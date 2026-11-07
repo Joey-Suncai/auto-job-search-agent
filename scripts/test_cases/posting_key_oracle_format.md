@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "url": str, "expect": str, "spec_quote": str, "ambiguous": false}. Write 8 cases ONLY for the Oracle rule: job and requisitions/preview, apply sections, query strings, upper-case host, different lang / site, two jobs on one tenant.

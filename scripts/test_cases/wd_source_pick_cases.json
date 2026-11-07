@@ -1,0 +1,284 @@
+[
+ {
+  "name": "real_drops_empty_strings_and_placeholders",
+  "fn": "real_options",
+  "options": [
+   "",
+   "Select One",
+   "LinkedIn",
+   ""
+  ],
+  "expect": [
+   "LinkedIn"
+  ],
+  "spec": "real_options drops empty strings and placeholders: \"Select One\", \"Select\", \"Choose One\", \"--\", and the Chinese placeholders \"选择一个\", \"请选择\", \"請選擇\", \"選擇一個\" (case-insensitive, an optional trailing period). Everything else is kept in order."
+ },
+ {
+  "name": "real_all_english_placeholders_yields_empty",
+  "fn": "real_options",
+  "options": [
+   "Select One",
+   "Select",
+   "Choose One",
+   "--"
+  ],
+  "expect": [],
+  "spec": "An empty result means the tenant's list is empty."
+ },
+ {
+  "name": "real_drops_chinese_placeholders",
+  "fn": "real_options",
+  "options": [
+   "选择一个",
+   "请选择",
+   "請選擇",
+   "選擇一個",
+   "Indeed"
+  ],
+  "expect": [
+   "Indeed"
+  ],
+  "spec": "real_options drops empty strings and placeholders: \"Select One\", \"Select\", \"Choose One\", \"--\", and the Chinese placeholders \"选择一个\", \"请选择\", \"請選擇\", \"選擇一個\" (case-insensitive, an optional trailing period). Everything else is kept in order."
+ },
+ {
+  "name": "real_placeholders_case_insensitive_with_trailing_period",
+  "fn": "real_options",
+  "options": [
+   "select one",
+   "SELECT.",
+   "choose one.",
+   "Google"
+  ],
+  "expect": [
+   "Google"
+  ],
+  "spec": "real_options drops empty strings and placeholders: \"Select One\", \"Select\", \"Choose One\", \"--\", and the Chinese placeholders \"选择一个\", \"请选择\", \"請選擇\", \"選擇一個\" (case-insensitive, an optional trailing period). Everything else is kept in order."
+ },
+ {
+  "name": "real_keeps_claim_options_in_order",
+  "fn": "real_options",
+  "options": [
+   "Employee referral",
+   "Career fair",
+   "Recruiter"
+  ],
+  "expect": [
+   "Employee referral",
+   "Career fair",
+   "Recruiter"
+  ],
+  "spec": "Everything else is kept in order."
+ },
+ {
+  "name": "real_keeps_near_miss_placeholder_text",
+  "fn": "real_options",
+  "options": [
+   "Select two",
+   "Google",
+   "LinkedIn"
+  ],
+  "expect": [
+   "Select two",
+   "Google",
+   "LinkedIn"
+  ],
+  "spec": "Everything else is kept in order.",
+  "ambiguous": false
+ },
+ {
+  "name": "real_empty_input_list",
+  "fn": "real_options",
+  "options": [],
+  "expect": [],
+  "spec": "An empty result means the tenant's list is empty."
+ },
+ {
+  "name": "real_filters_only_placeholders_not_claims",
+  "fn": "real_options",
+  "options": [
+   "--",
+   "University",
+   "Alumni"
+  ],
+  "expect": [
+   "University",
+   "Alumni"
+  ],
+  "spec": "Everything else is kept in order."
+ },
+ {
+  "name": "source_null_when_all_options_claim_people_or_events",
+  "fn": "source_pick",
+  "options": [
+   "Employee referral",
+   "Career fair",
+   "Recruiter"
+  ],
+  "expect": null,
+  "spec": "If no option is allowed, source_pick returns null (the runner then stops and asks the candidate; it never falls back to a claim)."
+ },
+ {
+  "name": "source_null_when_only_placeholders",
+  "fn": "source_pick",
+  "options": [
+   "Select One",
+   "--",
+   "选择一个"
+  ],
+  "expect": null,
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_skips_placeholder_and_picks_real_option",
+  "fn": "source_pick",
+  "options": [
+   "Select One",
+   "LinkedIn"
+  ],
+  "expect": "LinkedIn",
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_neutral_later_in_list_beats_earlier_non_neutral",
+  "fn": "source_pick",
+  "options": [
+   "Newspaper ad",
+   "LinkedIn"
+  ],
+  "expect": "LinkedIn",
+  "spec": "Among the allowed options, neutral channels come first: options mentioning website, career site, job board, online, internet, social, LinkedIn, Indeed, Glassdoor, search engine, Google, or starting with the word \"Other\". Ties keep the original order."
+ },
+ {
+  "name": "source_neutral_tie_keeps_original_order",
+  "fn": "source_pick",
+  "options": [
+   "Google",
+   "LinkedIn",
+   "Indeed"
+  ],
+  "expect": "Google",
+  "spec": "Ties keep the original order."
+ },
+ {
+  "name": "source_no_neutral_returns_first_allowed",
+  "fn": "source_pick",
+  "options": [
+   "Radio ad",
+   "TV ad"
+  ],
+  "expect": "Radio ad",
+  "spec": "If no neutral option exists, the first allowed option in list order is returned."
+ },
+ {
+  "name": "source_other_prefix_counts_as_neutral",
+  "fn": "source_pick",
+  "options": [
+   "Newspaper",
+   "Other source"
+  ],
+  "expect": "Other source",
+  "spec": "Among the allowed options, neutral channels come first: options mentioning website, career site, job board, online, internet, social, LinkedIn, Indeed, Glassdoor, search engine, Google, or starting with the word \"Other\". Ties keep the original order."
+ },
+ {
+  "name": "source_ziprecruiter_is_allowed",
+  "fn": "source_pick",
+  "options": [
+   "ZipRecruiter",
+   "Career fair"
+  ],
+  "expect": "ZipRecruiter",
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_zip_recruiter_two_words_is_allowed",
+  "fn": "source_pick",
+  "options": [
+   "Zip Recruiter"
+  ],
+  "expect": "Zip Recruiter",
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_blocks_recruiter_contact_and_friend_referral",
+  "fn": "source_pick",
+  "options": [
+   "A recruiter contacted me",
+   "Referred by a friend"
+  ],
+  "expect": null,
+  "spec": "If no option is allowed, source_pick returns null (the runner then stops and asks the candidate; it never falls back to a claim)."
+ },
+ {
+  "name": "source_blocks_school_university_college_professor",
+  "fn": "source_pick",
+  "options": [
+   "School",
+   "University",
+   "College",
+   "Professor"
+  ],
+  "expect": null,
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_blocks_agency_staffing_temp_headhunter_search_firm",
+  "fn": "source_pick",
+  "options": [
+   "Staffing agency",
+   "Temp agency",
+   "Headhunter",
+   "Search firm"
+  ],
+  "expect": null,
+  "spec": "source_pick never returns a placeholder and never returns an option that claims a person, contact, job or event the candidate never had: any option mentioning alumni, referral/referred, employee, recruiter/recruiting (but \"zip recruiter\"/\"ZipRecruiter\" is a job board and allowed), friend, family, colleague, career fair, job fair, campus, event, conference, university, college, school, professor, agency, search firm, staffing, direct contact, contacted, headhunter, sourcer, contingent, contractor, temporary/temp, in-person, program, workshop, info session / information session, alma mater."
+ },
+ {
+  "name": "source_blocks_fair_session_workshop_campus_event",
+  "fn": "source_pick",
+  "options": [
+   "Job fair",
+   "Info session",
+   "Workshop",
+   "Campus event"
+  ],
+  "expect": null,
+  "spec": "If no option is allowed, source_pick returns null (the runner then stops and asks the candidate; it never falls back to a claim)."
+ },
+ {
+  "name": "source_social_media_neutral_beats_word_of_mouth",
+  "fn": "source_pick",
+  "options": [
+   "Word of mouth",
+   "Social media"
+  ],
+  "expect": "Social media",
+  "spec": "Among the allowed options, neutral channels come first: options mentioning website, career site, job board, online, internet, social, LinkedIn, Indeed, Glassdoor, search engine, Google, or starting with the word \"Other\". Ties keep the original order."
+ },
+ {
+  "name": "source_career_site_neutral_over_blocked_job_fair",
+  "fn": "source_pick",
+  "options": [
+   "Job fair",
+   "Career site"
+  ],
+  "expect": "Career site",
+  "spec": "Among the allowed options, neutral channels come first: options mentioning website, career site, job board, online, internet, social, LinkedIn, Indeed, Glassdoor, search engine, Google, or starting with the word \"Other\". Ties keep the original order."
+ },
+ {
+  "name": "source_empty_list_returns_null",
+  "fn": "source_pick",
+  "options": [],
+  "expect": null,
+  "spec": "If no option is allowed, source_pick returns null (the runner then stops and asks the candidate; it never falls back to a claim)."
+ },
+ {
+  "name": "source_blocks_in_person_event_allows_search_engine",
+  "fn": "source_pick",
+  "options": [
+   "In-person event",
+   "Search engine"
+  ],
+  "expect": "Search engine",
+  "spec": "Among the allowed options, neutral channels come first: options mentioning website, career site, job board, online, internet, social, LinkedIn, Indeed, Glassdoor, search engine, Google, or starting with the word \"Other\". Ties keep the original order."
+ }
+]

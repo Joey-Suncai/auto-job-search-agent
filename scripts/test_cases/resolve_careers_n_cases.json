@@ -1,0 +1,187 @@
+[
+ {
+  "name": "link_after_400k_run_found",
+  "fn": "detect_ats",
+  "args": {
+   "text": "{PAD} https://boards.greenhouse.io/acme",
+   "pad": [
+    "A",
+    400000
+   ]
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "spec_quote": "before scanning, every run of 300 or more consecutive characters that are letters, digits, \"_\", \".\" or \"-\" is replaced by a single space ... A link elsewhere in the text is still found.",
+  "ambiguous": false
+ },
+ {
+  "name": "link_before_400k_run_found",
+  "fn": "detect_ats",
+  "args": {
+   "text": "https://jobs.lever.co/acme {PAD}",
+   "pad": [
+    "A",
+    400000
+   ]
+  },
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "spec_quote": "before scanning, every run of 300 or more consecutive characters that are letters, digits, \"_\", \".\" or \"-\" is replaced by a single space ... A link elsewhere in the text is still found.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_links_surrounding_400k_run",
+  "fn": "detect_ats",
+  "args": {
+   "text": "https://boards.greenhouse.io/acme {PAD} https://jobs.lever.co/acme",
+   "pad": [
+    "A",
+    400000
+   ]
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "spec_quote": "Order when several are present: greenhouse before lever before ashby before icims ... A link elsewhere in the text is still found.",
+  "ambiguous": false
+ },
+ {
+  "name": "link_glued_to_500_char_run_not_found",
+  "fn": "detect_ats",
+  "args": {
+   "text": "https://{PAD}boards.greenhouse.io/acme",
+   "pad": [
+    "A",
+    500
+   ]
+  },
+  "expect": [],
+  "spec_quote": "A link that is glued to such a run (the run continues straight into the host name with no other character in between) is part of the run and is NOT found.",
+  "ambiguous": false
+ },
+ {
+  "name": "run_of_299_chars_left_alone_link_found",
+  "fn": "detect_ats",
+  "args": {
+   "text": "{PAD} https://acme.bamboohr.com/careers",
+   "pad": [
+    "Z",
+    299
+   ]
+  },
+  "expect": [
+   [
+    "bamboohr",
+    "acme.bamboohr.com"
+   ]
+  ],
+  "spec_quote": "A run of fewer than 300 such characters is left alone. ... A link elsewhere in the text is still found. ... \"https://acme.bamboohr.com/careers\" → [\"bamboohr\", \"acme.bamboohr.com\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "run_built_from_x_dot_pairs_blanked",
+  "fn": "detect_ats",
+  "args": {
+   "text": "{PAD} https://jobs.ashbyhq.com/acme",
+   "pad": [
+    "x.",
+    200
+   ]
+  },
+  "expect": [
+   [
+    "ashby",
+    "acme"
+   ]
+  ],
+  "spec_quote": "before scanning, every run of 300 or more consecutive characters that are letters, digits, \"_\", \".\" or \"-\" is replaced by a single space (an inline base64 image such as data:image/png;base64,AAAA… or a minified blob). A link elsewhere in the text is still found.",
+  "ambiguous": false
+ },
+ {
+  "name": "run_of_dash_and_digits_blanked",
+  "fn": "detect_ats",
+  "args": {
+   "text": "{PAD} https://acme.breezy.hr",
+   "pad": [
+    "-1",
+    200
+   ]
+  },
+  "expect": [
+   [
+    "breezy",
+    "acme.breezy.hr"
+   ]
+  ],
+  "spec_quote": "every run of 300 or more consecutive characters that are letters, digits, \"_\", \".\" or \"-\" is replaced by a single space ... A link elsewhere in the text is still found. ... \"https://acme.breezy.hr\" → [\"breezy\", \"acme.breezy.hr\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "plain_page_no_long_run_no_false_alarm",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<html><body>Join us! <a href=\"https://jobs.lever.co/acme\">Apply</a></body></html>",
+   "pad": null
+  },
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "spec_quote": "detect_ats(text) scans a page's HTML + URL for links to applicant-tracking systems and returns [[system, ident], ...] in a fixed preference order, each once. Examples of what it recognises (unchanged): ... \"https://jobs.lever.co/acme\" → [\"lever\", \"acme\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "page_with_only_a_long_run_returns_empty",
+  "fn": "detect_ats",
+  "args": {
+   "text": "data:image/png;base64,{PAD}",
+   "pad": [
+    "QUJD",
+    100000
+   ]
+  },
+  "expect": [],
+  "spec_quote": "every run of 300 or more consecutive characters that are letters, digits, \"_\", \".\" or \"-\" is replaced by a single space (an inline base64 image such as data:image/png;base64,AAAA… or a minified blob). ... No recognised link → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "1_5MB_run_with_greenhouse_and_lever_order_kept",
+  "fn": "detect_ats",
+  "args": {
+   "text": "https://boards.greenhouse.io/acme {PAD} https://jobs.lever.co/acme",
+   "pad": [
+    "A",
+    1500000
+   ]
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "spec_quote": "Order when several are present: greenhouse before lever before ashby before icims ... Text of any length (1.5 MB) must be scanned in well under a second.",
+  "ambiguous": false
+ }
+]

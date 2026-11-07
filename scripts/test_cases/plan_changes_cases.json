@@ -1,0 +1,568 @@
+[
+ {
+  "name": "no_change_same_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "skip_optional_to_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Nickname",
+     "status": "skip_optional"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Nickname",
+     "status": "ok",
+     "answer": "Al"
+    }
+   ]
+  },
+  "expect": [
+   "Nickname: skip_optional → Al"
+  ]
+ },
+ {
+  "name": "answer_to_different_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Bob"
+    }
+   ]
+  },
+  "expect": [
+   "Name: Alice → Bob"
+  ]
+ },
+ {
+  "name": "answer_to_needs_user",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "needs_user"
+    }
+   ]
+  },
+  "expect": [
+   "Name: Alice → needs_user"
+  ]
+ },
+ {
+  "name": "multi_select_answer_change",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Choices",
+     "status": "ok",
+     "answer": "A | B"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Choices",
+     "status": "ok",
+     "answer": "A | B | C"
+    }
+   ]
+  },
+  "expect": [
+   "Choices: A | B → A | B | C"
+  ]
+ },
+ {
+  "name": "long_answer_truncated_to_40",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Essay",
+     "status": "ok",
+     "answer": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Essay",
+     "status": "ok",
+     "answer": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+   ]
+  },
+  "expect": [
+   "Essay: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa → bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ]
+ },
+ {
+  "name": "long_label_collapsed_and_truncated",
+  "old": {
+   "fields": [
+    {
+     "key": "long",
+     "label": "  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  ",
+     "status": "skip_optional"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "long",
+     "label": "  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA   BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  ",
+     "status": "ok",
+     "answer": "x"
+    }
+   ]
+  },
+  "expect": [
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA BBBBBBBBBBBBBBBBBBBBBBBBBBBBB: skip_optional → x"
+  ]
+ },
+ {
+  "name": "new_field_only",
+  "old": {
+   "fields": []
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "n",
+     "label": "New Q",
+     "status": "ok",
+     "answer": "Yes"
+    }
+   ]
+  },
+  "expect": [
+   "New Q: new → Yes"
+  ]
+ },
+ {
+  "name": "gone_field_only",
+  "old": {
+   "fields": [
+    {
+     "key": "g",
+     "label": "Old Q",
+     "status": "skip_optional"
+    }
+   ]
+  },
+  "new": {
+   "fields": []
+  },
+  "expect": [
+   "Old Q: skip_optional → gone"
+  ]
+ },
+ {
+  "name": "ordering_mixed_new_changed_gone",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "A old",
+     "status": "ok",
+     "answer": "1"
+    },
+    {
+     "key": "gone1",
+     "label": "Gone One",
+     "status": "skip_optional"
+    },
+    {
+     "key": "b",
+     "label": "B old",
+     "status": "ok",
+     "answer": "same"
+    },
+    {
+     "key": "gone2",
+     "label": "Gone Two",
+     "status": "needs_user"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "new1",
+     "label": "New One",
+     "status": "ok",
+     "answer": "N1"
+    },
+    {
+     "key": "a",
+     "label": "A new",
+     "status": "ok",
+     "answer": "2"
+    },
+    {
+     "key": "c",
+     "label": "C new",
+     "status": "file"
+    },
+    {
+     "key": "b",
+     "label": "B new",
+     "status": "ok",
+     "answer": "same"
+    }
+   ]
+  },
+  "expect": [
+   "New One: new → N1",
+   "A new: 1 → 2",
+   "C new: new → file",
+   "Gone One: skip_optional → gone",
+   "Gone Two: needs_user → gone"
+  ]
+ },
+ {
+  "name": "same_outcome_different_source",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Q",
+     "status": "ok",
+     "answer": "Yes",
+     "source": "x"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Q",
+     "status": "ok",
+     "answer": "Yes",
+     "source": "y"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "status_ok_missing_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": [
+   "Name: Alice → None"
+  ]
+ },
+ {
+  "name": "file_to_check_only",
+  "old": {
+   "fields": [
+    {
+     "key": "f",
+     "label": "Upload",
+     "status": "file"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "f",
+     "label": "Upload",
+     "status": "check_only"
+    }
+   ]
+  },
+  "expect": [
+   "Upload: file → check_only"
+  ]
+ },
+ {
+  "name": "null_plans_both",
+  "old": null,
+  "new": null,
+  "expect": []
+ },
+ {
+  "name": "plans_without_fields",
+  "old": {
+   "other": true
+  },
+  "new": {
+   "other": false
+  },
+  "expect": []
+ },
+ {
+  "name": "old_null_new_field",
+  "old": null,
+  "new": {
+   "fields": [
+    {
+     "key": "n",
+     "label": "New Q",
+     "status": "ok",
+     "answer": "Yes"
+    }
+   ]
+  },
+  "expect": [
+   "New Q: new → Yes"
+  ]
+ },
+ {
+  "name": "old_field_new_null",
+  "old": {
+   "fields": [
+    {
+     "key": "g",
+     "label": "Old Q",
+     "status": "needs_user"
+    }
+   ]
+  },
+  "new": null,
+  "expect": [
+   "Old Q: needs_user → gone"
+  ]
+ },
+ {
+  "name": "same_outcome_different_label",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Old Label",
+     "status": "ok",
+     "answer": "Yes"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "New Label",
+     "status": "ok",
+     "answer": "Yes"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "new_file_field_only",
+  "old": {
+   "fields": []
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "f",
+     "label": "Resume",
+     "status": "file"
+    }
+   ]
+  },
+  "expect": [
+   "Resume: new → file"
+  ]
+ },
+ {
+  "name": "answer_to_skip_optional",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Confirm",
+     "status": "ok",
+     "answer": "Yes"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Confirm",
+     "status": "skip_optional"
+    }
+   ]
+  },
+  "expect": [
+   "Confirm: Yes → skip_optional"
+  ]
+ },
+ {
+  "name": "check_only_to_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Check",
+     "status": "check_only"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Check",
+     "status": "ok",
+     "answer": "Done"
+    }
+   ]
+  },
+  "expect": [
+   "Check: check_only → Done"
+  ]
+ },
+ {
+  "name": "answer_length_40_vs_41",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Boundary",
+     "status": "ok",
+     "answer": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Boundary",
+     "status": "ok",
+     "answer": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+   ]
+  },
+  "expect": [
+   "Boundary: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa → bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ]
+ },
+ {
+  "name": "status_ok_missing_answer_to_answer",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok",
+     "answer": "Alice"
+    }
+   ]
+  },
+  "expect": [
+   "Name: None → Alice"
+  ]
+ },
+ {
+  "name": "same_missing_answer_outcome",
+  "old": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok"
+    }
+   ]
+  },
+  "new": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "Name",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": []
+ }
+]

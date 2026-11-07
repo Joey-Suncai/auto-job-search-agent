@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "url": str, "expect": bool, "spec_quote": str, "ambiguous": false}. Write 14 cases: 7 true (company career sites, ats=successfactors, sapsf, jobs.sap.com), 7 false (builtin.com/job/x/11528663, linkedin, indeed, glassdoor, workday, short ids).

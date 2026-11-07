@@ -1,0 +1,372 @@
+[
+ {
+  "name": "exact_simple",
+  "options": [
+   "Accounting",
+   "Computer Science",
+   "Data Science",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "Rule 2a: an option equal to the preference."
+ },
+ {
+  "name": "case_insensitive_exact",
+  "options": [
+   "Accounting",
+   "computer science",
+   "Data Science",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "computer science",
+  "spec": "Comparison is case-insensitive."
+ },
+ {
+  "name": "repeated_spaces_and_trailing_period",
+  "options": [
+   "Accounting",
+   "Computer   Science.",
+   "Data Science",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer   Science.",
+  "spec": "Comparison ignores repeated spaces and a trailing period."
+ },
+ {
+  "name": "preference_order_substring_beats_later_exact",
+  "options": [
+   "Accounting",
+   "Computer Science",
+   "Data Science and Analytics",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect": "Data Science and Analytics",
+  "spec": "The FIRST preference that matches any option decides; a later preference may never win while an earlier one matches something."
+ },
+ {
+  "name": "exact_beats_earlier_substring",
+  "options": [
+   "Computer Science and Engineering",
+   "Computer Science",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "For one preference, try in this order: a. an option equal to the preference; b. an option that contains the preference as a substring."
+ },
+ {
+  "name": "substring_forward",
+  "options": [
+   "Accounting",
+   "Computer Science and Engineering",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science and Engineering",
+  "spec": "b. an option that contains the preference as a substring."
+ },
+ {
+  "name": "reverse_containment_multiword",
+  "options": [
+   "Accounting",
+   "Data Analytics",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Data Analytics and Visualization"
+  ],
+  "expect": "Data Analytics",
+  "spec": "also an option whose own text is contained in the preference, but ONLY when that option has at least two words after removing the words and/of/the/a/an/or/in/for."
+ },
+ {
+  "name": "reverse_containment_one_word_rejected",
+  "options": [
+   "Accounting",
+   "Analytics",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Data Analytics and Visualization"
+  ],
+  "expect": null,
+  "spec": "a one-word option such as \"Science\", \"Data\" or \"Analytics\" never matches this way."
+ },
+ {
+  "name": "word_containment_computer_science",
+  "options": [
+   "Accounting",
+   "Computer and Information Science",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer and Information Science",
+  "spec": "c. an option that contains every word of the preference (ignoring and/of/the/a/an/or/in/for)."
+ },
+ {
+  "name": "word_containment_with_stop_words",
+  "options": [
+   "Accounting",
+   "Computer and Information Science",
+   "Science and Computer Applications",
+   "Data Science",
+   "Economics"
+  ],
+  "prefs": [
+   "Computer and Science"
+  ],
+  "expect": "Computer and Information Science",
+  "spec": "c. an option that contains every word of the preference (ignoring and/of/the/a/an/or/in/for)."
+ },
+ {
+  "name": "earlier_pref_c_beats_later_exact",
+  "options": [
+   "Accounting",
+   "Computer and Information Science",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science",
+   "Data Science"
+  ],
+  "expect": "Computer and Information Science",
+  "spec": "The FIRST preference that matches any option decides; a later preference may never win while an earlier one matches something."
+ },
+ {
+  "name": "b_before_c_even_if_c_option_earlier",
+  "options": [
+   "Computer and Information Science",
+   "Computer Science and Engineering",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science and Engineering",
+  "spec": "For one preference, try in this order: a. an option equal to the preference; b. an option that contains the preference as a substring; c. an option that contains every word of the preference."
+ },
+ {
+  "name": "c_first_in_list_order",
+  "options": [
+   "Accounting",
+   "Science of Computer Systems",
+   "Computer and Information Science",
+   "Data Science",
+   "Economics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Science of Computer Systems",
+  "spec": "Within one step, the first option in list order wins."
+ },
+ {
+  "name": "b_first_in_list_order",
+  "options": [
+   "Accounting",
+   "Applied Data Science",
+   "Data Science and Analytics",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Data Science"
+  ],
+  "expect": "Applied Data Science",
+  "spec": "Within one step, the first option in list order wins."
+ },
+ {
+  "name": "short_pref_only_exact_none",
+  "options": [
+   "Accounting",
+   "Art History",
+   "Studio Art",
+   "Design",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Art"
+  ],
+  "expect": null,
+  "spec": "Preferences shorter than 4 characters only use step a."
+ },
+ {
+  "name": "short_pref_exact",
+  "options": [
+   "Accounting",
+   "Art",
+   "Art History",
+   "Design",
+   "Economics"
+  ],
+  "prefs": [
+   "Art"
+  ],
+  "expect": "Art",
+  "spec": "Preferences shorter than 4 characters only use step a."
+ },
+ {
+  "name": "ignore_other_preference",
+  "options": [
+   "Accounting",
+   "Computer Science",
+   "Economics",
+   "Mathematics",
+   "Other"
+  ],
+  "prefs": [
+   "Other",
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "The preference \"Other\" (and empty strings) are ignored."
+ },
+ {
+  "name": "ignore_empty_and_other",
+  "options": [
+   "Accounting",
+   "Data Science",
+   "Economics",
+   "Mathematics",
+   "Other"
+  ],
+  "prefs": [
+   "",
+   "Other",
+   "Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "The preference \"Other\" (and empty strings) are ignored."
+ },
+ {
+  "name": "no_match_none",
+  "options": [
+   "Accounting",
+   "Biology",
+   "Chemistry",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": null,
+  "spec": "Nothing matches → None."
+ },
+ {
+  "name": "earlier_pref_no_match_later_matches",
+  "options": [
+   "Accounting",
+   "Applied Statistics",
+   "Economics",
+   "Mathematics",
+   "Physics"
+  ],
+  "prefs": [
+   "Data Science",
+   "Statistics"
+  ],
+  "expect": "Applied Statistics",
+  "spec": "Go through the preferences in order."
+ },
+ {
+  "name": "exact_after_trailing_period_in_option",
+  "options": [
+   "Accounting",
+   "Computer Science.",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science.",
+  "spec": "Comparison ignores repeated spaces and a trailing period."
+ },
+ {
+  "name": "length_four_uses_substring",
+  "options": [
+   "Accounting",
+   "Data Analytics",
+   "Economics",
+   "Mathematics",
+   "Statistics"
+  ],
+  "prefs": [
+   "Data"
+  ],
+  "expect": "Data Analytics",
+  "spec": "Preferences shorter than 4 characters only use step a."
+ },
+ {
+  "name": "information_systems_word_containment",
+  "options": [
+   "Accounting",
+   "Information and Systems Management",
+   "Computer Science",
+   "Data Science",
+   "Economics"
+  ],
+  "prefs": [
+   "Information Systems"
+  ],
+  "expect": "Information and Systems Management",
+  "spec": "c. an option that contains every word of the preference (ignoring and/of/the/a/an/or/in/for)."
+ },
+ {
+  "name": "pref_repeated_spaces_and_period",
+  "options": [
+   "Accounting",
+   "Computer Science",
+   "Data Science",
+   "Economics",
+   "Mathematics"
+  ],
+  "prefs": [
+   "Computer   Science."
+  ],
+  "expect": "Computer Science",
+  "spec": "Comparison is case-insensitive and ignores repeated spaces and a trailing period."
+ }
+]

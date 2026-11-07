@@ -1,0 +1,188 @@
+[
+ {
+  "name": "parse_tenant standard host with locale",
+  "fn": "parse_tenant",
+  "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/job/Chicago-IL/Data-Intern_R-12345",
+  "expect": [
+   "acme.wd1.myworkdayjobs.com",
+   "acme",
+   "External"
+  ]
+ },
+ {
+  "name": "parse_tenant no locale segment",
+  "fn": "parse_tenant",
+  "url": "https://acme.wd5.myworkdayjobs.com/Careers/job/Austin-TX/Intern_R-1",
+  "expect": [
+   "acme.wd5.myworkdayjobs.com",
+   "acme",
+   "Careers"
+  ]
+ },
+ {
+  "name": "parse_tenant host lower-cased when URL has uppercase",
+  "fn": "parse_tenant",
+  "url": "https://ACME.WD1.MyWorkdayJobs.com/en-US/External/job/x",
+  "expect": [
+   "acme.wd1.myworkdayjobs.com",
+   "acme",
+   "External"
+  ]
+ },
+ {
+  "name": "parse_tenant hyphenated tenant label",
+  "fn": "parse_tenant",
+  "url": "https://my-company.wd3.myworkdayjobs.com/en-GB/MyCompanyCareers/job/London/Intern_R-9",
+  "expect": [
+   "my-company.wd3.myworkdayjobs.com",
+   "my-company",
+   "MyCompanyCareers"
+  ]
+ },
+ {
+  "name": "parse_tenant first segment wday yields null",
+  "fn": "parse_tenant",
+  "url": "https://acme.wd1.myworkdayjobs.com/wday/job/Chicago-IL/Intern_R-1",
+  "expect": null
+ },
+ {
+  "name": "parse_tenant first segment job yields null",
+  "fn": "parse_tenant",
+  "url": "https://acme.wd1.myworkdayjobs.com/job/Chicago-IL/Data-Intern_R-12345",
+  "expect": null
+ },
+ {
+  "name": "parse_tenant myworkdaysite recruiting path",
+  "fn": "parse_tenant",
+  "url": "https://wd3.myworkdaysite.com/recruiting/Acme/External/job/Chicago-IL/Intern_R-77",
+  "expect": [
+   "wd3.myworkdaysite.com",
+   "acme",
+   "External"
+  ]
+ },
+ {
+  "name": "parse_tenant greenhouse is not Workday",
+  "fn": "parse_tenant",
+  "url": "https://boards.greenhouse.io/acme/jobs/1234567",
+  "expect": null
+ },
+ {
+  "name": "parse_tenant empty string",
+  "fn": "parse_tenant",
+  "url": "",
+  "expect": null
+ },
+ {
+  "name": "keep_posting plain intern title in US city",
+  "fn": "keep_posting",
+  "title": "Software Engineering Intern",
+  "location": "Chicago, IL",
+  "expect": true
+ },
+ {
+  "name": "keep_posting Internal Auditor is not an intern title",
+  "fn": "keep_posting",
+  "title": "Internal Auditor",
+  "location": "Chicago, IL",
+  "expect": false
+ },
+ {
+  "name": "keep_posting internship with Remote location",
+  "fn": "keep_posting",
+  "title": "Data Science Internship",
+  "location": "Remote",
+  "expect": true
+ },
+ {
+  "name": "keep_posting interns plural as a word",
+  "fn": "keep_posting",
+  "title": "Interns Wanted - Marketing",
+  "location": "New York, NY",
+  "expect": true
+ },
+ {
+  "name": "keep_posting only year 2027 allowed",
+  "fn": "keep_posting",
+  "title": "Summer 2027 Engineering Intern",
+  "location": "Austin, TX",
+  "expect": true
+ },
+ {
+  "name": "keep_posting year 2026 must be rejected",
+  "fn": "keep_posting",
+  "title": "Summer 2026 Engineering Intern",
+  "location": "Austin, TX",
+  "expect": false
+ },
+ {
+  "name": "keep_posting fall term excluded",
+  "fn": "keep_posting",
+  "title": "Fall 2027 Data Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "keep_posting coop term excluded",
+  "fn": "keep_posting",
+  "title": "Engineering Co-op Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "keep_posting non-US city excluded",
+  "fn": "keep_posting",
+  "title": "Marketing Intern",
+  "location": "Toronto, Canada",
+  "expect": false
+ },
+ {
+  "name": "keep_posting non-US city with US mention is kept",
+  "fn": "keep_posting",
+  "title": "Marketing Intern",
+  "location": "Toronto, Canada; United States",
+  "expect": true
+ },
+ {
+  "name": "job_key basic id after last underscore",
+  "fn": "job_key",
+  "path": "/job/Chicago-IL/Data-Intern_R-12345",
+  "expect": "r-12345"
+ },
+ {
+  "name": "job_key trailing slash ignored",
+  "fn": "job_key",
+  "path": "/job/Chicago-IL/Data-Intern_R-12345/",
+  "expect": "r-12345"
+ },
+ {
+  "name": "job_key id lower-cased",
+  "fn": "job_key",
+  "path": "/job/Chicago-IL/Data-Intern_R-ABC12",
+  "expect": "r-abc12"
+ },
+ {
+  "name": "job_key no underscore yields empty string",
+  "fn": "job_key",
+  "path": "/job/Chicago-IL/Data-Intern",
+  "expect": ""
+ },
+ {
+  "name": "job_key uses the LAST underscore",
+  "fn": "job_key",
+  "path": "/job/Austin-TX/Senior_Intern_Program_R-200",
+  "expect": "r-200"
+ },
+ {
+  "name": "job_key numeric job id suffix",
+  "fn": "job_key",
+  "path": "/job/Chicago-IL/Software-Engineer-Intern_2027_000123456",
+  "expect": "000123456"
+ },
+ {
+  "name": "job_key empty path",
+  "fn": "job_key",
+  "path": "",
+  "expect": ""
+ }
+]

@@ -1,0 +1,804 @@
+{
+ "_doc": "TEST FIXTURE: a fictional F-1 master's student (identity of the example person) for the F-1 / CPT tests. Used only when config/profile.json is missing (jsa_profile.use_fixture_if_no_user).",
+ "name": {
+  "first": "Alex",
+  "last": "Sun",
+  "preferred": "Joey",
+  "full": "Alex Rivera",
+  "signature": "Alex Rivera",
+  "file_prefix": "Alex_Rivera"
+ },
+ "contact": {
+  "email": "alex.rivera@example.com",
+  "phone": "555-010-2030",
+  "city_state": "Chicago, IL",
+  "linkedin": "linkedin.com/in/example",
+  "website": "github.com/example"
+ },
+ "accounts": {
+  "gmail": "alex.rivera@example.com",
+  "workday_email": "alex.rivera@example.com"
+ },
+ "education": [
+  {
+   "school": "University of Chicago",
+   "short": "UChicago",
+   "match_re": "chicago",
+   "level": "master",
+   "current": true,
+   "start": "2026-09",
+   "end": "2027-12",
+   "degree": "M.S. Applied Data Science"
+  },
+  {
+   "school": "University of Illinois Urbana-Champaign",
+   "short": "UIUC",
+   "match_re": "illinois",
+   "level": "bachelor",
+   "degree": "B.A. Economics"
+  }
+ ],
+ "employers": [
+  "Hyde Park Investment Services",
+  "Frost & Sullivan"
+ ],
+ "employers_re": "frost\\s*(&|and)?\\s*sullivan|hyde park",
+ "employer_words_re": "frost|hyde park",
+ "work_auth": {
+  "status": "F-1",
+  "restricted": true,
+  "needs_sponsorship": true,
+  "internship_basis": "CPT",
+  "job_note": "Summer 2027 internship: use CPT through UChicago",
+  "sponsorship_explain": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "citizenship": "Canada"
+ },
+ "transcript": {
+  "path": "",
+  "file_name": "Alex_Rivera_Transcript.pdf",
+  "label": "official transcript"
+ },
+ "resume_template": "resume/TEMPLATE.docx",
+ "high_school": {"name": "Springtown No.2 High School", "city": "Huzhou", "region": "Zhejiang", "country": "China", "end": "2022"},
+ "answers": {
+  "location_rank": {"open": true, "first": "/\\bchicago\\b/i"},
+  "name_pronunciation": {"text": "TSIGH-jwin-ee SOON (I go by Joey)"},
+  "visa_expiry": {"text": "F-1 student visa; program end date December 2027 (Summer 2027 internship on CPT)"},
+  "ft_start": {"after": "2028-01", "text": "January 2028"},
+  "has_preferred": {
+   "yes": true
+  },
+  "yoe_meets": {
+   "yes": true
+  },
+  "good_standing": {
+   "yes": true
+  },
+  "college_years_completed": {
+   "text": "4 years completed (B.A.); now in my 5th year of college, the first year of my M.S.",
+   "pick": [
+    "/^(4|four)(th)?\\b/i",
+    "/^(4|four)\\+|more than (3|three)|^5\\b|^five\\b/i"
+   ]
+  },
+  "college_year_current": {
+   "text": "5th year (first year of the M.S.)",
+   "pick": [
+    "/^5th|fifth/i",
+    "/graduate|master/i"
+   ]
+  },
+  "preferred_name": {
+   "text": "Joey"
+  },
+  "first_name": {
+   "text": "Alex"
+  },
+  "last_name": {
+   "text": "Sun"
+  },
+  "full_name": {
+   "text": "Alex Rivera"
+  },
+  "email": {
+   "text": "alex.rivera@example.com"
+  },
+  "phone_device": {
+   "text": "Mobile",
+   "pick": [
+    "/^mobile$/i",
+    "/^cell/i",
+    "/mobile/i",
+    "/\\bcell\\b/i",
+    "/cellular/i"
+   ]
+  },
+  "phone_code": {
+   "text": "United States of America (+1)",
+   "combo": "United States",
+   "pick": [
+    "/united states.*\\+ ?1\\b/i",
+    "/^\\+1\\b/",
+    "/united states/i"
+   ]
+  },
+  "phone": {
+   "text": "555-010-2030"
+  },
+  "address": {
+   "text": "100 Main St"
+  },
+  "city_state_zip": {
+   "text": "Springfield, IL 62701"
+  },
+  "county": {
+   "text": "Cook"
+  },
+  "zip": {
+   "text": "62701"
+  },
+  "city": {
+   "text": "Chicago"
+  },
+  "state": {
+   "text": "Illinois",
+   "pick": [
+    "/^illinois$/i",
+    "/^il$/i"
+   ]
+  },
+  "country": {
+   "text": "United States",
+   "combo": "United States",
+   "pick": [
+    "/^united states( of america)?$/i",
+    "/^united states of america\\b/i",
+    "/^(us|usa|u\\.s\\.a?\\.?)$/i"
+   ]
+  },
+  "location": {
+   "text": "Chicago, Illinois, United States",
+   "combo": "Chicago"
+  },
+  "linkedin": {
+   "text": "https://www.linkedin.com/in/example"
+  },
+  "website": {
+   "text": "https://github.com/example"
+  },
+  "middle_initial": {
+   "text": "N/A",
+   "note": "no middle name (Joey 2026-10-27)"
+  },
+  "visa_details": {
+   "text": "F-1 student visa (M.S. Applied Data Science, University of Chicago, program through December 2027); the Summer 2027 internship would be on CPT. Citizenship: Canada. Residence: Chicago, IL, United States."
+  },
+  "legal_dispute": {
+   "yes": false
+  },
+  "interviewed_before": {
+   "yes": false
+  },
+  "undergrad_year": {
+   "yes": false
+  },
+  "noncompete_detail": {
+   "text": "Not currently employed; no non-compete, non-solicitation or other restrictive agreements."
+  },
+  "know_employee": {
+   "yes": false
+  },
+  "debarred": {
+   "yes": false
+  },
+  "industry_investor": {
+   "yes": false
+  },
+  "industry_side_role": {
+   "yes": false
+  },
+  "other_jobs": {
+   "yes": false
+  },
+  "conflict_interest": {
+   "yes": false
+  },
+  "eligibility_3way": {
+   "pick": [
+    "/require sponsorship before/i",
+    "/require sponsorship/i"
+   ],
+   "text": "I require sponsorship before I am able to work."
+  },
+  "language_level": {
+   "pick": [
+    "/^fluent/i",
+    "/native/i"
+   ],
+   "text": "Fluent"
+  },
+  "contact_employer": {
+   "yes": true
+  },
+  "interview_travel": {
+   "yes": false
+  },
+  "employer": {
+   "text": "University of Chicago"
+  },
+  "lives_outside_us": {
+   "pick": [
+    "/inside the united states/i",
+    "/^no\\b/i"
+   ],
+   "text": "No"
+  },
+  "school_level": {
+   "pick": [
+    "/^master/i",
+    "/graduate/i"
+   ],
+   "text": "Master's"
+  },
+  "school": {
+   "pick": [
+    "/university of chicago/i",
+    "/^other$/i"
+   ],
+   "text": "University of Chicago",
+   "combo": "University of Chicago"
+  },
+  "degree": {
+   "pick": [
+    "/^master'?s( degree)?$/i",
+    "/master of science/i",
+    "/master/i"
+   ],
+   "text": "Master's Degree",
+   "alts": [
+    "Master's Degree",
+    "Master's",
+    "Master of Science"
+   ]
+  },
+  "discipline": {
+   "pick": [
+    "/^data science$/i",
+    "/^applied data science$/i",
+    "/^data analytics$/i",
+    "/^computer science$/i",
+    "/^information systems?$/i",
+    "/^statistics$/i",
+    "/^other$/i"
+   ],
+   "text": "Data Science",
+   "alts": [
+    "Data Science",
+    "Applied Data Science",
+    "Data Analytics",
+    "Computer Science",
+    "Information Systems",
+    "Statistics",
+    "Other"
+   ]
+  },
+  "start_month": {
+   "pick": [
+    "/^sep/i"
+   ],
+   "text": "September",
+   "alts": [
+    "September",
+    "Sep"
+   ]
+  },
+  "start_year": {
+   "pick": [
+    "/^2026$/"
+   ],
+   "text": "2026"
+  },
+  "end_month": {
+   "pick": [
+    "/^dec/i"
+   ],
+   "text": "December",
+   "alts": [
+    "December",
+    "Dec"
+   ]
+  },
+  "end_year": {
+   "pick": [
+    "/^2027$/"
+   ],
+   "text": "2027"
+  },
+  "grad_date": {
+   "mmyy": "12/27",
+   "text": "December 2027",
+   "alts": [
+    "Fall 2027",
+    "December 2027",
+    "Dec 2027",
+    "2027"
+   ],
+   "pick": [
+    "/fall\\s*2027|autumn\\s*2027/i",
+    "/dec(ember)?\\s*2027/i",
+    "/^2027$/",
+    "/winter\\s*2027/i",
+    "/^(?!.*(spring|summer|may|june)).*2027/i"
+   ]
+  },
+  "highest_ed": {
+   "pick": [
+    "/^bachelor/i"
+   ],
+   "text": "Bachelor"
+  },
+  "enrolled": {
+   "yes": true
+  },
+  "returning": {
+   "yes": true
+  },
+  "gpa_current": {
+    "text": "N/A",
+    "pick": [
+     "/^n\\/?a$/i",
+     "/not applicable/i",
+     "/^n\\/?a\\b/i",
+     "/^other\\b/i"
+    ],
+    "note": "the current graduate program has no GPA yet (fictional fixture)"
+   },
+  "gpa": {
+   "text": "3.70",
+   "note": "fixture GPA"
+  },
+  "gpa_threshold": {
+   "by": {"cumulative": 3.7, "major": 3.8},
+   "_why": "fixture: yes/no GPA thresholds compared with these"
+  },
+  "visa_conditions": {
+   "yes": true,
+   "depart": false,
+   "_why": "fixture F-1: work limited to CPT / OPT; no home-residency rule"
+  },
+  "auth_today": {
+   "yes": false,
+   "note": "F-1: CPT not yet effective (a Workday employer Q10, Joey 10-28)"
+  },
+  "immigration_status": {
+   "text": "F-1",
+   "pick": [
+    "/^f-?1( student)?( visa)?$/i",
+    "/^f-?1\\b(?!.*(cpt|opt))/i",
+    "/f-?1 student/i",
+    "/^student( visa)?$/i",
+    "/f-?1\\W*cpt/i",
+    "/f-?1(?!.*\\bopt\\b)/i"
+   ]
+  },
+  "auth_kind": {
+   "text": "CPT",
+   "pick": [
+    "/\\bcpt\\b|curricular practical/i",
+    "/f-?1/i",
+    "/student/i"
+   ]
+  },
+  "spons_now": {
+   "yes": false
+  },
+  "spons_future": {
+   "yes": true
+  },
+  "on_opt": {
+   "yes": false
+  },
+  "any_employer": {
+   "yes": false
+  },
+  "work_permit": {
+   "yes": true
+  },
+  "citizen_pr": {
+   "yes": false
+  },
+  "authorized": {
+   "yes": true
+  },
+  "disability_cc305": {
+   "text": "No, I do not have a disability and have not had one in the past",
+   "pick": [
+    "/^no,? i do(n'?t| not) (want to answer|have a disability)/i",
+    "/^no,? i (do not|don'?t) have a disability/i"
+   ]
+  },
+  "essential_functions": {
+   "yes": true
+  },
+  "background_drug": {
+   "yes": true
+  },
+  "license_state_class": {
+   "pick": [
+    "/^illinois,? class d$/i",
+    "/illinois.{0,10}class d\\b/i"
+   ],
+   "text": "Illinois, Class D"
+  },
+  "driver_license": {
+   "yes": true
+  },
+  "work_arrangement": {
+   "pick": [
+    "/^on-?site/i",
+    "/in-office/i",
+    "/^in office/i",
+    "/^on ?site/i"
+   ],
+   "text": "Onsite"
+  },
+  "license": {
+   "yes": false
+  },
+  "misconduct": {
+   "yes": false
+  },
+  "ai_review": {
+   "text": "Opt In",
+   "pick": [
+    "/recruiter and (the )?automated/i",
+    "/opt[- ]?in/i",
+    "/^(yes|i (agree|consent))\\b/i"
+   ]
+  },
+  "recent_industry": {
+   "text": "Financial Services",
+   "pick": [
+    "/financial services/i",
+    "/finance|banking|investment/i"
+   ]
+  },
+  "resume_employer": {
+   "yes": true
+  },
+  "prior_employer": {
+   "yes": false
+  },
+  "python_r": {
+   "yes": true
+  },
+  "full_time_summer": {
+   "yes": true
+  },
+  "avail_season": {
+   "pick": [
+    "/^summer/i",
+    "/june/i"
+   ],
+   "text": "Summer 2027",
+   "date": "06/14/2027"
+  },
+  "hours": {
+   "text": "40"
+  },
+  "overtime": {
+   "text": "Evenings only",
+   "pick": [
+    "/^just evenings?$/i",
+    "/^(yes,? )?(evenings?|weeknights?) only$|^only evenings?$/i",
+    "/^evenings?$/i",
+    "/^yes$/i"
+   ]
+  },
+  "start_date": {
+   "text": "06/14/2027"
+  },
+  "intern_when": {
+   "pick": [
+    "/^summer$/i",
+    "/^summer\\b/i"
+   ],
+   "text": "Summer"
+  },
+  "internship_mandatory": {
+   "yes": false
+  },
+  "enrolled_during": {
+   "yes": true
+  },
+  "relocate_where": {
+   "text": "Nationwide",
+   "pick": [
+    "/nationwide/i",
+    "/anywhere (in|within) the (u\\.?s\\.?|united states)/i",
+    "/^anywhere$/i"
+   ]
+  },
+  "relocate": {
+   "yes": true
+  },
+  "onsite": {
+   "yes": true
+  },
+  "travel": {
+   "yes": true,
+   "pick": [
+    "/^up to 25 ?%/i",
+    "/^(0 ?- ?|less than |under )25 ?%/i",
+    "/^yes\\b/i"
+   ]
+  },
+  "housing": {
+   "yes": true
+  },
+  "reside_us": {
+   "yes": true
+  },
+  "comp": {
+   "text": "Open / per internship program standard",
+   "yes": true
+  },
+  "how_heard": {
+   "pick": [
+    "/online job board/i",
+    "/job board/i",
+    "/^recruitment website$/i",
+    "/^others?$/i",
+    "/^other\\b/i"
+   ],
+   "text": "Online job board",
+   "alts": [
+    "Online job board",
+    "Job board",
+    "Other"
+   ]
+  },
+  "relative_names": {
+   "text": "NONE"
+  },
+  "relatives": {
+   "yes": false
+  },
+  "prev_employed": {
+   "yes": false
+  },
+  "noncompete": {
+   "yes": false
+  },
+  "government": {
+   "yes": false
+  },
+  "outside_business": {
+   "yes": false
+  },
+  "referral": {
+   "yes": false
+  },
+  "gender": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "hispanic": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "race": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "veteran": {
+   "pick": [
+    "/^i am not a (protected )?veteran\\.?$/i",
+    "/^i am not a veteran(?!.*(spouse|but|depend))/i",
+    "/^not a veteran(?!.*(spouse|but))/i",
+    "/^i am not a protected veteran/i",
+    "/^(i am )?not a protected veteran/i",
+    "/^no\\b/i",
+    "/^not applicable$/i"
+   ],
+   "text": "I am not a protected veteran"
+  },
+  "disability": {
+   "pick": [
+    "/^no,? i do(n't| not) have a disability(?!.*past)/i",
+    "/^no,? i do(n't| not) have a disability/i",
+    "/^no\\b/i"
+   ],
+   "text": "No, I do not have a disability"
+  },
+  "pronouns": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "transgender": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "orientation": {
+   "text": "I don't wish to answer",
+   "pick": [
+    "/decline|prefer not|don'?t wish|do not wish/i"
+   ]
+  },
+  "certify": {
+   "yes": true,
+   "pick": [
+    "/^yes\\b/i",
+    "/i (certify|agree)/i"
+   ]
+  },
+  "marketing": {
+   "yes": false,
+   "pick": [
+    "/^no\\b/i",
+    "/opt[- ]?out/i",
+    "/do not/i",
+    "/^i do not/i"
+   ]
+  },
+  "sms": {
+   "yes": true
+  },
+  "future_contact": {
+   "yes": true,
+   "pick": [
+    "/^yes\\b/i",
+    "/i agree/i",
+    "/^i (would|do)\\b/i"
+   ]
+  },
+  "data_consent": {
+   "yes": true,
+   "pick": [
+    "/^yes\\b/i",
+    "/i agree/i",
+    "/acknowledge/i",
+    "/^i (consent|accept|understand)/i"
+   ]
+  },
+  "address_type": {
+   "text": "Home",
+   "pick": [
+    "/^home$/i",
+    "/^(home|residential|mailing)\\b/i"
+   ]
+  },
+  "age_range": {
+   "age": 23,
+   "as_of": "2026-11-03"
+  },
+  "areas_of_interest": {
+   "text": "AI product management, product analytics, data analysis and data engineering, and applied AI / AI agents"
+  },
+  "bond_declined": {
+   "yes": false
+  },
+  "citizenship_country": {
+   "pick": [
+    "/^canada\\b/i"
+   ],
+   "text": "Canada"
+  },
+  "city_state": {
+   "text": "Chicago, IL"
+  },
+  "degree_end_mmyyyy": {
+   "text": "12/2027"
+  },
+  "degree_progress": {
+   "yes": true
+  },
+  "degree_start_mmyyyy": {
+   "text": "09/2026"
+  },
+  "employee_statement": {
+   "pick": [
+    "/^i have never (worked|been employed)\\b/i",
+    "/^i have not (previously )?(worked|been employed)\\b/i",
+    "/^never (worked|employed)\\b/i"
+   ]
+  },
+  "enrollment_status": {
+   "pick": [
+    "/master/i"
+   ],
+   "text": "Currently enrolled in a Master's degree program"
+  },
+  "how_heard_board": {
+   "default": "LinkedIn",
+   "fallback": [
+    "Indeed"
+   ]
+  },
+  "hs_grad_year": {
+   "text": "2022",
+   "pick": [
+    "/^2022$/"
+   ]
+  },
+  "intern_dates_mmyy": {
+   "text": "06/27 - 09/27"
+  },
+  "local_area": {
+   "home": "/\\bchicago(land)?\\b/i"
+  },
+  "military_status": {
+   "pick": [
+    "/^none of the above/i",
+    "/^not applicable$/i",
+    "/^i am not/i"
+   ]
+  },
+  "notice_period": {
+   "pick": [
+    "/^available immediately$/i",
+    "/^immediately$/i",
+    "/^none$/i"
+   ],
+   "text": "Available immediately"
+  },
+  "on_assignment": {
+   "yes": false
+  },
+  "pay_period": {
+   "pick": [
+    "/^hourly$/i",
+    "/per hour/i"
+   ],
+   "text": "Hourly"
+  },
+  "permanent_address": {
+   "text": "100 Example Road, Toronto, ON M5V 1A1, Canada"
+  },
+  "publications": {
+   "pick": [
+    "/^0$/",
+    "/^none$/i",
+    "/^no publications/i"
+   ],
+   "text": "0"
+  },
+  "signature": {
+   "text": "Alex Rivera"
+  },
+  "sponsorship_type": {
+   "text": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "startup_fit": {
+   "yes": true
+  },
+  "transportation": {
+   "yes": false
+  }
+ },
+ "not_work_items": [
+  "Job Searching Agent",
+  "U-STAGE",
+  "VOICE CLUB",
+  "ECON 491"
+ ],
+ "education_note": "XJTLU is never listed on applications (education = UChicago M.S. Applied Data Science + UIUC B.A. Economics only).",
+ "eligibility": {
+  "needs_sponsorship": true,
+  "citizen_or_pr": false,
+  "grad": "2027-12",
+  "degree_level": "masters",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01"
+ }
+}

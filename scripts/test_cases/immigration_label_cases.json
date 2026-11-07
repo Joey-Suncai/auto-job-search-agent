@@ -1,0 +1,146 @@
+[
+ {
+  "name": "current_immigration_status",
+  "label": "What is your current immigration status?",
+  "expect": true,
+  "quote": "True: \"What is your current immigration status?\""
+ },
+ {
+  "name": "visa_status",
+  "label": "Visa Status",
+  "expect": true,
+  "quote": "True: ... \"Visa Status\""
+ },
+ {
+  "name": "visa_type",
+  "label": "Visa type",
+  "expect": true,
+  "quote": "True: ... \"Visa type\""
+ },
+ {
+  "name": "visa_category",
+  "label": "Visa category",
+  "expect": true,
+  "quote": "True: ... \"Visa category\""
+ },
+ {
+  "name": "work_authorization_type",
+  "label": "Work authorization type",
+  "expect": true,
+  "quote": "True: ... \"Work authorization type\""
+ },
+ {
+  "name": "immigration_status",
+  "label": "Immigration Status",
+  "expect": true,
+  "quote": "True: ... \"Immigration Status\""
+ },
+ {
+  "name": "indicate_current_immigration_status",
+  "label": "Please indicate your current immigration status",
+  "expect": true,
+  "quote": "True: ... \"Please indicate your current status\" (when about immigration)"
+ },
+ {
+  "name": "what_type_of_visa_do_you_hold",
+  "label": "What type of visa do you hold?",
+  "expect": true,
+  "quote": "True: ... \"Visa type\""
+ },
+ {
+  "name": "current_visa_category",
+  "label": "Current visa category",
+  "expect": true,
+  "quote": "True: ... \"Visa category\""
+ },
+ {
+  "name": "select_work_authorization_type",
+  "label": "Please select your work authorization type",
+  "expect": true,
+  "quote": "True: ... \"Work authorization type\""
+ },
+ {
+  "name": "immigration_status_select_one",
+  "label": "Immigration status (select one)",
+  "expect": true,
+  "quote": "True: ... \"Immigration Status\""
+ },
+ {
+  "name": "current_visa_status",
+  "label": "Current Visa Status",
+  "expect": true,
+  "quote": "True: ... \"Visa Status\""
+ },
+ {
+  "name": "legally_qualified_work_us_with_visa_parenthetical",
+  "label": "Are you legally qualified to work in the United States? (If hired, you will be required to submit proof of U.S. citizenship or visa status.)",
+  "expect": false,
+  "quote": "False: yes/no questions that merely mention visas or status — \"Are you legally qualified to work in the United States? (If hired, you will be required to submit proof of U.S. citizenship or visa status.)\""
+ },
+ {
+  "name": "legally_authorized_work_us",
+  "label": "Are you legally authorized to work in the U.S.?",
+  "expect": false,
+  "quote": "False: yes/no questions that merely mention visas or status — \"Are you legally authorized to work in the U.S.?\""
+ },
+ {
+  "name": "require_immigration_sponsorship",
+  "label": "Will you require immigration sponsorship now or in the future?",
+  "expect": false,
+  "quote": "False: yes/no questions that merely mention visas or status — \"Will you require immigration sponsorship now or in the future?\""
+ },
+ {
+  "name": "hold_visa_allows_work",
+  "label": "Do you hold a visa that allows you to work?",
+  "expect": false,
+  "quote": "False: yes/no questions that merely mention visas or status — \"Do you hold a visa that allows you to work?\""
+ },
+ {
+  "name": "ever_sponsored_for_visa",
+  "label": "Have you ever been sponsored for a visa?",
+  "expect": false,
+  "quote": "False: yes/no questions that merely mention visas or status — \"Have you ever been sponsored for a visa?\""
+ },
+ {
+  "name": "select_type_of_sponsorship_require",
+  "label": "Please select the type of sponsorship you require",
+  "expect": false,
+  "quote": "Additional rule (2026-11-01, Arch Capital): ... \"Please select the type of sponsorship you require\" ... For this test, label such questions false (not immigration status)."
+ },
+ {
+  "name": "what_kind_of_sponsorship_need",
+  "label": "What kind of sponsorship will you need?",
+  "expect": false,
+  "quote": "Additional rule (2026-11-01, Arch Capital): ... \"What kind of sponsorship will you need?\" ... For this test, label such questions false (not immigration status)."
+ },
+ {
+  "name": "provide_details_visa_status_expiry",
+  "label": "Please provide details on your visa status (including visa type and expiry date), residential and citizenship status",
+  "expect": false,
+  "quote": "Additional rule (2026-11-01, Kelkeltal): a free-text request for DETAILS (\"Please provide details on your visa status (including visa type and expiry date), residential and citizenship status\" ...) is answered with a sentence, not a single status — label it false."
+ },
+ {
+  "name": "describe_immigration_status",
+  "label": "Please describe your immigration status",
+  "expect": false,
+  "quote": "Additional rule (2026-11-01, Kelkeltal): a free-text request for DETAILS (... \"Please describe your immigration status\" ...) is answered with a sentence, not a single status — label it false."
+ },
+ {
+  "name": "explain_visa_situation",
+  "label": "Explain your visa situation",
+  "expect": false,
+  "quote": "Additional rule (2026-11-01, Kelkeltal): a free-text request for DETAILS (... \"Explain your visa situation\") is answered with a sentence, not a single status — label it false."
+ },
+ {
+  "name": "are_you_married",
+  "label": "Are you married?",
+  "expect": false,
+  "quote": "treat any question starting with Are/Will/Do/Does/Have/Can/Would/Is you as false."
+ },
+ {
+  "name": "are_you_currently_employed",
+  "label": "Are you currently employed?",
+  "expect": false,
+  "quote": "treat any question starting with Are/Will/Do/Does/Have/Can/Would/Is you as false."
+ }
+]

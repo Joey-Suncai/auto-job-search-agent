@@ -1,0 +1,279 @@
+[
+ {
+  "name": "sponsorship simple Yes/No",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship Yes sentence vs No sentence",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "Yes, I will require sponsorship",
+   "No, I will not require sponsorship"
+  ],
+  "expect": "Yes, I will require sponsorship",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorization reversed No then Yes",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "No, I am not legally authorized to work in the United States",
+   "Yes, I am legally authorized to work in the United States"
+  ],
+  "expect": "Yes, I am legally authorized to work in the United States",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "at least 18 False then True",
+  "label": "Are you at least 18?",
+  "options": [
+   "False",
+   "True"
+  ],
+  "expect": "True",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled True sentence vs False sentence",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "True, I am currently enrolled as a student",
+   "False, I am not currently enrolled as a student"
+  ],
+  "expect": "True, I am currently enrolled as a student",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship Yes among extra options",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "Yes, I will require sponsorship",
+   "No, I will not require sponsorship",
+   "I am a U.S. citizen",
+   "Prefer not to answer"
+  ],
+  "expect": "Yes, I will require sponsorship",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "at least 18 True among extra options",
+  "label": "Are you at least 18?",
+  "options": [
+   "False",
+   "True",
+   "Prefer not to say"
+  ],
+  "expect": "True",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorization two statement pair",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "I am legally authorized to work in the United States",
+   "I am not legally authorized to work in the United States"
+  ],
+  "expect": "I am legally authorized to work in the United States",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship will vs will not",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "I will require sponsorship in the future",
+   "I will not require sponsorship in the future"
+  ],
+  "expect": "I will require sponsorship in the future",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled do not vs do",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "I do not currently attend school as a student",
+   "I do currently attend school as a student"
+  ],
+  "expect": "I do currently attend school as a student",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "at least 18 am vs am not",
+  "label": "Are you at least 18?",
+  "options": [
+   "I am at least 18 years old",
+   "I am not at least 18 years old"
+  ],
+  "expect": "I am at least 18 years old",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorization can vs can't",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "I can legally work in the United States",
+   "I can't legally work in the United States"
+  ],
+  "expect": "I can legally work in the United States",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship don't vs do",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "I don't need sponsorship now or in the future",
+   "I do need sponsorship now or in the future"
+  ],
+  "expect": "I do need sponsorship now or in the future",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled am not vs am reversed",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "I am not currently enrolled as a student",
+   "I am currently enrolled as a student"
+  ],
+  "expect": "I am currently enrolled as a student",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship visa situations unknown",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "I am a U.S. citizen or permanent resident",
+   "I currently hold OPT",
+   "I am authorized under CPT",
+   "I require H-1B sponsorship in the future"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Otherwise — more than two options and none starts with Yes/No/True/False (for example a list of visa situations such as \"I am a U.S. citizen or permanent resident\", \"I currently hold OPT…\", \"I am authorized under CPT…\") — the rule must NOT pick anything: the answer is \"unknown\" and the question goes to the candidate.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorization work status options unknown",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "I am a U.S. citizen",
+   "I am a permanent resident",
+   "I hold an employment authorization document",
+   "I require sponsorship now or later"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Otherwise — more than two options and none starts with Yes/No/True/False (for example a list of visa situations such as \"I am a U.S. citizen or permanent resident\", \"I currently hold OPT…\", \"I am authorized under CPT…\") — the rule must NOT pick anything: the answer is \"unknown\" and the question goes to the candidate.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled academic statuses unknown",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "I am a full-time student",
+   "I am a part-time student",
+   "I am not currently enrolled",
+   "I am a recent graduate"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Otherwise — more than two options and none starts with Yes/No/True/False (for example a list of visa situations such as \"I am a U.S. citizen or permanent resident\", \"I currently hold OPT…\", \"I am authorized under CPT…\") — the rule must NOT pick anything: the answer is \"unknown\" and the question goes to the candidate.",
+  "ambiguous": false
+ },
+ {
+  "name": "at least 18 age options unknown",
+  "label": "Are you at least 18?",
+  "options": [
+   "I am 18 or older",
+   "I am under 18",
+   "Prefer not to say"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Otherwise — more than two options and none starts with Yes/No/True/False (for example a list of visa situations such as \"I am a U.S. citizen or permanent resident\", \"I currently hold OPT…\", \"I am authorized under CPT…\") — the rule must NOT pick anything: the answer is \"unknown\" and the question goes to the candidate.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship Yes not at start two statements",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "I will require sponsorship: Yes",
+   "I will not require sponsorship"
+  ],
+  "expect": "I will require sponsorship: Yes",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorization do vs do not",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "I do have legal authorization to work in the United States",
+   "I do not have legal authorization to work in the United States"
+  ],
+  "expect": "I do have legal authorization to work in the United States",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "at least 18 Yes among extra non-Yes/No options",
+  "label": "Are you at least 18?",
+  "options": [
+   "Yes, I am at least 18",
+   "I am under 18",
+   "Prefer not to answer"
+  ],
+  "expect": "Yes, I am at least 18",
+  "spec_quote": "If an option starts with \"Yes\" (or \"True\") / \"No\" (or \"False\"), pick the one matching the fact, e.g. \"Yes, I will require sponsorship\" for a Yes fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled three I am options unknown",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "I am currently enrolled as a student",
+   "I am taking a leave of absence",
+   "I am not enrolled"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Picking a sentence only because it begins with \"I am\" is wrong.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled don't vs am two statements",
+  "label": "Are you currently enrolled as a student?",
+  "options": [
+   "I don't currently attend school",
+   "I am currently enrolled as a student"
+  ],
+  "expect": "I am currently enrolled as a student",
+  "spec_quote": "Otherwise, if there are exactly two options phrased as statements — one affirmative (\"I am…\", \"I do…\", \"I will…\", \"I can…\") and one negative (\"I am not…\", \"I do not…\", \"I don't…\", \"I will not…\", \"I can't…\") — pick the affirmative one for a Yes fact and the negative one for a No fact.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship more than two with Yes at end unknown",
+  "label": "Will you now or in the future require sponsorship?",
+  "options": [
+   "I am a U.S. citizen",
+   "I currently hold OPT",
+   "I will require sponsorship: Yes"
+  ],
+  "expect": "unknown",
+  "spec_quote": "Otherwise — more than two options and none starts with Yes/No/True/False (for example a list of visa situations such as \"I am a U.S. citizen or permanent resident\", \"I currently hold OPT…\", \"I am authorized under CPT…\") — the rule must NOT pick anything: the answer is \"unknown\" and the question goes to the candidate.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,292 @@
+[
+ {
+  "name": "Finish Later before Submit, Submit wins",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Finish Later"
+    },
+    {
+     "id": "b",
+     "text": "Submit"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "b",
+   "text": "Submit"
+  },
+  "spec": "\"or the word \"later\" (\"Finish Later\", \"Save and Finish Later\", \"Complete Later\" save the application and leave — JSA-143, 2026-11-04) (all case-insensitive) — AND does match one of: the word \"next\", \"continue\", \"submit\", ...\""
+ },
+ {
+  "name": "Save and Finish Later alone is null",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Save and Finish Later"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"or the word \"later\" (\"Finish Later\", \"Save and Finish Later\", \"Complete Later\" save the application and leave — JSA-143, 2026-11-04)\""
+ },
+ {
+  "name": "Finish alone is kept",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Finish"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "a",
+   "text": "Finish"
+  },
+  "spec": "\"AND does match one of: the word \"next\", \"continue\", \"submit\", \"save and continue\", \"save & continue\", exactly \"save\", \"proceed\", \"finish\", \"apply\"\""
+ },
+ {
+  "name": "Collateral Next — later only as a whole word",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Collateral Next"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "a",
+   "text": "Collateral Next"
+  },
+  "spec": "\"Return the FIRST button whose text (non-empty) does NOT match any of: ... or the word \"later\" ... (all case-insensitive) — AND does match one of: the word \"next\" ...\""
+ },
+ {
+  "name": "Later alone is excluded",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Later"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"or the word \"later\" ... (all case-insensitive)\""
+ },
+ {
+  "name": "Social buttons then Finish Later then Continue",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Sign in with Google"
+    },
+    {
+     "id": "b",
+     "text": "Finish Later"
+    },
+    {
+     "id": "c",
+     "text": "Continue"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "c",
+   "text": "Continue"
+  },
+  "spec": "\"does NOT match any of: \"log in with\", \"login with\", \"sign in with\", ... google, ... or the word \"later\" ...  AND does match one of: ... \"continue\" ...\""
+ },
+ {
+  "name": "Back then Next",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Back"
+    },
+    {
+     "id": "b",
+     "text": "Next"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "b",
+   "text": "Next"
+  },
+  "spec": "\"does NOT match any of: ... the word \"back\", \"previous\", ...  AND does match one of: the word \"next\" ...\""
+ },
+ {
+  "name": "Back alone is null",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Back"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"Return the FIRST button whose text (non-empty) does NOT match any of: ... the word \"back\", \"previous\", \"cancel\", ... None qualifies → null.\""
+ },
+ {
+  "name": "Save & Continue is kept",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Save & Continue"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "a",
+   "text": "Save & Continue"
+  },
+  "spec": "\"AND does match one of: ... \"save and continue\", \"save & continue\", exactly \"save\", ...\""
+ },
+ {
+  "name": "Save for later excluded",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Save for later"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"does NOT match any of: ... \"save for later\", ... or the word \"later\" ...\""
+ },
+ {
+  "name": "Complete Later excluded",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Complete Later"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"or the word \"later\" (\"Finish Later\", \"Save and Finish Later\", \"Complete Later\" save the application and leave — JSA-143, 2026-11-04)\""
+ },
+ {
+  "name": "First qualifying button wins over later Submit",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Next"
+    },
+    {
+     "id": "b",
+     "text": "Submit"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "a",
+   "text": "Next"
+  },
+  "spec": "\"Return the FIRST button whose text (non-empty) ... AND does match one of: the word \"next\", ...\""
+ },
+ {
+  "name": "Previous, Finish Later, Submit",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Previous"
+    },
+    {
+     "id": "b",
+     "text": "Finish Later"
+    },
+    {
+     "id": "c",
+     "text": "Submit"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "c",
+   "text": "Submit"
+  },
+  "spec": "\"does NOT match any of: ... \"previous\", ... or the word \"later\" ... AND does match one of: ... \"submit\" ...\""
+ },
+ {
+  "name": "Collateral Finish — substring later must not exclude",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Collateral Finish"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "a",
+   "text": "Collateral Finish"
+  },
+  "spec": "\"or the word \"later\" ... (all case-insensitive)\""
+ },
+ {
+  "name": "Continue Later excluded, Apply returned",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": "Continue Later"
+    },
+    {
+     "id": "b",
+     "text": "Apply"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "b",
+   "text": "Apply"
+  },
+  "spec": "\"or the word \"later\" ... AND does match one of: ... \"apply\"\""
+ },
+ {
+  "name": "Empty text skipped, Finish Later leaves null",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "a",
+     "text": ""
+    },
+    {
+     "id": "b",
+     "text": "Finish Later"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "\"Return the FIRST button whose text (non-empty) does NOT match any of: ... or the word \"later\" ...  None qualifies → null.\""
+ }
+]

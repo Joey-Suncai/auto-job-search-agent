@@ -1,0 +1,2 @@
+Each case: {"id": "n1", "fn": "last_note", "input": {"output": "<multi-line runner stdout>"}, "expect": "<string>", "spec": "<quoted spec sentence>"}.
+last_note(output) returns the last non-empty stdout line that is not a STATUS / TIME line (a STATUS / TIME line may also carry the "- <time> " log prefix, e.g. "- 2026-11-06T02:18:18 STATUS login-timeout"), with its "- <time> " log prefix (e.g. "- 2026-11-06T02:18:18 ") removed; at most 200 characters; "" when there is none.

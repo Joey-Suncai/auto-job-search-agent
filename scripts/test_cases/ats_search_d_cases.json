@@ -1,0 +1,529 @@
+[
+ {
+  "name": "detect_ats_adp_workforcenow_full_url",
+  "fn": "detect_ats",
+  "args": {
+   "text": "Apply at https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&ccId=19000101_000001&lang=en_US today."
+  },
+  "expect": [
+   [
+    "adp",
+    "workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&ccid=19000101_000001&lang=en_us"
+   ]
+  ],
+  "spec_quote": "adp: `workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?<query>` (also `workforcenow.cloud.adp.com`) → that whole host + path + query, lower-cased",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats_paycom_portal_token_strips_tail",
+  "fn": "detect_ats",
+  "args": {
+   "text": "See https://paycomonline.net/v4/ats/web.php/portal/0123456789abcdef0123456789abcdef?jobId=99 for details."
+  },
+  "expect": [
+   [
+    "paycom",
+    "paycomonline.net/v4/ats/web.php/portal/0123456789abcdef0123456789abcdef"
+   ]
+  ],
+  "spec_quote": "paycom: `paycomonline.net/v4/ats/web.php/portal/<32 hex>` (or `/jobs/<32 hex>`) → \"paycomonline.net/v4/ats/web.php/portal/<token>\" (the part after the token is dropped)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats_paylocity_jobs_all_guid",
+  "fn": "detect_ats",
+  "args": {
+   "text": "Open https://recruiting.paylocity.com/Recruiting/Jobs/All/8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b to browse."
+  },
+  "expect": [
+   [
+    "paylocity",
+    "recruiting.paylocity.com/recruiting/jobs/all/8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b"
+   ]
+  ],
+  "spec_quote": "paylocity: `recruiting.paylocity.com/Recruiting/Jobs/All/<GUID>` (or `/List/`) → lower-cased host + path; else \"recruiting.paylocity.com\".",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats_dayforce_with_locale",
+  "fn": "detect_ats",
+  "args": {
+   "text": "Careers: https://jobs.dayforcehcm.com/en-US/acme/ACMEJOBS"
+  },
+  "expect": [
+   [
+    "dayforce",
+    "jobs.dayforcehcm.com/en-us/acme/acmejobs"
+   ]
+  ],
+  "spec_quote": "dayforce: `jobs.dayforcehcm.com/[<locale like en-US>/]<tenant>[/<board>]` → host + those path parts, lower-cased.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats_brassring_query_with_partnerid",
+  "fn": "detect_ats",
+  "args": {
+   "text": "Search jobs at https://jobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=25012&siteid=5140#Home"
+  },
+  "expect": [
+   [
+    "brassring",
+    "jobs.brassring.com/tgnewui/search/home/home?partnerid=25012&siteid=5140"
+   ]
+  ],
+  "spec_quote": "brassring: a `jobs.` / `sjobs.` / `ts.brassring.com` URL whose query has `partnerid=` → host + path + query (lower-cased); else the host.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats_clearcompany_slug",
+  "fn": "detect_ats",
+  "args": {
+   "text": "We are hiring: apply.clearcompany.com/acme-corp"
+  },
+  "expect": [
+   [
+    "clearcompany",
+    "apply.clearcompany.com/acme-corp"
+   ]
+  ],
+  "spec_quote": "clearcompany: `apply.clearcompany.com/<slug>` → \"apply.clearcompany.com/<slug>\"; `<x>.hrmdirect.com` → that host; a bare `apply.clearcompany.com` → \"apply.clearcompany.com\".",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_adp_amp_entity_decoded",
+  "fn": "clean_ident",
+  "args": {
+   "system": "adp",
+   "ident": "workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&amp;ccId=19000101_000001"
+  },
+  "expect": "workforcenow.adp.com/19000101-aaaa-bbbb-cccc-123456789012/19000101_000001",
+  "spec_quote": "adp: HTML entities in the ident are decoded twice (\"&amp;\", \"&#038;\"), anything after \"#\" dropped, query keys compared case-insensitively. ... `cid` must be 36 characters of hex digits and dashes; `ccId` must be 8 digits, \"_\", 6 digits. → \"<host>/<cid>/<ccid>\".",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_adp_missing_ccid_null",
+  "fn": "clean_ident",
+  "args": {
+   "system": "adp",
+   "ident": "workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&lang=en_US"
+  },
+  "expect": null,
+  "spec_quote": "Otherwise null (a bare host, a `myjobs.adp.com/<slug>` ident, a missing ccId).",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_brassring_numeric_entity",
+  "fn": "clean_ident",
+  "args": {
+   "system": "brassring",
+   "ident": "jobs.brassring.com/tgnewui/search/home/home?partnerid=25012&#038;siteid=5140"
+  },
+  "expect": "jobs.brassring.com/25012/5140",
+  "spec_quote": "brassring: host `jobs.` / `sjobs.` / `ts.brassring.com`; `partnerid` and `siteid` in the query, both digits only (entities decoded, \"#…\" dropped) → \"<host>/<partnerid>/<siteid>\"; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_paycom_portal_token",
+  "fn": "clean_ident",
+  "args": {
+   "system": "paycom",
+   "ident": "paycomonline.net/v4/ats/web.php/portal/0123456789abcdef0123456789abcdef"
+  },
+  "expect": "0123456789abcdef0123456789abcdef",
+  "spec_quote": "paycom: the ident must end in `/portal/<32 hex>` or `/jobs/<32 hex>` → the 32-hex token; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_paylocity_guid",
+  "fn": "clean_ident",
+  "args": {
+   "system": "paylocity",
+   "ident": "recruiting.paylocity.com/recruiting/jobs/all/8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b"
+  },
+  "expect": "8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b",
+  "spec_quote": "paylocity: must end in `/recruiting/jobs/all/<GUID>` or `/list/<GUID>` (GUID = 8-4-4-4-12 hex) → the GUID; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_dayforce_with_locale",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dayforce",
+   "ident": "jobs.dayforcehcm.com/en-US/acme/ACMEJOBS"
+  },
+  "expect": "acme/acmejobs",
+  "spec_quote": "dayforce: path after the host, split on \"/\"; a leading locale (\"en-us\", \"fr\") is dropped only when three parts remain; exactly two parts left and the second is not \"jobs\" → \"<tenant>/<board>\"; else null",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_dayforce_no_locale",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dayforce",
+   "ident": "jobs.dayforcehcm.com/acme/ACMEJOBS"
+  },
+  "expect": "acme/acmejobs",
+  "spec_quote": "dayforce: path after the host, split on \"/\"; a leading locale (\"en-us\", \"fr\") is dropped only when three parts remain; exactly two parts left and the second is not \"jobs\" → \"<tenant>/<board>\"; else null",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_dayforce_locale_only_null",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dayforce",
+   "ident": "jobs.dayforcehcm.com/en-us"
+  },
+  "expect": null,
+  "spec_quote": "exactly two parts left and the second is not \"jobs\" → \"<tenant>/<board>\"; else null (\"jobs.dayforcehcm.com/en-us\" → null).",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident_clearcompany_bare_host_null",
+  "fn": "clean_ident",
+  "args": {
+   "system": "clearcompany",
+   "ident": "apply.clearcompany.com"
+  },
+  "expect": null,
+  "spec_quote": "clearcompany: `apply.clearcompany.com/<slug>` (slug not vendor infrastructure and not \"v1\") or `<x>.hrmdirect.com` → kept as is; a bare `apply.clearcompany.com` → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_adp_basic_single_location_empty_dropped",
+  "fn": "parse_adp",
+  "args": {
+   "d": {
+    "jobRequisitions": [
+     {
+      "itemID": "12345",
+      "requisitionTitle": "Data Analyst",
+      "requisitionLocations": [
+       {
+        "nameCode": {
+         "shortName": "Tampa, FL"
+        }
+       },
+       {
+        "nameCode": {
+         "shortName": ""
+        }
+       }
+      ]
+     },
+     {
+      "requisitionTitle": "No item id job"
+     }
+    ]
+   },
+   "host": "workforcenow.adp.com",
+   "cid": "19000101-aaaa-bbbb-cccc-123456789012",
+   "ccid": "19000101_000001"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Tampa, FL",
+    "url": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&ccId=19000101_000001&lang=en_US&jobId=12345&source=CC2"
+   }
+  ],
+  "spec_quote": "parse_adp(d, host, cid, ccid): d.jobRequisitions[] with itemID → title = requisitionTitle; location = requisitionLocations[].nameCode.shortName joined with \"; \" (empty ones dropped); url = `https://<host>/mascsr/default/mdf/recruitment/recruitment.html?cid=<cid>&ccId=<ccid>&lang=en_US&jobId=<itemID>&source=CC2` ... Rows that are not objects or lack itemID are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_adp_multi_location_and_non_object_row",
+  "fn": "parse_adp",
+  "args": {
+   "d": {
+    "jobRequisitions": [
+     "garbage-row",
+     {
+      "itemID": "777",
+      "requisitionTitle": "Warehouse Associate",
+      "requisitionLocations": [
+       {
+        "nameCode": {
+         "shortName": "Reno, NV"
+        }
+       },
+       {
+        "nameCode": {
+         "shortName": "Las Vegas, NV"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "host": "workforcenow.cloud.adp.com",
+   "cid": "19000101-aaaa-bbbb-cccc-123456789012",
+   "ccid": "19000101_000002"
+  },
+  "expect": [
+   {
+    "title": "Warehouse Associate",
+    "location": "Reno, NV; Las Vegas, NV",
+    "url": "https://workforcenow.cloud.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=19000101-aaaa-bbbb-cccc-123456789012&ccId=19000101_000002&lang=en_US&jobId=777&source=CC2"
+   }
+  ],
+  "spec_quote": "location = requisitionLocations[].nameCode.shortName joined with \"; \" (empty ones dropped) ... Rows that are not objects or lack itemID are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "paycom_config_good_trailing_slash_removed",
+  "fn": "paycom_config",
+  "args": {
+   "page": "<script>var configsFromHost = {\"sessionJWT\":\"jwt-abc\",\"libConfig\":\"{\\\"atsPortalMantleServiceUrl\\\":\\\"https://portal.paycomonline.net/service/\\\"}\"}; var Mountable = true;</script>"
+  },
+  "expect": [
+   "jwt-abc",
+   "https://portal.paycomonline.net/service"
+  ],
+  "spec_quote": "paycom_config(page) → [jwt, service_url] or null: reads the JSON between `var configsFromHost = ` and `; var Mountable`; needs sessionJWT and libConfig (a JSON string) with atsPortalMantleServiceUrl; the service URL must be https, its host paycomonline.net or a subdomain of it ... a trailing \"/\" is removed.",
+  "ambiguous": false
+ },
+ {
+  "name": "paycom_config_foreign_service_host_null",
+  "fn": "paycom_config",
+  "args": {
+   "page": "<script>var configsFromHost = {\"sessionJWT\":\"jwt-abc\",\"libConfig\":\"{\\\"atsPortalMantleServiceUrl\\\":\\\"https://jobs.example.com/ats\\\"}\"}; var Mountable = true;</script>"
+  },
+  "expect": null,
+  "spec_quote": "the service URL must be https, its host paycomonline.net or a subdomain of it, with no query, fragment, user name or port other than 443 ... Anything else → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "paycom_config_missing_libconfig_null",
+  "fn": "paycom_config",
+  "args": {
+   "page": "<script>var configsFromHost = {\"sessionJWT\":\"jwt-abc\"}; var Mountable = true;</script>"
+  },
+  "expect": null,
+  "spec_quote": "needs sessionJWT and libConfig (a JSON string) with atsPortalMantleServiceUrl ... Anything else → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_paylocity_internal_job_skipped",
+  "fn": "parse_paylocity",
+  "args": {
+   "page": "<script>window.pageData = {\"Jobs\":[{\"JobId\":\"111\",\"JobTitle\":\"Data Analyst\",\"JobLocation\":{\"City\":\"Tampa\",\"State\":\"FL\"}},{\"JobId\":\"222\",\"JobTitle\":\"Internal Ops\",\"IsInternal\":true,\"JobLocation\":{\"City\":\"Tampa\",\"State\":\"FL\"}}]};</script>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Tampa, FL",
+    "url": "https://recruiting.paylocity.com/Recruiting/Jobs/Details/111"
+   }
+  ],
+  "spec_quote": "parse_paylocity(page): JSON after `window.pageData = `; Jobs[] that are objects, have JobId and are not IsInternal → title JobTitle; location = JobLocation.City and .State joined \", \", else LocationName, else \"\"; url = `https://recruiting.paylocity.com/Recruiting/Jobs/Details/<JobId>`.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_paylocity_locationname_fallback_and_missing_jobid",
+  "fn": "parse_paylocity",
+  "args": {
+   "page": "<script>window.pageData = {\"Jobs\":[{\"JobId\":\"333\",\"JobTitle\":\"Engineer\",\"LocationName\":\"Remote\"},{\"JobTitle\":\"No id\",\"JobLocation\":{\"City\":\"X\",\"State\":\"Y\"}}]};</script>"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Remote",
+    "url": "https://recruiting.paylocity.com/Recruiting/Jobs/Details/333"
+   }
+  ],
+  "spec_quote": "location = JobLocation.City and .State joined \", \", else LocationName, else \"\" ... Jobs[] that are objects, have JobId and are not IsInternal",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_dayforce_uses_jobdetailsurl_on_exact_host",
+  "fn": "parse_dayforce",
+  "args": {
+   "d": [
+    {
+     "Title": "Data Analyst",
+     "ReferenceNumber": "12345",
+     "JobDetailsUrl": "https://jobs.dayforcehcm.com/en-US/acme/acmejobs/jobs/12345",
+     "City": "Dayton",
+     "State": "OH"
+    }
+   ],
+   "tenant": "acme",
+   "board": "acmejobs"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Dayton, OH",
+    "url": "https://jobs.dayforcehcm.com/en-US/acme/acmejobs/jobs/12345"
+   }
+  ],
+  "spec_quote": "parse_dayforce(d, tenant, board): d must be a list; items with Title and ReferenceNumber; url = JobDetailsUrl when its host is exactly jobs.dayforcehcm.com, else `https://jobs.dayforcehcm.com/en-US/<tenant>/<board>/jobs/<ReferenceNumber>`; location = City, State joined \", \".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_dayforce_foreign_jobdetailsurl_falls_back",
+  "fn": "parse_dayforce",
+  "args": {
+   "d": [
+    {
+     "Title": "Warehouse Associate",
+     "ReferenceNumber": "R-99",
+     "JobDetailsUrl": "https://careers.acme.com/jobs/R-99",
+     "City": "Reno",
+     "State": "NV"
+    }
+   ],
+   "tenant": "acme",
+   "board": "acmejobs"
+  },
+  "expect": [
+   {
+    "title": "Warehouse Associate",
+    "location": "Reno, NV",
+    "url": "https://jobs.dayforcehcm.com/en-US/acme/acmejobs/jobs/R-99"
+   }
+  ],
+  "spec_quote": "url = JobDetailsUrl when its host is exactly jobs.dayforcehcm.com, else `https://jobs.dayforcehcm.com/en-US/<tenant>/<board>/jobs/<ReferenceNumber>`",
+  "ambiguous": false
+ },
+ {
+  "name": "brassring_session_token_and_entity_decoded_cookie",
+  "fn": "brassring_session",
+  "args": {
+   "page": "<form><input type=\"hidden\" name=\"__RequestVerificationToken\" value=\"tok123\" /><input type=\"hidden\" id=\"CookieValue\" value=\"cv&amp;42\" /></form>"
+  },
+  "expect": [
+   "tok123",
+   "cv&42"
+  ],
+  "spec_quote": "brassring_session(page) → [token, cookie_value] or null: token = value of the hidden input named `__RequestVerificationToken`; cookie_value = value of the hidden input with id `CookieValue`, HTML entities decoded. Both needed.",
+  "ambiguous": false
+ },
+ {
+  "name": "brassring_session_missing_cookievalue_null",
+  "fn": "brassring_session",
+  "args": {
+   "page": "<form><input type=\"hidden\" name=\"__RequestVerificationToken\" value=\"tok123\" /></form>"
+  },
+  "expect": null,
+  "spec_quote": "Both needed.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_brassring_location_question_and_link",
+  "fn": "parse_brassring",
+  "args": {
+   "d": {
+    "Jobs": {
+     "Job": [
+      {
+       "jobtitle": "Data Analyst",
+       "Questions": [
+        {
+         "QuestionName": "Req ID",
+         "Value": "ABC"
+        },
+        {
+         "QuestionName": "Location",
+         "Value": "Tampa, FL"
+        },
+        {
+         "QuestionName": "City",
+         "Value": "Tampa"
+        }
+       ],
+       "Link": "https://jobs.brassring.com/apply/1"
+      }
+     ]
+    }
+   }
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Tampa, FL",
+    "url": "https://jobs.brassring.com/apply/1"
+   }
+  ],
+  "spec_quote": "parse_brassring(d): d.Jobs.Job[]; Questions[] become {QuestionName lower-cased: Value}; title = jobtitle; location = the first non-empty value whose name contains \"location\" or \"city\" (tags removed), else \"\"; url = Link; jobs without a title or Link are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_brassring_skips_jobs_without_link_and_defaults_location",
+  "fn": "parse_brassring",
+  "args": {
+   "d": {
+    "Jobs": {
+     "Job": [
+      {
+       "jobtitle": "No Link Job",
+       "Questions": [],
+       "Link": ""
+      },
+      {
+       "jobtitle": "Engineer",
+       "Questions": [
+        {
+         "QuestionName": "Req ID",
+         "Value": "X"
+        }
+       ],
+       "Link": "https://jobs.brassring.com/apply/2"
+      }
+     ]
+    }
+   }
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "",
+    "url": "https://jobs.brassring.com/apply/2"
+   }
+  ],
+  "spec_quote": "location = the first non-empty value whose name contains \"location\" or \"city\" (tags removed), else \"\"; url = Link; jobs without a title or Link are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "clearcompany_site_id_guid",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div id=\"job-list\" data-site-id=\"8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b\"></div>"
+  },
+  "expect": "8f3a2b1c-4d5e-6f70-8a9b-0c1d2e3f4a5b",
+  "spec_quote": "clearcompany_site_id(page) → the `data-site-id=\"<36-char GUID>\"` value, else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_clearcompany_filters_and_strips_apply",
+  "fn": "parse_clearcompany",
+  "args": {
+   "d": {
+    "results": [
+     {
+      "positionTitle": "Data Analyst",
+      "location": "Tampa, FL",
+      "applyLink": "https://apply.clearcompany.com/acme/jobs/123/apply"
+     },
+     {
+      "positionTitle": "Insecure",
+      "location": "Reno, NV",
+      "applyLink": "http://insecure.example.com/x"
+     },
+     {
+      "location": "Nowhere",
+      "applyLink": "https://apply.clearcompany.com/acme/jobs/9"
+     }
+    ]
+   }
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Tampa, FL",
+    "url": "https://apply.clearcompany.com/acme/jobs/123"
+   }
+  ],
+  "spec_quote": "parse_clearcompany(d): d.results[] → title positionTitle, location `location` (or \"\"), url = applyLink with a trailing \"/apply\" removed; kept only when there is a title and the url starts with https://.",
+  "ambiguous": false
+ }
+]

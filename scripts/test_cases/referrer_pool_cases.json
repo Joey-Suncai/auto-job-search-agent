@@ -1,0 +1,472 @@
+[
+ {
+  "name": "amazon_com_services_llc_referral_yes_no_asks",
+  "args": {
+   "label": "Were you referred by a current employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Amazon.com Services LLC"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true (the runner stops and the candidate is asked), and the explanation names the pool people at that company."
+ },
+ {
+  "name": "aws_short_name_referral_name_text_asks",
+  "args": {
+   "label": "Referral name",
+   "type": "text",
+   "options": [],
+   "company": "AWS"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Common short names count: \"AWS\" = Amazon, \"EY\" = Pellverwyn, \"UChicago\" = University of Chicago. … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true (the runner stops and the candidate is asked)."
+ },
+ {
+  "name": "ey_short_name_referrer_text_asks",
+  "args": {
+   "label": "Referrer",
+   "type": "text",
+   "options": [],
+   "company": "EY"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Common short names count: \"AWS\" = Amazon, \"EY\" = Pellverwyn, \"UChicago\" = University of Chicago. … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true."
+ },
+ {
+  "name": "uchicago_know_anyone_asks",
+  "args": {
+   "label": "Do you know anyone who works at UChicago?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "UChicago"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "\"Do you know anyone who works at <Co>?\" / \"Do you know anyone that works for one of our companies?\" — [is a referral question] … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true."
+ },
+ {
+  "name": "the_university_of_chicago_name_box_asks",
+  "args": {
+   "label": "Name of the employee who referred you",
+   "type": "text",
+   "options": [],
+   "company": "The University of Chicago"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Examples that are IN the pool: … \"The University of Chicago\" … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true. A referrer's name is never filled in automatically."
+ },
+ {
+  "name": "tiktok_inc_who_referred_you_asks",
+  "args": {
+   "label": "Who referred you?",
+   "type": "text",
+   "options": [],
+   "company": "TikTok Inc."
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Examples that are IN the pool: … \"TikTok\", \"TikTok Inc.\" … TikTok and ByteDance are separate keys (each one matches its own people). … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true."
+ },
+ {
+  "name": "bytedance_ltd_employee_referral_yes_no_asks",
+  "args": {
+   "label": "Employee referral?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "ByteDance Ltd"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "\"Employee referral?\" (Yes / No) [is a referral question] … Examples that are IN the pool: … \"ByteDance\", \"ByteDance Ltd\" … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true."
+ },
+ {
+  "name": "goldman_sachs_and_co_llc_referred_by_asks",
+  "args": {
+   "label": "Referred by",
+   "type": "text",
+   "options": [],
+   "company": "Rosostbra & Co. LLC"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Examples that are IN the pool: … \"Rosostbra & Co. LLC\" … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true."
+ },
+ {
+  "name": "ostrosros_corporation_current_employee_asks",
+  "args": {
+   "label": "Were you referred to this position by a current employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "OSTROSROS Corporation"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Examples that are IN the pool: … \"OSTROSROS Corporation\". … Hiring company IN the pool → the referral question is not answered: status \"unknown\" with ask = true (the runner stops and the candidate is asked), and the explanation names the pool people at that company."
+ },
+ {
+  "name": "amazonia_foods_near_miss_answers_no",
+  "args": {
+   "label": "Were you referred by a current employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Amazonia Foods"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "Companies that share no whole word with a key are NOT in the pool: \"Acme Corp\", \"Globex\", \"Initech\", \"Amazonia Foods\" … Hiring company NOT in the pool → \"no referral\": Yes / No options → \"No\"."
+ },
+ {
+  "name": "micronesia_airlines_near_miss_answers_no",
+  "args": {
+   "label": "Were you referred to this position by a current employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Micronesia Airlines"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "Companies that share no whole word with a key are NOT in the pool: … \"Micronesia Airlines\" (a different word) … Hiring company NOT in the pool → \"no referral\": Yes / No options → \"No\"."
+ },
+ {
+  "name": "acme_corp_referral_name_box_gets_na",
+  "args": {
+   "label": "Referral name",
+   "type": "text",
+   "options": [],
+   "company": "Acme Corp"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "N/A"
+  },
+  "quote": "With no such instruction: … a name box (\"Referral name\", \"Referred by\", \"Name of the employee who referred you\") → \"N/A\"."
+ },
+ {
+  "name": "globex_yes_no_gets_no",
+  "args": {
+   "label": "Were you referred by a current employee?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Globex"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "Hiring company NOT in the pool → \"no referral\": Yes / No options → \"No\"."
+ },
+ {
+  "name": "initech_list_with_none_option_picks_none",
+  "args": {
+   "label": "Were you referred to this position by a current employee?",
+   "type": "select",
+   "options": [
+    "Referred by an employee",
+    "None",
+    "Prefer not to say"
+   ],
+   "company": "Initech"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "None"
+  },
+  "quote": "A list without Yes / No that has \"None\", \"N/A\", \"Not applicable\", \"No referral\" or \"I was not referred\" → that option."
+ },
+ {
+  "name": "single_checkbox_out_of_pool_left_unticked",
+  "args": {
+   "label": "I was referred by a current employee",
+   "type": "checkbox",
+   "options": [
+    "I was referred by a current employee"
+   ],
+   "company": "Acme Corp"
+  },
+  "expect": {
+   "status": "ok",
+   "leave": true
+  },
+  "quote": "A single checkbox (\"I was referred by a current employee\") → left unticked (leave = true, no value)."
+ },
+ {
+  "name": "textbox_if_not_type_na_instruction_gives_na",
+  "args": {
+   "label": "Did someone from our company suggest you apply? If so, their name – if not type N/A",
+   "type": "text",
+   "options": [],
+   "company": "Northwind Traders"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "N/A"
+  },
+  "quote": "A text box → the word the form itself asks for when there is no referrer, exactly as the form writes it: \"… if not type N/A\" → \"N/A\"."
+ },
+ {
+  "name": "textbox_write_none_instruction_gives_none",
+  "args": {
+   "label": "Name of the employee who referred you (write None if no one referred you)",
+   "type": "text",
+   "options": [],
+   "company": "Globex"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "None"
+  },
+  "quote": "A text box → the word the form itself asks for when there is no referrer, exactly as the form writes it: … \"write None if no one referred you\" → \"None\"."
+ },
+ {
+  "name": "textarea_na_if_not_applicable_gives_na",
+  "args": {
+   "label": "Were you referred by an employee? (N/A if not applicable)",
+   "type": "textarea",
+   "options": [],
+   "company": "Initech"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "N/A"
+  },
+  "quote": "A text box → the word the form itself asks for when there is no referrer, exactly as the form writes it: … \"(N/A if not applicable)\" → \"N/A\"."
+ },
+ {
+  "name": "yes_no_question_in_textbox_no_instruction_gives_no",
+  "args": {
+   "label": "Were you referred by an employee?",
+   "type": "text",
+   "options": [],
+   "company": "Initech"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "With no such instruction: a yes/no question in a text box (\"Were you referred by an employee?\") → \"No\"."
+ },
+ {
+  "name": "name_box_textarea_no_instruction_gives_na",
+  "args": {
+   "label": "Name of the employee who referred you",
+   "type": "textarea",
+   "options": [],
+   "company": "Northwind Traders"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "N/A"
+  },
+  "quote": "With no such instruction: … a name box (\"Referral name\", \"Referred by\", \"Name of the employee who referred you\") → \"N/A\"."
+ },
+ {
+  "name": "know_anyone_at_out_of_pool_company_gives_no",
+  "args": {
+   "label": "Do you know anyone who works at Acme Corp?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Acme Corp"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "\"Do you know anyone who works at <Co>?\" → \"No\"."
+ },
+ {
+  "name": "no_company_given_referral_question_asks",
+  "args": {
+   "label": "Were you referred by a current employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": null
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Hiring company UNKNOWN (no company given, or an empty name) → status \"unknown\" with ask = true for every referral question; never assume \"No\"."
+ },
+ {
+  "name": "empty_company_name_name_box_asks",
+  "args": {
+   "label": "Referred by",
+   "type": "text",
+   "options": [],
+   "company": ""
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "Hiring company UNKNOWN (no company given, or an empty name) → status \"unknown\" with ask = true for every referral question; never assume \"No\"."
+ },
+ {
+  "name": "plain_how_did_you_hear_in_pool_never_picks_employee_referral",
+  "args": {
+   "label": "How did you hear about us?",
+   "type": "radio",
+   "options": [
+    "Online job board",
+    "Employee referral",
+    "Company website"
+   ],
+   "company": "Amazon"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Online job board"
+  },
+  "quote": "A plain \"How did you hear about us?\" … it is answered with the standard source answer — an option naming an online job board (\"Online job board\", \"Job board\") … It must NEVER pick an option that names a referral (\"Employee referral\", \"Referred by an employee\", \"Referral\"), whatever the company."
+ },
+ {
+  "name": "plain_source_question_falls_back_to_recruitment_website",
+  "args": {
+   "label": "How did you hear about us?",
+   "type": "select",
+   "options": [
+    "Employee referral",
+    "Recruitment website",
+    "Other"
+   ],
+   "company": "Globex"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Recruitment website"
+  },
+  "quote": "A plain \"How did you hear about us?\" / \"Referral source\" / \"Source\" question: it is answered with the standard source answer — an option naming an online job board (\"Online job board\", \"Job board\"), else \"Recruitment website\", else \"Other\"."
+ },
+ {
+  "name": "plain_source_question_only_referral_options_left_unanswered",
+  "args": {
+   "label": "How did you hear about us?",
+   "type": "radio",
+   "options": [
+    "Employee referral",
+    "Referred by an employee",
+    "Referral"
+   ],
+   "company": "Amazon"
+  },
+  "expect": {
+   "status": "unknown"
+  },
+  "quote": "It must NEVER pick an option that names a referral (\"Employee referral\", \"Referred by an employee\", \"Referral\"), whatever the company. When none of the allowed options exists the question is left unanswered (status unknown)."
+ },
+ {
+  "name": "referral_source_textbox_gets_online_job_board",
+  "args": {
+   "label": "Referral source",
+   "type": "text",
+   "options": [],
+   "company": "Globex"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Online job board"
+  },
+  "quote": "A plain \"How did you hear about us?\" / \"Referral source\" / \"Source\" question: it is answered with the standard source answer … a text box gets \"Online job board\"."
+ },
+ {
+  "name": "recruiter_question_in_pool_company_still_no",
+  "args": {
+   "label": "Were you referred by a recruiter?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": "Amazon"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "Recruiter questions: \"Were you referred by a recruiter?\", \"Have you been contacted by a recruiter?\" — always No, for every company (in the pool, not in the pool, or none given)."
+ },
+ {
+  "name": "recruiter_question_no_company_still_no",
+  "args": {
+   "label": "Have you been contacted by a recruiter?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "company": null
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No"
+  },
+  "quote": "Recruiter questions: … — always No, for every company (in the pool, not in the pool, or none given). (Recruiter questions and plain how-did-you-hear questions are unaffected.)"
+ },
+ {
+  "name": "how_did_you_hear_with_referral_wording_in_pool_asks",
+  "args": {
+   "label": "How did you hear about us? If you were referred, please give the employee's name.",
+   "type": "text",
+   "options": [],
+   "company": "Amazon"
+  },
+  "expect": {
+   "status": "unknown",
+   "ask": true
+  },
+  "quote": "A \"How did you hear about us?\" question whose own wording also asks about a referral (\"…If you were referred, please give the employee's name\"). … This also applies to the \"how did you hear … if referred, name\" question."
+ }
+]

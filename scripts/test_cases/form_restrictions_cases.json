@@ -1,0 +1,408 @@
+[
+ {
+  "name": "ec_protected_individual_full",
+  "field": {
+   "label": "This position requires access to information and technology that is subject to US export controls. Are you any of the following 'protected individuals'?",
+   "description": "",
+   "options": [
+    "US citizen or national",
+    "US permanent resident",
+    "Protected individual under 8 USC 1324b",
+    "None of the above"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control",
+   "blocks": true
+  }
+ },
+ {
+  "name": "ec_identity_only_in_options",
+  "field": {
+   "label": "Please select the statement that applies to you.",
+   "description": "This position requires access to information subject to U.S. export control laws (EAR).",
+   "options": [
+    "U.S. citizen",
+    "U.S. national",
+    "Lawful permanent resident",
+    "None of the above"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control",
+   "blocks": true
+  }
+ },
+ {
+  "name": "ec_label_only_no_options",
+  "field": {
+   "label": "Export Control Acknowledgement",
+   "description": "Because this role involves export-controlled technology, applicants must be a U.S. citizen, U.S. national, lawful permanent resident, or protected individual under 8 U.S.C. 1324b.",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control",
+   "blocks": true
+  }
+ },
+ {
+  "name": "ec_8usc_1324b_protected_individual",
+  "field": {
+   "label": "Are you a 'protected individual' as defined by 8 U.S.C. 1324b(a)(3)?",
+   "description": "This position requires access to export-controlled technical data.",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control",
+   "blocks": true
+  }
+ },
+ {
+  "name": "ec_itar_refugee_asylee_options_citizen",
+  "field": {
+   "label": "This position requires access to technology controlled under the International Traffic in Arms Regulations (ITAR) and deemed export rules. Please indicate your status:",
+   "description": "",
+   "options": [
+    "U.S. citizen",
+    "U.S. national",
+    "Lawful permanent resident (green card)",
+    "Refugee or asylee",
+    "None of the above"
+   ]
+  },
+  "citizen": true,
+  "expect": {
+   "kind": "export_control",
+   "blocks": false
+  }
+ },
+ {
+  "name": "ec_ear_citizenship_status_options",
+  "field": {
+   "label": "Are you a U.S. citizen or U.S. national?",
+   "description": "This role involves access to export-controlled items under the EAR. Green card holders are also eligible.",
+   "options": []
+  },
+  "citizen": true,
+  "expect": {
+   "kind": "export_control",
+   "blocks": false
+  }
+ },
+ {
+  "name": "ec_description_green_card_question_label_ask",
+  "field": {
+   "label": "What is your citizenship / immigration status?",
+   "description": "Access to this work requires status as a U.S. citizen or permanent resident because the technology is export-controlled.",
+   "options": [
+    "U.S. citizen",
+    "U.S. permanent resident",
+    "Other"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control",
+   "blocks": true
+  }
+ },
+ {
+  "name": "ecm_may_require_access",
+  "field": {
+   "label": "This position may require access to export-controlled technology. Are you a U.S. citizen or lawful permanent resident?",
+   "description": "",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control_maybe",
+   "blocks": false
+  }
+ },
+ {
+  "name": "ecm_deemed_export_licensing",
+  "field": {
+   "label": "Applicants must be one of the following:",
+   "description": "Candidates must be a U.S. citizen, U.S. permanent resident, or otherwise eligible for deemed export licensing.",
+   "options": [
+    "U.S. citizen",
+    "U.S. permanent resident",
+    "Other (eligible for deemed export licensing)"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control_maybe",
+   "blocks": false
+  }
+ },
+ {
+  "name": "ecm_committed_to_compliance",
+  "field": {
+   "label": "We are committed to compliance with export control laws. Are you a U.S. citizen or green card holder?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control_maybe",
+   "blocks": false
+  }
+ },
+ {
+  "name": "ecm_to_assess_export_compliance",
+  "field": {
+   "label": "We ask this question to assess our export compliance. What is your citizenship status?",
+   "description": "",
+   "options": [
+    "U.S. citizen",
+    "U.S. permanent resident",
+    "Neither"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "export_control_maybe",
+   "blocks": false
+  }
+ },
+ {
+  "name": "cit_requires_citizenship_gov_contract",
+  "field": {
+   "label": "This position requires U.S. citizenship pursuant to a government contract. Are you a U.S. citizen?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "citizenship",
+   "blocks": true
+  }
+ },
+ {
+  "name": "cit_only_us_citizens_considered",
+  "field": {
+   "label": "Only US Citizens will be considered for this position.",
+   "description": "",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "citizenship",
+   "blocks": true
+  }
+ },
+ {
+  "name": "cit_us_citizens_only_label",
+  "field": {
+   "label": "U.S. citizens only",
+   "description": "",
+   "options": [
+    "Acknowledge"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "citizenship",
+   "blocks": true
+  }
+ },
+ {
+  "name": "cit_limited_to_us_persons_citizen",
+  "field": {
+   "label": "This position is limited to U.S. persons. Do you meet this requirement?",
+   "description": "U.S. persons include U.S. citizens and lawful permanent residents.",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": true,
+  "expect": {
+   "kind": "citizenship",
+   "blocks": false
+  }
+ },
+ {
+  "name": "cit_citizenship_requirement_in_description",
+  "field": {
+   "label": "Are you a U.S. citizen?",
+   "description": "This position requires U.S. citizenship due to federal contract requirements.",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "citizenship",
+   "blocks": true
+  }
+ },
+ {
+  "name": "clr_active_secret",
+  "field": {
+   "label": "This role requires an active Secret clearance.",
+   "description": "",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "clearance",
+   "blocks": true
+  }
+ },
+ {
+  "name": "clr_ts_sci_required",
+  "field": {
+   "label": "Active TS/SCI clearance required",
+   "description": "",
+   "options": [
+    "I have an active TS/SCI",
+    "I do not"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "clearance",
+   "blocks": true
+  }
+ },
+ {
+  "name": "clr_must_obtain_dod_clearance",
+  "field": {
+   "label": "Applicant must be able to obtain a DoD security clearance.",
+   "description": "",
+   "options": []
+  },
+  "citizen": false,
+  "expect": {
+   "kind": "clearance",
+   "blocks": true
+  }
+ },
+ {
+  "name": "none_plain_citizenship_question",
+  "field": {
+   "label": "Are you a U.S. citizen?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_work_authorization",
+  "field": {
+   "label": "Are you legally authorized to work in the United States?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_visa_sponsorship",
+  "field": {
+   "label": "Will you now or in the future require visa sponsorship?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_export_compliance_software_experience",
+  "field": {
+   "label": "Do you have experience with export compliance software?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_what_is_your_citizenship",
+  "field": {
+   "label": "What is your citizenship?",
+   "description": "",
+   "options": [
+    "U.S.",
+    "Dual",
+    "Other"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_eeo_veteran_question_citizen",
+  "field": {
+   "label": "Are you a protected veteran?",
+   "description": "This question is part of our EEO compliance reporting and is voluntary.",
+   "options": [
+    "Yes",
+    "No",
+    "I don't wish to answer"
+   ]
+  },
+  "citizen": true,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ },
+ {
+  "name": "none_held_clearance_before",
+  "field": {
+   "label": "Have you ever held a security clearance?",
+   "description": "",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "citizen": false,
+  "expect": {
+   "kind": null,
+   "blocks": false
+  }
+ }
+]

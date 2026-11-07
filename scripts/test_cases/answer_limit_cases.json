@@ -1,0 +1,194 @@
+[
+ {
+  "name": "explicit parenthetical char limit overrides textarea",
+  "label": "Tell us about your project (255 char limit)",
+  "type": "textarea",
+  "expect": 255,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "max N characters overrides single-line text",
+  "label": "What is your goal? max 500 characters",
+  "type": "text",
+  "expect": 500,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "N characters max with unknown type",
+  "label": "Summarize your background. 500 characters max",
+  "type": null,
+  "expect": 500,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "Limit of N characters overrides text",
+  "label": "Additional comments Limit of 300 characters",
+  "type": "text",
+  "expect": 300,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "in N characters or less overrides textarea",
+  "label": "Describe your project in 1000 characters or less",
+  "type": "textarea",
+  "expect": 1000,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "hyphenated character limit with unknown type",
+  "label": "Short answer (150-character limit)",
+  "type": null,
+  "expect": 150,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "no stated limit in single-line text",
+  "label": "What is your name?",
+  "type": "text",
+  "expect": 255,
+  "spec_quote": "Otherwise a single-line text box (\"text\") holds at most 255 characters → 255.",
+  "ambiguous": false
+ },
+ {
+  "name": "no stated limit in textarea",
+  "label": "Tell us about yourself",
+  "type": "textarea",
+  "expect": 1200,
+  "spec_quote": "Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ },
+ {
+  "name": "no stated limit in unknown type",
+  "label": "Tell us about yourself",
+  "type": null,
+  "expect": 1200,
+  "spec_quote": "Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ },
+ {
+  "name": "year 2027 ignored in text field",
+  "label": "What are your plans for 2027?",
+  "type": "text",
+  "expect": 255,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise a single-line text box (\"text\") holds at most 255 characters → 255.",
+  "ambiguous": false
+ },
+ {
+  "name": "year 2027 ignored in textarea",
+  "label": "What are your plans for 2027?",
+  "type": "textarea",
+  "expect": 1200,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ },
+ {
+  "name": "frequency 3x per week ignored in text field",
+  "label": "How often do you exercise? 3x per week",
+  "type": "text",
+  "expect": 255,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise a single-line text box (\"text\") holds at most 255 characters → 255.",
+  "ambiguous": false
+ },
+ {
+  "name": "hours range 10-20 hours ignored in textarea",
+  "label": "How many hours can you work? 10-20 hours",
+  "type": "textarea",
+  "expect": 1200,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ },
+ {
+  "name": "word limit 200 words ignored in text field",
+  "label": "Write a bio in 200 words",
+  "type": "text",
+  "expect": 255,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise a single-line text box (\"text\") holds at most 255 characters → 255.",
+  "ambiguous": false
+ },
+ {
+  "name": "word limit 200 words ignored in textarea",
+  "label": "Write a bio in 200 words",
+  "type": "textarea",
+  "expect": 1200,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit max 500 characters overrides textarea",
+  "label": "Describe your idea (max 500 characters)",
+  "type": "textarea",
+  "expect": 500,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit max 500 characters overrides unknown type",
+  "label": "Describe your idea (max 500 characters)",
+  "type": null,
+  "expect": 500,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit limit with year also present",
+  "label": "In 2027, what is your goal? max 500 characters",
+  "type": "text",
+  "expect": 500,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "word limit plus character limit uses character limit",
+  "label": "Answer in 200 words or 1000 characters max",
+  "type": "text",
+  "expect": 1000,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit 255 char limit with unknown type",
+  "label": "Feedback (255 char limit)",
+  "type": null,
+  "expect": 255,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit 150-character limit overrides text",
+  "label": "Short answer (150-character limit)",
+  "type": "text",
+  "expect": 150,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "explicit 300 characters limit overrides textarea",
+  "label": "Additional comments Limit of 300 characters",
+  "type": "textarea",
+  "expect": 300,
+  "spec_quote": "If the label states a character limit, use that number: e.g. \"(255 char limit)\", \"max 500 characters\", \"500 characters max\", \"Limit of 300 characters\", \"in 1000 characters or less\" → 1000, \"(150-character limit)\". This wins over the field type.",
+  "ambiguous": false
+ },
+ {
+  "name": "year plus word limit no char limit in text",
+  "label": "In 2027, write 200 words about your goals",
+  "type": "text",
+  "expect": 255,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise a single-line text box (\"text\") holds at most 255 characters → 255.",
+  "ambiguous": false
+ },
+ {
+  "name": "hours range plus frequency no char limit in textarea",
+  "label": "Work 10-20 hours, 3x per week",
+  "type": "textarea",
+  "expect": 1200,
+  "spec_quote": "A number in the label that is not a character limit (a year \"2027\", \"3x per week\", \"10-20 hours\", a word limit like \"200 words\") is not a character limit and is ignored. Otherwise (textarea or unknown type) → 1200.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,180 @@
+[
+ {
+  "name": "amp_entity_in_title_and_company_text_only",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/111-ai",
+    "text": "AI &amp; Data Intern\nIn officeNew York City$100k – $110k\nPOSTED 6 DAYS AGO",
+    "company": "Acme &amp; Co"
+   }
+  },
+  "expect": {
+   "job_id": "111",
+   "company": "Acme & Co",
+   "title": "AI & Data Intern",
+   "location": "New York City",
+   "posted": "2026-10-28",
+   "url": "https://wellfound.com/jobs/111-ai"
+  }
+ },
+ {
+  "name": "quot_and_amp_entities_in_parts_and_company",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "https://wellfound.com/jobs/222-x?ref=abc",
+    "text": "ignored because parts is non-empty",
+    "company": "O&#39;Reilly Labs",
+    "parts": [
+     "Software Engineer &quot;Intern&quot;",
+     "Remote",
+     "San Francisco &amp; Bay Area",
+     "POSTED 1 WEEK AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "222",
+   "company": "O'Reilly Labs",
+   "title": "Software Engineer \"Intern\"",
+   "location": "San Francisco & Bay Area",
+   "posted": "2026-10-27",
+   "url": "https://wellfound.com/jobs/222-x"
+  }
+ },
+ {
+  "name": "lt_gt_entity_in_title_remote_fallback",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/333-pm",
+    "text": "PM Intern &lt;Summer&gt;\nRemote\nPOSTED JUST NOW",
+    "company": "&quot;Big&quot; Corp"
+   }
+  },
+  "expect": {
+   "job_id": "333",
+   "company": "\"Big\" Corp",
+   "title": "PM Intern <Summer>",
+   "location": "Remote",
+   "posted": "2026-11-03",
+   "url": "https://wellfound.com/jobs/333-pm"
+  }
+ },
+ {
+  "name": "amp_entity_in_location_text_only_keeps_first",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/444-de",
+    "text": "Data Engineer Intern\nHybridChicago &amp; Illinois$90k\nIn office&lt;Boston&gt;\nPOSTED 1 MONTH AGO",
+    "company": "Northwind Traders"
+   }
+  },
+  "expect": {
+   "job_id": "444",
+   "company": "Northwind Traders",
+   "title": "Data Engineer Intern",
+   "location": "Chicago & Illinois",
+   "posted": "2026-10-04",
+   "url": "https://wellfound.com/jobs/444-de"
+  }
+ },
+ {
+  "name": "amp_lt_entities_in_company_parts_with_dedupe",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/555-ri",
+    "text": "unused",
+    "company": "R&amp;D &lt;Labs&gt;",
+    "parts": [
+     "Research &amp; Insights Intern",
+     "On-site",
+     "Austin",
+     "Austin",
+     "POSTED 3 HOURS AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "555",
+   "company": "R&D <Labs>",
+   "title": "Research & Insights Intern",
+   "location": "Austin",
+   "posted": "2026-11-03",
+   "url": "https://wellfound.com/jobs/555-ri"
+  }
+ },
+ {
+  "name": "apos_and_amp_entities_with_year_posted",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/777-growth",
+    "text": "unused",
+    "company": "O&#39;Brien &amp; Sons",
+    "parts": [
+     "Sales &amp; Ops Intern",
+     "In office",
+     "Dublin",
+     "POSTED 1 YEAR AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "777",
+   "company": "O'Brien & Sons",
+   "title": "Sales & Ops Intern",
+   "location": "Dublin",
+   "posted": "2025-11-03",
+   "url": "https://wellfound.com/jobs/777-growth"
+  }
+ },
+ {
+  "name": "quot_and_lt_entities_multiple_locations_from_parts",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/888-ux",
+    "text": "unused",
+    "company": "Globex",
+    "parts": [
+     "UX &amp; UI Intern",
+     "Remote",
+     "&quot;Portland&quot;",
+     "&lt;Seattle&gt;",
+     "POSTED 2 WEEKS AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "888",
+   "company": "Globex",
+   "title": "UX & UI Intern",
+   "location": "\"Portland\"; <Seattle>",
+   "posted": "2026-10-20",
+   "url": "https://wellfound.com/jobs/888-ux"
+  }
+ },
+ {
+  "name": "entity_encoded_badge_line_ignored_after_decoding",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/999-qa",
+    "text": "QA &amp; Test Intern\n&lt;B&gt;RECRUITER RECENTLY ACTIVE\nIn officeAustin$60k\nPOSTED 4 DAYS AGO",
+    "company": "Acme &lt;Austin&gt;"
+   }
+  },
+  "expect": {
+   "job_id": "999",
+   "company": "Acme <Austin>",
+   "title": "QA & Test Intern",
+   "location": "Austin",
+   "posted": "2026-10-30",
+   "url": "https://wellfound.com/jobs/999-qa"
+  }
+ }
+]

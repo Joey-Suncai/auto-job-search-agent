@@ -1,0 +1,112 @@
+[
+ {
+  "name": "masters_lowercase",
+  "value": "masters",
+  "expect": true
+ },
+ {
+  "name": "masters_degree_uppercase",
+  "value": "MASTER'S DEGREE",
+  "expect": true
+ },
+ {
+  "name": "master_of_science_exact",
+  "value": "Master of Science",
+  "expect": true
+ },
+ {
+  "name": "ms_with_periods_lowercase",
+  "value": "m.s.",
+  "expect": true
+ },
+ {
+  "name": "ms_no_periods_uppercase",
+  "value": "MS",
+  "expect": true
+ },
+ {
+  "name": "masters_arts_science_business_full",
+  "value": "Masters of Arts or Science or Business Administration (Masters)",
+  "expect": true
+ },
+ {
+  "name": "bachelors_lowercase",
+  "value": "bachelors",
+  "expect": true
+ },
+ {
+  "name": "ba_with_periods_lowercase",
+  "value": "b.a.",
+  "expect": true
+ },
+ {
+  "name": "ba_no_periods_uppercase",
+  "value": "BA",
+  "expect": true
+ },
+ {
+  "name": "post_graduate_degree_lowercase",
+  "value": "post graduate degree",
+  "expect": true
+ },
+ {
+  "name": "undergraduate_degree_exact",
+  "value": "Undergraduate Degree",
+  "expect": true
+ },
+ {
+  "name": "doctorate_lowercase",
+  "value": "doctorate",
+  "expect": false
+ },
+ {
+  "name": "phd_uppercase",
+  "value": "PhD",
+  "expect": false
+ },
+ {
+  "name": "juris_doctor_exact",
+  "value": "Juris Doctor",
+  "expect": false
+ },
+ {
+  "name": "associate_lowercase",
+  "value": "associate",
+  "expect": false
+ },
+ {
+  "name": "mba_uppercase",
+  "value": "MBA",
+  "expect": false
+ },
+ {
+  "name": "master_business_admin_exact",
+  "value": "Master of Business Administration",
+  "expect": false
+ },
+ {
+  "name": "master_technology_exact",
+  "value": "Master of Technology",
+  "expect": false
+ },
+ {
+  "name": "high_school_exact",
+  "value": "High School",
+  "expect": false
+ },
+ {
+  "name": "diploma_lowercase",
+  "value": "diploma",
+  "expect": false
+ },
+ {
+  "name": "certificate_exact",
+  "value": "Certificate",
+  "expect": false
+ },
+ {
+  "name": "empty_value",
+  "value": "",
+  "expect": false
+ }
+]

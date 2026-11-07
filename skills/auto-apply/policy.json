@@ -1,0 +1,56 @@
+{
+ "version": 1,
+ "max_decisions_per_application": 3,
+ "default_action": "pause_for_joey",
+ "events": {
+  "requirement_appeared": {
+   "allowed": [
+    "generate_material",
+    "pause_for_joey",
+    "skip_if_optional",
+    "abort"
+   ],
+   "prefer": "generate_material"
+  },
+  "unknown_widget": {
+   "allowed": [
+    "classify_and_retry",
+    "pause_for_joey",
+    "abort"
+   ],
+   "prefer": "classify_and_retry",
+   "max_retries": 1
+  },
+  "page_state_lost": {
+   "allowed": [
+    "reopen_from_url",
+    "pause_for_joey",
+    "abort"
+   ],
+   "prefer": "reopen_from_url"
+  },
+  "material_mismatch": {
+   "allowed": [
+    "regenerate_material",
+    "pause_for_joey",
+    "abort"
+   ],
+   "prefer": "regenerate_material"
+  },
+  "answer_unknown": {
+   "allowed": [
+    "ask_joey",
+    "pause_for_joey"
+   ],
+   "prefer": "ask_joey"
+  }
+ },
+ "rules": [
+  "Choose exactly one action from allowed_actions. Never invent an action.",
+  "generate_material / regenerate_material only when generatable = true.",
+  "skip_if_optional only when required = false.",
+  "classify_and_retry only when retries_used is below the policy limit.",
+  "Never submit an application, never type a password, never solve a CAPTCHA, never change an answer the candidate already approved.",
+  "If the event is ambiguous or the evidence is thin, choose pause_for_joey."
+ ]
+}

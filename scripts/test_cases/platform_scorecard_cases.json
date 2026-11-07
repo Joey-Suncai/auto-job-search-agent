@@ -1,0 +1,1376 @@
+[
+ {
+  "name": "platform_priority_greenhouse_over_ats",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "ats": "workday",
+    "status": "submitted",
+    "by": "claude",
+    "secs": 10
+   }
+  ],
+  "emails": [],
+  "fmap": {
+   "2026-10-01_A": "J1"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-01",
+  "expect": {
+   "greenhouse": {
+    "folders": 1,
+    "submitted": 1,
+    "first_clean_rate": 1.0,
+    "needed_joey": 0,
+    "no_joey_rate": 1.0,
+    "confirmed": 0,
+    "pending": 1,
+    "confirm_rate": null,
+    "wrong_answers": 0,
+    "median_secs": 10,
+    "timed": 1,
+    "mean_ds_cost": 0,
+    "n_ok": false,
+    "no_joey_ok": true,
+    "clean_ok": true,
+    "confirm_ok": false,
+    "wrong_ok": true,
+    "time_ok": true,
+    "cost_ok": true,
+    "certified": false
+   }
+  },
+  "expect_absent": [
+   "workday",
+   "lever",
+   "ashby",
+   "other"
+  ],
+  "spec_quote": "Rule 1: platform priority order; Rule 13 platforms with no folder do not appear.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_fallback_and_other",
+  "results": [
+   {
+    "at": "2026-10-02T10:00:00",
+    "folder": "2026-10-02_A",
+    "url": "https://example.com/x",
+    "ats": "smartrecruiters",
+    "status": "dry-run",
+    "secs": 5
+   },
+   {
+    "at": "2026-10-02T10:00:00",
+    "folder": "2026-10-02_B",
+    "url": "https://example.com/y",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {
+   "2026-10-02_B": "J2"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "smartrecruiters": {
+    "folders": 1,
+    "submitted": 0,
+    "first_clean_rate": 1.0,
+    "no_joey_rate": null,
+    "confirm_rate": null,
+    "median_secs": null,
+    "mean_ds_cost": null
+   },
+   "other": {
+    "folders": 1,
+    "submitted": 1,
+    "first_clean_rate": 1.0,
+    "no_joey_rate": 1.0,
+    "confirmed": 0,
+    "pending": 0,
+    "confirm_rate": 0.0,
+    "median_secs": null,
+    "timed": 0,
+    "mean_ds_cost": 0,
+    "time_ok": false,
+    "cost_ok": true
+   }
+  },
+  "expect_absent": [
+   "greenhouse",
+   "workday",
+   "lever",
+   "ashby"
+  ],
+  "spec_quote": "Rules 1, 11, 13: ats fallback, other fallback, nulls when nothing to compute.",
+  "ambiguous": false
+ },
+ {
+  "name": "test_lines_ignored",
+  "results": [
+   {
+    "at": "2026-10-03T09:00:00",
+    "folder": "scratch",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-03T10:00:00",
+    "folder": "2026-10-03_A",
+    "url": "https://jobs.lever.co/x",
+    "status": "dry-run"
+   }
+  ],
+  "emails": [],
+  "fmap": {
+   "2026-10-03_A": "J3"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "lever": {
+    "folders": 1,
+    "submitted": 0,
+    "first_clean_rate": 1.0
+   }
+  },
+  "expect_absent": [
+   "greenhouse"
+  ],
+  "spec_quote": "Rule 2: lines whose folder name does not start with YYYY-MM-DD_ are test lines and are ignored entirely.",
+  "ambiguous": false
+ },
+ {
+  "name": "folder_platform_from_earliest_line",
+  "results": [
+   {
+    "at": "2026-10-04T10:00:00",
+    "folder": "2026-10-04_A",
+    "url": "https://jobs.lever.co/x",
+    "status": "dry-run"
+   },
+   {
+    "at": "2026-10-04T11:00:00",
+    "folder": "2026-10-04_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {
+   "2026-10-04_A": "J4"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "lever": {
+    "folders": 1,
+    "submitted": 1,
+    "first_clean_rate": 1.0,
+    "confirm_rate": 0.0
+   }
+  },
+  "expect_absent": [
+   "greenhouse"
+  ],
+  "spec_quote": "Rule 3: a folder belongs to the platform of its earliest line by at.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_clean_conditions",
+  "results": [
+   {
+    "at": "2026-10-05T10:00:00",
+    "folder": "2026-10-05_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "problems": []
+   },
+   {
+    "at": "2026-10-05T10:00:00",
+    "folder": "2026-10-05_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "problems": [
+     "p"
+    ]
+   },
+   {
+    "at": "2026-10-05T10:00:00",
+    "folder": "2026-10-05_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "bad": 0,
+    "failed": 0,
+    "needs": 0
+   },
+   {
+    "at": "2026-10-05T10:00:00",
+    "folder": "2026-10-05_D",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "failed": 1
+   },
+   {
+    "at": "2026-10-05T10:00:00",
+    "folder": "2026-10-05_E",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "verify_pass": false
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "greenhouse": {
+    "folders": 5,
+    "submitted": 2,
+    "first_clean_rate": 0.4,
+    "clean_ok": false,
+    "confirm_rate": 0.0,
+    "median_secs": null,
+    "timed": 0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 4: clean earliest line requires status dry-run/submitted, no problems, bad/failed/needs absent or 0, verify_pass not false.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_clean_status_not_in_set",
+  "results": [
+   {
+    "at": "2026-10-06T10:00:00",
+    "folder": "2026-10-06_A",
+    "url": "https://jobs.lever.co/x",
+    "status": "blocked"
+   },
+   {
+    "at": "2026-10-06T10:00:00",
+    "folder": "2026-10-06_B",
+    "url": "https://jobs.lever.co/x",
+    "status": "dry-run"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "lever": {
+    "folders": 2,
+    "submitted": 0,
+    "first_clean_rate": 0.5,
+    "clean_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 4: clean status must be dry-run or submitted.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_day_earliest_submitted_confirmation_plus2",
+  "results": [
+   {
+    "at": "2026-10-05T09:00:00",
+    "folder": "2026-10-05_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   },
+   {
+    "at": "2026-10-05T11:00:00",
+    "folder": "2026-10-05_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "by": "claude"
+   },
+   {
+    "at": "2026-10-05T12:00:00",
+    "folder": "2026-10-05_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "by": "joey"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "date": "2026-10-07",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {
+   "2026-10-05_A": "J1"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "needed_joey": 0,
+    "no_joey_rate": 1.0,
+    "confirmed": 1,
+    "pending": 0,
+    "confirm_rate": 1.0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rules 5, 6, 7: submit day from earliest submitted line; confirmation through submit day + 2 inclusive.",
+  "ambiguous": false
+ },
+ {
+  "name": "confirmation_date_boundaries",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "date": "2026-10-03",
+    "type": "Confirmation"
+   },
+   {
+    "job_id": "J2",
+    "date": "2026-10-04",
+    "type": "Confirmation"
+   },
+   {
+    "job_id": "J3",
+    "date": "2026-09-30",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {
+   "2026-10-01_A": "J1",
+   "2026-10-01_B": "J2",
+   "2026-10-01_C": "J3"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "confirmed": 1,
+    "pending": 0,
+    "confirm_rate": 0.3333
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: confirmation date must be from submit day through submit day + 2 days inclusive.",
+  "ambiguous": false
+ },
+ {
+  "name": "pending_exclusion_and_invalid_type",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J2",
+    "date": "2026-10-02",
+    "type": "Spam"
+   },
+   {
+    "job_id": "J3",
+    "date": "2026-10-02",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {
+   "2026-10-01_A": "J1",
+   "2026-10-01_B": "J2",
+   "2026-10-01_C": "J3"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-03",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "confirmed": 1,
+    "pending": 2,
+    "confirm_rate": 1.0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: not confirmed and today on or before submit day + 2 is pending and excluded from the rate; type must be in the confirmation set.",
+  "ambiguous": false
+ },
+ {
+  "name": "pending_boundary_today_plus2_vs_plus3",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-02T10:00:00",
+    "folder": "2026-10-02_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {
+   "2026-10-01_A": "J1",
+   "2026-10-02_B": "J2"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-04",
+  "expect": {
+   "greenhouse": {
+    "submitted": 2,
+    "confirmed": 0,
+    "pending": 1,
+    "confirm_rate": 0.0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: pending only while today is on or before submit day + 2 days.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_job_id_never_confirmed_not_pending",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "date": "2026-10-02",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "confirmed": 0,
+    "pending": 0,
+    "confirm_rate": 0.0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: a folder with no job id in fmap is never confirmed and is pending only by the date rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_job_id_pending_by_date",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "date": "2026-10-02",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-03",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "confirmed": 0,
+    "pending": 1,
+    "confirm_rate": null
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: no job id is never confirmed, pending only by the date rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "needed_joey_captcha_before_submit",
+  "results": [
+   {
+    "at": "2026-10-13T10:00:00",
+    "folder": "2026-10-13_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "captcha"
+   },
+   {
+    "at": "2026-10-13T11:00:00",
+    "folder": "2026-10-13_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-13T10:00:00",
+    "folder": "2026-10-13_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "handoff"
+   },
+   {
+    "at": "2026-10-13T11:00:00",
+    "folder": "2026-10-13_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 2,
+    "needed_joey": 1,
+    "no_joey_rate": 0.5
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 6: captcha before submit makes needed_joey; handoff before submit does not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "needed_joey_by_joey_and_captcha",
+  "results": [
+   {
+    "at": "2026-10-14T10:00:00",
+    "folder": "2026-10-14_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "by": "joey"
+   },
+   {
+    "at": "2026-10-14T09:00:00",
+    "folder": "2026-10-14_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "captcha"
+   },
+   {
+    "at": "2026-10-14T10:00:00",
+    "folder": "2026-10-14_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "by": "claude"
+   },
+   {
+    "at": "2026-10-14T09:00:00",
+    "folder": "2026-10-14_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   },
+   {
+    "at": "2026-10-14T10:00:00",
+    "folder": "2026-10-14_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "by": "claude"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "needed_joey": 2,
+    "no_joey_rate": 0.3333
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 6: needed_joey if earliest submitted line has by=joey or any captcha line before that submit; dry-run before submit does not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha_after_submit_not_needed",
+  "results": [
+   {
+    "at": "2026-10-15T10:00:00",
+    "folder": "2026-10-15_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-15T11:00:00",
+    "folder": "2026-10-15_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "captcha"
+   },
+   {
+    "at": "2026-10-15T09:00:00",
+    "folder": "2026-10-15_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "handoff"
+   },
+   {
+    "at": "2026-10-15T10:00:00",
+    "folder": "2026-10-15_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 2,
+    "needed_joey": 0,
+    "no_joey_rate": 1.0
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 6: only captcha before the submitted line counts; handoff does not.",
+  "ambiguous": false
+ },
+ {
+  "name": "wrong_answers_only_submitted_platform_folders",
+  "results": [
+   {
+    "at": "2026-10-16T10:00:00",
+    "folder": "2026-10-16_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-16T10:00:00",
+    "folder": "2026-10-16_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   },
+   {
+    "at": "2026-10-16T10:00:00",
+    "folder": "2026-10-16_C",
+    "url": "https://jobs.lever.co/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [
+   {
+    "folder": "2026-10-16_A"
+   },
+   {
+    "folder": "2026-10-16_B"
+   },
+   {
+    "folder": "2026-10-16_C"
+   },
+   {
+    "folder": "nonexistent"
+   }
+  ],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "folders": 2,
+    "submitted": 1,
+    "wrong_answers": 1
+   },
+   "lever": {
+    "folders": 1,
+    "submitted": 1,
+    "wrong_answers": 1
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 8: wrong_answers counts wrong records whose folder is a submitted folder of the platform.",
+  "ambiguous": false
+ },
+ {
+  "name": "runner_time_sum_and_exclusion",
+  "results": [
+   {
+    "at": "2026-10-17T10:00:00",
+    "folder": "2026-10-17_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 100
+   },
+   {
+    "at": "2026-10-17T11:00:00",
+    "folder": "2026-10-17_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "secs": 50
+   },
+   {
+    "at": "2026-10-17T10:00:00",
+    "folder": "2026-10-17_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 200
+   },
+   {
+    "at": "2026-10-17T10:00:00",
+    "folder": "2026-10-17_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-17T10:00:00",
+    "folder": "2026-10-17_D",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "secs": 1000
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "timed": 2,
+    "median_secs": 175,
+    "time_ok": true
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 9: runner time is sum of secs over lines that have secs; folders with no secs are left out of the median.",
+  "ambiguous": false
+ },
+ {
+  "name": "median_even_count",
+  "results": [
+   {
+    "at": "2026-10-18T10:00:00",
+    "folder": "2026-10-18_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 10
+   },
+   {
+    "at": "2026-10-18T10:00:00",
+    "folder": "2026-10-18_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 20
+   },
+   {
+    "at": "2026-10-18T10:00:00",
+    "folder": "2026-10-18_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "timed": 2,
+    "median_secs": 15
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 9: even count median is mean of the two middle values.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_submitted_nulls_and_failed_bars",
+  "results": [
+   {
+    "at": "2026-10-19T10:00:00",
+    "folder": "2026-10-19_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "folders": 1,
+    "submitted": 0,
+    "timed": 0,
+    "first_clean_rate": 1.0,
+    "needed_joey": 0,
+    "no_joey_rate": null,
+    "confirmed": 0,
+    "pending": 0,
+    "confirm_rate": null,
+    "wrong_answers": 0,
+    "median_secs": null,
+    "mean_ds_cost": null,
+    "n_ok": false,
+    "no_joey_ok": false,
+    "clean_ok": true,
+    "confirm_ok": false,
+    "wrong_ok": true,
+    "time_ok": false,
+    "cost_ok": false,
+    "certified": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rules 11 and 12: null values fail their bars; no submitted folders gives null rates/median/mean.",
+  "ambiguous": false
+ },
+ {
+  "name": "deepseek_cost_calculation_mean",
+  "results": [
+   {
+    "at": "2026-10-20T10:00:00",
+    "folder": "2026-10-20_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "deepseek": {
+     "prompt": 1000000,
+     "out": 0
+    }
+   },
+   {
+    "at": "2026-10-20T10:00:00",
+    "folder": "2026-10-20_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "deepseek": {
+     "prompt": 0,
+     "out": 1000000
+    }
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {
+   "2026-10-20_A": 0.5
+  },
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 2,
+    "mean_ds_cost": 0.6,
+    "cost_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 10: deepseek cost = ds_cost[folder] + sum(prompt*0.28 + out*0.42)/1,000,000; mean over submitted folders.",
+  "ambiguous": false
+ },
+ {
+  "name": "mean_cost_includes_zero_and_threshold",
+  "results": [
+   {
+    "at": "2026-10-21T10:00:00",
+    "folder": "2026-10-21_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-21T10:00:00",
+    "folder": "2026-10-21_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {
+   "2026-10-21_B": 0.02
+  },
+  "wrong": [],
+  "today": "2026-10-20",
+  "expect": {
+   "greenhouse": {
+    "submitted": 2,
+    "mean_ds_cost": 0.01,
+    "cost_ok": true
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rules 10 and 12: mean over submitted folders; cost_ok is mean_ds_cost <= 0.01.",
+  "ambiguous": false
+ },
+ {
+  "name": "generated_50_certified",
+  "generate": {
+   "platform_url": "https://boards.greenhouse.io/x",
+   "n": 50,
+   "status": "submitted",
+   "secs": 10,
+   "day": "2026-10-01"
+  },
+  "emails": [
+   {
+    "job_id": "JN",
+    "date": "2026-10-01",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-01",
+  "expect": {
+   "greenhouse": {
+    "folders": 50,
+    "submitted": 50,
+    "timed": 50,
+    "first_clean_rate": 1.0,
+    "needed_joey": 0,
+    "no_joey_rate": 1.0,
+    "confirmed": 50,
+    "pending": 0,
+    "confirm_rate": 1.0,
+    "wrong_answers": 0,
+    "median_secs": 10,
+    "mean_ds_cost": 0,
+    "n_ok": true,
+    "no_joey_ok": true,
+    "clean_ok": true,
+    "confirm_ok": true,
+    "wrong_ok": true,
+    "time_ok": true,
+    "cost_ok": true,
+    "certified": true
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rules 12 and 13: submitted >= 50 with all other bars true certifies.",
+  "ambiguous": false
+ },
+ {
+  "name": "generated_49_not_n_ok",
+  "generate": {
+   "platform_url": "https://boards.greenhouse.io/x",
+   "n": 49,
+   "status": "submitted",
+   "secs": 10,
+   "day": "2026-10-01"
+  },
+  "emails": [
+   {
+    "job_id": "JN",
+    "date": "2026-10-01",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-01",
+  "expect": {
+   "greenhouse": {
+    "folders": 49,
+    "submitted": 49,
+    "n_ok": false,
+    "certified": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 12: n_ok requires submitted >= 50; certified requires all six bars true.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_clean_bad_and_needs",
+  "results": [
+   {
+    "at": "2026-10-24T10:00:00",
+    "folder": "2026-10-24_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "bad": 1
+   },
+   {
+    "at": "2026-10-24T10:00:00",
+    "folder": "2026-10-24_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "needs": 1
+   },
+   {
+    "at": "2026-10-24T10:00:00",
+    "folder": "2026-10-24_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "verify_pass": true,
+    "bad": 0,
+    "failed": 0,
+    "needs": 0
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-30",
+  "expect": {
+   "greenhouse": {
+    "folders": 3,
+    "submitted": 2,
+    "first_clean_rate": 0.3333,
+    "clean_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 4: bad and needs must be absent or 0 for a clean earliest line.",
+  "ambiguous": false
+ },
+ {
+  "name": "confirmation_type_set",
+  "results": [
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_D",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-01T10:00:00",
+    "folder": "2026-10-01_E",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "date": "2026-10-02",
+    "type": "Rejection"
+   },
+   {
+    "job_id": "J2",
+    "date": "2026-10-02",
+    "type": "Assessment"
+   },
+   {
+    "job_id": "J3",
+    "date": "2026-10-02",
+    "type": "Interview"
+   },
+   {
+    "job_id": "J4",
+    "date": "2026-10-02",
+    "type": "Offer"
+   },
+   {
+    "job_id": "J5",
+    "date": "2026-10-02",
+    "type": "Other"
+   }
+  ],
+  "fmap": {
+   "2026-10-01_A": "J1",
+   "2026-10-01_B": "J2",
+   "2026-10-01_C": "J3",
+   "2026-10-01_D": "J4",
+   "2026-10-01_E": "J5"
+  },
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-10",
+  "expect": {
+   "greenhouse": {
+    "submitted": 5,
+    "confirmed": 4,
+    "pending": 0,
+    "confirm_rate": 0.8,
+    "confirm_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 7: confirmation types are Confirmation, Rejection, Assessment, Interview, Offer.",
+  "ambiguous": false
+ },
+ {
+  "name": "wrong_answers_multiple_records",
+  "results": [
+   {
+    "at": "2026-10-26T10:00:00",
+    "folder": "2026-10-26_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-26T10:00:00",
+    "folder": "2026-10-26_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [
+   {
+    "folder": "2026-10-26_A"
+   },
+   {
+    "folder": "2026-10-26_A"
+   },
+   {
+    "folder": "2026-10-26_B"
+   }
+  ],
+  "today": "2026-10-30",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "wrong_answers": 2,
+    "wrong_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 8: wrong_answers is the number of wrong records for submitted folders of the platform.",
+  "ambiguous": false
+ },
+ {
+  "name": "runner_time_includes_non_submitted_lines",
+  "results": [
+   {
+    "at": "2026-10-27T09:00:00",
+    "folder": "2026-10-27_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "secs": 40
+   },
+   {
+    "at": "2026-10-27T10:00:00",
+    "folder": "2026-10-27_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 60
+   },
+   {
+    "at": "2026-10-27T10:00:00",
+    "folder": "2026-10-27_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run",
+    "secs": 1000
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-30",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "timed": 1,
+    "median_secs": 100,
+    "time_ok": true
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 9: runner time sums secs over the lines of a submitted folder that have secs.",
+  "ambiguous": false
+ },
+ {
+  "name": "median_odd_count",
+  "results": [
+   {
+    "at": "2026-10-28T10:00:00",
+    "folder": "2026-10-28_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 10
+   },
+   {
+    "at": "2026-10-28T10:00:00",
+    "folder": "2026-10-28_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 20
+   },
+   {
+    "at": "2026-10-28T10:00:00",
+    "folder": "2026-10-28_C",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted",
+    "secs": 100
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {},
+  "wrong": [],
+  "today": "2026-10-30",
+  "expect": {
+   "greenhouse": {
+    "submitted": 3,
+    "timed": 3,
+    "median_secs": 20,
+    "time_ok": true
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 9: median over submitted folders that have runner time.",
+  "ambiguous": false
+ },
+ {
+  "name": "mean_cost_excludes_non_submitted",
+  "results": [
+   {
+    "at": "2026-10-29T10:00:00",
+    "folder": "2026-10-29_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   },
+   {
+    "at": "2026-10-29T10:00:00",
+    "folder": "2026-10-29_B",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "dry-run"
+   }
+  ],
+  "emails": [],
+  "fmap": {},
+  "ds_cost": {
+   "2026-10-29_A": 0.02,
+   "2026-10-29_B": 100
+  },
+  "wrong": [],
+  "today": "2026-10-30",
+  "expect": {
+   "greenhouse": {
+    "submitted": 1,
+    "mean_ds_cost": 0.02,
+    "cost_ok": false
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Rule 10: mean_ds_cost is mean over submitted folders only.",
+  "ambiguous": false
+ },
+ {
+  "name": "absent_platforms_and_ignored_records",
+  "results": [
+   {
+    "at": "2026-10-30T10:00:00",
+    "folder": "2026-10-30_A",
+    "url": "https://boards.greenhouse.io/x",
+    "status": "submitted"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J2",
+    "date": "2026-10-01",
+    "type": "Confirmation"
+   }
+  ],
+  "fmap": {
+   "2026-10-30_A": "J1"
+  },
+  "ds_cost": {},
+  "wrong": [
+   {
+    "folder": "2026-10-30_B"
+   }
+  ],
+  "today": "2026-10-10",
+  "expect": {
+   "greenhouse": {
+    "folders": 1,
+    "submitted": 1,
+    "confirmed": 0,
+    "pending": 0,
+    "confirm_rate": 0.0,
+    "wrong_answers": 0
+   }
+  },
+  "expect_absent": [
+   "lever",
+   "workday",
+   "ashby",
+   "other"
+  ],
+  "spec_quote": "Rules 8 and 13: platforms with no folder do not appear; wrong/email records for absent folders do not create platforms.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,18 @@
+{
+ "Denver local question as free-text box": {
+  "verdict": "case",
+  "why": "rules_bridge.js guard: a yes/no rule answering a free-text box is sent to the human on purpose (wrong-mapping guard, Joey 2026-10-30); answerFor itself returns the spec's Yes/No for option-less combos"
+ },
+ "Chicago local question as free-text box": {
+  "verdict": "case",
+  "why": "rules_bridge.js guard: a yes/no rule answering a free-text box is sent to the human on purpose (wrong-mapping guard, Joey 2026-10-30); answerFor itself returns the spec's Yes/No for option-less combos"
+ },
+ "Atlanta local question as free-text box": {
+  "verdict": "case",
+  "why": "rules_bridge.js guard: a yes/no rule answering a free-text box is sent to the human on purpose (wrong-mapping guard, Joey 2026-10-30); answerFor itself returns the spec's Yes/No for option-less combos"
+ },
+ "DFW local question with only an unwilling No option": {
+  "verdict": "case",
+  "why": "no option reads plain \"No\"; the only No option claims he is unwilling to relocate (false) → the rule asks the human instead (code fixed: it used to pick that option)"
+ }
+}

@@ -1,0 +1,242 @@
+[
+ {
+  "name": "intern_fall_2026_true",
+  "level": "Internship",
+  "text": "Our internship program runs during Fall 2026.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_lowercase_spring_2026_true",
+  "level": "Internship",
+  "text": "A spring 2026 internship rotation is available on our platform team.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_winter_2027_true",
+  "level": "Internship",
+  "text": "Winter 2027 term internship with our data team.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_summer_2027_alone_false",
+  "level": "Internship",
+  "text": "Summer 2027 internship program for students.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "intern_fall_2028_false",
+  "level": "Internship",
+  "text": "Fall 2028 internship cohort for our research group.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "intern_january_2027_true",
+  "level": "Internship",
+  "text": "Internship beginning January 2027 with our research group.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_april_2027_false",
+  "level": "Internship",
+  "text": "Cohort begins in April 2027 at our office.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "intern_coop_true",
+  "level": "Internship",
+  "text": "This role is a co-op with our hardware team.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_start_date_2026_true",
+  "level": "Internship",
+  "text": "Start date: 2026 for the summer intern class.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "intern_2026_fall_2025_true",
+  "level": "Internship",
+  "text": "Fall 2025 internship rotation with our design team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": true
+ },
+ {
+  "name": "intern_2026_fall_2027_false",
+  "level": "Internship",
+  "text": "Fall 2027 internship cohort for our product team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": false
+ },
+ {
+  "name": "intern_2028_january_2028_true",
+  "level": "Internship",
+  "text": "Interns begin January 2028 with our analytics team.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": true
+ },
+ {
+  "name": "intern_2028_start_date_march_2027_true",
+  "level": "Internship",
+  "text": "Start date: March 2027 for the internship.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": true
+ },
+ {
+  "name": "intern_2026_residency_true",
+  "level": "Internship",
+  "text": "Join our six-month engineering residency program.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": true
+ },
+ {
+  "name": "ft_start_2026_true",
+  "level": "New grad",
+  "text": "Start in 2026 with our new grad cohort.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "ft_start_september_2027_true",
+  "level": "New grad",
+  "text": "Targeted start date: September 2027 for new graduates.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "ft_start_october_2027_false",
+  "level": "New grad",
+  "text": "Targeted start date: October 2027 for new graduates.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "ft_start_january_2028_false",
+  "level": "New grad",
+  "text": "Start date: January 2028 at our Austin office.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "ft_start_2028_false",
+  "level": "New grad",
+  "text": "Start in 2028 with the engineering team.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": false
+ },
+ {
+  "name": "ft_asap_true",
+  "level": "New grad",
+  "text": "We are hiring ASAP for our new grad program.",
+  "intern_summer": 2027,
+  "fulltime_from": "2028-01",
+  "expect": true
+ },
+ {
+  "name": "ft_2027_06_start_2027_false",
+  "level": "New grad",
+  "text": "Start in 2027 with our platform team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": false
+ },
+ {
+  "name": "ft_2027_06_february_2027_true",
+  "level": "New grad",
+  "text": "Start date: February 2027 for new graduates.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": true
+ },
+ {
+  "name": "ft_2027_06_march_2027_false",
+  "level": "New grad",
+  "text": "Start date: March 2027 for new graduates.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": false
+ },
+ {
+  "name": "ft_2027_06_immediately_start_true",
+  "level": "New grad",
+  "text": "We need a graduate to immediately start on the team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-06",
+  "expect": true
+ },
+ {
+  "name": "ft_2028_05_start_2027_true",
+  "level": "New grad",
+  "text": "Start in 2027 as a new grad engineer.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": true
+ },
+ {
+  "name": "ft_2028_05_january_2028_true",
+  "level": "New grad",
+  "text": "Start date: January 2028 for our new grad cohort.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": true
+ },
+ {
+  "name": "ft_2028_05_february_2028_false",
+  "level": "New grad",
+  "text": "Start date: February 2028 for our new grad cohort.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": false
+ },
+ {
+  "name": "ft_2027_09_may_2027_true",
+  "level": "New grad",
+  "text": "Start May 2027 with our infrastructure team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-09",
+  "expect": true
+ },
+ {
+  "name": "ft_2027_09_june_2027_false",
+  "level": "New grad",
+  "text": "Start June 2027 with our infrastructure team.",
+  "intern_summer": 2026,
+  "fulltime_from": "2027-09",
+  "expect": false
+ },
+ {
+  "name": "ft_2028_05_start_far_from_year_false",
+  "level": "New grad",
+  "text": "Start your career with us. Our headquarters opened in 2026.",
+  "intern_summer": 2028,
+  "fulltime_from": "2028-05",
+  "expect": false
+ }
+]

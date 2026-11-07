@@ -1,0 +1,487 @@
+[
+ {
+  "name": "edu_start_default_mm_dd_yyyy",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "From Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2026-09"
+   },
+   "required": false,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": "09/01/2026",
+  "spec_quote": "Example: start \"2026-09\" with \"MM/dd/yyyy\" → \"09/01/2026\"",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_start_dd_mm_yyyy",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "Start Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2026-09"
+   },
+   "required": false,
+   "fmt": "dd/MM/yyyy"
+  },
+  "expect": "01/09/2026",
+  "spec_quote": "with \"dd/MM/yyyy\" → \"01/09/2026\"",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_start_yyyy_mm_dd",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "Begin Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2026-09"
+   },
+   "required": false,
+   "fmt": "yyyy-MM-dd"
+  },
+  "expect": "2026-09-01",
+  "spec_quote": "with \"yyyy-MM-dd\" → \"2026-09-01\"",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_start_single_letter_tokens",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "From",
+   "edu": {
+    "school": "Uni",
+    "start": "2026-09"
+   },
+   "required": false,
+   "fmt": "M/d/yyyy"
+  },
+  "expect": "9/1/2026",
+  "spec_quote": "with \"M/d/yyyy\" → \"9/1/2026\"",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_start_missing_start_returns_null",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "From Date",
+   "edu": {
+    "school": "Uni"
+   },
+   "required": false,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": null,
+  "spec_quote": "null when the entry has no start (or it cannot be read) — the caller then asks the person, it never guesses.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_end_required_february_28",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "To Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2022-09",
+    "end": "2026-02"
+   },
+   "required": true,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": "02/28/2026",
+  "spec_quote": "END box → only when `required` is true: the LAST day of the end month (e.g. 2026-02 → the 28th; 2028-02 → the 29th)",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_end_required_february_29_leap_year",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "End Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2024-09",
+    "end": "2028-02"
+   },
+   "required": true,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": "02/29/2028",
+  "spec_quote": "END box → only when `required` is true: the LAST day of the end month (e.g. 2026-02 → the 28th; 2028-02 → the 29th)",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_end_not_required_returns_null",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "To Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2022-09",
+    "end": "2026-06"
+   },
+   "required": false,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": null,
+  "spec_quote": "not required → null (left empty)",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_label_star_colon_spaces_ignored",
+  "fn": "edu_date_want",
+  "args": {
+   "label": " *From Date: ",
+   "edu": {
+    "school": "Uni",
+    "start": "2026-09"
+   },
+   "required": false,
+   "fmt": null
+  },
+  "expect": "09/01/2026",
+  "spec_quote": "a leading \"*\", a trailing \":\" and surrounding spaces are ignored, case does not matter. ... Missing / empty fmt = \"MM/dd/yyyy\".",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_unrelated_label_returns_null",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "Graduation Year",
+   "edu": {
+    "school": "Uni",
+    "start": "2022-09",
+    "end": "2026-06"
+   },
+   "required": true,
+   "fmt": "yyyy"
+  },
+  "expect": null,
+  "spec_quote": "any other label (e.g. \"Graduation Year\", \"Today's Date\") → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_end_required_but_no_end_returns_null",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "To Date",
+   "edu": {
+    "school": "Uni",
+    "start": "2022-09"
+   },
+   "required": true,
+   "fmt": "MM/dd/yyyy"
+  },
+  "expect": null,
+  "spec_quote": "required but no end → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_end_required_empty_fmt_default_last_day_december",
+  "fn": "edu_date_want",
+  "args": {
+   "label": "End",
+   "edu": {
+    "school": "Uni",
+    "start": "2022-09",
+    "end": "2026-12"
+   },
+   "required": true,
+   "fmt": ""
+  },
+  "expect": "12/31/2026",
+  "spec_quote": "END box → only when `required` is true: the LAST day of the end month ... Missing / empty fmt = \"MM/dd/yyyy\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_self_true_returns_none",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": true,
+    "tag": "button",
+    "id": "apply",
+    "cls": "btn",
+    "role": "",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "Apply",
+    "fixed": false
+   }
+  },
+  "expect": "none",
+  "spec_quote": "\"none\" — el is null or `self` is true (nothing covers the button);",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_null_el_returns_none",
+  "fn": "cover_action",
+  "args": {
+   "el": null
+  },
+  "expect": "none",
+  "spec_quote": "\"none\" — el is null or `self` is true (nothing covers the button);",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_fixed_cookie_banner_class_returns_hide_banner",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "div",
+    "id": "",
+    "cls": "cookiePolicy cookiemanager",
+    "role": "",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "We use cookies to improve your experience.",
+    "fixed": true
+   }
+  },
+  "expect": "hide_banner",
+  "spec_quote": "\"hide_banner\" — a fixed / sticky cookie or consent banner: its id, cls, role, title or text mentions cookie(s), consent, OneTrust, TrustArc, GDPR or \"cookiemanager\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_onetrust_banner_by_id_returns_hide_banner",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "div",
+    "id": "onetrust-banner-sdk",
+    "cls": "",
+    "role": "dialog",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "We value your privacy",
+    "fixed": true
+   }
+  },
+  "expect": "hide_banner",
+  "spec_quote": "\"hide_banner\" — a fixed / sticky cookie or consent banner: its id, cls, role, title or text mentions cookie(s), consent, OneTrust, TrustArc, GDPR or \"cookiemanager\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_non_fixed_cookie_notice_returns_stop",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "div",
+    "id": "cookie-notice",
+    "cls": "cookie-notice",
+    "role": "",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "We use cookies.",
+    "fixed": false
+   }
+  },
+  "expect": "stop",
+  "spec_quote": "A cookie banner that is NOT fixed / sticky → \"stop\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_chat_iframe_intercom_returns_hide_chat",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "iframe",
+    "id": "",
+    "cls": "",
+    "role": "",
+    "title": "",
+    "name": "",
+    "src": "https://js.intercomcdn.com/widget/frame",
+    "text": "",
+    "fixed": true
+   }
+  },
+  "expect": "hide_chat",
+  "spec_quote": "\"hide_chat\" — a chat widget: id / cls / title / name / src name a chat bot / chatbot, live chat, a chat widget, or a chat vendor (Intercom, Drift, Zendesk, Ada), and nothing in them mentions cookies or consent;",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_recaptcha_iframe_returns_stop",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "iframe",
+    "id": "",
+    "cls": "",
+    "role": "",
+    "title": "reCAPTCHA",
+    "name": "",
+    "src": "https://www.google.com/recaptcha/api2/anchor",
+    "text": "",
+    "fixed": false
+   }
+  },
+  "expect": "stop",
+  "spec_quote": "\"stop\" — a CAPTCHA (any of id / cls / title / name / src mentions recaptcha, hcaptcha or captcha)",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_session_timeout_dialog_returns_stop",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "div",
+    "id": "session-timeout",
+    "cls": "modal",
+    "role": "dialog",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "Your session has expired. Please log in again.",
+    "fixed": true
+   }
+  },
+  "expect": "stop",
+  "spec_quote": "\"stop\" — ... or anything not listed below (a dialog, a session-timeout message, an ordinary page element, a non-fixed element);",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_sticky_footer_no_cookie_words_returns_stop",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "footer",
+    "id": "site-footer",
+    "cls": "sticky-footer",
+    "role": "contentinfo",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "Careers | Privacy | Contact us",
+    "fixed": true
+   }
+  },
+  "expect": "stop",
+  "spec_quote": "\"stop\" — ... or anything not listed below (a dialog, a session-timeout message, an ordinary page element, a non-fixed element);",
+  "ambiguous": false
+ },
+ {
+  "name": "cover_chat_widget_mentioning_consent_returns_stop",
+  "fn": "cover_action",
+  "args": {
+   "el": {
+    "self": false,
+    "tag": "div",
+    "id": "chat-launcher",
+    "cls": "live-chat consent-prompt",
+    "role": "",
+    "title": "",
+    "name": "",
+    "src": "",
+    "text": "Chat with us",
+    "fixed": true
+   }
+  },
+  "expect": "stop",
+  "spec_quote": "\"hide_chat\" — a chat widget: id / cls / title / name / src name a chat bot / chatbot, live chat, a chat widget, or a chat vendor (Intercom, Drift, Zendesk, Ada), and nothing in them mentions cookies or consent;",
+  "ambiguous": false
+ },
+ {
+  "name": "press_confirmed_by_page_wins_even_if_not_clicked",
+  "fn": "press_result",
+  "args": {
+   "clicked": false,
+   "confirmed_by": "page",
+   "button_left": false
+  },
+  "expect": {
+   "status": "submitted",
+   "note_prefix": null
+  },
+  "spec_quote": "`confirmed_by` set (\"page\" or \"email\") → [\"submitted\", null] whatever the other two are.",
+  "ambiguous": false
+ },
+ {
+  "name": "press_confirmed_by_email_wins_even_if_clicked",
+  "fn": "press_result",
+  "args": {
+   "clicked": true,
+   "confirmed_by": "email",
+   "button_left": true
+  },
+  "expect": {
+   "status": "submitted",
+   "note_prefix": null
+  },
+  "spec_quote": "`confirmed_by` set (\"page\" or \"email\") → [\"submitted\", null] whatever the other two are.",
+  "ambiguous": false
+ },
+ {
+  "name": "press_clicked_unconfirmed_note_prefix",
+  "fn": "press_result",
+  "args": {
+   "clicked": true,
+   "confirmed_by": null,
+   "button_left": false
+  },
+  "expect": {
+   "status": "unconfirmed",
+   "note_prefix": "pressed the final button"
+  },
+  "spec_quote": "clicked true, not confirmed → [\"unconfirmed\", note] with the note starting \"pressed the final button\".",
+  "ambiguous": false
+ },
+ {
+  "name": "press_clicked_unconfirmed_button_left_note_prefix",
+  "fn": "press_result",
+  "args": {
+   "clicked": true,
+   "confirmed_by": null,
+   "button_left": true
+  },
+  "expect": {
+   "status": "unconfirmed",
+   "note_prefix": "pressed the final button"
+  },
+  "spec_quote": "clicked true, not confirmed → [\"unconfirmed\", note] with the note starting \"pressed the final button\".",
+  "ambiguous": false
+ },
+ {
+  "name": "press_not_clicked_button_left_blocked",
+  "fn": "press_result",
+  "args": {
+   "clicked": false,
+   "confirmed_by": null,
+   "button_left": false
+  },
+  "expect": {
+   "status": "blocked",
+   "note_prefix": "Apply not pressed"
+  },
+  "spec_quote": "clicked false and the Apply button is still on the page (`button_left` false) → [\"blocked\", note]: the note starts \"Apply not pressed\" and says nothing was submitted; it never says \"pressed the final button\".",
+  "ambiguous": false
+ },
+ {
+  "name": "press_not_clicked_button_gone_unconfirmed",
+  "fn": "press_result",
+  "args": {
+   "clicked": false,
+   "confirmed_by": null,
+   "button_left": true
+  },
+  "expect": {
+   "status": "unconfirmed",
+   "note_prefix": "the Apply click failed"
+  },
+  "spec_quote": "clicked false, the button has left the page (`button_left` true), not confirmed → [\"unconfirmed\", note]: the note starts \"the Apply click failed\" and never contains \"pressed the final button\".",
+  "ambiguous": false
+ }
+]

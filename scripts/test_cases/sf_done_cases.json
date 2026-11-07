@@ -1,0 +1,194 @@
+[
+ {
+  "name": "basic success phrase new in AFTER",
+  "before": "Cookies | Accept all | Manage settings\nSuccessFactors\nCareers at Acme\nSenior Test Analyst (m/f/d)\nMy Documents\nExpand all sections\nPersonal Information\nFirst name\nLast name\nEmail\nAttachments\nApply\nSave as draft",
+  "after": "SuccessFactors\nCareers at Acme\nThank you for applying\nYour application has been received. A confirmation email has been sent to you.\nBack to job search",
+  "expect": true,
+  "spec_quote": "It says \"submitted\" only when AFTER contains a success phrase that was NOT already in BEFORE.",
+  "ambiguous": false
+ },
+ {
+  "name": "form intro already thanks candidate, AFTER is same form plus error banner",
+  "before": "Cookies | Accept all\nSuccessFactors\nApply for Senior Test Analyst\nThank you for your interest in this position. Please complete all fields marked with an asterisk.\nMy Documents\nExpand all sections\nPersonal Information\nFirst name *\nLast name *\nApply",
+  "after": "Cookies | Accept all\nSuccessFactors\nApply for Senior Test Analyst\nThank you for your interest in this position. Please complete all fields marked with an asterisk.\nPlease correct the errors below.\nMy Documents\nExpand all sections\nPersonal Information\nFirst name *\nLast name *\nApply",
+  "expect": false,
+  "spec_quote": "A success phrase that appears in BEFORE as well (for example a form whose intro says \"Thank you for your interest in this position.\") does not count when it is still in AFTER; only a phrase new in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "form intro already thanks candidate, AFTER is a real confirmation page",
+  "before": "Cookies | Accept all\nSuccessFactors\nApply for Senior Test Analyst\nThank you for your interest in this position. Please complete all fields marked with an asterisk.\nMy Documents\nExpand all sections\nPersonal Information\nFirst name *\nLast name *\nApply",
+  "after": "SuccessFactors\nCareers at Acme\nYour application has been sent. Thank you!\nReference number: 2026-11-04-887\nBack to job search",
+  "expect": true,
+  "spec_quote": "It says \"submitted\" only when AFTER contains a success phrase that was NOT already in BEFORE.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty BEFORE and success phrase in AFTER",
+  "before": "",
+  "after": "Thank you for applying. Your application was received on 04 Nov 2026.",
+  "expect": true,
+  "spec_quote": "If BEFORE is empty, any success phrase in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty BEFORE and only non-listed wordings in AFTER",
+  "before": "",
+  "after": "Careers portal\nPlease correct the errors below.\nYour profile was saved.",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: thank you for visiting",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply\nThank you for visiting our careers site.",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: your profile was saved",
+  "before": "SuccessFactors\nMy Documents\nExpand all sections\nProfile\nApply",
+  "after": "SuccessFactors\nMy Documents\nExpand all sections\nProfile\nYour profile was saved.\nApply",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "case difference: THANK YOU FOR APPLYING in upper case",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nTHANK YOU FOR APPLYING\nYour details have been forwarded to the recruiter.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): \"thank you for applying\", \"thank you for your application\", \"thank you for your interest\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "success phrase already present in BEFORE instructions and still in AFTER",
+  "before": "SuccessFactors\nHow to apply: once you have applied, you will receive a confirmation email within 24 hours.\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nHow to apply: once you have applied, you will receive a confirmation email within 24 hours.\nPlease correct the errors below.\nMy Documents\nExpand all sections\nApply",
+  "expect": false,
+  "spec_quote": "A success phrase that appears in BEFORE as well (for example a form whose intro says \"Thank you for your interest in this position.\") does not count when it is still in AFTER; only a phrase new in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "success phrase present in BEFORE only, AFTER has no phrase",
+  "before": "SuccessFactors\nThank you for your interest in this position.\nApply",
+  "after": "Your session has expired. Please log in again.\nBack to job search",
+  "expect": false,
+  "spec_quote": "It says \"submitted\" only when AFTER contains a success phrase that was NOT already in BEFORE.",
+  "ambiguous": false
+ },
+ {
+  "name": "application successfully submitted",
+  "before": "Cookies | Accept all\nSuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nPersonal Information\nApply",
+  "after": "SuccessFactors\nApplication successfully submitted\nReference: 4711\nYou will receive a confirmation email shortly.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): ... \"application successfully submitted\", \"you have applied\", \"you have successfully applied\".",
+  "ambiguous": false
+ },
+ {
+  "name": "application was received",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nApply",
+  "after": "SuccessFactors\nYour application was received on 04 Nov 2026.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): ... \"application has been submitted / received / sent\", \"application was submitted / received / sent\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "you have successfully applied",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nYou have successfully applied for Senior Test Analyst.\nView your applications",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): ... \"you have applied\", \"you have successfully applied\".",
+  "ambiguous": false
+ },
+ {
+  "name": "thank you for your application in lower case with cookie banner",
+  "before": "Cookies | Accept all\nSuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "Cookies | Accept all\nSuccessFactors\nthank you for your application\nWe will be in touch.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): \"thank you for applying\", \"thank you for your application\", \"thank you for your interest\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: application has been saved",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nYour application has been saved as a draft.\nResume application",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: thank you for your cooperation",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nThank you for your cooperation.\nThe form has been closed.",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "new phrase appears alongside the pre-existing thank-you intro",
+  "before": "SuccessFactors\nThank you for your interest in this position. Please complete all required fields.\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nThank you for your interest in this position. Please complete all required fields.\nThank you for applying\nYour application has been received.",
+  "expect": true,
+  "spec_quote": "A success phrase that appears in BEFORE as well (for example a form whose intro says \"Thank you for your interest in this position.\") does not count when it is still in AFTER; only a phrase new in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "AFTER contains an unlisted wording plus a listed phrase",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nYour profile was saved.\nYou have applied for Senior Test Analyst.",
+  "expect": true,
+  "spec_quote": "It says \"submitted\" only when AFTER contains a success phrase that was NOT already in BEFORE.",
+  "ambiguous": false
+ },
+ {
+  "name": "case-insensitive match across BEFORE and AFTER",
+  "before": "SuccessFactors\nTHANK YOU FOR YOUR INTEREST IN THIS POSITION. Complete the form below.\nApply",
+  "after": "SuccessFactors\nThank you for your interest in this position. Complete the form below.\nPlease correct the errors below.\nApply",
+  "expect": false,
+  "spec_quote": "A success phrase that appears in BEFORE as well (for example a form whose intro says \"Thank you for your interest in this position.\") does not count when it is still in AFTER; only a phrase new in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: application sent successfully (no has been / was)",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nApplication sent successfully.\nStatus: sent",
+  "expect": false,
+  "spec_quote": "Wording that is not one of these phrases (e.g. \"Please correct the errors below\", \"Your profile was saved\", \"Thank you for visiting\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "application was sent",
+  "before": "Cookies | Accept all\nSuccessFactors\nSenior Test Analyst\nMy Documents\nApply",
+  "after": "Cookies | Accept all\nSuccessFactors\nYour application was sent.\nReference 9932.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): ... \"application was submitted / received / sent\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "thank you for your interest appears only in AFTER",
+  "before": "SuccessFactors\nSenior Test Analyst\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nThank you for your interest.\nOur talent team will review your details and contact you if there is a match.",
+  "expect": true,
+  "spec_quote": "Success phrases (case-insensitive): \"thank you for applying\", \"thank you for your application\", \"thank you for your interest\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "empty BEFORE with only the thank-you-for-interest form intro in AFTER",
+  "before": "",
+  "after": "SuccessFactors\nThank you for your interest in this position.\nPlease complete the form below.\nApply",
+  "expect": true,
+  "spec_quote": "If BEFORE is empty, any success phrase in AFTER counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "BEFORE phrase replaced by a different new phrase in AFTER",
+  "before": "SuccessFactors\nThank you for your interest in this position.\nMy Documents\nExpand all sections\nApply",
+  "after": "SuccessFactors\nYour application was submitted.\nA confirmation has been sent to your email address.",
+  "expect": true,
+  "spec_quote": "It says \"submitted\" only when AFTER contains a success phrase that was NOT already in BEFORE.",
+  "ambiguous": false
+ }
+]

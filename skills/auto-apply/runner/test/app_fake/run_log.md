@@ -1,0 +1,125 @@
+- 2026-10-28T00:24:07 start dry-run https://job-boards.greenhouse.io/embed/job_app?for=galtalnev&token=8281727
+- 2026-10-28T00:24:19 problems: no resume PDF in the folder
+- 2026-10-28T00:24:19 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 29, 'l2_na': 2} bad=[] errors=0 captcha=False
+- 2026-10-28T00:24:19 NOT submitted: dry-run | batch not approved | fill problems: no resume PDF in the folder
+- 2026-10-28T19:36:16 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:36:22 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:36:22 NOT submitted: batch not approved
+- 2026-10-28T19:36:37 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:36:45 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:36:45 NOT submitted: batch not approved
+- 2026-10-28T19:36:46 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:36:55 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:36:55 submit clicked
+- 2026-10-28T19:36:56 CONFIRMED: Thank you for applying | file:///Users/you/Desktop/job%20search%20agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:37:14 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-10-28T19:37:23 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-10-28T19:37:23 CAPTCHA present → hand-off
+- 2026-10-28T19:39:23 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:39:29 canonical audit FAILED: school='Other'
+- 2026-10-28T19:39:29 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:29 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:39:29 NOT submitted: batch not approved | fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:30 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:39:36 canonical audit FAILED: school='Other'
+- 2026-10-28T19:39:36 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:36 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:39:36 NOT submitted: fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:37 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:39:43 canonical audit FAILED: school='Other'
+- 2026-10-28T19:39:43 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:43 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:39:43 NOT submitted: fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:59 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-10-28T19:40:05 canonical audit FAILED: school='Other'
+- 2026-10-28T19:40:05 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:40:05 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-10-28T19:40:05 NOT submitted: fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:40:06 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-10-28T19:40:17 canonical audit FAILED: school='Other'; degree_level='Masters of Technology'
+- 2026-10-28T19:40:17 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois)); canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:40:17 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:40:17 NOT submitted: fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois)); canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:40:38 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:40:46 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:40:46 NOT submitted: batch not approved
+- 2026-10-28T19:40:48 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:40:56 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:40:56 submit clicked
+- 2026-10-28T19:40:56 CONFIRMED: Thank you for applying | file:///Users/you/Desktop/job%20search%20agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:41:17 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-10-28T19:41:26 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-10-28T19:41:26 CAPTCHA present → hand-off
+- 2026-10-28T19:41:27 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-10-28T19:41:36 canonical audit FAILED: degree_level='Masters of Technology'
+- 2026-10-28T19:41:36 problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:41:36 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:41:36 NOT submitted: fill problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:43:02 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:43:11 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:43:11 NOT submitted: batch not approved
+- 2026-10-28T19:43:12 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:43:20 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:43:20 submit clicked
+- 2026-10-28T19:43:21 CONFIRMED: Thank you for applying | file:///Users/you/Desktop/job%20search%20agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:43:42 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-10-28T19:43:50 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-10-28T19:43:50 CAPTCHA present → hand-off
+- 2026-10-28T19:43:52 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-10-28T19:44:00 canonical audit FAILED: degree_level='Masters of Technology'
+- 2026-10-28T19:44:00 problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:44:00 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:44:00 NOT submitted: fill problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:44:39 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:44:48 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:44:48 NOT submitted: batch not approved
+- 2026-10-28T19:44:50 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:44:58 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:44:58 submit clicked
+- 2026-10-28T19:44:59 CONFIRMED: Thank you for applying | file:///Users/you/Desktop/job%20search%20agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:45:20 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-10-28T19:45:29 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-10-28T19:45:29 CAPTCHA present → hand-off
+- 2026-10-28T19:45:31 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-10-28T19:45:40 canonical audit FAILED: degree_level='Masters of Technology'
+- 2026-10-28T19:45:40 problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-10-28T19:45:40 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:45:40 NOT submitted: fill problems: canonical mismatch: degree_level = 'Masters of Technology' (want Master of Science; no accept pattern matched (want Master of Science))
+- 2026-11-02T13:39:34 materials gate: ok
+- 2026-11-02T13:39:37 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-02T13:39:40 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-02T13:39:40 NOT submitted: batch not approved
+- 2026-11-02T13:39:41 materials gate: ok
+- 2026-11-02T13:39:41 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-02T13:39:45 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-02T13:39:45 submit clicked
+- 2026-11-02T13:39:45 CONFIRMED: Thank you for applying | file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-02T13:39:54 materials gate: ok
+- 2026-11-02T13:39:54 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-11-02T13:39:58 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-11-02T13:39:58 CAPTCHA present → hand-off
+- 2026-11-02T13:39:58 materials gate: ok
+- 2026-11-02T13:39:58 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-11-02T13:40:02 canonical audit FAILED: degree_level='Masters of Technology'
+- 2026-11-02T13:40:02 problems: canonical mismatch: degree_level = 'Masters of Technology' (want level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science; matched accept but also reject 'technology')
+- 2026-11-02T13:40:02 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-02T13:40:02 NOT submitted: fill problems: canonical mismatch: degree_level = 'Masters of Technology' (want level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science; matched accept but also reject 'technology')
+- 2026-11-03T02:26:16 materials gate: ok
+- 2026-11-03T02:26:17 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-03T02:26:20 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-03T02:26:20 NOT submitted: batch not approved
+- 2026-11-03T02:26:20 materials gate: ok
+- 2026-11-03T02:26:21 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-03T02:26:24 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-03T02:26:24 submit clicked
+- 2026-11-03T02:26:25 CONFIRMED: Thank you for applying | file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-03T02:26:33 materials gate: ok
+- 2026-11-03T02:26:33 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_captcha.html
+- 2026-11-03T02:26:37 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=True
+- 2026-11-03T02:26:37 CAPTCHA present → hand-off
+- 2026-11-03T02:26:37 materials gate: ok
+- 2026-11-03T02:26:37 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_badanswer.html
+- 2026-11-03T02:26:41 canonical audit FAILED: degree_level='Masters of Technology'
+- 2026-11-03T02:26:41 problems: canonical mismatch: degree_level = 'Masters of Technology' (want level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science; matched accept but also reject 'technology')
+- 2026-11-03T02:26:41 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-03T02:26:41 NOT submitted: fill problems: canonical mismatch: degree_level = 'Masters of Technology' (want level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science; matched accept but also reject 'technology')

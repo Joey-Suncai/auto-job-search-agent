@@ -1,0 +1,26 @@
+{
+ "legally able to work with e.g. OPT": {
+  "verdict": "case",
+  "why": "on_opt correctly does not take it; 'without sponsorship' makes it the sponsorship question, answered by spons_future — another rule, which the spec says may exist (this spec covers on_opt only). Whether spons_future's Yes fits the inverted 'able to work without sponsorship' wording is noted in JSA-175."
+ },
+ "can you obtain + now + OPT (exception overrides positive trigger)": {
+  "verdict": "case",
+  "why": "superseded by JSA-175 (2026-11-05): this spec expected 'none' because the authorized rule then refused every label naming OPT; now OPT named only as an example of authorization ('such as OPT') leaves the general work-authorization question, answered by the authorized rule = Yes (candidate-profile Standard answers: legally authorized = Yes, internship on CPT). on_opt still does not take it, which is what this spec checks."
+ },
+ "hold valid U.S. work authorization such as OPT": {
+  "verdict": "case",
+  "why": "superseded by JSA-175 (2026-11-05): this spec expected 'none' because the authorized rule then refused every label naming OPT; now OPT named only as an example of authorization ('(such as OPT)') leaves the general work-authorization question, answered by the authorized rule = Yes (candidate-profile Standard answers: legally authorized = Yes, internship on CPT). on_opt still does not take it, which is what this spec checks."
+ },
+ "legally authorised (British spelling) to work + e.g. OPT": {
+  "verdict": "case",
+  "why": "superseded by JSA-175 (2026-11-05): this spec expected 'none' because the authorized rule then refused every label naming OPT; now OPT named only as an example of authorization ('e.g. OPT') leaves the general work-authorization question, answered by the authorized rule = Yes (candidate-profile Standard answers: legally authorized = Yes, internship on CPT). on_opt still does not take it, which is what this spec checks."
+ },
+ "currently hold or can you obtain valid US work authorization, e.g. OPT": {
+  "verdict": "case",
+  "why": "superseded by JSA-175 (2026-11-05): this spec expected 'none' because the authorized rule then refused every label naming OPT; now OPT named only as an example of authorization ('e.g. OPT') leaves the general work-authorization question, answered by the authorized rule = Yes (candidate-profile Standard answers: legally authorized = Yes, internship on CPT). on_opt still does not take it, which is what this spec checks."
+ },
+ "Goldman full wording: legally authorized to work with e.g. OPT": {
+  "verdict": "case",
+  "why": "superseded by JSA-175 (2026-11-05; Goldman Oracle hdpc_171535 had been answered No by on_opt): OPT sits only inside the '(e.g., … F-1 Optional Practical Training (OPT))' example group, so this is the general work-authorization question → authorized = Yes (candidate-profile: legally authorized = Yes, internship on CPT). on_opt does not take it, which is what this spec checks."
+ }
+}

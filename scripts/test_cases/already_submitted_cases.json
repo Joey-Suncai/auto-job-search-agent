@@ -1,0 +1,167 @@
+[
+ {
+  "name": "submitted by runner",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"runner\"}"
+  ],
+  "expect": true,
+  "spec_quote": "returns True when any line has `\"folder\"` equal to the folder's base name (the last path part; a trailing slash is ignored) and `\"status\": \"submitted\"` — whoever submitted it (`\"by\": \"runner\"`, `\"by\": \"joey\"`, or no `by`)",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted by joey",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"joey\"}"
+  ],
+  "expect": true,
+  "spec_quote": "whoever submitted it (`\"by\": \"runner\"`, `\"by\": \"joey\"`, or no `by`)",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted with no by field",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\"}"
+  ],
+  "expect": true,
+  "spec_quote": "whoever submitted it (`\"by\": \"runner\"`, `\"by\": \"joey\"`, or no `by`)",
+  "ambiguous": false
+ },
+ {
+  "name": "only dry-run line",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"dry-run\", \"by\": \"runner\"}"
+  ],
+  "expect": false,
+  "spec_quote": "Lines with another status (dry-run, blocked, captcha, unconfirmed, needs-user) do not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked line after a submitted line",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"runner\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"blocked\", \"by\": \"runner\"}"
+  ],
+  "expect": true,
+  "spec_quote": "returns True when any line has `\"folder\"` equal to the folder's base name ... and `\"status\": \"submitted\"`",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked line before a submitted line",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"blocked\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\"}"
+  ],
+  "expect": true,
+  "spec_quote": "returns True when any line has `\"folder\"` equal to the folder's base name ... and `\"status\": \"submitted\"`",
+  "ambiguous": false
+ },
+ {
+  "name": "line folder is a longer name with our folder as prefix",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern_2\", \"status\": \"submitted\", \"by\": \"runner\"}"
+  ],
+  "expect": false,
+  "spec_quote": "The folder name must match exactly (no prefix / substring match: \"2026-11-04_Acme_Intern\" is not \"2026-11-04_Acme_Intern_2\").",
+  "ambiguous": false
+ },
+ {
+  "name": "our folder is the longer name, line has the prefix name",
+  "folder": "/x/applications/2026-11-04_Acme_Intern_2",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"runner\"}"
+  ],
+  "expect": false,
+  "spec_quote": "The folder name must match exactly (no prefix / substring match: \"2026-11-04_Acme_Intern\" is not \"2026-11-04_Acme_Intern_2\").",
+  "ambiguous": false
+ },
+ {
+  "name": "trailing slash on folder path",
+  "folder": "/x/applications/2026-11-04_Acme_Intern/",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"runner\"}"
+  ],
+  "expect": true,
+  "spec_quote": "the folder's base name (the last path part; a trailing slash is ignored)",
+  "ambiguous": false
+ },
+ {
+  "name": "trailing slash with bare folder name",
+  "folder": "2026-11-04_Acme_Intern/",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"joey\"}"
+  ],
+  "expect": true,
+  "spec_quote": "the folder's base name (the last path part; a trailing slash is ignored)",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid JSON line skipped, valid submitted line counts",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{not valid json",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"submitted\", \"by\": \"runner\"}"
+  ],
+  "expect": true,
+  "spec_quote": "Invalid JSON lines are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "only invalid JSON lines",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{not valid json",
+   "also not json"
+  ],
+  "expect": false,
+  "spec_quote": "Invalid JSON lines are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing results file",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": null,
+  "expect": false,
+  "spec_quote": "A missing results file → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty results file",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [],
+  "expect": false,
+  "spec_quote": "Lines with another status (dry-run, blocked, captcha, unconfirmed, needs-user) do not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "all non-counting statuses for our folder",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"dry-run\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"blocked\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"captcha\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"unconfirmed\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"needs-user\"}"
+  ],
+  "expect": false,
+  "spec_quote": "Lines with another status (dry-run, blocked, captcha, unconfirmed, needs-user) do not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted for a different folder, ours only dry-run",
+  "folder": "/x/applications/2026-11-04_Acme_Intern",
+  "lines": [
+   "{\"folder\": \"2026-11-04_Other_Corp\", \"status\": \"submitted\", \"by\": \"runner\"}",
+   "{\"folder\": \"2026-11-04_Acme_Intern\", \"status\": \"dry-run\", \"by\": \"runner\"}"
+  ],
+  "expect": false,
+  "spec_quote": "returns True when any line has `\"folder\"` equal to the folder's base name (the last path part; a trailing slash is ignored) and `\"status\": \"submitted\"`",
+  "ambiguous": false
+ }
+]

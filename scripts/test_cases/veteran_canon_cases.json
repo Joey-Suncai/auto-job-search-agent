@@ -1,0 +1,146 @@
+[
+ {
+  "name": "plain_no",
+  "answer": "No",
+  "expect": true,
+  "reason": "True (acceptable): any answer that says he is not a veteran ... such as \"No\""
+ },
+ {
+  "name": "not_a_veteran",
+  "answer": "I am not a veteran",
+  "expect": true,
+  "reason": "True (acceptable): ... such as ... \"I am not a veteran\""
+ },
+ {
+  "name": "not_a_protected_veteran",
+  "answer": "I am not a protected veteran",
+  "expect": true,
+  "reason": "True (acceptable): ... such as ... \"I am not a protected veteran\""
+ },
+ {
+  "name": "not_veteran_us_abbrev",
+  "answer": "I am not a Veteran (U.S.)",
+  "expect": true,
+  "reason": "True (acceptable): ... such as ... \"I am not a Veteran (U.S.)\""
+ },
+ {
+  "name": "not_veteran_did_not_serve",
+  "answer": "I am not a Veteran (I did not serve in the military).",
+  "expect": true,
+  "reason": "True (acceptable): ... such as ... \"I am not a Veteran (I did not serve in the military).\""
+ },
+ {
+  "name": "never_served_phrasing",
+  "answer": "I have never served in the military",
+  "expect": true,
+  "reason": "True (acceptable): ... \"I have never served in the military\" (a \"never served\" phrasing)"
+ },
+ {
+  "name": "quoted_protected_veteran_upper",
+  "answer": "I am NOT a \"Protected Veteran\" as described above",
+  "expect": true,
+  "reason": "Also true (2026-11-01, Arrowstreet): quoted tenant wording such as 'I am NOT a \"Protected Veteran\" as described above'"
+ },
+ {
+  "name": "no_comma_not_protected",
+  "answer": "No, I am not a protected veteran.",
+  "expect": true,
+  "reason": "Also true: options that begin with \"No,\" — \"No, I am not a protected veteran.\""
+ },
+ {
+  "name": "not_a_protected_veteran_short",
+  "answer": "Not a Protected Veteran",
+  "expect": true,
+  "reason": "Also true: \"Not a Veteran\", \"Not a Protected Veteran\"."
+ },
+ {
+  "name": "no_categories_dont_apply",
+  "answer": "No, I do not believe one or more of the above categories apply to me.",
+  "expect": true,
+  "reason": "Also true: \"No, I do not believe one or more of the above categories apply to me.\""
+ },
+ {
+  "name": "not_applicable_option",
+  "answer": "Not Applicable",
+  "expect": true,
+  "reason": "Also true: \"Not Applicable\" (when the options are veteran categories)."
+ },
+ {
+  "name": "lowercase_no_with_period",
+  "answer": "no.",
+  "expect": true,
+  "reason": "Capitalisation and a trailing period do not matter."
+ },
+ {
+  "name": "identify_just_not_protected",
+  "answer": "I identify as a Veteran, just not a protected Veteran",
+  "expect": false,
+  "reason": "False (wrong for him): any answer that says he IS a veteran of some kind — \"I identify as a Veteran, just not a protected Veteran\""
+ },
+ {
+  "name": "identify_classifications_protected",
+  "answer": "I identify as one or more of the classifications of protected veteran",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"I identify as one or more of the classifications of protected veteran\""
+ },
+ {
+  "name": "recently_separated",
+  "answer": "Recently separated veteran",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"Recently separated veteran\""
+ },
+ {
+  "name": "disabled_veteran",
+  "answer": "Disabled veteran",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"Disabled veteran\""
+ },
+ {
+  "name": "plain_yes",
+  "answer": "Yes",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"Yes\""
+ },
+ {
+  "name": "dont_wish_to_answer",
+  "answer": "I don't wish to answer",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"I don't wish to answer\" / \"Decline to self-identify\" (he answers this question)"
+ },
+ {
+  "name": "decline_self_identify",
+  "answer": "Decline to self-identify",
+  "expect": false,
+  "reason": "False (wrong for him): ... \"I don't wish to answer\" / \"Decline to self-identify\" (he answers this question)"
+ },
+ {
+  "name": "empty_answer",
+  "answer": "",
+  "expect": false,
+  "reason": "False (wrong for him): ... and an empty answer."
+ },
+ {
+  "name": "quoted_protected_veteran_false",
+  "answer": "I identify as a \"Protected Veteran\" as described above",
+  "expect": false,
+  "reason": "Also false: 'I identify as a \"Protected Veteran\" as described above'."
+ },
+ {
+  "name": "yes_identify_classifications_listed",
+  "answer": "Yes, I identify as belonging to one or more of the classifications of protected veterans listed above.",
+  "expect": false,
+  "reason": "Also false: \"Yes, I identify as belonging to one or more of the classifications of protected veterans listed above.\""
+ },
+ {
+  "name": "veteran_alone",
+  "answer": "Veteran",
+  "expect": false,
+  "reason": "Also true: \"Not a Veteran\", \"Not a Protected Veteran\". Also false: \"Veteran\"."
+ },
+ {
+  "name": "yes_i_believe_categories_apply",
+  "answer": "Yes, I believe one or more of the above categories apply to me.",
+  "expect": false,
+  "reason": "Also false: \"Yes, I believe one or more of the above categories apply to me.\""
+ }
+]

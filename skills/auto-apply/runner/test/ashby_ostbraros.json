@@ -1,0 +1,304 @@
+{
+ "id": "ae4a6f7d-a240-4fa2-8c8e-04cc906e4ef9",
+ "title": "Autonomy Engineer Intern, Computer Vision / Deep Learning, 2027",
+ "applicationForm": {
+  "sections": [
+   {
+    "title": null,
+    "fieldEntries": [
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38__systemfield_name",
+      "field": {
+       "id": "b0ddde16-23be-4652-89b7-232ba048bbd3",
+       "path": "_systemfield_name",
+       "humanReadablePath": "Name",
+       "title": "Name",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "String",
+       "__autoSerializationID": "StringField"
+      },
+      "isRequired": true,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38__systemfield_email",
+      "field": {
+       "id": "63632e59-29ac-48df-9ab6-bd902e2a2ea7",
+       "path": "_systemfield_email",
+       "humanReadablePath": "Email",
+       "title": "Email",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "Email",
+       "__autoSerializationID": "EmailField"
+      },
+      "isRequired": true,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38__systemfield_resume",
+      "field": {
+       "id": "bc8f3c08-c41f-4757-9892-3ceb4ca38e01",
+       "path": "_systemfield_resume",
+       "humanReadablePath": "Resume",
+       "title": "Resume",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "File",
+       "__autoSerializationID": "FileField"
+      },
+      "isRequired": true,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_phone",
+      "field": {
+       "id": "4aaaeb09-119b-4b40-9910-13cf743cbf1a",
+       "path": "phone",
+       "humanReadablePath": "Phone",
+       "title": "Phone",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "String",
+       "__autoSerializationID": "StringField"
+      },
+      "isRequired": true,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_cover_letter",
+      "field": {
+       "id": "f297fb4c-aeeb-43b2-942f-184cf21460bf",
+       "path": "cover_letter",
+       "humanReadablePath": "Cover Letter",
+       "title": "Cover Letter",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "File",
+       "__autoSerializationID": "FileField"
+      },
+      "isRequired": false,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_question_28381881003",
+      "field": {
+       "id": "f037e088-2606-42de-8d19-1d60dcae4572",
+       "path": "question_28381881003",
+       "humanReadablePath": "LinkedIn Profile",
+       "title": "LinkedIn Profile",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "String",
+       "__autoSerializationID": "StringField"
+      },
+      "isRequired": false,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_question_28381882003",
+      "field": {
+       "id": "efd92094-92c1-4321-839f-09d232f0d90c",
+       "path": "question_28381882003",
+       "humanReadablePath": "Website",
+       "title": "Website",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "String",
+       "__autoSerializationID": "StringField"
+      },
+      "isRequired": false,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_question_28381883003",
+      "field": {
+       "id": "53c230d6-615f-48cf-a58a-519f607a67f2",
+       "path": "question_28381883003",
+       "humanReadablePath": "How did you find about Ostbraros?",
+       "title": "How did you find about Ostbraros?",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "String",
+       "__autoSerializationID": "StringField"
+      },
+      "isRequired": false,
+      "descriptionHtml": null
+     },
+     {
+      "id": "56057663-d9b1-4ac8-9ddb-8ce22ca32f38_question_28381884003",
+      "field": {
+       "id": "adcea95d-7a0e-413b-90b6-a1af97baf964",
+       "path": "question_28381884003",
+       "humanReadablePath": "Prior Government Employment?",
+       "title": "Prior Government Employment?",
+       "isNullable": false,
+       "isPrivate": false,
+       "isDeactivated": false,
+       "isMany": false,
+       "metadata": {},
+       "type": "Boolean",
+       "__autoSerializationID": "BooleanField"
+      },
+      "isRequired": true,
+      "descriptionHtml": null
+     }
+    ]
+   }
+  ]
+ },
+ "surveyForms": [
+  {
+   "sections": [
+    {
+     "title": null,
+     "fieldEntries": [
+      {
+       "id": "dee3cc5f-aa88-4e08-ad0d-8ab264369ad8__systemfield_eeoc_gender",
+       "field": {
+        "id": "cbfb943a-e4f5-46e3-baa4-20e81e5012c5",
+        "path": "_systemfield_eeoc_gender",
+        "humanReadablePath": "Gender",
+        "title": "Gender",
+        "isNullable": false,
+        "isPrivate": false,
+        "isDeactivated": false,
+        "isMany": false,
+        "metadata": {},
+        "type": "ValueSelect",
+        "selectableValues": [
+         {
+          "label": "Male",
+          "value": "male"
+         },
+         {
+          "label": "Female",
+          "value": "female"
+         },
+         {
+          "label": "Decline to self-identify",
+          "value": "decline_to_self_identify"
+         }
+        ],
+        "__autoSerializationID": "ValueSelectField"
+       },
+       "isRequired": false
+      },
+      {
+       "id": "dee3cc5f-aa88-4e08-ad0d-8ab264369ad8__systemfield_eeoc_race",
+       "field": {
+        "id": "da2659f8-b3ac-4b3d-a97c-4cb5a27ec469",
+        "path": "_systemfield_eeoc_race",
+        "humanReadablePath": "Race",
+        "title": "Race",
+        "isNullable": false,
+        "isPrivate": false,
+        "isDeactivated": false,
+        "isMany": false,
+        "metadata": {},
+        "type": "ValueSelect",
+        "selectableValues": [
+         {
+          "label": "Hispanic or Latino",
+          "value": "hispanic_or_latino"
+         },
+         {
+          "label": "White (Not Hispanic or Latino)",
+          "value": "white"
+         },
+         {
+          "label": "Black or African American (Not Hispanic or Latino)",
+          "value": "black_or_african_american"
+         },
+         {
+          "label": "Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino)",
+          "value": "native_hawaiian_or_other_pacific_islander"
+         },
+         {
+          "label": "Asian (Not Hispanic or Latino)",
+          "value": "asian"
+         },
+         {
+          "label": "American Indian or Alaska Native (Not Hispanic or Latino)",
+          "value": "american_indian_or_alaska_native"
+         },
+         {
+          "label": "Two or More Races (Not Hispanic or Latino)",
+          "value": "two_or_more_races"
+         },
+         {
+          "label": "Decline to self-identify",
+          "value": "decline_to_self_identify"
+         }
+        ],
+        "__autoSerializationID": "ValueSelectField"
+       },
+       "isRequired": false
+      }
+     ]
+    },
+    {
+     "title": null,
+     "fieldEntries": [
+      {
+       "id": "dee3cc5f-aa88-4e08-ad0d-8ab264369ad8__systemfield_eeoc_veteran_status",
+       "field": {
+        "id": "ba25d21b-83c3-4e47-8ab0-ad1492a8ecdb",
+        "path": "_systemfield_eeoc_veteran_status",
+        "humanReadablePath": "Veteran Status",
+        "title": "Veteran Status",
+        "isNullable": false,
+        "isPrivate": false,
+        "isDeactivated": false,
+        "isMany": false,
+        "metadata": {},
+        "type": "ValueSelect",
+        "selectableValues": [
+         {
+          "label": "I identify as one or more of the classifications of protected veteran listed above",
+          "value": "protected_veteran"
+         },
+         {
+          "label": "I am not a protected veteran",
+          "value": "non_protected_veteran"
+         },
+         {
+          "label": "I decline to self-identify for protected veteran status",
+          "value": "decline_to_self_identify"
+         }
+        ],
+        "__autoSerializationID": "ValueSelectField"
+       },
+       "isRequired": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

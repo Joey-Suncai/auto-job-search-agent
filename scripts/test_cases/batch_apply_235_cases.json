@@ -1,0 +1,484 @@
+[
+ {
+  "id": "off1",
+  "fn": "offline",
+  "input": {
+   "ats": "greenhouse",
+   "dry_run": false
+  },
+  "expect": true,
+  "spec": "`offline(ats, dry_run)` is true for greenhouse / ashby / lever (any letter case, surrounding spaces ignored) unless `--dry-run`; every other platform keeps the dry-run."
+ },
+ {
+  "id": "off2",
+  "fn": "offline",
+  "input": {
+   "ats": "Ashby",
+   "dry_run": false
+  },
+  "expect": true,
+  "spec": "`offline(ats, dry_run)` is true for greenhouse / ashby / lever (any letter case, surrounding spaces ignored) unless `--dry-run`; every other platform keeps the dry-run."
+ },
+ {
+  "id": "off3",
+  "fn": "offline",
+  "input": {
+   "ats": "  lever ",
+   "dry_run": false
+  },
+  "expect": true,
+  "spec": "`offline(ats, dry_run)` is true for greenhouse / ashby / lever (any letter case, surrounding spaces ignored) unless `--dry-run`; every other platform keeps the dry-run."
+ },
+ {
+  "id": "off4",
+  "fn": "offline",
+  "input": {
+   "ats": "greenhouse",
+   "dry_run": true
+  },
+  "expect": false,
+  "spec": "`prepare --dry-run` keeps the old way (fill once first) for a demo or a board known for conditional questions."
+ },
+ {
+  "id": "off5",
+  "fn": "offline",
+  "input": {
+   "ats": "workday",
+   "dry_run": false
+  },
+  "expect": false,
+  "spec": "`offline(ats, dry_run)` is true for greenhouse / ashby / lever (any letter case, surrounding spaces ignored) unless `--dry-run`; every other platform keeps the dry-run."
+ },
+ {
+  "id": "oi1",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [
+    {
+     "key": "why_role",
+     "label": "Why this role?",
+     "options": [
+      "Growth",
+      "Mission"
+     ]
+    }
+   ],
+   "gate_items": [],
+   "given": []
+  },
+  "expect": [
+   {
+    "question": "Why this role?",
+    "options": [
+     "Growth",
+     "Mission"
+    ],
+    "kind": "question"
+   }
+  ],
+  "spec": "every `needs_user` entry with a non-empty label, in order, as {question: label, options, kind: \"question\"}"
+ },
+ {
+  "id": "oi2",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [
+    {
+     "key": "blank",
+     "label": "",
+     "options": []
+    },
+    {
+     "key": "sponsor",
+     "label": "Will you need sponsorship?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ],
+   "gate_items": [],
+   "given": []
+  },
+  "expect": [
+   {
+    "question": "Will you need sponsorship?",
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "kind": "question"
+   }
+  ],
+  "spec": "every `needs_user` entry with a non-empty label, in order, as {question: label, options, kind: \"question\"}"
+ },
+ {
+  "id": "oi3",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [
+    {
+     "key": "sponsor",
+     "label": "Will you need sponsorship?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "key": "start",
+     "label": "Earliest start date?",
+     "options": []
+    }
+   ],
+   "gate_items": [],
+   "given": [
+    "  will you need SPONSORSHIP? "
+   ]
+  },
+  "expect": [
+   {
+    "question": "Earliest start date?",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "except one whose label or field `key` is in `given` (the keys of answers.json; compared case-insensitively after trimming)"
+ },
+ {
+  "id": "oi4",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [
+    {
+     "key": "Start_Date",
+     "label": "When can you start?",
+     "options": []
+    },
+    {
+     "key": "relocate",
+     "label": "Willing to relocate?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ],
+   "gate_items": [],
+   "given": [
+    "start_date"
+   ]
+  },
+  "expect": [
+   {
+    "question": "Willing to relocate?",
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "kind": "question"
+   }
+  ],
+  "spec": "except one whose label or field `key` is in `given` (the keys of answers.json; compared case-insensitively after trimming)"
+ },
+ {
+  "id": "oi5",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [],
+   "gate_items": [
+    {
+     "kind": "file",
+     "msg": "Resume missing"
+    }
+   ],
+   "given": []
+  },
+  "expect": [
+   {
+    "question": "Resume missing",
+    "options": [],
+    "kind": "file"
+   }
+  ],
+  "spec": "then every materials-gate item that is required (missing `required` counts as required) and has a `msg` or `evidence`, as {question: evidence, else msg, options: [], kind: \"file\"}"
+ },
+ {
+  "id": "oi6",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [],
+   "gate_items": [
+    {
+     "kind": "file",
+     "required": true,
+     "msg": "DeepSeek answer file missing",
+     "evidence": "jobs/acme/answers.md"
+    }
+   ],
+   "given": []
+  },
+  "expect": [
+   {
+    "question": "jobs/acme/answers.md",
+    "options": [],
+    "kind": "file"
+   }
+  ],
+  "spec": "then every materials-gate item that is required (missing `required` counts as required) and has a `msg` or `evidence`, as {question: evidence, else msg, options: [], kind: \"file\"}"
+ },
+ {
+  "id": "oi7",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [],
+   "gate_items": [
+    {
+     "kind": "file",
+     "required": false,
+     "msg": "Optional transcript",
+     "evidence": "transcript.pdf"
+    }
+   ],
+   "given": []
+  },
+  "expect": [],
+  "spec": "A not-required gate item is left out."
+ },
+ {
+  "id": "oi8",
+  "fn": "offline_items",
+  "input": {
+   "needs_user": [
+    {
+     "key": "q1",
+     "label": "Why us?",
+     "options": [
+      "a"
+     ]
+    }
+   ],
+   "gate_items": [
+    {
+     "kind": "file",
+     "required": false,
+     "msg": "optional extra"
+    },
+    {
+     "kind": "file",
+     "required": true,
+     "msg": "Cover letter missing"
+    },
+    {
+     "kind": "file",
+     "required": true,
+     "msg": "Portfolio missing",
+     "evidence": "portfolio.pdf"
+    }
+   ],
+   "given": []
+  },
+  "expect": [
+   {
+    "question": "Why us?",
+    "options": [
+     "a"
+    ],
+    "kind": "question"
+   },
+   {
+    "question": "Cover letter missing",
+    "options": [],
+    "kind": "file"
+   },
+   {
+    "question": "portfolio.pdf",
+    "options": [],
+    "kind": "file"
+   }
+  ],
+  "spec": "`offline_items(needs_user, gate_items, given)` = the list for Joey: every `needs_user` entry with a non-empty label, in order, as {question: label, options, kind: \"question\"} ... then every materials-gate item that is required ... as {question: evidence, else msg, options: [], kind: \"file\"}."
+ },
+ {
+  "id": "out1",
+  "fn": "outcome",
+  "input": {
+   "status": "submitted"
+  },
+  "expect": "done",
+  "spec": "`outcome(status)`: submitted / already-submitted → \"done\""
+ },
+ {
+  "id": "out2",
+  "fn": "outcome",
+  "input": {
+   "status": "already-submitted"
+  },
+  "expect": "done",
+  "spec": "`outcome(status)`: submitted / already-submitted → \"done\""
+ },
+ {
+  "id": "out3",
+  "fn": "outcome",
+  "input": {
+   "status": "crashed"
+  },
+  "expect": "rerun",
+  "spec": "crashed, failed, chrome-busy, timeout or empty → \"rerun\""
+ },
+ {
+  "id": "out4",
+  "fn": "outcome",
+  "input": {
+   "status": "timeout"
+  },
+  "expect": "rerun",
+  "spec": "crashed, failed, chrome-busy, timeout or empty → \"rerun\""
+ },
+ {
+  "id": "out5",
+  "fn": "outcome",
+  "input": {
+   "status": ""
+  },
+  "expect": "rerun",
+  "spec": "crashed, failed, chrome-busy, timeout or empty → \"rerun\""
+ },
+ {
+  "id": "out6",
+  "fn": "outcome",
+  "input": {
+   "status": "needs-user"
+  },
+  "expect": "needs-joey",
+  "spec": "any other status (needs-user, blocked, captcha, login-timeout, unconfirmed, dry-run …) → \"needs-joey\""
+ },
+ {
+  "id": "out7",
+  "fn": "outcome",
+  "input": {
+   "status": "captcha"
+  },
+  "expect": "needs-joey",
+  "spec": "any other status (needs-user, blocked, captcha, login-timeout, unconfirmed, dry-run …) → \"needs-joey\""
+ },
+ {
+  "id": "inh1",
+  "fn": "inherited",
+  "input": {
+   "holder": {
+    "pid": 1234
+   },
+   "env_pid": "1234",
+   "parent_chain": [
+    1,
+    1234,
+    5678
+   ]
+  },
+  "expect": true,
+  "spec": "`inherited(holder, env_pid, parent_chain)`: true only when the holder's pid is a positive integer equal to env_pid (JSA_CHROME_LOCK_HOLDER) and that pid is in parent_chain (this process's ancestors); anything unparsable → false."
+ },
+ {
+  "id": "inh2",
+  "fn": "inherited",
+  "input": {
+   "holder": {
+    "pid": 1234
+   },
+   "env_pid": "999",
+   "parent_chain": [
+    1,
+    1234,
+    5678
+   ]
+  },
+  "expect": false,
+  "spec": "true only when the holder's pid is a positive integer equal to env_pid (JSA_CHROME_LOCK_HOLDER) and that pid is in parent_chain (this process's ancestors)"
+ },
+ {
+  "id": "inh3",
+  "fn": "inherited",
+  "input": {
+   "holder": {
+    "pid": 1234
+   },
+   "env_pid": "1234",
+   "parent_chain": [
+    1,
+    5678
+   ]
+  },
+  "expect": false,
+  "spec": "true only when the holder's pid is a positive integer equal to env_pid (JSA_CHROME_LOCK_HOLDER) and that pid is in parent_chain (this process's ancestors)"
+ },
+ {
+  "id": "inh4",
+  "fn": "inherited",
+  "input": {
+   "holder": null,
+   "env_pid": "1234",
+   "parent_chain": [
+    1,
+    1234
+   ]
+  },
+  "expect": false,
+  "spec": "anything unparsable → false."
+ },
+ {
+  "id": "inh5",
+  "fn": "inherited",
+  "input": {
+   "holder": {
+    "pid": 0
+   },
+   "env_pid": "0",
+   "parent_chain": [
+    0,
+    1
+   ]
+  },
+  "expect": false,
+  "spec": "true only when the holder's pid is a positive integer equal to env_pid (JSA_CHROME_LOCK_HOLDER) and that pid is in parent_chain (this process's ancestors); anything unparsable → false."
+ },
+ {
+  "id": "desc1",
+  "fn": "describe",
+  "input": {
+   "holder": {
+    "pid": 1234,
+    "who": "batch_apply",
+    "at": "2026-11-06T09:05:03"
+   }
+  },
+  "expect": "pid 1234 (batch_apply) since 09:05:03",
+  "spec": "`describe(holder)` → \"pid <pid> (<who>) since <HH:MM:SS from the ISO `at`>\", \"?\" for a missing pid / who."
+ },
+ {
+  "id": "desc2",
+  "fn": "describe",
+  "input": {
+   "holder": {
+    "pid": null,
+    "who": "batch_apply",
+    "at": "2026-11-06T09:05:03"
+   }
+  },
+  "expect": "pid ? (batch_apply) since 09:05:03",
+  "spec": "`describe(holder)` → \"pid <pid> (<who>) since <HH:MM:SS from the ISO `at`>\", \"?\" for a missing pid / who."
+ },
+ {
+  "id": "desc3",
+  "fn": "describe",
+  "input": {
+   "holder": {
+    "pid": 1234,
+    "who": null,
+    "at": "2026-11-06T23:59:59"
+   }
+  },
+  "expect": "pid 1234 (?) since 23:59:59",
+  "spec": "`describe(holder)` → \"pid <pid> (<who>) since <HH:MM:SS from the ISO `at`>\", \"?\" for a missing pid / who."
+ }
+]

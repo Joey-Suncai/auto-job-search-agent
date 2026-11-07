@@ -1,0 +1,5 @@
+# Two more fixed application-form answers (2026-11-03)
+An answer-rule engine maps a form question (label, field type, options) to one answer; for a select or radio it must be one of the options, copied exactly. The candidate has worked only for Frost & Sullivan and Hyde Park Investment Services; for every other company the answer to "have you worked for / been employed by this company" is "No". His available start date is 06/14/2027.
+- Questions asking whether he is / was a previous or former employee of the hiring company (e.g. "Please certify whether you are a previous employee.", "Are you a former employee of Acme?", "Have you previously been employed by Acme?") with Yes/No options → "No". The company in the question is never Frost & Sullivan or Hyde Park in these cases.
+- Date questions about when he is available to begin / start work (e.g. "Date available to begin employment?", "Date you are available to start", "What is your earliest start date?", "Available start date") as a date field → "06/14/2027".
+Questions outside these patterns are not part of this test; do not include them.

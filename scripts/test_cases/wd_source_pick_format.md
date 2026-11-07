@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": "unique_snake_case", "fn": "source_pick" | "real_options", "options": ["..."], "expect": <string or null for source_pick; array of strings for real_options>, "spec": "quoted sentence"}

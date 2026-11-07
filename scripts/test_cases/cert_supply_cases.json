@@ -1,0 +1,695 @@
+[
+ {
+  "name": "plain Summer 2027 internship, nothing blocking",
+  "post": {
+   "company": "Acme Robotics",
+   "title": "Software Engineering Intern",
+   "location": "Austin, TX",
+   "text": "Summer 2027 internship on the controls team.",
+   "url": "https://boards.example/acme/1",
+   "key": "acme-1",
+   "board": "acmerobotics"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "7. otherwise [true, \"ok\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked by exact company name",
+  "post": {
+   "company": "Stripe",
+   "title": "Software Engineering Intern",
+   "location": "San Francisco",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/stripe/1",
+   "key": "stripe-1",
+   "board": "stripe"
+  },
+  "blocked": [
+   "Stripe"
+  ],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "company blocked (tier A/B, tracker or skip list)"
+  ],
+  "spec_quote": "1. company blocked (by name, by board, or by a near match: with letters and digits only, lower case, a blocked name of 4+ characters inside the company name or the board token ... or the company name / token of 4+ characters inside a blocked name) → [false, \"company blocked (tier A/B, tracker or skip list)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked because board token is in blocked_boards",
+  "post": {
+   "company": "DV Group",
+   "title": "Data Analyst Intern",
+   "location": "Chicago, IL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/dv/9",
+   "key": "dv-9",
+   "board": "dvgroup"
+  },
+  "blocked": [],
+  "blocked_boards": [
+   "dvgroup"
+  ],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "company blocked (tier A/B, tracker or skip list)"
+  ],
+  "spec_quote": "a company is blocked when its board token is in blocked_boards",
+  "ambiguous": false
+ },
+ {
+  "name": "near match: blocked name contained in company name",
+  "post": {
+   "company": "DoorDash USA",
+   "title": "Logistics Intern",
+   "location": "Denver, CO",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/dd/2",
+   "key": "dd-2",
+   "board": "doordashusa"
+  },
+  "blocked": [
+   "DoorDash"
+  ],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "company blocked (tier A/B, tracker or skip list)"
+  ],
+  "spec_quote": "with letters and digits only, lower case, a blocked name of 4+ characters inside the company name or the board token — \"doordashusa\" contains \"doordash\"",
+  "ambiguous": false
+ },
+ {
+  "name": "near match: company name contained in a longer blocked name",
+  "post": {
+   "company": "Acme",
+   "title": "Hardware Intern",
+   "location": "Boston, MA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/acme/3",
+   "key": "acme-3",
+   "board": "acme"
+  },
+  "blocked": [
+   "Acme Technologies Inc"
+  ],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "company blocked (tier A/B, tracker or skip list)"
+  ],
+  "spec_quote": "or the company name / token of 4+ characters inside a blocked name",
+  "ambiguous": false
+ },
+ {
+  "name": "near-miss company name must NOT be blocked (no false alarm)",
+  "post": {
+   "company": "Verdant Labs",
+   "title": "Data Science Intern",
+   "location": "Denver, CO",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/verdant/4",
+   "key": "verdant-4",
+   "board": "verdantlabs"
+  },
+  "blocked": [
+   "Vercel"
+  ],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "1. company blocked (by name, by board, or by a near match: with letters and digits only, lower case, a blocked name of 4+ characters inside the company name or the board token ... or the company name / token of 4+ characters inside a blocked name)",
+  "ambiguous": false
+ },
+ {
+  "name": "posting key already in store",
+  "post": {
+   "company": "Northwind Systems",
+   "title": "Backend Intern",
+   "location": "Seattle, WA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/nw/5",
+   "key": "nw-5",
+   "board": "northwind"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [
+   "nw-5"
+  ],
+  "flags": [],
+  "expect": [
+   false,
+   "already in the store"
+  ],
+  "spec_quote": "2. key or url in known → [false, \"already in the store\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "posting url already in store",
+  "post": {
+   "company": "Northwind Systems",
+   "title": "Backend Intern",
+   "location": "Seattle, WA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/nw/6",
+   "key": "nw-6",
+   "board": "northwind"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [
+   "https://boards.example/nw/6"
+  ],
+  "flags": [],
+  "expect": [
+   false,
+   "already in the store"
+  ],
+  "spec_quote": "2. key or url in known → [false, \"already in the store\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "\"Internal\" does not make it an internship",
+  "post": {
+   "company": "Cobalt Analytics",
+   "title": "Internal Tools Engineer",
+   "location": "New York, NY",
+   "text": "Summer 2027 role.",
+   "url": "https://boards.example/cb/7",
+   "key": "cb-7",
+   "board": "cobalt"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not an internship"
+  ],
+  "spec_quote": "An internship title contains the word intern / interns / internship / internships / co-op / coop. \"Internal\", \"International\", \"Internet\" do not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "\"International\" does not make it an internship",
+  "post": {
+   "company": "Cobalt Analytics",
+   "title": "International Marketing Manager",
+   "location": "New York, NY",
+   "text": "Summer 2027 role.",
+   "url": "https://boards.example/cb/8",
+   "key": "cb-8",
+   "board": "cobalt"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not an internship"
+  ],
+  "spec_quote": "An internship title contains the word intern / interns / internship / internships / co-op / coop. \"Internal\", \"International\", \"Internet\" do not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "PhD-only internship",
+  "post": {
+   "company": "Helix Bio",
+   "title": "PhD Research Intern",
+   "location": "Boston, MA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/helix/9",
+   "key": "helix-9",
+   "board": "helixbio"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not open to him (PhD / undergraduate only / one school's fair)"
+  ],
+  "spec_quote": "3a. title says PhD / Ph.D / doctoral, undergraduate / undergrad, or \"college fair\" / \"career fair\" / \"university fair\" → [false, \"not open to him (PhD / undergraduate only / one school's fair)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "undergrad-only internship",
+  "post": {
+   "company": "Helix Bio",
+   "title": "Undergraduate Research Intern",
+   "location": "Boston, MA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/helix/10",
+   "key": "helix-10",
+   "board": "helixbio"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not open to him (PhD / undergraduate only / one school's fair)"
+  ],
+  "spec_quote": "3a. title says PhD / Ph.D / doctoral, undergraduate / undergrad, or \"college fair\" / \"career fair\" / \"university fair\" → [false, \"not open to him (PhD / undergraduate only / one school's fair)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "career fair intern",
+  "post": {
+   "company": "Beacon Group",
+   "title": "Career Fair Intern",
+   "location": "Atlanta, GA",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/beacon/11",
+   "key": "beacon-11",
+   "board": "beacongroup"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not open to him (PhD / undergraduate only / one school's fair)"
+  ],
+  "spec_quote": "3a. title says PhD / Ph.D / doctoral, undergraduate / undergrad, or \"college fair\" / \"career fair\" / \"university fair\" → [false, \"not open to him (PhD / undergraduate only / one school's fair)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "legal intern needs professional degree",
+  "post": {
+   "company": "Ridgeway Legal",
+   "title": "Legal Intern - Summer 2027",
+   "location": "Chicago, IL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/ridgeway/12",
+   "key": "ridgeway-12",
+   "board": "ridgeway"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "needs a professional degree (law / medicine / ministry)"
+  ],
+  "spec_quote": "3b. title names a role that needs a professional degree — legal, law clerk, law student, paralegal, juris, J.D., nursing, pharmacy, medical student, ministry, pastor, dental, veterinary → [false, \"needs a professional degree (law / medicine / ministry)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "nursing intern needs professional degree",
+  "post": {
+   "company": "Mercy Health",
+   "title": "Nursing Intern",
+   "location": "Miami, FL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/mercy/13",
+   "key": "mercy-13",
+   "board": "mercyhealth"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "needs a professional degree (law / medicine / ministry)"
+  ],
+  "spec_quote": "3b. title names a role that needs a professional degree — legal, law clerk, law student, paralegal, juris, J.D., nursing, pharmacy, medical student, ministry, pastor, dental, veterinary → [false, \"needs a professional degree (law / medicine / ministry)\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "non-U.S. location",
+  "post": {
+   "company": "Kestrel Software",
+   "title": "Software Intern",
+   "location": "London, United Kingdom",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/kestrel/14",
+   "key": "kestrel-14",
+   "board": "kestrel"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not a U.S. location"
+  ],
+  "spec_quote": "4. location does not name a U.S. place → [false, \"not a U.S. location\"]... \"Remote\" alone does not.",
+  "ambiguous": false
+ },
+ {
+  "name": "\"Remote\" alone is not a U.S. location",
+  "post": {
+   "company": "Kestrel Software",
+   "title": "Software Intern",
+   "location": "Remote",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/kestrel/15",
+   "key": "kestrel-15",
+   "board": "kestrel"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not a U.S. location"
+  ],
+  "spec_quote": "A U.S. place: \"United States\", \"USA\", \"U.S.\", \"Remote - US\" ... \"Remote\" alone does not.",
+  "ambiguous": false
+ },
+ {
+  "name": "\"Remote - US\" is a U.S. location",
+  "post": {
+   "company": "Kestrel Software",
+   "title": "Software Intern",
+   "location": "Remote - US",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/kestrel/16",
+   "key": "kestrel-16",
+   "board": "kestrel"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "A U.S. place: \"United States\", \"USA\", \"U.S.\", \"Remote - US\", a U.S. state name, \", <two-letter state code>\" (e.g. \"Austin, TX\"), or a major U.S. city ...",
+  "ambiguous": false
+ },
+ {
+  "name": "list with a U.S. place plus another country still counts",
+  "post": {
+   "company": "Kestrel Software",
+   "title": "Platform Intern",
+   "location": "New York, NY; Toronto, Canada",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/kestrel/17",
+   "key": "kestrel-17",
+   "board": "kestrel"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "A list naming a U.S. place and another country still counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "two-letter state code recognized",
+  "post": {
+   "company": "Summit Data",
+   "title": "Analytics Intern",
+   "location": "Boulder, CO",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/summit/18",
+   "key": "summit-18",
+   "board": "summitdata"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "A U.S. place: ... \", <two-letter state code>\" (e.g. \"Austin, TX\") ...",
+  "ambiguous": false
+ },
+ {
+  "name": "major U.S. city without state",
+  "post": {
+   "company": "Summit Data",
+   "title": "Analytics Intern",
+   "location": "San Francisco",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/summit/19",
+   "key": "summit-19",
+   "board": "summitdata"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "or a major U.S. city (New York, NYC, San Francisco, Seattle, Chicago, Boston, Austin, Los Angeles, Atlanta, Denver, Miami, Philadelphia, Washington DC, Bay Area).",
+  "ambiguous": false
+ },
+ {
+  "name": "title says 2026 and text never says 2027",
+  "post": {
+   "company": "Orbit Labs",
+   "title": "Software Engineering Intern - Summer 2026",
+   "location": "Austin, TX",
+   "text": "Our 2026 summer internship program runs twelve weeks.",
+   "url": "https://boards.example/orbit/20",
+   "key": "orbit-20",
+   "board": "orbitlabs"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not Summer 2027"
+  ],
+  "spec_quote": "5. not a Summer 2027 posting → [false, \"not Summer 2027\"]: the title has 2026 but not 2027; ... or \"2027\" appears in neither title nor text.",
+  "ambiguous": false
+ },
+ {
+  "name": "title says 2026 (not 2027) even though text says 2027",
+  "post": {
+   "company": "Orbit Labs",
+   "title": "Software Engineering Intern (Summer 2026)",
+   "location": "Austin, TX",
+   "text": "Join the Summer 2027 cohort.",
+   "url": "https://boards.example/orbit/21",
+   "key": "orbit-21",
+   "board": "orbitlabs"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not Summer 2027"
+  ],
+  "spec_quote": "5. not a Summer 2027 posting → [false, \"not Summer 2027\"]: the title has 2026 but not 2027; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "\"2027\" appears in neither title nor text",
+  "post": {
+   "company": "Orbit Labs",
+   "title": "Data Engineering Intern",
+   "location": "Austin, TX",
+   "text": "Join our data team for a great internship with mentorship.",
+   "url": "https://boards.example/orbit/22",
+   "key": "orbit-22",
+   "board": "orbitlabs"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not Summer 2027"
+  ],
+  "spec_quote": "or \"2027\" appears in neither title nor text.",
+  "ambiguous": false
+ },
+ {
+  "name": "title names Fall without saying Summer",
+  "post": {
+   "company": "Pinewood Tech",
+   "title": "Fall 2027 Backend Intern",
+   "location": "Seattle, WA",
+   "text": "Twelve-week internship, hybrid in Seattle.",
+   "url": "https://boards.example/pinewood/23",
+   "key": "pinewood-23",
+   "board": "pinewood"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   false,
+   "not Summer 2027"
+  ],
+  "spec_quote": "or the title names fall / autumn / winter / spring, or a month from January–April or September–December, without also saying summer",
+  "ambiguous": true,
+  "why_ambiguous": "The text mentions no season, so the title is the only place a season is named; but the spec does not state whether \"also saying summer\" may be satisfied anywhere in the posting. Under the natural reading (season named in the title, summer not named in the title) this fails."
+ },
+ {
+  "name": "title names both Summer and Fall — Summer is present",
+  "post": {
+   "company": "Pinewood Tech",
+   "title": "Summer and Fall 2027 Analytics Intern",
+   "location": "Seattle, WA",
+   "text": "Analytics internship, Summer 2027 cohort with an optional fall extension.",
+   "url": "https://boards.example/pinewood/24",
+   "key": "pinewood-24",
+   "board": "pinewood"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "or the title names fall / autumn / winter / spring ... without also saying summer",
+  "ambiguous": false
+ },
+ {
+  "name": "offline flags CLEAR and DEF",
+  "post": {
+   "company": "Ironclad Defense",
+   "title": "Systems Intern",
+   "location": "Huntsville, AL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/ironclad/25",
+   "key": "ironclad-25",
+   "board": "ironclad"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [
+   "CLEAR",
+   "DEF"
+  ],
+  "expect": [
+   false,
+   "flags CLEAR, DEF"
+  ],
+  "spec_quote": "6. any of CLEAR, NOSPON, DEG, START, STALE, DEF in flags → [false, \"flags \" + those flags joined by commas, in the order given].",
+  "ambiguous": false
+ },
+ {
+  "name": "soft flags OLD/TRACK/APPLIED are ignored",
+  "post": {
+   "company": "Ironclad Defense",
+   "title": "Systems Intern",
+   "location": "Huntsville, AL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/ironclad/26",
+   "key": "ironclad-26",
+   "board": "ironclad"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [
+   "OLD",
+   "TRACK",
+   "APPLIED"
+  ],
+  "expect": [
+   true,
+   "ok"
+  ],
+  "spec_quote": "OLD/TRACK/APPLIED = soft, ignored here",
+  "ambiguous": false
+ },
+ {
+  "name": "flag reason lists flags in spec order, not input order",
+  "post": {
+   "company": "Ironclad Defense",
+   "title": "Systems Intern",
+   "location": "Huntsville, AL",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/ironclad/27",
+   "key": "ironclad-27",
+   "board": "ironclad"
+  },
+  "blocked": [],
+  "blocked_boards": [],
+  "known": [],
+  "flags": [
+   "DEF",
+   "CLEAR",
+   "STALE"
+  ],
+  "expect": [
+   false,
+   "flags CLEAR, STALE, DEF"
+  ],
+  "spec_quote": "\"flags \" + those flags joined by commas, in the order given",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked check wins over already-in-store",
+  "post": {
+   "company": "Stripe",
+   "title": "Software Engineering Intern",
+   "location": "San Francisco",
+   "text": "Summer 2027 internship.",
+   "url": "https://boards.example/stripe/28",
+   "key": "stripe-28",
+   "board": "stripe"
+  },
+  "blocked": [
+   "Stripe"
+  ],
+  "blocked_boards": [],
+  "known": [
+   "stripe-28",
+   "https://boards.example/stripe/28"
+  ],
+  "flags": [
+   "CLEAR"
+  ],
+  "expect": [
+   false,
+   "company blocked (tier A/B, tracker or skip list)"
+  ],
+  "spec_quote": "Return [keep, reason], checking in this order (the first failing check gives the reason)",
+  "ambiguous": false
+ }
+]

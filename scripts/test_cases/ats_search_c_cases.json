@@ -1,0 +1,407 @@
+[
+ {
+  "name": "backoff attempt 1 without Retry-After",
+  "fn": "backoff",
+  "args": {
+   "attempt": 1,
+   "retry_after": null
+  },
+  "expect": 1.5,
+  "spec_quote": "attempt 1 → 1.5",
+  "ambiguous": false
+ },
+ {
+  "name": "backoff digit Retry-After with surrounding spaces",
+  "fn": "backoff",
+  "args": {
+   "attempt": 2,
+   "retry_after": " 7 "
+  },
+  "expect": 7.0,
+  "spec_quote": "When retry_after is a string of digits only (surrounding spaces allowed) whose value is ≤ cap → that value as a float.",
+  "ambiguous": false
+ },
+ {
+  "name": "backoff above-cap Retry-After falls back to capped exponential",
+  "fn": "backoff",
+  "args": {
+   "attempt": 6,
+   "retry_after": "120"
+  },
+  "expect": 30.0,
+  "spec_quote": "A Retry-After that is a date, empty, negative-looking (\"-5\") or above cap (\"120\") is ignored → the exponential value. ... 6 → 30.0 (capped).",
+  "ambiguous": false
+ },
+ {
+  "name": "backoff negative-looking Retry-After falls back to exponential",
+  "fn": "backoff",
+  "args": {
+   "attempt": 3,
+   "retry_after": "-5"
+  },
+  "expect": 6.0,
+  "spec_quote": "A Retry-After that is a date, empty, negative-looking (\"-5\") or above cap (\"120\") is ignored → the exponential value.",
+  "ambiguous": false
+ },
+ {
+  "name": "is_blocked 429 always blocked",
+  "fn": "is_blocked",
+  "args": {
+   "status": 429,
+   "body": ""
+  },
+  "expect": true,
+  "spec_quote": "429 → true, whatever the body.",
+  "ambiguous": false
+ },
+ {
+  "name": "is_blocked 403 ordinary JSON is not a wall",
+  "fn": "is_blocked",
+  "args": {
+   "status": 403,
+   "body": "{\"message\": \"Not authorized for PCSX\"}"
+  },
+  "expect": false,
+  "spec_quote": "A 403 whose body is ordinary JSON such as {\"message\": \"Not authorized for PCSX\"} → false (a real answer, not a wall).",
+  "ambiguous": false
+ },
+ {
+  "name": "is_blocked 500 empty body is not blocked",
+  "fn": "is_blocked",
+  "args": {
+   "status": 500,
+   "body": ""
+  },
+  "expect": false,
+  "spec_quote": "500 with an empty body → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "is_blocked 503 with challenge title",
+  "fn": "is_blocked",
+  "args": {
+   "status": 503,
+   "body": "<html><title>Just a moment...</title></html>"
+  },
+  "expect": true,
+  "spec_quote": "Any status → true when a <title> in the first 5,000 characters starts with \"just a moment\", \"attention required\", \"access denied\" or \"security check\" (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "is_blocked 200 normal page is not blocked",
+  "fn": "is_blocked",
+  "args": {
+   "status": 200,
+   "body": "<html><title>Careers</title><body>Jobs</body></html>"
+  },
+  "expect": false,
+  "spec_quote": "200 with a normal page → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_icims reads Job Locations label",
+  "fn": "parse_icims",
+  "args": {
+   "page": "<span class=\"sr-only field-label\">Job Locations</span><span> US-CA-Monrovia</span><a href=\"https://careers-acme.icims.com/jobs/12345/data-analyst/job?src=1\"><h3>Data Analyst</h3></a>",
+   "host": "careers-acme.icims.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "US-CA-Monrovia",
+    "url": "https://careers-acme.icims.com/jobs/12345/data-analyst/job"
+   }
+  ],
+  "spec_quote": "The location field label may read \"Location\", \"Locations\", \"Job Location\" or \"Job Locations\" ... url = the href up to /job (query string dropped).",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_icims same job id twice is one posting",
+  "fn": "parse_icims",
+  "args": {
+   "page": "<span class=\"sr-only field-label\">Location</span><span>US-VA-Arlington</span><a href=\"https://careers-acme.icims.com/jobs/987/engineer/job\"><h3>Engineer</h3></a><span class=\"sr-only field-label\">Location</span><span>US-VA-Arlington</span><a href=\"https://careers-acme.icims.com/jobs/987/engineer/job?x=1\"><h3>Engineer</h3></a>",
+   "host": "careers-acme.icims.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "US-VA-Arlington",
+    "url": "https://careers-acme.icims.com/jobs/987/engineer/job"
+   }
+  ],
+  "spec_quote": "The same job id twice on one page → one posting.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_sitemal splits comma parenthesis into location",
+  "fn": "parse_sitemal",
+  "args": {
+   "xml": "<rss><channel><item><title><![CDATA[Data Analyst (Houston, TX, US, 77042)]]></title><link>https://jobs.acme.com/job/1</link></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston, TX, US, 77042",
+    "url": "https://jobs.acme.com/job/1"
+   }
+  ],
+  "spec_quote": "When the title ends with a parenthesis that contains a comma — \"Data Analyst (Houston, TX, US, 77042)\" — the part before it is the title and the inside is the location (\"Houston, TX, US, 77042\").",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_sitemal keeps Remote parenthesis in title",
+  "fn": "parse_sitemal",
+  "args": {
+   "xml": "<rss><channel><item><title>Engineer (Remote)</title><link>https://jobs.acme.com/job/2</link></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Engineer (Remote)",
+    "location": "",
+    "url": "https://jobs.acme.com/job/2"
+   }
+  ],
+  "spec_quote": "A trailing parenthesis without a comma (\"Engineer (Remote)\") stays in the title and location is \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_sitemal decodes entities in title",
+  "fn": "parse_sitemal",
+  "args": {
+   "xml": "<rss><channel><item><title><![CDATA[Sales &amp; Marketing (Dallas, TX, US)]]></title><link>https://jobs.acme.com/job/3</link></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Sales & Marketing",
+    "location": "Dallas, TX, US",
+    "url": "https://jobs.acme.com/job/3"
+   }
+  ],
+  "spec_quote": "CDATA removed, entities decoded.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_oracle RequisitionNumber fallback and skip entries without id (title field not specified, so title expectation assumes Title field)",
+  "fn": "parse_oracle",
+  "args": {
+   "d": {
+    "items": [
+     {
+      "requisitionList": [
+       {
+        "Id": "123",
+        "Title": "Data Analyst",
+        "PrimaryLocation": "Phoenix, AZ"
+       },
+       {
+        "RequisitionNumber": "R10",
+        "Title": "Support Engineer",
+        "PrimaryLocation": "Remote"
+       },
+       {
+        "Title": "Missing Id",
+        "PrimaryLocation": "Nowhere"
+       }
+      ]
+     }
+    ]
+   },
+   "host": "eofe.fa.us2.oraclecloud.com",
+   "site": "ACME"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Phoenix, AZ",
+    "url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/ACME/job/123"
+   },
+   {
+    "title": "Support Engineer",
+    "location": "Remote",
+    "url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/ACME/job/R10"
+   }
+  ],
+  "spec_quote": "The posting id is Id, else RequisitionNumber; an entry with neither is skipped. | spec note: parse_oracle title field is not defined in the spec.",
+  "ambiguous": true
+ },
+ {
+  "name": "parse_jazz reads list markup location",
+  "fn": "parse_jazz",
+  "args": {
+   "page": "<a href=\"https://acme.jazzhr.com/apply/123/data-analyst\">Data Analyst</a><i class='fa fa-map-marker'></i> Houston, TX",
+   "host": "acme.jazzhr.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston, TX",
+    "url": "https://acme.jazzhr.com/apply/123/data-analyst"
+   }
+  ],
+  "spec_quote": "location = the text after the next `fa-map-marker'></i>` within 600 characters, else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_jazz table markup drops query",
+  "fn": "parse_jazz",
+  "args": {
+   "page": "<table><tr><td><a class=\"job_title_link\" href=\"/apply/jobs/details/456?&\">Engineer</a></td><td>Remote</td></tr></table>",
+   "host": "acme.jazzhr.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Remote",
+    "url": "https://acme.jazzhr.com/apply/jobs/details/456"
+   }
+  ],
+  "spec_quote": "Table markup: `<a class=\"job_title_link\" href=\"/apply/jobs/details/<id>?&\">Title</a>` → url = `https://<host>/apply/jobs/details/<id>` (query dropped), location = the text of the next `<td>` after the cell that holds the link (within 800 characters), else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "jobvite_range parses 1-50 of 63",
+  "fn": "jobvite_range",
+  "args": {
+   "page": "<div class=\"jv-pagination-text\">1-50 of 63</div>"
+  },
+  "expect": [
+   1,
+   50,
+   63
+  ],
+  "spec_quote": "From `class=\"jv-pagination-text\">1-50 of 63` (spaces around \"-\" allowed, case-insensitive \"of\") → [1, 50, 63].",
+  "ambiguous": false
+ },
+ {
+  "name": "jobvite_range returns null without pagination text",
+  "fn": "jobvite_range",
+  "args": {
+   "page": "<div>No jobs found</div>"
+  },
+  "expect": null,
+  "spec_quote": "None → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_rss removes duplicate city/name",
+  "fn": "parse_rss",
+  "args": {
+   "xml": "<rss><channel><item><title><![CDATA[Data Analyst]]></title><link>https://acme.teamtailor.com/jobs/1</link><tt:city>Houston</tt:city><tt:name>Houston</tt:name></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston",
+    "url": "https://acme.teamtailor.com/jobs/1"
+   }
+  ],
+  "spec_quote": "location = the <tt:city> and <tt:name> values inside that item, in order, duplicates removed, joined with \", \" ... CDATA wrappers removed from the title.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_rss joins city and name with comma",
+  "fn": "parse_rss",
+  "args": {
+   "xml": "<rss><channel><item><title>Engineer</title><link>https://acme.teamtailor.com/jobs/2</link><tt:city>Dallas</tt:city><tt:name>Acme</tt:name></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Dallas, Acme",
+    "url": "https://acme.teamtailor.com/jobs/2"
+   }
+  ],
+  "spec_quote": "location = the <tt:city> and <tt:name> values inside that item, in order, duplicates removed, joined with \", \".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_avature builds location from slug before United-States",
+  "fn": "parse_avature",
+  "args": {
+   "page": "<a href=\"https://acme.avature.net/en/JobDetail/Darlington-South-Carolina-United-States-Data-Analyst/123\">Data Analyst</a>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Darlington South Carolina, United States",
+    "url": "https://acme.avature.net/en/JobDetail/Darlington-South-Carolina-United-States-Data-Analyst/123"
+   }
+  ],
+  "spec_quote": "Location from the slug: the words before \"United-States\" with \"-\" → \" \", then \", United States\" (\"Darlington-South-Carolina-United-States-Data-Analyst\" → \"Darlington South Carolina, United States\").",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_avature slug starting with United-States",
+  "fn": "parse_avature",
+  "args": {
+   "page": "<a href=\"https://acme.avature.net/en/JobDetail/United-States-Remote-Support/456\">Remote Support</a>"
+  },
+  "expect": [
+   {
+    "title": "Remote Support",
+    "location": "United States",
+    "url": "https://acme.avature.net/en/JobDetail/United-States-Remote-Support/456"
+   }
+  ],
+  "spec_quote": "a slug that starts with \"United-States\" → \"United States\".",
+  "ambiguous": false
+ },
+ {
+  "name": "ukg_load_url relative valid URL",
+  "fn": "ukg_load_url",
+  "args": {
+   "page": "loadUrl: \"/ACME/JobBoard/12345678-1234-1234-1234-123456789abc/JobBoardView/LoadSearchResults\"",
+   "host": "recruiting.ultipro.com",
+   "tenant": "acme"
+  },
+  "expect": "https://recruiting.ultipro.com/ACME/JobBoard/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Returns `https://<host>/<tenant as in the URL>/JobBoard/<id>` only when the URL is on the same host, the tenant matches (case-insensitive), the second segment is JobBoard (any case), the id has 36 characters of hex digits and dashes, and the path ends exactly in JobBoardView/LoadSearchResults.",
+  "ambiguous": false
+ },
+ {
+  "name": "ukg_load_url absolute same-host URL uses tenant as in URL",
+  "fn": "ukg_load_url",
+  "args": {
+   "page": "loadUrl: \"https://recruiting2.ultipro.com/acme/JobBoard/abcdef12-3456-7890-abcd-ef1234567890/JobBoardView/LoadSearchResults\"",
+   "host": "recruiting2.ultipro.com",
+   "tenant": "Acme"
+  },
+  "expect": "https://recruiting2.ultipro.com/acme/JobBoard/abcdef12-3456-7890-abcd-ef1234567890",
+  "spec_quote": "Reads `loadUrl: \"/<TENANT>/JobBoard/<36-char id>/JobBoardView/LoadSearchResults\"` (relative or absolute). Returns `https://<host>/<tenant as in the URL>/JobBoard/<id>` ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ukg_load_url rejects short board id",
+  "fn": "ukg_load_url",
+  "args": {
+   "page": "loadUrl: \"/ACME/JobBoard/1234/JobBoardView/LoadSearchResults\"",
+   "host": "recruiting.ultipro.com",
+   "tenant": "acme"
+  },
+  "expect": null,
+  "spec_quote": "... the id has 36 characters of hex digits and dashes ... otherwise null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident jobvite accepts careers/acme lower-cased",
+  "fn": "clean_ident",
+  "args": {
+   "system": "jobvite",
+   "ident": "careers/Acme"
+  },
+  "expect": "careers/acme",
+  "spec_quote": "jobvite: `acme` or `careers/acme` are both kept (lower-cased); the tenant part must not be vendor infrastructure, \"search\" or \"viewall\".",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident ultipro accepts recruiting3.ultipro.ca",
+  "fn": "clean_ident",
+  "args": {
+   "system": "ultipro",
+   "ident": "recruiting3.ultipro.ca/abc123/JobBoard/12345678-1234-1234-1234-123456789abc"
+  },
+  "expect": "recruiting3.ultipro.ca/ABC123/JobBoard/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "ultipro: host may also be `recruiting<digits>.ultipro.com` (e.g. recruiting3) or end in `.ultipro.ca`. ... Returned as `<host>/<TENANT upper-case>/JobBoard/<board id lower-case>`.",
+  "ambiguous": false
+ }
+]

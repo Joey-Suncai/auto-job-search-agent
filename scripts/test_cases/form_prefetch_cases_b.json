@@ -1,0 +1,354 @@
+[
+ {
+  "name": "route_confident_rule_low_risk_used_without_joey",
+  "kind": "route",
+  "input": {
+   "question": "Why do you want to work at Acme?",
+   "options": [],
+   "rule": "confident",
+   "second_opinion": null,
+   "suggestion": null
+  },
+  "expect": {
+   "route": "used",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "rule answer, confident → used;"
+ },
+ {
+  "name": "route_confident_rule_but_visa_sponsorship_question_still_goes_to_joey",
+  "kind": "route",
+  "input": {
+   "question": "Do you now or in the future require visa sponsorship to work in the US?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "confident",
+   "second_opinion": null,
+   "suggestion": null
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): Joey always."
+ },
+ {
+  "name": "route_uncertain_rule_second_opinion_agrees_used",
+  "kind": "route",
+  "input": {
+   "question": "How did you hear about Acme?",
+   "options": [
+    "LinkedIn",
+    "Job board",
+    "Referral"
+   ],
+   "rule": "uncertain",
+   "second_opinion": "agree",
+   "suggestion": null
+  },
+  "expect": {
+   "route": "used",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "rule answer, uncertain (answer_rules `uncertainty`) → DeepSeek second opinion (JSA-202); agree → used; disagree → Joey;"
+ },
+ {
+  "name": "route_uncertain_rule_second_opinion_disagrees_goes_to_joey",
+  "kind": "route",
+  "input": {
+   "question": "Are you willing to relocate?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "uncertain",
+   "second_opinion": "disagree",
+   "suggestion": {
+    "answer": "Yes",
+    "fact": "willing_to_relocate"
+   }
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "rule answer, uncertain (answer_rules `uncertainty`) → DeepSeek second opinion (JSA-202); agree → used; disagree → Joey;"
+ },
+ {
+  "name": "route_no_rule_fact_suggestion_goes_on_sheet_and_into_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "Preferred Last Name",
+   "options": [],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "Sun",
+    "fact": "last_name"
+   }
+  },
+  "expect": {
+   "route": "sheet",
+   "high_risk": false,
+   "derived_block": true
+  },
+  "spec_quote": "A suggestion is never used on its own — low-risk questions included (Joey 2026-11-06): it goes on the sheet for his one-click confirm → `qa_add.py`"
+ },
+ {
+  "name": "route_no_rule_fact_suggestion_on_gpa_question_goes_to_joey_not_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "What is your cumulative GPA?",
+   "options": [],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "3.7",
+    "fact": "gpa"
+   }
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): Joey always. ... High-risk categories never go in this block — one by one."
+ },
+ {
+  "name": "rank_greedy_prefers_question_that_makes_most_jobs_ready",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "j1": {
+     "tier": "A",
+     "needs": [
+      "q_a",
+      "q_b"
+     ]
+    },
+    "j2": {
+     "tier": "A",
+     "needs": [
+      "q_a"
+     ]
+    },
+    "j3": {
+     "tier": "B",
+     "needs": [
+      "q_b"
+     ]
+    },
+    "j4": {
+     "tier": "B",
+     "needs": [
+      "q_c"
+     ]
+    },
+    "j5": {
+     "tier": "C",
+     "needs": [
+      "q_c"
+     ]
+    }
+   },
+   "max_questions": 2
+  },
+  "expect": {
+   "sheet": [
+    "q_c",
+    "q_a"
+   ],
+   "ready_after": 3,
+   "left_out": [
+    "q_b"
+   ]
+  },
+  "spec_quote": "ordered by marginal value: greedily, the question whose answer turns the most jobs fully ready (every remaining question answered) comes first — not raw frequency."
+ },
+ {
+  "name": "rank_tie_broken_by_number_of_jobs_asking",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "j1": {
+     "tier": "A",
+     "needs": [
+      "q_x"
+     ]
+    },
+    "j2": {
+     "tier": "A",
+     "needs": [
+      "q_x",
+      "q_w"
+     ]
+    },
+    "j3": {
+     "tier": "B",
+     "needs": [
+      "q_x",
+      "q_v"
+     ]
+    },
+    "j4": {
+     "tier": "B",
+     "needs": [
+      "q_y"
+     ]
+    },
+    "j5": {
+     "tier": "C",
+     "needs": [
+      "q_y",
+      "q_u"
+     ]
+    }
+   },
+   "max_questions": 2
+  },
+  "expect": {
+   "sheet": [
+    "q_x",
+    "q_y"
+   ],
+   "ready_after": 2,
+   "left_out": [
+    "q_u",
+    "q_v",
+    "q_w"
+   ]
+  },
+  "spec_quote": "Tie-break when two questions would make the same number of jobs ready: the one more jobs ask comes first (tier A/B jobs counted before C/D), then the alphabetically smaller id."
+ },
+ {
+  "name": "rank_tier_a_job_weighs_before_tier_c_on_equal_counts",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "j1": {
+     "tier": "A",
+     "needs": [
+      "q_z"
+     ]
+    },
+    "j2": {
+     "tier": "C",
+     "needs": [
+      "q_a"
+     ]
+    }
+   },
+   "max_questions": 1
+  },
+  "expect": {
+   "sheet": [
+    "q_z"
+   ],
+   "ready_after": 1,
+   "left_out": [
+    "q_a"
+   ]
+  },
+  "spec_quote": "Higher-score jobs first: the prefetch reads jobs in score order, and the sheet's ranking counts tier A/B jobs first."
+ },
+ {
+  "name": "stale_never_read_job_is_read",
+  "kind": "stale",
+  "input": {
+   "last": null,
+   "today": "2026-11-07",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": true
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "stale_job_read_one_day_ago_not_rechecked",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-06",
+    "status": "ok"
+   },
+   "today": "2026-11-07",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": false
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "stale_closed_posting_never_reread",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-10-01",
+    "status": "closed"
+   },
+   "today": "2026-11-20",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": false
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "cache_facts_version_change_invalidates_cached_answer",
+  "kind": "cache",
+  "input": {
+   "a": {
+    "question": "Preferred Last Name",
+    "options": [],
+    "facts_version": "facts-v1"
+   },
+   "b": {
+    "question": "Preferred Last Name",
+    "options": [],
+    "facts_version": "facts-v2"
+   }
+  },
+  "expect": {
+   "same_answer_reused": false
+  },
+  "spec_quote": "DeepSeek results cached by hash(JD or question + options) + facts version → reruns are deterministic; a facts change re-reads only what it touches."
+ },
+ {
+  "name": "merge_numbering_case_and_punctuation_ignored",
+  "kind": "merge",
+  "input": {
+   "a": "Q3. Preferred Last Name?",
+   "b": "preferred last name"
+  },
+  "expect": {
+   "same": true
+  },
+  "spec_quote": "One sheet — wordings merged (`collect_batch.qnorm`), then DeepSeek groups wordings that ask the same thing into one question (one qa entry with a match pattern)"
+ },
+ {
+  "name": "restriction_citizenship_requirement_not_met_marks_job_ineligible",
+  "kind": "restriction",
+  "input": {
+   "question": "This position requires U.S. citizenship. Are you a U.S. citizen or permanent resident?",
+   "citizen_or_pr": false
+  },
+  "expect": {
+   "job_ineligible": true
+  },
+  "spec_quote": "soft-reason 不可投 (OFF_CYCLE / UNDERGRAD_ONLY / NOSPON / START), 待核实 and self-contradicting rule hits → DeepSeek reads the full JD independently and returns a verdict with a quoted JD sentence",
+  "ambiguous": true,
+  "why": "The spec assigns the 不可投 verdict to the JSA-231 JD gate (which 'reads forms only' here) and never says how a restriction stated inside an application form question maps to job eligibility, nor what 'citizen_or_pr' means for that decision; the routing rule for a citizenship question only says 'Joey always'."
+ }
+]

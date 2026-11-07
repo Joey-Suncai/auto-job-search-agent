@@ -1,0 +1,574 @@
+[
+ {
+  "name": "secondary_email_secondary_true",
+  "fn": "is_secondary_email",
+  "args": [
+   "Please provide a secondary email."
+  ],
+  "expect": true,
+  "spec_quote": "True when the label asks for an e-mail address that is not the main one: the words \"secondary\", \"alternate\", \"alternative\", \"additional\", \"second\", \"backup\" or \"other\" directly before \"email\" / \"e-mail\" / \"email address\" (optionally with \"a\" / \"an\" before them).",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary_email_alternate_true",
+  "fn": "is_secondary_email",
+  "args": [
+   "Alternate Email Address"
+  ],
+  "expect": true,
+  "spec_quote": "True when the label asks for an e-mail address that is not the main one: the words \"secondary\", \"alternate\", \"alternative\", \"additional\", \"second\", \"backup\" or \"other\" directly before \"email\" / \"e-mail\" / \"email address\" (optionally with \"a\" / \"an\" before them).",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary_email_second_true",
+  "fn": "is_secondary_email",
+  "args": [
+   "Second e-mail"
+  ],
+  "expect": true,
+  "spec_quote": "True when the label asks for an e-mail address that is not the main one: the words \"secondary\", \"alternate\", \"alternative\", \"additional\", \"second\", \"backup\" or \"other\" directly before \"email\" / \"e-mail\" / \"email address\" (optionally with \"a\" / \"an\" before them).",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary_email_other_true",
+  "fn": "is_secondary_email",
+  "args": [
+   "Other email address"
+  ],
+  "expect": true,
+  "spec_quote": "True when the label asks for an e-mail address that is not the main one: the words \"secondary\", \"alternate\", \"alternative\", \"additional\", \"second\", \"backup\" or \"other\" directly before \"email\" / \"e-mail\" / \"email address\" (optionally with \"a\" / \"an\" before them).",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary_email_main_false",
+  "fn": "is_secondary_email",
+  "args": [
+   "Email Address"
+  ],
+  "expect": false,
+  "spec_quote": "False for the main address (\"Email Address\", \"Email\", \"Confirm Email\", \"Personal email\") and for questions that only mention e-mail (\"May we contact you by email?\", \"Use email for communication\", \"Other contact preference\").",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary_email_other_contact_preference_false",
+  "fn": "is_secondary_email",
+  "args": [
+   "Other contact preference"
+  ],
+  "expect": false,
+  "spec_quote": "False for the main address (\"Email Address\", \"Email\", \"Confirm Email\", \"Personal email\") and for questions that only mention e-mail (\"May we contact you by email?\", \"Use email for communication\", \"Other contact preference\").",
+  "ambiguous": false
+ },
+ {
+  "name": "how_heard_about_true",
+  "fn": "is_how_heard",
+  "args": [
+   "How did you hear about this job?"
+  ],
+  "expect": true,
+  "spec_quote": "True for a question about where the candidate learned of the job: \"How did you hear about …\", \"Please indicate how you heard about <Company>\", \"How did you find / learn about this job\", \"Where did you see / find this posting\", \"Source\", \"Referral source\", \"Recruitment source\".",
+  "ambiguous": false
+ },
+ {
+  "name": "how_heard_indicate_true",
+  "fn": "is_how_heard",
+  "args": [
+   "Please indicate how you heard about Rosostbra"
+  ],
+  "expect": true,
+  "spec_quote": "True for a question about where the candidate learned of the job: \"How did you hear about …\", \"Please indicate how you heard about <Company>\", \"How did you find / learn about this job\", \"Where did you see / find this posting\", \"Source\", \"Referral source\", \"Recruitment source\".",
+  "ambiguous": false
+ },
+ {
+  "name": "how_heard_source_true",
+  "fn": "is_how_heard",
+  "args": [
+   "Source"
+  ],
+  "expect": true,
+  "spec_quote": "True for a question about where the candidate learned of the job: \"How did you hear about …\", \"Please indicate how you heard about <Company>\", \"How did you find / learn about this job\", \"Where did you see / find this posting\", \"Source\", \"Referral source\", \"Recruitment source\".",
+  "ambiguous": false
+ },
+ {
+  "name": "how_heard_hear_back_false",
+  "fn": "is_how_heard",
+  "args": [
+   "Did you hear back from a recruiter?"
+  ],
+  "expect": false,
+  "spec_quote": "False for other questions (\"Have you attended any Rosostbra events?\", \"Did you hear back from a recruiter?\", \"Open source projects you contributed to\").",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_qa_rule_wins",
+  "fn": "box_plan",
+  "args": [
+   "If 'Other' please specify",
+   "text",
+   true,
+   {
+    "status": "ok",
+    "value": "Candidate's saved answer",
+    "rule": "qa:custom_other"
+   },
+   {
+    "label": "How did you hear about us?",
+    "answer": "Other"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": null,
+  "spec_quote": "`rule_answer.rule` starts with \"qa:\" (the candidate's own saved answer) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_secondary_email_diff_required_fill",
+  "fn": "box_plan",
+  "args": [
+   "Please provide a secondary email.",
+   "text",
+   true,
+   {},
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": "alternate@example.com",
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "fill",
+   "value": "alternate@example.com",
+   "rule": "secondary_email"
+  },
+  "spec_quote": "`facts.secondary_email` is a non-empty address that differs (case-insensitive, spaces ignored) from `facts.primary_email` → fill with it;",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_secondary_email_missing_required_ask",
+  "fn": "box_plan",
+  "args": [
+   "Alternate Email Address",
+   "text",
+   true,
+   {},
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "secondary_email"
+  },
+  "spec_quote": "else required → ask; else → leave (an optional box stays empty — the main address is never typed twice).",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_secondary_email_missing_optional_leave",
+  "fn": "box_plan",
+  "args": [
+   "Backup email (optional)",
+   "text",
+   false,
+   {},
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "leave",
+   "value": null,
+   "rule": "secondary_email"
+  },
+  "spec_quote": "else required → ask; else → leave (an optional box stays empty — the main address is never typed twice).",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_secondary_email_same_as_primary_required_ask",
+  "fn": "box_plan",
+  "args": [
+   "Second e-mail",
+   "text",
+   true,
+   {},
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": " Candidate@Example.com ",
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "secondary_email"
+  },
+  "spec_quote": "`facts.secondary_email` is a non-empty address that differs (case-insensitive, spaces ignored) from `facts.primary_email` → fill with it; else required → ask; else → leave.",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_related_null_required_ask",
+  "fn": "box_plan",
+  "args": [
+   "Please specify",
+   "text",
+   true,
+   {},
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "when `related` is null or its answer does not start with the word \"Other\" / \"Others\" (case-insensitive, quotes ignored; \"Other - not listed\" counts, \"Otherwise\" and \"Brother\" do not) → required → ask, optional → leave;",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_related_not_other_ask",
+  "fn": "box_plan",
+  "args": [
+   "If 'Other' please specify",
+   "text",
+   true,
+   {},
+   {
+    "label": "How did you hear about us?",
+    "answer": "LinkedIn"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "when `related` is null or its answer does not start with the word \"Other\" / \"Others\" (case-insensitive, quotes ignored; \"Other - not listed\" counts, \"Otherwise\" and \"Brother\" do not) → required → ask, optional → leave;",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_related_otherwise_ask",
+  "fn": "box_plan",
+  "args": [
+   "Other (please specify)",
+   "text",
+   true,
+   {},
+   {
+    "label": "How did you hear about us?",
+    "answer": "Otherwise"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "when `related` is null or its answer does not start with the word \"Other\" / \"Others\" (case-insensitive, quotes ignored; \"Other - not listed\" counts, \"Otherwise\" and \"Brother\" do not) → required → ask, optional → leave;",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_how_heard_text_fill",
+  "fn": "box_plan",
+  "args": [
+   "If 'Other' please specify",
+   "text",
+   false,
+   {},
+   {
+    "label": "How did you hear about Rosostbra?",
+    "answer": "Other"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": {
+   "action": "fill",
+   "value": "Employee referral",
+   "rule": "other_followup"
+  },
+  "spec_quote": "the related answer is Other and `is_how_heard(related.label)`: a text / textarea box → fill with `facts.how_heard_text` (ask when that is empty); a box with options → fill with the single option that starts with \"Other\" (ask when there is none or more than one);",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_how_heard_text_missing_ask",
+  "fn": "box_plan",
+  "args": [
+   "If you selected Other, please explain",
+   "textarea",
+   false,
+   {},
+   {
+    "label": "Where did you see this posting?",
+    "answer": "Other"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "the related answer is Other and `is_how_heard(related.label)`: a text / textarea box → fill with `facts.how_heard_text` (ask when that is empty); a box with options → fill with the single option that starts with \"Other\" (ask when there is none or more than one);",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_how_heard_list_one_other_fill",
+  "fn": "box_plan",
+  "args": [
+   "Other (please specify)",
+   "select",
+   true,
+   {},
+   {
+    "label": "Source",
+    "answer": "Other - not listed"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   [
+    "LinkedIn",
+    "Other",
+    "Referral"
+   ]
+  ],
+  "expect": {
+   "action": "fill",
+   "value": "Other",
+   "rule": "other_followup"
+  },
+  "spec_quote": "the related answer is Other and `is_how_heard(related.label)`: a text / textarea box → fill with `facts.how_heard_text` (ask when that is empty); a box with options → fill with the single option that starts with \"Other\" (ask when there is none or more than one);",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_how_heard_list_two_other_ask",
+  "fn": "box_plan",
+  "args": [
+   "If other, please specify",
+   "pills",
+   true,
+   {},
+   {
+    "label": "Recruitment source",
+    "answer": "Other"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   [
+    "Other",
+    "Other (please specify)",
+    "LinkedIn"
+   ]
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "the related answer is Other and `is_how_heard(related.label)`: a text / textarea box → fill with `facts.how_heard_text` (ask when that is empty); a box with options → fill with the single option that starts with \"Other\" (ask when there is none or more than one);",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_other_followup_race_other_ask",
+  "fn": "box_plan",
+  "args": [
+   "If you selected Other, please explain",
+   "text",
+   false,
+   {},
+   {
+    "label": "Race",
+    "answer": "Other"
+   },
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": "Employee referral"
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "other_followup"
+  },
+  "spec_quote": "the related answer is Other but the related question is not a how-heard question (race, visa type, degree …) → ask (the candidate's own words are needed).",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_number_asked_non_number_ask",
+  "fn": "box_plan",
+  "args": [
+   "If you indicated F-1 visa, number of months remaining",
+   "text",
+   false,
+   {
+    "status": "ok",
+    "value": "about six months",
+    "rule": "visa_months"
+   },
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": {
+   "action": "ask",
+   "value": null,
+   "rule": "number_asked"
+  },
+  "spec_quote": "A text / textarea box that asks for a number — the label contains \"number of months\", \"number of years\", \"number of days\", \"number of weeks\", \"how many\" or \"how long\" — while `rule_answer` is ok with a value that is not a plain number (digits, optionally one decimal point) → ask, rule \"number_asked\".",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_number_asked_plain_number_null",
+  "fn": "box_plan",
+  "args": [
+   "number of months remaining",
+   "text",
+   false,
+   {
+    "status": "ok",
+    "value": "6",
+    "rule": "visa_months"
+   },
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": null,
+  "spec_quote": "A plain-number value, an unknown rule answer, or a box with options → this rule does not apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_number_asked_unknown_rule_null",
+  "fn": "box_plan",
+  "args": [
+   "how many months are left?",
+   "textarea",
+   false,
+   {
+    "status": "unknown",
+    "value": "about six",
+    "rule": "visa_months"
+   },
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": null,
+  "spec_quote": "A plain-number value, an unknown rule answer, or a box with options → this rule does not apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_number_asked_select_options_null",
+  "fn": "box_plan",
+  "args": [
+   "how many months remaining?",
+   "select",
+   false,
+   {
+    "status": "ok",
+    "value": "about six",
+    "rule": "visa_months"
+   },
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   [
+    "1",
+    "2",
+    "3"
+   ]
+  ],
+  "expect": null,
+  "spec_quote": "A plain-number value, an unknown rule answer, or a box with options → this rule does not apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "box_plan_ordinary_text_null",
+  "fn": "box_plan",
+  "args": [
+   "First name",
+   "text",
+   true,
+   {
+    "status": "ok",
+    "value": "John",
+    "rule": "first_name"
+   },
+   null,
+   {
+    "primary_email": "candidate@example.com",
+    "secondary_email": null,
+    "how_heard_text": null
+   },
+   []
+  ],
+  "expect": null,
+  "spec_quote": "5. Anything else → null.",
+  "ambiguous": false
+ }
+]

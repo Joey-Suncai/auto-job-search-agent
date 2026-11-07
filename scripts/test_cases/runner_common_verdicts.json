@@ -1,0 +1,3 @@
+{
+ "captcha-on-platform-page-no-press|successfactors": "Case reads 'pushed' too widely. The format defines pushed = a push about an UNCONFIRMED submit; nothing was pressed here and no such push was sent. The push it saw is SuccessFactors' own CAPTCHA hand-off (「SuccessFactors 登录页有人机验证，交给你」) — CAPTCHAs are always Joey's (auto-apply SKILL, human checks), so the platform runner pushes it by design. Code correct."
+}

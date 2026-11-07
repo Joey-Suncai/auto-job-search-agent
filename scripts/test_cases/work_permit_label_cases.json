@@ -1,0 +1,112 @@
+[
+ {
+  "name": "true_exact_full_question",
+  "label": "Do you have a valid work permit for the country where this position is located?",
+  "expect": true
+ },
+ {
+  "name": "true_short_valid_work_permit",
+  "label": "Valid work permit?",
+  "expect": true
+ },
+ {
+  "name": "true_hold_us_work_permit",
+  "label": "Do you hold a work permit in the U.S.?",
+  "expect": true
+ },
+ {
+  "name": "true_possession_valid_country",
+  "label": "Are you in possession of a valid work permit for this country?",
+  "expect": true
+ },
+ {
+  "name": "true_currently_have_country_position",
+  "label": "Do you currently have a valid work permit for the country of the position?",
+  "expect": true
+ },
+ {
+  "name": "true_have_got_valid_permit",
+  "label": "Have you got a valid work permit?",
+  "expect": true
+ },
+ {
+  "name": "true_possess_valid_permit",
+  "label": "Do you possess a valid work permit?",
+  "expect": true
+ },
+ {
+  "name": "true_work_permit_valid_short",
+  "label": "Work permit valid?",
+  "expect": true
+ },
+ {
+  "name": "true_have_valid_work_permit",
+  "label": "Do you have a valid work permit?",
+  "expect": true
+ },
+ {
+  "name": "true_hold_valid_job_country",
+  "label": "Do you hold a valid work permit for the country where the job is located?",
+  "expect": true
+ },
+ {
+  "name": "true_holder_valid_country_position",
+  "label": "Are you the holder of a valid work permit in the country of the position?",
+  "expect": true
+ },
+ {
+  "name": "false_details_type_expiry_visa",
+  "label": "Please provide details re: your current work permit or visa (type and expiry)",
+  "expect": false
+ },
+ {
+  "name": "false_describe_work_permit",
+  "label": "Describe your work permit",
+  "expect": false
+ },
+ {
+  "name": "false_type_of_work_permit",
+  "label": "What type of work permit do you hold?",
+  "expect": false
+ },
+ {
+  "name": "false_expiry_date_label",
+  "label": "Work permit expiry date",
+  "expect": false
+ },
+ {
+  "name": "false_when_expire",
+  "label": "When does your work permit expire?",
+  "expect": false
+ },
+ {
+  "name": "false_restrictions_list",
+  "label": "Please list any restrictions on your work permit.",
+  "expect": false
+ },
+ {
+  "name": "false_upload_copy",
+  "label": "Upload a copy of your work permit.",
+  "expect": false
+ },
+ {
+  "name": "false_work_permit_number",
+  "label": "Work permit number",
+  "expect": false
+ },
+ {
+  "name": "false_visa_only",
+  "label": "Do you have a visa?",
+  "expect": false
+ },
+ {
+  "name": "false_authorized_to_work",
+  "label": "Are you authorized to work in this country?",
+  "expect": false
+ },
+ {
+  "name": "false_other_country_permit",
+  "label": "Do you have a valid work permit for a country other than the position's country?",
+  "expect": false
+ }
+]

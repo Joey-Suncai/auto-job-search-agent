@@ -1,0 +1,6 @@
+{
+ "college_which_attend": "by design: the audit checks the plain field labels; question-form labels ('?', 'which college', 'pursuing', 'sought') are left to the answer rules and the Review check (school label_not has '\\?' since #55) \u2014 a missed audit, not a false block",
+ "college_name_attended": "by design: the audit checks the plain field labels; question-form labels ('?', 'which college', 'pursuing', 'sought') are left to the answer rules and the Review check (school label_not has '\\?' since #55) \u2014 a missed audit, not a false block",
+ "degree_currently_pursuing": "by design: the audit checks the plain field labels; question-form labels ('?', 'which college', 'pursuing', 'sought') are left to the answer rules and the Review check (school label_not has '\\?' since #55) \u2014 a missed audit, not a false block",
+ "degree_bachelors_or_masters": "by design: the audit checks the plain field labels; question-form labels ('?', 'which college', 'pursuing', 'sought') are left to the answer rules and the Review check (school label_not has '\\?' since #55) \u2014 a missed audit, not a false block"
+}

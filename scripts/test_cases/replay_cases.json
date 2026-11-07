@@ -1,0 +1,766 @@
+[
+ {
+  "name": "no_corpus_skips_and_passes",
+  "corpus": [],
+  "submitted": [],
+  "baseline": null,
+  "reasons": [],
+  "now": {},
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "With no corpus at all, `--check` prints \"skip\" and passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_run_no_baseline_passes_simple_questions",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "First name",
+    "type": "text"
+   },
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": null,
+  "reasons": [],
+  "now": {
+   "First name": {
+    "status": "ok",
+    "value": "Ada",
+    "rule": "name_rule"
+   },
+   "Country": {
+    "status": "ok",
+    "value": "UK",
+    "rule": "country_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "The first run with no baseline writes the baseline from the current answers; `--check` on that run passes (nothing has changed yet) unless rule 4 applies.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_run_no_baseline_but_high_stakes_violation_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [],
+  "baseline": null,
+  "reasons": [],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 0,
+  "spec_quote": "A current answer (status ok) on a high-stakes question that contradicts the candidate's facts (here: \"Will you now or in the future require visa sponsorship?\" answered \"No\" — the fact is Yes) fails `--check`, submitted or not",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_change_with_exact_reason_passes",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Notice period",
+    "value": "2 months",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Notice period": {
+    "status": "ok",
+    "value": "2 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 1,
+  "spec_quote": "A change on a question of a SUBMITTED folder needs a recorded reason for exactly the new answer. With no reason, or a reason recorded for a different value, `--check` fails (exit 1).",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_change_without_reason_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Notice period": {
+    "status": "ok",
+    "value": "3 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 1,
+  "spec_quote": "With no reason, or a reason recorded for a different value, `--check` fails (exit 1).",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_change_reason_for_different_value_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Notice period",
+    "value": "4 weeks",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Notice period": {
+    "status": "ok",
+    "value": "3 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 1,
+  "spec_quote": "With no reason, or a reason recorded for a different value, `--check` fails (exit 1).",
+  "ambiguous": false
+ },
+ {
+  "name": "unsubmitted_change_without_reason_never_fails",
+  "corpus": [
+   {
+    "folder": "draft1",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [],
+  "baseline": {
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Notice period": {
+    "status": "ok",
+    "value": "3 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 1,
+  "spec_quote": "A change on a question of a folder that was not submitted is only reported; it never fails `--check`.",
+  "ambiguous": false
+ },
+ {
+  "name": "different_rule_name_same_answer_is_not_a_change",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "UK",
+    "rule": "country_rule_v9"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "A different rule name alone with the same status and value is not a change.",
+  "ambiguous": false
+ },
+ {
+  "name": "question_absent_from_baseline_is_not_a_change",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   },
+   {
+    "folder": "app1",
+    "question": "Middle name",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "UK",
+    "rule": "country_rule"
+   },
+   "Middle name": {
+    "status": "ok",
+    "value": "Grace",
+    "rule": "name_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "A question with no baseline entry yet is not a change.",
+  "ambiguous": false
+ },
+ {
+  "name": "status_change_unknown_to_ok_on_submitted_without_reason_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Middle name",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Middle name": {
+    "status": "unknown",
+    "value": ""
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Middle name": {
+    "status": "ok",
+    "value": "Grace",
+    "rule": "name_rule"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 1,
+  "spec_quote": "A question's answer \"changed\" when its status or value differs from the baseline.",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_to_unknown_is_no_change_regardless_of_value_field",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Middle name",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Middle name": {
+    "status": "unknown",
+    "value": ""
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Middle name": {
+    "status": "unknown",
+    "value": "Grace",
+    "rule": "name_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "Answers with status other than ok have no value (they compare by status only).",
+  "ambiguous": false
+ },
+ {
+  "name": "high_stakes_no_on_unsubmitted_folder_still_fails",
+  "corpus": [
+   {
+    "folder": "draft1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [],
+  "baseline": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "Yes"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 1,
+  "spec_quote": "fails `--check`, submitted or not — unless it was accepted as a known issue for exactly that value.",
+  "ambiguous": false
+ },
+ {
+  "name": "high_stakes_no_with_known_issue_for_no_passes",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Will you now or in the future require visa sponsorship?",
+    "value": "No",
+    "kind": "known_issue"
+   }
+  ],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "unless it was accepted as a known issue for exactly that value.",
+  "ambiguous": false
+ },
+ {
+  "name": "high_stakes_no_with_known_issue_for_other_value_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Will you now or in the future require visa sponsorship?",
+    "value": "Yes",
+    "kind": "known_issue"
+   }
+  ],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 0,
+  "spec_quote": "unless it was accepted as a known issue for exactly that value.",
+  "ambiguous": false
+ },
+ {
+  "name": "high_stakes_answered_yes_matches_fact_no_failure",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "Yes"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "Yes",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "A current answer (status ok) on a high-stakes question that contradicts the candidate's facts ... fails `--check`",
+  "ambiguous": false
+ },
+ {
+  "name": "high_stakes_non_ok_status_does_not_trigger_rule4",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Will you now or in the future require visa sponsorship?",
+    "type": "radio"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "ok",
+    "value": "No"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Will you now or in the future require visa sponsorship?",
+    "value": "",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Will you now or in the future require visa sponsorship?": {
+    "status": "unknown",
+    "value": "No",
+    "rule": "sponsor_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 1,
+  "spec_quote": "A current answer (status ok) on a high-stakes question that contradicts the candidate's facts ... fails `--check`",
+  "ambiguous": false
+ },
+ {
+  "name": "mix_submitted_reasoned_change_and_unsubmitted_unreasoned_change",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   },
+   {
+    "folder": "draft2",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   },
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Country",
+    "value": "Ireland",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "Ireland",
+    "rule": "country_rule_v2"
+   },
+   "Notice period": {
+    "status": "ok",
+    "value": "2 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 2,
+  "spec_quote": "A change on a question of a folder that was not submitted is only reported; it never fails `--check`.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_submitted_changes_only_one_reasoned_fails",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   },
+   {
+    "folder": "app1",
+    "question": "Notice period",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   },
+   "Notice period": {
+    "status": "ok",
+    "value": "1 month"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Country",
+    "value": "Ireland",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "Ireland",
+    "rule": "country_rule_v2"
+   },
+   "Notice period": {
+    "status": "ok",
+    "value": "2 months",
+    "rule": "notice_rule_v2"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 2,
+  "spec_quote": "A change on a question of a SUBMITTED folder needs a recorded reason for exactly the new answer. With no reason, or a reason recorded for a different value, `--check` fails (exit 1).",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_change_reason_recorded_as_known_issue_kind",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Country",
+    "value": "Ireland",
+    "kind": "known_issue"
+   }
+  ],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "Ireland",
+    "rule": "country_rule_v2"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 1,
+  "spec_quote": "A change on a question of a SUBMITTED folder needs a recorded reason for exactly the new answer.",
+  "ambiguous": true,
+  "_why": "Rule 2 speaks only of 'a recorded reason for exactly the new answer' and does not say whether kind known_issue counts as a reason for an ordinary change; rule 4 mentions known issue only for the high-stakes case. Treated here as satisfying rule 2."
+ },
+ {
+  "name": "nothing_changed_and_no_reasons_passes",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "First name",
+    "type": "text"
+   },
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "First name": {
+    "status": "ok",
+    "value": "Ada"
+   },
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "First name": {
+    "status": "ok",
+    "value": "Ada",
+    "rule": "name_rule"
+   },
+   "Country": {
+    "status": "ok",
+    "value": "UK",
+    "rule": "country_rule"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "A question's answer \"changed\" when its status or value differs from the baseline.",
+  "ambiguous": false
+ },
+ {
+  "name": "ok_with_empty_value_unchanged_is_no_change",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Middle name",
+    "type": "text"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Middle name": {
+    "status": "ok",
+    "value": ""
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Middle name": {
+    "status": "ok",
+    "value": "",
+    "rule": "name_rule_v3"
+   }
+  },
+  "expect_exit": 0,
+  "expect_changed": 0,
+  "spec_quote": "A question's answer \"changed\" when its status or value differs from the baseline. A different rule name alone with the same status and value is not a change.",
+  "ambiguous": false
+ },
+ {
+  "name": "reason_recorded_for_other_question_does_not_cover_submitted_change",
+  "corpus": [
+   {
+    "folder": "app1",
+    "question": "Country",
+    "type": "select"
+   }
+  ],
+  "submitted": [
+   "app1"
+  ],
+  "baseline": {
+   "Country": {
+    "status": "ok",
+    "value": "UK"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Notice period",
+    "value": "Ireland",
+    "kind": "change"
+   }
+  ],
+  "now": {
+   "Country": {
+    "status": "ok",
+    "value": "Ireland",
+    "rule": "country_rule_v2"
+   }
+  },
+  "expect_exit": 1,
+  "expect_changed": 1,
+  "spec_quote": "A change on a question of a SUBMITTED folder needs a recorded reason for exactly the new answer. With no reason, or a reason recorded for a different value, `--check` fails (exit 1).",
+  "ambiguous": false
+ }
+]

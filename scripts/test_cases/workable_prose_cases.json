@@ -1,0 +1,583 @@
+[
+ {
+  "name": "essay_like_describe_leading_spaces",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_describe",
+    "label": "  Describe your most challenging project",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "True when the field wants prose: type is \"textarea\", the key is NOT \"cover_letter\" and NOT \"summary\", and the label either starts (after leading spaces) with one of: Describe, Tell us, Share, Explain, Walk us through (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_tell_us_case_insensitive",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_tell",
+    "label": "TELL US why you want this role",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "starts (after leading spaces) with one of: Describe, Tell us, Share, Explain, Walk us through (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_share_prefix",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_share",
+    "label": "Share an example of a difficult bug",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "starts (after leading spaces) with one of: Describe, Tell us, Share, Explain, Walk us through (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_explain_prefix",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_explain",
+    "label": "Explain your debugging process",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "starts (after leading spaces) with one of: Describe, Tell us, Share, Explain, Walk us through (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_walk_us_through_prefix",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_walk",
+    "label": "Walk us through a project you led",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "starts (after leading spaces) with one of: Describe, Tell us, Share, Explain, Walk us through (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_long_how_did_you_label",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "q_long_how",
+    "label": "how did you decide which approach to take when you had to debug a production issue that affected many customers and required a careful rollback plan across several services",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "contains \"how did you\" / \"how do you\" / \"how would you\" followed within 80 characters by one of the words check, decide, approach, solve, fix, handle, \"find the\", know, verify, or is longer than 100 characters",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_cover_letter_key_excluded",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "cover_letter",
+    "label": "Describe your interest in this role",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when the field wants prose: type is \"textarea\", the key is NOT \"cover_letter\" and NOT \"summary\"",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_summary_key_excluded",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "summary",
+    "label": "Why do you want this role?",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when the field wants prose: type is \"textarea\", the key is NOT \"cover_letter\" and NOT \"summary\"",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_like_short_plain_textarea_address",
+  "fn": "essay_like",
+  "args": {
+   "field": {
+    "key": "address_field",
+    "label": "Address",
+    "type": "textarea",
+    "required": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when the field wants prose: type is \"textarea\", the key is NOT \"cover_letter\" and NOT \"summary\", and the label either starts ... or contains ... or is longer than 100 characters",
+  "ambiguous": false
+ },
+ {
+  "name": "guard_short_essay_becomes_unknown",
+  "fn": "guard_short_answers",
+  "args": {
+   "fields": [
+    {
+     "key": "q1",
+     "label": "Describe a time you fixed a bug",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q1": {
+     "status": "ok",
+     "value": "Online job board"
+    }
+   }
+  },
+  "expect": {
+   "q1": "unknown"
+  },
+  "spec_quote": "For every essay-like field whose answer has status \"ok\" and a value shorter than 60 characters, the answer becomes status \"unknown\" (a fact rule answered an essay by mistake, e.g. \"Online job board\" for \"How did you find the root cause\").",
+  "ambiguous": false
+ },
+ {
+  "name": "guard_long_essay_stays_ok",
+  "fn": "guard_short_answers",
+  "args": {
+   "fields": [
+    {
+     "key": "q2",
+     "label": "Describe a time you fixed a bug",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q2": {
+     "status": "ok",
+     "value": "This is a long answer that is definitely sixty characters or more long."
+    }
+   }
+  },
+  "expect": {
+   "q2": "ok"
+  },
+  "spec_quote": "Long values (60+ characters) stay.",
+  "ambiguous": false
+ },
+ {
+  "name": "guard_non_essay_short_stays_ok",
+  "fn": "guard_short_answers",
+  "args": {
+   "fields": [
+    {
+     "key": "address",
+     "label": "Address",
+     "type": "text",
+     "required": true
+    }
+   ],
+   "answers": {
+    "address": {
+     "status": "ok",
+     "value": "NYC"
+    }
+   }
+  },
+  "expect": {
+   "address": "ok"
+  },
+  "spec_quote": "Any other type (text, radio, select, file) is never essay-like.",
+  "ambiguous": false
+ },
+ {
+  "name": "guard_unknown_essay_unchanged",
+  "fn": "guard_short_answers",
+  "args": {
+   "fields": [
+    {
+     "key": "q4",
+     "label": "Share an example",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q4": {
+     "status": "unknown",
+     "value": "short"
+    }
+   }
+  },
+  "expect": {
+   "q4": "unknown"
+  },
+  "spec_quote": "Other answers are unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "guard_exactly_60_chars_stays_ok",
+  "fn": "guard_short_answers",
+  "args": {
+   "fields": [
+    {
+     "key": "q5",
+     "label": "Explain your approach",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q5": {
+     "status": "ok",
+     "value": "123456789012345678901234567890123456789012345678901234567890"
+    }
+   }
+  },
+  "expect": {
+   "q5": "ok"
+  },
+  "spec_quote": "For every essay-like field whose answer has status \"ok\" and a value shorter than 60 characters, the answer becomes status \"unknown\"",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_required_essay_uses_draft",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "q_required",
+     "label": "Describe your experience",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q_required": {
+     "status": "unknown"
+    }
+   },
+   "drafts": {
+    "q_required": "A full drafted answer"
+   },
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [
+    "q_required"
+   ],
+   "missing": []
+  },
+  "spec_quote": "Every essay-like field whose answer is not status \"ok\": if drafts has a non-empty text for its key, the answer becomes {status ok, value: that text}",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_optional_essay_missing_without_draft",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "q_optional",
+     "label": "Share an example",
+     "type": "textarea",
+     "required": false
+    }
+   ],
+   "answers": {},
+   "drafts": {},
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [],
+   "missing": [
+    "q_optional"
+   ]
+  },
+  "spec_quote": "otherwise the field is added to missing. This applies to required AND optional fields.",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_cover_non_empty_sets_ok",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "cover_letter",
+     "label": "Cover Letter",
+     "type": "textarea",
+     "required": false
+    }
+   ],
+   "answers": {},
+   "drafts": {},
+   "cover": "Dear hiring manager"
+  },
+  "expect": {
+   "ok_keys": [
+    "cover_letter"
+   ],
+   "missing": []
+  },
+  "spec_quote": "The field with key \"cover_letter\" and type textarea: if cover is non-empty, its answer becomes {status ok, value: cover} (whether the field is required or optional).",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_cover_null_is_missing",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "cover_letter",
+     "label": "Cover Letter",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {},
+   "drafts": {},
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [],
+   "missing": [
+    "cover_letter"
+   ]
+  },
+  "spec_quote": "If cover is null/empty, the field is added to missing.",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_essay_already_ok_left_alone",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "q_done",
+     "label": "Describe your experience",
+     "type": "textarea",
+     "required": true
+    }
+   ],
+   "answers": {
+    "q_done": {
+     "status": "ok",
+     "value": "Existing answer"
+    }
+   },
+   "drafts": {
+    "q_done": "Draft should not replace"
+   },
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [
+    "q_done"
+   ],
+   "missing": []
+  },
+  "spec_quote": "Essay-like fields that already have an ok answer are left alone and are not missing.",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_non_essay_unknown_never_missing",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "site",
+     "label": "Website",
+     "type": "text",
+     "required": true
+    }
+   ],
+   "answers": {
+    "site": {
+     "status": "unknown"
+    }
+   },
+   "drafts": {
+    "site": "Draft"
+   },
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [],
+   "missing": []
+  },
+  "spec_quote": "Non-essay fields are never touched and never missing.",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_mixed_order_cover_required_optional_nonessay",
+  "fn": "apply_drafts",
+  "args": {
+   "fields": [
+    {
+     "key": "cover_letter",
+     "label": "Cover Letter",
+     "type": "textarea",
+     "required": true
+    },
+    {
+     "key": "q_req",
+     "label": "Describe your experience",
+     "type": "textarea",
+     "required": true
+    },
+    {
+     "key": "q_opt",
+     "label": "Share an example",
+     "type": "textarea",
+     "required": false
+    },
+    {
+     "key": "site",
+     "label": "Website",
+     "type": "text",
+     "required": false
+    }
+   ],
+   "answers": {
+    "q_req": {
+     "status": "unknown"
+    },
+    "q_opt": {
+     "status": "unknown"
+    },
+    "site": {
+     "status": "unknown"
+    }
+   },
+   "drafts": {
+    "q_req": "",
+    "q_opt": "Optional drafted prose that is used"
+   },
+   "cover": null
+  },
+  "expect": {
+   "ok_keys": [
+    "q_opt"
+   ],
+   "missing": [
+    "cover_letter",
+    "q_req"
+   ]
+  },
+  "spec_quote": "Every essay-like field whose answer is not status \"ok\": if drafts has a non-empty text for its key, the answer becomes {status ok, value: that text}; otherwise the field is added to missing. This applies to required AND optional fields. If cover is null/empty, the field is added to missing.",
+  "ambiguous": false
+ },
+ {
+  "name": "required_empty_radio_required_empty",
+  "fn": "required_empty",
+  "args": {
+   "rows": [
+    {
+     "key": "r1",
+     "label": "Radio question",
+     "type": "radio",
+     "required": true,
+     "page": ""
+    }
+   ]
+  },
+  "expect": [
+   "Radio question"
+  ],
+  "spec_quote": "Returns the labels, in order, of rows with required true whose page value is empty or only whitespace.",
+  "ambiguous": false
+ },
+ {
+  "name": "required_empty_select_required_non_empty",
+  "fn": "required_empty",
+  "args": {
+   "rows": [
+    {
+     "key": "s1",
+     "label": "Select question",
+     "type": "select",
+     "required": true,
+     "page": "Engineering"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Returns the labels, in order, of rows with required true whose page value is empty or only whitespace.",
+  "ambiguous": false
+ },
+ {
+  "name": "required_empty_text_required_whitespace",
+  "fn": "required_empty",
+  "args": {
+   "rows": [
+    {
+     "key": "t1",
+     "label": "Text question",
+     "type": "text",
+     "required": true,
+     "page": "   "
+    }
+   ]
+  },
+  "expect": [
+   "Text question"
+  ],
+  "spec_quote": "Returns the labels, in order, of rows with required true whose page value is empty or only whitespace.",
+  "ambiguous": false
+ },
+ {
+  "name": "required_empty_file_required_missing_page",
+  "fn": "required_empty",
+  "args": {
+   "rows": [
+    {
+     "key": "f1",
+     "label": "File upload",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "expect": [
+   "File upload"
+  ],
+  "spec_quote": "rows are fields after filling, each with \"page\" = the value read back from the page (\"\" or missing when empty).",
+  "ambiguous": false
+ },
+ {
+  "name": "required_empty_optional_empty",
+  "fn": "required_empty",
+  "args": {
+   "rows": [
+    {
+     "key": "o1",
+     "label": "Optional question",
+     "type": "text",
+     "required": false,
+     "page": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Optional rows are never returned, empty or not.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,386 @@
+[
+ {
+  "name": "future_now_or_in_future_without_sponsorship",
+  "args": {
+   "label": "Will you be able to work in the United States without visa sponsorship now or in the future?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "If the question covers the future or the time after the internship — words such as \"future\", \"now or in the future\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_after_graduation_authorized_without_sponsorship",
+  "args": {
+   "label": "After you graduate, will you be legally authorized to work without employer sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as \"future\", \"now or in the future\", \"after you graduate\", \"upon graduation\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_upon_graduation_eligible_without_immigration_sponsorship",
+  "args": {
+   "label": "Upon graduation, will you be eligible to work without immigration sponsorship?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "\"upon graduation\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_at_any_time_able_without_visa_sponsorship",
+  "args": {
+   "label": "Will you be able to work without visa sponsorship at any time during your employment with us?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as ... \"at any time\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_long_term_authorized_without_sponsorship",
+  "args": {
+   "label": "Are you authorized to work in this country without employer sponsorship long-term?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as ... \"long-term\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_eventually_able_without_sponsorship",
+  "args": {
+   "label": "Will you eventually be able to work without sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as ... \"eventually\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_going_forward_legal_right_without_sponsorship",
+  "args": {
+   "label": "Do you have the legal right to work without visa sponsorship going forward?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as ... \"going forward\" ... the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "future_full_time_employment_without_sponsorship",
+  "args": {
+   "label": "For full-time employment, will you be able to work without employer sponsorship later in your career?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "words such as ... \"later\", ... \"full-time employment\" — the future answer applies: requires sponsorship in the future = Yes → \"able to work without sponsorship\" = **No**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_at_this_time_authorized_without_sponsorship",
+  "args": {
+   "label": "Are you authorized to work without sponsorship at this time?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "If it covers only now, the internship, \"this position\", \"at this time\", \"currently\" ... the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_duration_of_internship_able_without_sponsorship",
+  "args": {
+   "label": "Are you able to work without sponsorship for the duration of this internship?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"for the duration of this internship\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_currently_eligible_without_visa_sponsorship",
+  "args": {
+   "label": "Are you currently eligible to work without visa sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"currently\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_this_position_without_employer_sponsorship",
+  "args": {
+   "label": "Can you work in this position without employer sponsorship?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"this position\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_internship_authorization_without_immigration_sponsorship",
+  "args": {
+   "label": "Do you have authorization to work without immigration sponsorship for this internship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"the internship\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_legally_permitted_without_sponsorship",
+  "args": {
+   "label": "Are you legally permitted to work in the US without sponsorship now?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"only now\" → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_during_this_position_without_sponsorship",
+  "args": {
+   "label": "Are you able to work without sponsorship during this position?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"this position\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_currently_authorized_without_visa_sponsorship_for_role",
+  "args": {
+   "label": "Are you currently authorized to work without visa sponsorship for this role?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"currently\" (no future words) → the now answer applies: requires sponsorship now = No → \"able to work without sponsorship\" = **Yes**.",
+  "ambiguous": false
+ },
+ {
+  "name": "require_now_or_in_future_sponsorship",
+  "args": {
+   "label": "Will you now or in the future require sponsorship for employment?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship ... is not flipped: \"Will you now or in the future require sponsorship?\" → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "require_visa_sponsorship_now_or_future",
+  "args": {
+   "label": "Do you require visa sponsorship now or in the future?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship (the word require/need comes before \"without\", or there is no \"without\") is not flipped ... → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "need_employer_sponsorship_at_any_time_future",
+  "args": {
+   "label": "Will you need employer sponsorship at any time in the future?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship ... is not flipped: \"Will you now or in the future require sponsorship?\" → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "need_immigration_sponsorship_now_or_later",
+  "args": {
+   "label": "Do you need immigration sponsorship now or later?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship (the word require/need comes before \"without\", or there is no \"without\") is not flipped ... → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "require_sponsorship_currently",
+  "args": {
+   "label": "Do you currently require sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship ... is not flipped: ... \"Do you currently require sponsorship?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "need_visa_sponsorship_at_this_time",
+  "args": {
+   "label": "Do you need visa sponsorship to work at this time?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship (the word require/need comes before \"without\", or there is no \"without\") is not flipped: ... \"Do you currently require sponsorship?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "require_immigration_sponsorship_for_this_position",
+  "args": {
+   "label": "Do you require immigration sponsorship for this position?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship (the word require/need comes before \"without\", or there is no \"without\") is not flipped: ... \"Do you currently require sponsorship?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "need_employer_sponsorship_for_this_internship",
+  "args": {
+   "label": "Do you need employer sponsorship for this internship?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES / NEEDS sponsorship (the word require/need comes before \"without\", or there is no \"without\") is not flipped: ... \"Do you currently require sponsorship?\" → No.",
+  "ambiguous": false
+ }
+]

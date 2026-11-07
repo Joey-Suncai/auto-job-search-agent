@@ -1,0 +1,358 @@
+[
+ {
+  "name": "eeo_gender_required_true",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_1",
+     "tag": "",
+     "required": true,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "contact_gender"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "contact_gender",
+    "label": "What is your gender?",
+    "type": "select",
+    "required": true,
+    "options": [],
+    "tag": "spl-autocomplete"
+   }
+  ],
+  "spec_quote": "an id ending in \"_gender\" → {key: id, label: \"What is your gender?\", type: \"select\", required, options: [], tag: \"spl-autocomplete\"}",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_ethnicity_and_race_required_false",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 1,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_2",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "applicant_ethnicity",
+      "applicant_race"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "applicant_ethnicity",
+    "label": "What is your race/ethnicity?",
+    "type": "select",
+    "required": false,
+    "options": [],
+    "tag": "spl-autocomplete"
+   },
+   {
+    "key": "applicant_race",
+    "label": "What is your race/ethnicity?",
+    "type": "select",
+    "required": false,
+    "options": [],
+    "tag": "spl-autocomplete"
+   }
+  ],
+  "spec_quote": "an id ending in \"_ethnicity\" or \"_race\" → label \"What is your race/ethnicity?\"; other ids are skipped. Order = order of subs.",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_skips_other_ids_and_preserves_order",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 2,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_3",
+     "tag": "",
+     "required": true,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "x_gender",
+      "x_age",
+      "x_race"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "x_gender",
+    "label": "What is your gender?",
+    "type": "select",
+    "required": true,
+    "options": [],
+    "tag": "spl-autocomplete"
+   },
+   {
+    "key": "x_race",
+    "label": "What is your race/ethnicity?",
+    "type": "select",
+    "required": true,
+    "options": [],
+    "tag": "spl-autocomplete"
+   }
+  ],
+  "spec_quote": "other ids are skipped. Order = order of subs.",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_no_subs_produces_nothing",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 3,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_4",
+     "tag": "",
+     "required": true,
+     "radios": [],
+     "boxes": [],
+     "subs": []
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "An EEO block with no subs produces nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_two_raw_items_concatenate_in_order",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 4,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_5",
+     "tag": "",
+     "required": true,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "a_gender"
+     ]
+    },
+    {
+     "idx": 5,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_6",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "b_ethnicity"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "a_gender",
+    "label": "What is your gender?",
+    "type": "select",
+    "required": true,
+    "options": [],
+    "tag": "spl-autocomplete"
+   },
+   {
+    "key": "b_ethnicity",
+    "label": "What is your race/ethnicity?",
+    "type": "select",
+    "required": false,
+    "options": [],
+    "tag": "spl-autocomplete"
+   }
+  ],
+  "spec_quote": "A raw question ... becomes one select question per sub-list id: ... Order = order of subs.",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_requires_exact_suffix_match",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 6,
+     "type": "eeo",
+     "label": "EEO",
+     "text": "",
+     "id": "eeo_7",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": [],
+     "subs": [
+      "gender",
+      "foo_gender_extra",
+      "foo_race"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "foo_race",
+    "label": "What is your race/ethnicity?",
+    "type": "select",
+    "required": false,
+    "options": [],
+    "tag": "spl-autocomplete"
+   }
+  ],
+  "spec_quote": "an id ending in \"_gender\" ... an id ending in \"_ethnicity\" or \"_race\" ... other ids are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_free_text_example",
+  "fn": "other_text",
+  "args": {
+   "label": "Other (free text)"
+  },
+  "expect": true,
+  "spec_quote": "True for a free-text follow-up that asks to spell out an \"Other\" choice: the label starts (case-insensitive) with \"Other\" and within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\" (\"Other (free text)\", \"Other - please specify\")",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_please_specify_example",
+  "fn": "other_text",
+  "args": {
+   "label": "Other - please specify"
+  },
+  "expect": true,
+  "spec_quote": "True for a free-text follow-up that asks to spell out an \"Other\" choice: the label starts (case-insensitive) with \"Other\" and within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\" (\"Other (free text)\", \"Other - please specify\")",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_case_insensitive_describe",
+  "fn": "other_text",
+  "args": {
+   "label": "other - describe"
+  },
+  "expect": true,
+  "spec_quote": "the label starts (case-insensitive) with \"Other\" and within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_starts_if_other",
+  "fn": "other_text",
+  "args": {
+   "label": "If other, please tell us"
+  },
+  "expect": true,
+  "spec_quote": "or starts with \"If other\" or \"Please specify\".",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_starts_please_specify",
+  "fn": "other_text",
+  "args": {
+   "label": "Please specify your other choice"
+  },
+  "expect": true,
+  "spec_quote": "or starts with \"If other\" or \"Please specify\".",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_other_information_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Other information"
+  },
+  "expect": false,
+  "spec_quote": "False for anything else (\"Other information\", \"Others in your household\", \"Specify your degree\", \"Additional information\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_others_in_household_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Others in your household"
+  },
+  "expect": false,
+  "spec_quote": "False for anything else (\"Other information\", \"Others in your household\", \"Specify your degree\", \"Additional information\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_specify_your_degree_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Specify your degree"
+  },
+  "expect": false,
+  "spec_quote": "False for anything else (\"Other information\", \"Others in your household\", \"Specify your degree\", \"Additional information\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_additional_information_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Additional information"
+  },
+  "expect": false,
+  "spec_quote": "False for anything else (\"Other information\", \"Others in your household\", \"Specify your degree\", \"Additional information\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_bare_other_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Other"
+  },
+  "expect": false,
+  "spec_quote": "True ... the label starts (case-insensitive) with \"Other\" and within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\"; False for anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_special_not_specify_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Other - special request"
+  },
+  "expect": false,
+  "spec_quote": "within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\"; False for anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text_specify_beyond_30_chars_false",
+  "fn": "other_text",
+  "args": {
+   "label": "Other 123456789012345678901234567890 specify"
+  },
+  "expect": false,
+  "spec_quote": "the label starts (case-insensitive) with \"Other\" and within 30 characters has \"free text\", \"specify\", \"please\" or \"describe\"; False for anything else.",
+  "ambiguous": false
+ }
+]

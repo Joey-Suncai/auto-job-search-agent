@@ -1,0 +1,10 @@
+{
+ "resume": {
+  "file": "resume_fixture.pdf",
+  "sha256": "8372660d8cd97ac3c1b4fd3c409768da4dcffd7a58e147caa354be0ca8ea5d22",
+  "check": "pass"
+ },
+ "letter": {
+  "decision": "not_requested"
+ }
+}

@@ -1,0 +1,178 @@
+[
+ {
+  "name": "exact numeric match",
+  "want": "06/14/2027",
+  "got": "06/14/2027",
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "year-first numeric match",
+  "want": "06/14/2027",
+  "got": "2027-06-14",
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "day-first numeric match",
+  "want": "06/14/2027",
+  "got": "14/06/2027",
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "slash year-first numeric match",
+  "want": "06/14/2027",
+  "got": "2027/06/14",
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "month-day swapped valid numeric match",
+  "want": "12/31/2027",
+  "got": "31/12/2027",
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "numeric day mismatch",
+  "want": "06/14/2027",
+  "got": "06/15/2027",
+  "expect": false,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "numeric month mismatch",
+  "want": "06/14/2027",
+  "got": "07/14/2027",
+  "expect": false,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "numeric year mismatch",
+  "want": "06/14/2027",
+  "got": "06/14/2028",
+  "expect": false,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "numeric different numbers",
+  "want": "06/14/2027",
+  "got": "16/04/2027",
+  "expect": false,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "numeric plan with different day in year-first page",
+  "want": "06/14/2027",
+  "got": "2027-06-15",
+  "expect": false,
+  "spec_quote": "Same numbers in any order/format: plan \"06/14/2027\" matches page \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name December matches month-first page",
+  "want": "December 2027",
+  "got": "12/01/2027",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name December matches month-last day",
+  "want": "December 2027",
+  "got": "12/31/2027",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name December matches year-first page",
+  "want": "December 2027",
+  "got": "2027-12-01",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "abbreviated Jun matches numeric June",
+  "want": "Jun 2027",
+  "got": "06/15/2027",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "abbreviated Jun matches year-first June",
+  "want": "Jun 2027",
+  "got": "2027-06-30",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name December matches year-first with different day",
+  "want": "December 2027",
+  "got": "2027-12-31",
+  "expect": true,
+  "spec_quote": "A plan given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a page date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name wrong month",
+  "want": "December 2027",
+  "got": "11/01/2027",
+  "expect": false,
+  "spec_quote": "It does not match another month or year (\"11/01/2027\", \"12/01/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "month-name wrong year",
+  "want": "December 2027",
+  "got": "12/01/2028",
+  "expect": false,
+  "spec_quote": "It does not match another month or year (\"11/01/2027\", \"12/01/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "abbreviated Jun wrong month",
+  "want": "Jun 2027",
+  "got": "07/01/2027",
+  "expect": false,
+  "spec_quote": "It does not match another month or year (\"11/01/2027\", \"12/01/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "abbreviated Jun wrong year",
+  "want": "Jun 2027",
+  "got": "06/01/2028",
+  "expect": false,
+  "spec_quote": "It does not match another month or year (\"11/01/2027\", \"12/01/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "empty page with numeric plan",
+  "want": "06/14/2027",
+  "got": "",
+  "expect": false,
+  "spec_quote": "An empty page value never matches.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty page with month-name plan",
+  "want": "December 2027",
+  "got": "",
+  "expect": false,
+  "spec_quote": "An empty page value never matches.",
+  "ambiguous": false
+ }
+]

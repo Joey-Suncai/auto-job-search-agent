@@ -1,0 +1,474 @@
+[
+ {
+  "name": "exact match ignoring case, surrounding spaces, and curly apostrophe",
+  "fn": "degree_option",
+  "args": {
+   "want": "master's",
+   "options": [
+    "Bachelor's Degree",
+    "  Master’s  ",
+    "Master's Degree"
+   ]
+  },
+  "expect": "  Master’s  ",
+  "spec_quote": "Comparison ignores case, surrounding/multiple spaces and curly vs straight apostrophes (’ = '). Order: an option equal to `want`;",
+  "ambiguous": false
+ },
+ {
+  "name": "starts-with match preferred over contains",
+  "fn": "degree_option",
+  "args": {
+   "want": "Master",
+   "options": [
+    "Master of Science",
+    "Master's Degree"
+   ]
+  },
+  "expect": "Master of Science",
+  "spec_quote": "else the first option that starts with `want` (\"Master's Degree\");",
+  "ambiguous": false
+ },
+ {
+  "name": "contains whole word but skips options with the word post",
+  "fn": "degree_option",
+  "args": {
+   "want": "Doctorate",
+   "options": [
+    "Post doctorate degree",
+    "Earned Doctorate in Education"
+   ]
+  },
+  "expect": "Earned Doctorate in Education",
+  "spec_quote": "else the first option that contains `want` as a whole word, but never an option with the word \"post\" in it (\"Post doctorate degree\" is not Doctorate).",
+  "ambiguous": false
+ },
+ {
+  "name": "only post option yields none",
+  "fn": "degree_option",
+  "args": {
+   "want": "Doctorate",
+   "options": [
+    "Post doctorate degree"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "but never an option with the word \"post\" in it (\"Post doctorate degree\" is not Doctorate). None when nothing fits",
+  "ambiguous": false
+ },
+ {
+  "name": "empty want yields none",
+  "fn": "degree_option",
+  "args": {
+   "want": "",
+   "options": [
+    "Master's Degree",
+    "Bachelor's"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "None when nothing fits or `want` is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "no option fits yields none",
+  "fn": "degree_option",
+  "args": {
+   "want": "Bachelor's",
+   "options": [
+    "Master's Degree",
+    "Doctorate"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "None when nothing fits",
+  "ambiguous": false
+ },
+ {
+  "name": "plain first host label",
+  "fn": "tenant_id",
+  "args": {
+   "url": "https://egud.fa.us2.oraclecloud.com/hcmUI/CandidateExperience"
+  },
+  "expect": "egud",
+  "spec_quote": "take the first host label, drop a leading \"fa-\", then keep what is before the next \"-\". Lower case. \"https://egud.fa.us2.oraclecloud.com/hcmUI/…\" → \"egud\"",
+  "ambiguous": false
+ },
+ {
+  "name": "fa- prefix and next hyphen",
+  "fn": "tenant_id",
+  "args": {
+   "url": "https://fa-ewgu-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience"
+  },
+  "expect": "ewgu",
+  "spec_quote": "\"https://fa-ewgu-saasfaprod1.fa.ocs.oraclecloud.com/…\" → \"ewgu\"",
+  "ambiguous": false
+ },
+ {
+  "name": "non-oracle host yields empty string",
+  "fn": "tenant_id",
+  "args": {
+   "url": "https://careers.example.com/job/123"
+  },
+  "expect": "",
+  "spec_quote": "only hosts containing \"oraclecloud.com\" count (else \"\");",
+  "ambiguous": false
+ },
+ {
+  "name": "no fa- prefix but hyphen in first label",
+  "fn": "tenant_id",
+  "args": {
+   "url": "https://acme-tenant.fa.us2.oraclecloud.com/hcmUI"
+  },
+  "expect": "acme",
+  "spec_quote": "take the first host label, drop a leading \"fa-\", then keep what is before the next \"-\". Lower case.",
+  "ambiguous": false
+ },
+ {
+  "name": "fa- prefix with no following hyphen",
+  "fn": "tenant_id",
+  "args": {
+   "url": "https://fa-x9.oraclecloud.com/hcmUI"
+  },
+  "expect": "x9",
+  "spec_quote": "drop a leading \"fa-\", then keep what is before the next \"-\". Lower case.",
+  "ambiguous": false
+ },
+ {
+  "name": "oracle sender own tenant case-insensitive",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "EGUD.FA.SENDER@oracle.com",
+   "body": "Your code 123456",
+   "tenant": "egud",
+   "company": null
+  },
+  "expect": true,
+  "spec_quote": "If the sender (the From header) contains \"<pod>.fa.sender\" (Oracle's own sender), it is OK only when <pod> equals `tenant` (case-insensitive; an empty tenant → not OK).",
+  "ambiguous": false
+ },
+ {
+  "name": "oracle sender other tenant",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "egud.fa.sender@oracle.com",
+   "body": "code",
+   "tenant": "ewgu",
+   "company": null
+  },
+  "expect": false,
+  "spec_quote": "it is OK only when <pod> equals `tenant` (case-insensitive; an empty tenant → not OK).",
+  "ambiguous": false
+ },
+ {
+  "name": "oracle sender empty tenant",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "egud.fa.sender@oracle.com",
+   "body": "code",
+   "tenant": "",
+   "company": null
+  },
+  "expect": false,
+  "spec_quote": "an empty tenant → not OK",
+  "ambiguous": false
+ },
+ {
+  "name": "company sender names company in sender",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "jobs@acme.com",
+   "body": "Your one-time code is 123456",
+   "tenant": "egud",
+   "company": "Acme Corp"
+  },
+  "expect": true,
+  "spec_quote": "Otherwise (a company's own sender) it is OK when the first word of `company` appears (case-insensitive) in the sender or the body;",
+  "ambiguous": false
+ },
+ {
+  "name": "company sender names company in body",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "noreply@other.com",
+   "body": "Acme verification code: 123456",
+   "tenant": "egud",
+   "company": "Acme Corp"
+  },
+  "expect": true,
+  "spec_quote": "the first word of `company` appears (case-insensitive) in the sender or the body",
+  "ambiguous": false
+ },
+ {
+  "name": "company sender neither sender nor body names company",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "noreply@other.com",
+   "body": "Your verification code: 123456",
+   "tenant": "egud",
+   "company": "Acme Corp"
+  },
+  "expect": false,
+  "spec_quote": "it is OK when the first word of `company` appears (case-insensitive) in the sender or the body; when no company is given it is OK.",
+  "ambiguous": false
+ },
+ {
+  "name": "no company given",
+  "fn": "code_mail_ok",
+  "args": {
+   "sender": "noreply@other.com",
+   "body": "Your verification code: 123456",
+   "tenant": "egud",
+   "company": null
+  },
+  "expect": true,
+  "spec_quote": "when no company is given it is OK.",
+  "ambiguous": false
+ },
+ {
+  "name": "text too long",
+  "fn": "box_fit",
+  "args": {
+   "label": "First name",
+   "kind": "text",
+   "value": "Alexander",
+   "box": {
+    "maxlength": 5,
+    "type": "text",
+    "inputmode": "",
+    "block": ""
+   }
+  },
+  "expect": "too_long",
+  "spec_quote": "Else, a value longer than an integer maxlength > 0 → \"too_long\".",
+  "ambiguous": false
+ },
+ {
+  "name": "maxlength zero does not trigger too_long",
+  "fn": "box_fit",
+  "args": {
+   "label": "Code",
+   "kind": "text",
+   "value": "123456",
+   "box": {
+    "maxlength": 0
+   }
+  },
+  "expect": null,
+  "spec_quote": "a value longer than an integer maxlength > 0",
+  "ambiguous": false
+ },
+ {
+  "name": "none value always fits",
+  "fn": "box_fit",
+  "args": {
+   "label": "Salary",
+   "kind": "text",
+   "value": null,
+   "box": {
+    "maxlength": 1,
+    "type": "number"
+   }
+  },
+  "expect": null,
+  "spec_quote": "a None value always fits (None).",
+  "ambiguous": false
+ },
+ {
+  "name": "textarea within maxlength",
+  "fn": "box_fit",
+  "args": {
+   "label": "Cover letter",
+   "kind": "textarea",
+   "value": "Hello",
+   "box": {
+    "maxlength": 100
+   }
+  },
+  "expect": null,
+  "spec_quote": "Only kinds \"text\" / \"textarea\" are judged",
+  "ambiguous": false
+ },
+ {
+  "name": "amount box not a plain amount",
+  "fn": "box_fit",
+  "args": {
+   "label": "Desired salary",
+   "kind": "text",
+   "value": "about 85k",
+   "box": {
+    "type": "number",
+    "maxlength": 20
+   }
+  },
+  "expect": "not_number",
+  "spec_quote": "An amount box is: type \"number\", ... In an amount box, a value that is not a plain amount ... → \"not_number\".",
+  "ambiguous": false
+ },
+ {
+  "name": "amount box plain amount too long",
+  "fn": "box_fit",
+  "args": {
+   "label": "Desired salary",
+   "kind": "text",
+   "value": "25.50",
+   "box": {
+    "inputmode": "decimal",
+    "maxlength": 4
+   }
+  },
+  "expect": "too_long",
+  "spec_quote": "In an amount box, a value that is not a plain amount ... → \"not_number\". Else, a value longer than an integer maxlength > 0 → \"too_long\".",
+  "ambiguous": false
+ },
+ {
+  "name": "work-preferences label with currency is not an amount box",
+  "fn": "box_fit",
+  "args": {
+   "label": "Salary currency",
+   "kind": "text",
+   "value": "USD",
+   "box": {
+    "block": "work-preferences",
+    "maxlength": 3
+   }
+  },
+  "expect": null,
+  "spec_quote": "or block \"work-preferences\" with a label naming salary / pay / compensation / wage / rate but not currency / frequency / period / type / unit / basis.",
+  "ambiguous": false
+ },
+ {
+  "name": "split letters match_re recognized",
+  "fn": "edu_fill",
+  "args": {
+   "school": "U NIVERSITY OF C HICAGO From 2015 to 2019",
+   "education": [
+    {
+     "school": "University of Chicago",
+     "match_re": "University of Chicago",
+     "level": "bachelor",
+     "end": "2019-05",
+     "city": "Chicago",
+     "state": "IL"
+    }
+   ],
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "city": "Chicago",
+   "state": "IL",
+   "graduated": "Yes",
+   "degree": "bachelor"
+  },
+  "spec_quote": "The card's letters may also be split by spaces (\"U NIVERSITY OF C HICAGO\"): a match_re found in the text with spaces removed counts.",
+  "ambiguous": true,
+  "note": "Spec only states that a split-letter match_re counts; it does not define the normal-match result object's degree/graduated fields or whether 'school' is included outside the fallback."
+ },
+ {
+  "name": "fallback by degree level and end month",
+  "fn": "edu_fill",
+  "args": {
+   "school": "B.A. in Economics From No date provided to May 2026",
+   "education": [
+    {
+     "school": "University of Chicago",
+     "level": "bachelor",
+     "end": "2026-05",
+     "city": "Chicago",
+     "state": "IL"
+    },
+    {
+     "school": "Northwestern University",
+     "level": "master",
+     "end": "2026-05",
+     "city": "Evanston",
+     "state": "IL"
+    }
+   ],
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "city": "Chicago",
+   "state": "IL",
+   "graduated": "Yes",
+   "degree": "B.A.",
+   "school": "University of Chicago"
+  },
+  "spec_quote": "the entry whose level matches the card's degree word (B.A./B.S./Bachelor → \"bachelor\", M.S./M.A./Master → \"master\", Ph.D./Doctor → \"phd\") AND whose `end` (\"YYYY-MM\") equals a month written on the card (\"May 2026\" → \"2026-05\") is used, only when exactly one entry matches; the result then also carries \"school\" (the entry's school).",
+  "ambiguous": true,
+  "note": "Spec does not define whether the result 'degree' is the card's degree word or the entry level, nor how 'graduated' is derived from end/today."
+ },
+ {
+  "name": "two entries matching yields none",
+  "fn": "edu_fill",
+  "args": {
+   "school": "B.A. in Economics From No date provided to May 2026",
+   "education": [
+    {
+     "school": "University of Chicago",
+     "level": "bachelor",
+     "end": "2026-05",
+     "city": "Chicago",
+     "state": "IL"
+    },
+    {
+     "school": "University of Illinois",
+     "level": "bachelor",
+     "end": "2026-05",
+     "city": "Urbana",
+     "state": "IL"
+    }
+   ],
+   "today": "2026-11-05"
+  },
+  "expect": null,
+  "spec_quote": "only when exactly one entry matches; ... No match → None.",
+  "ambiguous": false
+ },
+ {
+  "name": "wrong month yields none",
+  "fn": "edu_fill",
+  "args": {
+   "school": "B.A. in Economics From No date provided to May 2026",
+   "education": [
+    {
+     "school": "University of Chicago",
+     "level": "bachelor",
+     "end": "2025-05",
+     "city": "Chicago",
+     "state": "IL"
+    }
+   ],
+   "today": "2026-11-05"
+  },
+  "expect": null,
+  "spec_quote": "AND whose `end` (\"YYYY-MM\") equals a month written on the card (\"May 2026\" → \"2026-05\")",
+  "ambiguous": false
+ },
+ {
+  "name": "fallback Ph.D. month conversion",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Ph.D. in Physics From No date provided to December 2023",
+   "education": [
+    {
+     "school": "MIT",
+     "level": "phd",
+     "end": "2023-12",
+     "city": "Cambridge",
+     "state": "MA"
+    }
+   ],
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "city": "Cambridge",
+   "state": "MA",
+   "graduated": "Yes",
+   "degree": "Ph.D.",
+   "school": "MIT"
+  },
+  "spec_quote": "the entry whose level matches the card's degree word (B.A./B.S./Bachelor → \"bachelor\", M.S./M.A./Master → \"master\", Ph.D./Doctor → \"phd\") AND whose `end` (\"YYYY-MM\") equals a month written on the card (\"May 2026\" → \"2026-05\") is used, only when exactly one entry matches; the result then also carries \"school\" (the entry's school).",
+  "ambiguous": true,
+  "note": "Spec does not define whether the result 'degree' is the card's degree word or the entry level, nor how 'graduated' is derived from end/today."
+ }
+]

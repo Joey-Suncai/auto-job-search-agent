@@ -1,0 +1,285 @@
+[
+ {
+  "name": "kb_signaling_two_hidden_sap_links_plus_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "https://careers.acme.com/talentcommunity/apply/123456",
+      "visible": false
+     },
+     {
+      "href": "/talentcommunity/apply/789012",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "It returns True only when at least one SAP apply link exists, none of them is visible, and `shadow` is True.",
+  "ambiguous": false
+ },
+ {
+  "name": "one_visible_among_hidden_sap_links_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "https://careers.acme.com/talentcommunity/apply/123456",
+      "visible": true
+     },
+     {
+      "href": "/talentcommunity/apply/789012",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "Every other situation returns False: a visible SAP link (it is clicked as usual), no SAP link at all (the \"Apply now\" dropdown flow of other tenants), or hidden SAP links with no visible shadow-root Apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "all_sap_links_visible_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/111",
+      "visible": true
+     },
+     {
+      "href": "/talentcommunity/apply/222",
+      "visible": true
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "Every other situation returns False: a visible SAP link (it is clicked as usual), no SAP link at all (the \"Apply now\" dropdown flow of other tenants), or hidden SAP links with no visible shadow-root Apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_sap_links_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [],
+    "shadow": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "Every other situation returns False: a visible SAP link (it is clicked as usual), no SAP link at all (the \"Apply now\" dropdown flow of other tenants), or hidden SAP links with no visible shadow-root Apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "hidden_sap_links_without_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/123456",
+      "visible": false
+     },
+     {
+      "href": "https://tenant.successfactors.com/talentcommunity/apply/654321",
+      "visible": false
+     }
+    ],
+    "shadow": false
+   }
+  },
+  "expect": false,
+  "spec_quote": "Every other situation returns False: a visible SAP link (it is clicked as usual), no SAP link at all (the \"Apply now\" dropdown flow of other tenants), or hidden SAP links with no visible shadow-root Apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "hrefs_without_numeric_job_id_do_not_count",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/",
+      "visible": false
+     },
+     {
+      "href": "https://careers.acme.com/talentcommunity/apply/apply-now",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "Only links whose href has \"/talentcommunity/apply/\" followed by a numeric job id count as SAP apply links.",
+  "ambiguous": false
+ },
+ {
+  "name": "relative_href_hidden_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/1234567",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "Only links whose href has \"/talentcommunity/apply/\" followed by a numeric job id count as SAP apply links.",
+  "ambiguous": false
+ },
+ {
+  "name": "absolute_href_hidden_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "https://tenant.successfactors.com/talentcommunity/apply/98765",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "Only links whose href has \"/talentcommunity/apply/\" followed by a numeric job id count as SAP apply links.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_info_object",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {}
+  },
+  "expect": false,
+  "spec_quote": "An empty / missing `info` returns False.",
+  "ambiguous": false
+ },
+ {
+  "name": "null_info",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": null
+  },
+  "expect": false,
+  "spec_quote": "An empty / missing `info` returns False.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_sap_key",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "shadow": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "It returns True only when at least one SAP apply link exists, none of them is visible, and `shadow` is True. Every other situation returns False: ... no SAP link at all ...",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_shadow_key",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/123456",
+      "visible": false
+     }
+    ]
+   }
+  },
+  "expect": false,
+  "spec_quote": "It returns True only when at least one SAP apply link exists, none of them is visible, and `shadow` is True.",
+  "ambiguous": false
+ },
+ {
+  "name": "single_hidden_sap_link_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/42",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "It returns True only when at least one SAP apply link exists, none of them is visible, and `shadow` is True.",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed_valid_and_invalid_hrefs_all_hidden_with_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/",
+      "visible": false
+     },
+     {
+      "href": "/talentcommunity/apply/777",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "Only links whose href has \"/talentcommunity/apply/\" followed by a numeric job id count as SAP apply links.",
+  "ambiguous": false
+ },
+ {
+  "name": "visible_non_sap_link_does_not_block_hidden_sap_link",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [
+     {
+      "href": "/talentcommunity/apply/apply-now",
+      "visible": true
+     },
+     {
+      "href": "/talentcommunity/apply/555",
+      "visible": false
+     }
+    ],
+    "shadow": true
+   }
+  },
+  "expect": true,
+  "spec_quote": "Only links whose href has \"/talentcommunity/apply/\" followed by a numeric job id count as SAP apply links.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_sap_links_no_shadow",
+  "fn": "custom_apply_widget",
+  "args": {
+   "info": {
+    "sap": [],
+    "shadow": false
+   }
+  },
+  "expect": false,
+  "spec_quote": "Every other situation returns False: a visible SAP link (it is clicked as usual), no SAP link at all (the \"Apply now\" dropdown flow of other tenants), or hidden SAP links with no visible shadow-root Apply.",
+  "ambiguous": false
+ }
+]

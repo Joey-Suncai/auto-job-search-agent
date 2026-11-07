@@ -1,0 +1,989 @@
+[
+ {
+  "name": "outcome_interview_positive",
+  "fn": "outcome",
+  "input": {
+   "status": "Interview"
+  },
+  "expect": {
+   "value": 1
+  },
+  "spec_quote": "\"Assessment\", \"Interview\", \"Offer\" → 1 (positive reply).",
+  "ambiguous": false
+ },
+ {
+  "name": "outcome_rejected_trim_case",
+  "fn": "outcome",
+  "input": {
+   "status": "  ReJeCtEd  "
+  },
+  "expect": {
+   "value": 0
+  },
+  "spec_quote": "Case-insensitive, surrounding spaces ignored. ... \"Rejected\", \"Applied\", \"No response\" → 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "outcome_no_response_zero",
+  "fn": "outcome",
+  "input": {
+   "status": "No response"
+  },
+  "expect": {
+   "value": 0
+  },
+  "spec_quote": "\"Rejected\", \"Applied\", \"No response\" → 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "outcome_shortlisted_none",
+  "fn": "outcome",
+  "input": {
+   "status": "Shortlisted"
+  },
+  "expect": {
+   "value": null
+  },
+  "spec_quote": "Anything else (\"Shortlisted\", ...) → None (not a usable application).",
+  "ambiguous": false
+ },
+ {
+  "name": "outcome_missing_none",
+  "fn": "outcome",
+  "input": {
+   "status": null
+  },
+  "expect": {
+   "value": null
+  },
+  "spec_quote": "Anything else (..., missing) → None (not a usable application).",
+  "ambiguous": false
+ },
+ {
+  "name": "outcome_applied_unconfirmed_none",
+  "fn": "outcome",
+  "input": {
+   "status": "Applied (unconfirmed)"
+  },
+  "expect": {
+   "value": null
+  },
+  "spec_quote": "Anything else (\"Shortlisted\", \"Applied (unconfirmed)\", \"Withdrawn\", \"\", missing) → None (not a usable application).",
+  "ambiguous": false
+ },
+ {
+  "name": "build_sample_basic_used_and_excluded",
+  "fn": "build_sample",
+  "input": {
+   "apps": [
+    {
+     "status": "Interview",
+     "applied_on": "2024-01-01",
+     "job_id": "j1",
+     "company": "A"
+    },
+    {
+     "status": "Rejected",
+     "applied_on": "2024-01-02",
+     "job_id": "j2",
+     "company": "B"
+    },
+    {
+     "status": "Shortlisted",
+     "applied_on": "2024-01-01",
+     "job_id": "j1",
+     "company": "A"
+    }
+   ],
+   "jobs": {
+    "j1": {
+     "s_referral": 0.5,
+     "s_timing": 0.2,
+     "s_sponsor": 0.1,
+     "s_fresh": 0.9
+    },
+    "j2": {
+     "s_referral": 0.3,
+     "s_timing": 0.4,
+     "s_sponsor": 0.2,
+     "s_fresh": 0.5
+    }
+   },
+   "today": "2024-01-10",
+   "min_days": 5
+  },
+  "expect": {
+   "n": 2,
+   "ys": [
+    1,
+    0
+   ],
+   "xs": [
+    [
+     0.5,
+     0.2,
+     0.1,
+     0.9
+    ],
+    [
+     0.3,
+     0.4,
+     0.2,
+     0.5
+    ]
+   ],
+   "excluded": {
+    "not submitted / unknown status": 1
+   }
+  },
+  "spec_quote": "A row is used only when: outcome(status) is not None; applied_on parses as a date; (today − applied_on) in days ≥ min_days ...; job_id is a key of jobs. Each used row → {\"x\": [s_referral, s_timing, s_sponsor, s_fresh] as floats, \"y\": outcome}. Rows not used are counted in `excluded` by reason.",
+  "ambiguous": false
+ },
+ {
+  "name": "build_sample_age_boundary_exact_min_days_included",
+  "fn": "build_sample",
+  "input": {
+   "apps": [
+    {
+     "status": "Offer",
+     "applied_on": "2024-03-03",
+     "job_id": "j1",
+     "company": "A"
+    },
+    {
+     "status": "Offer",
+     "applied_on": "2024-03-04",
+     "job_id": "j1",
+     "company": "A"
+    }
+   ],
+   "jobs": {
+    "j1": {
+     "s_referral": 0.2,
+     "s_timing": 0.2,
+     "s_sponsor": 0.2,
+     "s_fresh": 0.2
+    }
+   },
+   "today": "2024-03-10",
+   "min_days": 7
+  },
+  "expect": {
+   "n": 1,
+   "ys": [
+    1
+   ],
+   "excluded": {
+    "applied < 7 days ago": 1
+   }
+  },
+  "spec_quote": "(today − applied_on) in days ≥ min_days (exactly min_days days old IS included). Reason strings: ... \"applied < {min_days} days ago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "build_sample_exclusion_order_counts_once",
+  "fn": "build_sample",
+  "input": {
+   "apps": [
+    {
+     "status": "Withdrawn",
+     "applied_on": "bad-date",
+     "job_id": "zzz",
+     "company": "A"
+    },
+    {
+     "status": "Offer",
+     "applied_on": null,
+     "job_id": "zzz",
+     "company": "B"
+    },
+    {
+     "status": "Offer",
+     "applied_on": "2024-01-01",
+     "job_id": "zzz",
+     "company": "C"
+    }
+   ],
+   "jobs": {},
+   "today": "2024-06-01",
+   "min_days": 1
+  },
+  "expect": {
+   "n": 0,
+   "ys": [],
+   "excluded": {
+    "not submitted / unknown status": 1,
+    "no applied_on": 1,
+    "job not in jobs.jsonl": 1
+   }
+  },
+  "spec_quote": "the order of checks is: status, applied_on, age, job lookup (a row is counted once, under the first failing check).",
+  "ambiguous": false
+ },
+ {
+  "name": "build_sample_job_not_in_jobs",
+  "fn": "build_sample",
+  "input": {
+   "apps": [
+    {
+     "status": "Interview",
+     "applied_on": "2024-01-01",
+     "job_id": "missing",
+     "company": "A"
+    }
+   ],
+   "jobs": {},
+   "today": "2024-06-01",
+   "min_days": 1
+  },
+  "expect": {
+   "n": 0,
+   "ys": [],
+   "excluded": {
+    "job not in jobs.jsonl": 1
+   }
+  },
+  "spec_quote": "job_id is a key of jobs. ... Reason strings: ... \"job not in jobs.jsonl\".",
+  "ambiguous": false
+ },
+ {
+  "name": "normalise_keeps_existing_prior",
+  "fn": "normalise",
+  "input": {
+   "beta": [
+    0.4,
+    0.25,
+    0.2,
+    0.15
+   ]
+  },
+  "expect": {
+   "weights": [
+    0.4,
+    0.25,
+    0.2,
+    0.15
+   ]
+  },
+  "spec_quote": "Negative coefficients count as 0; the result is the positive parts divided by their sum, so it sums to 1.",
+  "ambiguous": false
+ },
+ {
+  "name": "normalise_negative_to_zero",
+  "fn": "normalise",
+  "input": {
+   "beta": [
+    -1,
+    0.5,
+    0.5,
+    0
+   ]
+  },
+  "expect": {
+   "weights": [
+    0,
+    0.5,
+    0.5,
+    0
+   ]
+  },
+  "spec_quote": "Negative coefficients count as 0; the result is the positive parts divided by their sum, so it sums to 1.",
+  "ambiguous": false
+ },
+ {
+  "name": "normalise_no_positive_uniform",
+  "fn": "normalise",
+  "input": {
+   "beta": [
+    0,
+    0,
+    -2,
+    0
+   ]
+  },
+  "expect": {
+   "weights": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  "spec_quote": "If no coefficient is positive, every factor gets 1/4.",
+  "ambiguous": false
+ },
+ {
+  "name": "normalise_zero_mixed_positive",
+  "fn": "normalise",
+  "input": {
+   "beta": [
+    2,
+    0,
+    1,
+    1
+   ]
+  },
+  "expect": {
+   "weights": [
+    0.5,
+    0,
+    0.25,
+    0.25
+   ]
+  },
+  "spec_quote": "Negative coefficients count as 0; the result is the positive parts divided by their sum, so it sums to 1.",
+  "ambiguous": false
+ },
+ {
+  "name": "fit_map_no_rows_equals_mu_and_sd2",
+  "fn": "fit_map",
+  "input": {
+   "rows": [],
+   "mu": [
+    0.1,
+    -0.2,
+    0.3,
+    0.05,
+    0.0
+   ],
+   "sd": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+   ]
+  },
+  "expect": {
+   "equals_mu": true,
+   "cov_diag_equals_sd2": true
+  },
+  "spec_quote": "With no rows the result equals mu exactly, and the covariance diagonal equals sd².",
+  "ambiguous": false
+ },
+ {
+  "name": "fit_map_tiny_sd_pins_to_mu",
+  "fn": "fit_map",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.2,
+      0.2,
+      0.2,
+      0.2
+     ],
+     "y": 0
+    }
+   ],
+   "mu": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sd": [
+    0.0001,
+    0.0001,
+    0.0001,
+    0.0001,
+    0.0001
+   ]
+  },
+  "expect": {
+   "pinned": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "spec_quote": "a very small sd (e.g. 1e-4) on a coefficient pins it at its mu (within 1e-3).",
+  "ambiguous": false
+ },
+ {
+  "name": "fit_map_positive_coefficient",
+  "fn": "fit_map",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      0.9,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.85,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.1,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "y": 0
+    },
+    {
+     "x": [
+      0.15,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "y": 0
+    }
+   ],
+   "mu": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sd": [
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  "expect": {
+   "positive": [
+    1
+   ]
+  },
+  "spec_quote": "If positives have a higher value of a factor than negatives (everything else equal) and that factor's prior is mu=0 with a wide sd, its fitted coefficient is > 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "fit_map_negative_coefficient",
+  "fn": "fit_map",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      0.5,
+      0.1,
+      0.5,
+      0.5
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.5,
+      0.2,
+      0.5,
+      0.5
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.5,
+      0.9,
+      0.5,
+      0.5
+     ],
+     "y": 0
+    },
+    {
+     "x": [
+      0.5,
+      0.8,
+      0.5,
+      0.5
+     ],
+     "y": 0
+    }
+   ],
+   "mu": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sd": [
+    10,
+    10,
+    10,
+    10,
+    10
+   ]
+  },
+  "expect": {
+   "negative": [
+    2
+   ]
+  },
+  "spec_quote": "if positives have a lower value, < 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "fit_map_finite_and_var_le_prior_separable",
+  "fn": "fit_map",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      1,
+      1,
+      1,
+      1
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.9,
+      0.9,
+      0.9,
+      0.9
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "y": 0
+    },
+    {
+     "x": [
+      0.1,
+      0.1,
+      0.1,
+      0.1
+     ],
+     "y": 0
+    }
+   ],
+   "mu": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sd": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "expect": {
+   "finite": true,
+   "var_le_prior": true
+  },
+  "spec_quote": "Adding more data never increases any posterior variance above the prior variance (diagonal of covariance ≤ sd² for each coefficient). Results are finite even when the data are perfectly separable (the prior keeps them finite).",
+  "ambiguous": false
+ },
+ {
+  "name": "spearman_identical_order",
+  "fn": "spearman",
+  "input": {
+   "a": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "b": [
+    10,
+    20,
+    30,
+    40
+   ]
+  },
+  "expect": {
+   "value": 1
+  },
+  "spec_quote": "Identical order → 1; reversed order → −1.",
+  "ambiguous": false
+ },
+ {
+  "name": "spearman_reversed_order",
+  "fn": "spearman",
+  "input": {
+   "a": [
+    1,
+    2,
+    3
+   ],
+   "b": [
+    3,
+    2,
+    1
+   ]
+  },
+  "expect": {
+   "value": -1
+  },
+  "spec_quote": "Identical order → 1; reversed order → −1.",
+  "ambiguous": false
+ },
+ {
+  "name": "spearman_fewer_than_two",
+  "fn": "spearman",
+  "input": {
+   "a": [
+    5
+   ],
+   "b": [
+    7
+   ]
+  },
+  "expect": {
+   "value": 1
+  },
+  "spec_quote": "Fewer than 2 items → 1. If either list is constant → 1 (defined as \"no change\").",
+  "ambiguous": false
+ },
+ {
+  "name": "spearman_average_ranks_for_ties",
+  "fn": "spearman",
+  "input": {
+   "a": [
+    1,
+    2,
+    2,
+    3
+   ],
+   "b": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "expect": {
+   "value": 0.95
+  },
+  "spec_quote": "Spearman rank correlation with average ranks for ties.",
+  "ambiguous": false
+ },
+ {
+  "name": "ranking_change_same_weights",
+  "fn": "ranking_change",
+  "input": {
+   "jobs": [
+    {
+     "id": "a",
+     "elig": "可投",
+     "v_level": "top",
+     "s_referral": 0.9,
+     "s_timing": 0.1,
+     "s_sponsor": 0.1,
+     "s_fresh": 0.1
+    },
+    {
+     "id": "b",
+     "elig": "可投",
+     "v_level": "standard",
+     "s_referral": 0.1,
+     "s_timing": 0.9,
+     "s_sponsor": 0.1,
+     "s_fresh": 0.1
+    },
+    {
+     "id": "c",
+     "elig": "可投",
+     "v_level": "standard",
+     "s_referral": 0.1,
+     "s_timing": 0.1,
+     "s_sponsor": 0.9,
+     "s_fresh": 0.1
+    },
+    {
+     "id": "d",
+     "elig": "不可投",
+     "v_level": "top",
+     "s_referral": 0.9,
+     "s_timing": 0.9,
+     "s_sponsor": 0.9,
+     "s_fresh": 0.9
+    }
+   ],
+   "w_old": {
+    "s_referral": 0.4,
+    "s_timing": 0.25,
+    "s_sponsor": 0.2,
+    "s_fresh": 0.15
+   },
+   "w_new": {
+    "s_referral": 0.4,
+    "s_timing": 0.25,
+    "s_sponsor": 0.2,
+    "s_fresh": 0.15
+   },
+   "top": 2
+  },
+  "expect": {
+   "n": 3,
+   "spearman": 1,
+   "top_overlap": 2,
+   "b_c_flips": 0
+  },
+  "spec_quote": "Only jobs with elig == \"可投\" count; n = their number. ... Same weights old and new → spearman 1, top_overlap = min(top, n), b_c_flips 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "ranking_change_elig_filter_n",
+  "fn": "ranking_change",
+  "input": {
+   "jobs": [
+    {
+     "id": "a",
+     "elig": "可投",
+     "s_referral": 0.5,
+     "s_timing": 0.5,
+     "s_sponsor": 0.5,
+     "s_fresh": 0.5
+    },
+    {
+     "id": "b",
+     "elig": "可投",
+     "s_referral": 0.2,
+     "s_timing": 0.2,
+     "s_sponsor": 0.2,
+     "s_fresh": 0.2
+    },
+    {
+     "id": "c",
+     "elig": "可投",
+     "s_referral": 0.8,
+     "s_timing": 0.1,
+     "s_sponsor": 0.1,
+     "s_fresh": 0.1
+    },
+    {
+     "id": "d",
+     "elig": "可投",
+     "v_level": "exclude",
+     "s_referral": 0.1,
+     "s_timing": 0.8,
+     "s_sponsor": 0.1,
+     "s_fresh": 0.1
+    },
+    {
+     "id": "e",
+     "elig": "不可投",
+     "s_referral": 0.9,
+     "s_timing": 0.9,
+     "s_sponsor": 0.9,
+     "s_fresh": 0.9
+    },
+    {
+     "id": "f",
+     "s_referral": 0.9,
+     "s_timing": 0.9,
+     "s_sponsor": 0.9,
+     "s_fresh": 0.9
+    }
+   ],
+   "w_old": {
+    "s_referral": 0.4,
+    "s_timing": 0.25,
+    "s_sponsor": 0.2,
+    "s_fresh": 0.15
+   },
+   "w_new": {
+    "s_referral": 0.1,
+    "s_timing": 0.1,
+    "s_sponsor": 0.4,
+    "s_fresh": 0.4
+   },
+   "top": 50
+  },
+  "expect": {
+   "n": 4
+  },
+  "spec_quote": "Only jobs with elig == \"可投\" count; n = their number.",
+  "ambiguous": false
+ },
+ {
+  "name": "ranking_change_b_to_c_flip",
+  "fn": "ranking_change",
+  "input": {
+   "jobs": [
+    {
+     "id": "a",
+     "elig": "可投",
+     "v_level": "standard",
+     "s_referral": 1.0,
+     "s_timing": 0.2,
+     "s_sponsor": 0.2,
+     "s_fresh": 0.2
+    },
+    {
+     "id": "b",
+     "elig": "可投",
+     "v_level": "standard",
+     "s_referral": 1.0,
+     "s_timing": 1.0,
+     "s_sponsor": 1.0,
+     "s_fresh": 1.0
+    }
+   ],
+   "w_old": {
+    "s_referral": 0.4,
+    "s_timing": 0.25,
+    "s_sponsor": 0.2,
+    "s_fresh": 0.15
+   },
+   "w_new": {
+    "s_referral": 0.05,
+    "s_timing": 0.1,
+    "s_sponsor": 0.4,
+    "s_fresh": 0.45
+   },
+   "top": 50
+  },
+  "expect": {
+   "n": 2,
+   "b_c_flips": 1,
+   "c_to_b": 0,
+   "b_to_c": 1
+  },
+  "spec_quote": "b_c_flips = number of \"standard\" jobs whose (chance ≥ 0.5) differs between old and new weights, c_to_b = flips from < 0.5 to ≥ 0.5, b_to_c = the rest of the flips.",
+  "ambiguous": false
+ },
+ {
+  "name": "needed_n_constant_factor_none",
+  "fn": "needed_n",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      0.1,
+      0.5,
+      0.2,
+      0.3
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.9,
+      0.5,
+      0.4,
+      0.6
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.2,
+      0.5,
+      0.8,
+      0.1
+     ],
+     "y": 0
+    },
+    {
+     "x": [
+      0.7,
+      0.5,
+      0.6,
+      0.9
+     ],
+     "y": 0
+    }
+   ],
+   "beta": [
+    0,
+    0.4,
+    0.25,
+    0.2,
+    0.15
+   ],
+   "prior_sd": 1
+  },
+  "expect": {
+   "none": [
+    "s_timing"
+   ],
+   "int": [
+    "s_referral",
+    "s_sponsor",
+    "s_fresh"
+   ]
+  },
+  "spec_quote": "For each factor: None when the factor has the same value in every row (no variation, the data can never inform it); otherwise a positive integer (more variation → a smaller or equal number).",
+  "ambiguous": false
+ },
+ {
+  "name": "needed_n_two_constant_factors_none",
+  "fn": "needed_n",
+  "input": {
+   "rows": [
+    {
+     "x": [
+      0.1,
+      0.5,
+      0.2,
+      0.3
+     ],
+     "y": 1
+    },
+    {
+     "x": [
+      0.9,
+      0.5,
+      0.8,
+      0.3
+     ],
+     "y": 0
+    }
+   ],
+   "beta": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "prior_sd": 2
+  },
+  "expect": {
+   "none": [
+    "s_timing",
+    "s_fresh"
+   ],
+   "int": [
+    "s_referral",
+    "s_sponsor"
+   ]
+  },
+  "spec_quote": "For each factor: None when the factor has the same value in every row (no variation, the data can never inform it); otherwise a positive integer (more variation → a smaller or equal number).",
+  "ambiguous": false
+ }
+]

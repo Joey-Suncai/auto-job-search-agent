@@ -1,0 +1,590 @@
+[
+ {
+  "name": "no_candidate_location_select_returns_no_fields",
+  "html": "<div class=\"section page-centered application-form hidden\" id=\"countrySurvey\n_all-candidate-locations\n\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;What is your age range?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]}],&quot;id&quot;:&quot;bac3a1&quot;}\" data-name=\"surveysResponses[bac3a1][baseTemplate]\" name=\"surveysResponses[bac3a1][baseTemplate]\"><div class=\"application-field\">radios</div></div>",
+  "country": "United States",
+  "expect_fields": [],
+  "expect_plan_keys": []
+ },
+ {
+  "name": "select_only_no_survey_sections",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location"
+  ]
+ },
+ {
+  "name": "all_locations_section_kept_for_any_country",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey\n_all-candidate-locations\n\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;What is your age range?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]}],&quot;id&quot;:&quot;bac3a1&quot;}\" data-name=\"surveysResponses[bac3a1][baseTemplate]\" name=\"surveysResponses[bac3a1][baseTemplate]\"><div class=\"application-field\">radios</div></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[bac3a1][responses][field0]",
+    "type": "radio",
+    "label": "What is your age range?",
+    "options": [
+     "18-20",
+     "21-24"
+    ],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[bac3a1][responses][field0]"
+  ]
+ },
+ {
+  "name": "placeholder_only_select_and_no_answer_drops_survey",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_US\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Job title&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;b0b0b0&quot;}\" data-name=\"surveysResponses[b0b0b0][baseTemplate]\" name=\"surveysResponses[b0b0b0][baseTemplate]\"></div>",
+  "country": null,
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[b0b0b0][responses][field0]",
+    "type": "text",
+    "label": "Job title",
+    "options": [],
+    "required": false,
+    "survey_for": "US"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location"
+  ]
+ },
+ {
+  "name": "us_section_kept_and_ca_section_dropped_for_us",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_US\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;dropdown&quot;,&quot;text&quot;:&quot;State&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;California&quot;},{&quot;text&quot;:&quot;New York&quot;}]}],&quot;id&quot;:&quot;us1234&quot;}\" data-name=\"surveysResponses[us1234][baseTemplate]\" name=\"surveysResponses[us1234][baseTemplate]\"></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_CA\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Province&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;ca5678&quot;}\" data-name=\"surveysResponses[ca5678][baseTemplate]\" name=\"surveysResponses[ca5678][baseTemplate]\"></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[us1234][responses][field0]",
+    "type": "select",
+    "label": "State",
+    "options": [
+     "California",
+     "New York"
+    ],
+    "required": false,
+    "survey_for": "US"
+   },
+   {
+    "key": "surveysResponses[ca5678][responses][field0]",
+    "type": "text",
+    "label": "Province",
+    "options": [],
+    "required": false,
+    "survey_for": "CA"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[us1234][responses][field0]"
+  ]
+ },
+ {
+  "name": "all_section_kept_us_section_dropped_for_canada",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-select&quot;,&quot;text&quot;:&quot;Which benefits do you use?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;Health&quot;},{&quot;text&quot;:&quot;Dental&quot;},{&quot;text&quot;:&quot;Vision&quot;}]}],&quot;id&quot;:&quot;a11a11&quot;}\" data-name=\"surveysResponses[a11a11][baseTemplate]\" name=\"surveysResponses[a11a11][baseTemplate]\"></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_US\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Zip code&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;u55u55&quot;}\" data-name=\"surveysResponses[u55u55][baseTemplate]\" name=\"surveysResponses[u55u55][baseTemplate]\"></div>",
+  "country": "Canada",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[a11a11][responses][field0]",
+    "type": "multi",
+    "label": "Which benefits do you use?",
+    "options": [
+     "Health",
+     "Dental",
+     "Vision"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[u55u55][responses][field0]",
+    "type": "text",
+    "label": "Zip code",
+    "options": [],
+    "required": false,
+    "survey_for": "US"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[a11a11][responses][field0]"
+  ]
+ },
+ {
+  "name": "all_five_field_types_mapped",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey\n_all-candidate-locations\n\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;What is your age range?&quot;,&quot;required&quot;:true,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]},{&quot;type&quot;:&quot;multiple-select&quot;,&quot;text&quot;:&quot;Which benefits do you use?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;Health&quot;},{&quot;text&quot;:&quot;Dental&quot;},{&quot;text&quot;:&quot;Vision&quot;}]},{&quot;type&quot;:&quot;dropdown&quot;,&quot;text&quot;:&quot;Education&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;HS&quot;},{&quot;text&quot;:&quot;BA&quot;}]},{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Job title&quot;,&quot;required&quot;:false},{&quot;type&quot;:&quot;textarea&quot;,&quot;text&quot;:&quot;Anything else?&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;f1f1f1&quot;}\" data-name=\"surveysResponses[f1f1f1][baseTemplate]\" name=\"surveysResponses[f1f1f1][baseTemplate]\"></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[f1f1f1][responses][field0]",
+    "type": "radio",
+    "label": "What is your age range?",
+    "options": [
+     "18-20",
+     "21-24"
+    ],
+    "required": true,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[f1f1f1][responses][field1]",
+    "type": "multi",
+    "label": "Which benefits do you use?",
+    "options": [
+     "Health",
+     "Dental",
+     "Vision"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[f1f1f1][responses][field2]",
+    "type": "select",
+    "label": "Education",
+    "options": [
+     "HS",
+     "BA"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[f1f1f1][responses][field3]",
+    "type": "text",
+    "label": "Job title",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[f1f1f1][responses][field4]",
+    "type": "textarea",
+    "label": "Anything else?",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[f1f1f1][responses][field0]",
+   "surveysResponses[f1f1f1][responses][field1]",
+   "surveysResponses[f1f1f1][responses][field2]",
+   "surveysResponses[f1f1f1][responses][field3]",
+   "surveysResponses[f1f1f1][responses][field4]"
+  ]
+ },
+ {
+  "name": "broken_json_template_skipped_next_input_used",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Broken&quot;,&quot;fields&quot;:[&quot; data-name=\"surveysResponses[badbad][baseTemplate]\" name=\"surveysResponses[badbad][baseTemplate]\"><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;What is your age range?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]}],&quot;id&quot;:&quot;c0c0c0&quot;}\" data-name=\"surveysResponses[c0c0c0][baseTemplate]\" name=\"surveysResponses[c0c0c0][baseTemplate]\"></div>",
+  "country": "Canada",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[c0c0c0][responses][field0]",
+    "type": "radio",
+    "label": "What is your age range?",
+    "options": [
+     "18-20",
+     "21-24"
+    ],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[c0c0c0][responses][field0]"
+  ]
+ },
+ {
+  "name": "whitespace_and_underscores_in_section_id_normalised",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey\n_US\n\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;State&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;d1d1d1&quot;}\" data-name=\"surveysResponses[d1d1d1][baseTemplate]\" name=\"surveysResponses[d1d1d1][baseTemplate]\"></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey\n_all-candidate-locations\n\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;Age range&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;}]}],&quot;id&quot;:&quot;d2d2d2&quot;}\" data-name=\"surveysResponses[d2d2d2][baseTemplate]\" name=\"surveysResponses[d2d2d2][baseTemplate]\"></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[d1d1d1][responses][field0]",
+    "type": "text",
+    "label": "State",
+    "options": [],
+    "required": false,
+    "survey_for": "US"
+   },
+   {
+    "key": "surveysResponses[d2d2d2][responses][field0]",
+    "type": "radio",
+    "label": "Age range",
+    "options": [
+     "18-20"
+    ],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[d1d1d1][responses][field0]",
+   "surveysResponses[d2d2d2][responses][field0]"
+  ]
+ },
+ {
+  "name": "survey_for_compared_case_insensitively",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_us\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Job title&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;e1e1e1&quot;}\" data-name=\"surveysResponses[e1e1e1][baseTemplate]\" name=\"surveysResponses[e1e1e1][baseTemplate]\"></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[e1e1e1][responses][field0]",
+    "type": "text",
+    "label": "Job title",
+    "options": [],
+    "required": false,
+    "survey_for": "us"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[e1e1e1][responses][field0]"
+  ]
+ },
+ {
+  "name": "canada_section_kept_for_canada",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_CA\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;Province&quot;,&quot;required&quot;:true,&quot;options&quot;:[{&quot;text&quot;:&quot;Ontario&quot;},{&quot;text&quot;:&quot;Quebec&quot;}]}],&quot;id&quot;:&quot;ca0001&quot;}\" data-name=\"surveysResponses[ca0001][baseTemplate]\" name=\"surveysResponses[ca0001][baseTemplate]\"></div>",
+  "country": "Canada",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[ca0001][responses][field0]",
+    "type": "radio",
+    "label": "Province",
+    "options": [
+     "Ontario",
+     "Quebec"
+    ],
+    "required": true,
+    "survey_for": "CA"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[ca0001][responses][field0]"
+  ]
+ },
+ {
+  "name": "no_answer_drops_every_survey_field",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;What is your age range?&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]}],&quot;id&quot;:&quot;bac3a1&quot;}\" data-name=\"surveysResponses[bac3a1][baseTemplate]\" name=\"surveysResponses[bac3a1][baseTemplate]\"></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_US\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Job title&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;b0b0b0&quot;}\" data-name=\"surveysResponses[b0b0b0][baseTemplate]\" name=\"surveysResponses[b0b0b0][baseTemplate]\"></div>",
+  "country": null,
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[bac3a1][responses][field0]",
+    "type": "radio",
+    "label": "What is your age range?",
+    "options": [
+     "18-20",
+     "21-24"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[b0b0b0][responses][field0]",
+    "type": "text",
+    "label": "Job title",
+    "options": [],
+    "required": false,
+    "survey_for": "US"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location"
+  ]
+ },
+ {
+  "name": "multiple_fields_with_label_whitespace_normalised",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;What  is your age range?&quot;,&quot;required&quot;:true},{&quot;type&quot;:&quot;textarea&quot;,&quot;text&quot;:&quot;Anything else?&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;c0ffee&quot;}\" data-name=\"surveysResponses[c0ffee][baseTemplate]\" name=\"surveysResponses[c0ffee][baseTemplate]\"></div>",
+  "country": "Canada",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[c0ffee][responses][field0]",
+    "type": "text",
+    "label": "What is your age range?",
+    "options": [],
+    "required": true,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[c0ffee][responses][field1]",
+    "type": "textarea",
+    "label": "Anything else?",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[c0ffee][responses][field0]",
+   "surveysResponses[c0ffee][responses][field1]"
+  ]
+ },
+ {
+  "name": "label_uses_last_application_label_before_select",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">Demographic questions</div><div class=\"application-label\">Where are you based?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (Where are you based?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location"
+  ]
+ },
+ {
+  "name": "unknown_type_maps_to_text_and_missing_options_empty",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;checkbox&quot;,&quot;text&quot;:&quot;Pick one&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;A&quot;},{&quot;text&quot;:&quot;B&quot;}]},{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Notes&quot;,&quot;required&quot;:false,&quot;options&quot;:[]}],&quot;id&quot;:&quot;ab12cd&quot;}\" data-name=\"surveysResponses[ab12cd][baseTemplate]\" name=\"surveysResponses[ab12cd][baseTemplate]\"></div>",
+  "country": "United States",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[ab12cd][responses][field0]",
+    "type": "text",
+    "label": "Pick one",
+    "options": [
+     "A",
+     "B"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[ab12cd][responses][field1]",
+    "type": "text",
+    "label": "Notes",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[ab12cd][responses][field0]",
+   "surveysResponses[ab12cd][responses][field1]"
+  ]
+ },
+ {
+  "name": "two_template_inputs_in_one_section_in_order",
+  "html": "<div class=\"application-question\"><label><div class=\"application-label\">What is your location?</div><div class=\"application-field\"><div class=\"application-dropdown\"><select class=\"candidate-location\" data-qa=\"candidate-location-select\"><option value=\"\">Select...</option><option value=\"CA\">Canada</option><option value=\"US\">United States</option></select></div></div></label></div><div class=\"section page-centered application-form hidden\" id=\"countrySurvey_all-candidate-locations\"><h4>Demographic Survey for Acme</h4><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;multiple-choice&quot;,&quot;text&quot;:&quot;Age range&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;18-20&quot;},{&quot;text&quot;:&quot;21-24&quot;}]},{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Job title&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;abc123&quot;}\" data-name=\"surveysResponses[abc123][baseTemplate]\" name=\"surveysResponses[abc123][baseTemplate]\"><input type=\"hidden\" value=\"{&quot;text&quot;:&quot;Demographic Survey&quot;,&quot;type&quot;:&quot;survey&quot;,&quot;fields&quot;:[{&quot;type&quot;:&quot;dropdown&quot;,&quot;text&quot;:&quot;Education&quot;,&quot;required&quot;:false,&quot;options&quot;:[{&quot;text&quot;:&quot;HS&quot;},{&quot;text&quot;:&quot;BA&quot;}]},{&quot;type&quot;:&quot;textarea&quot;,&quot;text&quot;:&quot;Notes&quot;,&quot;required&quot;:false}],&quot;id&quot;:&quot;def456&quot;}\" data-name=\"surveysResponses[def456][baseTemplate]\" name=\"surveysResponses[def456][baseTemplate]\"></div>",
+  "country": "Canada",
+  "expect_fields": [
+   {
+    "key": "candidate-location",
+    "type": "select",
+    "label": "Country of residence (What is your location?)",
+    "options": [
+     "Canada",
+     "United States"
+    ],
+    "required": false,
+    "survey_for": null
+   },
+   {
+    "key": "surveysResponses[abc123][responses][field0]",
+    "type": "radio",
+    "label": "Age range",
+    "options": [
+     "18-20",
+     "21-24"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[abc123][responses][field1]",
+    "type": "text",
+    "label": "Job title",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[def456][responses][field0]",
+    "type": "select",
+    "label": "Education",
+    "options": [
+     "HS",
+     "BA"
+    ],
+    "required": false,
+    "survey_for": "*"
+   },
+   {
+    "key": "surveysResponses[def456][responses][field1]",
+    "type": "textarea",
+    "label": "Notes",
+    "options": [],
+    "required": false,
+    "survey_for": "*"
+   }
+  ],
+  "expect_plan_keys": [
+   "candidate-location",
+   "surveysResponses[abc123][responses][field0]",
+   "surveysResponses[abc123][responses][field1]",
+   "surveysResponses[def456][responses][field0]",
+   "surveysResponses[def456][responses][field1]"
+  ]
+ }
+]

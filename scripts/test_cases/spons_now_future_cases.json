@@ -1,0 +1,170 @@
+[
+ {
+  "name": "future_now_or_in_the_future",
+  "label": "Will you now or in the future require sponsorship?",
+  "expect": "future",
+  "spec_quote": "any question that covers the future or any time after graduation, even if it also says \"now\".",
+  "ambiguous": false
+ },
+ {
+  "name": "future_now_or_at_any_time_after_graduation_h1b_tn",
+  "label": "Do you now or at any time after graduation require sponsorship (E.g., H-1B, TN, etc.)?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: \"now or in the future\", \"now or at any time after graduation\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_at_any_time",
+  "label": "Will you require visa sponsorship at any time?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"at any time\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_upon_graduation",
+  "label": "Will you require sponsorship upon graduation?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: \"now or in the future\", \"now or at any time after graduation\", \"at any time\", \"upon graduation\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_later",
+  "label": "Will you need visa sponsorship later?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"later\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_eventually",
+  "label": "Will you eventually require sponsorship?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"eventually\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_going_forward",
+  "label": "Will you require sponsorship going forward?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"going forward\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_in_the_future",
+  "label": "Will you require sponsorship in the future?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"in the future\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_for_full_time",
+  "label": "Will you require visa sponsorship for full-time employment?",
+  "expect": "future",
+  "spec_quote": "Examples of future wording: ... \"will you require … for full-time\"",
+  "ambiguous": false
+ },
+ {
+  "name": "future_no_time_word",
+  "label": "Will you require visa sponsorship?",
+  "expect": "future",
+  "spec_quote": "A question with no time word at all (\"Will you require visa sponsorship?\") is also \"future\" (the safe, true answer is Yes).",
+  "ambiguous": false
+ },
+ {
+  "name": "now_time_word_after_sponsorship",
+  "label": "Do you now require sponsorship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence (\"Do you now require sponsorship\", \"Do you require sponsorship at this time?\"), and has no future wording.",
+  "ambiguous": false
+ },
+ {
+  "name": "now_currently",
+  "label": "Do you currently require sponsorship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_at_this_time",
+  "label": "Do you require sponsorship at this time?",
+  "expect": "now",
+  "spec_quote": "(\"Do you now require sponsorship\", \"Do you require sponsorship at this time?\")",
+  "ambiguous": false
+ },
+ {
+  "name": "now_to_begin_this_internship",
+  "label": "Do you require sponsorship to begin this internship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_time_word_at_end",
+  "label": "Do you require sponsorship now?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_currently_before_sponsorship",
+  "label": "Are you currently requiring visa sponsorship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_two_time_words",
+  "label": "Do you now require visa sponsorship to begin this internship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_at_this_time_fronted",
+  "label": "At this time, do you require sponsorship?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "now_currently_at_end",
+  "label": "Do you require sponsorship currently?",
+  "expect": "now",
+  "spec_quote": "the question asks only about the present: \"now\", \"currently\", \"at this time\", \"to begin this internship\", placed anywhere in the sentence",
+  "ambiguous": false
+ },
+ {
+  "name": "other_what_type_of_sponsorship",
+  "label": "What type of sponsorship do you need?",
+  "expect": "other",
+  "spec_quote": "Not a sponsorship Yes/No question (classify \"other\"): \"What type of sponsorship do you need?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_which_visa_type",
+  "label": "Which visa type?",
+  "expect": "other",
+  "spec_quote": "Not a sponsorship Yes/No question (classify \"other\"): ... \"Which visa type?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_work_authorization",
+  "label": "Are you legally authorized to work in the US?",
+  "expect": "other",
+  "spec_quote": "\"Are you legally authorized to work in the US?\" (work authorization, not sponsorship)",
+  "ambiguous": false
+ },
+ {
+  "name": "other_graduation_date",
+  "label": "When do you graduate?",
+  "expect": "other",
+  "spec_quote": "Not a sponsorship Yes/No question (classify \"other\"): ... \"When do you graduate?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_which_sponsorship_category",
+  "label": "Which sponsorship category applies to you?",
+  "expect": "other",
+  "spec_quote": "Not a sponsorship Yes/No question (classify \"other\"): \"What type of sponsorship do you need?\", \"Which visa type?\"",
+  "ambiguous": false
+ }
+]

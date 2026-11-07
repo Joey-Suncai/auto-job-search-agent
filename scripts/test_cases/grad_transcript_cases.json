@@ -1,0 +1,262 @@
+[
+ {
+  "name": "grad_slot_plain_graduate",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Graduate Transcript"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "`slot_kind(label)` for an application file-upload slot returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_masters_apostrophe",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Master's transcript"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_ms_abbrev",
+  "fn": "slot_kind",
+  "args": {
+   "label": "M.S. Transcript"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_post_graduate",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Post-graduate transcript"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_grad_school",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Grad school transcript"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_if_applicable_wording",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Transcript (Graduate, if applicable)"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "including \"Transcript (Graduate, if applicable)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_mixed_undergrad_and_grad",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Undergraduate and graduate transcripts"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "and \"undergraduate and graduate transcripts\" (it asks for a graduate one too)",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_optional",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Graduate transcript (optional)"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_grad_if_applicable_phrase",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Graduate school transcript (if applicable)"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_slot_masters_program",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Master's program transcript (M.S.)"
+  },
+  "expect": "grad_transcript",
+  "spec_quote": "returns \"grad_transcript\" when the label asks for a GRADUATE / master's / M.S. / post-graduate / grad-school transcript",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_undergraduate",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Undergraduate transcript"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_unofficial",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Unofficial transcript"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_most_recent",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Most recent transcript"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_academic_record",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Academic record"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_plain",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Transcript"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "transcript_undergraduate_unofficial_combo",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Undergraduate transcript (unofficial)"
+  },
+  "expect": "transcript",
+  "spec_quote": "\"Undergraduate transcript\", \"Unofficial transcript\", \"Most recent transcript\", \"Academic record\" return \"transcript\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_portfolio",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Portfolio"
+  },
+  "expect": "other_file",
+  "spec_quote": "anything else (portfolio, writing sample) is \"other_file\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_writing_sample",
+  "fn": "slot_kind",
+  "args": {
+   "label": "Writing sample"
+  },
+  "expect": "other_file",
+  "spec_quote": "anything else (portfolio, writing sample) is \"other_file\"",
+  "ambiguous": false
+ },
+ {
+  "name": "email_secondary",
+  "fn": "email",
+  "args": {
+   "label": "Secondary email"
+  },
+  "expect": "secondary",
+  "spec_quote": "Secondary e-mail question (\"Secondary email\", \"Alternate email address\", \"Backup e-mail\", \"Additional email\") → the secondary e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_alternate",
+  "fn": "email",
+  "args": {
+   "label": "Alternate email address"
+  },
+  "expect": "secondary",
+  "spec_quote": "Secondary e-mail question (\"Secondary email\", \"Alternate email address\", \"Backup e-mail\", \"Additional email\") → the secondary e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_backup",
+  "fn": "email",
+  "args": {
+   "label": "Backup e-mail"
+  },
+  "expect": "secondary",
+  "spec_quote": "Secondary e-mail question (\"Secondary email\", \"Alternate email address\", \"Backup e-mail\", \"Additional email\") → the secondary e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_additional",
+  "fn": "email",
+  "args": {
+   "label": "Additional email"
+  },
+  "expect": "secondary",
+  "spec_quote": "Secondary e-mail question (\"Secondary email\", \"Alternate email address\", \"Backup e-mail\", \"Additional email\") → the secondary e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_plain",
+  "fn": "email",
+  "args": {
+   "label": "Email"
+  },
+  "expect": "main",
+  "spec_quote": "plain \"Email\" / \"Email address\" / \"Confirm email\" → the main e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_address",
+  "fn": "email",
+  "args": {
+   "label": "Email address"
+  },
+  "expect": "main",
+  "spec_quote": "plain \"Email\" / \"Email address\" / \"Confirm email\" → the main e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_confirm",
+  "fn": "email",
+  "args": {
+   "label": "Confirm email"
+  },
+  "expect": "main",
+  "spec_quote": "plain \"Email\" / \"Email address\" / \"Confirm email\" → the main e-mail",
+  "ambiguous": false
+ },
+ {
+  "name": "email_your_email",
+  "fn": "email",
+  "args": {
+   "label": "Your email"
+  },
+  "expect": "main",
+  "spec_quote": "plain \"Email\" / \"Email address\" / \"Confirm email\" → the main e-mail",
+  "ambiguous": false
+ }
+]

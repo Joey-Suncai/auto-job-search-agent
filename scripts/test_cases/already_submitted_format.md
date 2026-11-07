@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "folder": str (a path like "/x/applications/<name>" or "<name>/"), "lines": [str, ...] or null (raw file lines; null = no file), "expect": bool, "spec_quote": str, "ambiguous": false}
+Write 16 cases: submitted by runner / joey / no by, only dry-run lines, a later blocked line after a submitted one (still True), substring names, trailing slash, invalid JSON line, no file, empty file.

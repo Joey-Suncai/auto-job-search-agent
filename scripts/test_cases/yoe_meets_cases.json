@@ -1,0 +1,313 @@
+[
+ {
+  "name": "internship_no_experience_required",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Northwind Analytics is hiring summer interns for our data team. This is an entry-level internship designed for students still enrolled in a degree program. No prior professional experience is required; we provide full training during the first two weeks. Candidates should be comfortable with spreadsheets and eager to learn.",
+  "expect": "Yes"
+ },
+ {
+  "name": "new_grad_no_prior_experience",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Brightpath Software runs a new-grad engineering program starting each July. We hire graduating seniors with strong fundamentals in computer science. Prior industry experience is not necessary, and we do not require any internships. You will be paired with a mentor for your first six months.",
+  "expect": "Yes, I do"
+ },
+ {
+  "name": "zero_to_two_years_minimum_zero",
+  "label": "Do you satisfy the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "jd": "Lakeside Media is looking for a junior research assistant. The role is open to candidates with 0-2 years of experience, and we encourage recent graduates to apply. Day-to-day work includes survey design and basic data cleaning. Training is provided on our internal tools.",
+  "expect": "Yes"
+ },
+ {
+  "name": "years_of_college_only",
+  "label": "Do you possess the required years of experience listed in the job description?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Cedar Grove Nonprofit seeks an intern for its community outreach team. Applicants must have completed at least two years of college coursework in a related field. The internship runs for ten weeks during the summer. Strong written communication skills are a plus.",
+  "expect": "Yes"
+ },
+ {
+  "name": "age_requirement_only",
+  "label": "Do you meet the minimum years of experience required for this role?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Summit Retail is hiring seasonal sales associates for the holiday period. Applicants must be at least 18 years of age and able to lift 25 pounds. No previous retail experience is necessary. Schedules include evenings and weekends.",
+  "expect": "Yes"
+ },
+ {
+  "name": "company_history_years",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "radio",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Harborline Logistics has served the region for over 40 years and is now hiring operations interns. Our internship program introduces students to freight coordination and customer service. No professional experience is required. Candidates should be organized and detail-oriented.",
+  "expect": "Yes, I do"
+ },
+ {
+  "name": "zero_plus_years",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "jd": "Pinecrest Health is recruiting new-grad patient coordinators. The posting lists 0+ years of experience, with all training provided on site. We look for candidates with a calm manner and good record-keeping habits. This is a full-time role starting in June.",
+  "expect": "Yes"
+ },
+ {
+  "name": "zero_years_explicit",
+  "label": "Do you satisfy the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Quarry Lane Books is hiring a marketing intern for the fall semester. The job description states 0 years of experience required; we welcome first-time interns. Duties include social media scheduling and event support. The position is 15 hours per week.",
+  "expect": "Yes, I do"
+ },
+ {
+  "name": "class_of_2027_graduation",
+  "label": "Do you possess the required years of experience listed in the job description?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Meridian Capital Group is accepting applications for its summer analyst internship. Candidates must be on track to graduate in the class of 2027. We do not require any previous finance experience. The ten-week program includes a capstone project.",
+  "expect": "Yes"
+ },
+ {
+  "name": "four_year_degree_no_experience",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Fairfield Engineering is hiring new-grad civil engineering analysts. A four-year bachelor's degree in civil engineering is required. No work experience is required beyond the degree, though a relevant coursework project is helpful. The role begins with a structured onboarding program.",
+  "expect": "Yes"
+ },
+ {
+  "name": "graduation_within_a_year",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "radio",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Blue Harbor Foods is looking for a supply chain intern to join us next spring. Applicants should be graduating within a year and enrolled in a relevant program. No prior industry experience is necessary. Interns work alongside our planning team three days a week.",
+  "expect": "Yes, I do"
+ },
+ {
+  "name": "two_plus_years_digits",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Kestrel Data Systems is hiring a data analyst. The role requires 2+ years of experience in an analytics role. You will build dashboards and maintain reporting pipelines. Familiarity with SQL and a BI tool is expected.",
+  "expect": "ASK"
+ },
+ {
+  "name": "at_least_two_years_words",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Thornton & Vale is recruiting a communications manager. Candidates must have at least two years of professional experience in public relations or corporate communications. The role involves media relations and drafting executive messaging. Excellent writing skills are essential.",
+  "expect": "ASK"
+ },
+ {
+  "name": "three_to_five_years_industry",
+  "label": "Do you possess the required years of experience listed in the job description?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Alpine Ridge Manufacturing seeks a process engineer. We are looking for 3-5 years of relevant industry experience in a production environment. The position supports continuous-improvement projects across two plants. A BS in industrial engineering is preferred.",
+  "expect": "ASK"
+ },
+ {
+  "name": "one_year_related_work",
+  "label": "Do you satisfy the years of experience required for this position?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "jd": "Verity Legal Services is hiring a paralegal assistant. The ideal candidate has one year of related work experience in a law office. Duties include filing, scheduling, and document preparation. Strong attention to detail is required.",
+  "expect": "ASK"
+ },
+ {
+  "name": "two_yrs_sql",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Nimbus Retail Analytics is growing its reporting team. The job lists 2 yrs experience with SQL and a strong grasp of Excel. You will support weekly sales reporting for merchandising. This is a hybrid role based downtown.",
+  "expect": "ASK"
+ },
+ {
+  "name": "one_plus_years_preferred",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Willow Creek Marketing is hiring a content associate. 1+ years of experience in content writing or social media is preferred. The associate will draft blog posts and newsletters. We offer flexible hours and a small, collaborative team.",
+  "expect": "ASK"
+ },
+ {
+  "name": "minimum_three_years_related",
+  "label": "Do you possess the required years of experience listed in the job description?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Granite Peak Financial is seeking a credit analyst. A minimum of 3 years of experience in commercial lending is required. The analyst will prepare credit memos and monitor portfolio risk. CFA progress is a plus.",
+  "expect": "ASK"
+ },
+ {
+  "name": "four_years_preferred_words",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "jd": "Silverline Studios is hiring a producer for branded video projects. Four years of experience in video production is preferred, though we will consider strong portfolios. The producer manages budgets, crews, and client timelines. Travel to shoot locations is occasional.",
+  "expect": "ASK"
+ },
+ {
+  "name": "no_jd_text_available",
+  "label": "Do you meet the years of experience required for this position?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "",
+  "expect": "ASK"
+ },
+ {
+  "name": "at_least_one_year_experience",
+  "label": "Do you have the minimum years of experience required for this role?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Orchard Street Clinic is hiring a front-desk coordinator. Candidates should have at least 1 year of experience in a healthcare or customer-service setting. The coordinator manages scheduling and insurance intake. Bilingual candidates are encouraged to apply.",
+  "expect": "ASK"
+ },
+ {
+  "name": "five_plus_years_required",
+  "label": "Do you satisfy the years of experience required for this position?",
+  "type": "radio",
+  "options": [
+   "Yes, I do",
+   "No, I do not"
+  ],
+  "jd": "Ironwood Consulting is looking for an engagement manager. The posting requires 5+ years of experience leading client engagements. You will manage a team of three analysts and own deliverable quality. An MBA is preferred but not required.",
+  "expect": "ASK"
+ },
+ {
+  "name": "two_years_similar_role",
+  "label": "Do you possess the required years of experience listed in the job description?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Copperfield Home Goods is hiring a merchandising planner. A minimum of two years of experience in a similar planning role is required. The planner forecasts demand for two product categories. Advanced Excel skills are needed.",
+  "expect": "ASK"
+ },
+ {
+  "name": "how_many_years_do_you_have",
+  "label": "How many years of professional experience do you have?",
+  "type": "select",
+  "options": [
+   "0-1 years",
+   "2-4 years",
+   "5+ years"
+  ],
+  "jd": "Beacon Hill Staffing is hiring an administrative assistant for a client in the nonprofit sector. The assistant supports scheduling, expense reports, and meeting logistics. Strong Outlook skills are preferred.",
+  "expect": "NOT_THIS_RULE"
+ },
+ {
+  "name": "years_experience_with_python",
+  "label": "Years of experience with Python",
+  "type": "select",
+  "options": [
+   "0-1 years",
+   "2-3 years",
+   "4+ years"
+  ],
+  "jd": "Cobalt Labs is hiring a backend engineer to work on our Python services. You will design APIs and improve our data pipeline reliability. Experience with Postgres is a plus.",
+  "expect": "NOT_THIS_RULE"
+ },
+ {
+  "name": "experience_with_tableau",
+  "label": "Do you have experience with Tableau?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Riverside Health Analytics is hiring a reporting specialist. The specialist builds dashboards for clinical operations teams. We value clear communication and curiosity about healthcare data.",
+  "expect": "NOT_THIS_RULE"
+ },
+ {
+  "name": "how_many_years_customer_service",
+  "label": "How many years of experience do you have in customer service?",
+  "type": "select",
+  "options": [
+   "Less than 1 year",
+   "1-3 years",
+   "More than 3 years"
+  ],
+  "jd": "Trailhead Outfitters is hiring a customer support associate for our online store. The associate answers email and chat inquiries about orders and returns. Weekend coverage is shared across the team.",
+  "expect": "NOT_THIS_RULE"
+ },
+ {
+  "name": "do_you_have_fundraising_experience",
+  "label": "Do you have prior experience with fundraising?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "jd": "Greenway Arts Council is hiring a development intern to support its annual fund. The intern helps with donor mailings and event logistics. This is a 12-week internship with a stipend.",
+  "expect": "NOT_THIS_RULE"
+ }
+]

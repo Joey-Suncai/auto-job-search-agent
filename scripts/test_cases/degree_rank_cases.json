@@ -1,0 +1,231 @@
+[
+ {
+  "name": "simple_ms_over_ma",
+  "options": [
+   "Bachelor's Degree",
+   "Master of Arts",
+   "Master of Science"
+  ],
+  "expect": "Master of Science"
+ },
+ {
+  "name": "first_tier_tie_list_order",
+  "options": [
+   "Master's of Science",
+   "Master of Science",
+   "Master's Degree",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master's of Science"
+ },
+ {
+  "name": "ms_abbrev_over_plain",
+  "options": [
+   "Masters",
+   "MS",
+   "Bachelor's Degree"
+  ],
+  "expect": "MS"
+ },
+ {
+  "name": "msc_over_plain_degree",
+  "options": [
+   "Master of Arts",
+   "MSc",
+   "Master's Degree",
+   "Associate's Degree"
+  ],
+  "expect": "MSc"
+ },
+ {
+  "name": "plain_degree_over_other_master",
+  "options": [
+   "Bachelor's Degree",
+   "Master of Arts",
+   "Master's Degree",
+   "Doctorate"
+  ],
+  "expect": "Master's Degree"
+ },
+ {
+  "name": "second_tier_tie_list_order",
+  "options": [
+   "Bachelor's Degree",
+   "Master of Arts",
+   "Masters",
+   "Master's Degree"
+  ],
+  "expect": "Masters"
+ },
+ {
+  "name": "plain_masters_apostrophe_over_other",
+  "options": [
+   "Associate's Degree",
+   "Master of Arts",
+   "Master's",
+   "Doctorate"
+  ],
+  "expect": "Master's"
+ },
+ {
+  "name": "science_or_engineering_allowed_alone",
+  "options": [
+   "Master of Science or Engineering",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master of Science or Engineering"
+ },
+ {
+  "name": "plain_degree_beats_science_or_engineering",
+  "options": [
+   "Master of Science or Engineering",
+   "Master's Degree",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master's Degree"
+ },
+ {
+  "name": "ms_beats_science_or_engineering",
+  "options": [
+   "Master of Science or Engineering",
+   "MS",
+   "Bachelor's Degree"
+  ],
+  "expect": "MS"
+ },
+ {
+  "name": "mba_disallowed_null",
+  "options": [
+   "Bachelor's Degree",
+   "MBA",
+   "Master of Business Administration"
+  ],
+  "expect": null
+ },
+ {
+  "name": "law_disallowed_null",
+  "options": [
+   "MS-Law",
+   "Master of Laws",
+   "LLM",
+   "JD",
+   "Bachelor's Degree"
+  ],
+  "expect": null
+ },
+ {
+  "name": "executive_disallowed_null",
+  "options": [
+   "Executive Master",
+   "EMBA",
+   "Bachelor's Degree"
+  ],
+  "expect": null
+ },
+ {
+  "name": "education_finearts_socialwork_null",
+  "options": [
+   "M.Ed",
+   "MFA",
+   "MSW",
+   "Bachelor's Degree"
+  ],
+  "expect": null
+ },
+ {
+  "name": "public_health_admin_policy_null",
+  "options": [
+   "MPH",
+   "MPA",
+   "MPP",
+   "Bachelor's Degree"
+  ],
+  "expect": null
+ },
+ {
+  "name": "engineering_only_null",
+  "options": [
+   "Master of Engineering",
+   "M.Eng",
+   "Bachelor's Degree"
+  ],
+  "expect": null
+ },
+ {
+  "name": "technology_disallowed_does_not_block_ms",
+  "options": [
+   "Master of Technology",
+   "Master of Science",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master of Science"
+ },
+ {
+  "name": "nursing_disallowed_does_not_block_ms",
+  "options": [
+   "Master of Science in Nursing",
+   "Master of Science",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master of Science"
+ },
+ {
+  "name": "no_allowed_master_null",
+  "options": [
+   "Bachelor's Degree",
+   "Associate's Degree",
+   "Doctorate"
+  ],
+  "expect": null
+ },
+ {
+  "name": "first_tier_tie_ms_abbrev_order",
+  "options": [
+   "Bachelor's Degree",
+   "M.S.",
+   "MS",
+   "Master of Science"
+  ],
+  "expect": "M.S."
+ },
+ {
+  "name": "composite_allowed_tie_list_order",
+  "options": [
+   "Associate's Degree",
+   "Master of Science or Engineering",
+   "Masters of Arts or Science or Business Administration (Masters)"
+  ],
+  "expect": "Master of Science or Engineering"
+ },
+ {
+  "name": "plain_degree_beats_composite_allowed",
+  "options": [
+   "Doctorate",
+   "Master of Science or Engineering",
+   "Masters of Arts or Science or Business Administration (Masters)",
+   "Master's Degree"
+  ],
+  "expect": "Master's Degree"
+ },
+ {
+  "name": "ms_beats_plain_and_composite",
+  "options": [
+   "Bachelor's Degree",
+   "Master's Degree",
+   "Masters of Arts or Science or Business Administration (Masters)",
+   "Master of Science"
+  ],
+  "expect": "Master of Science"
+ },
+ {
+  "name": "disallowed_specialties_with_other_allowed",
+  "options": [
+   "MBA",
+   "MS-Law",
+   "MFA",
+   "Master of Arts",
+   "Bachelor's Degree"
+  ],
+  "expect": "Master of Arts"
+ }
+]

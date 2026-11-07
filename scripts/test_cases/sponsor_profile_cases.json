@@ -1,0 +1,242 @@
+[
+ {
+  "name": "F-1 sponsor_factor Blocked citizenship required",
+  "fn": "sponsor_factor",
+  "args": [
+   "Blocked: citizenship required",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.0
+ },
+ {
+  "name": "F-1 sponsor_factor Blocked no sponsorship",
+  "fn": "sponsor_factor",
+  "args": [
+   "Blocked: no sponsorship",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.0
+ },
+ {
+  "name": "F-1 sponsor_factor Posting offers sponsorship",
+  "fn": "sponsor_factor",
+  "args": [
+   "Posting offers sponsorship",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 1.0
+ },
+ {
+  "name": "F-1 sponsor_factor Strong H-1B sponsor",
+  "fn": "sponsor_factor",
+  "args": [
+   "Strong H-1B sponsor",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.8
+ },
+ {
+  "name": "F-1 sponsor_factor Some H-1B history",
+  "fn": "sponsor_factor",
+  "args": [
+   "Some H-1B history",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.6
+ },
+ {
+  "name": "F-1 sponsor_factor Unknown verify",
+  "fn": "sponsor_factor",
+  "args": [
+   "Unknown — verify",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.4
+ },
+ {
+  "name": "F-1 sponsor_factor null label",
+  "fn": "sponsor_factor",
+  "args": [
+   null,
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.4
+ },
+ {
+  "name": "Citizen sponsor_factor Blocked no sponsorship",
+  "fn": "sponsor_factor",
+  "args": [
+   "Blocked: no sponsorship",
+   {
+    "needs_sponsorship": false,
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": 1.0
+ },
+ {
+  "name": "Green-card sponsor_factor Blocked citizenship required",
+  "fn": "sponsor_factor",
+  "args": [
+   "Blocked: citizenship required",
+   {
+    "needs_sponsorship": false,
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": 1.0
+ },
+ {
+  "name": "H-1B sponsor_factor Blocked other reason",
+  "fn": "sponsor_factor",
+  "args": [
+   "Blocked: other reason",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": 0.0
+ },
+ {
+  "name": "F-1 label_blocks Blocked citizenship required",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: citizenship required",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "Citizen label_blocks Blocked citizenship required",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: citizenship required",
+   {
+    "needs_sponsorship": false,
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "Green-card label_blocks Blocked citizenship required",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: citizenship required",
+   {
+    "needs_sponsorship": false,
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "F-1 label_blocks Blocked no sponsorship",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: no sponsorship",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "Citizen label_blocks Blocked no sponsorship",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: no sponsorship",
+   {
+    "needs_sponsorship": false,
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "F-1 label_blocks Blocked other reason",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: other reason",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "F-1 label_blocks Posting offers sponsorship",
+  "fn": "label_blocks",
+  "args": [
+   "Posting offers sponsorship",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "F-1 label_blocks empty label",
+  "fn": "label_blocks",
+  "args": [
+   "",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "F-1 label_blocks null label",
+  "fn": "label_blocks",
+  "args": [
+   null,
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "F-1 label_blocks Blocked NO SPONSORSHIP uppercase phrase",
+  "fn": "label_blocks",
+  "args": [
+   "Blocked: NO SPONSORSHIP",
+   {
+    "needs_sponsorship": true,
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": true
+ }
+]

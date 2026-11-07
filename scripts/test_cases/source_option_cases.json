@@ -1,0 +1,158 @@
+[
+ {
+  "name": "linkedin",
+  "option": "LinkedIn",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a channel he could truthfully have used: a website, job board, social network, search engine, advertisement, publication) — LinkedIn is a social network/job board he could have found the job on."
+ },
+ {
+  "name": "employee_referral",
+  "option": "Employee Referral",
+  "expect": false,
+  "reason": "Spec: false when it claims a person, contact, event, school, program or prior work (e.g. \"Employee Referral\") — he was never referred."
+ },
+ {
+  "name": "indeed",
+  "option": "Indeed",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a channel he could truthfully have used: a website, job board...) — Indeed is a public job board."
+ },
+ {
+  "name": "referred_by_recruiter",
+  "option": "Referred by a Recruiter",
+  "expect": false,
+  "reason": "Spec example false case: \"Referred by a Recruiter\" — he was never contacted by a recruiter."
+ },
+ {
+  "name": "company_website",
+  "option": "Company Website",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a website...) — he found jobs on company career sites."
+ },
+ {
+  "name": "company_contacted_me",
+  "option": "Company Contacted Me",
+  "expect": false,
+  "reason": "Spec example false case: \"Company Contacted Me\" — he was never contacted by the company."
+ },
+ {
+  "name": "built_in",
+  "option": "Built In",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a job board / website) — Built In is a public job board."
+ },
+ {
+  "name": "campus_recruiting_event",
+  "option": "Campus Recruiting Event",
+  "expect": false,
+  "reason": "Spec example false case: \"Campus Recruiting Event\" — he never met the company at a campus event."
+ },
+ {
+  "name": "google_search",
+  "option": "Google Search",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a search engine) — Google is a search engine."
+ },
+ {
+  "name": "career_fair",
+  "option": "Career Fair",
+  "expect": false,
+  "reason": "Spec example false case: \"Career Fair\" — he never met the company at a career fair."
+ },
+ {
+  "name": "glassdoor",
+  "option": "Glassdoor",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a website / job board) — Glassdoor is a public job site."
+ },
+ {
+  "name": "auburn_university",
+  "option": "Auburn University",
+  "expect": false,
+  "reason": "Spec example false case: \"Auburn University\" — false when it claims a school."
+ },
+ {
+  "name": "handshake",
+  "option": "Handshake",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a job board / website) — listed among allowed channels in the case format guidance."
+ },
+ {
+  "name": "current_temporary_employee",
+  "option": "Current Temporary Employee",
+  "expect": false,
+  "reason": "Spec example false case: \"Current Temporary Employee\" — false when it claims prior work (temporary)."
+ },
+ {
+  "name": "billboard_advertisement",
+  "option": "Billboard Advertisement",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (an advertisement) — a billboard is an advertisement."
+ },
+ {
+  "name": "agency_search_firm",
+  "option": "Agency / Search Firm",
+  "expect": false,
+  "reason": "Spec example false case: \"Agency / Search Firm\" — he was not placed by an agency or staffing firm."
+ },
+ {
+  "name": "newspaper_advertisement",
+  "option": "Newspaper Advertisement",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (an advertisement, publication) — a newspaper ad is a publication/advertisement."
+ },
+ {
+  "name": "alumni_network",
+  "option": "Alumni Network",
+  "expect": false,
+  "reason": "Spec example false case: \"Alumni Network\" — false when it claims a school program/network."
+ },
+ {
+  "name": "ziprecruiter",
+  "option": "ZipRecruiter",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a job board) — ZipRecruiter is a public job board."
+ },
+ {
+  "name": "in_person",
+  "option": "In-Person",
+  "expect": false,
+  "reason": "Spec example false case: \"In-Person\" — he found every job on public boards, not in person."
+ },
+ {
+  "name": "facebook",
+  "option": "Facebook",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a social network) — Facebook is a social network."
+ },
+ {
+  "name": "empty_option",
+  "option": "",
+  "expect": false,
+  "reason": "Spec: \"Empty option → false.\""
+ },
+ {
+  "name": "industry_trade_publication",
+  "option": "Industry Trade Publication",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a publication) — a trade publication is a publication."
+ },
+ {
+  "name": "former_contractor",
+  "option": "Former Contractor",
+  "expect": false,
+  "reason": "Spec: false when it claims prior work — he never worked there in any form (employee, temporary, contingent, contractor)."
+ },
+ {
+  "name": "twitter_x",
+  "option": "Twitter / X",
+  "expect": true,
+  "reason": "Spec: true when the option is allowed (a social network) — Twitter/X is a social network."
+ },
+ {
+  "name": "named_recruiting_program",
+  "option": "Year Up Recruiting Program",
+  "expect": false,
+  "reason": "Spec: false when it claims a program — \"a named recruiting program\" is listed as a false case."
+ }
+]

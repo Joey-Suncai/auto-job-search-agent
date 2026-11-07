@@ -1,0 +1,773 @@
+[
+ {
+  "name": "detect tiktok and bytedance hosts",
+  "fn": "detect_ats_f",
+  "args": {
+   "text": "https://lifeattiktok.com/search/1 and https://joinbytedance.com/company/acme"
+  },
+  "expect": [
+   [
+    "bytedance",
+    "joinbytedance.com"
+   ],
+   [
+    "tiktok",
+    "lifeattiktok.com"
+   ]
+  ],
+  "spec_quote": "tiktok: `lifeattiktok.com` / `api.lifeattiktok.com` → ident that host; ... bytedance: `joinbytedance.com` or `jobs.bytedance.com` → that host.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect cornerstone site and ignore na.api.csod.com trap",
+  "fn": "detect_ats_f",
+  "args": {
+   "text": "https://na.api.csod.com/foo https://henkel.csod.com/ux/ats/careersite/1/jobs"
+  },
+  "expect": [
+   [
+    "cornerstone",
+    "henkel.csod.com/ux/ats/careersite/1"
+   ]
+  ],
+  "spec_quote": "cornerstone: `<slug>.csod.com`, keeping `/ux/ats/careersite/<digits>` when the URL has it ... A host that is only the end of a longer name (the `api.csod.com` inside `na.api.csod.com`) is not taken.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect pageup mob and keka jobdetails",
+  "fn": "detect_ats_f",
+  "args": {
+   "text": "https://careers.pageuppeople.com/mob/123/abc/en-us/job/1 https://acme.keka.com/careers/jobdetails"
+  },
+  "expect": [
+   [
+    "keka",
+    "acme.keka.com/careers/jobdetails"
+   ],
+   [
+    "pageup",
+    "mob/123/abc/en-us"
+   ]
+  ],
+  "spec_quote": "pageup: `careers.pageuppeople.com/<client digits>/<channel>/<locale>` → \"client/channel/locale\" (an optional leading \"mob/\" is kept). ... keka: `<tenant>.keka.com/careers[/<one segment>]` → \"tenant.keka.com/careers[/segment]\".",
+  "ambiguous": false
+ },
+ {
+  "name": "detect avature own-domain SearchJobs with locale and eightfold apply host",
+  "fn": "detect_ats_f",
+  "args": {
+   "text": "https://careers.acme.com/en_US/careers/SearchJobs https://apply.careers.acme.io/jobs"
+  },
+  "expect": [
+   [
+    "avature",
+    "careers.acme.com/en_us"
+   ],
+   [
+    "eightfold",
+    "apply.careers.acme.io"
+   ]
+  ],
+  "spec_quote": "eightfold on the company's own domain: `apply.careers.<name>.<com|net|org|io>` → that host. ... avature on the company's own domain: a URL whose path is `/careers/SearchJobs` or `/careers/JobDetail` (optionally after one locale segment like `/en_US`) ... → \"host\" or \"host/en_us\".",
+  "ambiguous": false
+ },
+ {
+  "name": "detect ultipro.ca, moka, and darwinbox",
+  "fn": "detect_ats_f",
+  "args": {
+   "text": "https://recruiting.ultipro.ca/ACME/JobBoard/12345678-1234-1234-1234-123456789abc https://app.mokahr.com/social-recruitment/acme/12345 https://acme.darwinbox.in/xyz"
+  },
+  "expect": [
+   [
+    "darwinbox",
+    "acme.darwinbox.in"
+   ],
+   [
+    "moka",
+    "app.mokahr.com/social-recruitment/acme/12345"
+   ],
+   [
+    "ultipro",
+    "recruiting.ultipro.ca/acme/jobboard/12345678-1234-1234-1234-123456789abc"
+   ]
+  ],
+  "spec_quote": "moka `app.mokahr.com` / `hire-r1.mokahr.com` + `/social-recruitment/<slug>/<digits>` (or campus-) → that path with host; darwinbox `<slug>.darwinbox.in` / `.darwinbox.com` → host. ... ultipro: `recruiting<digits?>.ultipro.com` and now also `.ultipro.ca` boards.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean tiktok lifeattiktok host",
+  "fn": "clean_ident",
+  "args": {
+   "system": "tiktok",
+   "ident": "lifeattiktok.com"
+  },
+  "expect": "tiktok",
+  "spec_quote": "tiktok: \"lifeattiktok.com\", \"api.lifeattiktok.com\" or \"tiktok\" → \"tiktok\"",
+  "ambiguous": false
+ },
+ {
+  "name": "clean tiktok usds host",
+  "fn": "clean_ident",
+  "args": {
+   "system": "tiktok",
+   "ident": "careers.tiktokusds.com"
+  },
+  "expect": "usds",
+  "spec_quote": "\"careers.tiktokusds.com\" or \"usds\" → \"usds\"",
+  "ambiguous": false
+ },
+ {
+  "name": "clean cornerstone with site",
+  "fn": "clean_ident",
+  "args": {
+   "system": "cornerstone",
+   "ident": "henkel.csod.com/ux/ats/careersite/1"
+  },
+  "expect": "henkel.csod.com/1",
+  "spec_quote": "cornerstone: \"<slug>.csod.com[/ux/ats/careersite/<n>[/…]]\" → \"<slug>.csod.com/<n>\" (n = 1 when absent)",
+  "ambiguous": false
+ },
+ {
+  "name": "clean cornerstone without site",
+  "fn": "clean_ident",
+  "args": {
+   "system": "cornerstone",
+   "ident": "acme.csod.com"
+  },
+  "expect": "acme.csod.com/1",
+  "spec_quote": "cornerstone: \"<slug>.csod.com[/ux/ats/careersite/<n>[/…]]\" → \"<slug>.csod.com/<n>\" (n = 1 when absent)",
+  "ambiguous": false
+ },
+ {
+  "name": "clean pageup with mob and tail",
+  "fn": "clean_ident",
+  "args": {
+   "system": "pageup",
+   "ident": "mob/123/abc/en-us/job/456"
+  },
+  "expect": "123/abc/en-us",
+  "spec_quote": "pageup: \"[mob/]<digits>/<channel>/<xx or xx-yy>[/…]\" → \"<digits>/<channel>/<locale>\" (mob/ and any tail dropped)",
+  "ambiguous": false
+ },
+ {
+  "name": "clean keka jobdetails is not a portal",
+  "fn": "clean_ident",
+  "args": {
+   "system": "keka",
+   "ident": "acme.keka.com/careers/jobdetails"
+  },
+  "expect": "acme.keka.com",
+  "spec_quote": "keka: ... the segments api, applyjob, jobdetails, content are not portals (→ just the host)",
+  "ambiguous": false
+ },
+ {
+  "name": "clean vendor personio slug",
+  "fn": "clean_ident",
+  "args": {
+   "system": "personio",
+   "ident": "www.jobs.personio.com"
+  },
+  "expect": null,
+  "spec_quote": "personio / softgarden / gupy / beisen: exactly \"<slug>.jobs.personio.com|de\" ... a vendor slug (www, api, app, login, portal …) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean gem vendor api slug",
+  "fn": "clean_ident",
+  "args": {
+   "system": "gem",
+   "ident": "api"
+  },
+  "expect": null,
+  "spec_quote": "gem / recruiterbox / join / hrmos / herp: a slug of letters, digits, '_', '.', '-' starting with a letter or digit → unchanged; vendor words (www, api, app, jsapi, v1, pages …) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean avature custom host with locale",
+  "fn": "clean_ident",
+  "args": {
+   "system": "avature",
+   "ident": "careers.acme.com/en_US/careers/SearchJobs"
+  },
+  "expect": "careers.acme.com/en_US",
+  "spec_quote": "eightfold / avature on a non-vendor host (custom_host): a host with at least three labels that is not the bare company domain ... → the host; for avature a first path segment that is a locale (\"en_us\", \"en-us\", \"en\", \"global\", \"us\") is kept, a 5-character one written as \"en_US\"; any other path dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean eightfold bare company domain",
+  "fn": "clean_ident",
+  "args": {
+   "system": "eightfold",
+   "ident": "acme.com"
+  },
+  "expect": null,
+  "spec_quote": "eightfold / avature on a non-vendor host (custom_host): a host with at least three labels that is not the bare company domain (\"acme.com\", \"www.acme.com\") → the host",
+  "ambiguous": false
+ },
+ {
+  "name": "page systems eightfold custom host",
+  "fn": "page_systems",
+  "args": {
+   "url": "https://apply.careers.acme.io/jobs",
+   "page": "window._EF_GROUP_ID = 123; powered by eightfold"
+  },
+  "expect": [
+   [
+    "eightfold",
+    "apply.careers.acme.io"
+   ]
+  ],
+  "spec_quote": "an Eightfold page — it contains \"window._EF_GROUP_ID =\" or \"_EF_PRODUCT\" AND the word \"eightfold\" (any case) → [\"eightfold\", custom_host of the url host]",
+  "ambiguous": false
+ },
+ {
+  "name": "page systems avature locale",
+  "fn": "page_systems",
+  "args": {
+   "url": "https://careers.acme.com/en_US/careers/SearchJobs",
+   "page": "Powered by Avature"
+  },
+  "expect": [
+   [
+    "avature",
+    "careers.acme.com/en_US"
+   ]
+  ],
+  "spec_quote": "an Avature page — the url path is /careers/SearchJobs… or /careers/JobDetail… (optionally after one locale segment) AND the page contains \"avature\" (any case) → [\"avature\", custom_host of host + locale]",
+  "ambiguous": false
+ },
+ {
+  "name": "page systems rejects www avature host",
+  "fn": "page_systems",
+  "args": {
+   "url": "https://www.acme.com/careers/SearchJobs",
+   "page": "Avature"
+  },
+  "expect": [],
+  "spec_quote": "Hosts custom_host rejects give nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "big tech TikTok",
+  "fn": "big_tech",
+  "args": {
+   "company": "TikTok"
+  },
+  "expect": [
+   [
+    "tiktok",
+    "tiktok"
+   ]
+  ],
+  "spec_quote": "\"TikTok\" (optionally + Inc / Inc. / Shop / US / USA, nothing else) → [[\"tiktok\", \"tiktok\"]]",
+  "ambiguous": false
+ },
+ {
+  "name": "big tech TikTok USDS",
+  "fn": "big_tech",
+  "args": {
+   "company": "TikTok USDS"
+  },
+  "expect": [
+   [
+    "tiktok",
+    "usds"
+   ]
+  ],
+  "spec_quote": "a name starting \"TikTok\" that contains \"USDS\" or \"U.S. Data Security\" → [[\"tiktok\", \"usds\"]]",
+  "ambiguous": false
+ },
+ {
+  "name": "big tech ByteDance Inc",
+  "fn": "big_tech",
+  "args": {
+   "company": "ByteDance Inc."
+  },
+  "expect": [
+   [
+    "bytedance",
+    "bytedance"
+   ]
+  ],
+  "spec_quote": "\"ByteDance\" (optionally + Inc / Ltd) → [[\"bytedance\", \"bytedance\"]]",
+  "ambiguous": false
+ },
+ {
+  "name": "throne location walks city_info parents",
+  "fn": "throne_location",
+  "args": {
+   "item": {
+    "city_info": {
+     "en_name": "San Jose",
+     "parent": {
+      "en_name": "California",
+      "parent": {
+       "en_name": "United States of America"
+      }
+     }
+    }
+   }
+  },
+  "expect": "San Jose, California, United States of America",
+  "spec_quote": "throne_location(item): walk item.city_info → .parent → … collecting en_name (else name): \"San Jose, California, United States of America\"",
+  "ambiguous": false
+ },
+ {
+  "name": "parse throne tiktok posting",
+  "fn": "parse_throne",
+  "args": {
+   "d": {
+    "data": {
+     "job_post_list": [
+      {
+       "id": "123",
+       "title": "Engineer",
+       "city_info": {
+        "en_name": "San Jose",
+        "parent": {
+         "en_name": "California"
+        }
+       }
+      }
+     ]
+    }
+   },
+   "tenant": "tiktok"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "San Jose, California",
+    "url": "https://lifeattiktok.com/search/123"
+   }
+  ],
+  "spec_quote": "parse_throne(d, tenant): d.data.job_post_list[] with id and title (else name). url = \"https://lifeattiktok.com/search/<id>\" (tiktok), ...",
+  "ambiguous": false
+ },
+ {
+  "name": "csod session context token and api",
+  "fn": "csod_session",
+  "args": {
+   "page": "csod.context.token = 'tok123'; var api = \"https://eu.api.csod.com\";"
+  },
+  "expect": [
+   "tok123",
+   "https://eu.api.csod.com"
+  ],
+  "spec_quote": "csod_session(page) → [token, api]: token from `csod.context.token = '…'` (or \"…\"), else from a `\"token\":\"…\"` field; api = the first \"https://<x>.api.csod.com\" in the page, else \"https://na.api.csod.com\"",
+  "ambiguous": false
+ },
+ {
+  "name": "csod session json token default api",
+  "fn": "csod_session",
+  "args": {
+   "page": "{\"token\":\"jsonTok\"}"
+  },
+  "expect": [
+   "jsonTok",
+   "https://na.api.csod.com"
+  ],
+  "spec_quote": "token from `csod.context.token = '…'` (or \"…\"), else from a `\"token\":\"…\"` field; api = the first \"https://<x>.api.csod.com\" in the page, else \"https://na.api.csod.com\"",
+  "ambiguous": false
+ },
+ {
+  "name": "parse csod first location only",
+  "fn": "parse_csod",
+  "args": {
+   "d": {
+    "data": {
+     "requisitions": [
+      {
+       "requisitionId": "R1",
+       "displayJobTitle": "Analyst",
+       "locations": [
+        {
+         "city": "Austin",
+         "state": "TX",
+         "country": "US"
+        },
+        {
+         "city": "Dallas"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "host": "henkel.csod.com",
+   "site": "1",
+   "slug": "henkel"
+  },
+  "expect": [
+   {
+    "title": "Analyst",
+    "location": "Austin, TX, US",
+    "url": "https://henkel.csod.com/ux/ats/careersite/1/job/R1?c=henkel"
+   }
+  ],
+  "spec_quote": "parse_csod(d, host, site, slug): d.data.requisitions[] with requisitionId and displayJobTitle; location = the FIRST entry of locations: its city, state, country (string fields that are present) joined \", \"; url = \"https://<host>/ux/ats/careersite/<site>/job/<requisitionId>?c=<slug>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "parse gem with extId and id fallback",
+  "fn": "parse_gem",
+  "args": {
+   "d": [
+    {
+     "data": {
+      "oatsExternalJobPostings": {
+       "jobPostings": [
+        {
+         "title": "Designer",
+         "extId": "e1",
+         "locations": [
+          {
+           "name": "Remote"
+          }
+         ]
+        },
+        {
+         "title": "Dev",
+         "id": "i2",
+         "locations": [
+          {
+           "city": "Austin",
+           "isRemote": true
+          }
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ],
+   "slug": "acme"
+  },
+  "expect": [
+   {
+    "title": "Designer",
+    "location": "Remote",
+    "url": "https://jobs.gem.com/acme/e1"
+   },
+   {
+    "title": "Dev",
+    "location": "Austin",
+    "url": "https://jobs.gem.com/acme/i2"
+   }
+  ],
+  "spec_quote": "parse_gem(d, slug): d is a list; d[0].data.oatsExternalJobPostings.jobPostings[] with title and extId (else id); url = \"https://jobs.gem.com/<slug>/<extId>\"; location = each location's name (else city; \"Remote\" when isRemote and no name) joined \"; \"",
+  "ambiguous": false
+ },
+ {
+  "name": "parse pageup joined url and location",
+  "fn": "parse_pageup",
+  "args": {
+   "page": "<a class=\"job-link\" href=\"/123/abc/en-us/job/456/engineer\">Engineer</a><span class=\"location\">Austin, TX</span>",
+   "base": "https://careers.pageuppeople.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Austin, TX",
+    "url": "https://careers.pageuppeople.com/123/abc/en-us/job/456/engineer"
+   }
+  ],
+  "spec_quote": "parse_pageup(page, base): each `<a class=\"job-link\" href=\"…/job/<digits>/…\">Title</a>`; location = the next `class=\"location\"` element's text before the following job link; url = href joined to base; each job id once.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse personio office and offices",
+  "fn": "parse_personio",
+  "args": {
+   "d": [
+    {
+     "id": 10,
+     "name": "Engineer",
+     "office": "Berlin"
+    },
+    {
+     "id": 11,
+     "name": "Dev",
+     "offices": [
+      "Munich",
+      "Remote"
+     ]
+    }
+   ],
+   "host": "acme.jobs.personio.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Berlin",
+    "url": "https://acme.jobs.personio.com/job/10"
+   },
+   {
+    "title": "Dev",
+    "location": "Munich; Remote",
+    "url": "https://acme.jobs.personio.com/job/11"
+   }
+  ],
+  "spec_quote": "parse_personio(d, host): d is a list of {id, name, office, offices}; url = \"https://<host>/job/<id>\"; location = office, else offices joined \"; \".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse recruiterbox location and remote fallback",
+  "fn": "parse_recruiterbox",
+  "args": {
+   "d": {
+    "objects": [
+     {
+      "title": "Analyst",
+      "hosted_url": "https://acme.recruiterbox.com/jobs/1",
+      "location": {
+       "city": "Austin",
+       "state": "TX",
+       "country": "US"
+      }
+     },
+     {
+      "title": "Remote Dev",
+      "hosted_url": "https://acme.recruiterbox.com/jobs/2",
+      "location": {},
+      "allows_remote": true
+     }
+    ]
+   }
+  },
+  "expect": [
+   {
+    "title": "Analyst",
+    "location": "Austin, TX, US",
+    "url": "https://acme.recruiterbox.com/jobs/1"
+   },
+   {
+    "title": "Remote Dev",
+    "location": "Remote",
+    "url": "https://acme.recruiterbox.com/jobs/2"
+   }
+  ],
+  "spec_quote": "parse_recruiterbox(d): d.objects[] with title and hosted_url starting \"https://\"; location = location.city, .state, .country (non-empty) joined \", \"; when all empty and allows_remote is true → \"Remote\".",
+  "ambiguous": false
+ },
+ {
+  "name": "schema location dedupes places",
+  "fn": "schema_location",
+  "args": {
+   "loc": [
+    {
+     "address": {
+      "addressLocality": "Austin",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "address": {
+      "addressLocality": "Austin",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "address": {
+      "addressLocality": "Dallas",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+     }
+    }
+   ]
+  },
+  "expect": "Austin, TX, US; Dallas, TX, US",
+  "spec_quote": "schema_location(loc): ... per place address.addressLocality, addressRegion, addressCountry (non-empty strings) joined \", \"; places joined \"; \", duplicates once.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse softgarden jobLocation",
+  "fn": "parse_softgarden",
+  "args": {
+   "d": {
+    "dataFeedElement": [
+     {
+      "item": {
+       "title": "Engineer",
+       "url": "https://acme.career.softgarden.de/job/1",
+       "jobLocation": {
+        "address": {
+         "addressLocality": "Berlin",
+         "addressCountry": "DE"
+        }
+       }
+      }
+     }
+    ]
+   }
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Berlin, DE",
+    "url": "https://acme.career.softgarden.de/job/1"
+   }
+  ],
+  "spec_quote": "parse_softgarden(d): d.dataFeedElement[].item with title and url starting \"https://\"; location = schema_location(item.jobLocation).",
+  "ambiguous": false
+ },
+ {
+  "name": "join company id from nested id",
+  "fn": "join_company_id",
+  "args": {
+   "page": "var x = {\"company\":{\"id\":98765}};"
+  },
+  "expect": "98765",
+  "spec_quote": "join_company_id(page): the digits in `\"company\":{\"id\":N` (else `\"companyId\":N`, quotes around N allowed) → string; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse join url fallback and city location",
+  "fn": "parse_join",
+  "args": {
+   "d": {
+    "items": [
+     {
+      "id": 1,
+      "title": "Engineer",
+      "city": {
+       "cityName": "Berlin",
+       "regionName": "Berlin",
+       "countryName": "Germany"
+      }
+     },
+     {
+      "id": 2,
+      "title": "Dev",
+      "url": "https://join.com/companies/acme/jobs/2",
+      "city": {
+       "cityName": "Munich",
+       "countryName": "Germany"
+      }
+     }
+    ]
+   },
+   "slug": "acme"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Berlin, Berlin, Germany",
+    "url": "https://join.com/companies/acme/jobs/1"
+   },
+   {
+    "title": "Dev",
+    "location": "Munich, Germany",
+    "url": "https://join.com/companies/acme/jobs/2"
+   }
+  ],
+  "spec_quote": "parse_join(d, slug): d.items[] with id and title; url = item.url, else \"https://join.com/companies/<slug>/jobs/<idParam or id>\"; location = city.cityName, city.regionName, city.countryName joined \", \".",
+  "ambiguous": false
+ },
+ {
+  "name": "keka identifier lowercases guid",
+  "fn": "keka_identifier",
+  "args": {
+   "page": "<script src=\"/careers/api/embedjobs/js/123E4567-E89B-12D3-A456-426614174000\"></script>"
+  },
+  "expect": "123e4567-e89b-12d3-a456-426614174000",
+  "spec_quote": "keka_identifier(page): the GUID in \"/ats/documents/<guid>/careerportal/\" or \"/careers/api/embedjobs/js/<guid>\", lower-cased; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse keka multiple locations",
+  "fn": "parse_keka",
+  "args": {
+   "d": [
+    {
+     "id": "j1",
+     "title": "Engineer",
+     "jobLocations": [
+      {
+       "city": "Austin",
+       "state": "TX",
+       "countryName": "US"
+      },
+      {
+       "city": "Dallas",
+       "state": "TX",
+       "countryName": "US"
+      }
+     ]
+    }
+   ],
+   "host": "acme.keka.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Austin, TX, US; Dallas, TX, US",
+    "url": "https://acme.keka.com/careers/jobdetails/j1"
+   }
+  ],
+  "spec_quote": "parse_keka(d, host): d is a list of {id, title, jobLocations[{city, state, countryName}]}; url = \"https://<host>/careers/jobdetails/<id>\"; location = per entry city, state, countryName joined \", \", entries joined \"; \".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse gupy next data",
+  "fn": "parse_gupy",
+  "args": {
+   "page": "<script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"jobs\":[{\"id\":\"1\",\"title\":\"Engineer\",\"workplace\":{\"address\":{\"city\":\"São Paulo\",\"stateShortName\":\"SP\",\"country\":\"Brazil\"}}}]}}}</script>",
+   "host": "acme.gupy.io"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "São Paulo, SP, Brazil",
+    "url": "https://acme.gupy.io/jobs/1"
+   }
+  ],
+  "spec_quote": "parse_gupy(page, host): the JSON in `<script id=\"__NEXT_DATA__\" …>…</script>` → props.pageProps.jobs[] with id and title; url = \"https://<host>/jobs/<id>\"; location = workplace.address city, stateShortName (else state), country joined \", \". Bad JSON → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse hrmos card",
+  "fn": "parse_hrmos",
+  "args": {
+   "page": "<li class=\"pg-list-cassette\"><a href=\"https://hrmos.co/pages/acme/jobs/123\"><h2>Engineer</h2></a><li class=\"sg-tag-location\">Tokyo</li></li>"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Tokyo",
+    "url": "https://hrmos.co/pages/acme/jobs/123"
+   }
+  ],
+  "spec_quote": "parse_hrmos(page): each `<li class=\"pg-list-cassette …\">` card: link \"https://hrmos.co/pages/<x>/jobs/<id>\", title = its <h2> text, location = its `class=\"sg-tag-location\"` <li> text (else \"\").",
+  "ambiguous": false
+ },
+ {
+  "name": "parse herp ignores other slug",
+  "fn": "parse_herp",
+  "args": {
+   "page": "<a class=\"requisition-list-card__header-anchor\" href=\"/v1/acme/456\"><h2>Designer</h2></a><a class=\"requisition-list-card__header-anchor\" href=\"/v1/other/789\"><h2>Ignore</h2></a>",
+   "slug": "acme"
+  },
+  "expect": [
+   {
+    "title": "Designer",
+    "location": "",
+    "url": "https://herp.careers/v1/acme/456"
+   }
+  ],
+  "spec_quote": "parse_herp(page, slug): each `<a … requisition-list-card__header-anchor … href=\"/v1/<slug>/<id>\"><h2 …>Title</h2>`; url = \"https://herp.careers/v1/<slug>/<id>\"; location \"\"; each link once; links of another slug ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "beisen portal id",
+  "fn": "beisen_portal",
+  "args": {
+   "page": "var BSGlobal = {\"PortalId\":12345};"
+  },
+  "expect": "12345",
+  "spec_quote": "beisen_portal(page): the object after `var BSGlobal =` parsed as JSON → its PortalId as a string; missing / bad JSON → null.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,3 @@
+{
+ "bangkok_remote_b3": "Gate-only verdict: the gate deliberately counts a bare 'Remote' part as a U.S. option (pre-JSA-084 behaviour, kept so mixed 'City; Remote' postings go to a human), while the spec (rule 7) and us_location.py treat it as unknown. The search filter follows the spec; the gate stays lenient."
+}

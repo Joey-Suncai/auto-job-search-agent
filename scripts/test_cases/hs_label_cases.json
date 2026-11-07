@@ -1,0 +1,146 @@
+[
+ {
+  "name": "hs_name",
+  "label": "Name of your high school",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_location",
+  "label": "High school location (city and state)",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_diploma_yesno",
+  "label": "Did you receive a high school diploma?",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_graduation_year",
+  "label": "Year you graduated high school",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_gpa",
+  "label": "High school GPA",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_name_attended",
+  "label": "Name of high school attended",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_finish_year",
+  "label": "In what year did you finish high school?",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_city_state",
+  "label": "City and state of your high school",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "hs_diploma_equivalent",
+  "label": "High school diploma or equivalent",
+  "expect": "other",
+  "spec": "every question about his HIGH SCHOOL (its name, its location, the high-school diploma, the year he finished high school)"
+ },
+ {
+  "name": "college_school_or_university",
+  "label": "School or University",
+  "expect": "school",
+  "spec": "the label asks for the name of the college / university he attends or attended"
+ },
+ {
+  "name": "college_institution_name",
+  "label": "Institution name",
+  "expect": "school",
+  "spec": "the label asks for the name of the college / university he attends or attended"
+ },
+ {
+  "name": "college_university_name",
+  "label": "College/University name",
+  "expect": "school",
+  "spec": "the label asks for the name of the college / university he attends or attended"
+ },
+ {
+  "name": "college_which_attend",
+  "label": "Which college or university do you attend?",
+  "expect": "school",
+  "spec": "the label asks for the name of the college / university he attends or attended"
+ },
+ {
+  "name": "college_name_attended",
+  "label": "Name of the college you attended",
+  "expect": "school",
+  "spec": "the label asks for the name of the college / university he attends or attended"
+ },
+ {
+  "name": "degree_short",
+  "label": "Degree",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "degree_highest_level_education",
+  "label": "Highest level of education",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "degree_beyond_high_school",
+  "label": "My highest degree completed beyond high school is:",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "degree_highest_earned",
+  "label": "Highest degree earned",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "degree_currently_pursuing",
+  "label": "What degree are you currently pursuing?",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "degree_bachelors_or_masters",
+  "label": "Bachelor's or Master's degree sought",
+  "expect": "degree_level",
+  "spec": "the label asks for a college degree or level he holds or is earning"
+ },
+ {
+  "name": "college_gpa",
+  "label": "What is your GPA at your college?",
+  "expect": "other",
+  "spec": "questions that are yes/no or about dates, GPA, location of a school, or employment"
+ },
+ {
+  "name": "employment_yesno",
+  "label": "Are you currently employed?",
+  "expect": "other",
+  "spec": "questions that are yes/no or about dates, GPA, location of a school, or employment"
+ },
+ {
+  "name": "college_location",
+  "label": "What is the location of your college?",
+  "expect": "other",
+  "spec": "questions that are yes/no or about dates, GPA, location of a school, or employment"
+ },
+ {
+  "name": "degree_received_date",
+  "label": "Month and year you received your degree",
+  "expect": "other",
+  "spec": "questions that are yes/no or about dates, GPA, location of a school, or employment"
+ }
+]

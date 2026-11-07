@@ -1,0 +1,43 @@
+{
+ "high_risk_gpa_question_goes_to_joey_even_with_confident_rule": {
+  "verdict": "case misreads the spec",
+  "why": "The spec's routing list starts with 'rule answer, confident → used'; the high-risk bullet is about what DeepSeek may touch (no second opinion acceptance and no suggestion for these categories). A confident rule answer to a high-risk question is Joey's own confirmed Standard answer (candidate-profile.md, canon-checked at submit); sending every one of them to Joey would leave no job ready (almost every form asks sponsorship). Flagged to Joey as a wording to confirm."
+ },
+ "route_confident_rule_but_visa_sponsorship_question_still_goes_to_joey": {
+  "verdict": "case misreads the spec",
+  "why": "Same as high_risk_gpa_question_goes_to_joey_even_with_confident_rule: confident rules (his Standard answers) are used; high-risk = never answered by DeepSeek."
+ },
+ "form_identity_restriction_ineligibility": {
+  "verdict": "case misreads the spec",
+  "why": "The restriction kind is JSA-231's form_restrictions: a question that only ASKS ('Are you a US citizen or permanent resident?') is not a restriction — the form must say the position REQUIRES it (export control / citizens only / clearance). The question itself is high-risk → Joey."
+ },
+ "greedy_sheet_picks_marginal_value_over_raw_frequency": {
+  "check": "long_tail_off",
+  "verdict": "case forgets the long-tail cut",
+  "why": "q2 is asked by only 2 jobs: 'a question only one or two jobs ask waits until that job is picked'. The greedy order itself (q2 before the more frequent q1) is checked with the cut off."
+ },
+ "rank_tie_break_prefers_question_asked_by_tier_a_over_tier_c": {
+  "check": "long_tail_off",
+  "verdict": "case forgets the long-tail cut",
+  "why": "Each question is asked by one job → long tail, not on the sheet. The tier tie-break is checked with the cut off."
+ },
+ "rank_greedy_prefers_question_that_makes_most_jobs_ready": {
+  "check": "long_tail_off",
+  "verdict": "case forgets the long-tail cut",
+  "why": "Every question is asked by ≤ 2 jobs → long tail. The greedy order (q_c, then q_a by id) is checked with the cut off."
+ },
+ "rank_tie_broken_by_number_of_jobs_asking": {
+  "check": "long_tail_off",
+  "verdict": "case forgets the long-tail cut",
+  "why": "q_y is asked by 2 jobs → long tail; q_x (3 jobs) stays. With the cut off the expected order holds."
+ },
+ "rank_tier_a_job_weighs_before_tier_c_on_equal_counts": {
+  "check": "long_tail_off",
+  "verdict": "case forgets the long-tail cut",
+  "why": "One job each → long tail. The A-before-C tie-break is checked with the cut off."
+ },
+ "rank_greedy_marginal_value_with_tier_and_frequency_tiebreak": {
+  "verdict": "case misreads the spec",
+  "why": "the case ignores the long-tail cut: q1 / q2 / q9 are each asked by ≤ 2 jobs, so the spec leaves them out of the sheet (same as the 5 earlier rank verdicts)"
+ }
+}

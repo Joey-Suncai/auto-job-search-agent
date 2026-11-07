@@ -1,0 +1,916 @@
+[
+ {
+  "name": "non_aggregator_url_returns_null",
+  "row": {
+   "url": "https://careers.example.com/job/1",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://careers.example.com/job/1": "https://careers.example.com/job/1"
+  },
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Engineer",
+     "https://gh/1"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": null,
+  "expect_follow_called": false,
+  "spec_quote": "Any other url → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright_near_miss_url_returns_null",
+  "row": {
+   "url": "https://jobright.ai/jobs/12345",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Engineer",
+     "https://gh/1"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": null,
+  "expect_follow_called": false,
+  "spec_quote": "else \"jobright.ai/jobs/info/\" → jobright. Any other url → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "zapply_kind_case_insensitive_then_redirect_strip",
+  "row": {
+   "url": "https://ZAPPLY.JOBS/r/abc",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://ZAPPLY.JOBS/r/abc": "https://acme.com/apply?utm_campaign=spring"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "redirect",
+   "ats_url": "https://acme.com/apply"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "Aggregator kind from the url (case-insensitive): contains \"zapply.jobs\" → zapply ... ats_url = the final URL with these query parameters removed ... any starting with \"utm_\"",
+  "ambiguous": false
+ },
+ {
+  "name": "vansh_follow_nothing_dead_link",
+  "row": {
+   "url": "https://go.vansh.nyc/abc",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "dead_link"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "zapply and vansh rows: follow the url. - no final URL → code \"dead_link\".",
+  "ambiguous": false
+ },
+ {
+  "name": "zapply_final_path_jobs_expired",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/apply/xyz": "https://zapply.jobs/jobs"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "expired"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "if the host is zapply.jobs and the path is exactly \"/jobs\" or \"/jobs/\" → code \"expired\"",
+  "ambiguous": false
+ },
+ {
+  "name": "zapply_final_path_jobs_slash_expired",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/apply/xyz": "https://zapply.jobs/jobs/"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "expired"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "if the host is zapply.jobs and the path is exactly \"/jobs\" or \"/jobs/\" → code \"expired\"",
+  "ambiguous": false
+ },
+ {
+  "name": "zapply_final_jobs_subpath_stuck",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/apply/xyz": "https://zapply.jobs/jobs/12345?x=1"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "stuck"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "if the host is zapply.jobs and the path is exactly \"/jobs\" or \"/jobs/\" → code \"expired\"; otherwise → code \"stuck\".",
+  "ambiguous": false
+ },
+ {
+  "name": "zapply_row_lands_on_vansh_host_stuck",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/apply/xyz": "https://go.vansh.nyc/j/9"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "stuck"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "final URL's host contains \"zapply.jobs\" or \"vansh.nyc\": if the host is zapply.jobs and the path is exactly \"/jobs\" or \"/jobs/\" → code \"expired\"; otherwise → code \"stuck\".",
+  "ambiguous": false
+ },
+ {
+  "name": "vansh_redirect_removes_all_listed_params",
+  "row": {
+   "url": "https://go.vansh.nyc/x",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://go.vansh.nyc/x": "https://jobs.acme.com/apply?utm_source=a&utm_medium=b&source=c&src=d&gh_src=e&iis=f&iisn=g&job=17"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "redirect",
+   "ats_url": "https://jobs.acme.com/apply?job=17"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "ats_url = the final URL with these query parameters removed ... any starting with \"utm_\", and \"source\", \"src\", \"gh_src\", \"iis\", \"iisn\". Other parameters and the path stay.",
+  "ambiguous": false
+ },
+ {
+  "name": "redirect_param_names_case_insensitive",
+  "row": {
+   "url": "https://zapply.jobs/r/1",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/r/1": "https://acme.com/careers/apply?UTM_Source=x&Source=y&SRC=z&jobId=7"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "redirect",
+   "ats_url": "https://acme.com/careers/apply?jobId=7"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "the final URL with these query parameters removed (names matched case-insensitively): any starting with \"utm_\", and \"source\", \"src\", \"gh_src\", \"iis\", \"iisn\".",
+  "ambiguous": false
+ },
+ {
+  "name": "redirect_param_near_misses_kept",
+  "row": {
+   "url": "https://zapply.jobs/r/2",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://zapply.jobs/r/2": "https://acme.com/apply?utm=1&source_id=2&srcx=3&iisnn=4&iis=5"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "redirect",
+   "ats_url": "https://acme.com/apply?utm=1&source_id=2&srcx=3&iisnn=4"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "any starting with \"utm_\", and \"source\", \"src\", \"gh_src\", \"iis\", \"iisn\". Other parameters and the path stay.",
+  "ambiguous": false
+ },
+ {
+  "name": "redirect_without_query_unchanged",
+  "row": {
+   "url": "https://go.vansh.nyc/y",
+   "company": "Acme",
+   "title": "Engineer"
+  },
+  "follow": {
+   "https://go.vansh.nyc/y": "https://acme.com/jobs/5"
+  },
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "redirect",
+   "ats_url": "https://acme.com/jobs/5"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "otherwise → code \"redirect\", ats_url = the final URL with these query parameters removed ... Other parameters and the path stay.",
+  "ambiguous": false
+ },
+ {
+  "name": "already_ats_url_short_circuits_zapply",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer",
+   "ats_url": "https://acme.com/apply/1"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "already"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "A row that already has a non-empty ats_url → code \"already\" (nothing else is called).",
+  "ambiguous": false
+ },
+ {
+  "name": "already_beats_jobright_no_title",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "",
+   "ats_url": "https://acme.com/apply/9"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "already"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "A row that already has a non-empty ats_url → code \"already\" (nothing else is called).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_ats_url_proceeds_normally",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer",
+   "ats_url": ""
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "dead_link"
+  },
+  "expect_follow_called": true,
+  "spec_quote": "A row that already has a non-empty ats_url → code \"already\" (nothing else is called).",
+  "ambiguous": false
+ },
+ {
+  "name": "whitespace_only_ats_url",
+  "row": {
+   "url": "https://zapply.jobs/apply/xyz",
+   "company": "Acme",
+   "title": "Engineer",
+   "ats_url": "   "
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "already"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "A row that already has a non-empty ats_url → code \"already\" (nothing else is called).",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec says \"non-empty ats_url\" without saying whether whitespace-only counts as empty; it only mentions whitespace for the title. Literally a whitespace string is non-empty, so 'already' is the plain reading, but an implementation that trims would return dead_link here."
+ },
+ {
+  "name": "jobright_empty_title_no_title",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": ""
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Engineer",
+     "https://gh/1"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "no_title"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "jobright rows: the jobright url is never followed or fetched (follow must not be called). - empty or whitespace title → code \"no_title\".",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright_whitespace_title_no_title",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "   "
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Engineer",
+     "https://gh/1"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "no_title"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "empty or whitespace title → code \"no_title\".",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright_known_board_match_case_insensitive_kind",
+  "row": {
+   "url": "https://JOBRIGHT.AI/Jobs/Info/abc123",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {
+   "https://JOBRIGHT.AI/Jobs/Info/abc123": "https://elsewhere.example/x"
+  },
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Software Engineer",
+     "https://boards.greenhouse.io/acme/jobs/1"
+    ],
+    [
+     "Accountant",
+     "https://boards.greenhouse.io/acme/jobs/2"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "board",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/1"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "Aggregator kind from the url (case-insensitive) ... \"jobright.ai/jobs/info/\" → jobright ... the jobright url is never followed or fetched (follow must not be called)",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright_guess_board_match_when_known_fails",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Data Analyst"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Data Engineer",
+     "https://gh/1"
+    ]
+   ],
+   "lever:acme": [
+    [
+     "Data Analyst",
+     "https://jobs.lever.co/acme/9"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "board",
+   "ats_url": "https://jobs.lever.co/acme/9"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "Candidates in this order: every known board, then every guesses board that is not in known, then every Workday tenant. ... The first candidate that matches wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright_workday_tenant_match",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Data Analyst"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [
+   [
+    "acme.wd5.myworkdayjobs.com",
+    "acme",
+    "External"
+   ]
+  ],
+  "boards": {},
+  "wd": {
+   "acme:External": [
+    [
+     "Data Analyst",
+     "https://acme.wd5.myworkdayjobs.com/en-US/External/job/123"
+    ]
+   ]
+  },
+  "expect": {
+   "code": "workday",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/en-US/External/job/123"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "for a tenant, wd_search(host, tenant, site, row title) ... The first candidate that matches wins: code \"board\" (from a board) or \"workday\" (from a tenant).",
+  "ambiguous": false
+ },
+ {
+  "name": "similarity_exactly_point_75_matches",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer Python"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Senior Software Engineer Python",
+     "https://gh/1"
+    ],
+    [
+     "Accountant",
+     "https://gh/2"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "board",
+   "ats_url": "https://gh/1"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "A candidate matches when its best posting has similarity ≥ 0.75 (|A ∩ B| / |A ∪ B| = 3/4 here).",
+  "ambiguous": false
+ },
+ {
+  "name": "similarity_two_thirds_below_threshold",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Software Engineer Python",
+     "https://gh/1"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "no_match"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "A candidate matches when its best posting has similarity ≥ 0.75 ... No candidate matches (or there are none) → code \"no_match\".",
+  "ambiguous": false
+ },
+ {
+  "name": "stopwords_punctuation_case_normalised",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "The Senior Software Engineer (USA)"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "senior software engineer",
+     "https://gh/7"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "board",
+   "ats_url": "https://gh/7"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "Title similarity = |A ∩ B| / |A ∪ B| where A and B are the sets of words of the two titles after lowercasing, replacing every character that is not a letter, digit or space by a space, and dropping the words the, a, an, and, of, for, in, to, u, s, us, usa.",
+  "ambiguous": false
+ },
+ {
+  "name": "tie_on_one_candidate_skips_to_next",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Software Engineer",
+     "https://gh/1"
+    ],
+    [
+     "Software Engineer",
+     "https://gh/2"
+    ]
+   ],
+   "lever:acme": [
+    [
+     "Software Engineer",
+     "https://jobs.lever.co/acme/9"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "board",
+   "ats_url": "https://jobs.lever.co/acme/9"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "unless the second-best posting has exactly the same similarity and a different url (two equally good postings → that candidate gives no match, go on to the next one).",
+  "ambiguous": false
+ },
+ {
+  "name": "tie_first_known_second_known_matches_ahead_of_guess",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "guesses": [
+   [
+    "ashby",
+    "acme"
+   ]
+  ],
+  "tenants": [
+   [
+    "acme.wd5.myworkdayjobs.com",
+    "acme",
+    "External"
+   ]
+  ],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Software Engineer",
+     "https://gh/1"
+    ],
+    [
+     "Software Engineer",
+     "https://gh/2"
+    ]
+   ],
+   "lever:acme": [
+    [
+     "Software Engineer",
+     "https://jobs.lever.co/acme/9"
+    ]
+   ],
+   "ashby:acme": [
+    [
+     "Software Engineer",
+     "https://jobs.ashbyhq.com/acme/1"
+    ]
+   ]
+  },
+  "wd": {
+   "acme:External": [
+    [
+     "Software Engineer",
+     "https://acme.wd5.myworkdayjobs.com/en-US/External/job/1"
+    ]
+   ]
+  },
+  "expect": {
+   "code": "board",
+   "ats_url": "https://jobs.lever.co/acme/9"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "Candidates in this order: every known board, then every guesses board that is not in known, then every Workday tenant. ... The first candidate that matches wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "tie_in_only_candidate_no_match",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [],
+  "tenants": [],
+  "boards": {
+   "greenhouse:acme": [
+    [
+     "Software Engineer",
+     "https://gh/1"
+    ],
+    [
+     "Software Engineer",
+     "https://gh/2"
+    ]
+   ]
+  },
+  "wd": {},
+  "expect": {
+   "code": "no_match"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "two equally good postings → that candidate gives no match, go on to the next one ... No candidate matches (or there are none) → code \"no_match\".",
+  "ambiguous": false
+ },
+ {
+  "name": "no_candidates_at_all_no_match",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Software Engineer"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [],
+  "boards": {},
+  "wd": {},
+  "expect": {
+   "code": "no_match"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "No candidate matches (or there are none) → code \"no_match\".",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_board_list_falls_through_to_workday",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Data Analyst"
+  },
+  "follow": {},
+  "known": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "guesses": [
+   [
+    "lever",
+    "acme"
+   ]
+  ],
+  "tenants": [
+   [
+    "acme.wd5.myworkdayjobs.com",
+    "acme",
+    "External"
+   ]
+  ],
+  "boards": {
+   "greenhouse:acme": [],
+   "lever:acme": [
+    [
+     "Data Engineer",
+     "https://jobs.lever.co/acme/1"
+    ]
+   ]
+  },
+  "wd": {
+   "acme:External": [
+    [
+     "Data Analyst",
+     "https://acme.wd5.myworkdayjobs.com/en-US/External/job/123"
+    ]
+   ]
+  },
+  "expect": {
+   "code": "workday",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/en-US/External/job/123"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "For a board candidate the postings are board(ats, token) ... The first candidate that matches wins: code \"board\" (from a board) or \"workday\" (from a tenant), ats_url = the matching posting's url, exactly as given.",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_url_used_exactly_as_given",
+  "row": {
+   "url": "https://jobright.ai/jobs/info/abc",
+   "company": "Acme",
+   "title": "Data Analyst"
+  },
+  "follow": {},
+  "known": [],
+  "guesses": [],
+  "tenants": [
+   [
+    "acme.wd5.myworkdayjobs.com",
+    "acme",
+    "External"
+   ]
+  ],
+  "boards": {},
+  "wd": {
+   "acme:External": [
+    [
+     "Data Analyst",
+     "https://acme.wd5.myworkdayjobs.com/en-US/External/job/Data-Analyst_R-123?source=workday&utm_source=wd"
+    ]
+   ]
+  },
+  "expect": {
+   "code": "workday",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/en-US/External/job/Data-Analyst_R-123?source=workday&utm_source=wd"
+  },
+  "expect_follow_called": false,
+  "spec_quote": "The first candidate that matches wins: code \"board\" (from a board) or \"workday\" (from a tenant), ats_url = the matching posting's url, exactly as given.",
+  "ambiguous": false
+ }
+]

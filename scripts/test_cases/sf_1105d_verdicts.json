@@ -1,0 +1,3 @@
+{
+ "cover_chat_widget_mentioning_consent_returns_stop": "Case misreads the spec: the element is fixed and its class says 'consent-prompt', which is exactly the spec's hide_banner rule ('a fixed / sticky cookie or consent banner: its id, cls … mentions … consent'). The spec only rules it out as a CHAT widget, which the code honours (not hide_chat). Hiding it from view for one click (never pressing it) is the intended, harmless outcome."
+}

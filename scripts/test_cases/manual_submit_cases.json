@@ -1,0 +1,814 @@
+[
+ {
+  "name": "lever dry-run clean writes sheet",
+  "kind": "should_write",
+  "spec_quote": "A sheet is written only when the ATS is exactly \"lever\". Only when the problem list is empty AND there is at least one field result AND every field result has ok = true.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "dry-run",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "lever captcha clean writes sheet",
+  "kind": "should_write",
+  "spec_quote": "Any other status (\"dry-run\", \"unconfirmed\", \"captcha\", \"blocked\") may get a sheet.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "captcha",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "lever blocked clean writes sheet",
+  "kind": "should_write",
+  "spec_quote": "Any other status (\"dry-run\", \"unconfirmed\", \"captcha\", \"blocked\") may get a sheet.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "blocked",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "uppercase ats does not write",
+  "kind": "should_write",
+  "spec_quote": "A sheet is written only when the ATS is exactly \"lever\".",
+  "ambiguous": false,
+  "ats": "Lever",
+  "status": "dry-run",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "other ats does not write",
+  "kind": "should_write",
+  "spec_quote": "A sheet is written only when the ATS is exactly \"lever\".",
+  "ambiguous": false,
+  "ats": "greenhouse",
+  "status": "dry-run",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "submitted status never writes",
+  "kind": "should_write",
+  "spec_quote": "Never when the status is \"submitted\" (already confirmed).",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "submitted",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "problems block sheet",
+  "kind": "should_write",
+  "spec_quote": "Only when the problem list is empty AND there is at least one field result AND every field result has ok = true.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "dry-run",
+  "problems": [
+   "missing email"
+  ],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "empty results block sheet",
+  "kind": "should_write",
+  "spec_quote": "Only when the problem list is empty AND there is at least one field result AND every field result has ok = true.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "dry-run",
+  "problems": [],
+  "results": [],
+  "expect": false
+ },
+ {
+  "name": "failed field blocks sheet",
+  "kind": "should_write",
+  "spec_quote": "Only when the problem list is empty AND there is at least one field result AND every field result has ok = true.",
+  "ambiguous": false,
+  "ats": "lever",
+  "status": "dry-run",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   },
+   {
+    "ok": false
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "whitespace ats is not exactly lever",
+  "kind": "should_write",
+  "spec_quote": "A sheet is written only when the ATS is exactly \"lever\".",
+  "ambiguous": false,
+  "ats": " lever ",
+  "status": "dry-run",
+  "problems": [],
+  "results": [
+   {
+    "ok": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "basic normal rows use plan labels",
+  "kind": "sheet",
+  "spec_quote": "The Field column shows the label from the plan's field with the same key; if the plan has no such key, the result's own label.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "name",
+    "label": "Full name"
+   },
+   {
+    "key": "email",
+    "label": "Email address"
+   }
+  ],
+  "results": [
+   {
+    "key": "name",
+    "label": "Name (cut)",
+    "type": "text",
+    "want": "Ada Lovelace",
+    "ok": true
+   },
+   {
+    "key": "email",
+    "label": "Email (cut)",
+    "type": "text",
+    "want": "ada@example.com",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Full name",
+    "Ada Lovelace"
+   ],
+   [
+    "Email address",
+    "ada@example.com"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "missing plan key falls back and normal answer escapes",
+  "kind": "sheet",
+  "spec_quote": "if the plan has no such key, the result's own label. Normal answer: the Answer column is the answer text, with line breaks turned into spaces and \"|\" escaped as \"\\|\".",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "name",
+    "label": "Full name"
+   }
+  ],
+  "results": [
+   {
+    "key": "name",
+    "label": "Name",
+    "type": "text",
+    "want": "Ada",
+    "ok": true
+   },
+   {
+    "key": "cover",
+    "label": "Cover letter",
+    "type": "textarea",
+    "want": "Line one|Line two\nLine three",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Full name",
+    "Ada"
+   ],
+   [
+    "Cover letter",
+    "Line one\\|Line two Line three"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "file field with file name uploads and lists file",
+  "kind": "sheet",
+  "spec_quote": "File field (type \"file\") with a file name in want: the Answer column says upload plus the absolute path = folder path + \"/\" + file name; that path is also listed under a \"## Files\" section.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "resume",
+    "label": "Resume"
+   }
+  ],
+  "results": [
+   {
+    "key": "resume",
+    "label": "Resume (cut)",
+    "type": "file",
+    "want": "resume.pdf",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Resume",
+    "/abs/path/2026-10-31_Acme_Intern/resume.pdf"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [
+   "/abs/path/2026-10-31_Acme_Intern/resume.pdf"
+  ],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "blank file and whitespace text get no row and no number",
+  "kind": "sheet",
+  "spec_quote": "File field with no file name, or a non-file field whose want is missing or empty/whitespace: no table row and no number; its label is listed under \"## Leave blank\".",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "name",
+    "label": "Full name"
+   },
+   {
+    "key": "resume",
+    "label": "Resume"
+   },
+   {
+    "key": "phone",
+    "label": "Phone"
+   },
+   {
+    "key": "city",
+    "label": "City"
+   }
+  ],
+  "results": [
+   {
+    "key": "name",
+    "label": "Name",
+    "type": "text",
+    "want": "Ada",
+    "ok": true
+   },
+   {
+    "key": "resume",
+    "label": "Resume",
+    "type": "file",
+    "want": null,
+    "ok": true
+   },
+   {
+    "key": "phone",
+    "label": "Phone",
+    "type": "text",
+    "want": "   ",
+    "ok": true
+   },
+   {
+    "key": "city",
+    "label": "City",
+    "type": "text",
+    "want": "London",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Full name",
+    "Ada"
+   ],
+   [
+    "City",
+    "London"
+   ]
+  ],
+  "expect_blank": [
+   "Resume",
+   "Phone"
+  ],
+  "expect_files": [],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "longer than 160 characters becomes long answer",
+  "kind": "sheet",
+  "spec_quote": "Long answer: an answer longer than 160 characters, or containing a line break, gets a table row that says \"see answer N below\" (N = its row number) and the full text, unchanged, in its own \"## Answer N — <label>\" section inside a code block.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "essay",
+    "label": "Essay"
+   }
+  ],
+  "results": [
+   {
+    "key": "essay",
+    "label": "Essay (cut)",
+    "type": "textarea",
+    "want": "This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer.",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Essay",
+    "LONG"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [],
+  "expect_long": [
+   {
+    "n": 1,
+    "text": "This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer. This is a long answer."
+   }
+  ],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "short answer with line break becomes long answer",
+  "kind": "sheet",
+  "spec_quote": "Long answer: an answer longer than 160 characters, or containing a line break, gets a table row that says \"see answer N below\" (N = its row number) and the full text, unchanged, in its own \"## Answer N — <label>\" section inside a code block.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "notes",
+    "label": "Notes"
+   }
+  ],
+  "results": [
+   {
+    "key": "notes",
+    "label": "Notes",
+    "type": "textarea",
+    "want": "Short\nline",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Notes",
+    "LONG"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [],
+  "expect_long": [
+   {
+    "n": 1,
+    "text": "Short\nline"
+   }
+  ],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "exactly 160 characters is normal answer",
+  "kind": "sheet",
+  "spec_quote": "An answer of exactly 160 characters with no line break is a normal answer.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "bio",
+    "label": "Bio"
+   }
+  ],
+  "results": [
+   {
+    "key": "bio",
+    "label": "Bio",
+    "type": "text",
+    "want": "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Bio",
+    "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij"
+   ]
+  ],
+  "expect_blank": [],
+  "expect_files": [],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "long answer row number skips blank field",
+  "kind": "sheet",
+  "spec_quote": "Long answer: an answer longer than 160 characters, or containing a line break, gets a table row that says \"see answer N below\" (N = its row number). File field with no file name ... no table row and no number.",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "name",
+    "label": "Full name"
+   },
+   {
+    "key": "resume",
+    "label": "Resume"
+   },
+   {
+    "key": "essay",
+    "label": "Essay"
+   },
+   {
+    "key": "city",
+    "label": "City"
+   }
+  ],
+  "results": [
+   {
+    "key": "name",
+    "label": "Name",
+    "type": "text",
+    "want": "Ada",
+    "ok": true
+   },
+   {
+    "key": "resume",
+    "label": "Resume",
+    "type": "file",
+    "want": null,
+    "ok": true
+   },
+   {
+    "key": "essay",
+    "label": "Essay",
+    "type": "textarea",
+    "want": "Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text",
+    "ok": true
+   },
+   {
+    "key": "city",
+    "label": "City",
+    "type": "text",
+    "want": "London",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Full name",
+    "Ada"
+   ],
+   [
+    "Essay",
+    "LONG"
+   ],
+   [
+    "City",
+    "London"
+   ]
+  ],
+  "expect_blank": [
+   "Resume"
+  ],
+  "expect_files": [],
+  "expect_long": [
+   {
+    "n": 2,
+    "text": "Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text"
+   }
+  ],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "file blank and pipe escaping combined",
+  "kind": "sheet",
+  "spec_quote": "File field with no file name ... no table row and no number; its label is listed under \"## Leave blank\". Normal answer: ... \"|\" escaped as \"\\|\".",
+  "ambiguous": false,
+  "folder": "/abs/path/2026-10-31_Acme_Intern",
+  "plan_fields": [
+   {
+    "key": "resume",
+    "label": "Résumé"
+   },
+   {
+    "key": "github",
+    "label": "GitHub URL"
+   }
+  ],
+  "results": [
+   {
+    "key": "resume",
+    "label": "Resume",
+    "type": "file",
+    "want": "cv.pdf",
+    "ok": true
+   },
+   {
+    "key": "portfolio",
+    "label": "Portfolio",
+    "type": "file",
+    "want": "",
+    "ok": true
+   },
+   {
+    "key": "github",
+    "label": "GitHub",
+    "type": "text",
+    "want": "https://x|y",
+    "ok": true
+   }
+  ],
+  "expect_rows": [
+   [
+    "Résumé",
+    "/abs/path/2026-10-31_Acme_Intern/cv.pdf"
+   ],
+   [
+    "GitHub URL",
+    "https://x\\|y"
+   ]
+  ],
+  "expect_blank": [
+   "Portfolio"
+  ],
+  "expect_files": [
+   "/abs/path/2026-10-31_Acme_Intern/cv.pdf"
+  ],
+  "expect_long": [],
+  "expect_command_folder": "2026-10-31_Acme_Intern"
+ },
+ {
+  "name": "no existing lines records new submitted line",
+  "kind": "manual_line",
+  "spec_quote": "Otherwise the new line has: folder, url, ats, at = the timestamp, status \"submitted\", by \"joey\", and note = the given note, or \"submitted by Joey by hand from manual_submit.md\" when no note (or an empty note) is given.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "called in",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "called in"
+  }
+ },
+ {
+  "name": "dry-run line for folder does not block and null note uses default",
+  "kind": "manual_line",
+  "spec_quote": "Lines for the folder with other statuses (\"dry-run\", \"unconfirmed\", …) do not count. note = the given note, or \"submitted by Joey by hand from manual_submit.md\" when no note (or an empty note) is given.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "dry-run"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": null,
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "submitted by Joey by hand from manual_submit.md"
+  }
+ },
+ {
+  "name": "unconfirmed line does not block and empty note uses default",
+  "kind": "manual_line",
+  "spec_quote": "Lines for the folder with other statuses (\"dry-run\", \"unconfirmed\", …) do not count. note = the given note, or \"submitted by Joey by hand from manual_submit.md\" when no note (or an empty note) is given.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "unconfirmed"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "submitted by Joey by hand from manual_submit.md"
+  }
+ },
+ {
+  "name": "submitted line for other folder does not block",
+  "kind": "manual_line",
+  "spec_quote": "Lines for the folder with other statuses (\"dry-run\", \"unconfirmed\", …) do not count; lines for other folders do not count.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f2",
+    "status": "submitted"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "other folder",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "other folder"
+  }
+ },
+ {
+  "name": "submitted line for same folder records nothing",
+  "kind": "manual_line",
+  "spec_quote": "If any existing line has this folder AND status \"submitted\", nothing new is recorded (result: none) — re-running is safe.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "submitted"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "retry",
+  "expect": null
+ },
+ {
+  "name": "submitted line among others for same folder records nothing",
+  "kind": "manual_line",
+  "spec_quote": "If any existing line has this folder AND status \"submitted\", nothing new is recorded (result: none) — re-running is safe.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "submitted"
+   },
+   {
+    "folder": "f1",
+    "status": "dry-run"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "retry",
+  "expect": null
+ },
+ {
+  "name": "blocked same folder plus submitted other folder records new",
+  "kind": "manual_line",
+  "spec_quote": "Lines for the folder with other statuses (\"dry-run\", \"unconfirmed\", …) do not count; lines for other folders do not count.",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "blocked"
+   },
+   {
+    "folder": "f2",
+    "status": "submitted"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "blocked retry",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "blocked retry"
+  }
+ },
+ {
+  "name": "uppercase Submitted status does not count",
+  "kind": "manual_line",
+  "spec_quote": "If any existing line has this folder AND status \"submitted\", nothing new is recorded (result: none).",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "Submitted"
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "case check",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "case check"
+  }
+ },
+ {
+  "name": "submitted with trailing space does not count",
+  "kind": "manual_line",
+  "spec_quote": "If any existing line has this folder AND status \"submitted\", nothing new is recorded (result: none).",
+  "ambiguous": false,
+  "folder": "f1",
+  "results": [
+   {
+    "folder": "f1",
+    "status": "submitted "
+   }
+  ],
+  "url": "https://example.com/job",
+  "ats": "lever",
+  "at": "2026-10-31T15:00:00",
+  "note": "space check",
+  "expect": {
+   "folder": "f1",
+   "url": "https://example.com/job",
+   "ats": "lever",
+   "at": "2026-10-31T15:00:00",
+   "status": "submitted",
+   "by": "joey",
+   "note": "space check"
+  }
+ }
+]

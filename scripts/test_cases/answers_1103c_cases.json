@@ -1,0 +1,157 @@
+[
+ {
+  "name": "good_standing_academic_institution_yes_no",
+  "label": "Are you in good standing with your academic institution?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "currently_good_academic_standing_reordered_options",
+  "label": "Are you currently in good academic standing?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_at_named_university",
+  "label": "Are you in good academic standing at Riverside University?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "holds_good_standing_at_college",
+  "label": "Do you currently hold good academic standing at Northgate College?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_college_with_placeholder_option",
+  "label": "Are you in good standing at your college?",
+  "type": "select",
+  "options": [
+   "Select…",
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_university_text_field",
+  "label": "Are you in good standing with your university?",
+  "type": "text",
+  "options": [],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_academically_pinecrest",
+  "label": "Are you in good standing academically at Pinecrest University?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_option_starting_with_yes",
+  "label": "Are you currently in good academic standing at your institution?",
+  "type": "select",
+  "options": [
+   "Yes, I am",
+   "No"
+  ],
+  "expect": "Yes, I am"
+ },
+ {
+  "name": "good_standing_with_your_school",
+  "label": "Are you in good standing with your school?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "good_standing_summit_textarea",
+  "label": "Please confirm: are you in good academic standing at Summit University?",
+  "type": "textarea",
+  "options": [],
+  "expect": "Yes"
+ },
+ {
+  "name": "academic_probation_not_yes",
+  "label": "Are you currently on academic probation?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ },
+ {
+  "name": "suspension_from_university_not_yes",
+  "label": "Have you ever been suspended from your university?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ },
+ {
+  "name": "academic_dismissal_not_yes",
+  "label": "Are you facing academic dismissal at Crestline College?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ },
+ {
+  "name": "disciplinary_action_not_yes",
+  "label": "Have you ever been subject to disciplinary action at your institution?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ },
+ {
+  "name": "probation_or_suspension_combined_not_yes",
+  "label": "Are you on academic probation or suspension at your university?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ },
+ {
+  "name": "pending_disciplinary_action_not_yes",
+  "label": "Is there any pending disciplinary action against you at Northgate University?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_YES"
+ }
+]

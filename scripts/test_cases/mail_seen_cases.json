@@ -1,0 +1,1023 @@
+[
+ {
+  "name": "new item, done result, recorded as done",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m1"
+    }
+   ],
+   "results": {
+    "m1": {
+     "type": "ack"
+    }
+   },
+   "fallback_ids": [],
+   "seen": {},
+   "n_apps": 3,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "ack"
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m1"
+   ],
+   "seen_after": {
+    "m1": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 3
+    }
+   }
+  },
+  "spec_quote": "For every item that is handled (apply called): if apply added no new line to notes[\"fallback\"], seen[id] is set to {\"on\": today (ISO date), \"apps\": n_apps, \"kind\": \"unmatched\" if the result is a dict with unmatched true, else \"done\"}",
+  "ambiguous": false
+ },
+ {
+  "name": "new item, result unmatched, recorded as unmatched and pushed",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m2"
+    }
+   ],
+   "results": {
+    "m2": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {},
+   "n_apps": 2,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [
+    {
+     "unmatched": true
+    }
+   ],
+   "handled": 1,
+   "called": [
+    "m2"
+   ],
+   "seen_after": {
+    "m2": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "push: the unmatched results that should be pushed to Joey — every unmatched result except one whose id was already recorded in seen as \"unmatched\" before this run (never pushed twice)",
+  "ambiguous": false
+ },
+ {
+  "name": "new item, apply returns None: handled, kind done, no result",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m3"
+    }
+   ],
+   "results": {
+    "m3": null
+   },
+   "fallback_ids": [],
+   "seen": {},
+   "n_apps": 1,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m3"
+   ],
+   "seen_after": {
+    "m3": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 1
+    }
+   }
+  },
+  "spec_quote": "results: the non-None results, in item order; ... (a None result is \"done\")",
+  "ambiguous": false
+ },
+ {
+  "name": "seen done entry is skipped, other item handled",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m4"
+    },
+    {
+     "id": "m5"
+    }
+   ],
+   "results": {
+    "m4": {
+     "type": "a"
+    },
+    "m5": {
+     "type": "b"
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m4": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 2
+    }
+   },
+   "n_apps": 2,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "b"
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m5"
+   ],
+   "seen_after": {
+    "m4": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 2
+    },
+    "m5": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "An item is skipped (apply not called) when its id is in seen",
+  "ambiguous": false
+ },
+ {
+  "name": "seen unmatched, same n_apps as recorded: skipped",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m6"
+    }
+   ],
+   "results": {
+    "m6": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m6": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   },
+   "n_apps": 2,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [],
+   "push": [],
+   "handled": 0,
+   "called": [],
+   "seen_after": {
+    "m6": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "An item is skipped (apply not called) when its id is in seen — except when that entry's kind is \"unmatched\" and n_apps is greater than the entry's \"apps\"",
+  "ambiguous": false
+ },
+ {
+  "name": "seen unmatched, tracker gained rows: re-handled and now matched, not pushed",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m7"
+    }
+   ],
+   "results": {
+    "m7": {
+     "type": "matched"
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m7": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   },
+   "n_apps": 4,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "matched"
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m7"
+   ],
+   "seen_after": {
+    "m7": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 4
+    }
+   }
+  },
+  "spec_quote": "except when that entry's kind is \"unmatched\" and n_apps is greater than the entry's \"apps\" (the tracker gained rows, so it may match now)",
+  "ambiguous": false
+ },
+ {
+  "name": "seen unmatched, n_apps smaller than recorded apps: skipped",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m8"
+    }
+   ],
+   "results": {
+    "m8": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m8": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 5
+    }
+   },
+   "n_apps": 1,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [],
+   "push": [],
+   "handled": 0,
+   "called": [],
+   "seen_after": {
+    "m8": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 5
+    }
+   }
+  },
+  "spec_quote": "An item is skipped (apply not called) when its id is in seen — except when that entry's kind is \"unmatched\" and n_apps is greater than the entry's \"apps\"",
+  "ambiguous": false
+ },
+ {
+  "name": "reread true re-handles a seen done item and refreshes the entry",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m9"
+    }
+   ],
+   "results": {
+    "m9": {
+     "type": "x"
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m9": {
+     "on": "2024-05-08",
+     "kind": "done",
+     "apps": 3
+    }
+   },
+   "n_apps": 3,
+   "reread": true,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "x"
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m9"
+   ],
+   "seen_after": {
+    "m9": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 3
+    }
+   }
+  },
+  "spec_quote": "An item is skipped (apply not called) when its id is in seen — except when that entry's kind is \"unmatched\" and n_apps is greater than the entry's \"apps\" (the tracker gained rows, so it may match now), or when reread is true.",
+  "ambiguous": false
+ },
+ {
+  "name": "unmatched retried because apps grew, still unmatched: handled but not pushed again",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m10"
+    }
+   ],
+   "results": {
+    "m10": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m10": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   },
+   "n_apps": 5,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m10"
+   ],
+   "seen_after": {
+    "m10": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 5
+    }
+   }
+  },
+  "spec_quote": "every unmatched result except one whose id was already recorded in seen as \"unmatched\" before this run (never pushed twice)",
+  "ambiguous": false
+ },
+ {
+  "name": "reread true on a seen unmatched item that is still unmatched: not pushed twice",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m11"
+    }
+   ],
+   "results": {
+    "m11": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "m11": {
+     "on": "2024-05-08",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   },
+   "n_apps": 2,
+   "reread": true,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m11"
+   ],
+   "seen_after": {
+    "m11": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "except one whose id was already recorded in seen as \"unmatched\" before this run (never pushed twice)",
+  "ambiguous": false
+ },
+ {
+  "name": "fallback line added: seen not recorded for that id, other item recorded",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m12"
+    },
+    {
+     "id": "m13"
+    }
+   ],
+   "results": {
+    "m12": {
+     "type": "a"
+    },
+    "m13": {
+     "type": "b"
+    }
+   },
+   "fallback_ids": [
+    "m12"
+   ],
+   "seen": {},
+   "n_apps": 2,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "a"
+    },
+    {
+     "type": "b"
+    }
+   ],
+   "push": [],
+   "handled": 2,
+   "called": [
+    "m12",
+    "m13"
+   ],
+   "seen_after": {
+    "m13": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "If apply did add a fallback line, seen is not changed for that id (tried again next run).",
+  "ambiguous": false
+ },
+ {
+  "name": "fallback item not recorded while a seen done item stays skipped (retried next run)",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m14"
+    },
+    {
+     "id": "m15"
+    }
+   ],
+   "results": {
+    "m14": {
+     "type": "a"
+    },
+    "m15": {
+     "type": "b"
+    }
+   },
+   "fallback_ids": [
+    "m15"
+   ],
+   "seen": {
+    "m14": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    }
+   },
+   "n_apps": 1,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "type": "b"
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m15"
+   ],
+   "seen_after": {
+    "m14": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    }
+   }
+  },
+  "spec_quote": "If apply did add a fallback line, seen is not changed for that id (tried again next run).",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed order: skip done, re-handle grown unmatched, None result, fallback keeps id unseen",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "a"
+    },
+    {
+     "id": "b"
+    },
+    {
+     "id": "c"
+    },
+    {
+     "id": "d"
+    }
+   ],
+   "results": {
+    "a": {
+     "type": "x"
+    },
+    "b": {
+     "type": "y"
+    },
+    "c": {
+     "unmatched": true
+    },
+    "d": null
+   },
+   "fallback_ids": [
+    "a"
+   ],
+   "seen": {
+    "b": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    },
+    "c": {
+     "on": "2024-05-01",
+     "kind": "unmatched",
+     "apps": 1
+    }
+   },
+   "n_apps": 3,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [],
+   "handled": 2,
+   "called": [
+    "c",
+    "d"
+   ],
+   "seen_after": {
+    "b": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    },
+    "c": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 3
+    },
+    "d": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 3
+    }
+   }
+  },
+  "spec_quote": "results: the non-None results, in item order;",
+  "ambiguous": false
+ },
+ {
+  "name": "empty items: nothing handled, seen unchanged",
+  "fn": "run_new",
+  "args": {
+   "items": [],
+   "results": {},
+   "fallback_ids": [],
+   "seen": {
+    "z": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    }
+   },
+   "n_apps": 1,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [],
+   "push": [],
+   "handled": 0,
+   "called": [],
+   "seen_after": {
+    "z": {
+     "on": "2024-05-09",
+     "kind": "done",
+     "apps": 1
+    }
+   }
+  },
+  "spec_quote": "handled: number of items apply was called on.",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate ids in one run (unmatched): both handled",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "dup"
+    },
+    {
+     "id": "dup"
+    }
+   ],
+   "results": {
+    "dup": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {},
+   "n_apps": 1,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    },
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [
+    {
+     "unmatched": true
+    },
+    {
+     "unmatched": true
+    }
+   ],
+   "handled": 2,
+   "called": [
+    "dup",
+    "dup"
+   ],
+   "seen_after": {
+    "dup": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 1
+    }
+   }
+  },
+  "spec_quote": "push: the unmatched results that should be pushed to Joey — every unmatched result except one whose id was already recorded in seen as \"unmatched\" before this run (never pushed twice)",
+  "ambiguous": true
+ },
+ {
+  "name": "three unmatched items, middle one already seen-as-unmatched: only the others pushed",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "p"
+    },
+    {
+     "id": "q"
+    },
+    {
+     "id": "r"
+    }
+   ],
+   "results": {
+    "p": {
+     "unmatched": true
+    },
+    "q": {
+     "unmatched": true
+    },
+    "r": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [],
+   "seen": {
+    "q": {
+     "on": "2024-05-09",
+     "kind": "unmatched",
+     "apps": 1
+    }
+   },
+   "n_apps": 2,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    },
+    {
+     "unmatched": true
+    },
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [
+    {
+     "unmatched": true
+    },
+    {
+     "unmatched": true
+    }
+   ],
+   "handled": 3,
+   "called": [
+    "p",
+    "q",
+    "r"
+   ],
+   "seen_after": {
+    "p": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 2
+    },
+    "q": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 2
+    },
+    "r": {
+     "on": "2024-05-10",
+     "kind": "unmatched",
+     "apps": 2
+    }
+   }
+  },
+  "spec_quote": "every unmatched result except one whose id was already recorded in seen as \"unmatched\" before this run (never pushed twice)",
+  "ambiguous": false
+ },
+ {
+  "name": "re-handled seen-unmatched item whose apply used fallback: old entry kept, not pushed",
+  "fn": "run_new",
+  "args": {
+   "items": [
+    {
+     "id": "m17"
+    }
+   ],
+   "results": {
+    "m17": {
+     "unmatched": true
+    }
+   },
+   "fallback_ids": [
+    "m17"
+   ],
+   "seen": {
+    "m17": {
+     "on": "2024-05-01",
+     "kind": "unmatched",
+     "apps": 1
+    }
+   },
+   "n_apps": 3,
+   "reread": false,
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "results": [
+    {
+     "unmatched": true
+    }
+   ],
+   "push": [],
+   "handled": 1,
+   "called": [
+    "m17"
+   ],
+   "seen_after": {
+    "m17": {
+     "on": "2024-05-01",
+     "kind": "unmatched",
+     "apps": 1
+    }
+   }
+  },
+  "spec_quote": "If apply did add a fallback line, seen is not changed for that id (tried again next run).",
+  "ambiguous": false
+ },
+ {
+  "name": "save_seen keeps entry exactly 7 days old (boundary)",
+  "fn": "save_seen",
+  "args": {
+   "seen": {
+    "a": {
+     "on": "2024-05-03",
+     "kind": "done",
+     "apps": 1
+    }
+   },
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "a": {
+    "on": "2024-05-03",
+    "kind": "done",
+    "apps": 1
+   }
+  },
+  "spec_quote": "Keeps only entries whose \"on\" is on or after today − 7 days (string compare of ISO dates)",
+  "ambiguous": false
+ },
+ {
+  "name": "save_seen drops entry 8 days old",
+  "fn": "save_seen",
+  "args": {
+   "seen": {
+    "a": {
+     "on": "2024-05-02",
+     "kind": "done",
+     "apps": 1
+    }
+   },
+   "today": "2024-05-10"
+  },
+  "expect": {},
+  "spec_quote": "Keeps only entries whose \"on\" is on or after today − 7 days (string compare of ISO dates)",
+  "ambiguous": false
+ },
+ {
+  "name": "save_seen drops entry without an \"on\" key",
+  "fn": "save_seen",
+  "args": {
+   "seen": {
+    "a": {
+     "kind": "unmatched",
+     "apps": 2
+    }
+   },
+   "today": "2024-05-10"
+  },
+  "expect": {},
+  "spec_quote": "an entry without \"on\" is dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "save_seen mixed dates: keeps today, 6 days old and future, drops 9 days old and no-on",
+  "fn": "save_seen",
+  "args": {
+   "seen": {
+    "a": {
+     "on": "2024-05-10",
+     "kind": "done",
+     "apps": 3
+    },
+    "b": {
+     "on": "2024-05-04",
+     "kind": "unmatched",
+     "apps": 1
+    },
+    "c": {
+     "on": "2024-05-01",
+     "kind": "done",
+     "apps": 2
+    },
+    "d": {
+     "on": "2024-06-01",
+     "kind": "done",
+     "apps": 0
+    },
+    "e": {
+     "kind": "done",
+     "apps": 0
+    }
+   },
+   "today": "2024-05-10"
+  },
+  "expect": {
+   "a": {
+    "on": "2024-05-10",
+    "kind": "done",
+    "apps": 3
+   },
+   "b": {
+    "on": "2024-05-04",
+    "kind": "unmatched",
+    "apps": 1
+   },
+   "d": {
+    "on": "2024-06-01",
+    "kind": "done",
+    "apps": 0
+   }
+  },
+  "spec_quote": "Keeps only entries whose \"on\" is on or after today − 7 days (string compare of ISO dates); an entry without \"on\" is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "save_seen with empty seen returns empty dict",
+  "fn": "save_seen",
+  "args": {
+   "seen": {},
+   "today": "2024-05-10"
+  },
+  "expect": {},
+  "spec_quote": "Writes the kept dict as JSON to path (creating the folder), and returns it.",
+  "ambiguous": false
+ },
+ {
+  "name": "load_seen returns parsed JSON dict",
+  "fn": "load_seen",
+  "args": {
+   "file": "{\"a\": {\"on\": \"2024-05-09\", \"kind\": \"done\", \"apps\": 2}}"
+  },
+  "expect": {
+   "a": {
+    "on": "2024-05-09",
+    "kind": "done",
+    "apps": 2
+   }
+  },
+  "spec_quote": "Returns the JSON dict in path",
+  "ambiguous": false
+ },
+ {
+  "name": "load_seen with invalid JSON returns empty dict, no error",
+  "fn": "load_seen",
+  "args": {
+   "file": "{this is not json"
+  },
+  "expect": {},
+  "spec_quote": "a missing file or invalid JSON → {} (no error)",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,108 @@
+[
+ {
+  "name": "linkedin company jobs link dropped, own-site search link kept",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://www.linkedin.com/company/acme/jobs/\">Jobs</a><a href=\"https://www.acme.com/careers\">Search jobs</a>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://www.acme.com/careers"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words (jobright, joinhandshake, linkedin, builtin, indeed, glassdoor, ...) is dropped — unless detect_ats recognises the URL ... \"https://www.linkedin.com/company/acme/jobs/\" is dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "indeed and glassdoor links dropped",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://www.indeed.com/cmp/Acme/jobs\">Acme jobs</a><a href=\"https://www.glassdoor.com/Jobs/Acme-Jobs-E123.htm\">Acme Careers</a><a href=\"https://acme.com/jobs\">View jobs</a>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://acme.com/jobs"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words (jobright, joinhandshake, linkedin, builtin, indeed, glassdoor, greenhouse.io, ...) is dropped — unless detect_ats recognises the URL",
+  "ambiguous": false
+ },
+ {
+  "name": "jobright job info link dropped",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://jobright.ai/jobs/info/12345\">Junior Quant Developer</a><a href=\"https://acme.com/careers\">Open positions</a>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://acme.com/careers"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words (jobright, ...) is dropped — unless detect_ats recognises the URL",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse board on skip-word host kept, linkedin dropped",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://www.linkedin.com/company/acme/jobs/\">Acme on LinkedIn</a><a href=\"https://boards.greenhouse.io/acme\">Greenhouse</a>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://boards.greenhouse.io/acme"
+  ],
+  "spec_quote": "\"https://www.linkedin.com/company/acme/jobs/\" is dropped; \"https://boards.greenhouse.io/acme\" is kept. Order: first links whose URL is a known ATS posting page (detect_ats finds something)",
+  "ambiguous": false
+ },
+ {
+  "name": "own-site careers links kept, relative URL resolved against base",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"/careers\">Search jobs</a><a href=\"https://careers.acme.com/openings\">Open positions</a>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://www.acme.com/careers",
+   "https://careers.acme.com/openings"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words ... is dropped — unless detect_ats recognises the URL ... then links whose text or URL says search / open / view jobs etc. or whose host is a different host starting with \"careers.\" / \"career.\" / \"jobs.\", then the rest in page order",
+  "ambiguous": false
+ },
+ {
+  "name": "mix: ATS board first, then careers host, glassdoor dropped",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://careers.acme.com/\">Search jobs</a><a href=\"https://www.glassdoor.com/Jobs/Acme.htm\">Acme reviews</a><a href=\"https://boards.greenhouse.io/acme\">Apply</a>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://boards.greenhouse.io/acme",
+   "https://careers.acme.com/"
+  ],
+  "spec_quote": "Order: first links whose URL is a known ATS posting page (detect_ats finds something), then links whose text or URL says search / open / view jobs etc. or whose host is a different host starting with \"careers.\" / \"career.\" / \"jobs.\" ... a link whose host contains any of the borrow_domains skip words ... is dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: host contains 'link' but not 'linkedin' is kept",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://www.linkedin.com/jobs/view/123\">View job</a><a href=\"https://www.linkage.com/careers/acme\">Search jobs</a>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://www.linkage.com/careers/acme"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words (jobright, joinhandshake, linkedin, builtin, indeed, glassdoor, greenhouse.io, lever.co, ashbyhq, myworkday, icims, smartrecruiters, workable, github, simplify, zapply, vansh, ziprecruiter, wellfound, \"google.\", bit.ly) is dropped — unless detect_ats recognises the URL",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: greenhouse.io host not recognised by detect_ats is dropped, myworkday board kept",
+  "fn": "career_links",
+  "args": {
+   "page": "<a href=\"https://www.greenhouse.io/about\">About Greenhouse</a><a href=\"https://acme.wd5.myworkdayjobs.com/AcmeCareers\">Search jobs</a>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://acme.wd5.myworkdayjobs.com/AcmeCareers"
+  ],
+  "spec_quote": "a link whose host contains any of the borrow_domains skip words (..., greenhouse.io, lever.co, ashbyhq, myworkday, ...) is dropped — unless detect_ats recognises the URL (a Greenhouse / Lever / Ashby / Workday / iCIMS … board link stays)",
+  "ambiguous": false
+ }
+]

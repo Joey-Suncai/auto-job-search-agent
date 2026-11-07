@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "plan_questions" | "other_text", "args": {...}, "expect": ..., "spec_quote": str, "ambiguous": false}. plan_questions: args {"raw": [one or two raw items]}, expect the list. other_text: args {"label"}, expect bool. Write 18 cases: plan_questions 6, other_text 12.

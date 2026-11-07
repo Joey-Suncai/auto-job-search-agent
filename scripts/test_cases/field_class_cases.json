@@ -1,0 +1,242 @@
+[
+ {
+  "name": "work_auth-authorized-to-work",
+  "label": "Are you legally authorized to work in the United States?",
+  "expect_class": "critical",
+  "expect_group": "work_auth",
+  "spec_quote": "A question ... is CRITICAL when it asks about: 1. work authorization, sponsorship, visa type / status, citizenship, permanent residence, immigration, work permit, CPT / OPT / H-1B, export-control \"U.S. person\" questions → group work_auth",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth-sponsorship-with-office-city",
+  "label": "Will you now or in the future require visa sponsorship to work in our Denver, CO office?",
+  "expect_class": "critical",
+  "expect_group": "work_auth",
+  "spec_quote": "Precedence: a question that mentions work authorization / sponsorship / visa is critical work_auth even if it also mentions location or start dates.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth-export-control-us-person",
+  "label": "Are you a \"U.S. person\" as defined by U.S. export control laws (ITAR/EAR)?",
+  "expect_class": "critical",
+  "expect_group": "work_auth",
+  "spec_quote": "export-control \"U.S. person\" questions → group work_auth",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth-visa-type-status",
+  "label": "What is your current visa type / status?",
+  "expect_class": "critical",
+  "expect_group": "work_auth",
+  "spec_quote": "work authorization, sponsorship, visa type / status, citizenship, permanent residence, immigration, work permit",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth-cpt-opt-h1b",
+  "label": "Do you have CPT, OPT, or H-1B work authorization?",
+  "expect_class": "critical",
+  "expect_group": "work_auth",
+  "spec_quote": "CPT / OPT / H-1B ... → group work_auth",
+  "ambiguous": false
+ },
+ {
+  "name": "education-major-field-of-study",
+  "label": "What is your major / field of study?",
+  "expect_class": "critical",
+  "expect_group": "education",
+  "spec_quote": "his school, degree, major / field of study / minor, GPA, enrollment, class standing, transcript ... → group education",
+  "ambiguous": false
+ },
+ {
+  "name": "education-gpa",
+  "label": "What is your cumulative GPA?",
+  "expect_class": "critical",
+  "expect_group": "education",
+  "spec_quote": "his school, degree, major / field of study / minor, GPA ... → group education",
+  "ambiguous": false
+ },
+ {
+  "name": "education-school-and-degree",
+  "label": "Which university did you attend, and what degree did you earn?",
+  "expect_class": "critical",
+  "expect_group": "education",
+  "spec_quote": "his school, degree ... → group education",
+  "ambiguous": false
+ },
+ {
+  "name": "education-degree-start-date-month-year",
+  "label": "Education — degree start date (month/year)",
+  "expect_class": "critical",
+  "expect_group": "education",
+  "spec_quote": "degree start or graduation dates ... → group education",
+  "ambiguous": false
+ },
+ {
+  "name": "education-bare-start-date-year",
+  "label": "Start date year",
+  "expect_class": "critical",
+  "expect_group": "education",
+  "spec_quote": "\"Start date year\" / \"End date year\" / \"From month\" with nothing else are the dates of an education or work entry → critical education.",
+  "ambiguous": false
+ },
+ {
+  "name": "contact-email-address",
+  "label": "Email address",
+  "expect_class": "critical",
+  "expect_group": "contact",
+  "spec_quote": "his own name, e-mail, phone, street address, ZIP / postal code, city or state of residence, date of birth → group contact",
+  "ambiguous": false
+ },
+ {
+  "name": "contact-phone-number",
+  "label": "Phone number",
+  "expect_class": "critical",
+  "expect_group": "contact",
+  "spec_quote": "his own name, e-mail, phone, street address ... → group contact",
+  "ambiguous": false
+ },
+ {
+  "name": "contact-address-city-state-zip",
+  "label": "Street address, city, state, ZIP code",
+  "expect_class": "critical",
+  "expect_group": "contact",
+  "spec_quote": "street address, ZIP / postal code, city or state of residence ... → group contact",
+  "ambiguous": false
+ },
+ {
+  "name": "contact-date-of-birth",
+  "label": "Date of birth",
+  "expect_class": "critical",
+  "expect_group": "contact",
+  "spec_quote": "his own name, e-mail, phone, street address, ZIP / postal code, city or state of residence, date of birth → group contact",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo-gender",
+  "label": "Gender",
+  "expect_class": "critical",
+  "expect_group": "eeo",
+  "spec_quote": "EEO / self-identification: gender, sex, race, ethnicity, Hispanic / Latino, disability, veteran / military status, pronouns, sexual orientation, transgender → group eeo",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo-hispanic-latino",
+  "label": "Are you Hispanic or Latino?",
+  "expect_class": "critical",
+  "expect_group": "eeo",
+  "spec_quote": "ethnicity, Hispanic / Latino ... → group eeo",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo-veteran-military-status",
+  "label": "Veteran / military status",
+  "expect_class": "critical",
+  "expect_group": "eeo",
+  "spec_quote": "disability, veteran / military status ... → group eeo",
+  "ambiguous": false
+ },
+ {
+  "name": "experience-years-of-experience",
+  "label": "How many years of experience do you have as a software engineer?",
+  "expect_class": "critical",
+  "expect_group": "experience",
+  "spec_quote": "anything written as his experience or as other people's contact details: work history, employer, job title, years of experience ... → group experience",
+  "ambiguous": false
+ },
+ {
+  "name": "experience-portfolio-github-linkedin",
+  "label": "Portfolio / GitHub / LinkedIn URLs",
+  "expect_class": "critical",
+  "expect_group": "experience",
+  "spec_quote": "references / referees, portfolio / GitHub / LinkedIn → group experience",
+  "ambiguous": false
+ },
+ {
+  "name": "experience-references-referees",
+  "label": "Please list two references (name, title, phone, e-mail)",
+  "expect_class": "critical",
+  "expect_group": "experience",
+  "spec_quote": "anything written as his experience or as other people's contact details: ... references / referees ... → group experience",
+  "ambiguous": false
+ },
+ {
+  "name": "experience-work-history-employer-title",
+  "label": "Work history: employer name and job title",
+  "expect_class": "critical",
+  "expect_group": "experience",
+  "spec_quote": "work history, employer, job title ... → group experience",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-how-did-you-hear",
+  "label": "How did you hear about us?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "Everything else is NON-CRITICAL (group \"\"), in particular: how did you hear about us / source",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-communication-preference",
+  "label": "Preferred communication method (e-mail / SMS / WhatsApp)",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "communication preference (e-mail / SMS / WhatsApp)",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-salary-expectations",
+  "label": "What are your salary expectations?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "salary / pay / compensation expectations",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-job-earliest-start-date",
+  "label": "What is your earliest available start date for this position?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "salary / pay / compensation expectations, available or desired START DATE for the job",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-office-location-with-city",
+  "label": "Which office location do you prefer — New York, NY or remote?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "A question about the job's start date or location stays non-critical even if it mentions a city or a date.",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-relatives-employed",
+  "label": "Do you have any relatives employed at our company?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "relatives employed at the company",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-why-do-you-want-to-work-here",
+  "label": "Why do you want to work here?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "\"why do you want to work here\" style motivation questions",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-consent-checkbox",
+  "label": "I consent to a background check and to the processing of my application.",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "consent checkboxes, optional questions",
+  "ambiguous": false
+ },
+ {
+  "name": "noncrit-willing-to-relocate",
+  "label": "Are you willing to relocate?",
+  "expect_class": "non-critical",
+  "expect_group": "",
+  "spec_quote": "location / office / relocation / remote / hybrid / on-site / travel preferences",
+  "ambiguous": false
+ }
+]

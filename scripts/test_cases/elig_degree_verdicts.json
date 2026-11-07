@@ -1,0 +1,6 @@
+{
+ "masters_juniors_or_seniors_plus_grad_eligible": "Case misreads spec rule 1: its text says 'open to juniors or seniors' \u2014 it contains the explicit 'open to juniors' wording, which rule 1 says stays Ineligible even when graduate students are also welcomed (Uline 2026-10-30 behaviour, unchanged for the author).",
+ "phd_juniors_or_seniors_plus_grad_eligible": "Same as masters_juniors_or_seniors_plus_grad_eligible: 'open to juniors \u2026' is the explicit juniors limit of rule 1.",
+ "fulltime_masters_juniors_only_eligible": "Case is not neutral (format): a full-time new-grad role 'starting in Summer 2027' with the default grad date Dec 2027 \u2014 the graduation-window rule blocks it (a start before graduation), which is a candidate-date rule, not degree level. Degree level correctly has no effect on full-time roles here.",
+ "fulltime_bachelors_pursuing_phd_eligible": "Same as fulltime_masters_juniors_only_eligible: 'new graduate \u2026 starting in Summer 2027' is outside the default Dec 2027 grad date; degree level has no effect on full-time roles."
+}

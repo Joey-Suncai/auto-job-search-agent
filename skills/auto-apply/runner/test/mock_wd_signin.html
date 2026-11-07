@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8"><title>mock workday sign-in</title></head><body>
+<div id="app"></div>
+<script>
+// Offline mock of a Workday auth step (test/t_wd_signin.py). Mode = location.hash: account | new | verify | captcha | relogin | social
+// | oldacct (create form first; the e-mail already has an account with another password, the tenant says nothing — gaig / aba 11-05)
+// | lateverify (create form first; an earlier run's account is unverified, sign-in says wrong password until its link is opened)
+// | locked (sign-in answers "account locked")   — JSA-207
+const mode = (location.hash || '#account').slice(1);
+const RIGHT = 'pw-right';
+const st = (k, v) => v === undefined ? localStorage.getItem('mock_' + k) : localStorage.setItem('mock_' + k, v);
+const app = document.getElementById('app');
+function signedIn() { app.innerHTML = '<div data-automation-id="progressBar"><span data-automation-id="progressBarActiveStep">current step 1 of 6 My Information</span></div><h2>My Information</h2>'; }
+function signIn(err) {
+  app.innerHTML = '<h2>Sign In</h2><div data-automation-id="noCaptchaWrapper" style="width:300px;height:40px"></div>' + (err ? '<div data-automation-id="errorMessage">' + err + '</div>' : '') +
+    '<input data-automation-id="email" type="email"><input data-automation-id="password" type="password">' +
+    '<div data-automation-id="signInSubmitButton" style="position:relative;display:inline-block"><button>Sign In</button><div data-automation-id="click_filter" style="position:absolute;inset:0"></div></div>' +
+    '<button data-automation-id="createAccountLink">Create Account</button>' +
+    (mode === 'captcha' ? '<iframe title="captcha challenge" src="about:blank"></iframe>' : '');
+  document.querySelector('[data-automation-id="signInSubmitButton"] [data-automation-id="click_filter"]').onclick = () => {
+    const pw = document.querySelector('[data-automation-id="password"]').value;
+    const has = mode === 'account' || st('created') === '1';
+    if (mode === 'verify' && st('created') === '1' && st('verified') !== '1') return signIn('Please verify your account before you sign in. Check your email.');
+    if (mode === 'locked') return signIn('Your account has been locked. Too many failed attempts.');
+    if (mode === 'oldacct') return signIn('Wrong email or password.');
+    if (mode === 'lateverify') return st('verified') === '1' && pw === RIGHT ? signedIn() : signIn('Wrong email or password.');
+    if (has && pw === RIGHT) return signedIn();
+    signIn('Wrong email or password.');
+  };
+  document.querySelector('[data-automation-id="createAccountLink"]').onclick = createForm;
+}
+function createForm() {
+  app.innerHTML = '<h2>Create Account</h2><input data-automation-id="email" type="email"><input data-automation-id="password" type="password">' +
+    '<input data-automation-id="verifyPassword" type="password"><label><input data-automation-id="createAccountCheckbox" type="checkbox"> I agree</label>' +
+    '<div data-automation-id="createAccountSubmitButton" style="position:relative;display:inline-block"><button>Create Account</button><div data-automation-id="click_filter" style="position:absolute;inset:0"></div></div>';
+  document.querySelector('[data-automation-id="createAccountSubmitButton"] [data-automation-id="click_filter"]').onclick = () => {
+    const p = [...document.querySelectorAll('input[type=password]')].map(x => x.value);
+    if (!document.querySelector('[data-automation-id="createAccountCheckbox"]').checked || p[0] !== p[1]) return;
+    if (mode === 'oldacct' || mode === 'lateverify') { signIn(''); return; }   // no message: the e-mail already has an account
+    if (mode === 'account') { app.innerHTML = '<h2>Create Account</h2><p>An account with this email already exists.</p><button data-automation-id="signInLink">Sign In</button>'; document.querySelector('[data-automation-id="signInLink"]').onclick = () => signIn(''); return; }
+    st('created', '1'); st('pw', p[0]);
+    if (mode === 'relogin') { signIn(''); return; }
+    if (mode === 'verify') { app.innerHTML = '<h2>Create Account</h2><p>We sent a verification email. Please verify your account.</p>'; return; }
+    signedIn();
+  };
+}
+if (mode === 'social' && !window.__chose) { app.innerHTML = '<h2>Sign In</h2><button data-automation-id="GoogleSignInButton">Sign in with Google</button><button data-automation-id="SignInWithEmailButton">Sign in with email</button>'; document.querySelector('[data-automation-id="SignInWithEmailButton"]').onclick = () => { window.__chose = 1; signIn(''); }; }
+else if (location.search.includes('verifyToken')) { st('verified', '1'); document.body.textContent = 'verified'; }
+else if ((mode === 'oldacct' || mode === 'lateverify') && st('seen') !== '1') { st('seen', '1'); createForm(); }
+else signIn('');
+</script></body></html>

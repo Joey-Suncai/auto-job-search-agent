@@ -1,0 +1,86 @@
+[
+ {
+  "name": "Lever apply URL collapses to site/uuid",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Lever (`jobs.lever.co` or `jobs.eu.lever.co`): \"<site>/<uuid>\" — the site slug and the 36-character posting id, whatever follows (/apply, /thanks, /already-received?ms=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "Lever thanks URL collapses to site/uuid",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/thanks",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Lever (`jobs.lever.co` or `jobs.eu.lever.co`): \"<site>/<uuid>\" — the site slug and the 36-character posting id, whatever follows (/apply, /thanks, /already-received?ms=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "Lever already-received with query parameter collapses to site/uuid",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/already-received?ms=1699999999",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Lever (`jobs.lever.co` or `jobs.eu.lever.co`): \"<site>/<uuid>\" — the site slug and the 36-character posting id, whatever follows (/apply, /thanks, /already-received?ms=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "Lever EU host also collapses to site/uuid",
+  "url": "https://jobs.eu.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Lever (`jobs.lever.co` or `jobs.eu.lever.co`): \"<site>/<uuid>\" — the site slug and the 36-character posting id, whatever follows (/apply, /thanks, /already-received?ms=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "Lever bare posting URL without trailing path",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Lever (`jobs.lever.co` or `jobs.eu.lever.co`): \"<site>/<uuid>\" — the site slug and the 36-character posting id, whatever follows (/apply, /thanks, /already-received?ms=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "Ashby application URL collapses to org/uuid",
+  "url": "https://jobs.ashbyhq.com/acme/12345678-1234-1234-1234-123456789abc/application",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Ashby (`jobs.ashbyhq.com`): \"<org>/<uuid>\" likewise (/application, /form …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Ashby form URL collapses to org/uuid",
+  "url": "https://jobs.ashbyhq.com/acme/12345678-1234-1234-1234-123456789abc/form",
+  "expect": "acme/12345678-1234-1234-1234-123456789abc",
+  "spec_quote": "Ashby (`jobs.ashbyhq.com`): \"<org>/<uuid>\" likewise (/application, /form …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse token query parameter number",
+  "url": "https://boards.greenhouse.io/acme/jobs/4567890?token=1234567",
+  "expect": "1234567",
+  "spec_quote": "Greenhouse: the number in a `token=` or `gh_jid=` query parameter.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse gh_jid query parameter number on embed URL",
+  "url": "https://example.com/careers/engineering?gh_jid=7654321&utm_source=linkedin",
+  "expect": "7654321",
+  "spec_quote": "Greenhouse: the number in a `token=` or `gh_jid=` query parameter.",
+  "ambiguous": false
+ },
+ {
+  "name": "Other host keeps path but drops query string",
+  "url": "https://example.com/jobs/123?utm_source=newsletter&utm_medium=email",
+  "expect": "https://example.com/jobs/123",
+  "spec_quote": "Anything else: the URL without its query string and fragment.",
+  "ambiguous": false
+ },
+ {
+  "name": "Other host drops both query string and fragment",
+  "url": "https://example.com/jobs/123?ref=abc#apply",
+  "expect": "https://example.com/jobs/123",
+  "spec_quote": "Anything else: the URL without its query string and fragment.",
+  "ambiguous": false
+ },
+ {
+  "name": "Other host URL with neither query nor fragment is unchanged",
+  "url": "https://example.com/jobs/123",
+  "expect": "https://example.com/jobs/123",
+  "spec_quote": "Anything else: the URL without its query string and fragment.",
+  "ambiguous": false
+ }
+]

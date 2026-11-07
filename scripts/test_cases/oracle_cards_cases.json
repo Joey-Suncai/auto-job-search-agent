@@ -1,0 +1,420 @@
+[
+ {
+  "name": "current entry → not graduated",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Stanford University\nMajor: Computer Science\nFields to fix: 2",
+   "education": [
+    {
+     "school": "Stanford University",
+     "level": "bachelor",
+     "end": "2020-05",
+     "current": true,
+     "city": "Stanford",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Stanford",
+   "state": "CA",
+   "graduated": "No",
+   "degree": "Bachelor's"
+  },
+  "spec_quote": "\"graduated\": \"No\" if the entry is `current` or its `end` month is after today's month (compare \"YYYY-MM\" strings), else \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "end month in the past → graduated",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Massachusetts Institute of Technology",
+   "education": [
+    {
+     "school": "Massachusetts Institute of Technology",
+     "level": "master",
+     "end": "2019-06",
+     "current": false,
+     "city": "Cambridge",
+     "state": "MA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Cambridge",
+   "state": "MA",
+   "graduated": "Yes",
+   "degree": "Master's"
+  },
+  "spec_quote": "\"degree\": \"Master's\" for level master",
+  "ambiguous": false
+ },
+ {
+  "name": "end month after today's month → not graduated",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Purdue University",
+   "education": [
+    {
+     "school": "Purdue University",
+     "level": "bachelor",
+     "end": "2027-05",
+     "city": "West Lafayette",
+     "state": "IN"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "West Lafayette",
+   "state": "IN",
+   "graduated": "No",
+   "degree": "Bachelor's"
+  },
+  "spec_quote": "\"graduated\": \"No\" if the entry is `current` or its `end` month is after today's month (compare \"YYYY-MM\" strings)",
+  "ambiguous": false
+ },
+ {
+  "name": "end month equal to today's month is NOT after → graduated Yes",
+  "fn": "edu_fill",
+  "args": {
+   "school": "University of Texas at Austin",
+   "education": [
+    {
+     "school": "University of Texas at Austin",
+     "level": "master",
+     "end": "2026-11",
+     "city": "Austin",
+     "state": "TX"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Austin",
+   "state": "TX",
+   "graduated": "Yes",
+   "degree": "Master's"
+  },
+  "spec_quote": "its `end` month is after today's month (compare \"YYYY-MM\" strings), else \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "no end and not current → graduated Yes",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Ohio State University",
+   "education": [
+    {
+     "school": "Ohio State University",
+     "level": "bachelor",
+     "city": "Columbus",
+     "state": "OH"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Columbus",
+   "state": "OH",
+   "graduated": "Yes",
+   "degree": "Bachelor's"
+  },
+  "spec_quote": "an entry without end and not current → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "match_re regex is used instead of the entry school name",
+  "fn": "edu_fill",
+  "args": {
+   "school": "University of California, Berkeley\nMajor: Physics",
+   "education": [
+    {
+     "school": "UC Berkeley",
+     "match_re": "Berkeley",
+     "level": "phd",
+     "end": "2018-12",
+     "city": "Berkeley",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Berkeley",
+   "state": "CA",
+   "graduated": "Yes",
+   "degree": "Doctorate"
+  },
+  "spec_quote": "The first entry whose `match_re` (a regular expression; if missing, the entry's school name) is found in the card text (case-insensitive) is used.",
+  "ambiguous": false
+ },
+ {
+  "name": "no match_re → entry school name matched in card text",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Georgia Institute of Technology\nMajor: EE",
+   "education": [
+    {
+     "school": "Georgia Institute of Technology",
+     "level": "master",
+     "end": "2021-05",
+     "city": "Atlanta",
+     "state": "GA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Atlanta",
+   "state": "GA",
+   "graduated": "Yes",
+   "degree": "Master's"
+  },
+  "spec_quote": "if missing, the entry's school name) is found in the card text (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "upper-case card text still matches (case-insensitive)",
+  "fn": "edu_fill",
+  "args": {
+   "school": "STANFORD UNIVERSITY\nFIELDS TO FIX: 1",
+   "education": [
+    {
+     "school": "Stanford University",
+     "level": "bachelor",
+     "end": "2022-06",
+     "current": false,
+     "city": "Stanford",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Stanford",
+   "state": "CA",
+   "graduated": "Yes",
+   "degree": "Bachelor's"
+  },
+  "spec_quote": "is found in the card text (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "no education entry matches the card → None",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Some Other College\nMajor: History",
+   "education": [
+    {
+     "school": "Stanford University",
+     "level": "bachelor",
+     "end": "2020-05",
+     "city": "Stanford",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": null,
+  "spec_quote": "None when no entry matches or the card text is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty card text → None",
+  "fn": "edu_fill",
+  "args": {
+   "school": "",
+   "education": [
+    {
+     "school": "Stanford University",
+     "level": "bachelor",
+     "end": "2020-05",
+     "city": "Stanford",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": null,
+  "spec_quote": "None when no entry matches or the card text is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty education list → None",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Stanford University",
+   "education": [],
+   "today": "2026-11-04"
+  },
+  "expect": null,
+  "spec_quote": "None when no entry matches or the card text is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "level doctorate → Doctorate",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Yale University",
+   "education": [
+    {
+     "school": "Yale University",
+     "level": "doctorate",
+     "current": true,
+     "city": "New Haven",
+     "state": "CT"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "New Haven",
+   "state": "CT",
+   "graduated": "No",
+   "degree": "Doctorate"
+  },
+  "spec_quote": "\"Doctorate\" for phd or doctorate, else None",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown level → degree None",
+  "fn": "edu_fill",
+  "args": {
+   "school": "De Anza College",
+   "education": [
+    {
+     "school": "De Anza College",
+     "level": "associate",
+     "end": "2018-06",
+     "city": "Cupertino",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Cupertino",
+   "state": "CA",
+   "graduated": "Yes",
+   "degree": null
+  },
+  "spec_quote": "\"Master's\" for level master, \"Bachelor's\" for bachelor, \"Doctorate\" for phd or doctorate, else None",
+  "ambiguous": false
+ },
+ {
+  "name": "first matching entry wins over a later match",
+  "fn": "edu_fill",
+  "args": {
+   "school": "Stanford University\nFields to fix: 2",
+   "education": [
+    {
+     "school": "Stanford University",
+     "level": "bachelor",
+     "end": "2020-05",
+     "city": "Stanford",
+     "state": "CA"
+    },
+    {
+     "school": "Other School",
+     "match_re": "Stanford",
+     "level": "master",
+     "end": "2026-05",
+     "city": "Palo Alto",
+     "state": "CA"
+    }
+   ],
+   "today": "2026-11-04"
+  },
+  "expect": {
+   "city": "Stanford",
+   "state": "CA",
+   "graduated": "Yes",
+   "degree": "Bachelor's"
+  },
+  "spec_quote": "The first entry whose `match_re` ... is found in the card text (case-insensitive) is used.",
+  "ambiguous": false
+ },
+ {
+  "name": "plural issues refusal sentence",
+  "fn": "submit_refused",
+  "args": {
+   "text": "You have 2 issues that need to be fixed before you can submit"
+  },
+  "expect": "You have 2 issues that need to be fixed before you can submit",
+  "spec_quote": "\"You have N issue(s) that need(s) to be fixed before you can submit\"",
+  "ambiguous": false
+ },
+ {
+  "name": "singular issue refusal sentence",
+  "fn": "submit_refused",
+  "args": {
+   "text": "You have 1 issue that needs to be fixed before you can submit"
+  },
+  "expect": "You have 1 issue that needs to be fixed before you can submit",
+  "spec_quote": "\"You have N issue(s) that need(s) to be fixed before you can submit\"",
+  "ambiguous": false
+ },
+ {
+  "name": "need to add or modify some info before submitting",
+  "fn": "submit_refused",
+  "args": {
+   "text": "You need to add or modify some info before submitting"
+  },
+  "expect": "need to add or modify some info before submitting",
+  "spec_quote": "\"need to add or modify some info before submitting\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Fields to fix: N refusal",
+  "fn": "submit_refused",
+  "args": {
+   "text": "Fields to fix: 2"
+  },
+  "expect": "Fields to fix: 2",
+  "spec_quote": "\"Fields to fix: N\" (case-insensitive, any whitespace)",
+  "ambiguous": false
+ },
+ {
+  "name": "upper-case FIELDS TO FIX matched case-insensitively",
+  "fn": "submit_refused",
+  "args": {
+   "text": "FIELDS TO FIX: 3"
+  },
+  "expect": "FIELDS TO FIX: 3",
+  "spec_quote": "\"Fields to fix: N\" (case-insensitive, any whitespace)",
+  "ambiguous": false
+ },
+ {
+  "name": "thank-you page → empty string",
+  "fn": "submit_refused",
+  "args": {
+   "text": "Thank you for your application! We have received your submission."
+  },
+  "expect": "",
+  "spec_quote": "Otherwise \"\" (e.g. a thank-you page, a normal form).",
+  "ambiguous": false
+ },
+ {
+  "name": "normal form page → empty string",
+  "fn": "submit_refused",
+  "args": {
+   "text": "Work Experience\nCompany\nJob title\nSave and continue"
+  },
+  "expect": "",
+  "spec_quote": "Otherwise \"\" (e.g. a thank-you page, a normal form).",
+  "ambiguous": false
+ },
+ {
+  "name": "refusal embedded in longer page text",
+  "fn": "submit_refused",
+  "args": {
+   "text": "There is a problem with your application. Fields to fix: 1 Please review the highlighted fields."
+  },
+  "expect": "Fields to fix: 1",
+  "spec_quote": "Returns the matching sentence part (non-empty string) when the page says the submit did not go through: ... \"Fields to fix: N\"",
+  "ambiguous": false
+ }
+]

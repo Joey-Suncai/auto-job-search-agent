@@ -1,0 +1,216 @@
+[
+ {
+  "name": "lowercase thanks-for-applying sentence",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Thanks for applying! We'll be in touch soon."
+  },
+  "expect": true,
+  "spec_quote": "True when the page text contains a thank-you / received sentence (case-insensitive): ... \"thanks for applying\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "uppercase thank-you-for-applying (case-insensitive)",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "THANK YOU FOR APPLYING TO ACME."
+  },
+  "expect": true,
+  "spec_quote": "True when the page text contains a thank-you / received sentence (case-insensitive): \"thank you for applying\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "thank you for your application",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Thank you for your application. Our team will review it shortly."
+  },
+  "expect": true,
+  "spec_quote": "\"thank you for your application\"",
+  "ambiguous": false
+ },
+ {
+  "name": "thank you for your interest",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Thank you for your interest in Acme Corp."
+  },
+  "expect": true,
+  "spec_quote": "\"thank you for your interest\"",
+  "ambiguous": false
+ },
+ {
+  "name": "application has been received",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Your application has been received by our recruiting team."
+  },
+  "expect": true,
+  "spec_quote": "\"application received\" / \"has been received\"",
+  "ambiguous": false
+ },
+ {
+  "name": "your application is in",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Great news — your application is in."
+  },
+  "expect": true,
+  "spec_quote": "\"your application is in\"",
+  "ambiguous": false
+ },
+ {
+  "name": "URL /apply/success even with form-ish text",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/success",
+   "text": "Submit application"
+  },
+  "expect": true,
+  "spec_quote": "or when the URL contains \"/apply/success\", \"/apply/thank\" or \"/confirmation\".",
+  "ambiguous": false
+ },
+ {
+  "name": "URL /confirmation with empty text",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/confirmation",
+   "text": ""
+  },
+  "expect": true,
+  "spec_quote": "or when the URL contains \"/apply/success\", \"/apply/thank\" or \"/confirmation\".",
+  "ambiguous": false
+ },
+ {
+  "name": "URL /apply/thank",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/thank-you",
+   "text": "Loading..."
+  },
+  "expect": true,
+  "spec_quote": "or when the URL contains \"/apply/success\", \"/apply/thank\" or \"/confirmation\".",
+  "ambiguous": false
+ },
+ {
+  "name": "unchanged form - button text only",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "First name Last name Email Phone Resume Submit application"
+  },
+  "expect": false,
+  "spec_quote": "Anything else (empty text, the job description, \"Submit application\" button text) → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "error page please correct",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Please correct the highlighted fields and try again."
+  },
+  "expect": false,
+  "spec_quote": "text with \"please fix\", \"please correct\", \"please complete\", \"is required\" or \"there was an error / there were errors\" is False",
+  "ambiguous": false
+ },
+ {
+  "name": "error page please complete + is required",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "Please complete all fields. Email is required."
+  },
+  "expect": false,
+  "spec_quote": "text with \"please fix\", \"please correct\", \"please complete\", \"is required\" or \"there was an error / there were errors\" is False",
+  "ambiguous": false
+ },
+ {
+  "name": "error plus thank-you sentence is True",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/",
+   "text": "There were errors with your file upload, but thank you for applying — your application was submitted."
+  },
+  "expect": true,
+  "spec_quote": "is False — unless a thank-you sentence above is also present.",
+  "ambiguous": false
+ },
+ {
+  "name": "job description text",
+  "fn": "confirmed_page",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/",
+   "text": "About the role: we are looking for a backend engineer with 5+ years of experience. Benefits include..."
+  },
+  "expect": false,
+  "spec_quote": "Anything else (empty text, the job description, \"Submit application\" button text) → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "simple shortcode, uppercase",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/ABCDEF"
+  },
+  "expect": "acme/j/ABCDEF",
+  "spec_quote": "`apply.workable.com/<account>/j/<SHORTCODE>` (SHORTCODE = 6–12 hex characters, either case) → \"<account>/j/<SHORTCODE>\" exactly as written",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase shortcode with /apply/ suffix",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3/apply/"
+  },
+  "expect": "acme/j/a1b2c3",
+  "spec_quote": "\"<account>/j/<SHORTCODE>\" exactly as written, whatever follows (/apply/, /apply/success, ?s=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "12-hex shortcode with /apply/success suffix",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/A1B2C3D4E5F6/apply/success"
+  },
+  "expect": "acme/j/A1B2C3D4E5F6",
+  "spec_quote": "(SHORTCODE = 6–12 hex characters, either case) → \"<account>/j/<SHORTCODE>\" exactly as written, whatever follows (/apply/, /apply/success, ?s=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "query string ?s= is dropped",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/a1b2c3?s=linkedin"
+  },
+  "expect": "acme/j/a1b2c3",
+  "spec_quote": "\"<account>/j/<SHORTCODE>\" exactly as written, whatever follows (/apply/, /apply/success, ?s=…).",
+  "ambiguous": false
+ },
+ {
+  "name": "hyphenated account name",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/my-company/j/1A2B3C/apply/"
+  },
+  "expect": "my-company/j/1A2B3C",
+  "spec_quote": "`apply.workable.com/<account>/j/<SHORTCODE>` ... → \"<account>/j/<SHORTCODE>\" exactly as written",
+  "ambiguous": false
+ },
+ {
+  "name": "case preserved exactly as written with deeper path",
+  "fn": "posting_key",
+  "args": {
+   "url": "https://apply.workable.com/Big-Co/j/DEADbeef12/apply/step2"
+  },
+  "expect": "Big-Co/j/DEADbeef12",
+  "spec_quote": "(SHORTCODE = 6–12 hex characters, either case) → \"<account>/j/<SHORTCODE>\" exactly as written, whatever follows (/apply/, /apply/success, ?s=…).",
+  "ambiguous": false
+ }
+]

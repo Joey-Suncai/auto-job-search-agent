@@ -1,0 +1,892 @@
+<style>
+#dash-root .jh{position:relative;font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
+#dash-root .jh-head h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0;text-wrap:balance}
+#dash-root .jh-take{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0;max-width:72ch}
+#dash-root .jh-tabs{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs);border-bottom:1px solid var(--color-border-line);padding-bottom:var(--cds-gap-xs)}
+#dash-root .jh-tab{font:inherit;font-size:var(--cds-font-size-body);background:none;border:1px solid transparent;border-radius:var(--cds-radius);padding:var(--cds-pad-xs) var(--cds-pad-sm);color:var(--color-fg-muted);cursor:pointer}
+#dash-root .jh-tab[aria-selected="true"]{color:var(--color-fg);border-color:var(--color-border-line);background:var(--color-panel)}
+#dash-root .jh-tab:focus-visible,#dash-root .jh-btn:focus-visible{outline:2px solid var(--color-fg);outline-offset:2px}
+#dash-root .jh-page[hidden]{display:none}
+#dash-root .jh-page{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+#dash-root .jh-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:var(--cds-gap-md)}
+#dash-root .jh-kpi{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-md) var(--cds-pad-lg)}
+#dash-root .jh-kpi .v{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-title);font-weight:400;font-variant-numeric:tabular-nums;display:block}
+#dash-root .jh-kpi .l{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+#dash-root .jh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:var(--cds-gap-md)}
+#dash-root .jh-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);min-width:0;display:flex;flex-direction:column;gap:var(--cds-gap-sm)}
+#dash-root .jh-card h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+#dash-root .jh-note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:0}
+#dash-root .jh-chart{position:relative;min-height:240px}
+#dash-root .jh-filters{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm);align-items:center}
+#dash-root .jh-filters input[type=search],#dash-root .jh-filters select{font:inherit;font-size:var(--cds-font-size-caption);padding:var(--cds-pad-xs) var(--cds-pad-sm);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-bg);color:var(--color-fg);max-width:100%}
+#dash-root .jh-filters input[type=search]{min-width:min(100%,14rem)}
+#dash-root .jh-filters label{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);display:flex;gap:var(--cds-gap-xs);align-items:center}
+#dash-root .jh-chips{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs)}
+#dash-root .jh-chip{font:inherit;font-size:var(--cds-font-size-caption);border:1px solid var(--color-border-line);border-radius:999px;padding:2px 10px;background:none;color:var(--color-fg-muted);cursor:pointer}
+#dash-root .jh-chip[aria-pressed="true"]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
+#dash-root .jh-btn{font:inherit;font-size:var(--cds-font-size-caption);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-xs) var(--cds-pad-sm);background:var(--color-bg);color:var(--color-fg);cursor:pointer}
+#dash-root .jh-applybar{display:flex;gap:var(--cds-gap-sm);align-items:center;flex-wrap:wrap;margin:6px 0 10px;font-size:var(--cds-font-size-caption)}
+#dash-root .jh-count{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);font-variant-numeric:tabular-nums}
+#dash-root .jh-tablebox{max-height:70vh;overflow:auto;border:1px solid var(--color-border-line);border-radius:var(--cds-radius)}
+#dash-root .jh-tablebox::-webkit-scrollbar,#dash-root .jh-topscroll::-webkit-scrollbar{height:10px;width:10px}
+#dash-root .jh-tablebox::-webkit-scrollbar-thumb,#dash-root .jh-topscroll::-webkit-scrollbar-thumb{background:var(--cds-chart-muted);border-radius:5px}
+#dash-root .jh-topscroll{overflow-x:auto;overflow-y:hidden;height:12px}
+#dash-root .jh-topscroll>div{height:1px}
+#dash-root .jh-ddl{white-space:nowrap}
+#dash-root .jh-done{white-space:nowrap}
+#dash-root .jh-done .jh-btn[aria-busy="true"]{cursor:progress;opacity:.6}
+#dash-root .jh-done .undo{all:unset;cursor:pointer;color:var(--color-fg-muted);text-decoration:underline;margin-left:4px}
+#dash-root table.jh-t{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
+#dash-root .jh-t th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:var(--cds-font-weight-medium);padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);white-space:nowrap;z-index:1}
+#dash-root .jh-t th button{all:unset;cursor:pointer}
+#dash-root .jh-t th[aria-sort="descending"] button::after{content:" ↓"}
+#dash-root .jh-t th[aria-sort="ascending"] button::after{content:" ↑"}
+#dash-root .jh-t td{padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);vertical-align:top}
+#dash-root .jh-t tbody tr{cursor:pointer}
+#dash-root .jh-t tbody tr:hover{background:var(--color-bg)}
+#dash-root .jh-t td.n{text-align:right}
+#dash-root .jh-t .wrap{min-width:14rem;max-width:28rem}
+#dash-root .jh-pill{display:inline-block;border-radius:999px;padding:0 8px;font-size:var(--cds-font-size-caption);border:1px solid var(--color-border-line);white-space:nowrap}
+#dash-root .jh-pill.A{color:var(--color-ok);border-color:var(--color-ok)}
+#dash-root .jh-pill.B{color:var(--color-fg)}
+#dash-root .jh-pill.Blocked{color:var(--color-bad);border-color:var(--color-bad)}
+#dash-root .jh-pill.good{color:var(--color-ok);border-color:var(--color-ok)}
+#dash-root .jh-pill.warn{color:var(--color-warn);border-color:var(--color-warn)}
+#dash-root .jh-pill.bad{color:var(--color-bad);border-color:var(--color-bad)}
+#dash-root .jh-pref{display:inline-flex;gap:2px;white-space:nowrap}
+#dash-root .jh-pref button{font:inherit;font-size:var(--cds-font-size-caption);border:1px solid transparent;border-radius:var(--cds-radius);background:none;padding:0 4px;cursor:pointer;opacity:.35;filter:grayscale(1)}
+#dash-root .jh-pref button:hover{opacity:.8;filter:none}
+#dash-root .jh-pref button[aria-pressed="true"]{opacity:1;filter:none;border-color:var(--color-border-line);background:var(--color-bg)}
+#dash-root .jh-pref button[aria-busy="true"]{cursor:progress;opacity:.6}
+#dash-root .jh-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);max-width:min(90vw,40rem);background:var(--cds-surface-popover);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-sm) var(--cds-pad-md);font-size:var(--cds-font-size-caption);z-index:10}
+#dash-root .jh-toast.bad{border-color:var(--color-bad);color:var(--color-bad)}
+#dash-root .jh-toast[hidden]{display:none}
+#dash-root .jh-bar{display:flex;align-items:center;gap:6px}
+#dash-root .jh-bar i{display:block;height:6px;border-radius:3px;background:var(--color-fg-muted);opacity:.55}
+#dash-root .jh-detail{border-top:1px solid var(--color-border-line);padding-top:var(--cds-gap-sm);display:grid;gap:var(--cds-gap-sm)}
+#dash-root .jh-detail[hidden]{display:none}
+#dash-root .jh-detail h3{margin:0;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)}
+#dash-root .jh-break{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:var(--cds-gap-xs)}
+#dash-root .jh-break div{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+#dash-root .jh-break b{display:block;color:var(--color-fg);font-size:var(--cds-font-size-body);font-weight:500}
+#dash-root .jh-tip{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);white-space:nowrap;z-index:5}
+#dash-root .jh-tip[hidden]{display:none}
+#dash-root .jh-tip .k{color:var(--cds-text-secondary)}
+#dash-root .jh-legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+#dash-root .jh-legend span{display:inline-flex;align-items:center;gap:4px}
+#dash-root .jh-legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+#dash-root .jh-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:var(--cds-gap-md)}
+#dash-root .jh-steps p{margin:0;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+#dash-root .jh-steps b{display:block;font-size:var(--cds-font-size-body);color:var(--color-fg);font-weight:500;margin-bottom:2px}
+#dash-root .jh-method dt{font-weight:500}
+#dash-root .jh-method dd{margin:0 0 var(--cds-gap-sm);color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+#dash-root [data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+#dash-root [data-dash-source-state=empty]{color:transparent}
+#dash-root a{color:inherit}
+</style>
+
+<div class="jh">
+  <header class="jh-head">
+    <h1 id="title">Job Hunt Command Center</h1>
+    <p class="jh-take" id="takeaway">Loading your scored pipeline…</p>
+  </header>
+
+  <section class="jh-kpis" id="kpis" aria-label="Headline figures">
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=jobs">—</span><span class="l">Relevant U.S. roles scored</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=tier_a">—</span><span class="l">Tier A (score ≥ 70)</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=internships">—</span><span class="l">Summer 2027 internships (CPT)</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=elig_interns">—</span><span class="l">Internships cleared to apply (JD read)</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=sponsor_backed">—</span><span class="l">At proven H-1B sponsors</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=referral_paths">—</span><span class="l">Roles with a referral path</span></div>
+    <div class="jh-kpi"><span class="v dash-skeleton" data-source="kpis" data-field="value" data-where="metric=in_progress">—</span><span class="l">Applications in motion</span></div>
+  </section>
+
+  <nav class="jh-tabs" role="tablist" aria-label="Sections">
+    <button class="jh-tab" role="tab" id="tab-overview" data-page="overview" aria-selected="true">Overview</button>
+    <button class="jh-tab" role="tab" id="tab-jobs" data-page="jobs" aria-selected="false">All jobs</button>
+    <button class="jh-tab" role="tab" id="tab-companies" data-page="companies" aria-selected="false">Companies</button>
+    <button class="jh-tab" role="tab" id="tab-referrals" data-page="referrals" aria-selected="false">Referrals</button>
+    <button class="jh-tab" role="tab" id="tab-sponsorship" data-page="sponsorship" aria-selected="false">Sponsorship</button>
+    <button class="jh-tab" role="tab" id="tab-applications" data-page="applications" aria-selected="false">Applications</button>
+    <button class="jh-tab" role="tab" id="tab-sources" data-page="sources" aria-selected="false">Sources</button>
+    <button class="jh-tab" role="tab" id="tab-method" data-page="method" aria-selected="false">How scoring works</button>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section class="jh-page" id="overview" role="tabpanel">
+    <div class="jh-grid">
+      <div class="jh-card" id="card-track-tier">
+        <h2>Fit tiers by role track</h2>
+        <p class="jh-note">Roles per track, split by tier. Tier A is score 70 or more out of 100.</p>
+        <div class="jh-legend" id="lg-tier"></div>
+        <div class="jh-chart" id="ch-track-tier" data-source="track_tier"></div>
+      </div>
+      <div class="jh-card" id="card-level-sponsor">
+        <h2>Sponsorship signal by level</h2>
+        <p class="jh-note">Where each role stands on visa sponsorship, for internships (CPT) and full-time (OPT, then H-1B).</p>
+        <div class="jh-legend" id="lg-sp"></div>
+        <div class="jh-chart" id="ch-level-sponsor" data-source="level_sponsor"></div>
+      </div>
+    </div>
+    <div class="jh-card" id="card-top">
+      <h2>Top 25 to act on</h2>
+      <p class="jh-note">Highest-scoring roles whose full job description passed the eligibility check (Eligible). Click a row for the score breakdown, the check result and contacts.</p>
+      <div class="jh-tablebox" style="max-height:none">
+        <table class="jh-t" id="t-top" data-source="jobs" data-row-key="id">
+          <thead><tr>
+            <th data-field="rank">#</th><th data-field="joey_pref" title="Your 👍 / 👎">You</th><th data-field="score">Score</th><th data-field="company">Company</th><th data-field="title" class="wrap">Role</th>
+            <th data-field="level">Level</th><th data-field="elig">Eligibility</th><th data-field="runner" title="Can a runner apply? Ready = certified runner · Testing = runner not certified yet · No runner · Unknown platform">Runner</th><th data-field="apply" title="Apply from the dashboard: the open Claude session applies (Eligible roles with a runner that can submit)">Apply</th><th data-field="sponsorship">Sponsorship</th><th data-field="referral">Referral</th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+      <div class="jh-detail" id="d-top" hidden></div>
+    </div>
+  </section>
+
+  <!-- ALL JOBS -->
+  <section class="jh-page" id="jobs" role="tabpanel" hidden>
+    <div class="jh-card" id="card-jobs">
+      <h2>Every scored role</h2>
+      <p class="jh-note">Search and slice by track, level, tier, sponsorship, referral, source, freshness and score. Click a header to sort, a row for details.</p>
+      <div class="jh-filters">
+        <input type="search" id="f-q" placeholder="Search company, role, location…" aria-label="Search jobs">
+        <select id="f-track" aria-label="Track"><option value="">All tracks</option></select>
+        <select id="f-level" aria-label="Level"><option value="">All levels</option></select>
+        <select id="f-el" aria-label="Eligibility"><option value="">Any eligibility</option></select>
+        <select id="f-run" aria-label="Runner"><option value="">Any runner</option><option value="ready">Runner ready</option><option value="testing">Runner in testing</option><option value="none">No runner</option><option value="unknown">Platform unknown</option></select>
+        <select id="f-sp" aria-label="Sponsorship"><option value="">Any sponsorship signal</option></select>
+        <select id="f-ref" aria-label="Referral"><option value="">Any referral path</option></select>
+        <select id="f-src" aria-label="Source"><option value="">All sources</option></select>
+        <select id="f-age" aria-label="Posted within"><option value="">Any posting date</option><option value="7">Posted ≤ 7 days</option><option value="14">≤ 14 days</option><option value="30">≤ 30 days</option><option value="90">≤ 90 days</option></select>
+        <label>Min score <input type="range" id="f-min" min="0" max="90" step="5" value="0" aria-label="Minimum score"><span id="f-min-v">0</span></label>
+        <label><input type="checkbox" id="f-remote"> Remote only</label>
+        <label><input type="checkbox" id="f-blocked" checked> Hide Not eligible / Closed / Duplicate</label>
+        <button class="jh-btn" id="f-reset">Reset</button>
+      </div>
+      <div class="jh-chips" id="f-tiers" aria-label="Tier"></div>
+      <div class="jh-count" id="jobs-count"></div>
+      <div class="jh-tablebox">
+        <table class="jh-t" id="t-jobs" data-source="jobs" data-row-key="id">
+          <thead><tr>
+            <th data-field="joey_pref" title="Your 👍 / 👎"><button data-k="joey_pref">You</button></th>
+            <th data-field="score"><button data-k="score">Score</button></th>
+            <th data-field="tier"><button data-k="tier">Tier</button></th>
+            <th data-field="elig"><button data-k="elig">Eligibility</button></th>
+            <th data-field="runner" title="Ready = certified runner · Testing = runner not certified yet · No runner · Unknown platform"><button data-k="runner">Runner</button></th>
+            <th data-field="apply" title="Apply from the dashboard: the open Claude session applies (Eligible roles with a runner that can submit)">Apply</th>
+            <th data-field="company"><button data-k="company">Company</button></th>
+            <th data-field="title" class="wrap"><button data-k="title">Role</button></th>
+            <th data-field="track"><button data-k="track">Track</button></th>
+            <th data-field="level"><button data-k="level">Level</button></th>
+            <th data-field="location"><button data-k="location">Location</button></th>
+            <th data-field="sponsorship"><button data-k="sponsorship">Sponsorship</button></th>
+            <th data-field="h1b_fy25"><button data-k="h1b_fy25">H-1B FY25</button></th>
+            <th data-field="gc_sponsor"><button data-k="gc_sponsor">Green card</button></th>
+            <th data-field="referral"><button data-k="referral">Referral</button></th>
+            <th data-field="posted"><button data-k="posted">Posted</button></th>
+            <th data-field="n_sources"><button data-k="n_sources">Sources</button></th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+      <button class="jh-btn" id="jobs-more" hidden>Show 300 more</button>
+      <div class="jh-detail" id="d-jobs" hidden></div>
+    </div>
+  </section>
+
+  <!-- COMPANIES -->
+  <section class="jh-page" id="companies" role="tabpanel" hidden>
+    <div class="jh-card" id="card-companies">
+      <h2>Companies hiring for your tracks</h2>
+      <p class="jh-note">One row per company: open roles, best fit, H-1B filings (FY2025 LCAs and all-time), green-card (PERM) sponsorship, and referral path. Click a row to see its roles.</p>
+      <div class="jh-filters">
+        <input type="search" id="c-q" placeholder="Search companies…" aria-label="Search companies">
+        <select id="c-sp" aria-label="Sponsorship"><option value="">Any sponsorship signal</option></select>
+        <select id="c-gc" aria-label="Green card"><option value="">Any green-card signal</option><option value="Yes">Sponsors green cards</option><option value="No">No PERM found</option><option value="-">Not checked</option></select>
+        <label><input type="checkbox" id="c-ref"> Has referral path</label>
+      </div>
+      <div class="jh-count" id="comp-count"></div>
+      <div class="jh-tablebox">
+        <table class="jh-t" id="t-comp" data-source="companies" data-row-key="company">
+          <thead><tr>
+            <th data-field="company"><button data-k="company">Company</button></th>
+            <th data-field="open_roles"><button data-k="open_roles">Open roles</button></th>
+            <th data-field="a_roles"><button data-k="a_roles">Tier A</button></th>
+            <th data-field="best_score"><button data-k="best_score">Best score</button></th>
+            <th data-field="best_role" class="wrap"><button data-k="best_role">Best role</button></th>
+            <th data-field="sponsorship"><button data-k="sponsorship">Sponsorship</button></th>
+            <th data-field="h1b_fy25"><button data-k="h1b_fy25">H-1B FY25</button></th>
+            <th data-field="h1b_total"><button data-k="h1b_total">H-1B all-time</button></th>
+            <th data-field="gc_sponsor"><button data-k="gc_sponsor">Green card</button></th>
+            <th data-field="gc_perm"><button data-k="gc_perm">PERM 2025</button></th>
+            <th data-field="referral"><button data-k="referral">Referral</button></th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+      <button class="jh-btn" id="comp-more" hidden>Show 300 more</button>
+    </div>
+  </section>
+
+  <!-- REFERRALS -->
+  <section class="jh-page" id="referrals" role="tabpanel" hidden>
+    <div class="jh-card" id="card-contacts">
+      <h2>People who can refer you</h2>
+      <p class="jh-note">Your 1st-degree LinkedIn connections at companies with open roles in your tracks, plus warm-intro paths. Click a row to see that company's roles.</p>
+      <div class="jh-tablebox" style="max-height:none">
+        <table class="jh-t" id="t-contacts" data-source="contacts" data-row-key="key">
+          <thead><tr>
+            <th data-field="person">Person</th><th data-field="company">Company</th><th data-field="headline" class="wrap">Their role</th>
+            <th data-field="open_roles">Open roles</th><th data-field="best_score">Best score</th><th data-field="best_role" class="wrap">Best role for you</th><th data-field="ask" class="wrap">Suggested ask</th>
+          </tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="jh-card" id="card-alumni">
+      <h2>Roles where LinkedIn shows your network</h2>
+      <p class="jh-note">From LinkedIn job cards: connections or school alumni (UChicago, UIUC) working at the company.</p>
+      <div class="jh-tablebox">
+        <table class="jh-t" id="t-alumni" data-source="jobs" data-row-key="id">
+          <thead><tr><th data-field="company">Company</th><th data-field="title" class="wrap">Role</th><th data-field="li_connections">Connections</th><th data-field="li_alumni">Alumni</th><th data-field="score">Score</th><th data-field="sponsorship">Sponsorship</th><th data-field="apply">Apply</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPONSORSHIP -->
+  <section class="jh-page" id="sponsorship" role="tabpanel" hidden>
+    <div class="jh-card" id="card-path">
+      <h2>Your path: CPT → OPT → H-1B → green card</h2>
+      <div class="jh-steps">
+        <p><b>Summer 2027 internship</b>Paid internship authorized by UChicago as CPT. Any U.S. employer can host it; the scorer favors companies that also sponsor later.</p>
+        <p><b>Full-time from Jan 2028</b>Start on OPT after your December 2027 graduation. A STEM-designated M.S. adds the 24-month STEM OPT extension (confirm with UChicago's international office).</p>
+        <p><b>H-1B</b>The employer files for the lottery while you work on OPT. Scored from the employer's H-1B filings (DOL LCAs, FY2025 and all-time).</p>
+        <p><b>Green card</b>Employer files PERM, then I-140. Scored from Ellis PERM data for the top 225 sponsors; others use H-1B history as a stand-in.</p>
+      </div>
+    </div>
+    <div class="jh-card" id="card-sponsors">
+      <h2>Biggest sponsors with roles open for you</h2>
+      <p class="jh-note">Top 20 companies by FY2025 H-1B filings among companies in this pipeline. Filled marker: Ellis shows green-card (PERM) sponsorship.</p>
+      <div class="jh-chart" id="ch-sponsors" data-source="companies" style="min-height:520px"></div>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS -->
+  <section class="jh-page" id="applications" role="tabpanel" hidden>
+    <div class="jh-grid">
+      <div class="jh-card" id="card-funnel">
+        <h2>Application pipeline</h2>
+        <p class="jh-note">Each stage counts applications that reached it. Updated whenever you or the agent records progress.</p>
+        <div class="jh-chart" id="ch-funnel" data-source="app_funnel" style="min-height:220px"></div>
+      </div>
+      <div class="jh-card" id="card-refstat">
+        <h2>Referral asks</h2>
+        <p class="jh-note">Shortlisted roles by referral status.</p>
+        <div class="jh-chart" id="ch-refstat" data-source="app_refs" style="min-height:220px"></div>
+      </div>
+    </div>
+    <div class="jh-card" id="card-joey">
+      <h2>Waiting for you</h2>
+      <p class="jh-note">Every application that stopped for you, one row each (runner queue, CAPTCHAs, dashboard Apply requests merged). A row disappears by itself once the application is submitted, moves on in the tracker, or its job closes.</p>
+      <div class="jh-tablebox" style="max-height:420px">
+        <table class="jh-t" id="t-joey" data-source="joey_todo" data-row-key="folder">
+          <thead><tr><th data-field="kind">Type</th><th data-field="folder" class="wrap">Application</th><th data-field="age_days">Days</th><th data-field="n">Stops</th><th data-field="msg" class="wrap">What happened</th><th data-field="next" class="wrap">Next step</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="jh-card" id="card-apps">
+      <h2>Tracker</h2>
+      <p class="jh-note">The agent's shortlist plus every application found in your inbox (alex.rivera@example.com). Claude reads new job emails every morning and updates status, last email and action needed here.</p>
+      <div class="jh-filters"><select id="a-status" aria-label="Status"><option value="">All statuses</option></select><select id="a-cycle" aria-label="Cycle"><option value="">All cycles</option></select><label><input type="checkbox" id="a-action"> Action needed only</label></div>
+      <div class="jh-tablebox" style="max-height:78vh">
+        <table class="jh-t" id="t-apps" data-source="applications" data-row-key="job_id">
+          <thead><tr><th data-field="status">Status</th><th data-field="company">Company</th><th data-field="title" class="wrap">Role</th><th data-source="app_tier" data-field="tier">Tier</th><th data-field="level">Level</th><th data-field="score">Score</th><th data-field="referral_status">Referral</th><th data-field="last_email" class="wrap">Last email</th><th data-field="action_needed" class="wrap">Action needed</th><th data-field="action_ddl">DDL</th><th data-field="action_done">Done</th><th data-field="next_step" class="wrap">Next step</th><th data-field="applied_on">Applied</th><th data-field="cycle">Cycle</th><th data-field="updated">Updated</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="jh-card" id="card-emails">
+      <h2>Email updates</h2>
+      <p class="jh-note">Job-related emails from your inbox, newest first: confirmations, assessments, interviews, rejections, offers. Open links the email in Gmail.</p>
+      <div class="jh-tablebox" style="max-height:520px">
+        <table class="jh-t" id="t-emails" data-source="emails" data-row-key="id">
+          <thead><tr><th data-field="date">Date</th><th data-field="type">Type</th><th data-field="company">Company</th><th data-field="role" class="wrap">Role</th><th data-field="summary" class="wrap">What it says</th><th data-field="action" class="wrap">Action needed</th><th data-field="deadline">Deadline</th><th data-field="url">Email</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="jh-page" id="sources" role="tabpanel" hidden>
+    <div class="jh-card" id="card-src-chart">
+      <h2>Where the roles come from</h2>
+      <p class="jh-note">Per source: postings collected, relevant U.S. roles after filtering, and roles in this dashboard. LinkedIn is used mainly for network signals.</p>
+      <div class="jh-legend" id="lg-src"></div>
+      <div class="jh-chart" id="ch-sources" data-source="sources" style="min-height:460px"></div>
+    </div>
+    <div class="jh-card" id="card-src-table">
+      <h2>Source coverage and refresh</h2>
+      <div class="jh-tablebox" style="max-height:none">
+        <table class="jh-t" id="t-src" data-source="sources" data-row-key="source">
+          <thead><tr><th data-field="source">Source</th><th data-field="type">Type</th><th data-field="method" class="wrap">How it was collected</th><th data-field="visa_signal">Visa signal</th><th data-field="collected">Collected</th><th data-field="relevant_us">Relevant U.S.</th><th data-field="in_dashboard">In dashboard</th><th data-field="tier_ab">Tier A/B</th><th data-field="last_run">Last run</th><th data-field="cadence">Cadence</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="jh-page" id="method" role="tabpanel" hidden>
+    <div class="jh-card" id="card-method">
+      <h2>How each role is scored (v2, 0–100)</h2>
+      <dl class="jh-method">
+        <dt>Target</dt><dd>Only Summer 2027 internships are ranked. Full-time, new-grad and off-cycle roles (fall, spring, co-op, part-time) are kept but sit in Tier D.</dd>
+        <dt>Value level · 70 / 40 / 0</dt><dd>Top: AI PM, or a role you marked 👍. Standard: data analysis / BI, PM (incl. product ops and solutions), data science, AI roles. Excluded: unrelated fields, hardware, pure machine-learning engineering (client-facing AI engineering stays Standard), or a role you marked 👎. Three levels only, because two blind checks (Nov 3) showed your preferences inside the eligible pool are close to flat.</dd>
+        <dt>Chance · up to 30</dt><dd>30 × (0.40 referral + 0.25 timing + 0.20 sponsorship + 0.15 freshness). Referral: 1st-degree 100%, LinkedIn connection 80%, warm intro 60%, alumni 40%, cold 0. Timing: "Summer 2027" in the posting 100%, "summer" or "2027" 80%, not stated 50%. Sponsorship: posting offers it 100%, strong H-1B sponsor 80%, some history 60%, unknown 40%. Freshness: posted ≤ 7 days before we found it 100% … over 90 days 20%. These weights are starting priors; they are refitted from your tracker outcomes as replies come in.</dd>
+        <dt>Eligibility (full JD check)</dt><dd>Every posting's full job description is read from its job board and checked against your situation; Not eligible / Closed / Duplicate postings and postings that rule out sponsorship are Blocked.</dd>
+        <dt>Tiers</dt><dd>A = Top level · B = Standard with chance ≥ 50% · C = Standard below 50% · D = Excluded or not a Summer 2027 internship · Blocked. Location is never penalized.</dd>
+        <dt>Your 👍 / 👎</dt><dd>Click 👍 or 👎 on a role (the "You" column or the detail panel; click again to clear). The local server <code>scripts/scoring/pref_server.py</code> (LaunchAgent com.jobagent.pref, 127.0.0.1:8766) re-scores the role at once; the page shows the new level and tier, and the dashboard rebuild follows within 60 s. If the server is down the button says so. Chat or <code>scripts/scoring/pref.py &lt;id&gt; up|down|clear</code> still work; every mark is kept in data/scoring/prefs.jsonl as training data for a later preference model.</dd>
+        <dt>Caveats</dt><dd>H-1B data counts DOL labor condition applications and is matched to companies by name; a few large employers are still mis-matched (JSA-098).</dd>
+      </dl>
+    </div>
+  </section>
+  <div class="jh-tip" id="tip" hidden></div>
+  <div class="jh-toast" id="pref-toast" role="status" aria-live="polite" hidden></div>
+</div>
+
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const fmt = d3.format(',');
+  const TIERS = ['A', 'B', 'C', 'D', 'Blocked'];
+  const today = new Date();
+  window.jh = { page: 'overview', sort: { jobs: ['score', -1], comp: ['best_score', -1] }, lim: { jobs: 300, comp: 300 }, tiers: new Set(['A', 'B', 'C', 'D']) };
+
+  dash.calc('kpis', {
+    title: 'Headline figures', description: 'Counts of scored roles, tier A, internships, internships whose full JD passed the eligibility check, roles at proven H-1B sponsors, roles with a referral path, and applications past shortlist.',
+    inputs: ['jobs', 'applications'],
+    fn: (jobs, applications) => [
+      { metric: 'jobs', value: jobs.length },
+      { metric: 'tier_a', value: jobs.filter((j) => j.tier === 'A').length },
+      { metric: 'internships', value: jobs.filter((j) => j.level === 'Internship' && j.tier !== 'Blocked').length },
+      { metric: 'elig_interns', value: jobs.filter((j) => j.level === 'Internship' && j.elig === '可投').length },
+      { metric: 'sponsor_backed', value: jobs.filter((j) => ['Strong H-1B sponsor', 'Posting offers sponsorship'].includes(j.sponsorship)).length },
+      { metric: 'referral_paths', value: jobs.filter((j) => j.referral !== 'Cold').length },
+      { metric: 'in_progress', value: applications.filter((a) => ['Applied', 'Applied (unconfirmed)', 'Assessment', 'Interview', 'Offer'].includes(a.status)).length },
+    ],
+  });
+  dash.calc('track_tier', {
+    title: 'Roles by track and tier', description: 'Number of roles in each track and tier.', inputs: ['jobs'],
+    fn: (jobs) => { const m = {}; jobs.forEach((j) => { const k = j.track + '|' + j.tier; m[k] = (m[k] || 0) + 1; });
+      return Object.entries(m).map(([k, n]) => ({ track: k.split('|')[0], tier: k.split('|')[1], roles: n })); },
+  });
+  dash.calc('level_sponsor', {
+    title: 'Roles by level and sponsorship signal', description: 'Number of roles per level and sponsorship label.', inputs: ['jobs'],
+    fn: (jobs) => { const m = {}; jobs.forEach((j) => { const k = j.level + '|' + j.sponsorship; m[k] = (m[k] || 0) + 1; });
+      return Object.entries(m).map(([k, n]) => ({ level: k.split('|')[0], sponsorship: k.split('|')[1], roles: n })); },
+  });
+  dash.calc('app_funnel', {
+    title: 'Applications by stage reached', description: 'Applications that reached each stage (later stages count toward earlier ones).', inputs: ['applications'],
+    fn: (applications) => { const order = ['Shortlisted', 'Applied', 'Assessment', 'Interview', 'Offer'];
+      const rank = { Shortlisted: 0, Applied: 1, 'Applied (unconfirmed)': 1, 'No response': 1, Rejected: 1, Withdrawn: 1, Assessment: 2, Interview: 3, Offer: 4 };
+      return order.map((s, i) => ({ stage: s, count: applications.filter((a) => (rank[a.status] ?? 0) >= i).length })); },
+  });
+  dash.calc('app_refs', {
+    title: 'Shortlist by referral status', description: 'Applications per referral status.', inputs: ['applications'],
+    fn: (applications) => { const m = {}; applications.forEach((a) => { m[a.referral_status] = (m[a.referral_status] || 0) + 1; });
+      return Object.entries(m).map(([k, n]) => ({ referral_status: k, count: n })); },
+  });
+  dash.calc('app_tier', {
+    title: 'Application fit tier', description: 'Each application\'s fit tier (A–D) from the scored job list, matched by job id; a Blocked role shows its original tier.', inputs: ['applications', 'jobs'],
+    fn: (applications, jobs) => { const t = new Map(jobs.map((j) => [j.id, j.tier === 'Blocked' ? (j.tier_orig || j.tier) : j.tier]));
+      return applications.map((a) => ({ job_id: a.job_id, tier: t.get(a.job_id) || '' })); },
+  });
+
+  // ---------- tabs
+  const tabs = [...document.querySelectorAll('.jh-tab')];
+  const show = (id) => {
+    if (!document.getElementById(id) || !tabs.some((t) => t.dataset.page === id)) return;
+    jh.page = id;
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.page === id)));
+    document.querySelectorAll('.jh-page').forEach((p) => { p.hidden = p.id !== id; });
+    dash.setLink(id); draw();
+  };
+  tabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.page)));
+
+  // ---------- helpers
+  const td = (tr, text, cls) => { const c = tr.insertCell(); c.textContent = text == null || text === '' ? '—' : String(text); if (cls) c.className = cls; return c; };
+  const topScroll = (box) => { if (!box) return; let bar = box.previousElementSibling;
+    if (!bar || !bar.classList.contains('jh-topscroll')) { bar = document.createElement('div'); bar.className = 'jh-topscroll'; bar.appendChild(document.createElement('div')); box.before(bar);
+      const sync = (from, to) => () => { if (Math.abs(to.scrollLeft - from.scrollLeft) > 1) to.scrollLeft = from.scrollLeft; };
+      bar.addEventListener('scroll', sync(bar, box)); box.addEventListener('scroll', sync(box, bar));
+      new ResizeObserver(() => { bar.firstChild.style.width = box.scrollWidth + 'px'; bar.style.display = box.scrollWidth > box.clientWidth + 1 ? '' : 'none'; }).observe(box.firstElementChild || box); }
+    bar.firstChild.style.width = box.scrollWidth + 'px'; bar.style.display = box.scrollWidth > box.clientWidth + 1 ? '' : 'none'; };
+  const pill = (cell, text, cls) => { cell.textContent = ''; const s = document.createElement('span'); s.className = 'jh-pill ' + (cls || ''); s.textContent = text; cell.appendChild(s); };
+  const spCls = (s) => (s.startsWith('Blocked') ? 'bad' : s === 'Strong H-1B sponsor' || s === 'Posting offers sponsorship' ? 'good' : s === 'Some H-1B history' ? '' : 'warn');
+  // ---------- English display (JSA-180, Joey 2026-11-05 「把dashboard做成全英文的」): the store keeps its Chinese values
+  // (rule 11: data values stay in their source language); only what the page shows is translated.
+  /*EN-BEGIN*/
+  const ELIG_EN = { '可投': 'Eligible', '待核实': 'To verify', '不可投': 'Not eligible', '已关闭': 'Closed', '重复': 'Duplicate' };
+  const EN_RULES = [
+    [/读到完整 JD，未发现限制/g, 'Full JD read, no restriction found'],
+    [/读不到 JD（需要登录或网站不支持），申请前人工核实/g, 'JD not readable (sign-in needed or site not supported); verify before applying'],
+    [/JD 太短或读不到/g, 'JD too short or not readable'],
+    [/明写不担保/g, 'States no visa sponsorship'],
+    [/不提供签证担保/g, 'No visa sponsorship'],
+    [/明确提供担保/g, 'Sponsorship explicitly offered'],
+    [/担保说法前后矛盾/g, 'Sponsorship statements contradict each other'],
+    [/与 (J\d+) 是同一个岗位/g, 'Same posting as $1'],
+    [/不同 req，JD 正文逐字相同/g, 'different req, identical JD text'],
+    [/无法核实是否已下架，申请前人工核实/g, 'Cannot verify whether the posting was removed; verify before applying'],
+    [/岗位已下线/g, 'Posting removed'],
+    [/网站标注的截止日期已过，可能已关闭，申请前确认/g, 'Deadline on the site has passed, may be closed; confirm before applying'],
+    [/要求美国公民\/绿卡、安全许可或出口管制身份/g, 'Requires U.S. citizenship / green card, security clearance or export-control status'],
+    [/要求美国公民\/绿卡/g, 'Requires U.S. citizenship / green card'],
+    [/只限美国公民/g, 'U.S. citizens only'],
+    [/只招公民 \/ 绿卡/g, 'Citizens / green-card holders only'],
+    [/不是暑期实习（冬\/春\/秋季或 co-op）/g, 'Not a summer internship (winter / spring / fall or co-op)'],
+    [/毕业时间要求不含 (\d{4}) 年 (\d{1,2}) 月/g, 'Graduation window excludes $1-$2'],
+    [/毕业时间符合/g, 'Graduation date fits'],
+    [/要求 (\d+) 年以上工作经验/g, 'Requires $1+ years of work experience'],
+    [/要求 (\d+) 年经验/g, 'Requires $1 years of experience'],
+    [/只招本科在读或毕业 (\d+) 年内且未读研/g, 'Current undergraduates or graduates of the last $1 years without a graduate degree only'],
+    [/只招本科、毕业时间 /g, 'Undergraduates only, graduating '],
+    [/的本科生/g, ' undergraduates'],
+    [/只招本科（大三\/大四）/g, 'Undergraduates only (juniors / seniors)'],
+    [/只招在读四年制本科/g, 'Current four-year undergraduates only'],
+    [/只招在读本科/g, 'Current undergraduates only'],
+    [/只招本科大三/g, 'Undergraduate juniors only'],
+    [/只招大三大四/g, 'Juniors / seniors only'],
+    [/只招大三/g, 'Juniors only'],
+    [/只招本科/g, 'Undergraduates only'],
+    [/JD 写的是本科在读/g, 'JD asks for current undergraduates'],
+    [/偏好已完成本科/g, 'Prefers a completed bachelor’s degree'],
+    [/本科版/g, 'undergraduate version'],
+    [/只招博士生/g, 'PhD students only'],
+    [/只招博士/g, 'PhD only'],
+    [/只招 MBA/g, 'MBA only'],
+    [/实习期超过 (\d+) 周 \/ 多学期/g, 'Internship longer than $1 weeks / several terms'],
+    [/学期中要兼职/g, 'Part-time during the term'],
+    [/兼职/g, 'Part time'],
+    [/不在美国/g, 'Not in the U.S.'],
+    [/Lever 演示账号的假岗位/g, 'Fake posting on a Lever demo account'],
+    [/JSA-(\d+) 新规则重判缓存 JD/g, 're-judged on the cached JD by the JSA-$1 rule'],
+    [/JSA-(\d+) 规则/g, 'JSA-$1 rule'],
+    [/手动改/g, 'changed by hand'],
+    [/读完整 JD，(\d{4}-\d{2}-\d{2}) 第五批/g, 'full JD read $1, batch 5'],
+    [/Claude (\d{1,2}-\d{1,2}) 读 JD/g, 'Claude read the JD $1'],
+    [/(\d{4}-\d{2}-\d{2}) 读到的 JD/g, 'JD read $1'],
+    [/(\d{4}-\d{2}-\d{2}) 读不到/g, 'not readable $1'],
+    [/对抓取返回/g, 'returned to the fetch:'],
+    [/(\S+) 与 (\S+) 不是同一个 req/g, '$1 and $2 are not the same req'],
+    [/不是同一个/g, 'are not the same'],
+    [/建号后邮箱验证\/登录失败/g, 'account created, then e-mail verification / sign-in failed'],
+    [/Joey 决定跳过/g, 'Joey decided to skip it'],
+    [/未投/g, 'not applied'],
+    [/重复依据：与 (J\d+)（([\w-]+)）req 不同，但 JD 正文逐字相同、标题仅差一个连字符、地点与发布日期一致/g, 'duplicate because: a different req from $1 ($2), but identical JD text, titles differ by one hyphen, same location and posting date'],
+    [/已通过 (J\d+) 于 (\d{4}-\d{2}-\d{2}) 提交，避免重复投/g, 'already submitted through $1 on $2, not applied twice'],
+    [/URL 返回 (\d+)，且不在 ([\w .&-]+) 实时职位列表里/g, 'URL returned $1 and is not in $2’s live job list'],
+    [/抽查 CXS 返回 (\d+)，租户搜索已无此岗/g, 'spot check: CXS returned $1, the tenant search no longer has it'],
+    [/标题仅差连字符、地点与发布日期一致、JD 正文逐字相同/g, 'titles differ only by a hyphen, same location and date, identical JD text'],
+    [/暂无回应/g, 'No reply yet'],
+    [/等结果/g, 'Waiting for the result'],
+    [/请确认（Claude 不确定）：/g, 'Please check (Claude unsure): '],
+    [/use CPT through UChicago；/g, 'use CPT through UChicago; '],
+    [/重复/g, 'duplicate'],
+    [/；/g, '; '], [/，/g, ', '], [/、/g, ', '], [/：/g, ': '], [/（/g, ' ('], [/）/g, ')'],
+  ];
+  const en = (t) => { if (t == null) return t; let s = String(t); if (ELIG_EN[s.trim()]) return ELIG_EN[s.trim()];
+    for (const [rx, to] of EN_RULES) s = s.replace(rx, to); return s.replace(/ {2,}/g, ' ').replace(/\( /g, '(').trim(); };
+  /*EN-END*/
+  const ELIGS = ['可投', '待核实', '不可投', '已关闭', '重复'];
+  const eligCls = (e) => (e === '可投' ? 'good' : e === '待核实' || !e ? 'warn' : 'bad');
+  const RUN_TXT = { ready: 'Ready', testing: 'Testing', none: 'No runner', unknown: 'Unknown' };   // JSA-177: page data from build_dash.py
+  const runCls = (r) => (r === 'ready' ? 'good' : r === 'testing' ? 'warn' : r === 'none' ? 'bad' : '');
+  const runTxt = (j) => (j.apply_req && j.apply_req !== 'cancelled' ? '▶ ' : '') + (j.runner ? RUN_TXT[j.runner] + (j.platform ? ' · ' + j.platform : '') : '—');   // ▶ = an Apply request (JSA-179)
+  const ageDays = (d) => (d ? Math.round((today - new Date(d + 'T00:00:00Z')) / 864e5) : 9999);
+  const tip = $('#tip');
+  const showTip = (box, ev, html) => { const r = box.getBoundingClientRect(); tip.replaceChildren(...html); tip.hidden = false;
+    const tr = tip.getBoundingClientRect(); const pr = tip.offsetParent.getBoundingClientRect();
+    let x = ev.clientX - pr.left + 12, y = ev.clientY - pr.top + 12; if (x + tr.width > pr.width) x = ev.clientX - pr.left - tr.width - 12; tip.style.left = x + 'px'; tip.style.top = y + 'px'; };
+  const tipLine = (k, v) => { const d = document.createElement('div'); const a = document.createElement('span'); a.className = 'k'; a.textContent = k + ' '; const b = document.createElement('span'); b.textContent = v; d.append(a, b); return d; };
+  const hideTip = () => { tip.hidden = true; };
+  const fill = (sel, values) => { const s = $(sel); const cur = s.value; const first = s.options[0]; s.replaceChildren(first, ...values.map((v) => new Option(en(v), v))); s.value = values.includes(cur) ? cur : ''; };
+
+  // ---------- 👍 / 👎 (JSA-101): POST to the local pref server, which runs scripts/scoring/pref.py's apply()
+  const PREF_URL = 'http://127.0.0.1:8766/pref';
+  const toast = (msg, bad) => { const t = $('#pref-toast'); t.textContent = msg; t.className = 'jh-toast' + (bad ? ' bad' : ''); t.hidden = false;
+    clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, bad ? 12000 : 4000); };
+  const LVN = { top: 'Top', standard: 'Standard', exclude: 'Excluded', off_target: 'Not a Summer 2027 internship' };
+  const setPref = async (j, want, btns) => {
+    const pref = j.joey_pref === want ? 'clear' : want;
+    btns.forEach((b) => b.setAttribute('aria-busy', 'true'));
+    try {
+      const r = await fetch(PREF_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-JSA-Pref': '1' }, body: JSON.stringify({ id: j.id, pref }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+      if (pref === 'clear') delete j.joey_pref; else j.joey_pref = pref;
+      Object.assign(j, { v_level: d.v_level, score: d.score, tier: d.tier });
+      toast(`${pref === 'up' ? '👍' : pref === 'down' ? '👎' : 'Cleared'} ${j.company} — ${j.title}: ${LVN[d.v_level] || d.v_level} · score ${d.score} · Tier ${d.tier}`);
+      draw(); document.querySelectorAll('.jh-detail').forEach((box) => { if (!box.hidden && box.dataset.id === j.id) detail(box, j); });
+    } catch (e) {
+      const down = e instanceof TypeError;   // fetch rejects with TypeError when nothing listens on the port
+      toast(down ? 'Not saved: the pref server is not running (127.0.0.1:8766). Start it: launchctl kickstart gui/$(id -u)/com.jobagent.pref'
+                 : 'Not saved: ' + e.message, true);
+      btns.forEach((b) => b.removeAttribute('aria-busy'));
+    }
+  };
+  // ---------- tracker Done button (JSA-125): POST /action to the same local server → scripts/store/action_done.py
+  const ACTION_URL = 'http://127.0.0.1:8766/action', WAITV = ['', '等结果'];
+  const actionCell = (cell, a) => {
+    cell.className = 'jh-done'; cell.replaceChildren();
+    const open = !WAITV.includes((a.action_needed || '').trim()), hist = a.action_done || [], last = hist[hist.length - 1];
+    const send = async (done, el) => {
+      el.setAttribute('aria-busy', 'true');
+      try {
+        const r = await fetch(ACTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-JSA-Pref': '1' }, body: JSON.stringify({ job_id: a.job_id, done }) });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+        a.action_needed = d.action_needed; if (d.action_done) a.action_done = d.action_done; else delete a.action_done;
+        toast((done ? '✓ Done: ' : 'Undone: ') + a.company + ' — ' + en(done ? last2(a) : a.action_needed));
+        draw();
+      } catch (e) {
+        const down = e instanceof TypeError;
+        toast(down ? 'Not saved: the local server is not running (127.0.0.1:8766). Start it: launchctl kickstart gui/$(id -u)/com.jobagent.pref'
+                   : 'Not saved: ' + e.message, true);
+        el.removeAttribute('aria-busy');
+      }
+    };
+    const last2 = (x) => { const h = x.action_done || []; return h.length ? h[h.length - 1].action : ''; };
+    if (open) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'jh-btn'; b.textContent = '✓ Done'; b.title = 'Mark this action done';
+      b.addEventListener('click', (ev) => { ev.stopPropagation(); send(true, b); }); cell.appendChild(b);
+    } else if (last) {
+      const s = document.createElement('span'); s.textContent = '✓ ' + String(last.on).slice(5); s.title = 'Done ' + last.on + ': ' + en(last.action); s.style.color = 'var(--color-ok)';
+      const u = document.createElement('button'); u.type = 'button'; u.className = 'undo'; u.textContent = 'Undo';
+      u.addEventListener('click', (ev) => { ev.stopPropagation(); send(false, u); }); cell.append(s, u);
+    } else cell.textContent = '—';
+  };
+  const prefBox = (j) => {
+    const w = document.createElement('span'); w.className = 'jh-pref';
+    const btns = [['up', '👍', 'Mark as a top role'], ['down', '👎', 'Exclude this role']].map(([p, icon, label]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = icon; b.dataset.pref = p;
+      b.setAttribute('aria-pressed', String(j.joey_pref === p)); b.title = j.joey_pref === p ? 'Click to clear' : label; b.setAttribute('aria-label', label);
+      return b; });
+    btns.forEach((b) => b.addEventListener('click', (ev) => { ev.stopPropagation(); if (b.getAttribute('aria-busy')) return; setPref(j, b.dataset.pref, btns); }));
+    w.append(...btns); return w;
+  };
+
+  // ---------- detail panel
+  // ---------- Apply from the dashboard (JSA-179): POST /apply → the open Claude session applies (Joey chose A)
+  const APPLY_URL = 'http://127.0.0.1:8766/apply';
+  const REQ_EN = { queued: 'Queued', applying: 'Applying', submitted: 'Submitted', 'needs-you': 'Needs you', cancelled: 'Cancelled' };
+  const reqCls = (r) => (r === 'submitted' ? 'good' : r === 'needs-you' ? 'bad' : r === 'cancelled' ? '' : 'warn');
+  // JSA-183 (Joey 2026-11-05 「在所有能看到 Jobs 的地方都可以点 Apply」): every row except 不可投 / 已关闭 / 重复, TikTok
+  // (Joey submits), a job already in the tracker, or one already requested; the mode says how the desk applies
+  const APPLIED = new Set();
+  const applyMode = (j) => ((j.elig || '待核实') === '待核实' ? 'verify-first'
+    : (j.runner === 'ready' || (j.runner === 'testing' && j.platform !== 'tiktok')) ? 'runner' : 'by-hand');
+  const noApply = (j) => (['不可投', '已关闭', '重复'].includes(j.elig) ? en(j.elig) : j.platform === 'tiktok' ? 'You submit TikTok'
+    : APPLIED.has(j.id) ? 'In tracker' : ['queued', 'applying', 'needs-you', 'submitted'].includes(j.apply_req || '') ? 'Requested' : '');
+  const canApply = (j) => !noApply(j);
+  const MODE_TXT = {
+    runner: 'The open apply session will re-read the live posting, prepare your resume and cover letter, and submit only if every check passes.',
+    'verify-first': 'This role is NOT verified yet (To verify). The apply session first reads the full JD and stops if anything rules you out; only then does it prepare materials and apply.',
+    'by-hand': 'There is no runner for this role yet. The apply session looks for the company\u2019s apply link (a supported system \u2192 the runner); otherwise it fills the form by hand in the job Chrome, checks every field, and submits only if every check passes.' };
+  const applyBtn = (j, after) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'jh-btn'; b.textContent = 'Apply';
+    b.title = 'The agent re-reads the live posting, prepares the resume and cover letter, and submits only if every check passes';
+    b.addEventListener('click', async (ev) => {
+      ev.stopPropagation();
+      if (!window.confirm(`Apply to ${j.company} — ${j.title}?\n\n${MODE_TXT[applyMode(j)]} CAPTCHAs and new questions come back to you.`)) return;
+      b.disabled = true; b.setAttribute('aria-busy', 'true');
+      try {
+        const r = await fetch(APPLY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-JSA-Pref': '1' }, body: JSON.stringify({ job_id: j.id, confirm: true }) });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) { toast('Not queued: ' + (d.error || r.status), true); b.disabled = false; b.removeAttribute('aria-busy'); return; }
+        j.apply_req = d.apply_req; j.apply_req_at = d.apply_req_at; toast('Queued: ' + j.company + (d.desk === 'none' ? ' — no apply session is open yet: open the apply-desk session in the main folder and it applies in order' : ' — the apply session takes it in turn'), d.desk === 'none'); after();
+      } catch (e) { toast('Not queued: the local server (127.0.0.1:8766) is not answering', true); b.disabled = false; b.removeAttribute('aria-busy'); }
+    });
+    return b;
+  };
+  const applyCell = (cell, j) => {   // the row's Apply column (JSA-179): a button, or the request's status
+    cell.textContent = '';
+    if (j.apply_req) pill(cell, REQ_EN[j.apply_req] || j.apply_req, reqCls(j.apply_req));
+    if (canApply(j)) { const b = applyBtn(j, () => applyCell(cell, j)); if (applyMode(j) !== 'runner') { b.textContent = 'Apply*'; b.title = MODE_TXT[applyMode(j)]; } cell.appendChild(b); }
+    else if (!j.apply_req) { const m = document.createElement('span'); m.textContent = noApply(j); m.style.color = 'var(--color-fg-muted)'; m.style.fontSize = 'var(--cds-font-size-caption)'; cell.appendChild(m); }
+  };
+  const applyBar = (box, j) => {
+    const bar = document.createElement('p'); bar.className = 'jh-applybar';
+    if (j.apply_req) {
+      bar.append(document.createTextNode('Apply request: ')); const sp = document.createElement('span'); bar.appendChild(sp);
+      pill(sp, REQ_EN[j.apply_req] || j.apply_req, reqCls(j.apply_req));
+      bar.append(document.createTextNode(' ' + String(j.apply_req_at || '').slice(0, 16).replace('T', ' ') + (j.apply_req_note ? ' — ' + en(j.apply_req_note) : '')));
+    }
+    if (canApply(j)) { bar.appendChild(applyBtn(j, () => detail(box, j))); if (applyMode(j) !== 'runner') bar.append(document.createTextNode(' ' + MODE_TXT[applyMode(j)])); } else if (!j.apply_req) {
+      const why = noApply(j);
+      bar.append(document.createTextNode('Apply from the dashboard: not available — ' + why));
+      bar.style.color = 'var(--color-fg-muted)';
+    }
+    box.appendChild(bar);
+  };
+  const detail = (box, j) => {
+    box.hidden = false; box.replaceChildren(); box.dataset.id = j.id;
+    const h = document.createElement('h3'); h.textContent = j.title + ' · ' + j.company + ' '; h.appendChild(prefBox(j)); box.appendChild(h);
+    const meta = document.createElement('p'); meta.className = 'jh-note';
+    meta.textContent = [j.level, j.track, j.location, j.salary, j.posted ? 'posted ' + j.posted : ''].filter(Boolean).join(' · '); box.appendChild(meta);
+    applyBar(box, j);
+    const br = document.createElement('div'); br.className = 'jh-break';
+    const LV = { top: 'Top', standard: 'Standard', exclude: 'Excluded', off_target: 'Not a Summer 2027 internship' };
+    const pc = (x) => (x == null ? '—' : Math.round(x * 100) + '%');
+    (j.score_version === 'v2'
+      ? [['Total', j.score + ' / 100 (Tier ' + j.tier + ')'], ['Value level', LV[j.v_level] || j.v_level], ['Chance', pc(j.s_chance)],
+         ['Referral', pc(j.s_referral)], ['Timing', pc(j.s_timing)], ['Sponsorship', pc(j.s_sponsor)], ['Freshness', pc(j.s_fresh)]]
+      : [['Total', j.score + ' / 100 (Tier ' + j.tier + ')'], ['Role fit', j.s_role + ' / 25'], ['Timing', j.s_timing + ' / 15'], ['Sponsorship', j.s_sponsor + ' / 30'],
+         ['Green card', j.s_greencard + ' / 10'], ['Referral', j.s_referral + ' / 15'], ['Freshness', j.s_fresh + ' / 5']]).forEach(([k, v]) => {
+      const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = v; d.append(b, document.createTextNode(k)); br.appendChild(d); });
+    box.appendChild(br);
+    const lines = [
+      ['Runner', j.runner ? RUN_TXT[j.runner] + (j.platform ? ' (' + j.platform + ')' : '') : '—'],
+      ['Eligibility', en(j.elig || '待核实') + (j.elig_reason ? ' — ' + en(j.elig_reason) : '') + (j.elig_evidence ? ` · JD: "${en(j.elig_evidence)}"` : '') + (j.elig_checked ? ` (checked ${j.elig_checked})` : '')],
+      ['Sponsorship', j.sponsorship + (j.h1b_fy25 ? ` · ${fmt(j.h1b_fy25)} H-1B filings in FY2025` : '') + (j.h1b_total ? ` · ${fmt(j.h1b_total)} since ${j.h1b_since}` : '')],
+      ['Green card', j.gc_sponsor ? `Ellis: ${j.gc_sponsor === 'Yes' ? 'sponsors green cards' : 'no PERM found for matched entity'}${j.gc_perm !== '' ? ` · ${j.gc_perm} PERM filings in 2025` : ''}${j.gc_months ? ` · ~${j.gc_months} processing` : ''}` : 'Not checked (H-1B history used)'],
+      ['Referral', j.referral_detail + (j.contacts ? ' · ' + j.contacts : '') + (j.warm_path ? ' · ' + j.warm_path : '')],
+      ['Found on', srcList(j).join('; ')],
+      ['Notes', en(j.notes)],
+    ];
+    lines.forEach(([k, v]) => { if (!v) return; const p = document.createElement('p'); p.className = 'jh-note'; const b = document.createElement('b'); b.textContent = k + ': '; p.append(b, document.createTextNode(v)); box.appendChild(p); });
+    if (j.url && /^https?:\/\//.test(j.url)) { const a = document.createElement('a'); a.href = j.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Open the posting ↗'; box.appendChild(a); }
+  };
+
+  // ---------- table builders
+  const sortRows = (rows, [k, dir]) => rows.slice().sort((a, b) => { const x = a[k], y = b[k];
+    if (typeof x === 'number' || typeof y === 'number') return ((+x || 0) - (+y || 0)) * dir; return String(x ?? '').localeCompare(String(y ?? '')) * dir; });
+  const wireSort = (tableSel, key) => {
+    document.querySelectorAll(tableSel + ' th button').forEach((b) => b.addEventListener('click', () => {
+      const k = b.dataset.k; const [ck, cd] = jh.sort[key]; jh.sort[key] = [k, ck === k ? -cd : (['company', 'title', 'track', 'level', 'location', 'tier', 'best_role', 'runner'].includes(k) ? 1 : -1)]; jh.lim[key] = 300; draw(); }));
+  };
+  const setSortMarks = (tableSel, key) => document.querySelectorAll(tableSel + ' th').forEach((th) => {
+    const b = th.querySelector('button'); if (!b) return; th.setAttribute('aria-sort', b.dataset.k === jh.sort[key][0] ? (jh.sort[key][1] > 0 ? 'ascending' : 'descending') : 'none'); });
+  wireSort('#t-jobs', 'jobs'); wireSort('#t-comp', 'comp');
+
+  const jobRow = (tb, j, cols, box) => {
+    const tr = tb.insertRow(); tr.dataset.key = j.id;
+    cols.forEach((c) => {
+      if (c === 'score') { const cell = tr.insertCell(); const w = document.createElement('div'); w.className = 'jh-bar'; const i = document.createElement('i'); i.style.width = Math.max(2, j.score * 0.5) + 'px'; const s = document.createElement('span'); s.textContent = j.score; w.append(s, i); cell.appendChild(w); }
+      else if (c === 'tier') pill(tr.insertCell(), j.tier, j.tier);
+      else if (c === 'joey_pref') tr.insertCell().appendChild(prefBox(j));
+      else if (c === 'elig') pill(tr.insertCell(), en(j.elig || '待核实'), eligCls(j.elig));
+      else if (c === 'runner') pill(tr.insertCell(), runTxt(j), runCls(j.runner));
+      else if (c === 'apply') applyCell(tr.insertCell(), j);
+      else if (c === 'sponsorship') pill(tr.insertCell(), j.sponsorship, spCls(j.sponsorship));
+      else if (c === 'h1b_fy25' || c === 'n_sources' || c === 'rank' || c === 'li_connections' || c === 'li_alumni') td(tr, typeof j[c] === 'number' ? fmt(j[c]) : j[c], 'n');
+      else if (c === 'title') td(tr, j.title, 'wrap');
+      else td(tr, j[c]);
+    });
+    tr.addEventListener('click', () => detail(box, j));
+  };
+
+  // ---------- filters (jobs)
+  const tierBox = $('#f-tiers');
+  TIERS.forEach((t) => { const b = document.createElement('button'); b.className = 'jh-chip'; b.textContent = 'Tier ' + t; b.dataset.t = t;
+    b.setAttribute('aria-pressed', String(jh.tiers.has(t))); b.addEventListener('click', () => { jh.tiers.has(t) ? jh.tiers.delete(t) : jh.tiers.add(t); b.setAttribute('aria-pressed', String(jh.tiers.has(t))); jh.lim.jobs = 300; draw(); }); tierBox.appendChild(b); });
+  ['#f-q', '#f-track', '#f-level', '#f-el', '#f-run', '#f-sp', '#f-ref', '#f-src', '#f-age', '#f-min', '#f-remote', '#f-blocked'].forEach((s) => $(s).addEventListener('input', () => { jh.lim.jobs = 300; $('#f-min-v').textContent = $('#f-min').value; draw(); }));
+  $('#f-reset').addEventListener('click', () => { ['#f-q', '#f-track', '#f-level', '#f-el', '#f-run', '#f-sp', '#f-ref', '#f-src', '#f-age'].forEach((s) => { $(s).value = ''; }); $('#f-min').value = 0; $('#f-min-v').textContent = '0';
+    $('#f-remote').checked = false; $('#f-blocked').checked = true; jh.tiers = new Set(['A', 'B', 'C', 'D']); tierBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(jh.tiers.has(b.dataset.t)))); jh.lim.jobs = 300; draw(); });
+  $('#jobs-more').addEventListener('click', () => { jh.lim.jobs += 300; draw(); });
+  $('#comp-more').addEventListener('click', () => { jh.lim.comp += 300; draw(); });
+  ['#c-q', '#c-sp', '#c-gc', '#c-ref'].forEach((s) => $(s).addEventListener('input', () => { jh.lim.comp = 300; draw(); }));
+  $('#a-status').addEventListener('input', () => draw()); $('#a-cycle').addEventListener('input', () => draw()); $('#a-action').addEventListener('input', () => draw());
+  window.jhFilterCompany = (name) => { $('#f-q').value = name; jh.tiers = new Set(TIERS); tierBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', 'true')); show('jobs'); };
+
+  const filteredJobs = (rows) => {
+    const q = $('#f-q').value.trim().toLowerCase(), run = $('#f-run').value, tr = $('#f-track').value, lv = $('#f-level').value, el = $('#f-el').value, sp = $('#f-sp').value, rf = $('#f-ref').value, src = $('#f-src').value,
+      age = +$('#f-age').value || 0, min = +$('#f-min').value, rem = $('#f-remote').checked, hideB = $('#f-blocked').checked;
+    return rows.filter((j) => (!q || (j.company + ' ' + j.title + ' ' + j.location).toLowerCase().includes(q)) && (!tr || j.track === tr) && (!lv || j.level === lv) && (!el || (j.elig || '待核实') === el) && (!run || j.runner === run)
+      && (!sp || j.sponsorship === sp) && (!rf || j.referral === rf) && (!src || srcList(j).includes(src)) && (!age || ageDays(j.posted) <= age)
+      && j.score >= min && (!rem || j.remote === 'Yes') && (!hideB || j.tier !== 'Blocked' || ['不可投', '已关闭', '重复'].includes(el)) && (jh.tiers.has(j.tier) || (j.tier === 'Blocked' && ['不可投', '已关闭', '重复'].includes(el))));
+  };
+
+  // ---------- charts
+  const stackedBars = (box, rows, catKey, segKey, segs, colors, valKey) => {
+    box.replaceChildren(); const W = box.clientWidth; if (!W) return;
+    const cats = [...new Set(rows.map((r) => r[catKey]))].sort((a, b) => d3.sum(rows.filter((r) => r[catKey] === b), (r) => r[valKey]) - d3.sum(rows.filter((r) => r[catKey] === a), (r) => r[valKey]));
+    const svg = d3.select(box).append('svg').attr('width', '100%');
+    const meas = svg.append('text').attr('font-size', 12); let lw = 0; cats.forEach((c) => { meas.text(c); lw = Math.max(lw, meas.node().getComputedTextLength()); }); meas.remove();
+    const m = { l: lw + 10, r: 48, t: 4, b: 22 }, bh = 26, H = m.t + m.b + cats.length * (bh + 10);
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const tot = (c) => d3.sum(rows.filter((r) => r[catKey] === c), (r) => r[valKey]);
+    const x = d3.scaleLinear([0, d3.max(cats, tot) || 1], [m.l, W - m.r]).nice(); const y = d3.scaleBand(cats, [m.t, H - m.b]).padding(0.28);
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor((W - m.l) / 90))).tickFormat(d3.format('~s'))).attr('font-size', null).attr('font-family', null)
+      .call((g) => { g.selectAll('text').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)'); g.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)'); });
+    svg.append('g').selectAll('text').data(cats).join('text').attr('x', m.l - 8).attr('y', (c) => y(c) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').text((c) => c);
+    cats.forEach((c) => { let x0 = 0;
+      segs.forEach((s, i) => { const r = rows.find((q) => q[catKey] === c && q[segKey] === s); const v = r ? r[valKey] : 0; if (!v) return;
+        svg.append('rect').attr('x', x(x0)).attr('y', y(c)).attr('width', Math.max(1, x(x0 + v) - x(x0))).attr('height', y.bandwidth()).attr('fill', colors[i])
+          .on('mousemove', (ev) => showTip(box, ev, [tipLine(c, ''), tipLine(s, fmt(v))])).on('mouseleave', hideTip); x0 += v; });
+      svg.append('text').attr('x', x(x0) + 6).attr('y', y(c) + y.bandwidth() / 2).attr('dy', '0.35em').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(fmt(x0)); });
+  };
+  const legend = (sel, names, colors) => $(sel).replaceChildren(...names.map((n, i) => { const s = document.createElement('span'); const k = document.createElement('i'); k.style.background = colors[i]; s.append(k, document.createTextNode(n)); return s; }));
+
+  // sources is "a; b" text; a list or a missing value must not stop the page (JSA-095)
+const srcList = (j) => Array.isArray(j.sources) ? j.sources.map(String) : String(j.sources || j.source || 'Unknown').split('; ').filter(Boolean)
+const SPS = ['Posting offers sponsorship', 'Strong H-1B sponsor', 'Some H-1B history', 'Unknown — verify', 'Blocked: no sponsorship', 'Blocked: citizenship required'];
+  const tierColors = () => [dash.colors[0], dash.colors[1], dash.colors[2], 'var(--cds-chart-muted)', 'var(--cds-chart-status-critical)'];
+  const spColors = () => [dash.colors[0], dash.colors[1], dash.colors[2], 'var(--cds-chart-muted)', 'var(--cds-chart-status-critical)', dash.colors[4]];
+
+  const drawSponsors = (box, comps) => {
+    box.replaceChildren(); const W = box.clientWidth; if (!W) return;
+    const top = comps.filter((c) => c.h1b_fy25 > 0).sort((a, b) => b.h1b_fy25 - a.h1b_fy25).slice(0, 20);
+    const svg = d3.select(box).append('svg').attr('width', '100%');
+    const meas = svg.append('text').attr('font-size', 12); let lw = 0; top.forEach((c) => { meas.text(c.company); lw = Math.max(lw, meas.node().getComputedTextLength()); }); meas.remove();
+    const m = { l: Math.min(lw + 26, W * 0.45), r: 56, t: 4, b: 22 }, H = m.t + m.b + top.length * 24;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear([0, d3.max(top, (c) => c.h1b_fy25) || 1], [m.l, W - m.r]).nice(); const y = d3.scaleBand(top.map((c) => c.company), [m.t, H - m.b]).padding(0.3);
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor((W - m.l) / 90))).tickFormat(d3.format('~s'))).attr('font-size', null).attr('font-family', null)
+      .call((g) => { g.selectAll('text').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)'); g.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)'); });
+    const g = svg.append('g').selectAll('g').data(top).join('g').style('cursor', 'pointer').on('click', (ev, c) => window.jhFilterCompany(c.company))
+      .on('mousemove', (ev, c) => showTip(box, ev, [tipLine(c.company, ''), tipLine('H-1B FY2025', fmt(c.h1b_fy25)), tipLine('Green card', c.gc_sponsor || 'not checked'), tipLine('Open roles', fmt(c.open_roles)), tipLine('Best score', c.best_score)]))
+      .on('mouseleave', hideTip);
+    g.append('circle').attr('cx', m.l - 12).attr('cy', (c) => y(c.company) + y.bandwidth() / 2).attr('r', 4).attr('fill', (c) => (c.gc_sponsor === 'Yes' ? dash.colors[1] : 'none')).attr('stroke', dash.colors[1]);
+    g.append('text').attr('x', m.l - 22).attr('y', (c) => y(c.company) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)')
+      .text((c) => c.company).each(function () { let t = d3.select(this).text(); while (this.getComputedTextLength() > m.l - 26 && t.length > 4) { t = t.slice(0, -2); d3.select(this).text(t + '…'); } });
+    g.append('rect').attr('x', m.l).attr('y', (c) => y(c.company)).attr('height', y.bandwidth()).attr('width', (c) => Math.max(1, x(c.h1b_fy25) - m.l)).attr('rx', 4).attr('fill', dash.colors[0]);
+    g.append('text').attr('x', (c) => x(c.h1b_fy25) + 6).attr('y', (c) => y(c.company) + y.bandwidth() / 2).attr('dy', '0.35em').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((c) => fmt(c.h1b_fy25));
+  };
+
+  const drawSimpleBars = (box, rows, labelKey, valKey) => {
+    box.replaceChildren(); const W = box.clientWidth; if (!W) return;
+    const svg = d3.select(box).append('svg').attr('width', '100%');
+    const meas = svg.append('text').attr('font-size', 12); let lw = 0; rows.forEach((r) => { meas.text(r[labelKey]); lw = Math.max(lw, meas.node().getComputedTextLength()); }); meas.remove();
+    const m = { l: lw + 12, r: 48, t: 4, b: 8 }, H = m.t + m.b + rows.length * 40;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear([0, d3.max(rows, (r) => r[valKey]) || 1], [m.l, W - m.r]); const y = d3.scaleBand(rows.map((r) => r[labelKey]), [m.t, H - m.b]).padding(0.3);
+    svg.append('g').selectAll('text').data(rows).join('text').attr('x', m.l - 8).attr('y', (r) => y(r[labelKey]) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').text((r) => r[labelKey]);
+    svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', m.l).attr('y', (r) => y(r[labelKey])).attr('height', y.bandwidth()).attr('width', (r) => Math.max(1, x(r[valKey]) - m.l)).attr('rx', 4).attr('fill', (r, i) => dash.colors[i % 8]);
+    svg.append('g').selectAll('text').data(rows).join('text').attr('x', (r) => x(r[valKey]) + 6).attr('y', (r) => y(r[labelKey]) + y.bandwidth() / 2).attr('dy', '0.35em').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((r) => fmt(r[valKey]));
+  };
+
+  const drawSources = (box, rows) => {
+    box.replaceChildren(); const W = box.clientWidth; if (!W) return;
+    const keys = ['collected', 'relevant_us', 'in_dashboard'], names = ['Collected', 'Relevant U.S.', 'In dashboard'], cols = ['var(--cds-chart-muted)', dash.colors[1], dash.colors[0]];
+    legend('#lg-src', names, cols);
+    const svg = d3.select(box).append('svg').attr('width', '100%');
+    const meas = svg.append('text').attr('font-size', 12); let lw = 0; rows.forEach((r) => { meas.text(r.source); lw = Math.max(lw, meas.node().getComputedTextLength()); }); meas.remove();
+    const m = { l: Math.min(lw + 10, W * 0.42), r: 52, t: 4, b: 22 }, H = m.t + m.b + rows.length * 30;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleSymlog([0, d3.max(rows, (r) => r.collected) || 1], [m.l, W - m.r]).constant(10); const y = d3.scaleBand(rows.map((r) => r.source), [m.t, H - m.b]).padding(0.2);
+    svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues([0, 10, 100, 1000, 10000].filter((v) => v <= x.domain()[1])).tickFormat(d3.format('~s'))).attr('font-size', null).attr('font-family', null)
+      .call((g) => { g.selectAll('text').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)'); g.selectAll('line,path').attr('stroke', 'var(--cds-chart-axis)'); });
+    svg.append('g').selectAll('text').data(rows).join('text').attr('x', m.l - 8).attr('y', (r) => y(r.source) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)')
+      .text((r) => r.source).each(function () { let t = d3.select(this).text(); while (this.getComputedTextLength() > m.l - 12 && t.length > 4) { t = t.slice(0, -2); d3.select(this).text(t + '…'); } });
+    const sub = d3.scaleBand(keys, [0, y.bandwidth()]).padding(0.1);
+    rows.forEach((r) => keys.forEach((k, i) => { svg.append('rect').attr('x', m.l).attr('y', y(r.source) + sub(k)).attr('height', sub.bandwidth()).attr('width', Math.max(1, x(r[k]) - m.l)).attr('rx', 2).attr('fill', cols[i])
+      .on('mousemove', (ev) => showTip(box, ev, [tipLine(r.source, ''), ...keys.map((kk, j) => tipLine(names[j], fmt(r[kk])))])).on('mouseleave', hideTip); }));
+    svg.append('g').selectAll('text').data(rows).join('text').attr('x', (r) => x(r.collected) + 6).attr('y', (r) => y(r.source) + y.bandwidth() / 2).attr('dy', '0.35em').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((r) => fmt(r.in_dashboard));
+  };
+
+  // ---------- main draw
+  function draw() {
+    const J = dash.data('jobs'), C = dash.data('companies'), P = dash.data('contacts'), A = dash.data('applications'), S = dash.data('sources'), K = dash.data('kpis');
+    if (A.status === 'ok') { APPLIED.clear(); A.data.forEach((a) => a.job_id && APPLIED.add(a.job_id)); }
+    document.querySelectorAll('.dash-skeleton').forEach((e) => { if (K.status !== 'loading') e.classList.remove('dash-skeleton'); });
+    if (K.status === 'ok') { K.data.forEach((r) => { const el = document.querySelector(`[data-where="metric=${r.metric}"]`); if (el) el.textContent = fmt(r.value); }); }
+    else document.querySelectorAll('[data-source="kpis"]').forEach((el) => { el.textContent = '—'; });
+    const jobs = J.status === 'ok' ? J.data : [];
+    if (J.status === 'ok' && K.status === 'ok') {
+      const k = Object.fromEntries(K.data.map((r) => [r.metric, r.value]));
+      const best = jobs.filter((j) => j.elig === '可投' && j.level === 'Internship').sort((a, b) => b.score - a.score)[0];
+      $('#takeaway').textContent = `${fmt(k.elig_interns)} Summer 2027 internships passed the full-JD eligibility check; ${fmt(k.tier_a)} Tier A roles combine fit, sponsorship and timing.` + (best ? ` Start with ${best.company}: ${best.title}.` : '');
+    } else if (J.status !== 'loading') $('#takeaway').textContent = 'Data didn’t load.';
+    if (J.status === 'ok') {
+      fill('#f-track', [...new Set(jobs.map((j) => j.track))].sort()); fill('#f-level', ['Internship', 'New grad', 'Early career'].filter((l) => jobs.some((j) => j.level === l)));
+      fill('#f-el', ELIGS.filter((e) => jobs.some((j) => (j.elig || '待核实') === e)));
+      fill('#f-sp', SPS.filter((s) => jobs.some((j) => j.sponsorship === s))); fill('#f-ref', ['1st-degree contact', 'LinkedIn connection', 'Warm intro', 'School alumni', 'Cold'].filter((s) => jobs.some((j) => j.referral === s)));
+      fill('#f-src', [...new Set(jobs.flatMap(srcList))].sort());
+    }
+    if (C.status === 'ok') fill('#c-sp', SPS.filter((s) => C.data.some((c) => c.sponsorship === s)));
+    if (A.status === 'ok') { fill('#a-status', [...new Set(A.data.map((a) => a.status))]); fill('#a-cycle', [...new Set(A.data.map((a) => a.cycle).filter(Boolean))]); }
+    const p = jh.page;
+    if (p === 'overview') {
+      const tt = dash.data('track_tier'), ls = dash.data('level_sponsor');
+      legend('#lg-tier', TIERS.map((t) => 'Tier ' + t), tierColors()); legend('#lg-sp', SPS, spColors());
+      if (tt.status === 'ok') stackedBars($('#ch-track-tier'), tt.data, 'track', 'tier', TIERS, tierColors(), 'roles'); else $('#ch-track-tier').replaceChildren();
+      if (ls.status === 'ok') stackedBars($('#ch-level-sponsor'), ls.data, 'level', 'sponsorship', SPS, spColors(), 'roles'); else $('#ch-level-sponsor').replaceChildren();
+      const tb = $('#t-top tbody'); tb.replaceChildren();
+      jobs.filter((j) => j.tier !== 'Blocked' && j.elig === '可投').slice().sort((a, b) => b.score - a.score).slice(0, 25).forEach((j) => jobRow(tb, j, ['rank', 'joey_pref', 'score', 'company', 'title', 'level', 'elig', 'runner', 'apply', 'sponsorship', 'referral'], $('#d-top')));
+    }
+    if (p === 'jobs') {
+      const rows = sortRows(filteredJobs(jobs), jh.sort.jobs); setSortMarks('#t-jobs', 'jobs');
+      $('#jobs-count').textContent = `Showing ${fmt(Math.min(rows.length, jh.lim.jobs))} of ${fmt(rows.length)} matching roles (${fmt(jobs.length)} total)`;
+      const tb = $('#t-jobs tbody'); tb.replaceChildren();
+      rows.slice(0, jh.lim.jobs).forEach((j) => jobRow(tb, j, ['joey_pref', 'score', 'tier', 'elig', 'runner', 'apply', 'company', 'title', 'track', 'level', 'location', 'sponsorship', 'h1b_fy25', 'gc_sponsor', 'referral', 'posted', 'n_sources'], $('#d-jobs')));
+      $('#jobs-more').hidden = rows.length <= jh.lim.jobs;
+    }
+    if (p === 'companies') {
+      const comps = C.status === 'ok' ? C.data : []; const q = $('#c-q').value.trim().toLowerCase(), sp = $('#c-sp').value, gc = $('#c-gc').value, rf = $('#c-ref').checked;
+      const rows = sortRows(comps.filter((c) => (!q || c.company.toLowerCase().includes(q)) && (!sp || c.sponsorship === sp) && (!gc || (gc === '-' ? !c.gc_sponsor : c.gc_sponsor === gc)) && (!rf || c.referral !== 'Cold')), jh.sort.comp);
+      setSortMarks('#t-comp', 'comp'); $('#comp-count').textContent = `Showing ${fmt(Math.min(rows.length, jh.lim.comp))} of ${fmt(rows.length)} companies`;
+      const tb = $('#t-comp tbody'); tb.replaceChildren();
+      rows.slice(0, jh.lim.comp).forEach((c) => { const tr = tb.insertRow(); tr.dataset.key = c.company;
+        td(tr, c.company); td(tr, fmt(c.open_roles), 'n'); td(tr, fmt(c.a_roles), 'n'); td(tr, c.best_score, 'n'); td(tr, c.best_role, 'wrap'); pill(tr.insertCell(), c.sponsorship, spCls(c.sponsorship));
+        td(tr, fmt(c.h1b_fy25), 'n'); td(tr, fmt(c.h1b_total), 'n'); td(tr, c.gc_sponsor); td(tr, c.gc_perm === '' ? '' : fmt(c.gc_perm), 'n'); td(tr, c.referral);
+        tr.addEventListener('click', () => window.jhFilterCompany(c.company)); });
+      $('#comp-more').hidden = rows.length <= jh.lim.comp;
+    }
+    if (p === 'referrals') {
+      const tb = $('#t-contacts tbody'); tb.replaceChildren();
+      (P.status === 'ok' ? P.data : []).forEach((c) => { const tr = tb.insertRow(); tr.dataset.key = c.key; td(tr, c.person); td(tr, c.company); td(tr, c.headline, 'wrap'); td(tr, fmt(c.open_roles), 'n'); td(tr, c.best_score, 'n'); td(tr, c.best_role, 'wrap'); td(tr, c.ask, 'wrap');
+        tr.addEventListener('click', () => window.jhFilterCompany(c.company)); });
+      const ta = $('#t-alumni tbody'); ta.replaceChildren();
+      jobs.filter((j) => j.li_connections || j.li_alumni).sort((a, b) => b.li_connections - a.li_connections || b.score - a.score).forEach((j) => { const tr = ta.insertRow(); tr.dataset.key = j.id;
+        td(tr, j.company); td(tr, j.title, 'wrap'); td(tr, fmt(j.li_connections), 'n'); td(tr, fmt(j.li_alumni), 'n'); td(tr, j.score, 'n'); pill(tr.insertCell(), j.sponsorship, spCls(j.sponsorship)); applyCell(tr.insertCell(), j);
+        tr.addEventListener('click', () => window.jhFilterCompany(j.company)); });
+    }
+    if (p === 'sponsorship') { if (C.status === 'ok') drawSponsors($('#ch-sponsors'), C.data); else $('#ch-sponsors').replaceChildren(); }
+    if (p === 'applications') {
+      const f = dash.data('app_funnel'), r = dash.data('app_refs');
+      if (f.status === 'ok') drawSimpleBars($('#ch-funnel'), f.data, 'stage', 'count'); else $('#ch-funnel').replaceChildren();
+      if (r.status === 'ok') drawSimpleBars($('#ch-refstat'), r.data, 'referral_status', 'count'); else $('#ch-refstat').replaceChildren();
+      const st = $('#a-status').value, cy = $('#a-cycle').value, act = $('#a-action').checked; const tb = $('#t-apps tbody'); tb.replaceChildren();
+      const EMD = dash.data('emails'), ddl = new Map(); (EMD.status === 'ok' ? EMD.data : []).forEach((e) => { if (e.deadline && e.job_id) ddl.set(e.job_id + '|' + e.date, e.deadline); });
+      const AT = dash.data('app_tier'); const atier = new Map((AT.status === 'ok' ? AT.data : []).map((r) => [r.job_id, r.tier]));
+      const arank = (a) => (a.action_needed ? 0 : 1) * 10 + ({ Offer: 0, Interview: 1, Assessment: 2, Applied: 3, 'Applied (unconfirmed)': 4, 'No response': 6, Rejected: 7, Shortlisted: 5 }[a.status] ?? 8);
+      (A.status === 'ok' ? A.data : []).filter((a) => (!st || a.status === st) && (!cy || a.cycle === cy) && (!act || a.action_needed)).sort((x, y) => arank(x) - arank(y)).forEach((a) => { const tr = tb.insertRow(); tr.dataset.key = a.job_id;
+        pill(tr.insertCell(), a.status, ['Offer', 'Interview', 'Assessment'].includes(a.status) ? 'good' : a.status === 'Rejected' ? 'bad' : ''); td(tr, a.company); td(tr, a.title, 'wrap'); { const tv = atier.get(a.job_id); if (tv) pill(tr.insertCell(), tv, tv); else td(tr, ''); } td(tr, a.level); td(tr, a.score, 'n'); td(tr, a.referral_status);
+        const le = td(tr, a.last_email ? (a.last_email_date + ' · ' + en(a.last_email)) : '', 'wrap'); if (a.email_url) { le.replaceChildren(); const l = document.createElement('a'); l.href = a.email_url; l.target = '_blank'; l.rel = 'noopener'; l.textContent = a.last_email_date + ' · ' + en(a.last_email); le.appendChild(l); }
+        td(tr, en(a.action_needed), 'wrap'); { const c = tr.insertCell(); c.className = 'jh-ddl'; const wait = !a.action_needed || a.action_needed === '等结果', said = ((a.action_needed || '') + ' ' + (a.next_step || '')).match(/\b(?:by|due|before|deadline:?)\s+(\d{4}-\d{2}-\d{2}(?: \d{1,2}:\d{2}(?: ?[A-Z]{2,3})?)?)/i);
+          const d = ddl.get(a.job_id + '|' + a.last_email_date) || (said ? said[1] : '');
+          if ((!d && wait) || (wait && (a.action_done || []).length)) c.textContent = '—';   // done → no deadline left (JSA-125)
+          else if (!d) { c.textContent = 'Not stated'; c.style.color = 'var(--color-fg-muted)'; }
+          else { const m = d.match(/\d{4}-\d{2}-\d{2}/), left = m ? Math.round((new Date(m[0] + 'T23:59') - new Date()) / 864e5) : null;
+            pill(c, d + (left == null ? '' : left < 0 ? ' · overdue' : left === 0 ? ' · today' : ' · ' + left + (left === 1 ? ' day' : ' days') + ' left'), left == null ? '' : left < 0 ? 'bad' : left <= 2 ? 'warn' : ''); } }
+        actionCell(tr.insertCell(), a);
+        td(tr, a.next_step, 'wrap'); td(tr, a.applied_on); td(tr, a.cycle); td(tr, a.updated);
+        tr.addEventListener('click', () => { const j = jobs.find((x) => x.id === a.job_id); if (j) window.jhFilterCompany(j.company); }); });
+      topScroll($('#t-apps').closest('.jh-tablebox'));
+    }
+    if (p === 'applications') {
+      const JT = dash.data('joey_todo'); const jb = $('#t-joey tbody'); jb.replaceChildren();
+      const jrows = JT.status === 'ok' ? JT.data : [];
+      if (!jrows.length) { const tr = jb.insertRow(); const c = tr.insertCell(); c.colSpan = 6; c.textContent = 'Nothing is waiting for you.'; }
+      jrows.forEach((r) => { const tr = jb.insertRow(); tr.dataset.key = r.folder;
+        pill(tr.insertCell(), r.kind, ['captcha', 'answers', 'sign-in'].includes(r.kind) ? 'warn' : r.kind === 'unconfirmed' ? '' : 'bad');
+        td(tr, String(r.folder || '').replace(/^\d{4}-\d{2}-\d{2}_/, '').replace(/_/g, ' '), 'wrap'); td(tr, r.age_days == null ? '' : String(r.age_days), 'n'); td(tr, String(r.n), 'n');
+        td(tr, r.msg, 'wrap'); td(tr, r.next, 'wrap'); });
+    }
+    if (p === 'applications') {
+      const EM = dash.data('emails'); const eb = $('#t-emails tbody'); eb.replaceChildren();
+      (EM.status === 'ok' ? EM.data : []).slice().sort((x, y) => (y.date || '').localeCompare(x.date || '')).forEach((e) => { const tr = eb.insertRow(); tr.dataset.key = e.id;
+        td(tr, e.date); pill(tr.insertCell(), e.type, ['Interview', 'Offer', 'Assessment'].includes(e.type) ? 'good' : e.type === 'Rejection' ? 'bad' : ''); td(tr, e.company); td(tr, e.role, 'wrap'); td(tr, en(e.summary), 'wrap'); td(tr, en(e.action), 'wrap'); td(tr, e.deadline);
+        const c = tr.insertCell(); if (e.url) { const l = document.createElement('a'); l.href = e.url; l.target = '_blank'; l.rel = 'noopener'; l.textContent = 'Open'; c.appendChild(l); } else c.textContent = '—'; });
+    }
+    if (p === 'sources') {
+      const rows = S.status === 'ok' ? S.data : [];
+      drawSources($('#ch-sources'), rows);
+      const tb = $('#t-src tbody'); tb.replaceChildren();
+      rows.forEach((s) => { const tr = tb.insertRow(); tr.dataset.key = s.source; td(tr, s.source); td(tr, s.type); td(tr, s.method, 'wrap'); td(tr, s.visa_signal); td(tr, fmt(s.collected), 'n'); td(tr, fmt(s.relevant_us), 'n'); td(tr, fmt(s.in_dashboard), 'n'); td(tr, fmt(s.tier_ab), 'n'); td(tr, s.last_run); td(tr, s.cadence); });
+    }
+  }
+  dash.onData(draw);
+  // a chart drawn while its box had no width (page not laid out yet) stays empty: redraw once it gets one (JSA-095)
+  if (window.ResizeObserver) { let lastW = {}; const ro = new ResizeObserver((es) => { if (es.some((e) => !lastW[e.target.id] && e.contentRect.width)) draw(); es.forEach((e) => { lastW[e.target.id] = e.contentRect.width; }); });
+    document.querySelectorAll('.jh-chart').forEach((el) => ro.observe(el)); }
+  const named = location.hash.slice(1); if (named) show(named);
+})();
+</script>

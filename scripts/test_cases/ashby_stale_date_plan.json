@@ -1,0 +1,17 @@
+{
+ "_doc": "JSA-208 fixture: an Ashby plan.json written before the prep-time date check (JSA-073) — the date answer is still the answers.json text. Sanitised from a real 11-02 plan: fictional person, made-up org / ids.",
+ "version": 1,
+ "created": "2026-11-02T11:48:17",
+ "folder": "2026-11-02_ExampleCo_Software_Engineer_Intern",
+ "url": "https://jobs.ashbyhq.com/exampleco/00000000-0000-4000-8000-000000000208/application",
+ "ats": "ashby",
+ "ready": true,
+ "needs_user": [],
+ "fields": [
+  {"key": "_systemfield_name", "label": "Name", "type": "text", "required": true, "options": [], "answer": "Alex Rivera", "status": "ok", "source": "rules:name"},
+  {"key": "_systemfield_email", "label": "Email", "type": "text", "required": true, "options": [], "answer": "alex.rivera@example.com", "status": "ok", "source": "rules:email"},
+  {"key": "_systemfield_resume", "label": "Resume", "type": "file", "required": true, "options": [], "status": "file", "source": "runner"},
+  {"key": "11111111-2222-4333-8444-555555555555", "label": "When is your earliest availability to start?", "type": "date", "required": true, "options": [],
+   "sel": "[name=\"11111111-2222-4333-8444-555555555555\"]", "answer": "June 14, 2027", "status": "ok", "source": "answers.json"}
+ ]
+}

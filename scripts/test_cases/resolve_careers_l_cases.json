@@ -1,0 +1,283 @@
+[
+ {
+  "name": "lead_word generic first word american",
+  "fn": "lead_word",
+  "args": {
+   "label": "american",
+   "ws": [
+    "american",
+    "express"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "true when the company has 2+ distinctive words, the label equals the FIRST word exactly, that word has ≥ 4 characters, is not all digits, and is not a common word (american, national, united, global, first, general, international, north, south, east, west, central, pacific, atlantic, new, great, state, city, county, university, health, bank, capital, financial, insurance, energy, data, digital, smart, tech, technology, technologies, systems, software, consulting, partners, medical, care, home, life, team, business, precision, advanced, applied, premier, quality, superior, summit, pioneer, liberty, apex, blue, green, red, black, white, gold).",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word short first word",
+  "fn": "lead_word",
+  "args": {
+   "label": "abc",
+   "ws": [
+    "abc",
+    "supply"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "that word has ≥ 4 characters",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word single-word company",
+  "fn": "lead_word",
+  "args": {
+   "label": "idemia",
+   "ws": [
+    "idemia"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "true when the company has 2+ distinctive words",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word label differs from first word",
+  "fn": "lead_word",
+  "args": {
+   "label": "foo",
+   "ws": [
+    "idemia",
+    "security"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "the label equals the FIRST word exactly",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word all digits",
+  "fn": "lead_word",
+  "args": {
+   "label": "1234",
+   "ws": [
+    "1234",
+    "systems"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "is not all digits",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word valid lead word",
+  "fn": "lead_word",
+  "args": {
+   "label": "idemia",
+   "ws": [
+    "idemia",
+    "security"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "true when the company has 2+ distinctive words, the label equals the FIRST word exactly, that word has ≥ 4 characters, is not all digits, and is not a common word",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word generic blue",
+  "fn": "lead_word",
+  "args": {
+   "label": "blue",
+   "ws": [
+    "blue",
+    "cross"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "is not a common word (american, national, united, global, first, general, international, north, south, east, west, central, pacific, atlantic, new, great, state, city, county, university, health, bank, capital, financial, insurance, energy, data, digital, smart, tech, technology, technologies, systems, software, consulting, partners, medical, care, home, life, team, business, precision, advanced, applied, premier, quality, superior, summit, pioneer, liberty, apex, blue, green, red, black, white, gold)",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word valid acme",
+  "fn": "lead_word",
+  "args": {
+   "label": "acme",
+   "ws": [
+    "acme",
+    "widgets"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "true when the company has 2+ distinctive words, the label equals the FIRST word exactly, that word has ≥ 4 characters, is not all digits, and is not a common word",
+  "ambiguous": false
+ },
+ {
+  "name": "lead_word generic precision",
+  "fn": "lead_word",
+  "args": {
+   "label": "precision",
+   "ws": [
+    "precision",
+    "castparts"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "is not a common word (... precision, advanced, applied, premier, quality, superior, summit, pioneer, liberty, apex, blue, green, red, black, white, gold).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company initials leaving out of",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Blue Cross Blue Shield of Michigan | bluecrossblueshield</title></head><body>Michigan health insurance</body></html>",
+   "company": "Blue Cross Blue Shield of Michigan",
+   "final_url": "https://www.bcbsm.com"
+  },
+  "expect": true,
+  "spec_quote": "the label may equal the initials of the company name with \"of\", \"the\", \"and\", \"for\" left out: \"Blue Cross Blue Shield of Michigan\" → \"bcbsm\" passes the host check (the page names must still name the company as before: e.g. contain all of the words squashed together, or its first two words).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company whole-name domain empty page",
+  "fn": "names_company",
+  "args": {
+   "page": "",
+   "company": "Precision Castparts",
+   "final_url": "https://www.precisioncastparts.com"
+  },
+  "expect": true,
+  "spec_quote": "when the label equals all distinctive words squashed together (or the whole name squashed) and the page names are empty (rendered by JavaScript), the page counts as the company (\"Precision Castparts\" on precisioncastparts.com with an empty page) — unless the host is foreign / parked (unchanged).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company lead_word accepted IDEMIA",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>IDEMIA IDEMIA</title></head><body><p>Public Security</p></body></html>",
+   "company": "IDEMIA Public Security",
+   "final_url": "https://www.idemia.com"
+  },
+  "expect": true,
+  "spec_quote": "names_company then accepts the page only when ALL hold: lead_word is true; the first word appears as a whole word at least TWICE in the page names; and at least one OTHER distinctive word of the name with ≥ 3 letters appears as a whole word anywhere in the page HTML text (tags stripped).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company lead word appears once only",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>IDEMIA</title></head><body><p>Public Security</p></body></html>",
+   "company": "IDEMIA Public Security",
+   "final_url": "https://www.idemia.com"
+  },
+  "expect": false,
+  "spec_quote": "the first word appears as a whole word at least TWICE in the page names",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company no other distinctive word in body",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>IDEMIA IDEMIA</title></head><body><p>Welcome to our site</p></body></html>",
+   "company": "IDEMIA Public Security",
+   "final_url": "https://www.idemia.com"
+  },
+  "expect": false,
+  "spec_quote": "at least one OTHER distinctive word of the name with ≥ 3 letters appears as a whole word anywhere in the page HTML text (tags stripped)",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company other distinctive word too short",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Acme Acme</title></head><body><p>AI</p></body></html>",
+   "company": "Acme AI",
+   "final_url": "https://www.acme.com"
+  },
+  "expect": false,
+  "spec_quote": "at least one OTHER distinctive word of the name with ≥ 3 letters appears as a whole word anywhere in the page HTML text (tags stripped)",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company page names another company",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Nissan Nissan</title></head><body><p>Motor Corporation</p></body></html>",
+   "company": "IDEMIA Public Security",
+   "final_url": "https://www.idemia.com"
+  },
+  "expect": false,
+  "spec_quote": "the first word appears as a whole word at least TWICE in the page names",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company Nissan never motor",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>In loving memory of Uzi Nissan — In loving memory of Uzi Nissan</title></head><body><p>In loving memory of Uzi Nissan</p></body></html>",
+   "company": "Nissan Motor Corporation",
+   "final_url": "https://www.nissan.com"
+  },
+  "expect": false,
+  "spec_quote": "\"Nissan Motor Corporation\" on nissan.com whose page is \"in loving memory of Uzi Nissan\" twice and never \"motor\" → false",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company page titled just Nissan",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Nissan</title></head><body><p>Welcome</p></body></html>",
+   "company": "Nissan Motor Corporation",
+   "final_url": "https://www.nissan.com"
+  },
+  "expect": false,
+  "spec_quote": "a page titled just \"Nissan\" → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company initials leaving out the",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>The Home Depot | thehomedepot</title></head><body>Home improvement</body></html>",
+   "company": "The Home Depot",
+   "final_url": "https://www.hd.com"
+  },
+  "expect": true,
+  "spec_quote": "the label may equal the initials of the company name with \"of\", \"the\", \"and\", \"for\" left out",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company initials but page names do not name company",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Michigan Insurance</title></head><body>Michigan insurance</body></html>",
+   "company": "Blue Cross Blue Shield of Michigan",
+   "final_url": "https://www.bcbsm.com"
+  },
+  "expect": false,
+  "spec_quote": "the page names must still name the company as before: e.g. contain all of the words squashed together, or its first two words",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company whole-name domain but page names non-empty and unrelated",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Acme Widgets</title></head><body>Acme widgets</body></html>",
+   "company": "Precision Castparts",
+   "final_url": "https://www.precisioncastparts.com"
+  },
+  "expect": false,
+  "spec_quote": "when the label equals all distinctive words squashed together (or the whole name squashed) and the page names are empty (rendered by JavaScript), the page counts as the company",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company lead_word false generic first word",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>American American</title></head><body><p>Airlines Group</p></body></html>",
+   "company": "American Airlines Group",
+   "final_url": "https://www.american.com"
+  },
+  "expect": false,
+  "spec_quote": "is not a common word (american, national, united, global, first, general, international, north, south, east, west, central, pacific, atlantic, new, great, state, city, county, university, health, bank, capital, financial, insurance, energy, data, digital, smart, tech, technology, technologies, systems, software, consulting, partners, medical, care, home, life, team, business, precision, advanced, applied, premier, quality, superior, summit, pioneer, liberty, apex, blue, green, red, black, white, gold)",
+  "ambiguous": false
+ }
+]

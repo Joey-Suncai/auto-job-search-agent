@@ -1,0 +1,482 @@
+[
+ {
+  "name": "names_company: copyright fragment names the company when the title does not",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Home</title></head><body><p>&copy; 2024 Ingredion</p></body></html>",
+   "company": "Ingredion Incorporated",
+   "final_url": ""
+  },
+  "expect": true,
+  "spec_quote": "up to three copyright fragments (the text after \"©\", \"&copy;\", \"(c)\" or \"Copyright\" and optional years, up to 60 characters, stopping at `<`, `\"`, `{` or `}`)",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: og:title content supplies the company name when the title does not",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Home</title><meta property=\"og:title\" content=\"Piedmont Lithium - Investor Relations\"></head><body></body></html>",
+   "company": "Piedmont Lithium",
+   "final_url": ""
+  },
+  "expect": true,
+  "spec_quote": "The name check reads more of the page (page_names): the `<title>`, the content of meta og:site_name, og:title, application-name, apple-mobile-web-app-title, ... Entities are decoded, text is lower-cased",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: JSON-LD Organization name is read as page evidence",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Welcome</title><script type=\"application/ld+json\">{\"@type\":\"Organization\",\"name\":\"Cascade Bancorp\"}</script></head><body></body></html>",
+   "company": "Cascade Bancorp",
+   "final_url": ""
+  },
+  "expect": true,
+  "spec_quote": "a JSON-LD \"name\" that follows `\"@type\": \"Organization\"` (or Corporation / WebSite)",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: strong host with slogan title, distinctive phrase appearing three times in the HTML",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Welcome</title></head><body><p>Erie Insurance</p><p>erie insurance</p><p>ERIE INSURANCE</p></body></html>",
+   "company": "Erie Insurance Group",
+   "final_url": "https://www.erieinsurance.com/careers"
+  },
+  "expect": true,
+  "spec_quote": "Strong host: when the host label equals the distinctive words joined with no spaces, or the company key squashed (\"dematic\" for Dematic, \"erieinsurance\" for Erie Insurance Group), it is enough that ... the distinctive words appear as a phrase (separated by at most three non-word characters) at least three times anywhere in the page HTML (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: host equal to only the first word is not strong, so a page titled only 'Nissan' fails",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Nissan</title></head><body><p>Welcome</p></body></html>",
+   "company": "Nissan Motor Corporation",
+   "final_url": "https://www.nissan.com/"
+  },
+  "expect": false,
+  "spec_quote": "A label equal only to the first word (\"nissan\" for Nissan Motor Corporation) is not strong.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: country-code host (amway.my) is rejected even though the page names the company",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Amway Malaysia</title></head><body></body></html>",
+   "company": "Amway",
+   "final_url": "https://www.amway.my/"
+  },
+  "expect": false,
+  "spec_quote": "a host whose last label is a country code or any TLD other than com, org, net, edu, gov, mil, io, ai, co, us, app, dev, tech, health, bank, inc, group, jobs, careers, coop, biz, info, energy, earth, me, tv, chat, so, xyz, cloud → false (\"www.amway.my\", \"lenovo.com.cn\", \"regeneron.ie\")",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: ww38 parking-redirect host is rejected",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Vulcan Materials Company</title></head><body></body></html>",
+   "company": "Vulcan Materials",
+   "final_url": "https://ww38.vulcan-materials.com/"
+  },
+  "expect": false,
+  "spec_quote": "A host that starts with \"ww\" + digits + \".\" (a parking redirect such as \"ww38.vulcan-materials.com\") → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: parked/for-sale page fails even with no final_url",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Acme Widgets</title></head><body><p>Buy this domain today.</p><p>This domain may be for sale</p></body></html>",
+   "company": "Acme Widgets",
+   "final_url": ""
+  },
+  "expect": false,
+  "spec_quote": "A page that says the domain is for sale / parked (e.g. \"This domain may be for sale\", \"buy this domain\", \"sedoparking\", \"parkingcrew\", \"hugedomains\") → false, with or without final_url.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company: initials check accepts initials of raw name words before the legal suffix is removed (sig.com)",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Susquehanna International Group</title></head><body></body></html>",
+   "company": "Susquehanna International Group",
+   "final_url": "https://www.sig.com/"
+  },
+  "expect": true,
+  "spec_quote": "The initials check also accepts the initials of the raw name words before legal suffixes are removed (\"Susquehanna International Group\" → \"sig\" for host sig.com).",
+  "ambiguous": false
+ },
+ {
+  "name": "is_challenge: title beginning 'Pardon Our Interruption' is a challenge at status 200",
+  "fn": "is_challenge",
+  "args": {
+   "status": 200,
+   "page": "<html><head><title>Pardon Our Interruption</title></head><body><p>Nothing here</p></body></html>"
+  },
+  "expect": true,
+  "spec_quote": "is_challenge also true (any status) when ... the `<title>` begins with \"captcha\", \"pardon our interruption\", \"are you a robot\" or \"human verification\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "is_challenge: body containing 'Request unsuccessful. Incapsula' is a challenge at status 200",
+  "fn": "is_challenge",
+  "args": {
+   "status": 200,
+   "page": "<html><head><title>Loading</title></head><body>Request unsuccessful. Incapsula</body></html>"
+  },
+  "expect": true,
+  "spec_quote": "is_challenge also true (any status) when the first 5,000 characters contain \"_Incapsula_Resource\" or \"Request unsuccessful. Incapsula\"",
+  "ambiguous": false
+ },
+ {
+  "name": "is_challenge: a 200 careers page merely mentioning Incapsula is not a challenge",
+  "fn": "is_challenge",
+  "args": {
+   "status": 200,
+   "page": "<html><head><title>Careers at Acme</title></head><body><p>Our site is protected by Incapsula.</p></body></html>"
+  },
+  "expect": false,
+  "spec_quote": "is_challenge also true (any status) when the first 5,000 characters contain \"_Incapsula_Resource\" or \"Request unsuccessful. Incapsula\", and when the `<title>` begins with \"captcha\", \"pardon our interruption\", \"are you a robot\" or \"human verification\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: jobs2web.com host is recorded as successfactors with the host as ident",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://ey.jobs2web.com/search/jobs\">Careers</a>"
+  },
+  "expect": [
+   [
+    "successfactors",
+    "ey.jobs2web.com"
+   ]
+  ],
+  "spec_quote": "successfactors also matches hosts ending in \"jobs2web.com\" (ident = the host, lower-case, e.g. \"ey.jobs2web.com\")",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: njoyn host is recorded after the earlier systems",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://acme.njoyn.com/careers\">Jobs</a> <a href=\"https://boards.greenhouse.io/acme\">Greenhouse</a>"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "njoyn",
+    "acme.njoyn.com"
+   ]
+  ],
+  "spec_quote": "a new system njoyn (`<x>.njoyn.com` → host), listed after dover.",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links: ATS posting links come first (page order), then a 'see all openings' link",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://acme.com/careers\">See all openings</a><a href=\"https://boards.greenhouse.io/acme\">Greenhouse</a><a href=\"https://jobs.lever.co/acme\">Lever</a></body></html>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://boards.greenhouse.io/acme",
+   "https://jobs.lever.co/acme",
+   "https://acme.com/careers"
+  ],
+  "spec_quote": "Order: first links whose URL is a known ATS posting page (detect_ats finds something), then links whose text or URL says search / open / view jobs etc. or whose host is a different host starting with \"careers.\" / \"career.\" / \"jobs.\", then the rest in page order.",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links: ATS link first, then a careers.-subdomain link",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://careers.acme.com/life\">Life at Acme</a><a href=\"https://jobs.ashbyhq.com/acme\">Ashby</a></body></html>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://jobs.ashbyhq.com/acme",
+   "https://careers.acme.com/life"
+  ],
+  "spec_quote": "Order: first links whose URL is a known ATS posting page (detect_ats finds something), then links whose text or URL says search / open / view jobs etc. or whose host is a different host starting with \"careers.\" / \"career.\" / \"jobs.\", then the rest in page order.",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links: duplicates removed and result capped at 6",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://boards.greenhouse.io/acme\">GH</a><a href=\"https://jobs.lever.co/acme\">Lever</a><a href=\"https://jobs.ashbyhq.com/acme\">Ashby</a><a href=\"https://boards.greenhouse.io/acme\">GH again</a><a href=\"https://acme.myworkdayjobs.com/en-US/AcmeCareers\">Workday</a><a href=\"https://acme.icims.com/jobs\">iCIMS</a><a href=\"https://acme.taleo.net/careersection/2\">Taleo</a><a href=\"https://jobs.jobvite.com/acme\">Jobvite</a></body></html>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://boards.greenhouse.io/acme",
+   "https://jobs.lever.co/acme",
+   "https://jobs.ashbyhq.com/acme",
+   "https://acme.myworkdayjobs.com/en-US/AcmeCareers",
+   "https://acme.icims.com/jobs",
+   "https://acme.taleo.net/careersection/2"
+  ],
+  "spec_quote": "At most 6, no duplicates.",
+  "ambiguous": false
+ },
+ {
+  "name": "wikidata_pick: keeps the org-typed item, drops the one whose description is not an organisation",
+  "fn": "wikidata_pick",
+  "args": {
+   "company": "Ingredion Incorporated",
+   "results": [
+    {
+     "id": "Q1",
+     "label": "Ingredion",
+     "description": "American food company",
+     "match": {
+      "text": "Ingredion"
+     },
+     "aliases": []
+    },
+    {
+     "id": "Q2",
+     "label": "Ingredion",
+     "description": "1970 album",
+     "match": {
+      "text": "Ingredion"
+     },
+     "aliases": []
+    }
+   ]
+  },
+  "expect": [
+   "Q1"
+  ],
+  "spec_quote": "Keep an id when (a) its description says it is an organisation (contains one of: compan, corporation, business, ... any case) AND (b) its label, match text or one of its aliases is the same company",
+  "ambiguous": false
+ },
+ {
+  "name": "wikidata_pick: matches via alias; ignores a non-object and an item with no id",
+  "fn": "wikidata_pick",
+  "args": {
+   "company": "Federal Express Corporation",
+   "results": [
+    "garbage",
+    {
+     "label": "FedEx",
+     "description": "delivery company"
+    },
+    {
+     "id": "Q3",
+     "label": "FedEx",
+     "description": "American multinational delivery company",
+     "match": {
+      "text": "FedEx Corporation"
+     },
+     "aliases": [
+      "Federal Express"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   "Q3"
+  ],
+  "spec_quote": "Non-objects and items without an id are ignored. ... (b) its label, match text or one of its aliases is the same company",
+  "ambiguous": false
+ },
+ {
+  "name": "wikidata_pick: at most two ids, in order",
+  "fn": "wikidata_pick",
+  "args": {
+   "company": "Zephyr Robotics",
+   "results": [
+    {
+     "id": "Q10",
+     "label": "Zephyr Robotics",
+     "description": "robotics company",
+     "match": {
+      "text": ""
+     },
+     "aliases": []
+    },
+    {
+     "id": "Q11",
+     "label": "Zephyr Robotics Inc",
+     "description": "technology company",
+     "match": {
+      "text": ""
+     },
+     "aliases": []
+    },
+    {
+     "id": "Q12",
+     "label": "Zephyr",
+     "description": "software company",
+     "match": {
+      "text": "Zephyr Robotics"
+     },
+     "aliases": []
+    }
+   ]
+  },
+  "expect": [
+   "Q10",
+   "Q11"
+  ],
+  "spec_quote": "At most 2 ids, in order.",
+  "ambiguous": false
+ },
+ {
+  "name": "wikidata_pick: organisation wording without a name match and a name match without organisation wording are both rejected",
+  "fn": "wikidata_pick",
+  "args": {
+   "company": "Cascade Bancorp",
+   "results": [
+    {
+     "id": "Q20",
+     "label": "Cascade Bancorp",
+     "description": "a river in Oregon",
+     "match": {
+      "text": ""
+     },
+     "aliases": []
+    },
+    {
+     "id": "Q21",
+     "label": "Cascade Range",
+     "description": "mountain range company",
+     "match": {
+      "text": ""
+     },
+     "aliases": []
+    },
+    {
+     "id": "Q22",
+     "label": "Cascade Bancorp",
+     "description": "bank holding company",
+     "match": {
+      "text": ""
+     },
+     "aliases": []
+    }
+   ]
+  },
+  "expect": [
+   "Q22"
+  ],
+  "spec_quote": "Keep an id when (a) its description says it is an organisation ... AND (b) its label, match text or one of its aliases is the same company",
+  "ambiguous": false
+ },
+ {
+  "name": "alias_domains: comment key skipped, first same_name key wins, domains lower-cased",
+  "fn": "alias_domains",
+  "args": {
+   "company": "Acme",
+   "table": {
+    "_note": "comment",
+    "Acme Inc": [
+     "a.com",
+     "ACME.io"
+    ],
+    "Acme Corp": [
+     "b.com"
+    ]
+   }
+  },
+  "expect": [
+   "a.com",
+   "acme.io"
+  ],
+  "spec_quote": "table = {name: [domains] or a single domain string}; keys starting with \"_\" are comments. Returns the lower-cased domains of the first key that is same_name as the company",
+  "ambiguous": false
+ },
+ {
+  "name": "alias_domains: a single domain string value is returned as a one-element list",
+  "fn": "alias_domains",
+  "args": {
+   "company": "Qorvo, Inc.",
+   "table": {
+    "Qorvo": "qorvo.com"
+   }
+  },
+  "expect": [
+   "qorvo.com"
+  ],
+  "spec_quote": "table = {name: [domains] or a single domain string} ... Returns the lower-cased domains of the first key that is same_name as the company",
+  "ambiguous": false
+ },
+ {
+  "name": "alias_domains: a differently-named key is not the same company, so no domains",
+  "fn": "alias_domains",
+  "args": {
+   "company": "Qorvo, Inc.",
+   "table": {
+    "Qorvo Power": [
+     "qorvo-power.com"
+    ]
+   }
+  },
+  "expect": [],
+  "spec_quote": "\"Qorvo Power\" is not \"Qorvo, Inc.\"; \"Qorvo\" is. ... [] when none.",
+  "ambiguous": false
+ },
+ {
+  "name": "looks_like_title: '2025 Summer Analyst' reads as a job title",
+  "fn": "looks_like_title",
+  "args": {
+   "company": "2025 Summer Analyst"
+  },
+  "expect": true,
+  "spec_quote": "true when the company name contains a whole word intern / interns / internship / internships / co-op / coop, or \"summer 20NN\" / \"20NN summer\"",
+  "ambiguous": false
+ },
+ {
+  "name": "looks_like_title: 'InternXL' is a company, not a posting title",
+  "fn": "looks_like_title",
+  "args": {
+   "company": "InternXL"
+  },
+  "expect": false,
+  "spec_quote": "Otherwise false (\"InternXL\" → false, \"Associate Bank\" → false).",
+  "ambiguous": false
+ },
+ {
+  "name": "looks_like_title: 'Associate Bank' has no intern/summer/year word",
+  "fn": "looks_like_title",
+  "args": {
+   "company": "Associate Bank"
+  },
+  "expect": false,
+  "spec_quote": "or contains engineer / analyst / scientist / developer / manager / associate together with intern / summer / a 20NN year. Otherwise false (\"InternXL\" → false, \"Associate Bank\" → false).",
+  "ambiguous": false
+ },
+ {
+  "name": "paren_acronym: all-upper-case parenthetical is lower-cased",
+  "fn": "paren_acronym",
+  "args": {
+   "company": "Washington Metropolitan Area Transit Authority (WMATA)"
+  },
+  "expect": "wmata",
+  "spec_quote": "paren_acronym(company): the 2–8 letter, all upper-case text inside parentheses, lower-cased (\"… Authority (WMATA)\" → \"wmata\")",
+  "ambiguous": false
+ },
+ {
+  "name": "paren_acronym: a mixed-case parenthetical yields the empty string",
+  "fn": "paren_acronym",
+  "args": {
+   "company": "Acme Corp (formerly Acme)"
+  },
+  "expect": "",
+  "spec_quote": "\"\" when none or when it is not all upper-case (\"(formerly Acme)\" → \"\").",
+  "ambiguous": false
+ },
+ {
+  "name": "foreign_host: acme.co.uk is foreign because the last label is not in the allowed list",
+  "fn": "foreign_host",
+  "args": {
+   "host": "acme.co.uk"
+  },
+  "expect": true,
+  "spec_quote": "foreign_host(host): true when the last label is not in the list above (com, org, net, …); \"acme.co.uk\" → true, \"acme.io\" → false.",
+  "ambiguous": false
+ }
+]

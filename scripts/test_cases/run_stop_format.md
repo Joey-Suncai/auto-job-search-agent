@@ -1,0 +1,2 @@
+Each case: {"id": "s1", "fn": "stop_status", "input": {"reasons": [<strings>], "submit": true|false}, "expect": "dry-run" | "needs-user" | "blocked", "spec": "<quoted>"}.
+Real reasons look like: "dry-run", "batch not approved", "plan not ready: question_123; Why us?", "fill problems: required fields not in plan: company-name-0, title-0", "verify failed", "field problems: q1: empty", "CAPTCHA", "canonical audit FAILED".

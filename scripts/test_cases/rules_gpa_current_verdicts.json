@@ -1,0 +1,3 @@
+{
+ "Rule 1 near miss — '?' between current and GPA": {"verdict": "case", "why": "The label 'Current student? Please provide your cumulative GPA' is two questions; the older enrolled rule also matches 'current student?', so the answer is ambiguous and the runner stops for Joey — safer than guessing. The spec only covers single GPA questions (rule 4 keeps enrollment questions out of scope)."}
+}

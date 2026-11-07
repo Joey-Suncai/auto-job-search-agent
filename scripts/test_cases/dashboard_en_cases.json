@@ -1,0 +1,229 @@
+[
+ {
+  "name": "exact-eligible",
+  "input": "可投",
+  "expect_exact": "Eligible",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "exact-to-verify",
+  "input": "待核实",
+  "expect_exact": "To verify",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "exact-not-eligible",
+  "input": "不可投",
+  "expect_exact": "Not eligible",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "exact-closed",
+  "input": "已关闭",
+  "expect_exact": "Closed",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "exact-duplicate",
+  "input": "重复",
+  "expect_exact": "Duplicate",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "exact-with-surrounding-spaces",
+  "input": "  不可投  ",
+  "expect_exact": "Not eligible",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "english-only-eligibility-word",
+  "input": "Eligible",
+  "expect_exact": "Eligible",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "english-only-sentence",
+  "input": "Recruiter said to follow up next week.",
+  "expect_exact": "Recruiter said to follow up next week.",
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "null-passthrough",
+  "input": null,
+  "expect_exact": null,
+  "must_contain": [],
+  "no_cjk": false,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-single-jd-read",
+  "input": "读到完整 JD，未发现限制",
+  "expect_exact": null,
+  "must_contain": [
+   "JD"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-jd-unreadable-login",
+  "input": "读不到 JD（需要登录或网站不支持），申请前人工核实",
+  "expect_exact": null,
+  "must_contain": [
+   "JD"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-duplicate-with-jnumber",
+  "input": "与 J12345 是同一个岗位",
+  "expect_exact": null,
+  "must_contain": [
+   "J12345"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-graduation-month",
+  "input": "毕业时间要求不含 2027 年 5 月",
+  "expect_exact": null,
+  "must_contain": [
+   "2027",
+   "5"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-years-experience",
+  "input": "要求 3 年以上工作经验",
+  "expect_exact": null,
+  "must_contain": [
+   "3"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-internship-weeks",
+  "input": "实习期超过 12 周 / 多学期",
+  "expect_exact": null,
+  "must_contain": [
+   "12"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-aside-date-plus-full-jd",
+  "input": "（2026-03-01 读到的 JD）；读到完整 JD，未发现限制",
+  "expect_exact": null,
+  "must_contain": [
+   "2026-03-01",
+   "JD"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-aside-date-unreadable-plus-no-response",
+  "input": "（2026-04-15 读不到）；暂无回应",
+  "expect_exact": null,
+  "must_contain": [
+   "2026-04-15"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-claude-english-tail",
+  "input": "请确认（Claude 不确定）：I could not verify the visa sponsorship terms.",
+  "expect_exact": null,
+  "must_contain": [
+   "Claude",
+   "I could not verify the visa sponsorship terms."
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-not-summer-coop-plus-not-us",
+  "input": "不是暑期实习（冬/春/秋季或 co-op）；不在美国",
+  "expect_exact": null,
+  "must_contain": [
+   "co-op"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-bachelors-three-phrases",
+  "input": "只招本科（大三/大四）；JD 写的是本科在读；毕业时间符合",
+  "expect_exact": null,
+  "must_contain": [
+   "JD"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-jnumber-plus-closed-deadline",
+  "input": "与 J00042 是同一个岗位；岗位已下线；网站标注的截止日期已过，可能已关闭，申请前确认",
+  "expect_exact": null,
+  "must_contain": [
+   "J00042"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-citizenship-phd-mba",
+  "input": "要求美国公民/绿卡、安全许可或出口管制身份；只招博士；只招 MBA",
+  "expect_exact": null,
+  "must_contain": [
+   "MBA"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-four-phrases-with-jd",
+  "input": "学期中要兼职；明确提供担保；担保说法前后矛盾；JD 太短或读不到",
+  "expect_exact": null,
+  "must_contain": [
+   "JD"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ },
+ {
+  "name": "reason-multi-number-jnumber-phrases",
+  "input": "要求 5 年以上工作经验；毕业时间要求不含 2027 年 5 月；与 J54321 是同一个岗位",
+  "expect_exact": null,
+  "must_contain": [
+   "5",
+   "2027",
+   "J54321"
+  ],
+  "no_cjk": true,
+  "ambiguous": false
+ }
+]

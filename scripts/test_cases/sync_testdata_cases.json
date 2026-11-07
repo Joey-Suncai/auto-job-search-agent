@@ -1,0 +1,82 @@
+[
+ {
+  "name": "cx is None — normal run",
+  "cx": null,
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "None or \"\" → False (normal run, the tracker row is written).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is empty string — normal run",
+  "cx": "",
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "None or \"\" → False (normal run, the tracker row is written).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is exactly the runner path — test mode suppressed",
+  "cx": "/r/data/runner",
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "A path that resolves to the same folder as `runner` → False: \"~\" is expanded, a trailing \"/\" is ignored, symlinks and \"..\" are resolved (compare real paths).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is the runner path with a trailing slash — trailing slash ignored",
+  "cx": "/r/data/runner/",
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "A path that resolves to the same folder as `runner` → False: \"~\" is expanded, a trailing \"/\" is ignored, symlinks and \"..\" are resolved (compare real paths).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx uses .. to come back to the runner folder",
+  "cx": "/r/data/runner/../runner",
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "A path that resolves to the same folder as `runner` → False: \"~\" is expanded, a trailing \"/\" is ignored, symlinks and \"..\" are resolved (compare real paths).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx uses a . segment, resolving to the runner folder",
+  "cx": "/r/data/./runner",
+  "runner": "/r/data/runner",
+  "expect": false,
+  "spec_quote": "A path that resolves to the same folder as `runner` → False: \"~\" is expanded, a trailing \"/\" is ignored, symlinks and \"..\" are resolved (compare real paths).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is the sibling runner_test folder — test mode",
+  "cx": "/r/data/runner_test",
+  "runner": "/r/data/runner",
+  "expect": true,
+  "spec_quote": "Any other path (a temp folder, a test fixture folder, a sibling such as \".../data/runner_test\") → True (test mode, no tracker row).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is a temp folder",
+  "cx": "/tmp/x",
+  "runner": "/r/data/runner",
+  "expect": true,
+  "spec_quote": "Any other path (a temp folder, a test fixture folder, a sibling such as \".../data/runner_test\") → True (test mode, no tracker row).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is a different folder (parent of runner) — test mode",
+  "cx": "/r/data",
+  "runner": "/r/data/runner",
+  "expect": true,
+  "spec_quote": "Any other path (a temp folder, a test fixture folder, a sibling such as \".../data/runner_test\") → True (test mode, no tracker row).",
+  "ambiguous": false
+ },
+ {
+  "name": "cx is a near-miss name sharing the runner prefix — test mode",
+  "cx": "/r/data/runnerX",
+  "runner": "/r/data/runner",
+  "expect": true,
+  "spec_quote": "Any other path (a temp folder, a test fixture folder, a sibling such as \".../data/runner_test\") → True (test mode, no tracker row).",
+  "ambiguous": false
+ }
+]

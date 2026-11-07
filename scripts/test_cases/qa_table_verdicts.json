@@ -1,0 +1,3 @@
+{
+ "regex entry with yes-no answer on radio list": {"verdict": "case", "why": "the spec named only some built-in rules as examples; a built-in driver's-license rule exists (answer from the profile), so the table is rightly not used — source is 'rule', which the spec's own rule ('for those the table is never used') requires"}
+}

@@ -1,0 +1,485 @@
+[
+ {
+  "name": "rel_posted_2_weeks_ago",
+  "fn": "rel_date",
+  "args": {
+   "text": "Posted 2 weeks ago"
+  },
+  "expect": "2026-10-18"
+ },
+ {
+  "name": "rel_reposted_one_month_ago_case_insensitive",
+  "fn": "rel_date",
+  "args": {
+   "text": "Reposted One Month Ago"
+  },
+  "expect": "2026-10-02"
+ },
+ {
+  "name": "rel_hours_ago_counts_zero_days",
+  "fn": "rel_date",
+  "args": {
+   "text": "5 hours ago"
+  },
+  "expect": "2026-11-01"
+ },
+ {
+  "name": "rel_a_day_ago_one_day_back",
+  "fn": "rel_date",
+  "args": {
+   "text": "a day ago"
+  },
+  "expect": "2026-10-31"
+ },
+ {
+  "name": "rel_trailing_applicants_not_whole_phrase",
+  "fn": "rel_date",
+  "args": {
+   "text": "Posted 2 weeks ago · 40 applicants"
+  },
+  "expect": ""
+ },
+ {
+  "name": "rel_missing_ago_returns_empty",
+  "fn": "rel_date",
+  "args": {
+   "text": "2 weeks"
+  },
+  "expect": ""
+ },
+ {
+  "name": "job_id_plain_view_path",
+  "fn": "job_id",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/view/3812345678"
+  },
+  "expect": "3812345678"
+ },
+ {
+  "name": "job_id_words_then_id_with_query",
+  "fn": "job_id",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/view/data-analyst-intern-3812345678/?refId=abc"
+  },
+  "expect": "3812345678"
+ },
+ {
+  "name": "job_id_current_job_id_query_param",
+  "fn": "job_id",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/search/?currentJobId=3901234567&keywords=data+analyst"
+  },
+  "expect": "3901234567"
+ },
+ {
+  "name": "job_id_fewer_than_six_digits_empty",
+  "fn": "job_id",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/view/12345"
+  },
+  "expect": ""
+ },
+ {
+  "name": "parse_card_basic_all_fields",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3812345678",
+    "lines": [
+     "Data Analyst Intern (Summer 2027)",
+     "Acme Corp",
+     "New York, NY",
+     "3 connections work here",
+     "12 school alumni work here",
+     "$25/hr",
+     "Posted 2 weeks ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3812345678",
+   "title": "Data Analyst Intern (Summer 2027)",
+   "company": "Acme Corp",
+   "location": "New York, NY",
+   "remote": "",
+   "salary": "$25/hr",
+   "posted": "2026-10-18",
+   "li_alumni": 12,
+   "li_connections": 3
+  }
+ },
+ {
+  "name": "parse_card_duplicate_first_line_dropped_and_remote_suffix",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3812345679",
+    "lines": [
+     "Data Analyst Intern",
+     "Data Analyst Intern",
+     "Acme Corp",
+     "Austin, TX (Remote)",
+     "1 week ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3812345679",
+   "title": "Data Analyst Intern",
+   "company": "Acme Corp",
+   "location": "Austin, TX",
+   "remote": "Yes",
+   "salary": "",
+   "posted": "2026-10-25",
+   "li_alumni": 0,
+   "li_connections": 0
+  }
+ },
+ {
+  "name": "parse_card_verified_suffix_and_lowercase_remote_suffix",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3900000001",
+    "lines": [
+     "Business Intelligence Analyst (Verified Job)",
+     "Globex",
+     "Seattle, WA (remote)",
+     "Be an early applicant"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3900000001",
+   "title": "Business Intelligence Analyst",
+   "company": "Globex",
+   "location": "Seattle, WA",
+   "remote": "Yes",
+   "salary": "",
+   "posted": "",
+   "li_alumni": 0,
+   "li_connections": 0
+  }
+ },
+ {
+  "name": "parse_card_onsite_suffix_and_company_alumni_ignored",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3900000002",
+    "lines": [
+     "Data Engineer",
+     "Initech LLC",
+     "Chicago, IL (On-site)",
+     "5 connections work here",
+     "7 company alumni work here",
+     "Easy Apply"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3900000002",
+   "title": "Data Engineer",
+   "company": "Initech LLC",
+   "location": "Chicago, IL",
+   "remote": "",
+   "salary": "",
+   "posted": "",
+   "li_alumni": 0,
+   "li_connections": 5
+  }
+ },
+ {
+  "name": "parse_card_fewer_than_three_lines_returns_none",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3812345670",
+    "lines": [
+     "Data Analyst",
+     "Acme Corp"
+    ]
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_card_id_without_digits_returns_none",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "",
+    "lines": [
+     "Data Analyst",
+     "Acme Corp",
+     "NYC",
+     "3 connections work here"
+    ]
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_card_reposted_line_and_dollar_salary_and_alumni_works",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3900000003",
+    "lines": [
+     "Product Manager Intern",
+     "The Walt Disney Company",
+     "Orlando, FL",
+     "Reposted One Month Ago",
+     "$30 an hour",
+     "18 school alumni works here"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3900000003",
+   "title": "Product Manager Intern",
+   "company": "The Walt Disney Company",
+   "location": "Orlando, FL",
+   "remote": "",
+   "salary": "$30 an hour",
+   "posted": "2026-10-02",
+   "li_alumni": 18,
+   "li_connections": 0
+  }
+ },
+ {
+  "name": "parse_card_blank_lines_dropped_ignored_insights",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "3900000004",
+    "lines": [
+     "",
+     "   ",
+     "Machine Learning Intern",
+     "Vercel",
+     "Boston, MA",
+     "Viewed",
+     "·"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "3900000004",
+   "title": "Machine Learning Intern",
+   "company": "Vercel",
+   "location": "Boston, MA",
+   "remote": "",
+   "salary": "",
+   "posted": "",
+   "li_alumni": 0,
+   "li_connections": 0
+  }
+ },
+ {
+  "name": "pick_new_drop_by_existing_id",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "3812345678",
+     "title": "Data Analyst Intern",
+     "company": "Acme Corp",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [
+    "3812345678"
+   ],
+   "pairs": []
+  },
+  "expect": []
+ },
+ {
+  "name": "pick_new_drop_by_existing_pair_with_company_suffix",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "3812345679",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "company": "Acme Corp.",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [],
+   "pairs": [
+    [
+     "acme",
+     "data analyst"
+    ]
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "pick_new_drop_senior_title_via_keep_card",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "3333333333",
+     "title": "Senior Data Analyst",
+     "company": "Acme Corp",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": []
+ },
+ {
+  "name": "pick_new_kept_card_blocks_later_same_pair",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "4000000001",
+     "title": "Data Analyst Intern",
+     "company": "Meta Platforms, Inc.",
+     "location": "Menlo Park, CA"
+    },
+    {
+     "job_id": "4000000002",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "company": "Meta Platforms Inc",
+     "location": "Menlo Park, CA"
+    },
+    {
+     "job_id": "4000000003",
+     "title": "Product Manager Intern",
+     "company": "Meta Platforms, Inc.",
+     "location": "Menlo Park, CA"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "4000000001",
+   "4000000003"
+  ]
+ },
+ {
+  "name": "pick_new_internship_wrong_year_and_fall_dropped_new_grad_kept",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "5000000001",
+     "title": "Data Analyst Intern - Summer 2028",
+     "company": "Acme Corp",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "5000000002",
+     "title": "Data Analyst New Grad 2028",
+     "company": "Globex",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "5000000003",
+     "title": "Business Intelligence Intern (Fall 2027)",
+     "company": "Initech",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "5000000002"
+  ]
+ },
+ {
+  "name": "company_tiers_simple_a",
+  "fn": "company_tiers",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme Corp",
+     "tier": "A",
+     "tier_orig": ""
+    }
+   ]
+  },
+  "expect": {
+   "acme": "A"
+  }
+ },
+ {
+  "name": "company_tiers_majority_and_tie_to_better",
+  "fn": "company_tiers",
+  "args": {
+   "rows": [
+    {
+     "company": "Meta Platforms, Inc.",
+     "tier": "A",
+     "tier_orig": ""
+    },
+    {
+     "company": "Meta Platforms, Inc.",
+     "tier": "B",
+     "tier_orig": ""
+    },
+    {
+     "company": "Meta Platforms, Inc.",
+     "tier": "B",
+     "tier_orig": ""
+    },
+    {
+     "company": "Google LLC",
+     "tier": "C",
+     "tier_orig": ""
+    },
+    {
+     "company": "Google LLC",
+     "tier": "A",
+     "tier_orig": ""
+    }
+   ]
+  },
+  "expect": {
+   "meta platforms": "B",
+   "google": "A"
+  }
+ },
+ {
+  "name": "company_tiers_tier_orig_override_and_non_counting_ignored",
+  "fn": "company_tiers",
+  "args": {
+   "rows": [
+    {
+     "company": "Initech",
+     "tier": "A",
+     "tier_orig": "D"
+    },
+    {
+     "company": "Hooli Inc",
+     "tier": "Blocked",
+     "tier_orig": "Blocked"
+    },
+    {
+     "company": "Umbrella Corp",
+     "tier": "",
+     "tier_orig": ""
+    },
+    {
+     "company": "Globex",
+     "tier": "C",
+     "tier_orig": ""
+    }
+   ]
+  },
+  "expect": {
+   "initech": "D",
+   "globex": "C"
+  }
+ }
+]

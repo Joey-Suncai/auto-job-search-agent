@@ -1,0 +1,312 @@
+[
+ {
+  "name": "basic_zoneless_receipt",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting <careers@acme.com>",
+    "subject": "Thank you for applying to Acme"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme",
+  "spec": "choose_mail(mails, since, company) returns the subject of the newest mail sent at or after `since` whose subject reads as an application receipt (\"Thank you for applying…\") and whose sender or subject names the company."
+ },
+ {
+  "name": "exactly_at_since_zoneless_is_included",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme",
+  "spec": "choose_mail(mails, since, company) returns the subject of the newest mail sent at or after `since` ...; at or after includes equality."
+ },
+ {
+  "name": "zoneless_one_second_before_since_excluded",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:29:59",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "A time WITHOUT a time zone (e.g. \"2026-11-02T19:30:00\") is read as UTC. choose_mail returns the subject of the newest mail sent at or after `since` ...; otherwise null."
+ },
+ {
+  "name": "zoned_mail_equal_to_zoneless_since",
+  "mails": [
+   {
+    "sent": "2026-11-02T13:30:00-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Application received - Acme"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": "Application received - Acme",
+  "spec": "A time with a zone is compared with its zone (\"2026-11-02T13:30:00-06:00\" is the same moment as \"2026-11-02T19:30:00\")."
+ },
+ {
+  "name": "zoned_mail_one_second_before_zoneless_since",
+  "mails": [
+   {
+    "sent": "2026-11-02T13:29:59-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Application received - Acme"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "A time with a zone is compared with its zone (\"2026-11-02T13:30:00-06:00\" is the same moment as \"2026-11-02T19:30:00\"). choose_mail returns ... at or after `since` ...; otherwise null."
+ },
+ {
+  "name": "zoneless_mail_equal_to_zoned_since",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Thanks for your interest in Acme"
+   }
+  ],
+  "since": "2026-11-02T13:30:00-06:00",
+  "company": "Acme",
+  "expect": "Thanks for your interest in Acme",
+  "spec": "A time WITHOUT a time zone (e.g. \"2026-11-02T19:30:00\") is read as UTC. A time with a zone is compared with its zone (\"2026-11-02T13:30:00-06:00\" is the same moment as \"2026-11-02T19:30:00\")."
+ },
+ {
+  "name": "zoneless_one_second_before_zoned_since",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:29:59",
+    "from": "Acme Recruiting",
+    "subject": "Thanks for your interest in Acme"
+   }
+  ],
+  "since": "2026-11-02T13:30:00-06:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "A time WITHOUT a time zone ... is read as UTC. A time with a zone is compared with its zone ... choose_mail returns ... at or after `since` ...; otherwise null."
+ },
+ {
+  "name": "newest_receipt_wins_with_mixed_zones",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme (early)"
+   },
+   {
+    "sent": "2026-11-02T13:31:00-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Application received - Acme"
+   }
+  ],
+  "since": "2026-11-02T19:00:00",
+  "company": "Acme",
+  "expect": "Application received - Acme",
+  "spec": "choose_mail(mails, since, company) returns the subject of the newest mail sent at or after `since` whose subject reads as an application receipt ... and whose sender or subject names the company."
+ },
+ {
+  "name": "newer_non_receipt_ignored",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:00:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme"
+   },
+   {
+    "sent": "2026-11-02T13:30:00-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Interview schedule for Acme"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme",
+  "spec": "choose_mail(...) returns the subject of the newest mail sent at or after `since` whose subject reads as an application receipt ...; otherwise null."
+ },
+ {
+  "name": "newer_receipt_for_other_company_excluded",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:00:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme"
+   },
+   {
+    "sent": "2026-11-02T13:30:00-06:00",
+    "from": "Globex Recruiting",
+    "subject": "Thank you for applying to Globex"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme",
+  "spec": "choose_mail(...) returns the subject of the newest mail sent at or after `since` whose subject reads as an application receipt ... and whose sender or subject names the company."
+ },
+ {
+  "name": "no_mail_naming_company_returns_null",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Globex Recruiting",
+    "subject": "Thank you for applying to Globex"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "choose_mail(...) returns ... whose sender or subject names the company; otherwise null."
+ },
+ {
+  "name": "company_named_only_in_sender",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Talent Team <jobs@example.com>",
+    "subject": "Thank you for applying"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thank you for applying",
+  "spec": "choose_mail(...) returns the subject ... whose sender or subject names the company."
+ },
+ {
+  "name": "company_named_only_in_subject",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "careers@example.com",
+    "subject": "Application received - Acme"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Application received - Acme",
+  "spec": "choose_mail(...) returns the subject ... whose sender or subject names the company."
+ },
+ {
+  "name": "phrase_thanks_for_your_interest",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme University Relations",
+    "subject": "Thanks for your interest in the Acme program"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thanks for your interest in the Acme program",
+  "spec": "choose_mail(...) whose subject reads as an application receipt (\"Thanks for your interest…\") ..."
+ },
+ {
+  "name": "phrase_thank_you_for_your_application",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme HR",
+    "subject": "Thank you for your application to Acme"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Thank you for your application to Acme",
+  "spec": "choose_mail(...) whose subject reads as an application receipt (\"Thank you for your application…\") ..."
+ },
+ {
+  "name": "phrase_application_received",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Application received"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": "Application received",
+  "spec": "choose_mail(...) whose subject reads as an application receipt (\"Application received\") ..."
+ },
+ {
+  "name": "at_since_chosen_over_older_receipt",
+  "mails": [
+   {
+    "sent": "2026-11-02T18:00:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme (old)"
+   },
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme (at since)"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme (at since)",
+  "spec": "choose_mail(...) returns the subject of the newest mail sent at or after `since` ..."
+ },
+ {
+  "name": "all_receipts_before_since_return_null",
+  "mails": [
+   {
+    "sent": "2026-11-02T13:00:00-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme"
+   }
+  ],
+  "since": "2026-11-02T19:30:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "A time with a zone is compared with its zone ... choose_mail returns ... at or after `since` ...; otherwise null."
+ },
+ {
+  "name": "mixed_zones_compare_newest_correctly",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:30:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme (zoneless newer)"
+   },
+   {
+    "sent": "2026-11-02T13:29:00-06:00",
+    "from": "Acme Recruiting",
+    "subject": "Thank you for applying to Acme (zoned older)"
+   }
+  ],
+  "since": "2026-11-02T19:00:00",
+  "company": "Acme",
+  "expect": "Thank you for applying to Acme (zoneless newer)",
+  "spec": "Mixing mails with and without a zone must never fail. choose_mail(...) returns the subject of the newest mail sent at or after `since` ..."
+ },
+ {
+  "name": "no_company_receipt_even_with_company_non_receipt",
+  "mails": [
+   {
+    "sent": "2026-11-02T19:00:00",
+    "from": "Acme Recruiting",
+    "subject": "Interview schedule for Acme"
+   },
+   {
+    "sent": "2026-11-02T13:30:00-06:00",
+    "from": "Globex Recruiting",
+    "subject": "Thank you for applying to Globex"
+   }
+  ],
+  "since": "2026-11-02T18:00:00",
+  "company": "Acme",
+  "expect": null,
+  "spec": "choose_mail(...) returns ... whose subject reads as an application receipt ... and whose sender or subject names the company; otherwise null."
+ }
+]

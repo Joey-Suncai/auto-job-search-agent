@@ -1,0 +1,237 @@
+[
+ {
+  "name": "clones_same_title_same_location_first_url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/1",
+     "Austin, TX"
+    ],
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/2",
+     "Austin, TX"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/1",
+  "spec_quote": "clones — when the best-scoring postings all have the same title and the same location text (compared case-insensitively) but different URLs, they are one opening posted as several requisitions: the first of them (in input order) is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "clones_location_compared_case_insensitively_first_url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Sr Data Scientist",
+   "location": "Remote",
+   "postings": [
+    [
+     "Senior Data Scientist",
+     "https://acme.example/jobs/10",
+     "Remote"
+    ],
+    [
+     "Senior Data Scientist",
+     "https://acme.example/jobs/11",
+     "remote"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/10",
+  "spec_quote": "when the best-scoring postings all have the same title and the same location text (compared case-insensitively) but different URLs, they are one opening posted as several requisitions: the first of them (in input order) is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_title_two_cities_city_breaks_tie",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/ny",
+     "New York, NY"
+    ],
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/atx",
+     "Austin, TX"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/atx",
+  "spec_quote": "Several postings tie on the best score with different URLs → the single one whose location contains the row's city; none, or more than one with different URLs → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_title_two_cities_no_city_match_null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/ny",
+     "New York, NY"
+    ],
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/chi",
+     "Chicago, IL"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Several postings tie on the best score with different URLs → the single one whose location contains the row's city; none, or more than one with different URLs → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "greater_filler_words_tampa_named",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Greater Tampa Bay Area",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/tpa",
+     "US - Tampa, FL (Lithia area)"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/tpa",
+  "spec_quote": "The row's city counts as named in a posting location when any word of city_of(location) that has ≥ 4 letters and is not greater / area / metro / metropolitan / region / county / downtown appears (as a substring, lower-case) in the posting location ... \"Greater Tampa Bay Area\" is named by \"US - Tampa, FL (Lithia area)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city_only_short_and_filler_words_whole_city_string_must_appear",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Bay Area, CA",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/sf",
+     "San Francisco Bay Area"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/sf",
+  "spec_quote": "when the city has no such word, the whole city string must appear. (city_of(\"Bay Area, CA\") = \"bay area\"; the words \"bay\" and \"area\" are short/filler, so \"bay area\" must appear — it does in \"San Francisco Bay Area\".)",
+  "ambiguous": false
+ },
+ {
+  "name": "single_posting_other_city_null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/den",
+     "Denver, CO"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "that posting, unless: the row has a city (city_of(location) non-empty), the posting location is non-empty, the posting location does not contain the city, ... → null (same title in another city = a different opening).",
+  "ambiguous": false
+ },
+ {
+  "name": "single_posting_51_locations_chosen",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/multi",
+     "51 Locations"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/multi",
+  "spec_quote": "unless: ... the posting location does not say \"<N> Locations\", \"remote\", \"multiple\", \"united states\", \"nationwide\" or equal \"us\" ... → null",
+  "ambiguous": false
+ },
+ {
+  "name": "below_floor_null_even_with_city_match",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Marketing Manager",
+     "https://acme.example/jobs/mkt",
+     "Austin, TX"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Best similarity < 0.75 (or no postings) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "tie_two_postings_both_contain_city_null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/a1",
+     "Austin, TX"
+    ],
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/a2",
+     "Austin, TX - North"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Best-scoring postings that differ in title or location still need the row's city to pick exactly one (as before). ... Several postings tie on the best score with different URLs → the single one whose location contains the row's city; none, or more than one with different URLs → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_postings_null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": []
+  },
+  "expect": null,
+  "spec_quote": "Best similarity < 0.75 (or no postings) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "posting_location_us_equals_us_exception_chosen",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://acme.example/jobs/us",
+     "US"
+    ]
+   ]
+  },
+  "expect": "https://acme.example/jobs/us",
+  "spec_quote": "unless: the row has a city (city_of(location) non-empty), the posting location is non-empty, the posting location does not contain the city, the posting location does not say \"<N> Locations\", \"remote\", \"multiple\", \"united states\", \"nationwide\" or equal \"us\", and the row's title does not contain the city → null",
+  "ambiguous": false
+ }
+]

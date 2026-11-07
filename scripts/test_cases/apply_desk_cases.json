@@ -1,0 +1,195 @@
+[
+ {
+  "name": "fresh beat 10 s old is alive",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": 1699999990
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "True exactly when beat can be read as a number and now - beat <= stale (a beat in the future is fresh)."
+ },
+ {
+  "name": "beat exactly stale (60 s old) is alive",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": 1699999940
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "True exactly when beat can be read as a number and now - beat <= stale (a beat in the future is fresh)."
+ },
+ {
+  "name": "beat 61 s old is not alive",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": 1699999939
+   },
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "True exactly when beat can be read as a number and now - beat <= stale (a beat in the future is fresh)."
+ },
+ {
+  "name": "beat in the future is fresh",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": 1700000100
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "True exactly when beat can be read as a number and now - beat <= stale (a beat in the future is fresh)."
+ },
+ {
+  "name": "numeric string beat is readable",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": "1699999990"
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "state is a dict (or null) that may hold \"beat\" (epoch seconds, a number or a numeric string)."
+ },
+ {
+  "name": "non-numeric string beat is not readable",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": "never"
+   },
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "Missing, null or non-numeric beat → false."
+ },
+ {
+  "name": "null state is not alive",
+  "fn": "desk_alive",
+  "args": {
+   "state": null,
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "Missing, null or non-numeric beat → false."
+ },
+ {
+  "name": "missing beat key is not alive",
+  "fn": "desk_alive",
+  "args": {
+   "state": {},
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "Missing, null or non-numeric beat → false."
+ },
+ {
+  "name": "custom stale=30 accepts a 30 s old beat",
+  "fn": "desk_alive",
+  "args": {
+   "state": {
+    "beat": 1699999970
+   },
+   "now": 1700000000,
+   "stale": 30
+  },
+  "expect": true,
+  "spec": "True exactly when beat can be read as a number and now - beat <= stale (a beat in the future is fresh)."
+ },
+ {
+  "name": "notify when there is no notified_at",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999000
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "no notify when notified 599 s ago",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999000,
+    "notified_at": 1699999401
+   },
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "notify when notified 601 s ago",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999000,
+    "notified_at": 1699999399
+   },
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "no notify when notified exactly grace (600 s) ago",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999000,
+    "notified_at": 1699999400
+   },
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "alive desk never notifies even with old notified_at",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999990,
+    "notified_at": 1699999000
+   },
+   "now": 1700000000
+  },
+  "expect": false,
+  "spec": "false when desk_alive(state, now, stale); otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "custom grace=100 notifies when notified 200 s ago",
+  "fn": "should_notify",
+  "args": {
+   "state": {
+    "beat": 1699999000,
+    "notified_at": 1699999800
+   },
+   "now": 1700000000,
+   "grace": 100
+  },
+  "expect": true,
+  "spec": "otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ },
+ {
+  "name": "null state notifies",
+  "fn": "should_notify",
+  "args": {
+   "state": null,
+   "now": 1700000000
+  },
+  "expect": true,
+  "spec": "false when desk_alive(state, now, stale); otherwise true when state has no readable numeric \"notified_at\", or now - notified_at > grace; else false."
+ }
+]

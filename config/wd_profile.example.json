@@ -1,0 +1,72 @@
+{
+ "_source": "EXAMPLE Workday profile of a fictional candidate — copy to config/wd_profile.json and replace with your own resume entries (work / education / languages).",
+ "work": [
+  {
+   "match": "acme",
+   "Job Title": "Data Analyst Intern",
+   "Company": "Acme Analytics",
+   "Location": "Springfield, Illinois",
+   "From": "06/2025",
+   "To": "08/2025",
+   "current": false,
+   "Description": "Example description: built weekly SQL reports for the sales team and automated a data-quality check in Python."
+  }
+ ],
+ "education": [
+  {
+   "match": "example state",
+   "School": "Example State University",
+   "Degree": "master",
+   "Field": "Data Science",
+   "From": "2026",
+   "To": "2027",
+   "GPA": "",
+   "Field_alts": [
+    "Data Analytics and Data Science"
+   ],
+   "Field_real": "M.S. Data Science",
+   "Field_prefs": [
+    "Data Science",
+    "Data Analytics",
+    "Computer Science",
+    "Statistics"
+   ],
+   "Field_search": [
+    "Data",
+    "Statist",
+    "Computer"
+   ],
+   "From_month": "2026-09",
+   "To_month": "2027-05"
+  },
+  {
+   "match": "sample college",
+   "School": "Sample College",
+   "Degree": "bachelor",
+   "Field": "Statistics",
+   "From": "2022",
+   "To": "2026",
+   "GPA": "3.60",
+   "Field_alts": [],
+   "Field_real": "B.S. Statistics",
+   "Field_prefs": [
+    "Statistics",
+    "Mathematics"
+   ],
+   "Field_search": [
+    "Statist",
+    "Math"
+   ],
+   "From_month": "2022-09",
+   "To_month": "2026-05"
+  }
+ ],
+ "languages": [
+  {
+   "match": "english",
+   "level": "4 - Fluent",
+   "fluent": true,
+   "tiktok": "Professional working"
+  }
+ ]
+}

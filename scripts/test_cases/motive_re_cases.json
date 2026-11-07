@@ -1,0 +1,212 @@
+[
+ {
+  "name": "exact_why_join_X",
+  "label": "Why do you want to join X?",
+  "expect": true,
+  "spec_quote": "a question asking why the candidate wants THIS job or THIS company is always answered, even when optional.",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_what_interested",
+  "label": "What interested you in X and/or this position?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_what_excites_role",
+  "label": "What excites you about this role?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_what_drew_X",
+  "label": "What drew you to X?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_why_applying",
+  "label": "Why are you applying?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_what_motivates_opportunity",
+  "label": "What motivates you to pursue this opportunity?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_tell_us_why_internship",
+  "label": "Tell us why you are interested in this internship",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "company_why_work_at_company",
+  "label": "Why do you want to work at our company?",
+  "expect": true,
+  "spec_quote": "a question asking why the candidate wants THIS job or THIS company is always answered, even when optional.",
+  "ambiguous": false
+ },
+ {
+  "name": "team_interest",
+  "label": "What interests you about our team?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "position_why_this_position",
+  "label": "Why this position?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "company_attracted",
+  "label": "What attracted you to our company?",
+  "expect": true,
+  "spec_quote": "a question asking why the candidate wants THIS job or THIS company is always answered, even when optional.",
+  "ambiguous": false
+ },
+ {
+  "name": "role_made_apply",
+  "label": "What made you apply for this role?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "job_why_this_job",
+  "label": "Why do you want this job?",
+  "expect": true,
+  "spec_quote": "a question asking why the candidate wants THIS job or THIS company is always answered, even when optional.",
+  "ambiguous": false
+ },
+ {
+  "name": "opportunity_compelling",
+  "label": "What do you find compelling about this opportunity?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "motivation_applying_role",
+  "label": "Tell us about your motivation for applying to this role",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "team_join_interest",
+  "label": "Why are you interested in joining our team?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_team_position",
+  "label": "What drew you to our team and this position?",
+  "expect": true,
+  "spec_quote": "answer true when it asks for the candidate's motivation or interest in the role / company / team / position, in any tense",
+  "ambiguous": false
+ },
+ {
+  "name": "how_learn_about_posting",
+  "label": "How did you learn about this job posting?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "location",
+  "label": "Where are you located?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "dates_start",
+  "label": "What is your earliest available start date?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "visa_sponsorship",
+  "label": "Do you require visa sponsorship to work in this country?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "salary_expectations",
+  "label": "What are your salary expectations?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "how_hear_about_us",
+  "label": "How did you hear about us?",
+  "expect": false,
+  "spec_quote": "\"How did you hear about us?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "newsletter_optin",
+  "label": "Are you interested in our newsletter?",
+  "expect": false,
+  "spec_quote": "\"Are you interested in our newsletter / talent community / Women's program?\" (a yes/no opt-in, not motivation)",
+  "ambiguous": false
+ },
+ {
+  "name": "talent_community_optin",
+  "label": "Would you like to join our talent community?",
+  "expect": false,
+  "spec_quote": "\"Are you interested in our newsletter / talent community / Women's program?\" (a yes/no opt-in, not motivation)",
+  "ambiguous": false
+ },
+ {
+  "name": "womens_program_optin",
+  "label": "Are you interested in our Women's program?",
+  "expect": false,
+  "spec_quote": "\"Are you interested in our newsletter / talent community / Women's program?\" (a yes/no opt-in, not motivation)",
+  "ambiguous": false
+ },
+ {
+  "name": "interesting_paper",
+  "label": "What is the most interesting paper you read?",
+  "expect": false,
+  "spec_quote": "\"What is the most interesting paper you read?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "department_choice",
+  "label": "Which department are you most interested in?",
+  "expect": false,
+  "spec_quote": "\"Which department are you most interested in?\" (a choice, not a why)",
+  "ambiguous": false
+ },
+ {
+  "name": "project_proud",
+  "label": "Describe a project you are proud of",
+  "expect": false,
+  "spec_quote": "\"Describe a project you are proud of\"",
+  "ambiguous": false
+ },
+ {
+  "name": "office_location_preference",
+  "label": "Which office location would you prefer?",
+  "expect": false,
+  "spec_quote": "Answer false for questions that are not about motivation: location, dates, visa, salary, \"How did you hear about us?\"",
+  "ambiguous": false
+ }
+]

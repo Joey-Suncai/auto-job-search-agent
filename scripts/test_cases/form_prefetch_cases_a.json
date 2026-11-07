@@ -1,0 +1,336 @@
+[
+ {
+  "name": "confident_rule_answer_used_without_asking",
+  "kind": "route",
+  "input": {
+   "question": "Preferred Last Name",
+   "options": [],
+   "rule": "confident",
+   "second_opinion": null,
+   "suggestion": null
+  },
+  "expect": {
+   "route": "used",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "rule answer, confident → used;"
+ },
+ {
+  "name": "uncertain_rule_with_disagreeing_second_opinion_goes_to_joey",
+  "kind": "route",
+  "input": {
+   "question": "How did you hear about us?",
+   "options": [
+    "LinkedIn",
+    "Referral",
+    "Other"
+   ],
+   "rule": "uncertain",
+   "second_opinion": "disagree",
+   "suggestion": null
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "rule answer, uncertain (answer_rules `uncertainty`) → DeepSeek second opinion (JSA-202); agree → used; disagree → Joey;"
+ },
+ {
+  "name": "no_rule_fact_derived_suggestion_on_sheet_in_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "Preferred Last Name",
+   "options": [],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "Sun",
+    "fact": "last_name"
+   }
+  },
+  "expect": {
+   "route": "sheet",
+   "high_risk": false,
+   "derived_block": true
+  },
+  "spec_quote": "it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Sun, from last_name) are listed together with their fact"
+ },
+ {
+  "name": "no_rule_ask_suggestion_on_sheet_but_not_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "Do you have a PhD in Computer Science?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "ASK",
+    "fact": null
+   }
+  },
+  "expect": {
+   "route": "sheet",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "spec_quote": "no rule answer → DeepSeek suggests an answer **from his facts only**, naming the fact it used, or \"ASK\". **A suggestion is never used on its own — low-risk questions included**"
+ },
+ {
+  "name": "high_risk_visa_question_never_uses_fact_suggestion",
+  "kind": "route",
+  "input": {
+   "question": "Will you now or in the future require visa sponsorship?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "Yes",
+    "fact": "needs_sponsorship"
+   }
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): Joey always. / High-risk categories never go in this block — one by one."
+ },
+ {
+  "name": "high_risk_gpa_question_goes_to_joey_even_with_confident_rule",
+  "kind": "route",
+  "input": {
+   "question": "What is your undergraduate GPA (4.0 scale)?",
+   "options": [],
+   "rule": "confident",
+   "second_opinion": null,
+   "suggestion": null
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): Joey always."
+ },
+ {
+  "name": "greedy_sheet_picks_marginal_value_over_raw_frequency",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "J1": {
+     "tier": "A",
+     "needs": [
+      "q1",
+      "q9"
+     ]
+    },
+    "J2": {
+     "tier": "A",
+     "needs": [
+      "q1",
+      "q9"
+     ]
+    },
+    "J3": {
+     "tier": "A",
+     "needs": [
+      "q1",
+      "q9"
+     ]
+    },
+    "J4": {
+     "tier": "B",
+     "needs": [
+      "q1",
+      "q9"
+     ]
+    },
+    "J5": {
+     "tier": "B",
+     "needs": [
+      "q2"
+     ]
+    },
+    "J6": {
+     "tier": "C",
+     "needs": [
+      "q2"
+     ]
+    }
+   },
+   "max_questions": 1
+  },
+  "expect": {
+   "sheet": [
+    "q2"
+   ],
+   "ready_after": 2,
+   "left_out": [
+    "q1",
+    "q9"
+   ]
+  },
+  "spec_quote": "ordered by marginal value: greedily, the question whose answer turns the most jobs fully ready (every remaining question answered) comes first — not raw frequency."
+ },
+ {
+  "name": "rank_tie_break_prefers_question_asked_by_tier_a_over_tier_c",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "J1": {
+     "tier": "C",
+     "needs": [
+      "qa"
+     ]
+    },
+    "J2": {
+     "tier": "A",
+     "needs": [
+      "qb"
+     ]
+    }
+   },
+   "max_questions": 1
+  },
+  "expect": {
+   "sheet": [
+    "qb"
+   ],
+   "ready_after": 1,
+   "left_out": [
+    "qa"
+   ]
+  },
+  "spec_quote": "Higher-score jobs first: the prefetch reads jobs in score order, and the sheet's ranking counts tier A/B jobs first."
+ },
+ {
+  "name": "never_read_job_is_read",
+  "kind": "stale",
+  "input": {
+   "last": null,
+   "today": "2026-11-07",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": true
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "recently_read_ok_job_is_skipped",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-05",
+    "status": "ok"
+   },
+   "today": "2026-11-07",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": false
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "closed_posting_is_not_read_again",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-01-02",
+    "status": "closed"
+   },
+   "today": "2026-11-07",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": false
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "identical_question_and_options_and_facts_reuse_cached_deepseek_answer",
+  "kind": "cache",
+  "input": {
+   "a": {
+    "question": "How did you hear about us?",
+    "options": [
+     "LinkedIn",
+     "Referral",
+     "Other"
+    ],
+    "facts_version": "f7"
+   },
+   "b": {
+    "question": "How did you hear about us?",
+    "options": [
+     "LinkedIn",
+     "Referral",
+     "Other"
+    ],
+    "facts_version": "f7"
+   }
+  },
+  "expect": {
+   "same_answer_reused": true
+  },
+  "spec_quote": "DeepSeek results cached by hash(JD or question + options) + facts version → reruns are deterministic"
+ },
+ {
+  "name": "facts_version_change_re_reads_same_question",
+  "kind": "cache",
+  "input": {
+   "a": {
+    "question": "Preferred Last Name",
+    "options": [],
+    "facts_version": "f7"
+   },
+   "b": {
+    "question": "Preferred Last Name",
+    "options": [],
+    "facts_version": "f8"
+   }
+  },
+  "expect": {
+   "same_answer_reused": false
+  },
+  "spec_quote": "DeepSeek results cached by hash(JD or question + options) + facts version → reruns are deterministic; a facts change re-reads only what it touches."
+ },
+ {
+  "name": "wordings_differing_only_in_numbering_case_and_punctuation_merge",
+  "kind": "merge",
+  "input": {
+   "a": "Q3. Are you authorized to work in the US?",
+   "b": "are you authorized to work in the us"
+  },
+  "expect": {
+   "same": true
+  },
+  "spec_quote": "One sheet — wordings merged (`collect_batch.qnorm`), then DeepSeek groups wordings that ask the same thing into one question"
+ },
+ {
+  "name": "form_identity_restriction_ineligibility",
+  "kind": "restriction",
+  "input": {
+   "question": "Are you a US citizen or permanent resident?",
+   "citizen_or_pr": false
+  },
+  "expect": {
+   "job_ineligible": true
+  },
+  "spec_quote": "the JD half is the JSA-231 gate's verdict, so this reads forms only. / soft-reason 不可投 (OFF_CYCLE / UNDERGRAD_ONLY / NOSPON / START)",
+  "ambiguous": true,
+  "why": "The spec never says what the prefetch should do with an identity restriction stated on the form itself: it says the JD verdict belongs to the JSA-231 gate and that this routine 'reads forms only', and the only 不可投 signals named are the JD soft-reason rules (OFF_CYCLE / UNDERGRAD_ONLY / NOSPON / START). Whether a form-side citizenship/PR restriction marks the job ineligible (or instead goes to Joey as a form question) is not stated."
+ }
+]

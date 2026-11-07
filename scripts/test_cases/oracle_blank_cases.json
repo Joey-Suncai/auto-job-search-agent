@@ -1,0 +1,122 @@
+[
+ {
+  "name": "exact_placeholder_license",
+  "fn": "blank_card",
+  "args": {
+   "title": "Unnamed License"
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_placeholder_certification",
+  "fn": "blank_card",
+  "args": {
+   "title": "Unnamed Certification"
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase_unnamed_education",
+  "fn": "blank_card",
+  "args": {
+   "title": "unnamed education"
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "leading_trailing_spaces_ignored",
+  "fn": "blank_card",
+  "args": {
+   "title": "  Unnamed Experience  "
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed_case_placeholder",
+  "fn": "blank_card",
+  "args": {
+   "title": "uNnAmEd Certificate"
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder_word_alone",
+  "fn": "blank_card",
+  "args": {
+   "title": "UNNAMED"
+  },
+  "expect": true,
+  "spec_quote": "The placeholder starts with the word \"Unnamed\" (\"Unnamed License\", \"Unnamed Certification\", \"unnamed education\"), case-insensitive, leading/trailing spaces ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "contains_unnamed_later",
+  "fn": "blank_card",
+  "args": {
+   "title": "The Unnamed Project"
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "word_only_starts_with_letters",
+  "fn": "blank_card",
+  "args": {
+   "title": "Unnamedly"
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_title",
+  "fn": "blank_card",
+  "args": {
+   "title": ""
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "none_title",
+  "fn": "blank_card",
+  "args": {
+   "title": null
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "real_card_title",
+  "fn": "blank_card",
+  "args": {
+   "title": "License"
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "unnamed_not_at_start",
+  "fn": "blank_card",
+  "args": {
+   "title": "My Unnamed License"
+  },
+  "expect": false,
+  "spec_quote": "Any other title is a real card and is never deleted: a title that merely contains \"unnamed\" later (\"The Unnamed Project\"), a word that only starts with the letters (\"Unnamedly\"), an empty title or None → False.",
+  "ambiguous": false
+ }
+]

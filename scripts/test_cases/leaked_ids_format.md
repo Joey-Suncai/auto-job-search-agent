@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "text": str, "known": [str], "expect": [str], "spec_quote": str, "ambiguous": false}. Write 20 cases: real leaks in parentheses and at sentence ends, several IDs at once, lowercase look-alikes, longer tokens (S10 vs S1, M2M, JSA050), hyphenated, ordinary prose with none, empty text.

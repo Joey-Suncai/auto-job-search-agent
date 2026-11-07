@@ -1,0 +1,1126 @@
+[
+ {
+  "name": "targets: spot-check rejected match is never retried",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://jobright.ai/jobs/info/111",
+     "elig": "可投",
+     "ats_unresolved": "spot-check: reviewer rejected this match"
+    },
+    {
+     "id": "j2",
+     "url": "https://jobright.ai/jobs/info/222",
+     "elig": "可投"
+    }
+   ]
+  },
+  "expect": [
+   "j2"
+  ],
+  "spec_quote": "its `ats_unresolved` does not start with `spot-check:` (a match a reviewer rejected is never tried again)",
+  "ambiguous": false
+ },
+ {
+  "name": "targets: other ats_unresolved text does not block the row",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://joinhandshake.com/jobs/9",
+     "elig": "待核实",
+     "ats_unresolved": "no ats detected, needs manual look"
+    }
+   ]
+  },
+  "expect": [
+   "j1"
+  ],
+  "spec_quote": "Other `ats_unresolved` texts do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "targets: elig 不可投 dropped",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://jobright.ai/jobs/info/1",
+     "elig": "不可投"
+    },
+    {
+     "id": "j2",
+     "url": "https://jobright.ai/jobs/info/2",
+     "elig": "待核实"
+    }
+   ]
+  },
+  "expect": [
+   "j2"
+  ],
+  "spec_quote": "its `elig` is `可投` or `待核实`",
+  "ambiguous": false
+ },
+ {
+  "name": "targets: non-aggregator url dropped",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://boards.greenhouse.io/acme/jobs/123",
+     "elig": "可投"
+    },
+    {
+     "id": "j2",
+     "url": "https://linkedin.com/jobs/view/456",
+     "elig": "可投"
+    }
+   ]
+  },
+  "expect": [
+   "j2"
+  ],
+  "spec_quote": "its `url` is an aggregator link (contains `jobright.ai/jobs/info/`, or `joinhandshake.com`, or `linkedin.com/jobs/view/` / `linkedin.com/comm/jobs/view/`, case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "targets: empty ats_url counts as no ats_url",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://jobright.ai/jobs/info/7",
+     "ats_url": "",
+     "elig": "可投"
+    },
+    {
+     "id": "j2",
+     "url": "https://jobright.ai/jobs/info/8",
+     "ats_url": "https://acme.wd1.myworkdayjobs.com/x",
+     "elig": "可投"
+    }
+   ]
+  },
+  "expect": [
+   "j1"
+  ],
+  "spec_quote": "it has no (or an empty) `ats_url`",
+  "ambiguous": false
+ },
+ {
+  "name": "targets: aggregator url matching is case-insensitive",
+  "fn": "targets",
+  "args": {
+   "jobs": [
+    {
+     "id": "j1",
+     "url": "https://JOBRIGHT.AI/Jobs/Info/42",
+     "elig": "可投"
+    },
+    {
+     "id": "j2",
+     "url": "https://WWW.LinkedIn.com/Comm/Jobs/View/99",
+     "elig": "待核实"
+    },
+    {
+     "id": "j3",
+     "url": "https://JoinHandshake.com/jobs/5",
+     "elig": "可投"
+    }
+   ]
+  },
+  "expect": [
+   "j1",
+   "j2",
+   "j3"
+  ],
+  "spec_quote": "`linkedin.com/jobs/view/` / `linkedin.com/comm/jobs/view/`, case-insensitive",
+  "ambiguous": false
+ },
+ {
+  "name": "run_key: no --fresh, arguments joined in order",
+  "fn": "run_key",
+  "args": {
+   "argv": [
+    "--report",
+    "out.json"
+   ]
+  },
+  "expect": "--report out.json",
+  "spec_quote": "The key is the run's command-line arguments joined with single spaces, in their original order, with every `--fresh` argument left out.",
+  "ambiguous": false
+ },
+ {
+  "name": "run_key: single --fresh dropped",
+  "fn": "run_key",
+  "args": {
+   "argv": [
+    "--report",
+    "out.json",
+    "--fresh"
+   ]
+  },
+  "expect": "--report out.json",
+  "spec_quote": "with every `--fresh` argument left out",
+  "ambiguous": false
+ },
+ {
+  "name": "run_key: several --fresh arguments all dropped",
+  "fn": "run_key",
+  "args": {
+   "argv": [
+    "--fresh",
+    "--report",
+    "out.json",
+    "--fresh",
+    "--limit",
+    "50",
+    "--fresh"
+   ]
+  },
+  "expect": "--report out.json --limit 50",
+  "spec_quote": "with every `--fresh` argument left out. Nothing else is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "run_key: original order kept",
+  "fn": "run_key",
+  "args": {
+   "argv": [
+    "--zeta",
+    "1",
+    "--alpha",
+    "2",
+    "--fresh",
+    "--mid",
+    "3"
+   ]
+  },
+  "expect": "--zeta 1 --alpha 2 --mid 3",
+  "spec_quote": "joined with single spaces, in their original order",
+  "ambiguous": false
+ },
+ {
+  "name": "run_key: argument that merely starts with --fresh is kept",
+  "fn": "run_key",
+  "args": {
+   "argv": [
+    "--freshness",
+    "3",
+    "--report",
+    "out.json"
+   ]
+  },
+  "expect": "--freshness 3 --report out.json",
+  "spec_quote": "with every `--fresh` argument left out. Nothing else is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "systems_back: string ident stays a string",
+  "fn": "systems_back",
+  "args": {
+   "systems": [
+    [
+     "greenhouse",
+     "acme"
+    ],
+    [
+     "lever",
+     "acme-lever"
+    ]
+   ]
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme",
+    "str"
+   ],
+   [
+    "lever",
+    "acme-lever",
+    "str"
+   ]
+  ],
+  "spec_quote": "an ident is a string, or (for Workday) a list of strings; when read back, a list ident becomes a tuple, a string ident stays a string.",
+  "ambiguous": false
+ },
+ {
+  "name": "systems_back: list ident becomes a tuple",
+  "fn": "systems_back",
+  "args": {
+   "systems": [
+    [
+     "workday",
+     [
+      "acme",
+      "External"
+     ]
+    ]
+   ]
+  },
+  "expect": [
+   [
+    "workday",
+    [
+     "acme",
+     "External"
+    ],
+    "tuple"
+   ]
+  ],
+  "spec_quote": "when read back, a list ident becomes a tuple",
+  "ambiguous": false
+ },
+ {
+  "name": "systems_back: mixed string and list idents",
+  "fn": "systems_back",
+  "args": {
+   "systems": [
+    [
+     "workday",
+     [
+      "acme",
+      "Careers"
+     ]
+    ],
+    [
+     "greenhouse",
+     "acme-gh"
+    ],
+    [
+     "workday",
+     [
+      "beta",
+      "Internal"
+     ]
+    ]
+   ]
+  },
+  "expect": [
+   [
+    "workday",
+    [
+     "acme",
+     "Careers"
+    ],
+    "tuple"
+   ],
+   [
+    "greenhouse",
+    "acme-gh",
+    "str"
+   ],
+   [
+    "workday",
+    [
+     "beta",
+     "Internal"
+    ],
+    "tuple"
+   ]
+  ],
+  "spec_quote": "when read back, a list ident becomes a tuple, a string ident stays a string.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: no file on disk, nothing resumed, header written",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": null,
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": [
+    {
+     "key": "K1"
+    }
+   ]
+  },
+  "spec_quote": "Otherwise (no file, a different key, an empty file, or `fresh`) nothing is loaded and the file is started over: it then contains only the header line for `key`.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: matching key resumes comp, render and row",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [[\"greenhouse\", \"acme\"]], \"site\": \"acme.com\", \"note\": \"n1\", \"reason\": \"r1\"}",
+    "{\"t\": \"render\", \"site\": \"beta.com\", \"s\": [[\"workday\", [\"beta\", \"Ext\"]]], \"note\": \"n2\"}",
+    "{\"t\": \"row\", \"id\": \"row1\", \"r\": {\"status\": \"ok\"}}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [
+      [
+       "greenhouse",
+       "acme"
+      ]
+     ],
+     "acme.com",
+     "n1",
+     "r1"
+    ]
+   },
+   "render": {
+    "beta.com": [
+     [
+      [
+       "workday",
+       [
+        "beta",
+        "Ext"
+       ]
+      ]
+     ],
+     "n2"
+    ]
+   },
+   "rows": {
+    "row1": {
+     "status": "ok"
+    }
+   },
+   "resumed": 3,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [
+      [
+       "greenhouse",
+       "acme"
+      ]
+     ],
+     "site": "acme.com",
+     "note": "n1",
+     "reason": "r1"
+    },
+    {
+     "t": "render",
+     "site": "beta.com",
+     "s": [
+      [
+       "workday",
+       [
+        "beta",
+        "Ext"
+       ]
+      ]
+     ],
+     "note": "n2"
+    },
+    {
+     "t": "row",
+     "id": "row1",
+     "r": {
+      "status": "ok"
+     }
+    }
+   ]
+  },
+  "spec_quote": "The file is used only when it exists, `fresh` is false, and its first readable line has `\"key\"` equal to `key`. Then every comp / render / row line is loaded",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: different key, file restarted with new header",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"OTHER\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": [
+    {
+     "key": "K1"
+    }
+   ]
+  },
+  "spec_quote": "Otherwise (no file, a different key, an empty file, or `fresh`) nothing is loaded and the file is started over: it then contains only the header line for `key`.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: fresh=true ignores an otherwise matching file",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}",
+    "{\"t\": \"row\", \"id\": \"r1\", \"r\": 1}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": true,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": [
+    {
+     "key": "K1"
+    }
+   ]
+  },
+  "spec_quote": "The file is used only when it exists, `fresh` is false, and its first readable line has `\"key\"` equal to `key`.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: empty file is not resumed",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [],
+   "no_path": false,
+   "key": "K9",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": [
+    {
+     "key": "K9"
+    }
+   ]
+  },
+  "spec_quote": "Otherwise (no file, a different key, an empty file, or `fresh`) nothing is loaded and the file is started over: it then contains only the header line for `key`.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: truncated last line skipped, other lines still count",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}",
+    "{\"t\": \"row\", \"id\": \"r1\", \"r\": 1}",
+    "{\"t\": \"row\", \"id\": \"r2\", \"r\": {\"half\": "
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [],
+     "acme.com",
+     "",
+     ""
+    ]
+   },
+   "render": {},
+   "rows": {
+    "r1": 1
+   },
+   "resumed": 2,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [],
+     "site": "acme.com",
+     "note": "",
+     "reason": ""
+    },
+    {
+     "t": "row",
+     "id": "r1",
+     "r": 1
+    }
+   ]
+  },
+  "spec_quote": "A line that is not valid JSON (for example the last line, cut off when the run was killed) is skipped; the other lines still count.",
+  "ambiguous": true,
+  "why": "The loading rule is clear, but the spec never says whether a resumed run rewrites the file or only appends via put(); since file_after must be parsed JSON, the trailing invalid line cannot be represented. The listed file_after assumes the invalid line is left in place and simply not reported."
+ },
+ {
+  "name": "checkpoint: unknown t line ignored",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"something-else\", \"c\": \"Acme\", \"site\": \"acme.com\"}",
+    "{\"t\": \"comp\", \"c\": \"Beta\", \"s\": [], \"site\": \"beta.com\", \"note\": \"nb\", \"reason\": \"rb\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Beta": [
+     [],
+     "beta.com",
+     "nb",
+     "rb"
+    ]
+   },
+   "render": {},
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "something-else",
+     "c": "Acme",
+     "site": "acme.com"
+    },
+    {
+     "t": "comp",
+     "c": "Beta",
+     "s": [],
+     "site": "beta.com",
+     "note": "nb",
+     "reason": "rb"
+    }
+   ]
+  },
+  "spec_quote": "Lines with an unknown `t` are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: duplicate company, later line wins",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [[\"greenhouse\", \"old\"]], \"site\": \"old.com\", \"note\": \"old\", \"reason\": \"old\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [[\"lever\", \"new\"]], \"site\": \"new.com\", \"note\": \"new\", \"reason\": \"new\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [
+      [
+       "lever",
+       "new"
+      ]
+     ],
+     "new.com",
+     "new",
+     "new"
+    ]
+   },
+   "render": {},
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [
+      [
+       "greenhouse",
+       "old"
+      ]
+     ],
+     "site": "old.com",
+     "note": "old",
+     "reason": "old"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [
+      [
+       "lever",
+       "new"
+      ]
+     ],
+     "site": "new.com",
+     "note": "new",
+     "reason": "new"
+    }
+   ]
+  },
+  "spec_quote": "When the same company / site / row appears twice, the later line wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: no_path with puts writes nothing and resumes nothing",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": null,
+   "no_path": true,
+   "key": "K1",
+   "fresh": false,
+   "puts": [
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [],
+     "site": "acme.com",
+     "note": "",
+     "reason": ""
+    }
+   ]
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": null
+  },
+  "spec_quote": "path None → no file is read or written; nothing is resumed.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: comp line without reason gets empty reason",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [[\"workday\", [\"acme\", \"Ext\"]]], \"site\": \"acme.com\", \"note\": \"n1\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [
+      [
+       "workday",
+       [
+        "acme",
+        "Ext"
+       ]
+      ]
+     ],
+     "acme.com",
+     "n1",
+     ""
+    ]
+   },
+   "render": {},
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [
+      [
+       "workday",
+       [
+        "acme",
+        "Ext"
+       ]
+      ]
+     ],
+     "site": "acme.com",
+     "note": "n1"
+    }
+   ]
+  },
+  "spec_quote": "comp[company] = (systems, site, note, reason) (reason \"\" when missing)",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: puts after a successful resume are appended",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": [
+    {
+     "t": "render",
+     "site": "new.com",
+     "s": [],
+     "note": "nn"
+    }
+   ]
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [],
+     "acme.com",
+     "",
+     ""
+    ]
+   },
+   "render": {},
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [],
+     "site": "acme.com",
+     "note": "",
+     "reason": ""
+    },
+    {
+     "t": "render",
+     "site": "new.com",
+     "s": [],
+     "note": "nn"
+    }
+   ]
+  },
+  "spec_quote": "Appends `obj` as one JSON line (with a path); does nothing without a path.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: puts after a key mismatch land after the new header",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"OTHER\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": [
+    {
+     "t": "row",
+     "id": "r1",
+     "r": 1
+    }
+   ]
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {},
+   "resumed": 0,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "row",
+     "id": "r1",
+     "r": 1
+    }
+   ]
+  },
+  "spec_quote": "Otherwise (no file, a different key, an empty file, or `fresh`) nothing is loaded and the file is started over: it then contains only the header line for `key`.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: duplicate site, later render line wins",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"render\", \"site\": \"acme.com\", \"s\": [[\"greenhouse\", \"old\"]], \"note\": \"old\"}",
+    "{\"t\": \"render\", \"site\": \"acme.com\", \"s\": [[\"greenhouse\", \"new\"]], \"note\": \"new\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {
+    "acme.com": [
+     [
+      [
+       "greenhouse",
+       "new"
+      ]
+     ],
+     "new"
+    ]
+   },
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "render",
+     "site": "acme.com",
+     "s": [
+      [
+       "greenhouse",
+       "old"
+      ]
+     ],
+     "note": "old"
+    },
+    {
+     "t": "render",
+     "site": "acme.com",
+     "s": [
+      [
+       "greenhouse",
+       "new"
+      ]
+     ],
+     "note": "new"
+    }
+   ]
+  },
+  "spec_quote": "When the same company / site / row appears twice, the later line wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: duplicate row, later result wins",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"row\", \"id\": \"row1\", \"r\": {\"v\": 1}}",
+    "{\"t\": \"row\", \"id\": \"row1\", \"r\": {\"v\": 2}}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {},
+   "render": {},
+   "rows": {
+    "row1": {
+     "v": 2
+    }
+   },
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "row",
+     "id": "row1",
+     "r": {
+      "v": 1
+     }
+    },
+    {
+     "t": "row",
+     "id": "row1",
+     "r": {
+      "v": 2
+     }
+    }
+   ]
+  },
+  "spec_quote": "rows[row_id] = result ... When the same company / site / row appears twice, the later line wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: list ident read back as tuple in comp systems",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"WD\", \"s\": [[\"workday\", [\"wd\", \"External\"]], [\"greenhouse\", \"wd-gh\"]], \"site\": \"wd.com\", \"note\": \"n\", \"reason\": \"\"}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "WD": [
+     [
+      [
+       "workday",
+       [
+        "wd",
+        "External"
+       ]
+      ],
+      [
+       "greenhouse",
+       "wd-gh"
+      ]
+     ],
+     "wd.com",
+     "n",
+     ""
+    ]
+   },
+   "render": {},
+   "rows": {},
+   "resumed": 1,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "WD",
+     "s": [
+      [
+       "workday",
+       [
+        "wd",
+        "External"
+       ]
+      ],
+      [
+       "greenhouse",
+       "wd-gh"
+      ]
+     ],
+     "site": "wd.com",
+     "note": "n",
+     "reason": ""
+    }
+   ]
+  },
+  "spec_quote": "when read back, a list ident becomes a tuple, a string ident stays a string.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkpoint: resumed counts companies + sites + rows once each",
+  "fn": "checkpoint",
+  "args": {
+   "file_lines": [
+    "{\"key\": \"K1\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"\", \"reason\": \"\"}",
+    "{\"t\": \"comp\", \"c\": \"Acme\", \"s\": [], \"site\": \"acme.com\", \"note\": \"2\", \"reason\": \"\"}",
+    "{\"t\": \"render\", \"site\": \"a.com\", \"s\": [], \"note\": \"\"}",
+    "{\"t\": \"render\", \"site\": \"b.com\", \"s\": [], \"note\": \"\"}",
+    "{\"t\": \"row\", \"id\": \"r1\", \"r\": 1}"
+   ],
+   "no_path": false,
+   "key": "K1",
+   "fresh": false,
+   "puts": []
+  },
+  "expect": {
+   "comp": {
+    "Acme": [
+     [],
+     "acme.com",
+     "2",
+     ""
+    ]
+   },
+   "render": {
+    "a.com": [
+     [],
+     ""
+    ],
+    "b.com": [
+     [],
+     ""
+    ]
+   },
+   "rows": {
+    "r1": 1
+   },
+   "resumed": 4,
+   "file_after": [
+    {
+     "key": "K1"
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [],
+     "site": "acme.com",
+     "note": "",
+     "reason": ""
+    },
+    {
+     "t": "comp",
+     "c": "Acme",
+     "s": [],
+     "site": "acme.com",
+     "note": "2",
+     "reason": ""
+    },
+    {
+     "t": "render",
+     "site": "a.com",
+     "s": [],
+     "note": ""
+    },
+    {
+     "t": "render",
+     "site": "b.com",
+     "s": [],
+     "note": ""
+    },
+    {
+     "t": "row",
+     "id": "r1",
+     "r": 1
+    }
+   ]
+  },
+  "spec_quote": "`resumed()` = number of companies + rendered sites + rows loaded.",
+  "ambiguous": false
+ }
+]

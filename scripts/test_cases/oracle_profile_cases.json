@@ -1,0 +1,140 @@
+[
+ {
+  "name": "My Profile URL with 'Applied on 11/4/2026' → done",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/my-profile",
+   "text": "Jane Doe\nApplied on 11/4/2026\nProfile last updated"
+  },
+  "expect": "done",
+  "spec_quote": "A URL containing \"/my-profile\" whose text has \"Applied on <M/D/YYYY>\" (one or two digit month and day, two or four digit year; case-insensitive) → \"done\".",
+  "ambiguous": false
+ },
+ {
+  "name": "My Profile URL without any 'Applied on <date>' → not done (exact non-done label unspecified)",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/my-profile",
+   "text": "Thanks for applying! Your profile is up to date."
+  },
+  "expect": "profile",
+  "spec_quote": "Without \"Applied on <date>\" the My Profile page is not \"done\". (Ambiguous: the spec only rules out \"done\" and does not name the value returned instead, so any non-\"done\" string satisfies it.)",
+  "ambiguous": true
+ },
+ {
+  "name": "My Profile URL with two-digit year 'Applied on 11/04/26' → done",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/my-profile",
+   "text": "Application status\nApplied on 11/04/26\nSubmitted"
+  },
+  "expect": "done",
+  "spec_quote": "\"Applied on <M/D/YYYY>\" (one or two digit month and day, two or four digit year; case-insensitive) → \"done\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain job page URL (/job/123) with 'Applied on' text → job, not done",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/job/123",
+   "text": "Applied on 11/4/2026"
+  },
+  "expect": "job",
+  "spec_quote": "A URL containing \"/my-profile\" whose text has \"Applied on <M/D/YYYY>\" ... → \"done\". (The rule keys on the URL, so a /job/123 page is not \"done\"; the concrete value \"job\" is fixed by the case format, not stated in the spec.)",
+  "ambiguous": false
+ },
+ {
+  "name": "My Profile URL with lowercase 'applied on 3/7/2026' (one-digit month and day) → done",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/my-profile",
+   "text": "applied on 3/7/2026"
+  },
+  "expect": "done",
+  "spec_quote": "A URL containing \"/my-profile\" whose text has \"Applied on <M/D/YYYY>\" (one or two digit month and day, two or four digit year; case-insensitive) → \"done\".",
+  "ambiguous": false
+ },
+ {
+  "name": "URL merely containing '/my-profile' later in the path with 'Applied on 12/31/2026' → done",
+  "fn": "classify",
+  "args": {
+   "url": "https://careers.example.com/application/my-profile",
+   "text": "Applied on 12/31/2026"
+  },
+  "expect": "done",
+  "spec_quote": "A URL containing \"/my-profile\" whose text has \"Applied on <M/D/YYYY>\" (one or two digit month and day, two or four digit year; case-insensitive) → \"done\".",
+  "ambiguous": false
+ },
+ {
+  "name": "job id as a whole number in 'Careers 8491' plus Applied on → True",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Applied on 11/4/2026\nCareers 8491 — Software Engineer",
+   "job_id": "8491",
+   "title": null
+  },
+  "expect": true,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above) AND either the job id appears as a whole number (not inside a longer number: \"8491\" is in \"Careers 8491\" but not in \"84910\") or the title appears (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "job id 8491 only appears inside longer number 84910 → False",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Applied on 11/4/2026\nCareers 84910",
+   "job_id": "8491",
+   "title": null
+  },
+  "expect": false,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above) AND either the job id appears as a whole number (not inside a longer number: \"8491\" is in \"Careers 8491\" but not in \"84910\") or the title appears (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "Title appears in different case, job id absent → True",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Applied on 11/4/2026\nYou applied to senior data engineer",
+   "job_id": "9999",
+   "title": "Senior Data Engineer"
+  },
+  "expect": true,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above) AND either the job id appears as a whole number ... or the title appears (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "Applied on present but neither job id nor title in text → False",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Applied on 11/4/2026\nThanks for applying!",
+   "job_id": "8491",
+   "title": null
+  },
+  "expect": false,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above) AND either the job id appears as a whole number ... or the title appears (case-insensitive). Otherwise False.",
+  "ambiguous": false
+ },
+ {
+  "name": "job id present as whole number but no 'Applied on <date>' → False",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Careers 8491 — Software Engineer\nApply now",
+   "job_id": "8491",
+   "title": null
+  },
+  "expect": false,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above) AND either the job id appears as a whole number ... or the title appears (case-insensitive). Otherwise False.",
+  "ambiguous": false
+ },
+ {
+  "name": "Two-digit year 'Applied on 11/4/26' plus whole-number job id → True",
+  "fn": "profile_lists",
+  "args": {
+   "text": "Applied on 11/4/26\nJob 8491",
+   "job_id": "8491",
+   "title": null
+  },
+  "expect": true,
+  "spec_quote": "True only when the text has \"Applied on <date>\" (as above: one or two digit month and day, two or four digit year) AND either the job id appears as a whole number ... or the title appears (case-insensitive).",
+  "ambiguous": false
+ }
+]

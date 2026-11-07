@@ -1,0 +1,301 @@
+[
+ {
+  "name": "board_of_linkedin_source",
+  "fn": "board_of",
+  "args": [
+   "linkedin",
+   null
+  ],
+  "expect": "LinkedIn"
+ },
+ {
+  "name": "board_of_indeed_source",
+  "fn": "board_of",
+  "args": [
+   "indeed_search",
+   null
+  ],
+  "expect": "Indeed"
+ },
+ {
+  "name": "board_of_wellfound_source",
+  "fn": "board_of",
+  "args": [
+   "wellfound_search",
+   null
+  ],
+  "expect": "Wellfound"
+ },
+ {
+  "name": "board_of_dice_source",
+  "fn": "board_of",
+  "args": [
+   "dice_search",
+   null
+  ],
+  "expect": "Dice"
+ },
+ {
+  "name": "board_of_builtin_source",
+  "fn": "board_of",
+  "args": [
+   "builtin",
+   null
+  ],
+  "expect": "Built In"
+ },
+ {
+  "name": "board_of_handshake_source",
+  "fn": "board_of",
+  "args": [
+   "handshake",
+   null
+  ],
+  "expect": "Handshake"
+ },
+ {
+  "name": "board_of_linkedin_url_host",
+  "fn": "board_of",
+  "args": [
+   null,
+   "https://www.linkedin.com/jobs/view/123"
+  ],
+  "expect": "LinkedIn"
+ },
+ {
+  "name": "board_of_jobright_url_null",
+  "fn": "board_of",
+  "args": [
+   null,
+   "https://jobright.ai/jobs"
+  ],
+  "expect": null
+ },
+ {
+  "name": "board_pick_linked_in_spelling",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Linked In",
+    "Indeed",
+    "Glassdoor"
+   ],
+   "linkedin",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "Linked In"
+ },
+ {
+  "name": "board_pick_row_board_beats_default",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn.com",
+    "Indeed.com"
+   ],
+   "indeed_search",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "Indeed.com"
+ },
+ {
+  "name": "board_pick_missing_row_board_uses_default_zip",
+  "fn": "board_pick",
+  "args": [
+   [
+    "ZipRecruiter",
+    "Glassdoor"
+   ],
+   "wellfound_search",
+   null,
+   "ZipRecruiter"
+  ],
+  "expect": "ZipRecruiter"
+ },
+ {
+  "name": "board_pick_missing_row_and_linkedin_null",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Indeed",
+    "Glassdoor"
+   ],
+   "wellfound_search",
+   null,
+   "LinkedIn"
+  ],
+  "expect": null
+ },
+ {
+  "name": "board_pick_yes_no_list_null",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Yes",
+    "No"
+   ],
+   "linkedin",
+   null,
+   "LinkedIn"
+  ],
+  "expect": null
+ },
+ {
+  "name": "board_pick_blank_options_and_null_urls",
+  "fn": "board_pick",
+  "args": [
+   [
+    "",
+    " ",
+    "LinkedIn.com"
+   ],
+   null,
+   null,
+   "LinkedIn"
+  ],
+  "expect": "LinkedIn.com"
+ },
+ {
+  "name": "board_pick_default_not_board_but_row_board_found",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Indeed",
+    "LinkedIn"
+   ],
+   "linkedin",
+   null,
+   "NotABoard"
+  ],
+  "expect": "LinkedIn"
+ },
+ {
+  "name": "board_pick_default_not_board_and_row_absent_null",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Indeed",
+    "LinkedIn"
+   ],
+   "wellfound_search",
+   null,
+   "NotABoard"
+  ],
+  "expect": null
+ },
+ {
+  "name": "board_pick_indeed_url_host",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed"
+   ],
+   null,
+   "https://www.indeed.com/viewjob?jk=1",
+   "LinkedIn"
+  ],
+  "expect": "Indeed"
+ },
+ {
+  "name": "board_pick_builtin_source",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Built In"
+   ],
+   "builtin",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "Built In"
+ },
+ {
+  "name": "board_pick_handshake_source",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Handshake",
+    "Indeed"
+   ],
+   "handshake",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "Handshake"
+ },
+ {
+  "name": "board_pick_dice_source",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Dice",
+    "LinkedIn"
+   ],
+   "dice_search",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "Dice"
+ },
+ {
+  "name": "board_pick_missing_row_board_uses_linkedin_default",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed"
+   ],
+   "wellfound_search",
+   null,
+   "LinkedIn"
+  ],
+  "expect": "LinkedIn"
+ },
+ {
+  "name": "board_pick_icims_url_no_board_no_linkedin_null",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Indeed",
+    "Glassdoor"
+   ],
+   null,
+   "https://careers.company.icims.com/jobs/123",
+   "LinkedIn"
+  ],
+  "expect": null
+ },
+ {
+  "name": "board_pick_angel_co_maps_to_wellfound_option",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Angel List",
+    "LinkedIn"
+   ],
+   null,
+   "https://angel.co/company/foo",
+   "LinkedIn"
+  ],
+  "expect": "Angel List"
+ },
+ {
+  "name": "board_pick_source_checked_before_url",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed",
+    "Glassdoor"
+   ],
+   "indeed_search",
+   "https://www.linkedin.com/jobs",
+   "LinkedIn"
+  ],
+  "expect": "Indeed"
+ }
+]

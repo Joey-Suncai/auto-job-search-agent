@@ -1,0 +1,112 @@
+[
+ {
+  "name": "exact_h1b_now_or_future_sponsorship",
+  "label": "Will you now or in the future require sponsorship for employment visa status (e.g., H-1B)?",
+  "expect": true
+ },
+ {
+  "name": "direct_visa_sponsorship_required",
+  "label": "Do you require visa sponsorship?",
+  "expect": true
+ },
+ {
+  "name": "short_sponsorship_required",
+  "label": "Sponsorship required?",
+  "expect": true
+ },
+ {
+  "name": "sponsorship_to_work_in_us",
+  "label": "Will you require sponsorship to work in the United States?",
+  "expect": true
+ },
+ {
+  "name": "employer_sponsorship_now_or_future",
+  "label": "Do you now or will you in the future require employer sponsorship for a work visa?",
+  "expect": true
+ },
+ {
+  "name": "currently_or_future_visa_sponsorship",
+  "label": "Are you currently in need of, or will you in the future require, visa sponsorship?",
+  "expect": true
+ },
+ {
+  "name": "need_sponsorship_employment_visa_status",
+  "label": "Will you need sponsorship for employment visa status?",
+  "expect": true
+ },
+ {
+  "name": "sponsorship_for_employment_authorization",
+  "label": "Do you require sponsorship for employment authorization?",
+  "expect": true
+ },
+ {
+  "name": "employer_sponsored_visa_support",
+  "label": "Will you require employer-sponsored visa support now or in the future?",
+  "expect": true
+ },
+ {
+  "name": "need_visa_sponsorship_for_work_authorization",
+  "label": "Do you need visa sponsorship to be legally authorized to work?",
+  "expect": true
+ },
+ {
+  "name": "future_employment_visa_sponsorship",
+  "label": "Will you now or in the future require sponsorship for an employment visa?",
+  "expect": true
+ },
+ {
+  "name": "arbitration_benefit_plans_sponsors",
+  "label": "By accepting this agreement, you agree that any dispute arising out of your employment, including claims related to the Company's benefit plans or the plans' sponsors, shall be resolved by binding arbitration.",
+  "expect": false
+ },
+ {
+  "name": "data_consent_plan_sponsors",
+  "label": "I consent to the processing of my personal data by the Company and its benefit plan sponsors for purposes of administration and administration-related services.",
+  "expect": false
+ },
+ {
+  "name": "benefit_plans_sponsors_share_information",
+  "label": "I acknowledge that the Company's benefit plans and the plans' sponsors may share information with third-party administrators as described in the plan documents and applicable law.",
+  "expect": false
+ },
+ {
+  "name": "arbitration_jury_waiver_plan_sponsors",
+  "label": "I agree to arbitrate any claims against the Company, its affiliates, and the sponsors of its employee benefit plans, and I waive my right to a jury trial to the fullest extent permitted by law.",
+  "expect": false
+ },
+ {
+  "name": "event_sponsors_communications_consent",
+  "label": "By checking this box, I consent to receive communications from the Company and its event sponsors, including promotional materials and event-related updates.",
+  "expect": false
+ },
+ {
+  "name": "visa_sponsorship_type_currently_held",
+  "label": "What type of visa sponsorship do you currently hold?",
+  "expect": false
+ },
+ {
+  "name": "select_sponsorship_category_seeking",
+  "label": "Select the category of sponsorship you are seeking.",
+  "expect": false
+ },
+ {
+  "name": "check_all_apply_employment_visa_types",
+  "label": "Check all that apply: employment visa types you have held.",
+  "expect": false
+ },
+ {
+  "name": "relocation_assistance_required",
+  "label": "Do you require relocation assistance?",
+  "expect": false
+ },
+ {
+  "name": "current_work_authorization_status",
+  "label": "What is your current work authorization status?",
+  "expect": false
+ },
+ {
+  "name": "legally_authorized_to_work_no_sponsorship_mention",
+  "label": "Are you legally authorized to work in the country?",
+  "expect": false
+ }
+]

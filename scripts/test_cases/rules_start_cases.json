@@ -1,0 +1,146 @@
+[
+ {
+  "name": "start_q_would_available_summer",
+  "label": "When would you be available to start a summer internship?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin (\"When would you be available to start a summer internship?\", ...) → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_could_begin",
+  "label": "When could you be available to begin?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin (..., \"When could you be available to begin?\", ...) → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_can_you_start",
+  "label": "When can you start?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin (..., \"When can you start?\", ...) → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_earliest_start_date",
+  "label": "Earliest start date",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin (..., \"Earliest start date\", ...) → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_date_available_begin_employment",
+  "label": "Date available to begin employment",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin (..., \"Date available to begin employment\") → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_available_to_start",
+  "label": "When are you available to start?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin ... → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_earliest_available_start_date",
+  "label": "What is your earliest available start date?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin ... → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_could_begin_employment",
+  "label": "What date could you begin employment?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin ... → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_able_to_start_internship",
+  "label": "When would you be able to start your internship?",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin ... → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "start_q_start_date_availability",
+  "label": "Start date availability",
+  "type": "text",
+  "options": [],
+  "expect": "06/14/2027",
+  "spec_quote": "A text box asking when he is available / could start / can begin ... → \"06/14/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "length_q_weeks_available",
+  "label": "How many weeks are you available?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how LONG he is available, or about the END date (\"How many weeks are you available?\", ...) is NOT a start-date question → expect \"none\" unless it is answered with the start date by mistake (never \"06/14/2027\").",
+  "ambiguous": false
+ },
+ {
+  "name": "length_q_internship_end",
+  "label": "When would your internship end?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how LONG he is available, or about the END date (..., \"When would your internship end?\") is NOT a start-date question → expect \"none\" unless it is answered with the start date by mistake (never \"06/14/2027\").",
+  "ambiguous": false
+ },
+ {
+  "name": "length_q_how_long_available",
+  "label": "How long are you available for the internship?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how LONG he is available, or about the END date ... is NOT a start-date question → expect \"none\" unless it is answered with the start date by mistake (never \"06/14/2027\").",
+  "ambiguous": false
+ },
+ {
+  "name": "interview_q_available_to_interview",
+  "label": "When are you available to interview?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about availability for interviews (\"When are you available to interview?\") → never \"06/14/2027\" (expect \"none\").",
+  "ambiguous": false
+ },
+ {
+  "name": "interview_q_interview_availability",
+  "label": "Interview availability",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about availability for interviews ... → never \"06/14/2027\" (expect \"none\").",
+  "ambiguous": false
+ },
+ {
+  "name": "interview_q_available_for_interview",
+  "label": "When could you be available for an interview?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about availability for interviews ... → never \"06/14/2027\" (expect \"none\").",
+  "ambiguous": false
+ }
+]

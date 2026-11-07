@@ -1,0 +1,260 @@
+[
+ {
+  "name": "b_clean_ats_url_param_not_unwrapped",
+  "fn": "clean_url",
+  "args": {
+   "url": "https://jobs.lever.co/acme/1234?url=https://evil.com/apply"
+  },
+  "expect": "https://jobs.lever.co/acme/1234?url=https://evil.com/apply",
+  "why": "Redirect wrappers are unwrapped only \"when the URL's host is NOT a known ATS host\"; lever.co is a known ATS host, so \"A known ATS URL is never unwrapped, even if it has such a parameter.\" Also \"Every other parameter is kept in its order\"."
+ },
+ {
+  "name": "b_clean_utm_source_uppercase_dropped",
+  "fn": "clean_url",
+  "args": {
+   "url": "HTTPS://acme.com/careers?UTM_Source=news&jobId=42&Fbclid=xyz"
+  },
+  "expect": "https://acme.com/careers?jobId=42",
+  "why": "\"Tracking parameters are dropped (name case-insensitive): utm_*, ... fbclid\" and \"Every other parameter is kept in its order (e.g. gh_jid, jobId, ...)\"; \"the scheme is lower-cased\"; \"When none is left there is no ?\"."
+ },
+ {
+  "name": "b_posting_workday_details_true",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/details/R-12345"
+  },
+  "expect": true,
+  "why": "\"Workday host: only when the path contains /job/ or /details/\"."
+ },
+ {
+  "name": "b_posting_workday_query_digits_false",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External?jobId=12345678"
+  },
+  "expect": false,
+  "why": "Workday rule is path-only — \"only when the path contains /job/ or /details/ (nothing else counts for Workday)\" — and the general digit/UUID rule excludes Workday: \"Any URL (including the above when their own rule did not hold, except Workday)\"."
+ },
+ {
+  "name": "b_posting_workable_j_code_true",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/AB12CD/"
+  },
+  "expect": true,
+  "why": "\"Workable host: path has /j/<6 or more letters/digits>\" — AB12CD is 6 alphanumerics."
+ },
+ {
+  "name": "b_pick_ats_rule_d_beats_plain_apply_link",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-swe",
+    "links": [
+     {
+      "href": "https://acme.com/careers",
+      "text": "Apply now"
+     },
+     {
+      "href": "https://boards.greenhouse.io/acme/jobs/987654",
+      "text": "View job"
+     }
+    ]
+   }
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/987654",
+  "why": "(b) takes the \"Apply now\" link, (d) takes the Greenhouse link which is \"on a known ATS host AND is posting_like\" (/jobs/<digits>); \"Best = known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS), then the rest\"."
+ },
+ {
+  "name": "b_pick_ats_board_beats_non_ats_posting",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "links": [
+     {
+      "href": "https://acme.com/jobs/123456",
+      "text": "Apply on company site"
+     }
+    ],
+    "data_urls": [
+     {
+      "key": "applicationUrl",
+      "url": "https://boards.greenhouse.io/acme"
+     }
+    ]
+   }
+  },
+  "expect": "https://boards.greenhouse.io/acme",
+  "why": "(c) takes the data_url whose key contains \"application\"; ranking is \"known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS)\" — the Greenhouse board is known ATS, the company URL is only posting_like."
+ },
+ {
+  "name": "b_pick_drops_wellfound_link_and_cleans_tracking",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "links": [
+     {
+      "href": "https://wellfound.com/jobs/1234567-swe/apply",
+      "text": "Apply"
+     },
+     {
+      "href": "https://apply.workable.com/acme/j/ABC123?utm_source=wellfound",
+      "text": "Apply on company site"
+     }
+    ]
+   }
+  },
+  "expect": "https://apply.workable.com/acme/j/ABC123",
+  "why": "\"A candidate is dropped when its cleaned URL is \"\", is on a Wellfound host or a never-apply host\"; candidates are \"cleaned with clean_url\" and \"utm_*\" is dropped, and the Workable URL is known ATS and posting_like so it is best."
+ },
+ {
+  "name": "b_classify_signin_url_in_opened",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "title": "Acme - Software Engineer",
+    "opened": [
+     "https://wellfound.com/login?next=/jobs/1234567-software-engineer"
+    ]
+   }
+  },
+  "expect": {
+   "via": "signin",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 2: \"a URL in `opened` is such a Wellfound sign-in URL\" (path starts with /login)."
+ },
+ {
+  "name": "b_classify_company_redirect_closed",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/company/acme",
+    "title": "Acme"
+   }
+  },
+  "expect": {
+   "via": "closed",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 3: \"`url` is on a Wellfound host and its path has no /jobs/<digits> (the job page redirected elsewhere, e.g. to /jobs or /company/acme)\"."
+ },
+ {
+  "name": "b_classify_company_jobs_path_still_job_page",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/company/acme/jobs/7654321-software-engineer",
+    "modal": "Send application  Write a note"
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "The path does contain /jobs/<digits>, so rule 3's URL check does not hold; pick_external is \"\" so rule 4 fails; rule 5: \"`modal` contains \"send application\" ... \"write a note\"\"."
+ },
+ {
+  "name": "b_classify_signin_to_apply_text",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "text": "Log in to apply to this role"
+   }
+  },
+  "expect": {
+   "via": "signin",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 6: \"the text says \"log in to apply\" ... (any case)\"."
+ },
+ {
+  "name": "b_classify_already_applied_button",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "buttons": [
+     "Already applied"
+    ]
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 7: \"a button label or link text starts with \"Applied\", \"Already applied\" or \"You applied\" (any case)\"."
+ },
+ {
+  "name": "b_classify_wellfound_apply_link",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "links": [
+     {
+      "href": "https://wellfound.com/jobs/1234567-software-engineer/apply",
+      "text": "Apply"
+     }
+    ]
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 8: \"a link on a Wellfound host whose text is exactly an apply label\" (\"Apply\"); the same link is dropped from pick_external because it \"is on a Wellfound host\"."
+ },
+ {
+  "name": "b_classify_peeked_opened_nothing",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "buttons": [
+     "Apply"
+    ],
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "unknown",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 9: \"a button whose label is exactly an apply label (reason says a peek is needed, or — when `peeked` is true — that the peek opened nothing readable)\"; no opened URL, no modal text."
+ },
+ {
+  "name": "b_classify_apply_label_near_misses_unknown",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-software-engineer",
+    "buttons": [
+     "Apply filters",
+     "Send application"
+    ],
+    "links": [
+     {
+      "href": "https://acme.com",
+      "text": "acme.com"
+     }
+    ]
+   }
+  },
+  "expect": {
+   "via": "unknown",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "why": "Rule 10: \"otherwise (no Apply control)\" — an apply label is a whole label from the list and \"\"Send application\" or \"Submit\" is not one\", so \"Apply filters\" and \"Send application\" do not match; the plain company link is not a candidate (\"A plain company-website link (label \"acme.com\", no \"apply\") is not a candidate unless rule (d) takes it\" and acme.com is not a known ATS host)."
+ }
+]

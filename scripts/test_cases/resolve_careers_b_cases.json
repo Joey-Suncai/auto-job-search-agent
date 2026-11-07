@@ -1,0 +1,354 @@
+[
+ {
+  "name": "norm_title expands Quant and Assoc with trailing dot",
+  "fn": "norm_title",
+  "args": {
+   "t": "Quant Analytics Assoc."
+  },
+  "expect": "quantitative analytics associate",
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior, Jr → junior, Assoc → associate, Mgr → manager, Eng → engineer, Mgmt → management, Quant → quantitative, ML → machine learning, Intl → international. So \"Quant Analytics Assoc.\" and \"Quantitative Analytics Associate\" are similarity 1.0.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title expands Sr dot and Eng after removing trailing - Remote",
+  "fn": "norm_title",
+  "args": {
+   "t": "Sr. Software Eng - Remote"
+  },
+  "expect": "senior software engineer",
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior, Jr → junior, Assoc → associate, Mgr → manager, Eng → engineer, Mgmt → management, Quant → quantitative, ML → machine learning, Intl → international.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title expands ML and Mgr",
+  "fn": "norm_title",
+  "args": {
+   "t": "ML Mgr (Remote)"
+  },
+  "expect": "machine learning manager",
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior, Jr → junior, Assoc → associate, Mgr → manager, Eng → engineer, Mgmt → management, Quant → quantitative, ML → machine learning, Intl → international.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title expands Intl, Mgmt, Jr",
+  "fn": "norm_title",
+  "args": {
+   "t": "Intl Mgmt Jr"
+  },
+  "expect": "international management junior",
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior, Jr → junior, Assoc → associate, Mgr → manager, Eng → engineer, Mgmt → management, Quant → quantitative, ML → machine learning, Intl → international.",
+  "ambiguous": false
+ },
+ {
+  "name": "match_posting abbreviation similarity 1.0 with city match",
+  "fn": "match_posting",
+  "args": {
+   "title": "Quant Analytics Assoc.",
+   "location": "New York, NY",
+   "postings": [
+    [
+     "Quantitative Analytics Associate",
+     "https://boards.greenhouse.io/acme/jobs/123",
+     "New York, NY"
+    ]
+   ]
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/123",
+  "spec_quote": "So \"Quant Analytics Assoc.\" and \"Quantitative Analytics Associate\" are similarity 1.0.",
+  "ambiguous": false
+ },
+ {
+  "name": "match_posting Sr/Eng expansion beats lower-similarity posting",
+  "fn": "match_posting",
+  "args": {
+   "title": "Sr. Data Eng",
+   "location": "Remote",
+   "postings": [
+    [
+     "Senior Data Engineer",
+     "https://jobs.lever.co/acme/1",
+     "Remote"
+    ],
+    [
+     "Data Engineer",
+     "https://jobs.lever.co/acme/2",
+     "Remote"
+    ]
+   ]
+  },
+  "expect": "https://jobs.lever.co/acme/1",
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior, Jr → junior, Assoc → associate, Mgr → manager, Eng → engineer, Mgmt → management, Quant → quantitative, ML → machine learning, Intl → international.",
+  "ambiguous": false
+ },
+ {
+  "name": "match_posting Mgr/Eng tie resolved by city",
+  "fn": "match_posting",
+  "args": {
+   "title": "Mgr Eng",
+   "location": "Denver, CO",
+   "postings": [
+    [
+     "Manager Engineer",
+     "https://jobs.ashbyhq.com/acme/1",
+     "Austin, TX"
+    ],
+    [
+     "Manager Engineer",
+     "https://jobs.ashbyhq.com/acme/2",
+     "Denver, CO"
+    ]
+   ]
+  },
+  "expect": "https://jobs.ashbyhq.com/acme/2",
+  "spec_quote": "Several postings tie on the best score with different URLs → the single one whose location contains the row's city; none, or more than one with different URLs → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company Bank of America fallback distinctive words on correct domain",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Bank of America | Careers</title></head><body>jobs</body></html>",
+   "company": "Bank of America",
+   "final_url": "https://www.bankofamerica.com/careers"
+  },
+  "expect": true,
+  "spec_quote": "names_company: when no distinctive word is left after dropping generic words (e.g. \"Bank of America\"), the distinctive words are the company key's words other than the, and, of (one-letter words still dropped) → \"bank\", \"america\".",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company Bank of America redirected to linkedin",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>LinkedIn</title></head><body>company page</body></html>",
+   "company": "Bank of America",
+   "final_url": "https://www.linkedin.com/company/bank-of-america"
+  },
+  "expect": false,
+  "spec_quote": "Otherwise → false (e.g. a guessed domain that redirected to linkedin.com or a domain-parking site).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_company Bank of America domain right but title omits company words",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Home</title></head><body>welcome</body></html>",
+   "company": "Bank of America",
+   "final_url": "https://www.bankofamerica.com/"
+  },
+  "expect": false,
+  "spec_quote": "names_company: when no distinctive word is left after dropping generic words (e.g. \"Bank of America\"), the distinctive words are the company key's words other than the, and, of (one-letter words still dropped) → \"bank\", \"america\".",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates simple name dedupes",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "Acme Corp"
+  },
+  "expect": [
+   "acme.com",
+   "acme.org"
+  ],
+  "spec_quote": "domain_candidates(company) → list of domains, no duplicates, in this order: words = company key (lower-case, text in parentheses removed, legal suffixes removed, punctuation → space) minus \"the\" and \"and\"; ... Candidates: all words joined + \".com\"; first two words joined + \".com\"; first word + \".com\" (left out when the first word has < 3 letters and there are more words); words joined by \"-\" + \".com\"; when ≥ 3 words, their initials + \".com\"; finally all words joined + \".org\".",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates three-word full list",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "Booz Allen Hamilton"
+  },
+  "expect": [
+   "boozallenhamilton.com",
+   "boozallen.com",
+   "booz.com",
+   "booz-allen-hamilton.com",
+   "bah.com",
+   "boozallenhamilton.org"
+  ],
+  "spec_quote": "domain_candidates(company) → list of domains, no duplicates, in this order: ... Candidates: all words joined + \".com\"; first two words joined + \".com\"; first word + \".com\" (left out when the first word has < 3 letters and there are more words); words joined by \"-\" + \".com\"; when ≥ 3 words, their initials + \".com\"; finally all words joined + \".org\".",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates removes the and punctuation",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "The Coca-Cola Company"
+  },
+  "expect": [
+   "cocacola.com",
+   "coca.com",
+   "coca-cola.com",
+   "cocacola.org"
+  ],
+  "spec_quote": "words = company key (lower-case, text in parentheses removed, legal suffixes removed, punctuation → space) minus \"the\" and \"and\"",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates drops and-sons part",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "Smith & Sons"
+  },
+  "expect": [
+   "smith.com",
+   "smith.org"
+  ],
+  "spec_quote": "the part of the name after \" and \" / \" & \" is dropped when that part ends in \"securities\" or \"sons\".",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates omits short first word",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "A.G. Edwards"
+  },
+  "expect": [
+   "agedwards.com",
+   "ag.com",
+   "a-g-edwards.com",
+   "age.com",
+   "agedwards.org"
+  ],
+  "spec_quote": "first word + \".com\" (left out when the first word has < 3 letters and there are more words)",
+  "ambiguous": false
+ },
+ {
+  "name": "domain_candidates non-latin name yields empty",
+  "fn": "domain_candidates",
+  "args": {
+   "company": "腾讯科技"
+  },
+  "expect": [],
+  "spec_quote": "A name with characters outside a-z0-9 after cleaning (e.g. Chinese) → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "board_guesses single-word company",
+  "fn": "board_guesses",
+  "args": {
+   "company": "Acme Corp"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "acme"
+   ]
+  ],
+  "spec_quote": "board_guesses(company) → for slug in [all words of the company key joined, joined by \"-\"] (each ≥ 3 letters, no duplicates) and for ats in greenhouse, lever, ashby: [ats, slug].",
+  "ambiguous": false
+ },
+ {
+  "name": "board_guesses three-word company two slugs",
+  "fn": "board_guesses",
+  "args": {
+   "company": "Booz Allen Hamilton"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "boozallenhamilton"
+   ],
+   [
+    "lever",
+    "boozallenhamilton"
+   ],
+   [
+    "ashby",
+    "boozallenhamilton"
+   ],
+   [
+    "greenhouse",
+    "booz-allen-hamilton"
+   ],
+   [
+    "lever",
+    "booz-allen-hamilton"
+   ],
+   [
+    "ashby",
+    "booz-allen-hamilton"
+   ]
+  ],
+  "spec_quote": "board_guesses(company) → for slug in [all words of the company key joined, joined by \"-\"] (each ≥ 3 letters, no duplicates) and for ats in greenhouse, lever, ashby: [ats, slug]. The first word alone is never a guess for a multi-word name.",
+  "ambiguous": false
+ },
+ {
+  "name": "board_guesses punctuation company slugs",
+  "fn": "board_guesses",
+  "args": {
+   "company": "Coca-Cola"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "cocacola"
+   ],
+   [
+    "lever",
+    "cocacola"
+   ],
+   [
+    "ashby",
+    "cocacola"
+   ],
+   [
+    "greenhouse",
+    "coca-cola"
+   ],
+   [
+    "lever",
+    "coca-cola"
+   ],
+   [
+    "ashby",
+    "coca-cola"
+   ]
+  ],
+  "spec_quote": "board_guesses(company) → for slug in [all words of the company key joined, joined by \"-\"] (each ≥ 3 letters, no duplicates) and for ats in greenhouse, lever, ashby: [ats, slug].",
+  "ambiguous": false
+ },
+ {
+  "name": "board_guesses does not drop and-sons part",
+  "fn": "board_guesses",
+  "args": {
+   "company": "Smith & Sons"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "smithsons"
+   ],
+   [
+    "lever",
+    "smithsons"
+   ],
+   [
+    "ashby",
+    "smithsons"
+   ],
+   [
+    "greenhouse",
+    "smith-sons"
+   ],
+   [
+    "lever",
+    "smith-sons"
+   ],
+   [
+    "ashby",
+    "smith-sons"
+   ]
+  ],
+  "spec_quote": "board_guesses(company) → for slug in [all words of the company key joined, joined by \"-\"] (each ≥ 3 letters, no duplicates) and for ats in greenhouse, lever, ashby: [ats, slug]. The first word alone is never a guess for a multi-word name.",
+  "ambiguous": false
+ }
+]

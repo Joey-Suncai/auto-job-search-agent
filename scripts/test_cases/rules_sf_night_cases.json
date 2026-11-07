@@ -1,0 +1,256 @@
+[
+ {
+  "name": "Enrolled in business master's — radio",
+  "label": "Are you currently pursuing a Bachelor's or Master's degree in business or a related field?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you (currently) pursuing / enrolled in a Bachelor's or Master's degree in business or a related field?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Enrolled in business degree — select wording variant",
+  "label": "Are you enrolled in a Master's degree program in business or a related field?",
+  "type": "select",
+  "options": [
+   "Select...",
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you (currently) pursuing / enrolled in a Bachelor's or Master's degree in business or a related field?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Pursuing bachelor's/master's in business — lowercase variant",
+  "label": "Are you pursuing a bachelor's or master's degree in business or a related field?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you (currently) pursuing / enrolled in a Bachelor's or Master's degree in business or a related field?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Ever hired at a third-party company — radio",
+  "label": "Have you ever been hired at Google?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Have you ever been hired at / employed by <company>?\" (company not Frost & Sullivan / Hyde Park) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Ever employed by a third-party company — select",
+  "label": "Have you ever been employed by Amazon Web Services?",
+  "type": "select",
+  "options": [
+   "--Select--",
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Have you ever been hired at / employed by <company>?\" (company not Frost & Sullivan / Hyde Park) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Ever hired by a consulting firm (not on the exception list)",
+  "label": "Were you ever hired by McKinsey & Company?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Have you ever been hired at / employed by <company>?\" (company not Frost & Sullivan / Hyde Park) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Ever employed by Frost & Sullivan — exception company",
+  "label": "Have you ever been employed by Frost & Sullivan?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Have you ever been hired at / employed by <company>?\" (company not Frost & Sullivan / Hyde Park) → \"No\".",
+  "ambiguous": true
+ },
+ {
+  "name": "Proof of age if hired — radio",
+  "label": "If hired, can you show proof of age?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"If hired, can you show proof of age?\" / \"Can you provide proof that you are at least 18?\" → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "At least 18 proof — select",
+  "label": "Can you provide proof that you are at least 18?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"If hired, can you show proof of age?\" / \"Can you provide proof that you are at least 18?\" → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Proof of age reworded",
+  "label": "If hired, will you be able to show proof of age?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No",
+   "Prefer not to answer"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"If hired, can you show proof of age?\" / \"Can you provide proof that you are at least 18?\" → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "County/State list — Illinois",
+  "label": "County/State",
+  "type": "select",
+  "options": [
+   "Alabama",
+   "Alaska",
+   "Illinois",
+   "Indiana",
+   "Iowa"
+  ],
+  "expect": "Illinois",
+  "spec_quote": "A list labelled \"County/State\" (options are U.S. states) → \"Illinois\".",
+  "ambiguous": false
+ },
+ {
+  "name": "County/State list — full state list",
+  "label": "County/State",
+  "type": "select",
+  "options": [
+   "Alabama",
+   "Alaska",
+   "Arizona",
+   "California",
+   "Colorado",
+   "Florida",
+   "Illinois",
+   "New York",
+   "Texas",
+   "Wisconsin"
+  ],
+  "expect": "Illinois",
+  "spec_quote": "A list labelled \"County/State\" (options are U.S. states) → \"Illinois\".",
+  "ambiguous": false
+ },
+ {
+  "name": "County/State list — alphabetical with placeholder",
+  "label": "County/State",
+  "type": "select",
+  "options": [
+   "--Select--",
+   "Illinois",
+   "Indiana",
+   "Michigan",
+   "Ohio"
+  ],
+  "expect": "Illinois",
+  "spec_quote": "A list labelled \"County/State\" (options are U.S. states) → \"Illinois\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain County text box",
+  "label": "County",
+  "type": "text",
+  "options": [],
+  "expect": "Cook",
+  "spec_quote": "A plain \"County\" box → \"Cook\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain County box — lowercase label",
+  "label": "County",
+  "type": "text",
+  "options": [],
+  "expect": "Cook",
+  "spec_quote": "A plain \"County\" box → \"Cook\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain County box — no state options present",
+  "label": "County",
+  "type": "text",
+  "options": [],
+  "expect": "Cook",
+  "spec_quote": "A plain \"County\" box → \"Cook\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Relative Name optional text box",
+  "label": "Relative Name",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Optional text boxes \"Relative Name\", \"Position\", \"Relationship\" that follow a relatives question → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Position optional text box",
+  "label": "Position",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Optional text boxes \"Relative Name\", \"Position\", \"Relationship\" that follow a relatives question → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Relationship optional text box",
+  "label": "Relationship",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Optional text boxes \"Relative Name\", \"Position\", \"Relationship\" that follow a relatives question → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Address Line1",
+  "label": "Address Line1",
+  "type": "text",
+  "options": [],
+  "expect": "100 Main St",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Address Line 1 with space",
+  "label": "Address Line 1",
+  "type": "text",
+  "options": [],
+  "expect": "100 Main St",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Street Address",
+  "label": "Street Address",
+  "type": "text",
+  "options": [],
+  "expect": "100 Main St",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "ambiguous": false
+ }
+]

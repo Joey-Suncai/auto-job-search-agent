@@ -1,0 +1,393 @@
+[
+ {
+  "id": "w1",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "full_name",
+     "label": "Full name",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": []
+  },
+  "expect": [
+   {
+    "question": "Full name",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "every field that is required, is not of type \"file\", whose answer `ans[key]` is missing or has a status other than \"ok\", and whose key is not the `id` of an entry in `missing` ... Output, in field order: {\"question\": label, \"options\": the field's options (a list, [] when none), \"kind\": \"question\"}."
+ },
+ {
+  "id": "w2",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "email",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {
+    "email": {
+     "status": "ok",
+     "value": "a@b.com"
+    }
+   },
+   "missing": []
+  },
+  "expect": [],
+  "spec": "whose answer `ans[key]` is missing or has a status other than \"ok\""
+ },
+ {
+  "id": "w3",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "phone",
+     "label": "Phone",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {
+    "phone": {
+     "status": "draft",
+     "value": "123"
+    }
+   },
+   "missing": []
+  },
+  "expect": [
+   {
+    "question": "Phone",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "whose answer `ans[key]` is missing or has a status other than \"ok\""
+ },
+ {
+  "id": "w4",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "resume",
+     "label": "Resume",
+     "type": "file",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": []
+  },
+  "expect": [],
+  "spec": "is not of type \"file\""
+ },
+ {
+  "id": "w5",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "cover",
+     "label": "Cover letter",
+     "type": "textarea",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": [
+    {
+     "id": "cover",
+     "label": "Cover letter"
+    }
+   ]
+  },
+  "expect": [],
+  "spec": "whose key is not the `id` of an entry in `missing` (missing = essay boxes not drafted yet — ds_materials drafts those, so they are not Joey's questions here)."
+ },
+ {
+  "id": "w6",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "nickname",
+     "label": "Nickname",
+     "type": "text",
+     "required": false,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": []
+  },
+  "expect": [],
+  "spec": "A not-required field is never listed, even with no answer."
+ },
+ {
+  "id": "w7",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "select",
+     "required": true,
+     "options": [
+      "Engineer",
+      "Designer"
+     ]
+    }
+   ],
+   "ans": {},
+   "missing": []
+  },
+  "expect": [
+   {
+    "question": "Role",
+    "options": [
+     "Engineer",
+     "Designer"
+    ],
+    "kind": "question"
+   }
+  ],
+  "spec": "\"options\": the field's options (a list, [] when none)"
+ },
+ {
+  "id": "w8",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "b",
+     "label": "B",
+     "type": "text",
+     "required": true,
+     "options": []
+    },
+    {
+     "key": "a",
+     "label": "A",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": []
+  },
+  "expect": [
+   {
+    "question": "B",
+    "options": [],
+    "kind": "question"
+   },
+   {
+    "question": "A",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "Output, in field order: {\"question\": label, \"options\": the field's options (a list, [] when none), \"kind\": \"question\"}."
+ },
+ {
+  "id": "w9",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "first",
+     "label": "First",
+     "type": "text",
+     "required": true,
+     "options": []
+    },
+    {
+     "key": "second",
+     "label": "Second",
+     "type": "text",
+     "required": true,
+     "options": []
+    },
+    {
+     "key": "third",
+     "label": "Third",
+     "type": "file",
+     "required": true,
+     "options": []
+    },
+    {
+     "key": "fourth",
+     "label": "Fourth",
+     "type": "textarea",
+     "required": true,
+     "options": []
+    },
+    {
+     "key": "fifth",
+     "label": "Fifth",
+     "type": "text",
+     "required": false,
+     "options": []
+    },
+    {
+     "key": "sixth",
+     "label": "Sixth",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {
+    "second": {
+     "status": "ok",
+     "value": "done"
+    },
+    "sixth": {
+     "status": "pending",
+     "value": "x"
+    }
+   },
+   "missing": [
+    {
+     "id": "fourth",
+     "label": "Fourth"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "First",
+    "options": [],
+    "kind": "question"
+   },
+   {
+    "question": "Sixth",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "every field that is required, is not of type \"file\", whose answer `ans[key]` is missing or has a status other than \"ok\", and whose key is not the `id` of an entry in `missing` ... A not-required field is never listed, even with no answer."
+ },
+ {
+  "id": "w10",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "x",
+     "label": "X",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {
+    "x": {
+     "status": "ok"
+    }
+   },
+   "missing": []
+  },
+  "expect": [],
+  "spec": "whose answer `ans[key]` is missing or has a status other than \"ok\""
+ },
+ {
+  "id": "w11",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "a",
+     "label": "A",
+     "type": "text",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {},
+   "missing": [
+    {
+     "id": "b",
+     "label": "B"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "A",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "whose key is not the `id` of an entry in `missing`"
+ },
+ {
+  "id": "w12",
+  "fn": "offline_unknowns",
+  "input": {
+   "fields": [
+    {
+     "key": "why",
+     "label": "Why?",
+     "type": "textarea",
+     "required": true,
+     "options": []
+    }
+   ],
+   "ans": {
+    "why": {
+     "status": "error",
+     "value": "bad"
+    }
+   },
+   "missing": []
+  },
+  "expect": [
+   {
+    "question": "Why?",
+    "options": [],
+    "kind": "question"
+   }
+  ],
+  "spec": "whose answer `ans[key]` is missing or has a status other than \"ok\""
+ },
+ {
+  "id": "w13",
+  "fn": "offline",
+  "input": {
+   "ats": "workable",
+   "dry_run": false
+  },
+  "expect": true,
+  "spec": "`offline(\"workable\", false)` is true (Workable publishes its form schema)"
+ },
+ {
+  "id": "w14",
+  "fn": "offline",
+  "input": {
+   "ats": "workable",
+   "dry_run": true
+  },
+  "expect": false,
+  "spec": "`offline(\"workable\", true)` is false (--dry-run)"
+ }
+]

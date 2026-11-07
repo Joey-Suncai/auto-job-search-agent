@@ -1,0 +1,3 @@
+Return a JSON array of test cases. Each case:
+{"name": "short unique snake_case name", "label": "the form question text", "type": "select" | "radio", "options": ["Yes", "No"] (vary: also "Yes, I do" / "No, I do not", reordered), "jd": "2-6 sentences of a realistic job description (or \"\" for the no-JD case)", "expect": "the exact option text" | "ASK" | "NOT_THIS_RULE"}
+Mix: about 10 cases expecting the Yes option (internship / new-grad JDs, including tricky ones mentioning years of college, age 18, company history, a 4-year degree, 0-2 years), about 12 expecting "ASK" (years required or preferred, digits and words, one empty JD), about 5 "NOT_THIS_RULE". Vary the question wording and the company names.

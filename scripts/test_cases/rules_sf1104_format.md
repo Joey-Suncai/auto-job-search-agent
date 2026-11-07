@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "type": "select"|"radio"|"checkbox", "options": [str], "expect": str, "spec_quote": str, "ambiguous": false}. Write 20 cases, 4 per bullet, varied wording and option order.

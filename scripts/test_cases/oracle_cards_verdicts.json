@@ -1,0 +1,6 @@
+{
+ "My Profile URL without any 'Applied on <date>' → not done (exact non-done label unspecified)": {
+  "verdict": "case",
+  "why": "the spec only says this page is not \"done\"; the case invented a \"profile\" label. classify returns \"unknown\", which is not done."
+ }
+}

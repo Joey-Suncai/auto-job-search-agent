@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": "unique_snake_case", "fn": "is_review_page" | "step_changed", "args": {"step": "...", "fields": [{"type": "text"}]} or {"before_step": "...", "before_keys": ["w1"], "after_step": "...", "after_keys": ["w2"]}, "expect": true|false, "spec": "quoted sentence"}

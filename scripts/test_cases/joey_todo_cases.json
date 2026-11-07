@@ -1,0 +1,485 @@
+[
+ {
+  "name": "single_open_queue_line_is_answers",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Acme_Data_Intern** — Workday needs answers: sponsorship question — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Acme_Data_Intern",
+    "n": 1,
+    "kind": "answers"
+   }
+  ],
+  "spec_quote": "`n` = how many open entries (all three ledgers together) the folder has; the row shows the NEWEST entry's message (by time). ... answers (needs answers, no rule answers, unknown, question)",
+  "ambiguous": false
+ },
+ {
+  "name": "unconfirmed_no_confirmation",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Bolt_Mkt_Intern** — No confirmation email received yet — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Bolt_Mkt_Intern",
+    "n": 1,
+    "kind": "unconfirmed"
+   }
+  ],
+  "spec_quote": "unconfirmed (no confirmation / unconfirmed / check Gmail)",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha_wins_over_sign_in",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Core_QA_Intern** — Complete the CAPTCHA then sign in to continue — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Core_QA_Intern",
+    "n": 1,
+    "kind": "captcha"
+   }
+  ],
+  "spec_quote": "first match wins, in this order: unconfirmed ... · captcha (CAPTCHA, human check, \"verify you are human\") · sign-in (sign in, account creation, login, password, one-time code)",
+  "ambiguous": false
+ },
+ {
+  "name": "sign_in_wins_over_answers",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Dune_Ops_Intern** — sign in to the portal, then it needs answers about degree — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Dune_Ops_Intern",
+    "n": 1,
+    "kind": "sign-in"
+   }
+  ],
+  "spec_quote": "first match wins, in this order: ... sign-in (sign in, account creation, login, password, one-time code) · answers (needs answers, no rule answers, unknown, question)",
+  "ambiguous": false
+ },
+ {
+  "name": "newest_message_decides_kind_n_counts_two",
+  "queue": [
+   "- [ ] 2026-11-01T09:00:00 **2026-11-01_Echo_Eng_Intern** — Welcome to the portal — https://a",
+   "- [ ] 2026-11-01T11:00:00 **2026-11-01_Echo_Eng_Intern** — Upload your transcript — https://b"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Echo_Eng_Intern",
+    "n": 2,
+    "kind": "materials"
+   }
+  ],
+  "spec_quote": "`n` = how many open entries (all three ledgers together) the folder has; the row shows the NEWEST entry's message (by time). ... materials (materials, transcript, resume, cover letter)",
+  "ambiguous": false
+ },
+ {
+  "name": "ticked_line_never_counts_closed",
+  "queue": [
+   "- [x] 2026-11-01T10:00:00 **2026-11-01_Fox_Legal_Intern** — Verify you are human — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [],
+  "spec_quote": "Ticked (`[x]`) queue lines and resolved checks never count.",
+  "ambiguous": false
+ },
+ {
+  "name": "open_human_check_is_captcha",
+  "queue": [],
+  "human_checks": [
+   {
+    "at": "2026-11-01T10:00:00",
+    "folder": "2026-11-01_Glen_PM_Intern",
+    "state": "open",
+    "checks": [
+     {
+      "question": "Please solve the puzzle"
+     }
+    ]
+   }
+  ],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Glen_PM_Intern",
+    "n": 1,
+    "kind": "captcha"
+   }
+  ],
+  "spec_quote": "A row whose newest entry is a human check is type captcha.",
+  "ambiguous": false
+ },
+ {
+  "name": "last_human_check_line_resolved_not_listed",
+  "queue": [],
+  "human_checks": [
+   {
+    "at": "2026-11-01T09:00:00",
+    "folder": "2026-11-01_Hill_Fin_Intern",
+    "state": "open",
+    "checks": [
+     {
+      "question": "Verify you are human"
+     }
+    ]
+   },
+   {
+    "at": "2026-11-01T12:00:00",
+    "folder": "2026-11-01_Hill_Fin_Intern",
+    "state": "resolved",
+    "checks": [
+     {
+      "question": "Verify you are human"
+     }
+    ]
+   }
+  ],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [],
+  "spec_quote": "human checks: JSON lines {at, folder, state: open|resolved, checks:[{question}]} — the LAST line per folder decides whether it is open; ... Ticked (`[x]`) queue lines and resolved checks never count.",
+  "ambiguous": false
+ },
+ {
+  "name": "dashboard_only_needs_you_waits",
+  "queue": [],
+  "human_checks": [],
+  "apply_requests": [
+   {
+    "at": "2026-11-01T09:00:00",
+    "id": "J00001",
+    "status": "needs-you",
+    "note": "Workday needs answers: degree level"
+   },
+   {
+    "at": "2026-11-01T09:00:00",
+    "id": "J00002",
+    "status": "queued",
+    "note": "sign in required"
+   },
+   {
+    "at": "2026-11-01T09:00:00",
+    "id": "J00003",
+    "status": "cancelled",
+    "note": "upload transcript"
+   }
+  ],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {
+   "2026-11-01_Ivy_QA_Intern": "J00001",
+   "2026-11-01_Jet_Ops_Intern": "J00002",
+   "2026-11-01_Kim_Sales_Intern": "J00003"
+  },
+  "expect": [
+   {
+    "folder": "2026-11-01_Ivy_QA_Intern",
+    "n": 1,
+    "kind": "answers"
+   }
+  ],
+  "spec_quote": "dashboard Apply requests: JSON lines {at, id (job id), status, note} — the LAST line per job id decides; only status `needs-you` waits for Joey.",
+  "ambiguous": false
+ },
+ {
+  "name": "dashboard_unknown_job_listed_under_job_id",
+  "queue": [],
+  "human_checks": [],
+  "apply_requests": [
+   {
+    "at": "2026-11-01T10:00:00",
+    "id": "J00099",
+    "status": "needs-you",
+    "note": "Verify you are human before applying"
+   }
+  ],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "J00099",
+    "n": 1,
+    "kind": "captcha"
+   }
+  ],
+  "spec_quote": "A dashboard request maps to its folder through the job id; with no folder known it is listed under the job id.",
+  "ambiguous": false
+ },
+ {
+  "name": "three_ledgers_combined_n3_newest_note_wins",
+  "queue": [
+   "- [ ] 2026-11-01T08:00:00 **2026-11-01_Lyn_Dev_Intern** — Runner error: timeout — https://x"
+  ],
+  "human_checks": [
+   {
+    "at": "2026-11-01T09:00:00",
+    "folder": "2026-11-01_Lyn_Dev_Intern",
+    "state": "open",
+    "checks": [
+     {
+      "question": "Are you human?"
+     }
+    ]
+   }
+  ],
+  "apply_requests": [
+   {
+    "at": "2026-11-01T10:00:00",
+    "id": "J00010",
+    "status": "needs-you",
+    "note": "Needs answers: salary expectation"
+   }
+  ],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {
+   "2026-11-01_Lyn_Dev_Intern": "J00010"
+  },
+  "expect": [
+   {
+    "folder": "2026-11-01_Lyn_Dev_Intern",
+    "n": 3,
+    "kind": "answers"
+   }
+  ],
+  "spec_quote": "`n` = how many open entries (all three ledgers together) the folder has; the row shows the NEWEST entry's message (by time).",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_result_closes_folder",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Moss_Mkt_Intern** — Upload your cover letter — https://x"
+  ],
+  "human_checks": [
+   {
+    "at": "2026-11-01T11:00:00",
+    "folder": "2026-11-01_Moss_Mkt_Intern",
+    "state": "open",
+    "checks": [
+     {
+      "question": "Are you human?"
+     }
+    ]
+   }
+  ],
+  "apply_requests": [],
+  "submitted": [
+   "2026-11-01_Moss_Mkt_Intern"
+  ],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [],
+  "spec_quote": "A folder is NOT listed (closed by itself) when: it has a `submitted` result, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "tracker_interview_status_closes_folder",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Nile_Fin_Intern** — Submit your transcript — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {
+   "J00005": "Interview"
+  },
+  "jobs": {},
+  "job_of": {
+   "2026-11-01_Nile_Fin_Intern": "J00005"
+  },
+  "expect": [],
+  "spec_quote": "A folder is NOT listed (closed by itself) when: ... its tracker row's status is one of Applied / Assessment / Interview / Offer / Rejected / Archived / No response / Withdrawn ...",
+  "ambiguous": false
+ },
+ {
+  "name": "job_eligibility_closed_closes_folder",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Orca_Sales_Intern** — CAPTCHA required — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {
+   "J00006": "已关闭"
+  },
+  "job_of": {
+   "2026-11-01_Orca_Sales_Intern": "J00006"
+  },
+  "expect": [],
+  "spec_quote": "A folder is NOT listed (closed by itself) when: ... OR its job's eligibility is 已关闭 / 不可投 / 重复.",
+  "ambiguous": false
+ },
+ {
+  "name": "rows_ordered_by_problem_type",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Pine_Dev_Intern** — Upload resume please — https://a",
+   "- [ ] 2026-11-01T11:00:00 **2026-11-01_Quill_Des_Intern** — No confirmation yet — https://b",
+   "- [ ] 2026-11-01T09:00:00 **2026-11-01_Rio_PM_Intern** — Needs answers: why us — https://c"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Quill_Des_Intern",
+    "n": 1,
+    "kind": "unconfirmed"
+   },
+   {
+    "folder": "2026-11-01_Rio_PM_Intern",
+    "n": 1,
+    "kind": "answers"
+   },
+   {
+    "folder": "2026-11-01_Pine_Dev_Intern",
+    "n": 1,
+    "kind": "materials"
+   }
+  ],
+  "spec_quote": "Rows are ordered by problem type in the order above, then oldest first.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_type_ordered_oldest_first",
+  "queue": [
+   "- [ ] 2026-11-01T12:00:00 **2026-11-01_Sun_A_Intern** — A general note from the portal — https://a",
+   "- [ ] 2026-11-01T08:00:00 **2026-11-01_Tan_B_Intern** — Another general note — https://b"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Tan_B_Intern",
+    "n": 1,
+    "kind": "other"
+   },
+   {
+    "folder": "2026-11-01_Sun_A_Intern",
+    "n": 1,
+    "kind": "other"
+   }
+  ],
+  "spec_quote": "Rows are ordered by problem type in the order above, then oldest first. ... otherwise other.",
+  "ambiguous": false
+ },
+ {
+  "name": "materials_wins_over_gate_referral",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Uma_Eng_Intern** — Upload your resume; a referral code is needed — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Uma_Eng_Intern",
+    "n": 1,
+    "kind": "materials"
+   }
+  ],
+  "spec_quote": "materials (materials, transcript, resume, cover letter) · gate (canonical / canon, fields not confirmed, review page lacks, not approved, referral)",
+  "ambiguous": false
+ },
+ {
+  "name": "runner_error_wins_over_refused",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Vic_QA_Intern** — Runner error: timed out, please correct the errors — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Vic_QA_Intern",
+    "n": 1,
+    "kind": "runner error"
+   }
+  ],
+  "spec_quote": "runner error (runner error, timeout, timed out) · refused (refused, correct the errors)",
+  "ambiguous": false
+ },
+ {
+  "name": "gate_keywords_canonical_fields_not_confirmed",
+  "queue": [
+   "- [ ] 2026-11-01T10:00:00 **2026-11-01_Wren_Ops_Intern** — Canonical fields not confirmed on the form — https://x"
+  ],
+  "human_checks": [],
+  "apply_requests": [],
+  "submitted": [],
+  "tracker": {},
+  "jobs": {},
+  "job_of": {},
+  "expect": [
+   {
+    "folder": "2026-11-01_Wren_Ops_Intern",
+    "n": 1,
+    "kind": "gate"
+   }
+  ],
+  "spec_quote": "gate (canonical / canon, fields not confirmed, review page lacks, not approved, referral)",
+  "ambiguous": false
+ }
+]

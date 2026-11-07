@@ -1,0 +1,342 @@
+[
+ {
+  "name": "rule1_source_linkedin",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "source": "linkedin"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "The job's own board when the job's record names one: its `source` value first (e.g. \"linkedin\", \"indeed_search\", \"Built In\", \"handshake\") ... The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_source_indeed_search",
+  "args": {
+   "picked": "Job Board - Other",
+   "job": {
+    "source": "indeed_search"
+   }
+  },
+  "expect": {
+   "board": "Indeed"
+  },
+  "spec_quote": "its `source` value first (e.g. \"linkedin\", \"indeed_search\", \"Built In\", \"handshake\") ... The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_source_built_in",
+  "args": {
+   "picked": "Other Job Board",
+   "job": {
+    "source": "Built In"
+   }
+  },
+  "expect": {
+   "board": "Built In"
+  },
+  "spec_quote": "its `source` value first (e.g. \"linkedin\", \"indeed_search\", \"Built In\", \"handshake\") ... The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_source_handshake",
+  "args": {
+   "picked": "Other online job board",
+   "job": {
+    "source": "handshake"
+   }
+  },
+  "expect": {
+   "board": "Handshake"
+  },
+  "spec_quote": "its `source` value first (e.g. \"linkedin\", \"indeed_search\", \"Built In\", \"handshake\") ... The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_source_wins_over_url_glassdoor",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "source": "glassdoor",
+    "url": "https://www.indeed.com/viewjob?jk=abc123"
+   }
+  },
+  "expect": {
+   "board": "Glassdoor"
+  },
+  "spec_quote": "its `source` value first (e.g. \"linkedin\", \"indeed_search\", \"Built In\", \"handshake\"), else the host of its posting URL",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_url_host_linkedin",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "url": "https://www.linkedin.com/jobs/view/3921847562"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "else the host of its posting URL (e.g. https://www.linkedin.com/jobs/… → LinkedIn, https://www.indeed.com/… → Indeed)",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_url_host_indeed",
+  "args": {
+   "picked": "Other online job board",
+   "job": {
+    "url": "https://www.indeed.com/viewjob?jk=abc123"
+   }
+  },
+  "expect": {
+   "board": "Indeed"
+  },
+  "spec_quote": "else the host of its posting URL (e.g. https://www.linkedin.com/jobs/… → LinkedIn, https://www.indeed.com/… → Indeed)",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_url_host_ziprecruiter",
+  "args": {
+   "picked": "Job Board - Other",
+   "job": {
+    "url": "https://www.ziprecruiter.com/jobs/company/12345"
+   }
+  },
+  "expect": {
+   "board": "ZipRecruiter"
+  },
+  "spec_quote": "else the host of its posting URL ... Known boards: LinkedIn, Indeed, Glassdoor, ZipRecruiter, Monster, CareerBuilder, Handshake, Wellfound, Dice, Built In, Craigslist, Simplify. The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_source_wins_over_url_dice",
+  "args": {
+   "picked": "Other Job Board",
+   "job": {
+    "source": "dice",
+    "url": "https://www.linkedin.com/jobs/view/1"
+   }
+  },
+  "expect": {
+   "board": "Dice"
+  },
+  "spec_quote": "its `source` value first ... else the host of its posting URL ... The answer is the board's name as written in that list.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_company_career_site_default_linkedin",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "url": "https://careers.acme.com/jobs/12345"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board, **LinkedIn**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_github_list_default_linkedin",
+  "args": {
+   "picked": "Other Job Board",
+   "job": {
+    "url": "https://github.com/someone/job-list/blob/main/README.md"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board, **LinkedIn**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_aggregator_default_linkedin",
+  "args": {
+   "picked": "Other online job board",
+   "job": {
+    "url": "https://www.google.com/search?q=software+engineer+jobs&ibp=htl;jobs"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board, **LinkedIn**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_no_source_no_url_default_linkedin",
+  "args": {
+   "picked": "Job Board - Other",
+   "job": {}
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board, **LinkedIn**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_unknown_host_default_linkedin",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "url": "https://jobs.example.org/apply/987"
+   }
+  },
+  "expect": {
+   "board": "LinkedIn"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board, **LinkedIn**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_configured_default_indeed_no_source",
+  "args": {
+   "picked": "Other online job board",
+   "job": {},
+   "defaults": [
+    "Indeed"
+   ]
+  },
+  "expect": {
+   "board": "Indeed"
+  },
+  "spec_quote": "the configured default board, **LinkedIn** (the configuration may give another default list, e.g. [\"Indeed\"]; then that one)",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_configured_default_indeed_with_career_site",
+  "args": {
+   "picked": "Job Boards-Other (specify name below)",
+   "job": {
+    "url": "https://careers.acme.com/jobs/999"
+   },
+   "defaults": [
+    "Indeed"
+   ]
+  },
+  "expect": {
+   "board": "Indeed"
+  },
+  "spec_quote": "Otherwise (a company career site URL, a GitHub list, an aggregator, no source) → the configured default board ... (the configuration may give another default list, e.g. [\"Indeed\"]; then that one)",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_other",
+  "args": {
+   "picked": "Other",
+   "job": {}
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — \"Other\", ... — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_linkedin",
+  "args": {
+   "picked": "LinkedIn",
+   "job": {
+    "url": "https://www.linkedin.com/jobs/view/1"
+   }
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — \"Other\", \"LinkedIn\", ... — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_employee_referral",
+  "args": {
+   "picked": "Employee Referral (specify below)",
+   "job": {
+    "source": "linkedin"
+   }
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — ... \"Employee Referral (specify below)\", ... — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_college_university",
+  "args": {
+   "picked": "College or University (specify name below)",
+   "job": {}
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — ... \"College or University (specify name below)\", ... — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_newell_career_site",
+  "args": {
+   "picked": "Sevfengal Career Site",
+   "job": {
+    "url": "https://careers.acme.com/jobs/1"
+   }
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — ... \"Sevfengal Career Site\", ... — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_job_fairs",
+  "args": {
+   "picked": "Job Fairs (Non-University)-Specify Below",
+   "job": {
+    "url": "https://www.indeed.com/viewjob?jk=x"
+   }
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — ... \"Job Fairs (Non-University)-Specify Below\", empty — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_empty",
+  "args": {
+   "picked": "",
+   "job": {
+    "source": "indeed_search"
+   },
+   "defaults": [
+    "Indeed"
+   ]
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — ... empty — gives no board name",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_picked_other_with_named_board_record",
+  "args": {
+   "picked": "Other",
+   "job": {
+    "source": "linkedin",
+    "url": "https://www.linkedin.com/jobs/view/1"
+   }
+  },
+  "expect": {
+   "none": true
+  },
+  "spec_quote": "A list answer that is not a job-board \"Other\" option — \"Other\", ... — gives no board name (none: the box keeps whatever the other rules answer).",
+  "ambiguous": true
+ }
+]

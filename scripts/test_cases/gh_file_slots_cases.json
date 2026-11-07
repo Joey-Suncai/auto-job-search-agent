@@ -1,0 +1,628 @@
+[
+ {
+  "name": "slot_kind: standard name resume wins over odd label",
+  "fn": "slot_kind",
+  "slot_name": "resume",
+  "label": "Attachments",
+  "expect": "resume",
+  "quote": "name \"resume\" → \"resume\"; name \"cover_letter\" → \"cover_letter\" — whatever the label says."
+ },
+ {
+  "name": "slot_kind: standard name cover_letter even when label says Resume",
+  "fn": "slot_kind",
+  "slot_name": "cover_letter",
+  "label": "Resume",
+  "expect": "cover_letter",
+  "quote": "name \"resume\" → \"resume\"; name \"cover_letter\" → \"cover_letter\" — whatever the label says."
+ },
+ {
+  "name": "slot_kind: Viking label with supplement + single PDF is other_file",
+  "fn": "slot_kind",
+  "slot_name": "question_12345",
+  "label": "This role requires a brief research supplement … Please upload your resume and brief research supplement — as a single PDF",
+  "expect": "other_file",
+  "quote": "Everything else → \"other_file\" (no document word at all, an OTHER word, two kinds named, or combine wording)."
+ },
+ {
+  "name": "slot_kind: resume + cover letter in one combined document is other_file",
+  "fn": "slot_kind",
+  "slot_name": "question_777",
+  "label": "Resume and cover letter combined into one PDF",
+  "expect": "other_file",
+  "quote": "Everything else → \"other_file\" (no document word at all, an OTHER word, two kinds named, or combine wording)."
+ },
+ {
+  "name": "slot_kind: 'Resume or CV' names only the RESUME kind",
+  "fn": "slot_kind",
+  "slot_name": "question_301",
+  "label": "Resume or CV",
+  "expect": "resume",
+  "quote": "The label names exactly one of RESUME / COVER / TRANSCRIPT, no OTHER word and no combine word → that kind (\"resume\", \"cover_letter\", \"transcript\")."
+ },
+ {
+  "name": "slot_kind: lone Transcript",
+  "fn": "slot_kind",
+  "slot_name": "question_302",
+  "label": "Transcript",
+  "expect": "transcript",
+  "quote": "TRANSCRIPT = transcript, academic record, grade report"
+ },
+ {
+  "name": "slot_kind: Unofficial transcript (PDF)",
+  "fn": "slot_kind",
+  "slot_name": "question_303",
+  "label": "Unofficial transcript (PDF)",
+  "expect": "transcript",
+  "quote": "The label names exactly one of RESUME / COVER / TRANSCRIPT, no OTHER word and no combine word → that kind (\"resume\", \"cover_letter\", \"transcript\")."
+ },
+ {
+  "name": "slot_kind: label with no document word",
+  "fn": "slot_kind",
+  "slot_name": "question_304",
+  "label": "Additional information",
+  "expect": "other_file",
+  "quote": "Everything else → \"other_file\" (no document word at all, an OTHER word, two kinds named, or combine wording)."
+ },
+ {
+  "name": "slot_kind: Writing sample is an OTHER word",
+  "fn": "slot_kind",
+  "slot_name": "question_305",
+  "label": "Writing sample",
+  "expect": "other_file",
+  "quote": "OTHER = supplement, writing sample, work sample, code sample, portfolio, project, research, paper, publication, essay, statement, certificate, recommendation, reference letter, case study."
+ },
+ {
+  "name": "slot_kind: Motivation letter is a COVER word",
+  "fn": "slot_kind",
+  "slot_name": "question_306",
+  "label": "Motivation letter",
+  "expect": "cover_letter",
+  "quote": "COVER = cover letter, covering letter, letter of interest, motivation letter"
+ },
+ {
+  "name": "file_slots: answers.json names an existing file for an other_file slot",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "resume",
+     "label": "Resume",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "cover_letter",
+     "label": "Cover Letter",
+     "type": "file",
+     "required": false
+    },
+    {
+     "key": "question_100",
+     "label": "Research supplement",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "resume.pdf",
+   "research.pdf",
+   "answers.json"
+  ],
+  "answers": {
+   "question_100": "research.pdf"
+  },
+  "expect": [
+   {
+    "key": "question_100",
+    "kind": "other_file",
+    "required": true,
+    "file": "research.pdf"
+   }
+  ],
+  "quote": "answers.json (a JSON object in the folder) has the slot's key and its value is the name of a file that exists directly in the folder → that name."
+ },
+ {
+  "name": "file_slots: answers.json value naming a nonexistent file is ignored",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_100",
+     "label": "Research supplement",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "answers.json"
+  ],
+  "answers": {
+   "question_100": "missing.pdf"
+  },
+  "expect": [
+   {
+    "key": "question_100",
+    "kind": "other_file",
+    "required": true,
+    "file": null
+   }
+  ],
+  "quote": "A value that is not an existing file in the folder (missing, a sub-path, \"..\", an absolute path, or a plain text answer) is ignored."
+ },
+ {
+  "name": "file_slots: plain text answer in answers.json is ignored",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_101",
+     "label": "Portfolio",
+     "type": "file",
+     "required": false
+    }
+   ]
+  },
+  "files": [
+   "answers.json"
+  ],
+  "answers": {
+   "question_101": "I will send my portfolio by email later"
+  },
+  "expect": [
+   {
+    "key": "question_101",
+    "kind": "other_file",
+    "required": false,
+    "file": null
+   }
+  ],
+  "quote": "A value that is not an existing file in the folder (missing, a sub-path, \"..\", an absolute path, or a plain text answer) is ignored."
+ },
+ {
+  "name": "file_slots: sub-path answer in answers.json is ignored",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_102",
+     "label": "Research paper",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "sub/research.pdf",
+   "answers.json"
+  ],
+  "answers": {
+   "question_102": "sub/research.pdf"
+  },
+  "expect": [
+   {
+    "key": "question_102",
+    "kind": "other_file",
+    "required": true,
+    "file": null
+   }
+  ],
+  "quote": "A value that is not an existing file in the folder (missing, a sub-path, \"..\", an absolute path, or a plain text answer) is ignored."
+ },
+ {
+  "name": "file_slots: resume and cover_letter kind slots match upper-case .PDF names; non-file fields excluded",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "resume",
+     "label": "Resume",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "question_1",
+     "label": "Resume",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "question_2",
+     "label": "Cover Letter",
+     "type": "file",
+     "required": false
+    },
+    {
+     "key": "question_3",
+     "label": "Why do you want this role?",
+     "type": "text",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "Resume_Final.PDF",
+   "Cover_Letter.PDF"
+  ],
+  "answers": null,
+  "expect": [
+   {
+    "key": "question_1",
+    "kind": "resume",
+    "required": true,
+    "file": "Resume_Final.PDF"
+   },
+   {
+    "key": "question_2",
+    "kind": "cover_letter",
+    "required": false,
+    "file": "Cover_Letter.PDF"
+   }
+  ],
+  "quote": "Each slot = {key, label, required (bool), kind = slot_kind(key, label), file = file name or null}."
+ },
+ {
+  "name": "file_slots: resume kind picks first .pdf in sorted name order",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_200",
+     "label": "CV",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "z_resume.pdf",
+   "a_resume_2024.pdf"
+  ],
+  "answers": null,
+  "expect": [
+   {
+    "key": "question_200",
+    "kind": "resume",
+    "required": true,
+    "file": "a_resume_2024.pdf"
+   }
+  ],
+  "quote": "kind \"resume\" → the first (sorted by name) file in the folder ending in .pdf (any case) whose name contains \"resume\" (any case); none → null."
+ },
+ {
+  "name": "file_slots: resume kind with no resume PDF present is null",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_201",
+     "label": "Resume",
+     "type": "file",
+     "required": false
+    }
+   ]
+  },
+  "files": [
+   "my_cover_letter.pdf",
+   "notes.txt"
+  ],
+  "answers": null,
+  "expect": [
+   {
+    "key": "question_201",
+    "kind": "resume",
+    "required": false,
+    "file": null
+   }
+  ],
+  "quote": "kind \"resume\" → the first (sorted by name) file in the folder ending in .pdf (any case) whose name contains \"resume\" (any case); none → null."
+ },
+ {
+  "name": "file_slots: transcript kind filled by Transcript.pdf",
+  "fn": "file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_202",
+     "label": "Academic record",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "Transcript.pdf",
+   "resume.pdf"
+  ],
+  "answers": null,
+  "expect": [
+   {
+    "key": "question_202",
+    "kind": "transcript",
+    "required": true,
+    "file": "Transcript.pdf"
+   }
+  ],
+  "quote": "kind \"transcript\" → \"Transcript.pdf\" when that file exists in the folder; else null."
+ },
+ {
+  "name": "missing_file_slots: required other_file slot missing, optional missing not reported",
+  "fn": "missing_file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_10",
+     "label": "Research supplement",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "question_11",
+     "label": "Writing sample",
+     "type": "file",
+     "required": false
+    }
+   ]
+  },
+  "files": [],
+  "answers": null,
+  "expect": [
+   "question_10"
+  ],
+  "quote": "Optional slots without a file are never reported."
+ },
+ {
+  "name": "missing_file_slots: standard resume file field is not an extra slot",
+  "fn": "missing_file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "resume",
+     "label": "Resume",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [],
+  "answers": null,
+  "expect": [],
+  "quote": "Only plan fields with type \"file\" whose key is not \"resume\" and not \"cover_letter\"."
+ },
+ {
+  "name": "missing_file_slots: required slot satisfied via answers.json is not reported",
+  "fn": "missing_file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_12",
+     "label": "Research supplement",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "research.pdf",
+   "answers.json"
+  ],
+  "answers": {
+   "question_12": "research.pdf"
+  },
+  "expect": [],
+  "quote": "missing_file_slots(plan, folder) → the slots from file_slots that are required and have file null."
+ },
+ {
+  "name": "missing_file_slots: two required missing slots reported in plan order",
+  "fn": "missing_file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_20",
+     "label": "Supplement",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "question_21",
+     "label": "Code sample",
+     "type": "file",
+     "required": true
+    },
+    {
+     "key": "question_22",
+     "label": "Comment",
+     "type": "text",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "answers.json"
+  ],
+  "answers": {},
+  "expect": [
+   "question_20",
+   "question_21"
+  ],
+  "quote": "file_slots(plan, folder) → list of extra slots, in plan order"
+ },
+ {
+  "name": "missing_file_slots: lowercase transcript.pdf does not satisfy a required transcript slot",
+  "fn": "missing_file_slots",
+  "plan": {
+   "fields": [
+    {
+     "key": "question_30",
+     "label": "Transcript",
+     "type": "file",
+     "required": true
+    }
+   ]
+  },
+  "files": [
+   "transcript.pdf"
+  ],
+  "answers": null,
+  "expect": [
+   "question_30"
+  ],
+  "quote": "A required extra slot with no file stops the application BEFORE Submit and is handed to Joey (status needs-user, with the slot's label); it is never submitted without the file."
+ },
+ {
+  "name": "after_submit: confirmed page wins over errors",
+  "fn": "after_submit",
+  "confirmed": true,
+  "code_page": false,
+  "before": [
+   {
+    "field": "resume",
+    "msg": "This field is required"
+   }
+  ],
+  "after": [
+   {
+    "field": "question_100",
+    "msg": "This field is required"
+   }
+  ],
+  "expect": {
+   "status": "submitted",
+   "fields": []
+  },
+  "quote": "confirmed (the confirmation page or a new thank-you text was seen) → status \"submitted\", fields []."
+ },
+ {
+  "name": "after_submit: security code page is unconfirmed even with a new message",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": true,
+  "before": [],
+  "after": [
+   {
+    "field": "security_code",
+    "msg": "Code is invalid"
+   }
+  ],
+  "expect": {
+   "status": "unconfirmed",
+   "fields": []
+  },
+  "quote": "otherwise, code_page true (the page asks for an e-mailed security code) → \"unconfirmed\", fields [] (a message on the code step is not a form validation error)."
+ },
+ {
+  "name": "after_submit: new validation error means failed",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": false,
+  "before": [],
+  "after": [
+   {
+    "field": "question_100",
+    "msg": "This field is required"
+   }
+  ],
+  "expect": {
+   "status": "failed",
+   "fields": [
+    "question_100"
+   ]
+  },
+  "quote": "Any new error → status \"failed\" (the form refused it, nothing was submitted), fields = the new errors' field names, each once, in order."
+ },
+ {
+  "name": "after_submit: same field with different message is not a new error",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": false,
+  "before": [
+   {
+    "field": "cover_letter",
+    "msg": "This field is required."
+   }
+  ],
+  "after": [
+   {
+    "field": "cover_letter",
+    "msg": "Please upload a cover letter"
+   }
+  ],
+  "expect": {
+   "status": "unconfirmed",
+   "fields": []
+  },
+  "quote": "otherwise, new errors = entries of after whose field does not appear as a field in before."
+ },
+ {
+  "name": "after_submit: multiple new errors deduplicated in order",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": false,
+  "before": [],
+  "after": [
+   {
+    "field": "question_100",
+    "msg": "This field is required"
+   },
+   {
+    "field": "question_101",
+    "msg": "This field is required"
+   },
+   {
+    "field": "question_100",
+    "msg": "Invalid file type"
+   }
+  ],
+  "expect": {
+   "status": "failed",
+   "fields": [
+    "question_100",
+    "question_101"
+   ]
+  },
+  "quote": "fields = the new errors' field names, each once, in order."
+ },
+ {
+  "name": "after_submit: nothing new and not confirmed is unconfirmed",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": false,
+  "before": [],
+  "after": [],
+  "expect": {
+   "status": "unconfirmed",
+   "fields": []
+  },
+  "quote": "otherwise → \"unconfirmed\", fields []."
+ },
+ {
+  "name": "after_submit: mix of repeated and new error reports only the new field",
+  "fn": "after_submit",
+  "confirmed": false,
+  "code_page": false,
+  "before": [
+   {
+    "field": "question_100",
+    "msg": "This field is required"
+   }
+  ],
+  "after": [
+   {
+    "field": "question_100",
+    "msg": "This field is required"
+   },
+   {
+    "field": "question_102",
+    "msg": "This field is required"
+   }
+  ],
+  "expect": {
+   "status": "failed",
+   "fields": [
+    "question_102"
+   ]
+  },
+  "quote": "otherwise, new errors = entries of after whose field does not appear as a field in before."
+ }
+]

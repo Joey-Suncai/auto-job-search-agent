@@ -1,0 +1,142 @@
+[
+ {
+  "name": "True_Masters_plain_DS",
+  "text": "completing a Master's in Data Science",
+  "expect": true,
+  "spec_quote": "Examples that are True: 'completing a Master's in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_my_masters_is",
+  "text": "my master's is in Data Science",
+  "expect": true,
+  "spec_quote": "Examples that are True: 'my master's is in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_MS_at_UChicago",
+  "text": "an M.S. in Data Science at UChicago",
+  "expect": true,
+  "spec_quote": "Examples that are True: 'an M.S. in Data Science at UChicago'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_degree_is_and_econ",
+  "text": "my degree is in Data Science and Economics",
+  "expect": true,
+  "spec_quote": "Examples that are True: 'my degree is in Data Science and Economics'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_MS_pursuing",
+  "text": "I am pursuing an MS in Data Science.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_program_in_DS",
+  "text": "The program in Data Science requires 12 courses.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_graduate_studies_in_DS",
+  "text": "She began graduate studies in Data Science last fall.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_masters_degree_is_in_DS",
+  "text": "My master's degree is in Data Science.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_masters_in_DS_from_UChicago",
+  "text": "He earned a masters in Data Science from UChicago.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "True_MS_program_is_in_DS",
+  "text": "This M.S. program is in Data Science.",
+  "expect": true,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where 'master's' / 'masters' / 'M.S.' / 'MS' / 'degree' / 'program' / 'graduate studies' is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_MS_Applied_DS",
+  "text": "M.S. in Applied Data Science",
+  "expect": false,
+  "spec_quote": "False: 'M.S. in Applied Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_career_in_DS_no_degree_word",
+  "text": "a career in data science",
+  "expect": false,
+  "spec_quote": "False: 'a career in data science' (no degree word)",
+  "ambiguous": false
+ },
+ {
+  "name": "False_Data_Science_intern",
+  "text": "Data Science intern",
+  "expect": false,
+  "spec_quote": "False: 'Data Science intern'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_experience_in_DS_projects",
+  "text": "experience in data science projects",
+  "expect": false,
+  "spec_quote": "False: 'experience in data science projects'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_empty_text",
+  "text": "",
+  "expect": false,
+  "spec_quote": "False: empty text.",
+  "ambiguous": false
+ },
+ {
+  "name": "False_degree_in_other_field",
+  "text": "My degree is in Computer Science.",
+  "expect": false,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_masters_in_Applied_DS",
+  "text": "I completed a Master's in Applied Data Science at UChicago.",
+  "expect": false,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science' ... that is NOT 'in Applied Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_degree_word_other_sentence",
+  "text": "My master's degree was completed in 2020. I now work in Data Science.",
+  "expect": false,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science': a phrase where ... is followed, within about 30 characters and inside the same sentence, by 'in Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_MS_Applied_DS_and_econ",
+  "text": "I have an M.S. in Applied Data Science and Economics.",
+  "expect": false,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science' ... that is NOT 'in Applied Data Science'",
+  "ambiguous": false
+ },
+ {
+  "name": "False_MS_in_Statistics",
+  "text": "I have an MS in Statistics.",
+  "expect": false,
+  "spec_quote": "Return True when the text names that degree program as plain 'Data Science'",
+  "ambiguous": false
+ }
+]

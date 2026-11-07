@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "type": "select"|"radio"|"text", "options": [str], "expect": str, "spec_quote": str, "ambiguous": false}. Write 16 cases: 5 recruiter, 5 signature, 3 agree-to-terms, 3 unrelated.

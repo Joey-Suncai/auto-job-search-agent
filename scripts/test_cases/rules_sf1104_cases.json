@@ -1,0 +1,250 @@
+[
+ {
+  "name": "travel_bands_select",
+  "label": "Are you willing to travel?",
+  "type": "select",
+  "options": [
+   "No",
+   "Up to 25%",
+   "Up to 50%",
+   "Up to 75%",
+   "More than 75%"
+  ],
+  "expect": "Up to 25%",
+  "spec_quote": "Travel with percent bands (No / Up to 25% / Up to 50% …) → \"Up to 25%\".",
+  "ambiguous": false
+ },
+ {
+  "name": "travel_bands_radio_reordered",
+  "label": "What is your travel availability?",
+  "type": "radio",
+  "options": [
+   "Up to 50%",
+   "Up to 25%",
+   "No",
+   "Up to 75%"
+  ],
+  "expect": "Up to 25%",
+  "spec_quote": "Travel with percent bands (No / Up to 25% / Up to 50% …) → \"Up to 25%\".",
+  "ambiguous": false
+ },
+ {
+  "name": "travel_yes_no_radio",
+  "label": "Are you willing to travel as required by this role?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Travel as Yes/No → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "travel_yes_no_select",
+  "label": "Willing to travel?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Travel as Yes/No → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "source_list_other_source_no_job_board",
+  "label": "How did you hear about this job?",
+  "type": "select",
+  "options": [
+   "Employee referral",
+   "Career fair",
+   "Company website",
+   "Other Source"
+  ],
+  "expect": "Other Source",
+  "spec_quote": "How did you hear / source list WITHOUT an \"online job board\"/\"job board\" option but WITH an option starting \"Other\" (e.g. \"Other Source\", \"Other\") → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_list_other_short",
+  "label": "How did you hear about us?",
+  "type": "radio",
+  "options": [
+   "Indeed",
+   "LinkedIn",
+   "Other",
+   "Career fair"
+  ],
+  "expect": "Other",
+  "spec_quote": "How did you hear / source list WITHOUT an \"online job board\"/\"job board\" option but WITH an option starting \"Other\" (e.g. \"Other Source\", \"Other\") → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_list_with_online_job_board",
+  "label": "How did you hear about this position?",
+  "type": "select",
+  "options": [
+   "Online job board",
+   "Indeed",
+   "LinkedIn",
+   "Referral"
+  ],
+  "expect": "Online job board",
+  "spec_quote": "With \"Online job board\" → \"Online job board\".",
+  "ambiguous": false
+ },
+ {
+  "name": "source_list_job_board_and_other",
+  "label": "How did you hear about this opening?",
+  "type": "radio",
+  "options": [
+   "Career fair",
+   "Online job board",
+   "Other Source"
+  ],
+  "expect": "Online job board",
+  "spec_quote": "With \"Online job board\" → \"Online job board\".",
+  "ambiguous": false
+ },
+ {
+  "name": "confidentiality_yes_no_radio",
+  "label": "Are you a party to any agreement that contains a confidentiality provision?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a party to any agreement that contains a confidentiality provision?\" / \"Have you signed a non-disclosure agreement (NDA)?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "nda_yes_no_select_reordered",
+  "label": "Have you signed a non-disclosure agreement (NDA)?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a party to any agreement that contains a confidentiality provision?\" / \"Have you signed a non-disclosure agreement (NDA)?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "nda_radio_no_first",
+  "label": "Have you signed a non-disclosure agreement (NDA)?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a party to any agreement that contains a confidentiality provision?\" / \"Have you signed a non-disclosure agreement (NDA)?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "confidentiality_select_yes_first",
+  "label": "Are you a party to any agreement that contains a confidentiality provision?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a party to any agreement that contains a confidentiality provision?\" / \"Have you signed a non-disclosure agreement (NDA)?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_yes_no_radio",
+  "label": "Are you a current or former contractor, temporary employee, or consultant of Acme Corp?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a current or former contractor, temporary employee, or consultant of <company>?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_select_reordered",
+  "label": "Are you a current or former contractor, temporary employee, or consultant of Globex Inc.?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a current or former contractor, temporary employee, or consultant of <company>?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_radio_no_first",
+  "label": "Are you a current or former contractor, temporary employee, or consultant of the hiring company?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a current or former contractor, temporary employee, or consultant of <company>?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_select_yes_first",
+  "label": "Are you a current or former contractor, temporary employee, or consultant of Initech?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Are you a current or former contractor, temporary employee, or consultant of <company>?\" (Yes/No) → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "certify_checkbox_plain",
+  "label": "I certify.",
+  "type": "checkbox",
+  "options": [
+   "I certify."
+  ],
+  "expect": "I certify.",
+  "spec_quote": "A single checkbox labelled \"I certify.\" or \"* I certify\" → its own text.",
+  "ambiguous": false
+ },
+ {
+  "name": "certify_checkbox_asterisk",
+  "label": "* I certify",
+  "type": "checkbox",
+  "options": [
+   "* I certify"
+  ],
+  "expect": "* I certify",
+  "spec_quote": "A single checkbox labelled \"I certify.\" or \"* I certify\" → its own text.",
+  "ambiguous": false
+ },
+ {
+  "name": "certify_checkbox_plain_alt",
+  "label": "I certify.",
+  "type": "checkbox",
+  "options": [
+   "I certify."
+  ],
+  "expect": "I certify.",
+  "spec_quote": "A single checkbox labelled \"I certify.\" or \"* I certify\" → its own text.",
+  "ambiguous": false
+ },
+ {
+  "name": "certify_checkbox_asterisk_alt",
+  "label": "* I certify",
+  "type": "checkbox",
+  "options": [
+   "* I certify"
+  ],
+  "expect": "* I certify",
+  "spec_quote": "A single checkbox labelled \"I certify.\" or \"* I certify\" → its own text.",
+  "ambiguous": false
+ }
+]

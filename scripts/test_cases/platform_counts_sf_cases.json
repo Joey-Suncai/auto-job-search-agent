@@ -1,0 +1,253 @@
+[
+ {
+  "name": "sf_query_rule_full_value_spec_example",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://careers.nevwynost.com/job/Dallas-IT-Data-Analytics-Intern-TX-75219/1430072400/?ats=successf"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive), e.g. `?ats=successfactors` or a cut-off `?ats=successf`",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_query_rule_value_case_insensitive",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/apply?ats=SUCCESSFACTORS"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_query_rule_cutoff_value",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/careers?ats=successf"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive), e.g. `?ats=successfactors` or a cut-off `?ats=successf`",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_query_rule_value_starts_with_successf_longer",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://careers.acme.com/openings?ats=successfactor"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_ats_value_success_only_and_jobs_path",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/jobs/x/12345678?ats=success"
+  },
+  "expect": null,
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive) ... the path (case-insensitive) is exactly `/job/<slug>/<id>` ... (`/jobs/`, not `/job/`)",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_no_ats_param_src_only",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/apply?src=successfactors"
+  },
+  "expect": null,
+  "spec_quote": "the query has a parameter `ats` whose value starts with `successf` (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_spec_example_trailing_slash",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.morkelfen.com/job/Chesterfield-Data-Science-Intern-MO-63017/1451720133/"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the path (case-insensitive) is exactly `/job/<slug>/<id>` with an optional trailing `/`, where `<slug>` is one non-empty path segment and `<id>` is 8 to 12 digits",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_eight_digit_boundary",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/data-analyst/12345678"
+  },
+  "expect": "successfactors",
+  "spec_quote": "`<id>` is 8 to 12 digits",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_twelve_digit_boundary",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/data-analyst/123456789012"
+  },
+  "expect": "successfactors",
+  "spec_quote": "`<id>` is 8 to 12 digits",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_seven_digits_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/x/1234567"
+  },
+  "expect": null,
+  "spec_quote": "`https://jobs.acme.com/job/x/1234567` → null (7 digits)",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_thirteen_digits_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/x/1234567890123"
+  },
+  "expect": null,
+  "spec_quote": "`<id>` is 8 to 12 digits",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_two_slug_segments_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/a/b/12345678"
+  },
+  "expect": null,
+  "spec_quote": "`https://jobs.acme.com/job/a/b/12345678` → null (two segments)",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_jobs_prefix_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/jobs/x/12345678"
+  },
+  "expect": null,
+  "spec_quote": "`https://jobs.acme.com/jobs/x/12345678` → null (`/jobs/`, not `/job/`)",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_empty_slug_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job//12345678"
+  },
+  "expect": null,
+  "spec_quote": "`<slug>` is one non-empty path segment",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_path_case_insensitive",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/JOB/Data-Analyst/12345678"
+  },
+  "expect": "successfactors",
+  "spec_quote": "the path (case-insensitive) is exactly `/job/<slug>/<id>` with an optional trailing `/`",
+  "ambiguous": false
+ },
+ {
+  "name": "sf_path_rule_extra_trailing_segment_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://jobs.acme.com/job/data-analyst/12345678/extra"
+  },
+  "expect": null,
+  "spec_quote": "the path (case-insensitive) is exactly `/job/<slug>/<id>` with an optional trailing `/`",
+  "ambiguous": false
+ },
+ {
+  "name": "builtin_exception_path_rule_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://builtin.com/job/data-analyst/12345678"
+  },
+  "expect": null,
+  "spec_quote": "`https://builtin.com/job/data-analyst/12345678` → null",
+  "ambiguous": false
+ },
+ {
+  "name": "builtin_exception_query_rule_null_subdomain",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://www.builtin.com/jobs/apply?ats=successfactors"
+  },
+  "expect": null,
+  "spec_quote": "hosts `builtin.com` or ending in `.builtin.com` (Built In is a job board whose own job pages use the same `/job/<slug>/<id>` path) are never `successfactors` by these two rules → null",
+  "ambiguous": false
+ },
+ {
+  "name": "suffix_match_wins_workday_over_path_rule",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://acme.wd1.myworkdayjobs.com/job/x/12345678"
+  },
+  "expect": "workday",
+  "spec_quote": "A suffix match always wins over these rules (`https://acme.wd1.myworkdayjobs.com/job/x/12345678` stays workday).",
+  "ambiguous": false
+ },
+ {
+  "name": "suffix_match_wins_workable_over_query_rule",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://apply.workable.com/apply?ats=successfactors"
+  },
+  "expect": "workable",
+  "spec_quote": "A suffix match always wins over these rules ... When **no suffix matches**, the URL is `successfactors` if either:",
+  "ambiguous": false
+ },
+ {
+  "name": "row_sf_path_rule_from_url_when_ats_url_empty",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "",
+    "url": "https://jobs.morkelfen.com/job/Chesterfield-Data-Science-Intern-MO-63017/1451720133/"
+   }
+  },
+  "expect": "successfactors",
+  "spec_quote": "`platform_of(row[\"ats_url\"])` when that is not null; otherwise `platform_of(row[\"url\"])`. Missing keys count as empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_sf_query_rule_from_url_when_ats_url_missing",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "url": "https://careers.acme.com/openings?ats=successf"
+   }
+  },
+  "expect": "successfactors",
+  "spec_quote": "`platform_of(row[\"ats_url\"])` when that is not null; otherwise `platform_of(row[\"url\"])`. Missing keys count as empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_ats_url_builtin_null_falls_back_to_lever",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "https://builtin.com/job/data-analyst/12345678",
+    "url": "https://jobs.lever.co/acme/123"
+   }
+  },
+  "expect": "lever",
+  "spec_quote": "`platform_of(row[\"ats_url\"])` when that is not null; otherwise `platform_of(row[\"url\"])`. ... hosts `builtin.com` ... are never `successfactors` by these two rules → null",
+  "ambiguous": false
+ },
+ {
+  "name": "row_ats_url_sf_wins_over_linkedin_url",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "https://jobs.acme.com/apply?ats=successfactors",
+    "url": "https://www.linkedin.com/jobs/view/123"
+   }
+  },
+  "expect": "successfactors",
+  "spec_quote": "`platform_of(row[\"ats_url\"])` when that is not null; otherwise `platform_of(row[\"url\"])`.",
+  "ambiguous": false
+ }
+]

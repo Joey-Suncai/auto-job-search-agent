@@ -1,0 +1,404 @@
+[
+ {
+  "name": "pw_limits: range with 'between ... and'",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Create an account\nEmail address\nPassword\nYour password must be between 8 and 18 characters."
+  },
+  "expect": [
+   8,
+   18
+  ],
+  "spec_quote": "A range: \"between 8 and 18 characters\", \"8-18 characters\", \"8 – 18 characters\", \"8 to 18 characters\" → [8, 18].",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: hyphen range with 'chars' and other non-length rules",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Password hint: 10-20 chars. Must contain at least 1 uppercase letter, at least 1 digit and 1 special character."
+  },
+  "expect": [
+   10,
+   20
+  ],
+  "spec_quote": "A range: \"between 8 and 18 characters\", \"8-18 characters\", \"8 – 18 characters\", \"8 to 18 characters\" → [8, 18]. ... \"chars\" counts as \"characters\". ... A number not followed by \"characters\" / \"chars\" (e.g. \"at least 1 uppercase letter\", \"18 years of age\") is not a length rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: 'fewer than 19 characters' is max 18",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Your new password must be fewer than 19 characters."
+  },
+  "expect": [
+   null,
+   18
+  ],
+  "spec_quote": "\"fewer than 19 characters\" / \"less than 19 characters\" → max 18 (strictly fewer).",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: min only, uppercase rule is not a length rule",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Password\nMust be at least 8 characters\nMust contain at least 1 uppercase letter\nMust contain at least 1 number"
+  },
+  "expect": [
+   8,
+   null
+  ],
+  "spec_quote": "A minimum alone: \"at least 8 characters\", ... → min 8. ... A number not followed by \"characters\" / \"chars\" (e.g. \"at least 1 uppercase letter\", \"18 years of age\") is not a length rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: range plus smaller separate maximum",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Passwords must be 8-18 characters long. For this site your password must not exceed 12 characters."
+  },
+  "expect": [
+   8,
+   12
+  ],
+  "spec_quote": "When the page states both a range and a separate maximum, the smaller maximum wins; a separate minimum and a range → the larger minimum wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: separate minimum plus range, larger minimum wins",
+  "fn": "pw_limits",
+  "args": {
+   "text": "Password must be at least 6 characters.\nSuccessFactors passwords are 8 to 18 characters."
+  },
+  "expect": [
+   8,
+   18
+  ],
+  "spec_quote": "When the page states both a range and a separate maximum, the smaller maximum wins; a separate minimum and a range → the larger minimum wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: age restriction and letter rule are not length rules",
+  "fn": "pw_limits",
+  "args": {
+   "text": "You must be at least 18 years of age to register. Password must contain at least 1 uppercase letter."
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "A number not followed by \"characters\" / \"chars\" (e.g. \"at least 1 uppercase letter\", \"18 years of age\") is not a length rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "pw_limits: line breaks and mixed case, separate min and max",
+  "fn": "pw_limits",
+  "args": {
+   "text": "PASSWORD REQUIREMENTS\nYour password must be at least 12 characters\nand it can be UP TO 30 characters."
+  },
+  "expect": [
+   12,
+   30
+  ],
+  "spec_quote": "Case and extra spaces / line breaks do not matter. ... A maximum alone: ... \"up to 18 characters\" ... → max 18. ... A minimum alone: \"at least 8 characters\" ... → min 8.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: range 8-18, first stored password (8 chars) fits",
+  "fn": "pick_password",
+  "args": {
+   "text": "Password must be between 8 and 18 characters.",
+   "items": [
+    [
+     "regular8",
+     "Aa1!Aa1!"
+    ],
+    [
+     "longer20",
+     "Aa1!Aa1!Aa1!Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": [
+   "regular8",
+   "Aa1!Aa1!"
+  ],
+  "spec_quote": "Return the FIRST pair whose password length fits the rule from `pw_limits(text)` (length ≥ min when min is stated, ≤ max when max is stated; both bounds inclusive).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: min 10 skips 8-char, uses 12-char",
+  "fn": "pick_password",
+  "args": {
+   "text": "Password must be at least 10 characters and contain 1 digit.",
+   "items": [
+    [
+     "short8",
+     "Aa1!Aa1!"
+    ],
+    [
+     "mid12",
+     "Aa1!Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": [
+   "mid12",
+   "Aa1!Aa1!Aa1!"
+  ],
+  "spec_quote": "Return the FIRST pair whose password length fits the rule from `pw_limits(text)` (length ≥ min when min is stated, ≤ max when max is stated; both bounds inclusive).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: max 12 excludes 16-char, 12-char exactly fits",
+  "fn": "pick_password",
+  "args": {
+   "text": "Your password cannot exceed 12 characters.",
+   "items": [
+    [
+     "long16",
+     "Aa1!Aa1!Aa1!Aa1!"
+    ],
+    [
+     "exact12",
+     "Aa1!Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": [
+   "exact12",
+   "Aa1!Aa1!Aa1!"
+  ],
+  "spec_quote": "length ≥ min when min is stated, ≤ max when max is stated; both bounds inclusive",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: between 10 and 12, nothing fits (8 and 16)",
+  "fn": "pick_password",
+  "args": {
+   "text": "Password must be between 10 and 12 characters.",
+   "items": [
+    [
+     "short8",
+     "Aa1!Aa1!"
+    ],
+    [
+     "long16",
+     "Aa1!Aa1!Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "When nothing fits, return null.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: empty password never fits, 8-char min uses 8-char",
+  "fn": "pick_password",
+  "args": {
+   "text": "Password must be at least 8 characters.",
+   "items": [
+    [
+     "empty",
+     ""
+    ],
+    [
+     "exact8",
+     "Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": [
+   "exact8",
+   "Aa1!Aa1!"
+  ],
+  "spec_quote": "An empty password never fits. ... Return the FIRST pair whose password length fits the rule",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_password: no rule on page, first non-empty (8 chars) used",
+  "fn": "pick_password",
+  "args": {
+   "text": "Create an account\nEmail address\nConfirm email address\nFirst name\nLast name",
+   "items": [
+    [
+     "empty",
+     ""
+    ],
+    [
+     "regular8",
+     "Aa1!Aa1!"
+    ],
+    [
+     "longer16",
+     "Aa1!Aa1!Aa1!Aa1!"
+    ]
+   ]
+  },
+  "expect": [
+   "regular8",
+   "Aa1!Aa1!"
+  ],
+  "spec_quote": "With no rule on the page, the first non-empty password is used.",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: exact 'Read and accept the data privacy statement'",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Read and accept the data privacy statement"
+  },
+  "expect": true,
+  "spec_quote": "Both wordings count: \"Read and accept the data privacy statement\" and \"Read and accept the data privacy agreement\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: uppercase 'ACCEPT THE PRIVACY STATEMENT'",
+  "fn": "privacy_link",
+  "args": {
+   "text": "ACCEPT THE PRIVACY STATEMENT"
+  },
+  "expect": true,
+  "spec_quote": "\"Accept the privacy statement\" ... Case and spacing do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: 'Review our privacy notice'",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Review our privacy notice"
+  },
+  "expect": true,
+  "spec_quote": "\"View the privacy policy\", \"Review our privacy notice\", \"Open the data privacy agreement\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: 'Open the data privacy agreement'",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Open the data privacy agreement"
+  },
+  "expect": true,
+  "spec_quote": "\"View the privacy policy\", \"Review our privacy notice\", \"Open the data privacy agreement\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: 'Privacy' alone is false",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Privacy"
+  },
+  "expect": false,
+  "spec_quote": "False for text that does not name a privacy statement / agreement / policy / notice (e.g. \"Terms of use\", \"Read the job description\", \"Create an account\", \"Privacy\" alone, \"Cookie settings\").",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_link: 'Terms of use' is false",
+  "fn": "privacy_link",
+  "args": {
+   "text": "By creating an account you agree to the Terms of use."
+  },
+  "expect": false,
+  "spec_quote": "False for text that does not name a privacy statement / agreement / policy / notice (e.g. \"Terms of use\", ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: question text is the first enclosing text",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "Make My Profile Visible to",
+    "Make My Profile Visible to Any Acme recruiter worldwide Any Acme recruiter in my country/region Only recruiters managing jobs I apply to"
+   ],
+   "options": [
+    "Any Acme recruiter worldwide",
+    "Any Acme recruiter in my country/region",
+    "Only recruiters managing jobs I apply to"
+   ]
+  },
+  "expect": "Make My Profile Visible to",
+  "spec_quote": "The first text that still contains a word of two or more letters and is at most 250 characters long is the question; return it.",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: only option texts remain, returns empty",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "Any Acme recruiter worldwide Any Acme recruiter in my country/region Only recruiters managing jobs I apply to"
+   ],
+   "options": [
+    "Any Acme recruiter worldwide",
+    "Any Acme recruiter in my country/region",
+    "Only recruiters managing jobs I apply to"
+   ]
+  },
+  "expect": "",
+  "spec_quote": "Return \"\" when no text qualifies (all empty, only option texts, or every remaining text longer than 250 characters).",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: only text is longer than 250 characters",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "Choose who can see your profile. Make My Profile Visible to any Acme recruiter worldwide, any Acme recruiter in my country or region, or only recruiters managing the jobs you apply to. You can change this setting at any time from your account preferences page."
+   ],
+   "options": []
+  },
+  "expect": "",
+  "spec_quote": "Return \"\" when no text qualifies (all empty, only option texts, or every remaining text longer than 250 characters).",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: leading required star and trailing colon with extra whitespace",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "*",
+    "   Make My Profile Visible to:   "
+   ],
+   "options": [
+    "Any Acme recruiter worldwide",
+    "Any Acme recruiter in my country/region",
+    "Only recruiters managing jobs I apply to"
+   ]
+  },
+  "expect": "Make My Profile Visible to",
+  "spec_quote": "Go through `texts` in order; remove every option text from it (longer options first), then drop a leading required star \"*\", a trailing colon and extra whitespace.",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: longer option removed first leaves nothing",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "Any recruiter worldwide",
+    "Make My Profile Visible to"
+   ],
+   "options": [
+    "Any recruiter",
+    "Any recruiter worldwide"
+   ]
+  },
+  "expect": "Make My Profile Visible to",
+  "spec_quote": "remove every option text from it (longer options first)",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_question: empty texts and single letter only, returns empty",
+  "fn": "radio_question",
+  "args": {
+   "texts": [
+    "*",
+    "",
+    "   ",
+    "A"
+   ],
+   "options": []
+  },
+  "expect": "",
+  "spec_quote": "The first text that still contains a word of two or more letters and is at most 250 characters long is the question; return it. Return \"\" when no text qualifies",
+  "ambiguous": false
+ }
+]

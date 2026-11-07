@@ -1,0 +1,134 @@
+[
+ {
+  "name": "exact_yes",
+  "answer": "Yes",
+  "expect": true,
+  "spec": "True: \"Yes\"."
+ },
+ {
+  "name": "yes_require_sponsorship",
+  "answer": "Yes, I will require sponsorship",
+  "expect": true,
+  "spec": "True: \"Yes, I will require sponsorship\"."
+ },
+ {
+  "name": "require_sponsorship_country",
+  "answer": "I require sponsorship to work in this country",
+  "expect": true,
+  "spec": "True: statement options that say he requires sponsorship, e.g. \"I require sponsorship to work in this country\"."
+ },
+ {
+  "name": "will_require_visa",
+  "answer": "I will require visa sponsorship",
+  "expect": true,
+  "spec": "True: statement options that say he will require sponsorship, e.g. \"I will require visa sponsorship\"."
+ },
+ {
+  "name": "would_need_h1b",
+  "answer": "I would need H-1B sponsorship",
+  "expect": true,
+  "spec": "True: statement options that say he needs sponsorship, e.g. \"I would need H-1B sponsorship\"."
+ },
+ {
+  "name": "need_employer",
+  "answer": "I need employer sponsorship",
+  "expect": true,
+  "spec": "True: statement options that say he needs sponsorship, e.g. \"I need employer sponsorship\"."
+ },
+ {
+  "name": "lowercase_yes",
+  "answer": "yes",
+  "expect": true,
+  "spec": "True: \"Yes\"; Capitalisation does not matter."
+ },
+ {
+  "name": "uppercase_require_visa",
+  "answer": "I WILL REQUIRE VISA SPONSORSHIP",
+  "expect": true,
+  "spec": "True: \"I will require visa sponsorship\"; Capitalisation does not matter."
+ },
+ {
+  "name": "mixed_case_employer",
+  "answer": "i NeEd EmPlOyEr SpOnSoRsHiP",
+  "expect": true,
+  "spec": "True: \"I need employer sponsorship\"; Capitalisation does not matter."
+ },
+ {
+  "name": "yes_would_need_h1b",
+  "answer": "Yes, I would need H-1B sponsorship",
+  "expect": true,
+  "spec": "True: \"Yes\" and statement options that say he needs sponsorship, e.g. \"I would need H-1B sponsorship\"."
+ },
+ {
+  "name": "need_sponsorship_country",
+  "answer": "I need sponsorship to work in this country",
+  "expect": true,
+  "spec": "True: statement options that say he needs sponsorship, e.g. \"I require sponsorship to work in this country\"."
+ },
+ {
+  "name": "exact_no",
+  "answer": "No",
+  "expect": false,
+  "spec": "False: \"No\"."
+ },
+ {
+  "name": "do_not_require",
+  "answer": "I do not require sponsorship",
+  "expect": false,
+  "spec": "False: \"I do not require sponsorship\"."
+ },
+ {
+  "name": "will_not_need",
+  "answer": "I will not need sponsorship",
+  "expect": false,
+  "spec": "False: \"I will not need sponsorship\"."
+ },
+ {
+  "name": "never_need",
+  "answer": "I never need sponsorship",
+  "expect": false,
+  "spec": "False: \"I never need sponsorship\"."
+ },
+ {
+  "name": "us_citizen",
+  "answer": "I am a U.S. citizen",
+  "expect": false,
+  "spec": "False: \"I am a U.S. citizen\"."
+ },
+ {
+  "name": "authorized_without",
+  "answer": "I am authorized to work without sponsorship",
+  "expect": false,
+  "spec": "False: \"I am authorized to work without sponsorship\"."
+ },
+ {
+  "name": "no_do_not_require",
+  "answer": "No, I do not require sponsorship",
+  "expect": false,
+  "spec": "False: \"No, I do not require sponsorship\"."
+ },
+ {
+  "name": "empty_answer",
+  "answer": "",
+  "expect": false,
+  "spec": "False: an empty answer."
+ },
+ {
+  "name": "uppercase_no",
+  "answer": "NO",
+  "expect": false,
+  "spec": "False: \"No\"; Capitalisation does not matter."
+ },
+ {
+  "name": "mixed_case_do_not",
+  "answer": "i Do NoT rEqUiRe SpOnSoRsHiP",
+  "expect": false,
+  "spec": "False: \"I do not require sponsorship\"; Capitalisation does not matter."
+ },
+ {
+  "name": "uppercase_never",
+  "answer": "I NEVER NEED SPONSORSHIP",
+  "expect": false,
+  "spec": "False: \"I never need sponsorship\"; Capitalisation does not matter."
+ }
+]

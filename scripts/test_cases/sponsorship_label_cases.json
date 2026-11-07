@@ -1,0 +1,170 @@
+[
+ {
+  "name": "label_colon_not_available",
+  "text": "Sponsorship: Not Available. Candidates must be able to work in the U.S. without restriction.",
+  "expect": true,
+  "reason": "Spec: must report NO_SPONSORSHIP \"including when the JD states it as a labelled field in a details block, e.g. 'Sponsorship: Not Available'\"."
+ },
+ {
+  "name": "label_colon_visa_no",
+  "text": "Visa Sponsorship: No. This is a 12-month contract engagement.",
+  "expect": true,
+  "reason": "Spec example: \"'Visa Sponsorship: No'\" is NO_SPONSORSHIP."
+ },
+ {
+  "name": "label_dash_none",
+  "text": "Sponsorship - None. This is a direct-hire role based in Austin.",
+  "expect": true,
+  "reason": "Spec example: \"'Sponsorship - None'\" is NO_SPONSORSHIP."
+ },
+ {
+  "name": "label_colon_not_offered",
+  "text": "Immigration Sponsorship: Not offered for this position.",
+  "expect": true,
+  "reason": "Spec example: \"'Immigration Sponsorship: Not offered'\" is NO_SPONSORSHIP."
+ },
+ {
+  "name": "label_en_dash_not_available",
+  "text": "Visa Sponsorship – Not Available",
+  "expect": true,
+  "reason": "Labelled field stating non-sponsorship, with en dash separator, is NO_SPONSORSHIP per \"including when the JD states it as a labelled field in a details block\"."
+ },
+ {
+  "name": "label_lowercase_visa_no",
+  "text": "visa sponsorship: no. we are unable to sponsor work visas.",
+  "expect": true,
+  "reason": "Spec: capitalisation does not matter; \"'Visa Sponsorship: No'\" and \"We are unable to sponsor\" are both NO_SPONSORSHIP."
+ },
+ {
+  "name": "sentence_unable_to_sponsor",
+  "text": "We are unable to sponsor employment visas for this position.",
+  "expect": true,
+  "reason": "Spec: \"Plain-sentence refusals ('We are unable to sponsor', ...) are NO_SPONSORSHIP as well.\""
+ },
+ {
+  "name": "sentence_f1_opt_cpt_ineligible",
+  "text": "F-1 / OPT / CPT students are not eligible for this role.",
+  "expect": true,
+  "reason": "Spec: \"'F-1 / OPT / CPT students are not eligible'\" is a plain-sentence refusal that is NO_SPONSORSHIP."
+ },
+ {
+  "name": "sentence_no_visa_sponsorship",
+  "text": "This position offers no visa sponsorship.",
+  "expect": true,
+  "reason": "Spec: \"'no visa sponsorship'\" is NO_SPONSORSHIP."
+ },
+ {
+  "name": "sentence_without_sponsorship_future",
+  "text": "Candidates must be authorized to work in the U.S. without sponsorship now or in the future.",
+  "expect": true,
+  "reason": "Spec: \"'without sponsorship now or in the future'\" is NO_SPONSORSHIP."
+ },
+ {
+  "name": "sentence_sponsorship_not_available",
+  "text": "Sponsorship is not available for this role.",
+  "expect": true,
+  "reason": "Spec: \"'sponsorship is not available'\" is listed among plain-sentence refusals that are NO_SPONSORSHIP."
+ },
+ {
+  "name": "conocophillips_other_than_employer_school",
+  "text": "Must be legally authorized to work in the United States on a full-time basis for anyone other than current employer and/or education institution.",
+  "expect": true,
+  "reason": "Spec: this exact phrasing \"excludes F-1 CPT\" and yields NO_SPONSORSHIP."
+ },
+ {
+  "name": "details_block_multiple_fields",
+  "text": "Details: Location – Houston, TX. Employment Type – Full-time. Visa Sponsorship – None.",
+  "expect": true,
+  "reason": "Spec: labelled field inside a details block stating non-sponsorship is NO_SPONSORSHIP."
+ },
+ {
+  "name": "sentence_will_not_sponsor_h1b",
+  "text": "Please note we will not sponsor H-1B visas for this position.",
+  "expect": true,
+  "reason": "Spec: must report NO_SPONSORSHIP \"whenever the employer says it will not sponsor a work visa\"."
+ },
+ {
+  "name": "label_visa_yes",
+  "text": "Visa Sponsorship: Yes. We support H-1B transfers and new petitions.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when \"the employer offers sponsorship ('Visa Sponsorship: Yes', ...)\"."
+ },
+ {
+  "name": "label_sponsorship_available",
+  "text": "Sponsorship: Available for candidates who qualify.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when sponsorship is offered (\"'Sponsorship: Available'\")."
+ },
+ {
+  "name": "label_dash_yes",
+  "text": "Sponsorship - Yes. Relocation assistance is provided.",
+  "expect": false,
+  "reason": "Spec: an employer offering sponsorship must not be flagged, whether as labelled field or plain sentence."
+ },
+ {
+  "name": "sentence_immigration_sponsorship_available",
+  "text": "Immigration sponsorship is available for this position.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when \"the employer offers sponsorship\"."
+ },
+ {
+  "name": "sentence_will_sponsor_h1b",
+  "text": "We will sponsor H-1B visas for the right candidate.",
+  "expect": false,
+  "reason": "Spec: \"'we will sponsor H-1B visas'\" is explicitly a non-NO_SPONSORSHIP case."
+ },
+ {
+  "name": "company_sponsored_medical_plan",
+  "text": "This role includes a company-sponsored medical plan, plus dental and vision coverage.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when \"'sponsor' means something else: a 'company-sponsored medical plan'\"."
+ },
+ {
+  "name": "event_sponsorship_opportunities",
+  "text": "Our team manages event sponsorship opportunities across the region.",
+  "expect": false,
+  "reason": "Spec: \"'event sponsorship opportunities'\" is a non-visa use of sponsor and must not be flagged."
+ },
+ {
+  "name": "sponsorship_ticketing_hospitality",
+  "text": "Experience in sponsorship, ticketing and hospitality sales is preferred.",
+  "expect": false,
+  "reason": "Spec: \"'sponsorship, ticketing and hospitality sales'\" must not be reported as NO_SPONSORSHIP."
+ },
+ {
+  "name": "executive_sponsor_mentorship",
+  "text": "You will be paired with an executive sponsor for mentorship during onboarding.",
+  "expect": false,
+  "reason": "Spec: \"'executive sponsor'\" is a different meaning of sponsor and must not be flagged."
+ },
+ {
+  "name": "opt_out_ai_screening",
+  "text": "Candidates can opt out of AI-assisted resume screening at any time.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when \"the text says the applicant can 'opt out' / 'opt in' of something (AI screening, text messages) — 'opt' here is not OPT\"."
+ },
+ {
+  "name": "opt_in_text_messages",
+  "text": "You may opt in to receive text message updates about your application.",
+  "expect": false,
+  "reason": "Spec: \"'opt in'\" of text messages is not the OPT visa program and must not be flagged."
+ },
+ {
+  "name": "e_verify_only",
+  "text": "We participate in E-Verify to confirm employment eligibility.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP when \"the text only mentions U.S. Citizenship and Immigration Services / E-Verify\"."
+ },
+ {
+  "name": "uscis_form_i9_mention",
+  "text": "You will complete Form I-9 with U.S. Citizenship and Immigration Services on your first day.",
+  "expect": false,
+  "reason": "Spec: a mere mention of \"U.S. Citizenship and Immigration Services\" is not a sponsorship refusal."
+ },
+ {
+  "name": "eeo_citizenship_status",
+  "text": "We are an equal opportunity employer and consider all applicants regardless of citizenship status.",
+  "expect": false,
+  "reason": "Spec: must NOT report NO_SPONSORSHIP for \"an EEO statement about citizenship status\"."
+ }
+]

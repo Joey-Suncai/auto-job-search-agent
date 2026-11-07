@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "parse_job" | "clean_label" | "attached_name" | "other_text", "args": {...}, "expect": ..., "spec_quote": str, "ambiguous": false}. args: parse_job {"url"}, clean_label {"text"}, attached_name {"text", "index"}, other_text {"label"}. Write 26 cases: parse_job 8, clean_label 5, attached_name 7, other_text 6.

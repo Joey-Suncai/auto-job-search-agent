@@ -1,0 +1,6 @@
+{
+ "plan_fields_mixed_sections_page_order_and_skips": "Spec: for CA_ `options` the option TEXT is `value` (else `name`) and the option ID is `name` (else `value`) \u2014 real Workable data is {\"name\": \"295514\", \"value\": \"Yes\"} (Thorlabs 2026-11-03). The case swaps the two roles (expects the text from `name`); the code follows the spec.",
+ "plan_fields_CA_options_value_else_name": "Spec: for CA_ `options` the option TEXT is `value` (else `name`) and the option ID is `name` (else `value`) \u2014 real Workable data is {\"name\": \"295514\", \"value\": \"Yes\"} (Thorlabs 2026-11-03). The case swaps the two roles (expects the text from `name`); the code follows the spec.",
+ "plan_fields_whitespace_collapse_labels_and_options": "Spec: for CA_ `options` the option TEXT is `value` (else `name`) and the option ID is `name` (else `value`) \u2014 real Workable data is {\"name\": \"295514\", \"value\": \"Yes\"} (Thorlabs 2026-11-03). The case swaps the two roles (expects the text from `name`); the code follows the spec.",
+ "choice_map_CA_options_id_is_name_else_value": "Spec: for CA_ `options` the option TEXT is `value` (else `name`) and the option ID is `name` (else `value`) \u2014 real Workable data is {\"name\": \"295514\", \"value\": \"Yes\"} (Thorlabs 2026-11-03). The case swaps the two roles (expects the text from `name`); the code follows the spec."
+}

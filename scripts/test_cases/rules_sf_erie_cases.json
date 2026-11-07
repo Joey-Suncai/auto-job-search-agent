@@ -1,0 +1,287 @@
+[
+ {
+  "name": "citizenship_status_no",
+  "label": "Are you a U.S. citizen, U.S. national, lawful permanent resident, refugee, or asylee?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "citizen-of-the-U.S. / lawful-permanent-resident / refugee / asylee (all named in one question) → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_status_no_variant",
+  "label": "Are you a citizen of the United States, a lawful permanent resident, a refugee, or an asylee?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "citizen-of-the-U.S. / lawful-permanent-resident / refugee / asylee (all named in one question) → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "pursuing_grad_degree_yes",
+  "label": "Are you in pursuit of a Bachelor's degree with completion of sophomore year in a relevant field or pursuing a graduate degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "pursuing a graduate degree (e.g. \"Are you in pursuit of a Bachelor's degree with completion of sophomore year in a relevant field or pursuing a graduate degree?\", \"Are you currently enrolled in or pursuing a graduate degree program?\") → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "enrolled_grad_degree_yes_variant",
+  "label": "Are you currently enrolled in or pursuing a graduate degree program?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "pursuing a graduate degree (e.g. \"Are you in pursuit of a Bachelor's degree with completion of sophomore year in a relevant field or pursuing a graduate degree?\", \"Are you currently enrolled in or pursuing a graduate degree program?\") → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "office_software_yes",
+  "label": "Do you have a working knowledge of word processing, spreadsheet, and presentation software (Delcorros Office)?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "working knowledge of / proficiency with word processing, spreadsheet and presentation software or Delcorros Office → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "office_software_yes_variant",
+  "label": "Are you proficient with Delcorros Word, Excel, and PowerPoint?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "working knowledge of / proficiency with word processing, spreadsheet and presentation software or Delcorros Office → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "independent_agent_no",
+  "label": "Would you like to be considered for opportunities as an independent insurance agent or sales producer?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "would he like to be considered for opportunities as an independent (insurance) agent, sales producer, or for an independent agent → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "independent_agent_no_variant",
+  "label": "Are you interested in being considered for an independent agent opportunity?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "would he like to be considered for opportunities as an independent (insurance) agent, sales producer, or for an independent agent → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "non_compete_no",
+  "label": "Are you subject to a non-compete, non-solicitation, or confidentiality agreement with a previous or current employer?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "subject to a non-compete / non-solicitation / confidentiality agreement with a previous or current employer → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "non_compete_no_variant",
+  "label": "Are you currently bound by any non-solicitation or confidentiality agreement with an employer?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "subject to a non-compete / non-solicitation / confidentiality agreement with a previous or current employer → \"No\"",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_erie_indicate_NO",
+  "label": "Have you ever worked at Erie Insurance as a third-party contractor (agency, vendor, or temp)? If NO, please indicate NO.",
+  "type": "text",
+  "options": [],
+  "expect": "NO",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_state_farm_N_A",
+  "label": "Have you ever worked for State Farm as a third-party contractor, vendor, or temp? If no, please enter N/A",
+  "type": "text",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "own_business_other_employment_None",
+  "label": "If hired, will you own or operate a business or have other employment? If not, type None",
+  "type": "text",
+  "options": [],
+  "expect": "None",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_competitor_allstate_indicate_NO",
+  "label": "Do you have any relatives employed by a competitor, vendor, or supplier of Allstate? If NO, please indicate NO.",
+  "type": "text",
+  "options": [],
+  "expect": "NO",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "previous_erie_permanent_employee_N_A",
+  "label": "Have you previously worked at Erie Insurance as a permanent employee under any name? If no, please enter N/A",
+  "type": "text",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_employment_business_None",
+  "label": "If hired, will you have any other employment or own or operate a business? If not, type None",
+  "type": "text",
+  "options": [],
+  "expect": "None",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_progressive_vendor_N_A",
+  "label": "Do you have any relatives working at a competitor or vendor of Progressive? If no, please enter N/A",
+  "type": "text",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "contractor_travelers_indicate_NO",
+  "label": "Have you worked for Travelers as a contractor, vendor, or temp? If NO, please indicate NO.",
+  "type": "text",
+  "options": [],
+  "expect": "NO",
+  "spec_quote": "Text boxes that ask a yes/no question and say what to type when the answer is No (\"If NO, please indicate NO.\", \"If no, please enter N/A\", \"If not, type None\") → the word exactly as the instruction writes it (\"NO\", \"N/A\", \"None\").",
+  "ambiguous": false
+ },
+ {
+  "name": "worked_company_any_capacity_no_instruction",
+  "label": "Have you ever worked for Erie Insurance in any capacity? (text box, no instruction for what to type)",
+  "type": "text",
+  "options": [],
+  "expect": "No",
+  "spec_quote": "A text box asking the same yes/no question with no instruction about what to type for No → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_competitor_no_instruction",
+  "label": "Do you have any relatives employed by a competitor or vendor? (text box, no instruction for what to type)",
+  "type": "text",
+  "options": [],
+  "expect": "No",
+  "spec_quote": "A text box asking the same yes/no question with no instruction about what to type for No → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature_of_applicant",
+  "label": "Signature of Applicant",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "applicant_signature",
+  "label": "Applicant Signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "electronic_signature",
+  "label": "Electronic Signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cumulative_gpa",
+  "label": "What is your current cumulative grade point average?",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "\"What is your current cumulative grade point average?\", \"Cumulative GPA\" (text) → \"GPA_ON_FILE\".",
+  "ambiguous": false
+ },
+ {
+  "name": "cumulative_gpa_short_label",
+  "label": "Cumulative GPA",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "\"What is your current cumulative grade point average?\", \"Cumulative GPA\" (text) → \"GPA_ON_FILE\".",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_what_grad_degree",
+  "label": "What graduate degree are you pursuing?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Near misses that must NOT get these answers → \"none\": \"What graduate degree are you pursuing?\" (text), \"Do you plan to pursue a graduate degree in the future?\" (Yes/No), \"How many years of experience do you have with spreadsheet software?\" (text).",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_future_grad_degree",
+  "label": "Do you plan to pursue a graduate degree in the future?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "Near misses that must NOT get these answers → \"none\": \"What graduate degree are you pursuing?\" (text), \"Do you plan to pursue a graduate degree in the future?\" (Yes/No), \"How many years of experience do you have with spreadsheet software?\" (text).",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_spreadsheet_years",
+  "label": "How many years of experience do you have with spreadsheet software?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Near misses that must NOT get these answers → \"none\": \"What graduate degree are you pursuing?\" (text), \"Do you plan to pursue a graduate degree in the future?\" (Yes/No), \"How many years of experience do you have with spreadsheet software?\" (text).",
+  "ambiguous": false
+ }
+]

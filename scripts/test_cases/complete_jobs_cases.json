@@ -1,0 +1,535 @@
+[
+ {
+  "name": "keep_present_values_never_overwritten",
+  "row": {
+   "id": "j1",
+   "company": "Acme",
+   "title": "Data Engineer",
+   "tier": 0,
+   "notes": "",
+   "remote": "No",
+   "sources": "LinkedIn",
+   "n_sources": 7,
+   "score": 0
+  },
+  "companies": [],
+  "expect": {
+   "tier": 0,
+   "notes": "",
+   "remote": "No",
+   "sources": "LinkedIn",
+   "n_sources": 7,
+   "score": 0
+  },
+  "spec_quote": "A field that is present with a value (including 0, \"\", \"No\", False) is kept as it is. Only a field that is absent or null (None) is filled.",
+  "ambiguous": false
+ },
+ {
+  "name": "remote_present_kept_despite_remote_location",
+  "row": {
+   "id": "j2",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "location": "Remote (US)",
+   "remote": "No"
+  },
+  "companies": [],
+  "expect": {
+   "remote": "No"
+  },
+  "spec_quote": "A field that is present with a value (including 0, \"\", \"No\", False) is kept as it is. Only a field that is absent or null (None) is filled. ... remote (if missing) = \"Yes\" when the location contains the word \"remote\" (any case), else \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_list_joined_with_semicolons",
+  "row": {
+   "id": "j3",
+   "company": "Acme",
+   "title": "Data Engineer",
+   "sources": [
+    "LinkedIn",
+    "Built In",
+    "Workday search"
+   ]
+  },
+  "companies": [],
+  "expect": {
+   "sources": "LinkedIn; Built In; Workday search",
+   "n_sources": 3
+  },
+  "spec_quote": "If `sources` is a list → join its items with \"; \". ... n_sources (if missing) = number of labels in the final `sources` string.",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_list_items_used_literally",
+  "row": {
+   "id": "j4",
+   "company": "Acme",
+   "title": "Data Engineer",
+   "sources": [
+    "linkedin"
+   ],
+   "source": "workday_search"
+  },
+  "companies": [],
+  "expect": {
+   "sources": "linkedin",
+   "n_sources": 1
+  },
+  "spec_quote": "If `sources` is a list → join its items with \"; \".",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_from_source_workday_mapping",
+  "row": {
+   "id": "j5",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "source": "workday_search"
+  },
+  "companies": [],
+  "expect": {
+   "sources": "Workday search",
+   "n_sources": 1
+  },
+  "spec_quote": "If absent/null → use the row's `source` key mapped to a label: workday_search → \"Workday search\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_from_unmapped_source_value",
+  "row": {
+   "id": "j6",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "source": "Hacker News crawl"
+  },
+  "companies": [],
+  "expect": {
+   "sources": "Hacker News crawl",
+   "n_sources": 1
+  },
+  "spec_quote": "any other non-empty value is used as is;",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_from_cert_supply_flag_fallback",
+  "row": {
+   "id": "j7",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "cert_supply": true
+  },
+  "companies": [],
+  "expect": {
+   "sources": "Cert supply",
+   "n_sources": 1
+  },
+  "spec_quote": "if `source` is also absent but the row has `cert_supply` set → \"Cert supply\"; otherwise \"Unknown\".",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_unknown_when_no_source_info",
+  "row": {
+   "id": "j8",
+   "company": "Acme",
+   "title": "Data Analyst"
+  },
+  "companies": [],
+  "expect": {
+   "sources": "Unknown",
+   "n_sources": 1
+  },
+  "spec_quote": "otherwise \"Unknown\". ... n_sources (if missing) = number of labels in the final `sources` string.",
+  "ambiguous": false
+ },
+ {
+  "name": "sources_null_filled_from_source_key",
+  "row": {
+   "id": "j9",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "sources": null,
+   "source": "builtin"
+  },
+  "companies": [],
+  "expect": {
+   "sources": "Built In",
+   "n_sources": 1
+  },
+  "spec_quote": "Only a field that is absent or null (None) is filled. ... If absent/null → use the row's `source` key mapped to a label: ... builtin → \"Built In\",",
+  "ambiguous": false
+ },
+ {
+  "name": "company_match_via_normalized_name_copies_facts",
+  "row": {
+   "id": "j10",
+   "company": "ACME, Inc.",
+   "title": "Data Engineer"
+  },
+  "companies": [
+   {
+    "company": "Acme Corp.",
+    "sponsorship": "Yes",
+    "h1b_fy25": 12,
+    "h1b_total": 40,
+    "h1b_since": "2019",
+    "gc_sponsor": "Yes",
+    "gc_perm": "Yes",
+    "gc_months": "6",
+    "referral": "Warm",
+    "contacts": "jane@acme.com",
+    "warm_path": "alum"
+   }
+  ],
+  "expect": {
+   "sponsorship": "Yes",
+   "h1b_fy25": 12,
+   "h1b_total": 40,
+   "h1b_since": "2019",
+   "gc_sponsor": "Yes",
+   "gc_perm": "Yes",
+   "gc_months": "6",
+   "referral": "Warm",
+   "contacts": "jane@acme.com",
+   "warm_path": "alum"
+  },
+  "spec_quote": "Company facts come from the companies table, matched on a normalized company name: ... So \"Acme Corp.\" matches \"ACME, Inc.\" Fields copied when missing: sponsorship, h1b_fy25, h1b_total, h1b_since, gc_sponsor, gc_perm, gc_months, referral, contacts, warm_path.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_match_does_not_overwrite_present_fields",
+  "row": {
+   "id": "j11",
+   "company": "Acme Corp.",
+   "title": "Data Engineer",
+   "sponsorship": "No",
+   "h1b_fy25": 0
+  },
+  "companies": [
+   {
+    "company": "ACME, Inc.",
+    "sponsorship": "Yes",
+    "h1b_fy25": 12,
+    "h1b_total": 40
+   }
+  ],
+  "expect": {
+   "sponsorship": "No",
+   "h1b_fy25": 0,
+   "h1b_total": 40
+  },
+  "spec_quote": "Never overwrite. A field that is present with a value (including 0, \"\", \"No\", False) is kept as it is. ... Fields copied when missing: sponsorship, h1b_fy25, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "company_match_ampersand_and_stopwords",
+  "row": {
+   "id": "j12",
+   "company": "Acme & Co.",
+   "title": "Data Analyst"
+  },
+  "companies": [
+   {
+    "company": "ACME and Company",
+    "sponsorship": "Yes",
+    "h1b_fy25": 3
+   }
+  ],
+  "expect": {
+   "sponsorship": "Yes",
+   "h1b_fy25": 3
+  },
+  "spec_quote": "lowercase, \"&\" → \" and \", .com dropped, non-alphanumerics → space, the words inc, incorporated, llc, corp, corporation, co, company, ... removed, spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_match_dotcom_dropped_and_inc_removed",
+  "row": {
+   "id": "j13",
+   "company": "Acme.com",
+   "title": "Data Analyst"
+  },
+  "companies": [
+   {
+    "company": "Acme Inc",
+    "sponsorship": "No",
+    "gc_sponsor": "Yes"
+   }
+  ],
+  "expect": {
+   "sponsorship": "No",
+   "gc_sponsor": "Yes"
+  },
+  "spec_quote": ".com dropped, non-alphanumerics → space, the words inc, incorporated, llc, corp, corporation, co, company, ltd, ... removed, spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_no_match_uses_defaults",
+  "row": {
+   "id": "j14",
+   "company": "Globex",
+   "title": "Data Analyst"
+  },
+  "companies": [
+   {
+    "company": "Acme Corp.",
+    "sponsorship": "Yes",
+    "h1b_fy25": 99,
+    "referral": "Warm"
+   }
+  ],
+  "expect": {
+   "sponsorship": "Unknown — verify",
+   "h1b_fy25": 0,
+   "h1b_total": 0,
+   "h1b_since": "",
+   "gc_sponsor": "",
+   "gc_perm": "",
+   "gc_months": "",
+   "referral": "Cold",
+   "contacts": "",
+   "warm_path": ""
+  },
+  "spec_quote": "No match → sponsorship \"Unknown — verify\", h1b_fy25 0, h1b_total 0, h1b_since \"\", gc_sponsor \"\", gc_perm \"\", gc_months \"\", referral \"Cold\", contacts \"\", warm_path \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "matched_company_null_field_uses_default",
+  "row": {
+   "id": "j15",
+   "company": "Acme Inc",
+   "title": "Data Analyst"
+  },
+  "companies": [
+   {
+    "company": "Acme",
+    "sponsorship": null,
+    "h1b_fy25": 12,
+    "gc_sponsor": "Yes"
+   }
+  ],
+  "expect": {
+   "sponsorship": "Unknown — verify",
+   "h1b_fy25": 12,
+   "gc_sponsor": "Yes",
+   "referral": "Cold",
+   "contacts": ""
+  },
+  "spec_quote": "A matched company whose own field is null/absent gives that same default.",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_detail_from_present_referral_and_li_defaults",
+  "row": {
+   "id": "j16",
+   "company": "Globex",
+   "title": "Data Analyst",
+   "referral": "Warm intro"
+  },
+  "companies": [],
+  "expect": {
+   "referral": "Warm intro",
+   "referral_detail": "Warm intro",
+   "li_connections": 0,
+   "li_alumni": 0
+  },
+  "spec_quote": "referral_detail (if missing) = the final `referral` value. li_connections and li_alumni (if missing) = 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_detail_from_company_derived_referral",
+  "row": {
+   "id": "j17",
+   "company": "Acme Corp.",
+   "title": "Data Analyst"
+  },
+  "companies": [
+   {
+    "company": "Acme Inc",
+    "referral": "Referral available"
+   }
+  ],
+  "expect": {
+   "referral": "Referral available",
+   "referral_detail": "Referral available"
+  },
+  "spec_quote": "Fields copied when missing: ... referral ... referral_detail (if missing) = the final `referral` value.",
+  "ambiguous": false
+ },
+ {
+  "name": "remote_yes_case_insensitive_location",
+  "row": {
+   "id": "j18",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "location": "REMOTE - United States"
+  },
+  "companies": [],
+  "expect": {
+   "remote": "Yes"
+  },
+  "spec_quote": "remote (if missing) = \"Yes\" when the location contains the word \"remote\" (any case), else \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "remote_no_and_salary_posted_empty_defaults",
+  "row": {
+   "id": "j19",
+   "company": "Acme",
+   "title": "Data Analyst",
+   "location": "New York, NY"
+  },
+  "companies": [],
+  "expect": {
+   "remote": "No",
+   "salary": "",
+   "posted": ""
+  },
+  "spec_quote": "remote (if missing) = \"Yes\" when the location contains the word \"remote\" (any case), else \"No\". salary (if missing) = \"\". posted (if missing) = \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "track_ai_for_ml_title",
+  "row": {
+   "id": "j20",
+   "company": "Acme",
+   "title": "Senior Machine Learning Engineer"
+  },
+  "companies": [],
+  "expect": {
+   "track": "AI Agentic Eng"
+  },
+  "spec_quote": "track (if missing or null) = from the title, first match wins, case-insensitive whole words: AI words (ai, machine learning, ml, llm, genai, generative, agent, agentic, nlp, deep learning, computer vision, research engineer, mlops…) → \"AI Agentic Eng\";",
+  "ambiguous": false
+ },
+ {
+  "name": "track_data_engineer_beats_analytics",
+  "row": {
+   "id": "j21",
+   "company": "Acme",
+   "title": "Analytics Engineer II"
+  },
+  "companies": [],
+  "expect": {
+   "track": "Data Engineer"
+  },
+  "spec_quote": "data engineering words (data engineer, analytics engineer, etl, data pipeline, database, data warehouse…) → \"Data Engineer\";",
+  "ambiguous": false
+ },
+ {
+  "name": "track_data_analyst_with_null_track",
+  "row": {
+   "id": "j22",
+   "company": "Acme",
+   "title": "Business Intelligence Analyst",
+   "track": null
+  },
+  "companies": [],
+  "expect": {
+   "track": "Data Analyst"
+  },
+  "spec_quote": "track (if missing or null) = from the title ... analyst words (data analyst, business analyst, business intelligence, bi analyst, marketing analyst, operations analyst…) → \"Data Analyst\";",
+  "ambiguous": false
+ },
+ {
+  "name": "track_product_manager",
+  "row": {
+   "id": "j23",
+   "company": "Acme",
+   "title": "Product Manager, Growth"
+  },
+  "companies": [],
+  "expect": {
+   "track": "Product Manager"
+  },
+  "spec_quote": "product words (product manager, product analyst, program manager, product…) → \"Product Manager\";",
+  "ambiguous": false
+ },
+ {
+  "name": "track_data_sci_analytics",
+  "row": {
+   "id": "j24",
+   "company": "Acme",
+   "title": "Data Scientist"
+  },
+  "companies": [],
+  "expect": {
+   "track": "Data Sci / Analytics"
+  },
+  "spec_quote": "data science words (data scien, analytics, quantitative, quant, statistic, research analyst, data…) → \"Data Sci / Analytics\";",
+  "ambiguous": false
+ },
+ {
+  "name": "track_other_when_nothing_matches",
+  "row": {
+   "id": "j25",
+   "company": "Acme",
+   "title": "Account Executive"
+  },
+  "companies": [],
+  "expect": {
+   "track": "Other"
+  },
+  "spec_quote": "nothing matches → \"Other\".",
+  "ambiguous": false
+ },
+ {
+  "name": "track_present_other_is_kept",
+  "row": {
+   "id": "j26",
+   "company": "Acme",
+   "title": "Machine Learning Engineer",
+   "track": "Other"
+  },
+  "companies": [],
+  "expect": {
+   "track": "Other"
+  },
+  "spec_quote": "A track already present (even \"Other\") is kept.",
+  "ambiguous": false
+ },
+ {
+  "name": "score_parts_default_zero",
+  "row": {
+   "id": "j27",
+   "company": "Globex",
+   "title": "Data Analyst",
+   "s_role": 3
+  },
+  "companies": [],
+  "expect": {
+   "s_role": 3,
+   "s_timing": 0,
+   "s_sponsor": 0,
+   "s_greencard": 0,
+   "s_referral": 0,
+   "s_fresh": 0
+  },
+  "spec_quote": "Score parts s_role, s_timing, s_sponsor, s_greencard, s_referral, s_fresh (if missing) = 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_fields_not_added_or_changed",
+  "row": {
+   "id": "j28",
+   "company": "Globex",
+   "title": "Data Analyst",
+   "elig_h1b": true
+  },
+  "companies": [],
+  "expect": {
+   "elig_h1b": true,
+   "sources": "Unknown"
+  },
+  "expect_absent": [
+   "notes",
+   "score",
+   "tier",
+   "rank",
+   "ats_provider",
+   "elig_note"
+  ],
+  "spec_quote": "Other fields (elig_*, ats_*, notes, score, tier, rank…) are never added or changed.",
+  "ambiguous": false
+ }
+]

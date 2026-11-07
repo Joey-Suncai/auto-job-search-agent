@@ -1,0 +1,86 @@
+[
+ {
+  "name": "plain text without semicolons",
+  "text": "Strong Python background, shipped two data platforms.",
+  "expect": "Strong Python background, shipped two data platforms.",
+  "spec_quote": "No other character changes; text without ';' is returned unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "single semicolon between clauses",
+  "text": "Strong Python; shipped two data platforms",
+  "expect": "Strong Python, shipped two data platforms",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it",
+  "ambiguous": false
+ },
+ {
+  "name": "several semicolons",
+  "text": "a;b;c",
+  "expect": "a, b, c",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it",
+  "ambiguous": false
+ },
+ {
+  "name": "single space before and after semicolon",
+  "text": "a ; b",
+  "expect": "a, b",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it (spaces around the ';' collapse).",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple spaces before and after semicolon",
+  "text": "a   ;   b",
+  "expect": "a, b",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it (spaces around the ';' collapse).",
+  "ambiguous": false
+ },
+ {
+  "name": "semicolon directly before a newline",
+  "text": "line one;\nline two",
+  "expect": "line one,\nline two",
+  "spec_quote": "If the ';' is followed by a line break, the comma is followed directly by that line break (no trailing space).",
+  "ambiguous": false
+ },
+ {
+  "name": "semicolon with surrounding spaces before a newline",
+  "text": "line one ; \nline two",
+  "expect": "line one,\nline two",
+  "spec_quote": "If the ';' is followed by a line break, the comma is followed directly by that line break (no trailing space). (spaces around the ';' collapse)",
+  "ambiguous": true
+ },
+ {
+  "name": "two semicolons in a row",
+  "text": "a;;b",
+  "expect": "a, b",
+  "spec_quote": "';;' (two in a row: each becomes \", \" then collapse as the rule says)",
+  "ambiguous": true
+ },
+ {
+  "name": "semicolon at start of string",
+  "text": "; note",
+  "expect": ", note",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it",
+  "ambiguous": false
+ },
+ {
+  "name": "semicolon at end of string",
+  "text": "note;",
+  "expect": "note,",
+  "spec_quote": "Every ';' is replaced by ',' with exactly one space after it and no space before it",
+  "ambiguous": true
+ },
+ {
+  "name": "no semicolon, other punctuation untouched",
+  "text": "No semicolons, just commas, dashes - and 100% ready!",
+  "expect": "No semicolons, just commas, dashes - and 100% ready!",
+  "spec_quote": "No other character changes; text without ';' is returned unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty string",
+  "text": "",
+  "expect": "",
+  "spec_quote": "None / empty → \"\".",
+  "ambiguous": false
+ }
+]

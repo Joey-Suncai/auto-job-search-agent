@@ -1,0 +1,170 @@
+[
+ {
+  "name": "recruiter-contacted-radio",
+  "label": "Were you contacted by an <company> recruiter?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you contacted by an <company> recruiter?\" / \"Have you been approached by a recruiter from <company>?\" / \"Were you referred by a recruiter?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "recruiter-approached-select",
+  "label": "Have you been approached by a recruiter from <company>?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you contacted by an <company> recruiter?\" / \"Have you been approached by a recruiter from <company>?\" / \"Were you referred by a recruiter?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "recruiter-referred-radio",
+  "label": "Were you referred by a recruiter?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you contacted by an <company> recruiter?\" / \"Have you been approached by a recruiter from <company>?\" / \"Were you referred by a recruiter?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "recruiter-contacted-select-reversed-options",
+  "label": "Were you contacted by an <company> recruiter?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you contacted by an <company> recruiter?\" / \"Have you been approached by a recruiter from <company>?\" / \"Were you referred by a recruiter?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "recruiter-approached-radio",
+  "label": "Have you been approached by a recruiter from <company>?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you contacted by an <company> recruiter?\" / \"Have you been approached by a recruiter from <company>?\" / \"Were you referred by a recruiter?\" → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature-typed-signature",
+  "label": "Typed Signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature-electronic-signature",
+  "label": "Electronic Signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature-e-signature",
+  "label": "E-signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature-digital-signature",
+  "label": "Digital signature",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "signature-full-legal-name-prompt",
+  "label": "Please sign with your full legal name",
+  "type": "text",
+  "options": [],
+  "expect": "Alex Rivera",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "ambiguous": false
+ },
+ {
+  "name": "agree-these-terms-radio",
+  "label": "Do you agree to these terms?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Do you agree to these terms?\" / \"Do you agree to the terms?\" (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "agree-the-terms-select",
+  "label": "Do you agree to the terms?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Do you agree to these terms?\" / \"Do you agree to the terms?\" (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "agree-the-terms-radio-reversed-options",
+  "label": "Do you agree to the terms?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Do you agree to these terms?\" / \"Do you agree to the terms?\" (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "unrelated-recruiter-name",
+  "label": "Recruiter name",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Unrelated questions (\"Recruiter name\", \"Signature date\") → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "unrelated-signature-date",
+  "label": "Signature date",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Unrelated questions (\"Recruiter name\", \"Signature date\") → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "unrelated-recruiter-name-capitalized",
+  "label": "Recruiter Name",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Unrelated questions (\"Recruiter name\", \"Signature date\") → \"none\".",
+  "ambiguous": false
+ }
+]

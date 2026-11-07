@@ -1,0 +1,323 @@
+[
+ {
+  "name": "file_kind_cover_letter_basic",
+  "fn": "file_kind",
+  "args": {
+   "label": "Cover Letter"
+  },
+  "expect": "cover",
+  "spec": "\"cover\" when the label mentions a cover letter (\"cover letter\", \"coverletter\")..."
+ },
+ {
+  "name": "file_kind_coverletter_one_word",
+  "fn": "file_kind",
+  "args": {
+   "label": "Coverletter"
+  },
+  "expect": "cover",
+  "spec": "\"cover\" when the label mentions a cover letter (\"cover letter\", \"coverletter\")..."
+ },
+ {
+  "name": "file_kind_motivational_letter",
+  "fn": "file_kind",
+  "args": {
+   "label": "Motivational Letter"
+  },
+  "expect": "cover",
+  "spec": "\"cover\" when the label mentions ... a motivation / motivational letter..."
+ },
+ {
+  "name": "file_kind_letter_of_motivation",
+  "fn": "file_kind",
+  "args": {
+   "label": "Letter of Motivation"
+  },
+  "expect": "cover",
+  "spec": "... or a letter of interest / letter of motivation."
+ },
+ {
+  "name": "file_kind_letter_of_interest_lowercase",
+  "fn": "file_kind",
+  "args": {
+   "label": "letter of interest"
+  },
+  "expect": "cover",
+  "spec": "\"cover\" when the label mentions ... a letter of interest / letter of motivation. ... Case-insensitive."
+ },
+ {
+  "name": "file_kind_references_plural",
+  "fn": "file_kind",
+  "args": {
+   "label": "References"
+  },
+  "expect": "reference",
+  "spec": "Else \"reference\" when it mentions reference or recommendation (letters of recommendation are the candidate's own documents)."
+ },
+ {
+  "name": "file_kind_letter_of_recommendation",
+  "fn": "file_kind",
+  "args": {
+   "label": "Letter of Recommendation"
+  },
+  "expect": "reference",
+  "spec": "Else \"reference\" when it mentions reference or recommendation (letters of recommendation are the candidate's own documents)."
+ },
+ {
+  "name": "file_kind_transcript_uppercase",
+  "fn": "file_kind",
+  "args": {
+   "label": "TRANSCRIPT"
+  },
+  "expect": "transcript",
+  "spec": "Else \"transcript\" when it mentions transcript. ... Case-insensitive."
+ },
+ {
+  "name": "file_kind_resume_cv",
+  "fn": "file_kind",
+  "args": {
+   "label": "Resume/CV"
+  },
+  "expect": "resume",
+  "spec": "Everything else is \"resume\" (\"Resume/CV\", ...)."
+ },
+ {
+  "name": "file_kind_upload_a_file_generic",
+  "fn": "file_kind",
+  "args": {
+   "label": "Upload a file"
+  },
+  "expect": "resume",
+  "spec": "Everything else is \"resume\" (..., \"Upload a file\", ...)."
+ },
+ {
+  "name": "file_kind_empty_label",
+  "fn": "file_kind",
+  "args": {
+   "label": ""
+  },
+  "expect": "resume",
+  "spec": "Everything else is \"resume\" (..., empty label)."
+ },
+ {
+  "name": "file_kind_attachments_uppercase",
+  "fn": "file_kind",
+  "args": {
+   "label": "ATTACHMENTS"
+  },
+  "expect": "resume",
+  "spec": "Everything else is \"resume\" (..., \"Attachments\", ...). Case-insensitive."
+ },
+ {
+  "name": "resume_empty_field_no_cover_wanted",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": false,
+   "multiple": false
+  },
+  "expect": [
+   "Alex_Rivera_Resume_X_A-Classic.pdf"
+  ],
+  "spec": "kind \"resume\": the résumé unless the field already shows a file ... ; then additionally the cover letter when want_cover is true AND the input accepts multiple files..."
+ },
+ {
+  "name": "resume_empty_field_want_cover_multi",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [
+   "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "Alex_Rivera_Cover_Letter_X.pdf"
+  ],
+  "spec": "kind \"resume\": the résumé ... ; then additionally the cover letter when want_cover is true AND the input accepts multiple files AND the cover name is not already in field_text AND cover is not null."
+ },
+ {
+  "name": "resume_want_cover_but_single_file_field",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": false
+  },
+  "expect": [
+   "Alex_Rivera_Resume_X_A-Classic.pdf"
+  ],
+  "spec": "then additionally the cover letter when want_cover is true AND the input accepts multiple files AND the cover name is not already in field_text AND cover is not null."
+ },
+ {
+  "name": "resume_field_already_shows_success",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "Successfully Uploaded",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": false,
+   "multiple": false
+  },
+  "expect": [],
+  "spec": "kind \"resume\": the résumé unless the field already shows a file (the text contains \"successful\", ...) — never a second résumé."
+ },
+ {
+  "name": "resume_field_shows_resume_pdf_want_cover",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "Alex_Rivera_Resume_X_A-Classic.pdf Successfully Uploaded",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [
+   "Alex_Rivera_Cover_Letter_X.pdf"
+  ],
+  "spec": "kind \"resume\": the résumé unless the field already shows a file (the text contains \"successful\", or a name ending in .pdf / .doc / .docx) — never a second résumé; then additionally the cover letter when want_cover is true AND the input accepts multiple files AND the cover name is not already in field_text AND cover is not null."
+ },
+ {
+  "name": "resume_field_shows_other_docx",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "old_resume_draft.docx",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [
+   "Alex_Rivera_Cover_Letter_X.pdf"
+  ],
+  "spec": "kind \"resume\": the résumé unless the field already shows a file (the text contains \"successful\", or a name ending in .pdf / .doc / .docx) — never a second résumé."
+ },
+ {
+  "name": "resume_field_shows_cover_only",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "Alex_Rivera_Cover_Letter_X.pdf",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [
+   "Alex_Rivera_Resume_X_A-Classic.pdf"
+  ],
+  "spec": "then additionally the cover letter when want_cover is true AND the input accepts multiple files AND the cover name is not already in field_text AND cover is not null."
+ },
+ {
+  "name": "resume_cover_null_want_cover_multi",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": null,
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [
+   "Alex_Rivera_Resume_X_A-Classic.pdf"
+  ],
+  "spec": "then additionally the cover letter when want_cover is true AND the input accepts multiple files AND the cover name is not already in field_text AND cover is not null."
+ },
+ {
+  "name": "cover_kind_empty_field",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "cover",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": false,
+   "multiple": false
+  },
+  "expect": [
+   "Alex_Rivera_Cover_Letter_X.pdf"
+  ],
+  "spec": "kind \"cover\": [cover] unless that exact name already appears in field_text; null cover -> []."
+ },
+ {
+  "name": "cover_kind_already_uploaded",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "cover",
+   "field_text": "Alex_Rivera_Cover_Letter_X.pdf Successfully Uploaded",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": false,
+   "multiple": false
+  },
+  "expect": [],
+  "spec": "kind \"cover\": [cover] unless that exact name already appears in field_text."
+ },
+ {
+  "name": "cover_kind_no_cover_file",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "cover",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": null,
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [],
+  "spec": "kind \"cover\": [cover] unless that exact name already appears in field_text; null cover -> []."
+ },
+ {
+  "name": "reference_kind_never_uploads",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "reference",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [],
+  "spec": "kind \"reference\" or \"transcript\": [] always (the candidate provides those)."
+ },
+ {
+  "name": "transcript_kind_never_uploads",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "transcript",
+   "field_text": "",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": true,
+   "multiple": true
+  },
+  "expect": [],
+  "spec": "kind \"reference\" or \"transcript\": [] always (the candidate provides those)."
+ },
+ {
+  "name": "resume_cover_field_shows_doc_extension",
+  "fn": "files_for_field",
+  "args": {
+   "kind": "resume",
+   "field_text": "attachment.doc",
+   "resume": "Alex_Rivera_Resume_X_A-Classic.pdf",
+   "cover": "Alex_Rivera_Cover_Letter_X.pdf",
+   "want_cover": false,
+   "multiple": false
+  },
+  "expect": [],
+  "spec": "kind \"resume\": the résumé unless the field already shows a file (the text contains \"successful\", or a name ending in .pdf / .doc / .docx) — never a second résumé."
+ }
+]

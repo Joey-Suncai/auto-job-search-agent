@@ -1,0 +1,348 @@
+[
+ {
+  "name": "linkedin_profile_required",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<div><label>LinkedIn Profile URL</label><input type=\"text\" name=\"urls[LinkedIn Profile]\" required></div>"
+  },
+  "expect": [
+   {
+    "key": "urls[LinkedIn Profile]",
+    "label": "LinkedIn Profile",
+    "required": true
+   }
+  ],
+  "spec_quote": "Every `<input … name=\"urls[X]\" …>` on the page becomes one field, in page order, key = `urls[X]` (X exactly as in the page, HTML entities decoded, e.g. `&amp;` → `&`). … label = X with spaces normalised; when X does not already contain the word \"url\", \"link\", \"website\" or \"profile\" (case-insensitive, whole word) \" URL\" is appended: … \"LinkedIn Profile\" stays \"LinkedIn Profile\" . required = the tag carries the attribute `required`.",
+  "ambiguous": false
+ },
+ {
+  "name": "github_portfolio_appends_url",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input type=\"text\" name=\"urls[Github / Portfolio]\">"
+  },
+  "expect": [
+   {
+    "key": "urls[Github / Portfolio]",
+    "label": "Github / Portfolio URL",
+    "required": false
+   }
+  ],
+  "spec_quote": "when X does not already contain the word \"url\", \"link\", \"website\" or \"profile\" (case-insensitive, whole word) \" URL\" is appended: \"Github / Portfolio\" → \"Github / Portfolio URL\"",
+  "ambiguous": false
+ },
+ {
+  "name": "personal_website_no_suffix",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input type=\"url\" name=\"urls[Personal Website]\" required>"
+  },
+  "expect": [
+   {
+    "key": "urls[Personal Website]",
+    "label": "Personal Website",
+    "required": true
+   }
+  ],
+  "spec_quote": "\"Personal Website\" stays \"Personal Website\". … required = the tag carries the attribute `required`.",
+  "ambiguous": false
+ },
+ {
+  "name": "entity_decoded_and_no_url_suffix_for_portfolio",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input type=\"text\" name=\"urls[Portfolio &amp; Blog]\" required>"
+  },
+  "expect": [
+   {
+    "key": "urls[Portfolio & Blog]",
+    "label": "Portfolio & Blog URL",
+    "required": true
+   }
+  ],
+  "spec_quote": "key = `urls[X]` (X exactly as in the page, HTML entities decoded, e.g. `&amp;` → `&`). … when X does not already contain the word \"url\", \"link\", \"website\" or \"profile\" (case-insensitive, whole word) \" URL\" is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate_name_listed_once",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input name=\"urls[LinkedIn Profile]\" type=\"text\"><input name=\"urls[LinkedIn Profile]\" type=\"text\" required>"
+  },
+  "expect": [
+   {
+    "key": "urls[LinkedIn Profile]",
+    "label": "LinkedIn Profile",
+    "required": false
+   }
+  ],
+  "spec_quote": "A name seen twice is listed once.",
+  "ambiguous": true
+ },
+ {
+  "name": "non_urls_inputs_ignored",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input name=\"email\" type=\"email\"><input name=\"urlsx[Twitter]\" type=\"text\"><input name=\"urls[LinkedIn Profile]\" type=\"text\" required>"
+  },
+  "expect": [
+   {
+    "key": "urls[LinkedIn Profile]",
+    "label": "LinkedIn Profile",
+    "required": true
+   }
+  ],
+  "spec_quote": "Inputs whose name is not `urls[…]` are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "spaces_normalised_in_label",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input name=\"urls[LinkedIn   Profile]\" type=\"text\">"
+  },
+  "expect": [
+   {
+    "key": "urls[LinkedIn   Profile]",
+    "label": "LinkedIn Profile",
+    "required": false
+   }
+  ],
+  "spec_quote": "label = X with spaces normalised; … key = `urls[X]` (X exactly as in the page, HTML entities decoded…)",
+  "ambiguous": true
+ },
+ {
+  "name": "page_order_preserved_three_fields",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<form><input name=\"urls[Website]\" type=\"text\"><input name=\"urls[LinkedIn Profile]\" type=\"text\" required><input name=\"urls[Twitter / X]\" type=\"text\"></form>"
+  },
+  "expect": [
+   {
+    "key": "urls[Website]",
+    "label": "Website",
+    "required": false
+   },
+   {
+    "key": "urls[LinkedIn Profile]",
+    "label": "LinkedIn Profile",
+    "required": true
+   },
+   {
+    "key": "urls[Twitter / X]",
+    "label": "Twitter / X URL",
+    "required": false
+   }
+  ],
+  "spec_quote": "Every `<input … name=\"urls[X]\" …>` on the page becomes one field, in page order … when X does not already contain the word \"url\", \"link\", \"website\" or \"profile\" (case-insensitive, whole word) \" URL\" is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "keyword_check_case_insensitive",
+  "fn": "lever_urls",
+  "args": {
+   "page": "<input name=\"urls[LinkedIn PROFILE]\" type=\"text\">"
+  },
+  "expect": [
+   {
+    "key": "urls[LinkedIn PROFILE]",
+    "label": "LinkedIn PROFILE",
+    "required": false
+   }
+  ],
+  "spec_quote": "when X does not already contain the word \"url\", \"link\", \"website\" or \"profile\" (case-insensitive, whole word) \" URL\" is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "coolest_ai_project_question_is_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "What is the coolest thing you have ever built using AI?",
+    "required": false
+   }
+  },
+  "expect": true,
+  "spec_quote": "True only for an optional (`required` false/missing) `textarea` whose label contains \"?\" …",
+  "ambiguous": false
+ },
+ {
+  "name": "required_textarea_not_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "What is the coolest thing you have ever built using AI?",
+    "required": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "True only for an optional (`required` false/missing) `textarea` …",
+  "ambiguous": false
+ },
+ {
+  "name": "tell_us_prefix_is_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "Tell us about a project you are proud of"
+   }
+  },
+  "expect": true,
+  "spec_quote": "True only for an optional (`required` false/missing) `textarea` whose label contains \"?\" or starts with \"Describe\", \"Tell us\", \"Share\", \"Explain\" or \"Walk us through\" (case-insensitive, leading spaces allowed)",
+  "ambiguous": false
+ },
+ {
+  "name": "leading_spaces_describe_is_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "   describe a time you disagreed with a teammate",
+    "required": false
+   }
+  },
+  "expect": true,
+  "spec_quote": "… or starts with \"Describe\", \"Tell us\", \"Share\", \"Explain\" or \"Walk us through\" (case-insensitive, leading spaces allowed)",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_label_excluded",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "Who referred you to this role?",
+    "required": false
+   }
+  },
+  "expect": false,
+  "spec_quote": "… and the label does not mention a referral (\"referred\", \"referral\", \"who referred\") …",
+  "ambiguous": false
+ },
+ {
+  "name": "survey_flag_excluded",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "How did you hear about us?",
+    "required": false,
+    "survey": true
+   }
+  },
+  "expect": false,
+  "spec_quote": "… — and not a survey / consent / demographic field …",
+  "ambiguous": false
+ },
+ {
+  "name": "text_input_never_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "text",
+    "label": "Why do you want to join us?",
+    "required": false
+   }
+  },
+  "expect": false,
+  "spec_quote": "Any other type (text, select, …) → False.",
+  "ambiguous": false
+ },
+ {
+  "name": "walk_us_through_prefix_is_essay",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "Walk us through your biggest technical failure",
+    "required": false
+   }
+  },
+  "expect": true,
+  "spec_quote": "… or starts with \"Describe\", \"Tell us\", \"Share\", \"Explain\" or \"Walk us through\" (case-insensitive, leading spaces allowed)",
+  "ambiguous": false
+ },
+ {
+  "name": "pronouns_label_excluded",
+  "fn": "optional_essay",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "What are your pronouns?",
+    "required": false
+   }
+  },
+  "expect": false,
+  "spec_quote": "… and the label does not mention a referral (\"referred\", \"referral\", \"who referred\") or pronouns.",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_full_label",
+  "fn": "city_state",
+  "args": {
+   "label": "Where do you currently live? (City, State)",
+   "type": "text"
+  },
+  "expect": "Chicago, IL",
+  "spec_quote": "\"Where do you currently live? (City, State)\", \"Where do you live?\", \"Where do you reside?\", \"Location (City, State)\" → \"Chicago, IL\" (rule city_state).",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_where_do_you_live",
+  "fn": "city_state",
+  "args": {
+   "label": "Where do you live?",
+   "type": "textarea"
+  },
+  "expect": "Chicago, IL",
+  "spec_quote": "\"Where do you currently live? (City, State)\", \"Where do you live?\", \"Where do you reside?\", \"Location (City, State)\" → \"Chicago, IL\" (rule city_state).",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_location_city_state",
+  "fn": "city_state",
+  "args": {
+   "label": "Location (City, State)",
+   "type": "text"
+  },
+  "expect": "Chicago, IL",
+  "spec_quote": "\"Where do you currently live? (City, State)\", \"Where do you live?\", \"Where do you reside?\", \"Location (City, State)\" → \"Chicago, IL\" (rule city_state).",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_with_zip_excluded",
+  "fn": "city_state",
+  "args": {
+   "label": "Where do you currently live? (City, State, Zip)",
+   "type": "text"
+  },
+  "expect": null,
+  "spec_quote": "Not this rule: labels that also mention zip / postal code, country, relocation, willingness or commuting.",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_with_country_excluded",
+  "fn": "city_state",
+  "args": {
+   "label": "Where do you reside? (Country)",
+   "type": "text"
+  },
+  "expect": null,
+  "spec_quote": "Not this rule: labels that also mention zip / postal code, country, relocation, willingness or commuting.",
+  "ambiguous": false
+ },
+ {
+  "name": "city_state_with_relocation_excluded",
+  "fn": "city_state",
+  "args": {
+   "label": "Where do you live? (City, State) — are you willing to relocate?",
+   "type": "text"
+  },
+  "expect": null,
+  "spec_quote": "Not this rule: labels that also mention zip / postal code, country, relocation, willingness or commuting.",
+  "ambiguous": false
+ }
+]

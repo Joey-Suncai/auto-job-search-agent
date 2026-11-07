@@ -1,0 +1,649 @@
+[
+ {
+  "name": "parse_posting_plain_digits",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/Acme/123456"
+  },
+  "expect": {
+   "company": "Acme",
+   "id": "123456"
+  },
+  "spec_quote": "`https://jobs.smartrecruiters.com/<Company>/<digits>` optionally followed by `-<slug>`, `/`, `?…` or `#…` (digits: 6 or more) → {\"company\": <Company>, \"id\": <digits>}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_digits_with_slug",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/AcmeCorp/1234567-senior-engineer"
+  },
+  "expect": {
+   "company": "AcmeCorp",
+   "id": "1234567"
+  },
+  "spec_quote": "`https://jobs.smartrecruiters.com/<Company>/<digits>` optionally followed by `-<slug>`, `/`, `?…` or `#…` (digits: 6 or more) → {\"company\": <Company>, \"id\": <digits>}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_careers_host_http_with_query",
+  "fn": "parse_posting",
+  "args": {
+   "url": "http://careers.smartrecruiters.com/Acme/654321?utm_source=linkedin"
+  },
+  "expect": {
+   "company": "Acme",
+   "id": "654321"
+  },
+  "spec_quote": "Also host `careers.smartrecruiters.com`. http or https.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_digits_trailing_slash",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/Acme/9876543210/"
+  },
+  "expect": {
+   "company": "Acme",
+   "id": "9876543210"
+  },
+  "spec_quote": "`https://jobs.smartrecruiters.com/<Company>/<digits>` optionally followed by `-<slug>`, `/`, `?…` or `#…` (digits: 6 or more) → {\"company\": <Company>, \"id\": <digits>}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_oneclick_ui_lowercase",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/oneclick-ui/company/Acme/publication/abcdef12-3456-7890-abcd-ef1234567890"
+  },
+  "expect": {
+   "company": "Acme",
+   "uuid": "abcdef12-3456-7890-abcd-ef1234567890"
+  },
+  "spec_quote": "`https://jobs.smartrecruiters.com/oneclick-ui/company/<Company>/publication/<uuid>` (uuid = 36 chars, hex and dashes, any case; anything may follow) → {\"company\": <Company>, \"uuid\": <uuid in lower case>}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_oneclick_ui_uppercase_trailing_path",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/oneclick-ui/company/BigCo/publication/ABCDEF12-3456-7890-ABCD-EF1234567890/apply"
+  },
+  "expect": {
+   "company": "BigCo",
+   "uuid": "abcdef12-3456-7890-abcd-ef1234567890"
+  },
+  "spec_quote": "`.../publication/<uuid>` (uuid = 36 chars, hex and dashes, any case; anything may follow) → {\"company\": <Company>, \"uuid\": <uuid in lower case>}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_five_digits_null",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/Acme/12345"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (other hosts, fewer than 6 digits, missing parts, \"oneclick-ui\" used as the company with digits) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_oneclick_ui_as_company_with_digits_null",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/oneclick-ui/123456"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (other hosts, fewer than 6 digits, missing parts, \"oneclick-ui\" used as the company with digits) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_other_host_null",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://example.com/Acme/123456"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (other hosts, fewer than 6 digits, missing parts, \"oneclick-ui\" used as the company with digits) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_posting_missing_id_null",
+  "fn": "parse_posting",
+  "args": {
+   "url": "https://jobs.smartrecruiters.com/Acme/"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (other hosts, fewer than 6 digits, missing parts, \"oneclick-ui\" used as the company with digits) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_star_and_whitespace",
+  "fn": "clean_label",
+  "args": {
+   "text": "  *   First   name  "
+  },
+  "expect": "First name",
+  "spec_quote": "Collapse whitespace; drop a leading \"*\" (required star) and the space after it; ... trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_trailing_counter_spaced",
+  "fn": "clean_label",
+  "args": {
+   "text": "First name 0 / 60"
+  },
+  "expect": "First name",
+  "spec_quote": "drop a trailing character counter of the form \"<n> / <m>\" (spaces optional); ... trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_trailing_counter_unspaced",
+  "fn": "clean_label",
+  "args": {
+   "text": "First name 0/60"
+  },
+  "expect": "First name",
+  "spec_quote": "drop a trailing character counter of the form \"<n> / <m>\" (spaces optional); ... trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_definitions_anywhere",
+  "fn": "clean_label",
+  "args": {
+   "text": "Years of experience (definition) required"
+  },
+  "expect": "Years of experience required",
+  "spec_quote": "remove \"(definitions)\" / \"(definition)\" anywhere; trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_combined_star_definitions_counter",
+  "fn": "clean_label",
+  "args": {
+   "text": "* Full name (definitions) 3 / 120"
+  },
+  "expect": "Full name",
+  "spec_quote": "Collapse whitespace; drop a leading \"*\" (required star) and the space after it; drop a trailing character counter of the form \"<n> / <m>\" (spaces optional); remove \"(definitions)\" / \"(definition)\" anywhere; trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label_no_change_other_kept",
+  "fn": "clean_label",
+  "args": {
+   "text": "Do you have other names?"
+  },
+  "expect": "Do you have other names?",
+  "spec_quote": "Collapse whitespace; drop a leading \"*\" (required star) and the space after it; drop a trailing character counter of the form \"<n> / <m>\" (spaces optional); remove \"(definitions)\" / \"(definition)\" anywhere; trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_drop_info_and_key_fallback",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "info",
+     "label": "Welcome to our careers page",
+     "text": "",
+     "id": "",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 1,
+     "type": "radio",
+     "label": "Are you authorized to work?",
+     "text": "",
+     "id": "auth",
+     "tag": "eligibility",
+     "required": true,
+     "radios": [
+      "Yes",
+      "No"
+     ],
+     "boxes": []
+    },
+    {
+     "idx": 2,
+     "type": "multiselect",
+     "label": "Pick your offices",
+     "text": "",
+     "id": "",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": [
+      "NYC",
+      "Berlin"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "auth",
+    "label": "Are you authorized to work?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "tag": "eligibility"
+   },
+   {
+    "key": "q2",
+    "label": "Pick your offices",
+    "type": "select",
+    "required": false,
+    "options": [
+     "NYC",
+     "Berlin"
+    ],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "Items with type \"info\", \"files\" or \"file\" are dropped. ... multiselect→select ... key = id, or \"q<idx>\" when id is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_type_mapping_table",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "number",
+     "label": "Years",
+     "text": "",
+     "id": "years",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 1,
+     "type": "date",
+     "label": "Start date",
+     "text": "",
+     "id": "start",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 2,
+     "type": "textarea",
+     "label": "Notes",
+     "text": "",
+     "id": "notes",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 3,
+     "type": "checkbox",
+     "label": "I agree",
+     "text": "",
+     "id": "agree",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 4,
+     "type": "rating",
+     "label": "Rate us",
+     "text": "",
+     "id": "rate",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "years",
+    "label": "Years",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "tag": ""
+   },
+   {
+    "key": "start",
+    "label": "Start date",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "tag": ""
+   },
+   {
+    "key": "notes",
+    "label": "Notes",
+    "type": "textarea",
+    "required": false,
+    "options": [],
+    "tag": ""
+   },
+   {
+    "key": "agree",
+    "label": "I agree",
+    "type": "checkbox",
+    "required": false,
+    "options": [],
+    "tag": ""
+   },
+   {
+    "key": "rate",
+    "label": "Rate us",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "type mapping: radio→radio, select→select, multiselect→select, text→text, number→text, date→text, textarea→textarea, checkbox→checkbox, anything else→text.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_empty_label_uses_text",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "select",
+     "label": "",
+     "text": "Choose a location",
+     "id": "loc",
+     "tag": "",
+     "required": false,
+     "radios": [
+      "Rome",
+      "Paris"
+     ],
+     "boxes": []
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "loc",
+    "label": "Choose a location",
+    "type": "select",
+    "required": false,
+    "options": [
+     "Rome",
+     "Paris"
+    ],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "label = clean_label(label, or text when label is empty), then if it ends with \" <option>\" for an option, that option text is removed from the end (each option in order).",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_strip_option_suffix_from_label",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "radio",
+     "label": "Do you have a car? Yes",
+     "text": "",
+     "id": "car",
+     "tag": "",
+     "required": true,
+     "radios": [
+      "Yes",
+      "No"
+     ],
+     "boxes": []
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "car",
+    "label": "Do you have a car?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "label = clean_label(label, or text when label is empty), then if it ends with \" <option>\" for an option, that option text is removed from the end (each option in order).",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_options_radios_over_boxes_and_fallback",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "radio",
+     "label": "Pick one",
+     "text": "",
+     "id": "one",
+     "tag": "",
+     "required": false,
+     "radios": [
+      "A",
+      "B"
+     ],
+     "boxes": [
+      "X"
+     ]
+    },
+    {
+     "idx": 1,
+     "type": "select",
+     "label": "Pick boxes",
+     "text": "",
+     "id": "two",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": [
+      "C",
+      "D"
+     ]
+    },
+    {
+     "idx": 2,
+     "type": "text",
+     "label": "Free text",
+     "text": "",
+     "id": "three",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "one",
+    "label": "Pick one",
+    "type": "radio",
+    "required": false,
+    "options": [
+     "A",
+     "B"
+    ],
+    "tag": ""
+   },
+   {
+    "key": "two",
+    "label": "Pick boxes",
+    "type": "select",
+    "required": false,
+    "options": [
+     "C",
+     "D"
+    ],
+    "tag": ""
+   },
+   {
+    "key": "three",
+    "label": "Free text",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "options = radios if non-empty, else boxes, else [].",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_questions_drop_file_types_keep_order",
+  "fn": "plan_questions",
+  "args": {
+   "raw": [
+    {
+     "idx": 0,
+     "type": "files",
+     "label": "Upload CV",
+     "text": "",
+     "id": "cv",
+     "tag": "",
+     "required": true,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 1,
+     "type": "text",
+     "label": "Nickname",
+     "text": "",
+     "id": "nick",
+     "tag": "personal",
+     "required": 0,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 2,
+     "type": "file",
+     "label": "Upload cover letter",
+     "text": "",
+     "id": "cl",
+     "tag": "",
+     "required": false,
+     "radios": [],
+     "boxes": []
+    },
+    {
+     "idx": 3,
+     "type": "textarea",
+     "label": "Comments",
+     "text": "",
+     "id": "",
+     "tag": "",
+     "required": 1,
+     "radios": [],
+     "boxes": []
+    }
+   ]
+  },
+  "expect": [
+   {
+    "key": "nick",
+    "label": "Nickname",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "tag": "personal"
+   },
+   {
+    "key": "q3",
+    "label": "Comments",
+    "type": "textarea",
+    "required": true,
+    "options": [],
+    "tag": ""
+   }
+  ],
+  "spec_quote": "Items with type \"info\", \"files\" or \"file\" are dropped. ... required = bool(required).",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_selected_other",
+  "fn": "if_other",
+  "args": {
+   "label": "If you selected Other, please specify below"
+  },
+  "expect": true,
+  "spec_quote": "matches labels that start with \"If you selected Other\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_answered_other_lowercase",
+  "fn": "if_other",
+  "args": {
+   "label": "if you answered other, please explain"
+  },
+  "expect": true,
+  "spec_quote": "matches labels that start with ... \"If you answered Other\", \"If other\" ... (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_short_form",
+  "fn": "if_other",
+  "args": {
+   "label": "If other, specify"
+  },
+  "expect": true,
+  "spec_quote": "matches labels that start with ... \"If other\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_quoted_other",
+  "fn": "if_other",
+  "args": {
+   "label": "If you selected \"Other\" please describe"
+  },
+  "expect": true,
+  "spec_quote": "matches labels that start with ... \"If you selected \\\"Other\\\"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_contained_later_not_matched",
+  "fn": "if_other",
+  "args": {
+   "label": "Do you have other names?"
+  },
+  "expect": false,
+  "spec_quote": "Must not match labels that merely contain \"other\" later (\"Do you have other names?\", \"If hired, will you…\").",
+  "ambiguous": false
+ },
+ {
+  "name": "if_other_if_hired_not_matched",
+  "fn": "if_other",
+  "args": {
+   "label": "If hired, will you be able to start immediately?"
+  },
+  "expect": false,
+  "spec_quote": "Must not match labels that merely contain \"other\" later (\"Do you have other names?\", \"If hired, will you…\").",
+  "ambiguous": false
+ }
+]

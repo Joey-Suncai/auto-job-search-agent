@@ -1,0 +1,92 @@
+[
+ {
+  "name": "css style block containing '.x code {...}', a hex colour (#a1b2c3) and '0.123456em' must be removed; real code after 'code is:' wins",
+  "html": "<html><head><style>.x code { color: #a1b2c3; font-size: 0.123456em; }</style></head><body><p>Your login code is: k7m2p9</p></body></html>",
+  "expect": "k7m2p9"
+ },
+ {
+  "name": "uppercase <STYLE> with attributes and a code-like token in its contents; only the body code counts",
+  "html": "<html><head><STYLE type=\"text/css\">p.code { content: \"ab12cd\"; } .z { color: #abcdef; }</STYLE></head><body><p>Verification code: Xy9Zab</p></body></html>",
+  "expect": "Xy9Zab"
+ },
+ {
+  "name": "<script> block mentioning 'code' and an all-digit token must be dropped entirely; body code inside <span>",
+  "html": "<html><body><script type=\"text/javascript\">var code = \"z9y8x7\"; function f() { return 987654; }</script><p>Your code: <span>q4w5e6</span></p></body></html>",
+  "expect": "q4w5e6"
+ },
+ {
+  "name": "style and script blocks spanning several lines with 'code' selectors and 0.987654em; code inside <b>",
+  "html": "<html><body>\n<style>\n.a code { color: #abcdef; }\n.b { width: 0.987654em; }\n</style>\n<script>\nvar x = 1; // code 555666\n</script>\n<p>Here is your code:\n<b>Ab12Cd</b></p>\n</body></html>",
+  "expect": "Ab12Cd"
+ },
+ {
+  "name": "tag between the word 'code' and the code does not break it; code wrapped in <span>",
+  "html": "<html><body><p>Your code<span>:</span> <span>a1b2c3</span></p></body></html>",
+  "expect": "a1b2c3"
+ },
+ {
+  "name": "each remaining tag becomes a single space, so a token split by <b> is no longer 6-10 chars -> null",
+  "html": "<html><body><p>Your code: <b>ab1</b>2cd3</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "no 'code' word anywhere in the mail -> null (order number 12345 is not relevant)",
+  "html": "<html><body><p>Hi Alice, your order 12345 has shipped and will arrive on Friday.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "after 'code': a 5-digit number (too short) and an 11-digit number (too long) are not codes -> null",
+  "html": "<html><body><p>Your code: 12345 (backup 12345678901).</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "8-digit token '20240115' is year-like (20xx followed only by digits) -> not a code, nothing else -> null",
+  "html": "<html><body><p>Your code: 20240115</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "year-like 20xx+digits is skipped, the next valid letters+digits token is returned",
+  "html": "<html><body><p>Your code: 20240115 then use ab12cd</p></body></html>",
+  "expect": "ab12cd"
+ },
+ {
+  "name": "year-like 19xx+digits is skipped, following letters+digits token is returned",
+  "html": "<html><body><p>Order code 19991231 replaced by Zz9Yy8</p></body></html>",
+  "expect": "Zz9Yy8"
+ },
+ {
+  "name": "upper boundary of token length: exactly 10 letters/digits with a digit counts",
+  "html": "<html><body><p>Your access code is a1b2c3d4e5 for today only.</p></body></html>",
+  "expect": "a1b2c3d4e5"
+ },
+ {
+  "name": "one char over the limit (11 letters/digits) is not a token and cannot be trimmed -> null",
+  "html": "<html><body><p>Your access code is a1b2c3d4e5f for today only.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "'code' must be a whole word: 'mycode' does not count, so nothing is searched -> null",
+  "html": "<html><body><p>Please type mycode is XY12AB into the field.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "first 'code' has no valid token in the next 200 characters; search continues at the second 'code'",
+  "html": "<html><body><p>This code is old and useless now. Please ignore this message completely and look at the newer mail in your inbox folder, because the older text here will never work again and the link below has also expired for good.</p><p>Your new code: t3st99</p></body></html>",
+  "expect": "t3st99"
+ },
+ {
+  "name": "style-only 'code' ('.code') plus hex colour and em size, body has no 'code' at all -> null",
+  "html": "<html><head><STYLE>.code { color: #a1b2c3; width: 0.123456em; }</STYLE></head><body><p>Thanks for your order.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "word 'CODE' in uppercase inside <b> is found (case-insensitive) and the token is inside <i>",
+  "html": "<html><body><p><b>CODE</b>: <i>9z8y7x</i></p></body></html>",
+  "expect": "9z8y7x"
+ },
+ {
+  "name": "6-digit number that is not year-like satisfies '6-10 letters/digits ... contains at least one digit' and is returned",
+  "html": "<html><body><p>Your code: 654321 expires soon.</p></body></html>",
+  "expect": "654321"
+ }
+]

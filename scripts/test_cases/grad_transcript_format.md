@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "slot_kind" | "email", "args": {"label": str}, "expect": "grad_transcript" | "transcript" | "resume" | "cover_letter" | "other_file" | "secondary" | "main", "spec_quote": str, "ambiguous": false}.
+Write 26 cases: slot_kind 18 (10 grad_transcript incl. "if applicable" and mixed undergrad+grad, 6 transcript incl. undergraduate, 2 other), email 8 (4 secondary, 4 main).

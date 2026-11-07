@@ -1,0 +1,1 @@
+public export: scripts/test_all.sh runs the tests against config/fixtures/f1_student

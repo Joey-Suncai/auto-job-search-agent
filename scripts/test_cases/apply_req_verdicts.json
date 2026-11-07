@@ -1,0 +1,3 @@
+{
+  "validate bad host port": {"verdict": "case", "why": "The first spec text said host 127.0.0.1:8766 only; the shared pref_server guard (JSA-101) accepts any local port on purpose — it binds 127.0.0.1:8766, and the Host check is against DNS rebinding, which a port check does not add to. Spec wording corrected 2026-11-05."}
+}

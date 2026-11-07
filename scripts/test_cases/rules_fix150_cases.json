@@ -1,0 +1,237 @@
+[
+ {
+  "name": "hs_grad_year — exact label 'Year of High School Graduation'",
+  "label": "Year of High School Graduation",
+  "type": "text",
+  "expect_rule": "hs_grad_year",
+  "expect_value": "2022",
+  "spec_quote": "A high-school graduation year question (\"Year of High School Graduation\", \"What year did you graduate high school?\", \"High school graduation date\") → hs_grad_year \"2022\" — never the university graduation date.",
+  "ambiguous": false
+ },
+ {
+  "name": "hs_grad_year — question form 'What year did you graduate high school?'",
+  "label": "What year did you graduate high school?",
+  "type": "text",
+  "expect_rule": "hs_grad_year",
+  "expect_value": "2022",
+  "spec_quote": "A high-school graduation year question (\"Year of High School Graduation\", \"What year did you graduate high school?\"), \"High school graduation date\") → hs_grad_year \"2022\" — never the university graduation date.",
+  "ambiguous": false
+ },
+ {
+  "name": "hs_grad_year — 'High school graduation date' must not return university date",
+  "label": "High school graduation date",
+  "type": "text",
+  "expect_rule": "hs_grad_year",
+  "expect_value": "2022",
+  "spec_quote": "A high-school graduation year question (\"Year of High School Graduation\", \"What year did you graduate high school?\", \"High school graduation date\") → hs_grad_year \"2022\" — never the university graduation date.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss — 'High School Name' is high-school-related, not the school-name question",
+  "label": "High School Name",
+  "type": "text",
+  "expect_rule": null,
+  "expect_value": null,
+  "spec_quote": "\"School City / State / Location / Address / Country / Zip / Year / GPA\", or anything about high school, is NOT the school-name question.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_type — 'If yes, what type of sponsorship?' returns explanation, never 'Yes'",
+  "label": "If yes, what type of sponsorship?",
+  "type": "textarea",
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "spec_quote": "\"If yes, what type of sponsorship?\" / \"What kind of visa sponsorship will you require?\" / \"Sponsorship type\" → sponsorship_type with the explanation text above — never \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_type — 'What kind of visa sponsorship will you require?'",
+  "label": "What kind of visa sponsorship will you require?",
+  "type": "textarea",
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "spec_quote": "\"If yes, what type of sponsorship?\" / \"What kind of visa sponsorship will you require?\" / \"Sponsorship type\" → sponsorship_type with the explanation text above — never \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_type — bare 'Sponsorship type' label",
+  "label": "Sponsorship type",
+  "type": "textarea",
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "spec_quote": "\"If yes, what type of sponsorship?\" / \"What kind of visa sponsorship will you require?\" / \"Sponsorship type\" → sponsorship_type with the explanation text above — never \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "spons_future — plain sponsorship question stays 'Yes'",
+  "label": "Will you now or in the future require sponsorship?",
+  "type": "text",
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "spec_quote": "A plain \"Will you now or in the future require sponsorship?\" stays spons_future \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "major — 'School Major:' returns field of study",
+  "label": "School Major:",
+  "type": "text",
+  "expect_rule": "major",
+  "expect_value": "Data Science",
+  "spec_quote": "\"School Major:\" → the field of study (\"Data Science\").",
+  "ambiguous": false
+ },
+ {
+  "name": "minor — 'School Minor:' is unknown (no minor)",
+  "label": "School Minor:",
+  "type": "text",
+  "expect_rule": null,
+  "expect_value": null,
+  "spec_quote": "\"School Minor:\" → unknown (no minor).",
+  "ambiguous": false
+ },
+ {
+  "name": "school — 'What school are you attending for your major?' IS the school question",
+  "label": "What school are you attending for your major?",
+  "type": "text",
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "\"What school are you attending for your major?\" IS the school question → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss — 'School City' must not get the school name",
+  "label": "School City",
+  "type": "text",
+  "expect_rule": null,
+  "expect_value": null,
+  "spec_quote": "\"School City / State / Location / Address / Country / Zip / Year / GPA\" ... is NOT the school-name question.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss — 'School GPA' is not the school-name question",
+  "label": "School GPA",
+  "type": "text",
+  "expect_rule": null,
+  "expect_value": null,
+  "spec_quote": "\"School City / State / Location / Address / Country / Zip / Year / GPA\", or anything about high school, is NOT the school-name question.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss — 'Concentration:' must not be answered as the school name",
+  "label": "Concentration:",
+  "type": "text",
+  "expect_rule": null,
+  "expect_value": null,
+  "spec_quote": "A label ending with \"Major\" / \"Minor\" / \"Concentration\" (optionally followed by \":\") ... is NOT the school-name question.",
+  "ambiguous": true,
+  "why": "The spec only says a Concentration label is not the school question; it does not say whether it maps to the field of study (as 'Major' does) or to unknown, so the required value is underspecified."
+ },
+ {
+  "name": "phone — 'Phone Number' matches 'phone'",
+  "label": "Phone Number",
+  "type": "text",
+  "expect_rule": "phone",
+  "expect_value": "555-010-2030",
+  "spec_quote": "The phone question matches \"phone\", a label that ends with \"mobile\" / \"mobile number\", or the whole word \"cell\" — not \"cell\" inside another word (\"excellence\", \"cancellation\").",
+  "ambiguous": false
+ },
+ {
+  "name": "phone — label ending with 'Mobile'",
+  "label": "Mobile",
+  "type": "text",
+  "expect_rule": "phone",
+  "expect_value": "555-010-2030",
+  "spec_quote": "The phone question matches \"phone\", a label that ends with \"mobile\" / \"mobile number\", or the whole word \"cell\".",
+  "ambiguous": false
+ },
+ {
+  "name": "phone — label ending with 'Mobile Number'",
+  "label": "Mobile Number",
+  "type": "text",
+  "expect_rule": "phone",
+  "expect_value": "555-010-2030",
+  "spec_quote": "The phone question matches \"phone\", a label that ends with \"mobile\" / \"mobile number\", or the whole word \"cell\".",
+  "ambiguous": false
+ },
+ {
+  "name": "phone — whole word 'Cell'",
+  "label": "Cell",
+  "type": "text",
+  "expect_rule": "phone",
+  "expect_value": "555-010-2030",
+  "spec_quote": "The phone question matches \"phone\", a label that ends with \"mobile\" / \"mobile number\", or the whole word \"cell\".",
+  "ambiguous": false
+ },
+ {
+  "name": "not phone — 'Excellence Award' contains 'cell' inside a word",
+  "label": "Excellence Award",
+  "type": "text",
+  "expect_rule": "not:phone",
+  "expect_value": null,
+  "spec_quote": "...not \"cell\" inside another word (\"excellence\", \"cancellation\"): such labels must not get the phone number.",
+  "ambiguous": false
+ },
+ {
+  "name": "not phone — 'Cancellation Reason' contains 'cell' inside a word",
+  "label": "Cancellation Reason",
+  "type": "text",
+  "expect_rule": "not:phone",
+  "expect_value": null,
+  "spec_quote": "...not \"cell\" inside another word (\"excellence\", \"cancellation\"): such labels must not get the phone number.",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_start_mmyyyy — program start asked in MM/YYYY",
+  "label": "When did you begin your current degree program? (MM/YYYY)",
+  "type": "text",
+  "expect_rule": "degree_start_mmyyyy",
+  "expect_value": "09/2026",
+  "spec_quote": "A question asking when the current degree program began, in MM/YYYY format → degree_start_mmyyyy \"09/2026\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_start_mmyyyy — 'Degree program start date (MM/YYYY)'",
+  "label": "Degree program start date (MM/YYYY)",
+  "type": "text",
+  "expect_rule": "degree_start_mmyyyy",
+  "expect_value": "09/2026",
+  "spec_quote": "A question asking when the current degree program began, in MM/YYYY format → degree_start_mmyyyy \"09/2026\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_end_mmyyyy — completion asked in MM/YYYY",
+  "label": "When will you complete your degree? (MM/YYYY)",
+  "type": "text",
+  "expect_rule": "degree_end_mmyyyy",
+  "expect_value": "12/2027",
+  "spec_quote": "when it will be completed / when the candidate graduates, in MM/YYYY format → degree_end_mmyyyy \"12/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_end_mmyyyy — expected graduation date in MM/YYYY",
+  "label": "Expected graduation date (MM/YYYY)",
+  "type": "text",
+  "expect_rule": "degree_end_mmyyyy",
+  "expect_value": "12/2027",
+  "spec_quote": "when it will be completed / when the candidate graduates, in MM/YYYY format → degree_end_mmyyyy \"12/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_date — graduation question without MM/YYYY format",
+  "label": "When will you graduate?",
+  "type": "text",
+  "expect_rule": "grad_date",
+  "expect_value": "December 2027",
+  "spec_quote": "The same question without an MM/YYYY format → grad_date \"December 2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "grad_date — completion question without MM/YYYY format",
+  "label": "When will you complete your degree?",
+  "type": "text",
+  "expect_rule": "grad_date",
+  "expect_value": "December 2027",
+  "spec_quote": "The same question without an MM/YYYY format → grad_date \"December 2027\".",
+  "ambiguous": false
+ }
+]

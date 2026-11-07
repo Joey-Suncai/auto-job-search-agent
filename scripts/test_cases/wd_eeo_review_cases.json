@@ -1,0 +1,225 @@
+[
+ {
+  "name": "basic_gender_unanswered",
+  "review_text": "Gender\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Gender"
+  ],
+  "spec": "A question is a real EEO question when its label asks about the candidate's gender (or sex), race, ethnicity, Hispanic / Latino origin, veteran (protected veteran) status, or disability."
+ },
+ {
+  "name": "answered_gender_not_returned",
+  "review_text": "First Name\nJane\nGender\nMale\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "Never returned: a question with any other answer (\"I do not wish to answer\", \"Male\", \"I am not a protected veteran\", \"No, I do not have a disability\")"
+ },
+ {
+  "name": "multiple_eo_questions_mixed",
+  "review_text": "Disability Status*\nNo Response\nVeteran Status\nI am not a protected veteran\nRace/Ethnicity\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Disability Status",
+   "Race/Ethnicity"
+  ],
+  "spec": "Only real EEO questions whose answer is \"No Response\" are returned. ... Each returned item is the label text with whitespace collapsed and a trailing \"*\" removed, in page order."
+ },
+ {
+  "name": "same_line_label_and_no_response",
+  "review_text": "Gender No Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Gender"
+  ],
+  "spec": "Label and \"No Response\" may also stand on the same line, separated by whitespace."
+ },
+ {
+  "name": "exclusion_parenthetical_professional_activities",
+  "review_text": "Please list professional, trade, business or civic activities and offices held: (Exclude those which would reveal sex, race, religion, national origin, age, ancestry, sexual orientation, physical or mental disability or other protected status).\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "A label that mentions the protected categories only inside an instruction NOT to disclose them. The part of the label that starts at \"exclude\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "eo_statement_plus_gender_question",
+  "review_text": "We are an equal opportunity employer and do not discriminate on the basis of race, gender, disability or veteran status. Please select your gender.\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "We are an equal opportunity employer and do not discriminate on the basis of race, gender, disability or veteran status. Please select your gender."
+  ],
+  "spec": "Still EEO (returned when \"No Response\"): an equal-opportunity statement followed by a real question ... (\"discriminate\", \"on the basis of\", \"without regard to\" are not instructions not to disclose)"
+ },
+ {
+  "name": "hispanic_regardless_of_race",
+  "review_text": "Are you Hispanic or Latino (regardless of race)?\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Are you Hispanic or Latino (regardless of race)?"
+  ],
+  "spec": "Still EEO (returned when \"No Response\"): \"Are you Hispanic or Latino (regardless of race)?\" (\"regardless of\" is not an exclusion instruction)"
+ },
+ {
+  "name": "non_topic_no_response_not_returned",
+  "review_text": "Middle Name\nNo Response\nList relevant certifications and/or specialized technical licenses.\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "Never returned: ... a question without topic words, even with \"No Response\" (\"Middle Name\", \"List relevant certifications and/or specialized technical licenses.\")."
+ },
+ {
+  "name": "free_text_label_excluded",
+  "review_text": "Describe your disability accommodation needs\nNo Response\nGender\nNo Response\n",
+  "free_text_labels": [
+   "Describe your disability accommodation needs"
+  ],
+  "expect": [
+   "Gender"
+  ],
+  "spec": "A question whose label is in free_text_labels — the labels of fields the runner recorded as free-text boxes (textarea or text input)."
+ },
+ {
+  "name": "free_text_label_case_and_surrounding_whitespace",
+  "review_text": "Please describe your veteran status in detail\nNo Response\n",
+  "free_text_labels": [
+   "  please DESCRIBE your veteran status in detail  "
+  ],
+  "expect": [],
+  "spec": "Compare ignoring case and surrounding whitespace; the same first 60 characters count as a match."
+ },
+ {
+  "name": "free_text_label_sixty_char_prefix",
+  "review_text": "Describe your disability accommodation needs and any assistive technology you require\nNo Response\n",
+  "free_text_labels": [
+   "Describe your disability accommodation needs and any assistive technology you need"
+  ],
+  "expect": [],
+  "spec": "Compare ignoring case and surrounding whitespace; the same first 60 characters count as a match."
+ },
+ {
+  "name": "do_not_disclose_race",
+  "review_text": "Do not disclose your race or ethnicity.\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "The part of the label that starts at \"exclude\", \"excluding\", \"do not include / list / mention / disclose / provide / reveal\" (also \"don't …\") ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "which_would_reveal_exclusion",
+  "review_text": "List any honors or awards received: (list only those which would reveal gender or race)\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "The part of the label that starts at ... \"which would reveal\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "do_not_mention_exclusion",
+  "review_text": "Describe memberships (do not mention organizations that would identify your race or ethnicity)\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "The part of the label that starts at ... \"do not include / list / mention / disclose / provide / reveal\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "other_protected_status_exclusion",
+  "review_text": "Provide examples of leadership (excluding other protected status characteristics)\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "The part of the label that starts at ... \"excluding\" ... or \"other protected status / characteristic / class\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "asterisk_same_line",
+  "review_text": "Disability Status* No Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Disability Status"
+  ],
+  "spec": "A trailing \"*\" after a label marks a required question. ... Each returned item is the label text with whitespace collapsed and a trailing \"*\" removed, in page order."
+ },
+ {
+  "name": "whitespace_collapsed_label",
+  "review_text": "Race    /   Ethnicity\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Race / Ethnicity"
+  ],
+  "spec": "Each returned item is the label text with whitespace collapsed and a trailing \"*\" removed, in page order."
+ },
+ {
+  "name": "disability_answered_no",
+  "review_text": "Disability Status\nNo, I do not have a disability\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "Never returned: a question with any other answer (\"I do not wish to answer\", \"Male\", \"I am not a protected veteran\", \"No, I do not have a disability\")"
+ },
+ {
+  "name": "veteran_do_not_wish_to_answer",
+  "review_text": "Veteran Status\nI do not wish to answer\n",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "Never returned: a question with any other answer (\"I do not wish to answer\", ...)"
+ },
+ {
+  "name": "sex_question_unanswered",
+  "review_text": "Sex\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Sex"
+  ],
+  "spec": "A question is a real EEO question when its label asks about the candidate's gender (or sex) ... Topic words: gender, race, ethnicity, veteran, disability, Hispanic, Latino — case-insensitive, any form."
+ },
+ {
+  "name": "exclusion_sentence_then_real_question",
+  "review_text": "Do not list any organizations which would reveal race or sex. Please select your gender.\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Do not list any organizations which would reveal race or sex. Please select your gender."
+  ],
+  "spec": "The part of the label that starts at ... \"do not include / list / mention / disclose / provide / reveal\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ },
+ {
+  "name": "empty_review_text",
+  "review_text": "",
+  "free_text_labels": [],
+  "expect": [],
+  "spec": "An empty list means nothing blocks the submit."
+ },
+ {
+  "name": "exclusion_and_real_eeo_mixed",
+  "review_text": "Please list professional, trade, business or civic activities and offices held: (Exclude those which would reveal sex, race, religion, national origin, age, ancestry, sexual orientation, physical or mental disability or other protected status).\nNo Response\nAre you Hispanic or Latino (regardless of race)?\nNo Response\nGender\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Are you Hispanic or Latino (regardless of race)?",
+   "Gender"
+  ],
+  "spec": "Only real EEO questions whose answer is \"No Response\" are returned. ... Each returned item is the label text with whitespace collapsed and a trailing \"*\" removed, in page order."
+ },
+ {
+  "name": "four_standard_labels",
+  "review_text": "Veteran Status*\nNo Response\nDisability Status*\nNo Response\nRace/Ethnicity\nNo Response\nGender\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Veteran Status",
+   "Disability Status",
+   "Race/Ethnicity",
+   "Gender"
+  ],
+  "spec": "Still EEO (returned when \"No Response\"): ... \"Veteran Status\", \"Disability Status*\", \"Race/Ethnicity\", \"Gender\"."
+ },
+ {
+  "name": "free_text_prefix_mismatch_still_returned",
+  "review_text": "Describe your gender identity and pronouns\nNo Response\n",
+  "free_text_labels": [
+   "Describe your veteran status and discharge details"
+  ],
+  "expect": [
+   "Describe your gender identity and pronouns"
+  ],
+  "spec": "Compare ignoring case and surrounding whitespace; the same first 60 characters count as a match."
+ },
+ {
+  "name": "dont_exclusion_then_gender",
+  "review_text": "Don't disclose your veteran status or disability\nNo Response\nGender\nNo Response\n",
+  "free_text_labels": [],
+  "expect": [
+   "Gender"
+  ],
+  "spec": "The part of the label that starts at ... \"(also \"don't …\")\" ... and runs to the closing parenthesis or to the end of that sentence, is ignored when looking for topic words."
+ }
+]

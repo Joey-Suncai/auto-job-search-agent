@@ -1,0 +1,25 @@
+- 2026-10-28T19:37:06 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:37:13 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:37:13 NOT submitted: plan not ready: question_69874419
+- 2026-10-28T19:39:52 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:39:58 canonical audit FAILED: school='Other'
+- 2026-10-28T19:39:58 problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:39:58 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:39:58 NOT submitted: plan not ready: question_69874419 | fill problems: canonical mismatch: school = 'Other' (want University of Chicago / University of Illinois; no accept pattern matched (want University of Chicago / University of Illinois))
+- 2026-10-28T19:41:08 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:41:16 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:41:16 NOT submitted: plan not ready: question_69874419
+- 2026-10-28T19:43:33 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:43:40 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:43:40 NOT submitted: plan not ready: question_69874419
+- 2026-10-28T19:45:09 start SUBMIT file:///Users/you/Projects/job-search-agent/skills/auto-apply/runner/test/mock_fake.html
+- 2026-10-28T19:45:18 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-10-28T19:45:18 NOT submitted: plan not ready: question_69874419
+- 2026-11-02T13:39:49 materials gate: ok
+- 2026-11-02T13:39:50 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/pensive-kepler-a89726/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-02T13:39:53 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-02T13:39:53 NOT submitted: plan not ready: question_69874419
+- 2026-11-03T02:26:29 materials gate: ok
+- 2026-11-03T02:26:29 start SUBMIT file:///Users/you/projects/job-search-agent/.claude/worktrees/progress-report-9490b0/skills/auto-apply/runner/test/mock_fake.html
+- 2026-11-03T02:26:33 verify pass=True counts={'fields': 31, 'l1_ok': 31, 'l2_ok': 0, 'l2_na': 31} bad=[] errors=0 captcha=False
+- 2026-11-03T02:26:33 NOT submitted: plan not ready: question_69874419

@@ -1,0 +1,148 @@
+[
+ {
+  "name": "career_links drops Instagram 'View jobs' link (social skip word)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://www.instagram.com/acme\">View jobs</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links drops Facebook careers URL (social skip word)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://www.facebook.com/acme/careers\">Careers</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links drops YouTube 'View jobs' link (social skip word)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://www.youtube.com/@acme\">View jobs</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links drops x.com 'Search jobs' link (whole host x.com)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://x.com/acme\">Search jobs</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com (x.com only as the whole host or its last two labels — \"box.com\" and \"netflix.com\" are not x.com).",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links drops twitter.com careers link (social skip word)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://twitter.com/acme/careers\">Careers</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links keeps box.com careers link (x.com must match host or last two labels, not substring)",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://www.box.com/careers\">View jobs</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://www.box.com/careers"
+  ],
+  "spec_quote": "x.com only as the whole host or its last two labels — \"box.com\" and \"netflix.com\" are not x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "career_links mix: social links dropped, company's own /careers link kept",
+  "fn": "career_links",
+  "args": {
+   "page": "<html><body><a href=\"https://www.instagram.com/acme\">Follow us</a><a href=\"https://www.acme.com/careers\">View jobs</a><a href=\"https://www.facebook.com/acme/careers\">Careers</a><a href=\"https://x.com/acme\">Join us</a></body></html>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://www.acme.com/careers"
+  ],
+  "spec_quote": "A social link is dropped from career_links like a LinkedIn link ... the borrow_domains / career_links skip list also holds the social hosts instagram.com, facebook.com, twitter.com, youtube.com and x.com",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains: facebook.com row lends no domain",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://www.facebook.com/acme",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "a row whose url is on a social host lends no domain in borrow_domains",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains: instagram.com row lends nothing, real careers row still lends acme.com",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://www.instagram.com/acme",
+     "ats_url": ""
+    },
+    {
+     "company": "Acme",
+     "url": "https://careers.acme.com/jobs",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "acme.com"
+  ],
+  "spec_quote": "a row whose url is on a social host lends no domain in borrow_domains",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains: x.com row lends nothing but fedex.com is not x.com",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "FedEx",
+   "jobs": [
+    {
+     "company": "FedEx",
+     "url": "https://x.com/fedex",
+     "ats_url": ""
+    },
+    {
+     "company": "FedEx",
+     "url": "https://www.fedex.com/careers",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "fedex.com"
+  ],
+  "spec_quote": "x.com only as the whole host or its last two labels — \"box.com\" and \"netflix.com\" are not x.com; a row whose url is on a social host lends no domain in borrow_domains",
+  "ambiguous": false
+ }
+]

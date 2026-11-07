@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "text": str, "expect": str, "spec_quote": str, "ambiguous": false}. Write 12 cases: plain, one / several ';', spaces before and after, ';' before a newline, ';;' (two in a row: each becomes ", " then collapse as the rule says), no ';', empty.

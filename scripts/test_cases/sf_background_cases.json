@@ -1,0 +1,1906 @@
+[
+ {
+  "name": "work exact Hyde Park single row",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Business Analyst Intern"
+      },
+      {
+       "label": "Company",
+       "value": "Hyde Park Investment Services, Inc."
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Champaign, Illinois"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "Existing summary text"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "08/01/2025"
+      },
+      {
+       "name": "End Date",
+       "value": "10/31/2025"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    }
+   },
+   "add": [
+    "Frost & Sullivan"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "Work row values: Job Title, Company, Location from the fact; Start Date = first day of the start month (MM/DD/YYYY, e.g. 08/01/2025); End Date = last day of the end month (e.g. 10/31/2025, 08/31/2024). Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "work ALL CAPS Hyde Park with wrong location and dates",
+  "section": {
+   "head": "Previous Employment",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "BA Intern"
+      },
+      {
+       "label": "Company",
+       "value": "HYDE PARK INVESTMENT SERVICES, INC"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Chicago, IL"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "noise"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/31/2020"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    }
+   },
+   "add": [
+    "Frost & Sullivan"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "a row belongs to it when its Company contains 'hyde park' (case-insensitive, any spacing/punctuation). Work row values: Job Title, Company, Location from the fact; Start Date = first day of the start month; End Date = last day of the end month.",
+  "ambiguous": false
+ },
+ {
+  "name": "work lowercase frost with wrong title and dates",
+  "section": {
+   "head": "Employment History",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Assistant"
+      },
+      {
+       "label": "Company",
+       "value": "frost"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Beijing, China"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "x"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "06/15/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "08/01/2024"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Frost & Sullivan",
+     "Job Title": "Consulting Assistant Intern",
+     "Company": "Frost & Sullivan",
+     "Location": "Shanghai, China",
+     "Start Date": "06/01/2024",
+     "End Date": "08/31/2024"
+    }
+   },
+   "add": [
+    "Hyde Park Investment Services, Inc."
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "a row belongs to it when its Company contains 'frost'. Work row values: Job Title, Company, Location from the fact; Start Date = first day of the start month; End Date = last day of the end month.",
+  "ambiguous": false
+ },
+ {
+  "name": "work duplicate Hyde Park rows",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Wrong"
+      },
+      {
+       "label": "Company",
+       "value": "Hyde Park Investment Services, Inc."
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Wrong"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "a"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Other"
+      },
+      {
+       "label": "Company",
+       "value": "HYDE PARK"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Other"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "b"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "02/02/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "02/02/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    }
+   },
+   "add": [
+    "Frost & Sullivan"
+   ],
+   "unmatched": [],
+   "delete": [
+    1
+   ]
+  },
+  "spec_quote": "The first row matching a fact is set from it; a later row matching the same fact is to be deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "work duplicate Frost after other fact",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Consulting Assistant Intern"
+      },
+      {
+       "label": "Company",
+       "value": "Frost & Sullivan"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Shanghai, China"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "06/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "08/31/2024"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Business Analyst Intern"
+      },
+      {
+       "label": "Company",
+       "value": "hyde park"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Champaign, Illinois"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s2"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "08/01/2025"
+      },
+      {
+       "name": "End Date",
+       "value": "10/31/2025"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Duplicate"
+      },
+      {
+       "label": "Company",
+       "value": "FROST"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Shanghai"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s3"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Frost & Sullivan",
+     "Job Title": "Consulting Assistant Intern",
+     "Company": "Frost & Sullivan",
+     "Location": "Shanghai, China",
+     "Start Date": "06/01/2024",
+     "End Date": "08/31/2024"
+    },
+    "1": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": [
+    2
+   ]
+  },
+  "spec_quote": "The first row matching a fact is set from it; a later row matching the same fact is to be deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "work unknown employer plus known Hyde Park",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Analyst"
+      },
+      {
+       "label": "Company",
+       "value": "Acme Corp"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "New York, NY"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "unknown"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2022"
+      },
+      {
+       "name": "End Date",
+       "value": "02/01/2022"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Intern"
+      },
+      {
+       "label": "Company",
+       "value": "hyde park"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Chicago"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "x"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/31/2020"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "1": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    }
+   },
+   "add": [
+    "Frost & Sullivan"
+   ],
+   "unmatched": [
+    0
+   ],
+   "delete": []
+  },
+  "spec_quote": "a non-empty row matching no fact is 'unmatched' (left for a person). Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "work empty row then Frost",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": ""
+      },
+      {
+       "label": "Company",
+       "value": ""
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": ""
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": ""
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Consulting Assistant Intern"
+      },
+      {
+       "label": "Company",
+       "value": "Frost & Sullivan"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Shanghai, China"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "06/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "08/31/2024"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    },
+    "1": {
+     "who": "Frost & Sullivan",
+     "Job Title": "Consulting Assistant Intern",
+     "Company": "Frost & Sullivan",
+     "Location": "Shanghai, China",
+     "Start Date": "06/01/2024",
+     "End Date": "08/31/2024"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "A row whose every box and date is empty takes the next fact (in the order above) that has no row yet.",
+  "ambiguous": false
+ },
+ {
+  "name": "work two empty rows",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": ""
+      },
+      {
+       "label": "Company",
+       "value": ""
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": ""
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": ""
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": ""
+      },
+      {
+       "label": "Company",
+       "value": ""
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": ""
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": ""
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "0": {
+     "who": "Hyde Park Investment Services, Inc.",
+     "Job Title": "Business Analyst Intern",
+     "Company": "Hyde Park Investment Services, Inc.",
+     "Location": "Champaign, Illinois",
+     "Start Date": "08/01/2025",
+     "End Date": "10/31/2025"
+    },
+    "1": {
+     "who": "Frost & Sullivan",
+     "Job Title": "Consulting Assistant Intern",
+     "Company": "Frost & Sullivan",
+     "Location": "Shanghai, China",
+     "Start Date": "06/01/2024",
+     "End Date": "08/31/2024"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "A row whose every box and date is empty takes the next fact (in the order above) that has no row yet.",
+  "ambiguous": false
+ },
+ {
+  "name": "work no rows",
+  "section": {
+   "head": "Work Experience",
+   "rows": []
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {},
+   "add": [
+    "Hyde Park Investment Services, Inc.",
+    "Frost & Sullivan"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "work non-empty row with empty Company is unmatched",
+  "section": {
+   "head": "Work Experience",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Analyst"
+      },
+      {
+       "label": "Company",
+       "value": ""
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Remote"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "01/01/2021"
+      },
+      {
+       "name": "End Date",
+       "value": "02/01/2021"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Job Title",
+       "value": "Consulting Assistant Intern"
+      },
+      {
+       "label": "Company",
+       "value": "Frost & Sullivan"
+      },
+      {
+       "label": "Division",
+       "value": ""
+      },
+      {
+       "label": "Location",
+       "value": "Shanghai, China"
+      },
+      {
+       "label": "Summary of Work Performed",
+       "value": "s"
+      }
+     ],
+     "dates": [
+      {
+       "name": "Start Date",
+       "value": "06/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "08/31/2024"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "work",
+   "rows": {
+    "1": {
+     "who": "Frost & Sullivan",
+     "Job Title": "Consulting Assistant Intern",
+     "Company": "Frost & Sullivan",
+     "Location": "Shanghai, China",
+     "Start Date": "06/01/2024",
+     "End Date": "08/31/2024"
+    }
+   },
+   "add": [
+    "Hyde Park Investment Services, Inc."
+   ],
+   "unmatched": [
+    0
+   ],
+   "delete": []
+  },
+  "spec_quote": "a non-empty row matching no fact is 'unmatched' (left for a person). Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "edu exact Chicago single row with wrong values",
+  "section": {
+   "head": "Formal Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Computer Science"
+      },
+      {
+       "label": "School Name",
+       "value": "University of Chicago"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "08/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "05/31/2026"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "Education row values: Type = the option starting with 'Master' for the master's school, 'Bachelor' for the bachelor's; Subject = the major; School Name = the school; Result = 'In Progress' for the current school, 'Graduated' for the finished one; From Date = first day of the start month; End Date = last day of the end month.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu lowercase chicago noise",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "CS"
+      },
+      {
+       "label": "School Name",
+       "value": "university of chicago"
+      },
+      {
+       "label": "Result",
+       "value": "Did Not Complete",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "a row belongs to it when its School Name contains 'chicago'. Education row values: Type = the option starting with 'Master' for the master's school; Subject = the major; School Name = the school; Result = 'In Progress' for the current school.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu Illinois single row",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Masters",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Economics"
+      },
+      {
+       "label": "School Name",
+       "value": "ILLINOIS"
+      },
+      {
+       "label": "Result",
+       "value": "In Progress",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Illinois Urbana-Champaign",
+     "Type": "Bachelors",
+     "Subject": "Economics",
+     "School Name": "University of Illinois Urbana-Champaign",
+     "Result": "Graduated",
+     "From Date": "08/01/2024",
+     "End Date": "05/31/2026"
+    }
+   },
+   "add": [
+    "University of Chicago"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "a row belongs to it when its School Name contains 'illinois'. Education row values: Type = the option starting with 'Bachelor' for the bachelor's; Subject = the major; School Name = the school; Result = 'Graduated' for the finished one.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu duplicate Chicago rows",
+  "section": {
+   "head": "Formal Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Masters",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Data"
+      },
+      {
+       "label": "School Name",
+       "value": "University of Chicago"
+      },
+      {
+       "label": "Result",
+       "value": "In Progress",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "09/01/2026"
+      },
+      {
+       "name": "End Date",
+       "value": "12/31/2027"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Other"
+      },
+      {
+       "label": "School Name",
+       "value": "chicago"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [],
+   "delete": [
+    1
+   ]
+  },
+  "spec_quote": "The first row matching a fact is set from it; a later row matching the same fact is to be deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu duplicate Illinois after Chicago",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Economics"
+      },
+      {
+       "label": "School Name",
+       "value": "University of Illinois Urbana-Champaign"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "08/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "05/31/2026"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Masters",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Applied Data Science"
+      },
+      {
+       "label": "School Name",
+       "value": "University of Chicago"
+      },
+      {
+       "label": "Result",
+       "value": "In Progress",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "09/01/2026"
+      },
+      {
+       "name": "End Date",
+       "value": "12/31/2027"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Econ"
+      },
+      {
+       "label": "School Name",
+       "value": "illinois"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Illinois Urbana-Champaign",
+     "Type": "Bachelors",
+     "Subject": "Economics",
+     "School Name": "University of Illinois Urbana-Champaign",
+     "Result": "Graduated",
+     "From Date": "08/01/2024",
+     "End Date": "05/31/2026"
+    },
+    "1": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": [
+    2
+   ]
+  },
+  "spec_quote": "The first row matching a fact is set from it; a later row matching the same fact is to be deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu unknown school plus Chicago",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Masters",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "History"
+      },
+      {
+       "label": "School Name",
+       "value": "Harvard University"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Data"
+      },
+      {
+       "label": "School Name",
+       "value": "chicago"
+      },
+      {
+       "label": "Result",
+       "value": "Did Not Complete",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "1": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [
+    0
+   ],
+   "delete": []
+  },
+  "spec_quote": "a non-empty row matching no fact is 'unmatched' (left for a person). Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "edu empty row then Illinois",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": ""
+      },
+      {
+       "label": "School Name",
+       "value": ""
+      },
+      {
+       "label": "Result",
+       "value": "",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Economics"
+      },
+      {
+       "label": "School Name",
+       "value": "Illinois"
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "08/01/2024"
+      },
+      {
+       "name": "End Date",
+       "value": "05/31/2026"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    },
+    "1": {
+     "who": "University of Illinois Urbana-Champaign",
+     "Type": "Bachelors",
+     "Subject": "Economics",
+     "School Name": "University of Illinois Urbana-Champaign",
+     "Result": "Graduated",
+     "From Date": "08/01/2024",
+     "End Date": "05/31/2026"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "A row whose every box and date is empty takes the next fact (in the order above) that has no row yet.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu two empty rows",
+  "section": {
+   "head": "Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": ""
+      },
+      {
+       "label": "School Name",
+       "value": ""
+      },
+      {
+       "label": "Result",
+       "value": "",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": ""
+      },
+      {
+       "label": "School Name",
+       "value": ""
+      },
+      {
+       "label": "Result",
+       "value": "",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": ""
+      },
+      {
+       "name": "End Date",
+       "value": ""
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "0": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    },
+    "1": {
+     "who": "University of Illinois Urbana-Champaign",
+     "Type": "Bachelors",
+     "Subject": "Economics",
+     "School Name": "University of Illinois Urbana-Champaign",
+     "Result": "Graduated",
+     "From Date": "08/01/2024",
+     "End Date": "05/31/2026"
+    }
+   },
+   "add": [],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "A row whose every box and date is empty takes the next fact (in the order above) that has no row yet.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu no rows",
+  "section": {
+   "head": "Education",
+   "rows": []
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {},
+   "add": [
+    "University of Chicago",
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [],
+   "delete": []
+  },
+  "spec_quote": "Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "edu non-empty row with empty School Name is unmatched",
+  "section": {
+   "head": "Formal Education",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Bachelors",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Math"
+      },
+      {
+       "label": "School Name",
+       "value": ""
+      },
+      {
+       "label": "Result",
+       "value": "Graduated",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "01/01/2020"
+      },
+      {
+       "name": "End Date",
+       "value": "01/01/2021"
+      }
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Type",
+       "value": "Masters",
+       "options": [
+        "Associate",
+        "Bachelors",
+        "Doctorate",
+        "Masters",
+        "Other"
+       ]
+      },
+      {
+       "label": "Subject",
+       "value": "Applied Data Science"
+      },
+      {
+       "label": "School Name",
+       "value": "University of Chicago"
+      },
+      {
+       "label": "Result",
+       "value": "In Progress",
+       "options": [
+        "Did Not Complete",
+        "Graduated",
+        "In Progress"
+       ]
+      }
+     ],
+     "dates": [
+      {
+       "name": "From Date",
+       "value": "09/01/2026"
+      },
+      {
+       "name": "End Date",
+       "value": "12/31/2027"
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "kind": "edu",
+   "rows": {
+    "1": {
+     "who": "University of Chicago",
+     "Type": "Masters",
+     "Subject": "Applied Data Science",
+     "School Name": "University of Chicago",
+     "Result": "In Progress",
+     "From Date": "09/01/2026",
+     "End Date": "12/31/2027"
+    }
+   },
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [
+    0
+   ],
+   "delete": []
+  },
+  "spec_quote": "a non-empty row matching no fact is 'unmatched' (left for a person). Facts left with no row are to be added (listed by Company / school name).",
+  "ambiguous": false
+ },
+ {
+  "name": "other heading Professional References",
+  "section": {
+   "head": "Professional References",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Name",
+       "value": "Jane Doe"
+      },
+      {
+       "label": "Company",
+       "value": "Acme"
+      }
+     ],
+     "dates": []
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "any other heading (e.g. 'Professional References', 'Language Skills', 'Certifications/Licenses') -> not handled (the planner returns nothing).",
+  "ambiguous": false
+ },
+ {
+  "name": "other heading Language Skills",
+  "section": {
+   "head": "Language Skills",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Language",
+       "value": "English"
+      },
+      {
+       "label": "Proficiency",
+       "value": "Native"
+      }
+     ],
+     "dates": []
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "any other heading (e.g. 'Professional References', 'Language Skills', 'Certifications/Licenses') -> not handled (the planner returns nothing).",
+  "ambiguous": false
+ },
+ {
+  "name": "other heading Certifications Licenses",
+  "section": {
+   "head": "Certifications/Licenses",
+   "rows": [
+    {
+     "fields": [
+      {
+       "label": "Certification",
+       "value": "CPA"
+      },
+      {
+       "label": "Year",
+       "value": "2020"
+      }
+     ],
+     "dates": []
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "any other heading (e.g. 'Professional References', 'Language Skills', 'Certifications/Licenses') -> not handled (the planner returns nothing).",
+  "ambiguous": false
+ },
+ {
+  "name": "other heading Awards with no rows",
+  "section": {
+   "head": "Awards",
+   "rows": []
+  },
+  "expect": null,
+  "spec_quote": "any other heading (e.g. 'Professional References', 'Language Skills', 'Certifications/Licenses') -> not handled (the planner returns nothing).",
+  "ambiguous": false
+ }
+]

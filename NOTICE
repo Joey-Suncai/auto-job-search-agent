@@ -1,0 +1,9 @@
+auto-job-search-agent
+Licensed under the PolyForm Noncommercial License 1.0.0 (see LICENSE): free for personal, research, educational and
+other noncommercial use. Commercial use needs a separate license from the copyright holder — open an issue to ask.
+
+Third-party parts keep their own licenses:
+- scripts/dashboard/vendor/d3.v7.9.0.min.js — D3 7.9.0, ISC License, Copyright 2010-2023 Mike Bostock.
+- Not shipped, optional: skills/job-hunt-pipeline/scripts/ats_inventory.py reads company → applicant-tracking-system lists
+  from kalil0321/ats-scrapers (MIT License) when you copy its `ats-companies/` CSVs into
+  skills/job-hunt-pipeline/references/ats_inventory/ yourself (keep its LICENSE with them).

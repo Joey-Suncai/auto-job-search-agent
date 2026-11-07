@@ -1,0 +1,426 @@
+[
+ {
+  "name": "Loom as whole word is a Joey task",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Share a Loom link with your introduction"
+    }
+   ]
+  },
+  "expect": [
+   "Share a Loom link with your introduction"
+  ],
+  "spec_quote": "it contains (case-insensitive, as a whole word) \"video\", \"Loom\", \"Vimeo\", \"HireVue\", \"VidCruiter\", \"Spark Hire\" / \"SparkHire\", \"Willo\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "HireVue is a Joey task",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Complete a HireVue on-demand interview"
+    }
+   ]
+  },
+  "expect": [
+   "Complete a HireVue on-demand interview"
+  ],
+  "spec_quote": "it contains (case-insensitive, as a whole word) ... \"HireVue\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "record a <thing> video is a Joey task",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Please record a 60-second video introducing yourself"
+    }
+   ]
+  },
+  "expect": [
+   "Please record a 60-second video introducing yourself"
+  ],
+  "spec_quote": "\"record\" / \"recorded\" / \"recording\" followed by \"yourself\", \"a\", \"an\" or \"your\" (e.g. \"record a short introduction\")",
+  "ambiguous": false
+ },
+ {
+  "name": "Spark Hire and SparkHire spellings both count",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Finish the Spark Hire screening"
+    },
+    {
+     "label": "Answer the SparkHire questions"
+    }
+   ]
+  },
+  "expect": [
+   "Finish the Spark Hire screening",
+   "Answer the SparkHire questions"
+  ],
+  "spec_quote": "\"Spark Hire\" / \"SparkHire\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Near miss: plural videos alone does not count",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Upload your videos to the portal"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Whole word: \"videos\" or \"videography\" do not count (\"video\" must stand alone)",
+  "ambiguous": false
+ },
+ {
+  "name": "Near miss: Loom inside Bloomberg does not count",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "How many years of Bloomberg terminal experience do you have?"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "\"Loom\" inside \"Bloomberg\" does not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "Near miss: videography does not count",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Describe your videography experience and gear"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Whole word: \"videos\" or \"videography\" do not count (\"video\" must stand alone)",
+  "ambiguous": false
+ },
+ {
+  "name": "Near miss: recorded transcript is not a Joey task",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Upload your recorded transcript from the registrar"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "\"record\" / \"recorded\" / \"recording\" followed by \"yourself\", \"a\", \"an\" or \"your\"; ... document uploads (resume, transcript), GPA etc. are not.",
+  "ambiguous": false
+ },
+ {
+  "name": "Ratings and GPA are not Joey tasks",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Rate your Excel skills from 1 to 5"
+    },
+    {
+     "label": "What is your cumulative GPA?"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Text questions, ratings, document uploads (resume, transcript), GPA etc. are not.",
+  "ambiguous": false
+ },
+ {
+  "name": "Mixed list returns only Joey labels, in order",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": [
+    {
+     "label": "Share a Loom link to your intro"
+    },
+    {
+     "label": "What is your GPA?"
+    },
+    {
+     "label": "Complete a VidCruiter interview"
+    },
+    {
+     "label": "Upload your resume"
+    },
+    {
+     "label": "Please record yourself answering a question"
+    }
+   ]
+  },
+  "expect": [
+   "Share a Loom link to your intro",
+   "Complete a VidCruiter interview",
+   "Please record yourself answering a question"
+  ],
+  "spec_quote": "Returns those labels in order.",
+  "ambiguous": false
+ },
+ {
+  "name": "Empty needs_user returns empty list",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": []
+  },
+  "expect": [],
+  "spec_quote": "A missing or empty needs_user → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "Missing needs_user returns empty list",
+  "fn": "joey_tasks",
+  "args": {
+   "needs_user": null
+  },
+  "expect": [],
+  "spec_quote": "A missing or empty needs_user → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "purpose cert makes a test batch",
+  "fn": "is_test_batch",
+  "args": {
+   "batch": {
+    "name": "fall-2026-apply",
+    "purpose": "cert"
+   }
+  },
+  "expect": true,
+  "spec_quote": "True when batch[\"purpose\"] == \"cert\", or the batch \"name\" contains \"cert\" (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "cert in name makes a test batch regardless of case",
+  "fn": "is_test_batch",
+  "args": {
+   "batch": {
+    "name": "CERT-2026-11-04-batch"
+   }
+  },
+  "expect": true,
+  "spec_quote": "or the batch \"name\" contains \"cert\" (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "cert as substring of name still counts (no whole-word rule here)",
+  "fn": "is_test_batch",
+  "args": {
+   "batch": {
+    "name": "concerto submissions run",
+    "purpose": "real"
+   }
+  },
+  "expect": true,
+  "spec_quote": "or the batch \"name\" contains \"cert\" (case-insensitive). (The whole-word restriction is stated only for joey_tasks, not here.)",
+  "ambiguous": false
+ },
+ {
+  "name": "Non-cert purpose and non-cert name is a real batch",
+  "fn": "is_test_batch",
+  "args": {
+   "batch": {
+    "name": "weekly-submissions",
+    "purpose": "real"
+   }
+  },
+  "expect": false,
+  "spec_quote": "Otherwise False (missing name / purpose → False).",
+  "ambiguous": false
+ },
+ {
+  "name": "Empty batch is not a test batch",
+  "fn": "is_test_batch",
+  "args": {
+   "batch": {}
+  },
+  "expect": false,
+  "spec_quote": "Otherwise False (missing name / purpose → False).",
+  "ambiguous": false
+ },
+ {
+  "name": "Test batch skips an ok row with a Loom task",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r1",
+    "status": "ok"
+   },
+   "needs_user": [
+    {
+     "label": "Share a Loom link"
+    }
+   ],
+   "test": true
+  },
+  "expect": {
+   "id": "r1",
+   "status": "skipped_joey_task",
+   "joey_tasks": [
+    "Share a Loom link"
+   ]
+  },
+  "spec_quote": "when test is true and row[\"status\"] is \"ok\" or \"flagged\", sets row[\"status\"] = \"skipped_joey_task\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Test batch skips a flagged row with a video task",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r2",
+    "status": "flagged"
+   },
+   "needs_user": [
+    {
+     "label": "record a 60-second video"
+    }
+   ],
+   "test": true
+  },
+  "expect": {
+   "id": "r2",
+   "status": "skipped_joey_task",
+   "joey_tasks": [
+    "record a 60-second video"
+   ]
+  },
+  "spec_quote": "when test is true and row[\"status\"] is \"ok\" or \"flagged\", sets row[\"status\"] = \"skipped_joey_task\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Real batch keeps status ok but still records joey_tasks",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r3",
+    "status": "ok"
+   },
+   "needs_user": [
+    {
+     "label": "Complete a HireVue interview"
+    }
+   ],
+   "test": false
+  },
+  "expect": {
+   "id": "r3",
+   "status": "ok",
+   "joey_tasks": [
+    "Complete a HireVue interview"
+   ]
+  },
+  "spec_quote": "A real batch (test false) never changes the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "Test batch leaves a closed_or_unreadable row's status alone but adds joey_tasks",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r4",
+    "status": "closed_or_unreadable"
+   },
+   "needs_user": [
+    {
+     "label": "Vimeo submission"
+    }
+   ],
+   "test": true
+  },
+  "expect": {
+   "id": "r4",
+   "status": "closed_or_unreadable",
+   "joey_tasks": [
+    "Vimeo submission"
+   ]
+  },
+  "spec_quote": "Rows with another status (e.g. \"closed_or_unreadable\") keep it.",
+  "ambiguous": false
+ },
+ {
+  "name": "No Joey tasks: test row returned unchanged, no joey_tasks key",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r5",
+    "status": "ok"
+   },
+   "needs_user": [
+    {
+     "label": "What is your GPA?"
+    }
+   ],
+   "test": true
+  },
+  "expect": {
+   "id": "r5",
+   "status": "ok"
+  },
+  "spec_quote": "When there are no tasks the row is returned unchanged (no \"joey_tasks\" key added).",
+  "ambiguous": false
+ },
+ {
+  "name": "No Joey tasks: real flagged row returned unchanged",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r6",
+    "status": "flagged"
+   },
+   "needs_user": [],
+   "test": false
+  },
+  "expect": {
+   "id": "r6",
+   "status": "flagged"
+  },
+  "spec_quote": "A real batch (test false) never changes the status. ... When there are no tasks the row is returned unchanged (no \"joey_tasks\" key added).",
+  "ambiguous": false
+ },
+ {
+  "name": "Multiple tasks recorded in order and ok row skipped",
+  "fn": "joey_gate",
+  "args": {
+   "row": {
+    "id": "r7",
+    "status": "ok"
+   },
+   "needs_user": [
+    {
+     "label": "Share a Loom link"
+    },
+    {
+     "label": "What is your GPA?"
+    },
+    {
+     "label": "Please record yourself answering a question"
+    }
+   ],
+   "test": true
+  },
+  "expect": {
+   "id": "r7",
+   "status": "skipped_joey_task",
+   "joey_tasks": [
+    "Share a Loom link",
+    "Please record yourself answering a question"
+   ]
+  },
+  "spec_quote": "Computes joey_tasks(plan). When non-empty: sets row[\"joey_tasks\"] to the list; and when test is true and row[\"status\"] is \"ok\" or \"flagged\", sets row[\"status\"] = \"skipped_joey_task\".",
+  "ambiguous": false
+ }
+]

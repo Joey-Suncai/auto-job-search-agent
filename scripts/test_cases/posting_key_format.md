@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "url": str, "expect": str, "spec_quote": str, "ambiguous": false}. Write 12 cases (Lever apply / thanks / already-received / eu, Ashby, Greenhouse token and gh_jid, other URLs with query and fragment).

@@ -1,0 +1,398 @@
+[
+ {
+  "name": "ashby_ok_and_file_included_in_order",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "ok"
+    },
+    {
+     "key": "_systemfield_email",
+     "status": "file"
+    }
+   ]
+  },
+  "expect": [
+   "_systemfield_name",
+   "_systemfield_email"
+  ]
+ },
+ {
+  "name": "ashby_mixed_statuses_only_ok_file",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "ok"
+    },
+    {
+     "key": "_systemfield_email",
+     "status": "skip_optional"
+    },
+    {
+     "key": "_systemfield_phone",
+     "status": "file"
+    },
+    {
+     "key": "_systemfield_resume",
+     "status": "needs_user"
+    },
+    {
+     "key": "_systemfield_check",
+     "status": "check_only"
+    }
+   ]
+  },
+  "expect": [
+   "_systemfield_name",
+   "_systemfield_phone"
+  ]
+ },
+ {
+  "name": "lever_returns_empty",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "ok"
+    },
+    {
+     "key": "_systemfield_email",
+     "status": "file"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "greenhouse_returns_empty",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "greenhouse",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "ats_ashby_case_sensitive_uppercase_empty",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "Ashby",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "no_fields_key_empty",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby"
+  },
+  "expect": []
+ },
+ {
+  "name": "empty_fields_list_empty",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": []
+  },
+  "expect": []
+ },
+ {
+  "name": "systemfield_later_in_key_excluded",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "x_systemfield_name",
+     "status": "ok"
+    },
+    {
+     "key": "foo_systemfield_email",
+     "status": "file"
+    },
+    {
+     "key": "_systemfield_phone",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": [
+   "_systemfield_phone"
+  ]
+ },
+ {
+  "name": "prefix_case_sensitive_excluded",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_Systemfield_name",
+     "status": "ok"
+    },
+    {
+     "key": "_systemfield_email",
+     "status": "file"
+    }
+   ]
+  },
+  "expect": [
+   "_systemfield_email"
+  ]
+ },
+ {
+  "name": "exact_prefix_key_included",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_systemfield_",
+     "status": "ok"
+    }
+   ]
+  },
+  "expect": [
+   "_systemfield_"
+  ]
+ },
+ {
+  "name": "uppercase_status_not_included",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_systemfield_name",
+     "status": "OK"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "missing_status_not_included",
+  "fn": "system_fields",
+  "plan": {
+   "ats": "ashby",
+   "fields": [
+    {
+     "key": "_systemfield_name"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "all_present_immediately_no_sleep",
+  "fn": "wait_until",
+  "keys": [
+   "a",
+   "b"
+  ],
+  "appear_at": {
+   "a": 0,
+   "b": 0
+  },
+  "timeout": 5,
+  "step": 1,
+  "expect": [],
+  "expect_sleeps": 0
+ },
+ {
+  "name": "one_missing_never_timeout_one_step_one",
+  "fn": "wait_until",
+  "keys": [
+   "a",
+   "b"
+  ],
+  "appear_at": {
+   "a": 0
+  },
+  "timeout": 1,
+  "step": 1,
+  "expect": [
+   "b"
+  ],
+  "expect_sleeps": 1
+ },
+ {
+  "name": "appears_before_deadline_returns_early",
+  "fn": "wait_until",
+  "keys": [
+   "a",
+   "b",
+   "c"
+  ],
+  "appear_at": {
+   "a": 0,
+   "b": 2,
+   "c": 3
+  },
+  "timeout": 5,
+  "step": 1,
+  "expect": [],
+  "expect_sleeps": 3
+ },
+ {
+  "name": "appears_at_deadline_exact",
+  "fn": "wait_until",
+  "keys": [
+   "a"
+  ],
+  "appear_at": {
+   "a": 3
+  },
+  "timeout": 3,
+  "step": 1,
+  "expect": [],
+  "expect_sleeps": 3
+ },
+ {
+  "name": "timeout_zero_one_check_no_sleep",
+  "fn": "wait_until",
+  "keys": [
+   "a"
+  ],
+  "appear_at": {},
+  "timeout": 0,
+  "step": 1,
+  "expect": [
+   "a"
+  ],
+  "expect_sleeps": 0
+ },
+ {
+  "name": "empty_keys_immediate_empty",
+  "fn": "wait_until",
+  "keys": [],
+  "appear_at": {},
+  "timeout": 5,
+  "step": 1,
+  "expect": [],
+  "expect_sleeps": 0
+ },
+ {
+  "name": "timeout_not_multiple_of_step",
+  "fn": "wait_until",
+  "keys": [
+   "a"
+  ],
+  "appear_at": {},
+  "timeout": 5,
+  "step": 2,
+  "expect": [
+   "a"
+  ],
+  "expect_sleeps": 3
+ },
+ {
+  "name": "order_preserved_for_multiple_missing",
+  "fn": "wait_until",
+  "keys": [
+   "b",
+   "a",
+   "c"
+  ],
+  "appear_at": {
+   "a": 1,
+   "b": 10,
+   "c": 10
+  },
+  "timeout": 2,
+  "step": 1,
+  "expect": [
+   "b",
+   "c"
+  ],
+  "expect_sleeps": 2
+ },
+ {
+  "name": "some_present_initially_some_missing",
+  "fn": "wait_until",
+  "keys": [
+   "a",
+   "b",
+   "c"
+  ],
+  "appear_at": {
+   "a": 0,
+   "c": 1
+  },
+  "timeout": 2,
+  "step": 1,
+  "expect": [
+   "b"
+  ],
+  "expect_sleeps": 2
+ },
+ {
+  "name": "step_larger_than_timeout",
+  "fn": "wait_until",
+  "keys": [
+   "a"
+  ],
+  "appear_at": {},
+  "timeout": 1,
+  "step": 3,
+  "expect": [
+   "a"
+  ],
+  "expect_sleeps": 1
+ },
+ {
+  "name": "all_become_present_at_first_sleep",
+  "fn": "wait_until",
+  "keys": [
+   "a",
+   "b"
+  ],
+  "appear_at": {
+   "a": 0,
+   "b": 1
+  },
+  "timeout": 10,
+  "step": 2,
+  "expect": [],
+  "expect_sleeps": 1
+ },
+ {
+  "name": "missing_key_plus_deadline_appearance",
+  "fn": "wait_until",
+  "keys": [
+   "x",
+   "y",
+   "z"
+  ],
+  "appear_at": {
+   "x": 0,
+   "z": 2
+  },
+  "timeout": 2,
+  "step": 1,
+  "expect": [
+   "y"
+  ],
+  "expect_sleeps": 2
+ }
+]

@@ -1,0 +1,116 @@
+[
+ {
+  "name": "missing JSA_NO_PUSH key is not muted",
+  "fn": "muted",
+  "env": {},
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "empty string value is not muted",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": ""
+  },
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "value \"0\" is not muted",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": "0"
+  },
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "value \" 0 \" trims to \"0\" and is not muted",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": " 0 "
+  },
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "value \"1\" mutes",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": "1"
+  },
+  "expect": true,
+  "spec": "Any other value (\"1\", \"yes\", \"true\", \"false\", \" 2 \") mutes."
+ },
+ {
+  "name": "value \"yes\" mutes",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": "yes"
+  },
+  "expect": true,
+  "spec": "Any other value (\"1\", \"yes\", \"true\", \"false\", \" 2 \") mutes."
+ },
+ {
+  "name": "value \"false\" mutes because only \"\" and \"0\" do not mute",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": "false"
+  },
+  "expect": true,
+  "spec": "Any other value (\"1\", \"yes\", \"true\", \"false\", \" 2 \") mutes."
+ },
+ {
+  "name": "value \"  \" trims to empty string and is not muted",
+  "fn": "muted",
+  "env": {
+   "JSA_NO_PUSH": "  "
+  },
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "other keys only are not muted",
+  "fn": "muted",
+  "env": {
+   "OTHER": "1",
+   "JSA_NO_PUSHX": "1"
+  },
+  "expect": false,
+  "spec": "returns true exactly when the key JSA_NO_PUSH is present and its value, with surrounding spaces removed, is neither \"\" nor \"0\"."
+ },
+ {
+  "name": "muted notify shows/sends nothing and returns empty list",
+  "fn": "notify",
+  "env": {
+   "JSA_NO_PUSH": "1"
+  },
+  "title": "Test title",
+  "body": "Test body",
+  "expect_calls": 0,
+  "expect": [],
+  "spec": "when muted: shows and sends nothing (no notification, no iMessage, no osascript call at all) and returns an empty list."
+ },
+ {
+  "name": "not muted notify tries the Mac notification",
+  "fn": "notify",
+  "env": {},
+  "title": "Test title",
+  "body": "Test body",
+  "expect_calls": "≥1",
+  "expect": "nonempty",
+  "spec": "When not muted it tries the Mac notification (and iMessage when configured)."
+ },
+ {
+  "name": "value \"0\" does not mute notify, so it tries the Mac notification",
+  "fn": "notify",
+  "env": {
+   "JSA_NO_PUSH": "0"
+  },
+  "title": "Test title",
+  "body": "Test body",
+  "expect_calls": "≥1",
+  "expect": "nonempty",
+  "spec": "When not muted it tries the Mac notification (and iMessage when configured)."
+ }
+]

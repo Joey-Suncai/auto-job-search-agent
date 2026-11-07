@@ -1,0 +1,215 @@
+[
+ {
+  "name": "basic block with header and limit removed",
+  "text": "# Open answers\n\n## q1 — Python experience\nlimit: 1200 characters · length: 711 · uses: S6\nI have 5 years of Python.\n",
+  "expect": [
+   [
+    "Python experience",
+    "I have 5 years of Python."
+   ]
+  ],
+  "spec_quote": "The header line before the first `## ` block (e.g. \"# Open answers ...\") is ignored. The `limit:` line is metadata and is never part of the body.",
+  "ambiguous": false
+ },
+ {
+  "name": "multi-line body preserved",
+  "text": "## q2 — Project summary\nlimit: 1200 characters · length: 20 · uses: S1\nLine one\nLine two\n",
+  "expect": [
+   [
+    "Project summary",
+    "Line one\nLine two"
+   ]
+  ],
+  "spec_quote": "The `limit:` line is metadata and is never part of the body.",
+  "ambiguous": false
+ },
+ {
+  "name": "leading and trailing blank lines trimmed",
+  "text": "## q3 — Trimmed\nlimit: 100\n\n\nBody starts here.\nBody ends here.\n\n\n",
+  "expect": [
+   [
+    "Trimmed",
+    "Body starts here.\nBody ends here."
+   ]
+  ],
+  "spec_quote": "Leading/trailing blank lines are trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "internal blank line preserved",
+  "text": "## q4 — Internal\nlimit: 100\nFirst\n\nSecond\n",
+  "expect": [
+   [
+    "Internal",
+    "First\n\nSecond"
+   ]
+  ],
+  "spec_quote": "Leading/trailing blank lines are trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty body omitted",
+  "text": "## q5 — Empty\nlimit: 100\n\n\n",
+  "expect": [],
+  "spec_quote": "A block whose body (after removing the limit line and trimming) is empty, or is exactly the word `ASK` (any letter case), is the materials step saying \"this cannot be answered from the candidate's facts\" — that block is NOT returned",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase ask omitted",
+  "text": "## q6 — Cannot\nlimit: 100\nask\n",
+  "expect": [],
+  "spec_quote": "is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed case ask with spaces omitted",
+  "text": "## q7 — Cannot\nlimit: 100\n  AsK  \n",
+  "expect": [],
+  "spec_quote": "after removing the limit line and trimming) is empty, or is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "ASK with trailing blank lines omitted",
+  "text": "## q8 — Cannot\nlimit: 100\nASK\n\n",
+  "expect": [],
+  "spec_quote": "after removing the limit line and trimming) is empty, or is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "ask inside sentence returned",
+  "text": "## q9 — Ask mention\nlimit: 100\nPlease ask the candidate for details.\n",
+  "expect": [
+   [
+    "Ask mention",
+    "Please ask the candidate for details."
+   ]
+  ],
+  "spec_quote": "A body that merely contains the word \"ask\" inside a sentence is a normal answer and is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "ASK with punctuation returned",
+  "text": "## q10 — Ask punctuation\nlimit: 100\nASK.\n",
+  "expect": [
+   [
+    "Ask punctuation",
+    "ASK."
+   ]
+  ],
+  "spec_quote": "is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "label whitespace collapsed and trimmed case kept",
+  "text": "## q11 —   SQL   Experience\twith   BigQuery   \nlimit: 100\nBody.\n",
+  "expect": [
+   [
+    "SQL Experience with BigQuery",
+    "Body."
+   ]
+  ],
+  "spec_quote": "Labels are returned with runs of whitespace collapsed to one space and trimmed; letter case is kept.",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple blocks returned in file order",
+  "text": "## q13 — Second\nlimit: 100\nB\n\n## q12 — First\nlimit: 100\nA\n",
+  "expect": [
+   [
+    "Second",
+    "B"
+   ],
+   [
+    "First",
+    "A"
+   ]
+  ],
+  "spec_quote": "The loader returns a list of (label, body) pairs, in file order, one per block that has a usable answer",
+  "ambiguous": false
+ },
+ {
+  "name": "omitted blocks do not disturb order",
+  "text": "## q14 — Keep1\nlimit: 100\nOne\n\n## q15 — Skip\nlimit: 100\nASK\n\n## q16 — Empty\nlimit: 100\n\n\n## q17 — Keep2\nlimit: 100\nTwo\n",
+  "expect": [
+   [
+    "Keep1",
+    "One"
+   ],
+   [
+    "Keep2",
+    "Two"
+   ]
+  ],
+  "spec_quote": "one per block that has a usable answer ... that block is NOT returned",
+  "ambiguous": false
+ },
+ {
+  "name": "no blocks returns empty list",
+  "text": "# Open answers\n\nNo blocks here.\n",
+  "expect": [],
+  "spec_quote": "The loader returns a list of (label, body) pairs, in file order, one per block that has a usable answer",
+  "ambiguous": false
+ },
+ {
+  "name": "header before first block ignored",
+  "text": "# Open answers — generated\n\n## q15 — Header ignored\nlimit: 100\nAnswer body.\n",
+  "expect": [
+   [
+    "Header ignored",
+    "Answer body."
+   ]
+  ],
+  "spec_quote": "The header line before the first `## ` block (e.g. \"# Open answers ...\") is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "ask as a line with more body returned",
+  "text": "## q16 — Ask line\nlimit: 100\nask\nmore details\n",
+  "expect": [
+   [
+    "Ask line",
+    "ask\nmore details"
+   ]
+  ],
+  "spec_quote": "is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "ASK with tab whitespace omitted",
+  "text": "## q17 — Cannot\nlimit: 100\n\tASK\t\n",
+  "expect": [],
+  "spec_quote": "after removing the limit line and trimming) is empty, or is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "Ask me later returned",
+  "text": "## q18 — Ask phrase\nlimit: 100\nAsk me later\n",
+  "expect": [
+   [
+    "Ask phrase",
+    "Ask me later"
+   ]
+  ],
+  "spec_quote": "is exactly the word `ASK` (any letter case)",
+  "ambiguous": false
+ },
+ {
+  "name": "whitespace-only body omitted",
+  "text": "## q19 — Blank spaces\nlimit: 100\n   \n\n",
+  "expect": [],
+  "spec_quote": "A block whose body (after removing the limit line and trimming) is empty ... is NOT returned",
+  "ambiguous": false
+ },
+ {
+  "name": "label case kept",
+  "text": "## q20 — mixed CASE label\nlimit: 100\nAnswer.\n",
+  "expect": [
+   [
+    "mixed CASE label",
+    "Answer."
+   ]
+  ],
+  "spec_quote": "letter case is kept.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,6 @@
+{
+ "cumulative_gpa": {
+  "verdict": "case",
+  "why": "Superseded by Joey 2026-11-05 (Erie): the CURRENT cumulative GPA is N/A (the M.S. has no GPA yet; same as a Workday employer 10-30) — rule gpa_current, tested in rules_gpa_current_cases.json."
+ }
+}

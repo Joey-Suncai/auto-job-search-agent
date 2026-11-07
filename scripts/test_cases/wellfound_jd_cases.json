@@ -1,0 +1,172 @@
+[
+ {
+  "name": "basic_happy_path",
+  "page": "<html><head><title>Senior Engineer at Acme • Remote | Wellfound</title></head><body><div>Job Location</div><div>Remote</div><div>Visa Sponsorship</div><div>Not Available</div><h1>About the job</h1><p>We are hiring.</p><p>Great team.</p><h2>About the company</h2><p>Acme makes things.</p></body></html>",
+  "expect": {
+   "title": "Senior Engineer",
+   "text": "We are hiring. Great team.",
+   "loc": "Remote"
+  }
+ },
+ {
+  "name": "no_about_the_job_null",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>Job Location</div><div>NYC</div><p>We are hiring.</p><h2>About the company</h2><p>Acme.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "no_about_company_block",
+  "page": "<html><head><title>Designer at Acme • NYC | Wellfound</title></head><body><h1>About the job</h1><p>Design things.</p><p>Ship them.</p></body></html>",
+  "expect": {
+   "title": "Designer",
+   "text": "Design things. Ship them.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "entities_decoded",
+  "page": "<html><head><title>QA &amp; Test Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>We build tools &amp; services for 5 &lt; 6 &amp;&amp; &#39;clients&#39;.</p></body></html>",
+  "expect": {
+   "title": "QA & Test Engineer",
+   "text": "We build tools & services for 5 < 6 && 'clients'.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "script_and_style_blocks_removed",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><script>var x = \"About the job\"; document.write(\"Fake JD\");</script><style>.About the job {color:red}</style><div>About the job</div><p>Real JD line.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Real JD line.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "missing_title",
+  "page": "<html><head></head><body><div>About the job</div><p>Do the work.</p></body></html>",
+  "expect": {
+   "title": "",
+   "text": "Do the work.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "title_with_at_inside_job_title",
+  "page": "<html><head><title>Data at Scale Intern at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>Analyze data.</p></body></html>",
+  "expect": {
+   "title": "Data at Scale Intern",
+   "text": "Analyze data.",
+   "loc": ""
+  },
+  "ambiguous": true,
+  "why": "The spec says to cut before the *first* ' at ' followed by a name then ' •' or ' |'; read literally the first ' at ' is the one inside the job title (' at Scale Intern at Acme •'), but the intended reading (and the example given with the case format) is to cut at the final ' at <Company> •'. Expect the latter."
+ },
+ {
+  "name": "job_location_missing",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>Visa Sponsorship</div><div>Available</div><div>About the job</div><p>Build stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "empty_jd_null",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><div>About the company</div><p>Acme.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "apply_now_trailing_dropped",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>Build stuff.</p><p>Ship stuff.</p><div>Apply Now</div></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff. Ship stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "apply_now_not_last_kept",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>Build stuff.</p><div>Apply Now</div><p>Then ship stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff. Apply Now Then ship stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "about_company_before_about_job",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the company</div><p>Acme is old.</p><div>About the job</div><p>Build stuff.</p><p>Ship stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff. Ship stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "job_location_adjacent_to_marker",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>Job Location</div><div>Remote</div><div>About the job</div><p>Build stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "job_location_after_marker",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>Build stuff.</p><div>Job Location</div><div>Remote</div><p>More stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff. Job Location Remote More stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "nested_tags",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><div><p>We <b>really</b> care about quality.</p></div></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "We really care about quality.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "whitespace_collapsed",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>About the job</div><p>Build    stuff.\n   Ship   it.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "Build stuff. Ship it.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "duplicate_about_the_job",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><div>Intro line</div><div>About the job</div><p>First JD.</p><div>About the job</div><p>Second JD.</p></body></html>",
+  "expect": {
+   "title": "Engineer",
+   "text": "First JD. About the job Second JD.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "title_wellfound_suffix_only",
+  "page": "<html><head><title>Staff Engineer | Wellfound</title></head><body><div>About the job</div><p>Build stuff.</p></body></html>",
+  "expect": {
+   "title": "Staff Engineer",
+   "text": "Build stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "title_at_without_separator",
+  "page": "<html><head><title>Engineer at Acme Corporation</title></head><body><div>About the job</div><p>Build stuff.</p></body></html>",
+  "expect": {
+   "title": "Engineer at Acme Corporation",
+   "text": "Build stuff.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "style_marker_only_null",
+  "page": "<html><head><title>Engineer at Acme • NYC | Wellfound</title></head><body><style>/* About the job */</style><div>Job Location</div><div>NYC</div><p>No marker here.</p></body></html>",
+  "expect": null
+ }
+]

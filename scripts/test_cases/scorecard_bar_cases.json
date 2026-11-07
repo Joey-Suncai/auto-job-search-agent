@@ -1,0 +1,194 @@
+[
+ {
+  "name": "lever_lowercase_exact",
+  "platform": "lever",
+  "expect": {
+   "n": 30,
+   "no_joey": null,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "lever_capitalized_L",
+  "platform": "Lever",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "lever_trailing_space",
+  "platform": "lever ",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "lever_leading_space",
+  "platform": " lever",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "lever_uppercase",
+  "platform": "LEVER",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "lever_newline_suffix",
+  "platform": "lever\n",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "greenhouse_lowercase_default",
+  "platform": "greenhouse",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "greenhouse_titlecase_default",
+  "platform": "Greenhouse",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "ashby_lowercase_default",
+  "platform": "ashby",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "ashby_mixedcase_default",
+  "platform": "Ashby",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "workday_lowercase_default",
+  "platform": "workday",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "workday_trailing_space_default",
+  "platform": "workday ",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "unknown_name_mycompany_default",
+  "platform": "mycompany",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "unknown_near_miss_lever2_default",
+  "platform": "lever2",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "empty_string_default",
+  "platform": "",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ },
+ {
+  "name": "unknown_with_space_default",
+  "platform": "unknown platform",
+  "expect": {
+   "n": 50,
+   "no_joey": 0.95,
+   "clean": 0.95,
+   "confirm": 0.95,
+   "secs": 300,
+   "cost": 0.01
+  }
+ }
+]

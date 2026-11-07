@@ -1,0 +1,4 @@
+# Workday wizard steps that are handed to the candidate (2026-11-03)
+Function joey_step(step) -> bool. step = the progress bar's current-step text, possibly prefixed "current step N of M".
+True for a third-party assessment or questionnaire step the agent must never click through: names containing "assessment" (e.g. "Take Assessment", "Assessments", "Skills Assessment"), "questionnaire" (e.g. "Pre-Screening Questionnaire", "WOTC Questionnaire"), "WOTC", "tax credit", "screening test", "skill test" / "skills test", or the Chinese 测评 / 評估. Case-insensitive.
+False for the normal steps: "My Information", "My Experience", "Application Questions", "Application Questions 1 of 2", "Voluntary Disclosures", "Self Identify", "Review", "Create Account/Sign In", "Autofill with Resume", "Quick Apply", "", and for text that merely contains "test" or "question" without the words above (e.g. "Additional Questions", "Questions" ).

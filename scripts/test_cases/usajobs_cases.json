@@ -1,0 +1,988 @@
+[
+ {
+  "name": "items_full_descriptor_display_and_fields",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultCount": 1,
+     "SearchResultItems": [
+      {
+       "MatchedObjectId": "1",
+       "MatchedObjectDescriptor": {
+        "PositionID": "800123400",
+        "PositionTitle": "Data Analyst",
+        "OrganizationName": "Department of the Treasury",
+        "DepartmentName": "Department of the Treasury",
+        "PositionLocationDisplay": "Washington, DC",
+        "PositionLocation": [
+         {
+          "LocationName": "New York, NY"
+         }
+        ],
+        "PositionURI": "https://www.usajobs.gov/job/800123400",
+        "PublicationStartDate": "2026-10-28T00:00:00.0000",
+        "ApplicationCloseDate": "2026-11-15T23:59:59.9970",
+        "UserArea": {
+         "Details": {
+          "WhoMayApply": {
+           "Name": "Public"
+          },
+          "JobGrade": [
+           {
+            "Code": "GS",
+            "LowGrade": "12"
+           }
+          ]
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "id": "800123400",
+    "title": "Data Analyst",
+    "org": "Department of the Treasury",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/800123400",
+    "posted": "2026-10-28",
+    "closes": "2026-11-15",
+    "who": "Public",
+    "grade": "GS-12"
+   }
+  ]
+ },
+ {
+  "name": "items_location_fallback_and_department_name_fallback",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultItems": [
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "8200001",
+        "PositionTitle": "Program Analyst",
+        "DepartmentName": "Department of Veterans Affairs",
+        "PositionLocation": [
+         {
+          "LocationName": "Denver, CO"
+         },
+         {
+          "LocationName": "Colorado Springs, CO"
+         }
+        ],
+        "PositionURI": "https://www.usajobs.gov/job/8200001",
+        "PublicationStartDate": "2026-10-15T00:00:00.0000",
+        "ApplicationCloseDate": "2026-11-20T00:00:00.0000",
+        "UserArea": {
+         "Details": {
+          "WhoMayApply": {
+           "Name": "Career transition (CTAP, ICTAP, RPL)"
+          },
+          "JobGrade": [
+           {
+            "Code": "GS",
+            "LowGrade": "09"
+           }
+          ]
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "id": "8200001",
+    "title": "Program Analyst",
+    "org": "Department of Veterans Affairs",
+    "location": "Denver, CO; Colorado Springs, CO",
+    "url": "https://www.usajobs.gov/job/8200001",
+    "posted": "2026-10-15",
+    "closes": "2026-11-20",
+    "who": "Career transition (CTAP, ICTAP, RPL)",
+    "grade": "GS-09"
+   }
+  ]
+ },
+ {
+  "name": "items_gs15_grade_and_missing_who_may_apply",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultItems": [
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "8300001",
+        "PositionTitle": "Supervisory Statistician",
+        "OrganizationName": "Census Bureau",
+        "PositionLocationDisplay": "Suitland, MD",
+        "PositionURI": "https://www.usajobs.gov/job/8300001",
+        "PublicationStartDate": "2026-09-30T00:00:00.0000",
+        "ApplicationCloseDate": "2026-12-01T23:59:59.0000",
+        "UserArea": {
+         "Details": {
+          "JobGrade": [
+           {
+            "Code": "GS",
+            "LowGrade": "15"
+           }
+          ]
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "id": "8300001",
+    "title": "Supervisory Statistician",
+    "org": "Census Bureau",
+    "location": "Suitland, MD",
+    "url": "https://www.usajobs.gov/job/8300001",
+    "posted": "2026-09-30",
+    "closes": "2026-12-01",
+    "who": "",
+    "grade": "GS-15"
+   }
+  ]
+ },
+ {
+  "name": "items_non_gs_and_empty_jobgrade_give_empty_grade",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultItems": [
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "9100001",
+        "PositionTitle": "Contract Specialist",
+        "OrganizationName": "General Services Administration",
+        "PositionLocationDisplay": "Washington, DC",
+        "PositionURI": "https://www.usajobs.gov/job/9100001",
+        "PublicationStartDate": "2026-10-05T00:00:00.0000",
+        "ApplicationCloseDate": "2026-11-05T23:59:59.0000",
+        "UserArea": {
+         "Details": {
+          "WhoMayApply": {
+           "Name": "Public"
+          },
+          "JobGrade": [
+           {
+            "Code": "NF",
+            "LowGrade": "04"
+           }
+          ]
+         }
+        }
+       }
+      },
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "9100002",
+        "PositionTitle": "Data Analyst",
+        "OrganizationName": "General Services Administration",
+        "PositionLocationDisplay": "Washington, DC",
+        "PositionURI": "https://www.usajobs.gov/job/9100002",
+        "PublicationStartDate": "2026-10-06T00:00:00.0000",
+        "ApplicationCloseDate": "2026-11-06T23:59:59.0000",
+        "UserArea": {
+         "Details": {
+          "WhoMayApply": {
+           "Name": "Public"
+          },
+          "JobGrade": []
+         }
+        }
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "id": "9100001",
+    "title": "Contract Specialist",
+    "org": "General Services Administration",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9100001",
+    "posted": "2026-10-05",
+    "closes": "2026-11-05",
+    "who": "Public",
+    "grade": ""
+   },
+   {
+    "id": "9100002",
+    "title": "Data Analyst",
+    "org": "General Services Administration",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9100002",
+    "posted": "2026-10-06",
+    "closes": "2026-11-06",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "items_skips_without_id_title_or_url",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultItems": [
+      {
+       "MatchedObjectDescriptor": {
+        "PositionTitle": "Data Analyst",
+        "PositionURI": "https://www.usajobs.gov/job/1",
+        "UserArea": {
+         "Details": {
+          "WhoMayApply": {
+           "Name": "Public"
+          }
+         }
+        }
+       }
+      },
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "9000002",
+        "PositionURI": "https://www.usajobs.gov/job/9000002"
+       }
+      },
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "9000003",
+        "PositionTitle": "Data Analyst"
+       }
+      },
+      {
+       "MatchedObjectDescriptor": {
+        "PositionID": "9000004",
+        "PositionTitle": "Data Analyst",
+        "OrganizationName": "Treasury",
+        "PositionLocationDisplay": "Washington, DC",
+        "PositionURI": "https://www.usajobs.gov/job/9000004",
+        "PublicationStartDate": "2026-10-01T00:00:00.0000",
+        "ApplicationCloseDate": "2026-10-31T23:59:59.0000"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "id": "9000004",
+    "title": "Data Analyst",
+    "org": "Treasury",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9000004",
+    "posted": "2026-10-01",
+    "closes": "2026-10-31",
+    "who": "",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "items_empty_search_result",
+  "fn": "items",
+  "args": [
+   {
+    "SearchResult": {
+     "SearchResultCount": 0,
+     "SearchResultItems": []
+    }
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "keep_track_open_passes",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000001",
+    "title": "Data Analyst",
+    "org": "Acme",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9000001",
+    "posted": "2026-10-20",
+    "closes": "2026-11-15",
+    "who": "Public",
+    "grade": ""
+   },
+   "2026-11-03"
+  ],
+  "expect": true
+ },
+ {
+  "name": "keep_senior_title_rejected",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000002",
+    "title": "Senior Data Analyst",
+    "org": "Acme",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9000002",
+    "posted": "2026-10-20",
+    "closes": "2026-12-01",
+    "who": "Public",
+    "grade": ""
+   },
+   "2026-11-03"
+  ],
+  "expect": false
+ },
+ {
+  "name": "keep_gs12_grade_rejected",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000003",
+    "title": "Data Analyst",
+    "org": "Treasury",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9000003",
+    "posted": "2026-10-20",
+    "closes": "2026-12-01",
+    "who": "Public",
+    "grade": "GS-12"
+   },
+   "2026-11-03"
+  ],
+  "expect": false
+ },
+ {
+  "name": "keep_closed_before_today_rejected",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000004",
+    "title": "Business Intelligence Analyst",
+    "org": "GSA",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/9000004",
+    "posted": "2026-10-01",
+    "closes": "2026-11-02",
+    "who": "Public",
+    "grade": ""
+   },
+   "2026-11-03"
+  ],
+  "expect": false
+ },
+ {
+  "name": "keep_empty_close_date_passes",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000005",
+    "title": "Product Manager",
+    "org": "VA",
+    "location": "Remote",
+    "url": "https://www.usajobs.gov/job/9000005",
+    "posted": "2026-10-25",
+    "closes": "",
+    "who": "",
+    "grade": ""
+   },
+   "2026-11-03"
+  ],
+  "expect": true
+ },
+ {
+  "name": "keep_closes_exactly_today_passes",
+  "fn": "keep",
+  "args": [
+   {
+    "id": "9000006",
+    "title": "Data Analyst",
+    "org": "VA",
+    "location": "Denver, CO",
+    "url": "https://www.usajobs.gov/job/9000006",
+    "posted": "2026-10-14",
+    "closes": "2026-11-03",
+    "who": "Public",
+    "grade": ""
+   },
+   "2026-11-03"
+  ],
+  "expect": true
+ },
+ {
+  "name": "known_job_url_single_row",
+  "fn": "known",
+  "args": [
+   [
+    {
+     "company": "Acme Corp.",
+     "title": "Data Analyst",
+     "url": "https://www.usajobs.gov/job/8123456"
+    }
+   ]
+  ],
+  "expect": [
+   [
+    "8123456"
+   ],
+   [
+    [
+     "acme",
+     "data analyst"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "known_getjob_viewdetails_url_with_port",
+  "fn": "known",
+  "args": [
+   [
+    {
+     "company": "Booz Allen Hamilton Inc.",
+     "title": "Senior Data Analyst - Remote (2026)",
+     "url": "https://www.usajobs.gov:443/GetJob/ViewDetails/7654321"
+    }
+   ]
+  ],
+  "expect": [
+   [
+    "7654321"
+   ],
+   [
+    [
+     "booz allen hamilton",
+     "senior data analyst"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "known_duplicate_org_title_pairs_deduped",
+  "fn": "known",
+  "args": [
+   [
+    {
+     "company": "Treasury",
+     "title": "Data Analyst",
+     "url": "https://www.usajobs.gov/job/1111111"
+    },
+    {
+     "company": "Treasury",
+     "title": "Data Analyst",
+     "url": "https://www.usajobs.gov/job/2222222"
+    }
+   ]
+  ],
+  "expect": [
+   [
+    "1111111",
+    "2222222"
+   ],
+   [
+    [
+     "treasury",
+     "data analyst"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "known_title_key_strips_brackets_years_summer_punctuation",
+  "fn": "known",
+  "args": [
+   [
+    {
+     "company": "National Aeronautics and Space Administration",
+     "title": "Management & Program Analyst (GS-0343-12/13) - Summer 2027",
+     "url": "https://www.usajobs.gov/job/5000001"
+    }
+   ]
+  ],
+  "expect": [
+   [
+    "5000001"
+   ],
+   [
+    [
+     "national aeronautics and space administration",
+     "management program analyst"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "pick_new_excludes_known_position_id",
+  "fn": "pick_new",
+  "args": [
+   [
+    {
+     "id": "1000001",
+     "title": "Data Analyst",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/1000001",
+     "posted": "2026-10-20",
+     "closes": "2026-11-20",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "1000002",
+     "title": "Business Intelligence Analyst",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/1000002",
+     "posted": "2026-10-21",
+     "closes": "2026-11-25",
+     "who": "Public",
+     "grade": ""
+    }
+   ],
+   [
+    "1000001"
+   ],
+   [],
+   "2026-11-03"
+  ],
+  "expect": [
+   {
+    "id": "1000002",
+    "title": "Business Intelligence Analyst",
+    "org": "Acme",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/1000002",
+    "posted": "2026-10-21",
+    "closes": "2026-11-25",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "pick_new_excludes_by_org_and_title_key",
+  "fn": "pick_new",
+  "args": [
+   [
+    {
+     "id": "2000001",
+     "title": "Data Analyst",
+     "org": "ACME Corp.",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/2000001",
+     "posted": "2026-10-20",
+     "closes": "2026-11-20",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "2000002",
+     "title": "Data Analyst",
+     "org": "Treasury",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/2000002",
+     "posted": "2026-10-22",
+     "closes": "2026-11-22",
+     "who": "Public",
+     "grade": ""
+    }
+   ],
+   [],
+   [
+    [
+     "acme",
+     "data analyst"
+    ]
+   ],
+   "2026-11-03"
+  ],
+  "expect": [
+   {
+    "id": "2000002",
+    "title": "Data Analyst",
+    "org": "Treasury",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/2000002",
+    "posted": "2026-10-22",
+    "closes": "2026-11-22",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "pick_new_caps_two_per_organisation",
+  "fn": "pick_new",
+  "args": [
+   [
+    {
+     "id": "3000001",
+     "title": "Data Analyst",
+     "org": "Department of Veterans Affairs",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/3000001",
+     "posted": "2026-10-20",
+     "closes": "2026-11-20",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "3000002",
+     "title": "AI Specialist",
+     "org": "Department of Veterans Affairs",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/3000002",
+     "posted": "2026-10-21",
+     "closes": "2026-11-21",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "3000003",
+     "title": "Product Manager",
+     "org": "Department of Veterans Affairs",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/3000003",
+     "posted": "2026-10-22",
+     "closes": "2026-11-22",
+     "who": "Public",
+     "grade": ""
+    }
+   ],
+   [],
+   [],
+   "2026-11-03"
+  ],
+  "expect": [
+   {
+    "id": "3000001",
+    "title": "Data Analyst",
+    "org": "Department of Veterans Affairs",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/3000001",
+    "posted": "2026-10-20",
+    "closes": "2026-11-20",
+    "who": "Public",
+    "grade": ""
+   },
+   {
+    "id": "3000002",
+    "title": "AI Specialist",
+    "org": "Department of Veterans Affairs",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/3000002",
+    "posted": "2026-10-21",
+    "closes": "2026-11-21",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "pick_new_drops_items_failing_keep",
+  "fn": "pick_new",
+  "args": [
+   [
+    {
+     "id": "4000001",
+     "title": "Senior Data Analyst",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/4000001",
+     "posted": "2026-10-20",
+     "closes": "2026-12-01",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "4000002",
+     "title": "Data Analyst",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/4000002",
+     "posted": "2026-10-01",
+     "closes": "2026-11-01",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "4000003",
+     "title": "Registered Nurse",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/4000003",
+     "posted": "2026-10-20",
+     "closes": "2026-12-01",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "4000004",
+     "title": "Business Intelligence Analyst",
+     "org": "Acme",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/4000004",
+     "posted": "2026-10-20",
+     "closes": "2026-12-01",
+     "who": "Public",
+     "grade": "GS-13"
+    },
+    {
+     "id": "4000005",
+     "title": "Data Analyst",
+     "org": "Treasury",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/4000005",
+     "posted": "2026-10-25",
+     "closes": "2026-11-30",
+     "who": "Public",
+     "grade": ""
+    }
+   ],
+   [],
+   [],
+   "2026-11-03"
+  ],
+  "expect": [
+   {
+    "id": "4000005",
+    "title": "Data Analyst",
+    "org": "Treasury",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/4000005",
+    "posted": "2026-10-25",
+    "closes": "2026-11-30",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "pick_new_not_repeated_and_keeps_order",
+  "fn": "pick_new",
+  "args": [
+   [
+    {
+     "id": "5000001",
+     "title": "Data Analyst",
+     "org": "Alpha",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/5000001",
+     "posted": "2026-10-20",
+     "closes": "2026-11-20",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "5000001",
+     "title": "Data Analyst",
+     "org": "Alpha",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/5000001",
+     "posted": "2026-10-20",
+     "closes": "2026-11-20",
+     "who": "Public",
+     "grade": ""
+    },
+    {
+     "id": "5000002",
+     "title": "Business Intelligence Analyst",
+     "org": "Beta",
+     "location": "Washington, DC",
+     "url": "https://www.usajobs.gov/job/5000002",
+     "posted": "2026-10-21",
+     "closes": "2026-11-21",
+     "who": "Public",
+     "grade": ""
+    }
+   ],
+   [],
+   [],
+   "2026-11-03"
+  ],
+  "expect": [
+   {
+    "id": "5000001",
+    "title": "Data Analyst",
+    "org": "Alpha",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/5000001",
+    "posted": "2026-10-20",
+    "closes": "2026-11-20",
+    "who": "Public",
+    "grade": ""
+   },
+   {
+    "id": "5000002",
+    "title": "Business Intelligence Analyst",
+    "org": "Beta",
+    "location": "Washington, DC",
+    "url": "https://www.usajobs.gov/job/5000002",
+    "posted": "2026-10-21",
+    "closes": "2026-11-21",
+    "who": "Public",
+    "grade": ""
+   }
+  ]
+ },
+ {
+  "name": "usajobs_jd_full_descriptor_display_location",
+  "fn": "usajobs_jd",
+  "args": [
+   {
+    "PositionID": "700123400",
+    "PositionTitle": "Data Analyst",
+    "OrganizationName": "Department of the Treasury",
+    "PositionLocationDisplay": "Washington, DC",
+    "PositionLocation": [
+     {
+      "LocationName": "New York, NY"
+     }
+    ],
+    "QualificationSummary": "One year of specialized experience.",
+    "UserArea": {
+     "Details": {
+      "WhoMayApply": {
+       "Name": "Public"
+      },
+      "JobSummary": "<p>Analyze <b>data</b>.</p>",
+      "MajorDuties": [
+       "Duty one.",
+       "Duty two."
+      ],
+      "Requirements": "<ul><li>US citizenship</li></ul>",
+      "Education": "None",
+      "SecurityClearance": "Not Required"
+     }
+    }
+   }
+  ],
+  "expect": {
+   "title": "Data Analyst",
+   "text": "Who may apply: Public. One year of specialized experience. Analyze data. Duty one. Duty two. US citizenship None Security clearance: Not Required.",
+   "loc": "Washington, DC"
+  }
+ },
+ {
+  "name": "usajobs_jd_without_who_may_apply_and_clearance",
+  "fn": "usajobs_jd",
+  "args": [
+   {
+    "PositionID": "700200000",
+    "PositionTitle": "IT Specialist",
+    "PositionLocationDisplay": "Remote",
+    "QualificationSummary": "Experience with databases.",
+    "UserArea": {
+     "Details": {
+      "JobSummary": "Support the team.",
+      "MajorDuties": [
+       "Troubleshoot systems."
+      ]
+     }
+    }
+   }
+  ],
+  "expect": {
+   "title": "IT Specialist",
+   "text": "Experience with databases. Support the team. Troubleshoot systems.",
+   "loc": "Remote"
+  }
+ },
+ {
+  "name": "usajobs_jd_location_fallback_entities_and_duties_list",
+  "fn": "usajobs_jd",
+  "args": [
+   {
+    "PositionID": "700300000",
+    "PositionTitle": "Management Analyst",
+    "PositionLocation": [
+     {
+      "LocationName": "Denver, CO"
+     },
+     {
+      "LocationName": "Chicago, IL"
+     }
+    ],
+    "QualificationSummary": "GS-9 &amp; above.",
+    "UserArea": {
+     "Details": {
+      "JobSummary": "<div>Lead <b>data</b> projects&nbsp;for the office &amp; team.</div>",
+      "MajorDuties": [
+       "<p>Duty A</p>",
+       "<p>Duty B</p>"
+      ]
+     }
+    }
+   }
+  ],
+  "expect": {
+   "title": "Management Analyst",
+   "text": "GS-9 & above. Lead data projects for the office & team. Duty A Duty B",
+   "loc": "Denver, CO; Chicago, IL"
+  }
+ },
+ {
+  "name": "usajobs_jd_clearance_requirements_education_html",
+  "fn": "usajobs_jd",
+  "args": [
+   {
+    "PositionID": "700400000",
+    "PositionTitle": "Program Analyst",
+    "PositionLocationDisplay": "Washington, DC",
+    "QualificationSummary": "Two years of experience.",
+    "UserArea": {
+     "Details": {
+      "WhoMayApply": {
+       "Name": "Internal to an agency"
+      },
+      "JobSummary": "Monitor programs.",
+      "Requirements": "<p>Must be a US citizen.</p>",
+      "Education": "<p>Bachelor's degree.</p>",
+      "SecurityClearance": "Top Secret"
+     }
+    }
+   }
+  ],
+  "expect": {
+   "title": "Program Analyst",
+   "text": "Who may apply: Internal to an agency. Two years of experience. Monitor programs. Must be a US citizen. Bachelor's degree. Security clearance: Top Secret.",
+   "loc": "Washington, DC"
+  }
+ },
+ {
+  "name": "usajobs_jd_no_title_returns_none",
+  "fn": "usajobs_jd",
+  "args": [
+   {
+    "PositionID": "700500000",
+    "PositionLocationDisplay": "Washington, DC",
+    "QualificationSummary": "Experience.",
+    "UserArea": {
+     "Details": {
+      "WhoMayApply": {
+       "Name": "Public"
+      },
+      "JobSummary": "Do work."
+     }
+    }
+   }
+  ],
+  "expect": null
+ }
+]

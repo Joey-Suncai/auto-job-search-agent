@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "type": "radio"|"text", "options": [str], "expect": "Yes"|"none", "spec_quote": str, "ambiguous": false}. Use options ["Yes","No"] for radio, [] for text. Write 14 cases: 8 Yes (varied wording incl. GED, "minimum of a High School Diploma or equivalent"), 6 none (year, date, school name, where, unrelated).

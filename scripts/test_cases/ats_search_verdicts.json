@@ -1,0 +1,46 @@
+{
+ "career_hosts derives careers/jobs hosts from company domain root": {
+  "verdict": "code",
+  "why": "fixed: the case passes a URL (https://www.acme.co.uk/about); root_domain now cuts a URL to its host before taking the root"
+ },
+ "Titles differing only by trailing \"- City, ST\" tail with different cities": {
+  "verdict": "code",
+  "why": "fixed: the city-in-title exemption let 'Software Engineer - Sunrise, FL' match the only posting, in Pensacola (the same bug matched an Amex Sunrise row to the Phoenix posting in the 11-03 run); the exemption now needs the city in both titles"
+ },
+ "Row's title names the city -> no rejection -> url": {
+  "verdict": "case",
+  "why": "written against the first wording of the rule; after the fix above the spec says the city must be in both titles, and a single posting in Pensacola for a Sunrise row is another opening → null"
+ },
+ "detect_ats_brassring_query_with_partnerid": {
+  "verdict": "code",
+  "why": "fixed: the \"#Home\" fragment was kept in the ident; the BrassRing pattern now stops at \"#\""
+ },
+ "brassring_session_token_and_entity_decoded_cookie": {
+  "verdict": "code",
+  "why": "fixed: the hidden inputs were matched only with name/id before type; attributes are now read in any order"
+ },
+ "parse_brassring_location_question_and_link": {
+  "verdict": "case",
+  "why": "the case puts \"jobtitle\" on the job object, beside Questions; the spec (and the live BrassRing answer: Questions[] holds QuestionName \"jobtitle\") takes the title from the Questions dict, so a job whose Questions have no jobtitle has no title and is skipped → []"
+ },
+ "parse_brassring_skips_jobs_without_link_and_defaults_location": {
+  "verdict": "case",
+  "why": "the case puts \"jobtitle\" on the job object, beside Questions; the spec (and the live BrassRing answer: Questions[] holds QuestionName \"jobtitle\") takes the title from the Questions dict, so a job whose Questions have no jobtitle has no title and is skipped → []"
+ },
+ "parse_dover url-quotes name, joins locations without duplicates": {
+  "verdict": "case",
+  "why": "the case puts the locations under \"location\"; Dover's careers-page JSON (read live 2026-11-03, Diffuse Bio) names the list \"locations\", and the spec now says so — the first wording only said \"each location's name\""
+ },
+ "parse_dover skips unpublished and sample jobs, empty name becomes company": {
+  "verdict": "case",
+  "why": "the case puts the locations under \"location\"; Dover's careers-page JSON (read live 2026-11-03, Diffuse Bio) names the list \"locations\", and the spec now says so — the first wording only said \"each location's name\""
+ },
+ "rmk_site returns [] on a vendor jobs2web host": {
+  "verdict": "code",
+  "why": "fixed: rmk_site checked only the vendor domains; it now refuses every host site_hosts would not try (vendor-label jobs2web hosts such as careers.jobs2web.com too), as the spec says"
+ },
+ "parse gem with extId and id fallback": {
+  "verdict": "code",
+  "why": "fixed (JSA-137): a remote Gem location with a city but no name came back as \"Remote\"; the city is the more useful value (the matcher checks the city), so name → city → \"Remote\" is the order now; spec reworded"
+ }
+}

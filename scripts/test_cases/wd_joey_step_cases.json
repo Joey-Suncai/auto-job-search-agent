@@ -1,0 +1,122 @@
+[
+ {
+  "name": "take_assessment",
+  "step": "Take Assessment",
+  "expect": true,
+  "spec": "names containing \"assessment\" (e.g. \"Take Assessment\", \"Assessments\", \"Skills Assessment\")"
+ },
+ {
+  "name": "assessments_plural",
+  "step": "Assessments",
+  "expect": true,
+  "spec": "names containing \"assessment\" (e.g. \"Take Assessment\", \"Assessments\", \"Skills Assessment\")"
+ },
+ {
+  "name": "skills_assessment",
+  "step": "Skills Assessment",
+  "expect": true,
+  "spec": "names containing \"assessment\" (e.g. \"Take Assessment\", \"Assessments\", \"Skills Assessment\")"
+ },
+ {
+  "name": "pre_screening_questionnaire",
+  "step": "Pre-Screening Questionnaire",
+  "expect": true,
+  "spec": "\"questionnaire\" (e.g. \"Pre-Screening Questionnaire\", \"WOTC Questionnaire\")"
+ },
+ {
+  "name": "wotc_questionnaire",
+  "step": "WOTC Questionnaire",
+  "expect": true,
+  "spec": "\"questionnaire\" (e.g. \"Pre-Screening Questionnaire\", \"WOTC Questionnaire\")"
+ },
+ {
+  "name": "wotc_standalone",
+  "step": "WOTC",
+  "expect": true,
+  "spec": "names containing ... \"WOTC\""
+ },
+ {
+  "name": "tax_credit_case_insensitive",
+  "step": "Tax Credit",
+  "expect": true,
+  "spec": "\"tax credit\" ... Case-insensitive."
+ },
+ {
+  "name": "screening_test",
+  "step": "Screening Test",
+  "expect": true,
+  "spec": "\"screening test\""
+ },
+ {
+  "name": "skill_test",
+  "step": "Skill Test",
+  "expect": true,
+  "spec": "\"skill test\" / \"skills test\""
+ },
+ {
+  "name": "skills_test_uppercase",
+  "step": "SKILLS TEST",
+  "expect": true,
+  "spec": "\"skill test\" / \"skills test\" ... Case-insensitive."
+ },
+ {
+  "name": "chinese_ceping",
+  "step": "测评",
+  "expect": true,
+  "spec": "or the Chinese 测评 / 評估"
+ },
+ {
+  "name": "chinese_pinggu",
+  "step": "評估",
+  "expect": true,
+  "spec": "or the Chinese 测评 / 評估"
+ },
+ {
+  "name": "prefixed_take_assessment",
+  "step": "current step 3 of 8: Take Assessment",
+  "expect": true,
+  "spec": "step = the progress bar's current-step text, possibly prefixed \"current step N of M\"."
+ },
+ {
+  "name": "my_information",
+  "step": "My Information",
+  "expect": false,
+  "spec": "False for the normal steps: \"My Information\", \"My Experience\", \"Application Questions\", \"Application Questions 1 of 2\", \"Voluntary Disclosures\", \"Self Identify\", \"Review\", \"Create Account/Sign In\", \"Autofill with Resume\", \"Quick Apply\", \"\""
+ },
+ {
+  "name": "application_questions_numbered",
+  "step": "Application Questions 1 of 2",
+  "expect": false,
+  "spec": "False for the normal steps: \"My Information\", \"My Experience\", \"Application Questions\", \"Application Questions 1 of 2\", \"Voluntary Disclosures\", \"Self Identify\", \"Review\", \"Create Account/Sign In\", \"Autofill with Resume\", \"Quick Apply\", \"\""
+ },
+ {
+  "name": "additional_questions",
+  "step": "Additional Questions",
+  "expect": false,
+  "spec": "for text that merely contains \"test\" or \"question\" without the words above (e.g. \"Additional Questions\", \"Questions\" )"
+ },
+ {
+  "name": "questions_only",
+  "step": "Questions",
+  "expect": false,
+  "spec": "for text that merely contains \"test\" or \"question\" without the words above (e.g. \"Additional Questions\", \"Questions\" )"
+ },
+ {
+  "name": "empty_string",
+  "step": "",
+  "expect": false,
+  "spec": "False for the normal steps: ... \"\""
+ },
+ {
+  "name": "prefixed_my_information",
+  "step": "current step 2 of 5: My Information",
+  "expect": false,
+  "spec": "step = the progress bar's current-step text, possibly prefixed \"current step N of M\"."
+ },
+ {
+  "name": "contest_near_miss",
+  "step": "Contest",
+  "expect": false,
+  "spec": "for text that merely contains \"test\" or \"question\" without the words above (e.g. \"Additional Questions\", \"Questions\" )"
+ }
+]

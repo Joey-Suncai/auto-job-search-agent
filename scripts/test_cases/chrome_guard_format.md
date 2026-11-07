@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "args": {"settings": {<id>: {...}}}, "expect": [[id, name], ...] (order as in settings), "spec_quote": str, "ambiguous": false}.
+Write 24 cases: clean profiles (only allowed, all others disabled), one bad extension enabled, several mixed, stub entries, blocklisted, state 0, disable_reasons [1] / [] / null / missing, component location 5 and 10 with unknown ids, unpacked lever_fill vs other unpacked, the Claude id disabled (not listed either).

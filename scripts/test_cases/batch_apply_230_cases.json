@@ -1,0 +1,472 @@
+[
+ {
+  "id": "r1",
+  "fn": "runner",
+  "input": {
+   "ats": "greenhouse"
+  },
+  "expect": "run.py",
+  "spec": "Greenhouse → `run.py <folder>`; Workday → `run_wd.py <folder> --wait-min 0 --login-wait-min 0` ... Oracle → `run_oracle.py`, SmartRecruiters → `run_smartrecruiters.py`, SuccessFactors → `run_successfactors.py`, iCIMS and Jibe → `run_icims.py`, Workable → `run_workable.py`"
+ },
+ {
+  "id": "r2",
+  "fn": "runner",
+  "input": {
+   "ats": "jibe"
+  },
+  "expect": "run_icims.py",
+  "spec": "iCIMS and Jibe → `run_icims.py`, Workable → `run_workable.py`, each as `--folder <folder> --wait-captcha 0`."
+ },
+ {
+  "id": "r3",
+  "fn": "runner",
+  "input": {
+   "ats": "tiktok"
+  },
+  "expect": null,
+  "spec": "Any other platform (TikTok / ByteDance included: Joey presses Submit there) → status `no runner in batch_apply`."
+ },
+ {
+  "id": "p1",
+  "fn": "platform",
+  "input": {
+   "url": "https://jobs.ashbyhq.com/acme/8f2c1a-77"
+  },
+  "expect": "ashby",
+  "spec": "Platform from the posting URL: greenhouse.io or `gh_jid=` → greenhouse; ashbyhq.com → ashby; lever.co → lever;"
+ },
+ {
+  "id": "p2",
+  "fn": "platform",
+  "input": {
+   "url": "https://www.acme.com/about/careers?gh_jid=4512345"
+  },
+  "expect": "greenhouse",
+  "spec": "Platform from the posting URL: greenhouse.io or `gh_jid=` → greenhouse;"
+ },
+ {
+  "id": "p3",
+  "fn": "platform",
+  "input": {
+   "url": "https://acme.wd5.myworkdaysite.com/recruiting/acme/Careers/job/Data-Analyst_R-99"
+  },
+  "expect": "workday",
+  "spec": "myworkdayjobs.com / myworkdaysite.com → workday;"
+ },
+ {
+  "id": "p4",
+  "fn": "platform",
+  "input": {
+   "url": "https://careers.acme.com/job/senior-data-analyst/12345678/"
+  },
+  "expect": "successfactors",
+  "spec": "successfactors / sapsf.com, or a company-domain page `/job/<slug>/<8–12 digits>` (not builtin.com) → successfactors;"
+ },
+ {
+  "id": "p5",
+  "fn": "platform",
+  "input": {
+   "url": "https://careers.acme.com/job/senior-data-analyst/1234567/"
+  },
+  "expect": "",
+  "spec": "successfactors / sapsf.com, or a company-domain page `/job/<slug>/<8–12 digits>` (not builtin.com) → successfactors; ... else unknown ('')."
+ },
+ {
+  "id": "c1",
+  "fn": "command",
+  "input": {
+   "ats": "greenhouse",
+   "folder": "/x/F",
+   "submit": true,
+   "ds_ok": false
+  },
+  "expect": [
+   "run.py",
+   "/x/F",
+   "--submit"
+  ],
+  "spec": "Greenhouse → `run.py <folder>`; ... `--submit` is appended on a submit run."
+ },
+ {
+  "id": "c2",
+  "fn": "command",
+  "input": {
+   "ats": "workday",
+   "folder": "/x/F",
+   "submit": false,
+   "ds_ok": false
+  },
+  "expect": [
+   "run_wd.py",
+   "/x/F",
+   "--wait-min",
+   "0",
+   "--login-wait-min",
+   "0"
+  ],
+  "spec": "Workday → `run_wd.py <folder> --wait-min 0 --login-wait-min 0` (+ `--ds-ok` only on a submit where Claude spot-checked the DeepSeek answers)"
+ },
+ {
+  "id": "c3",
+  "fn": "command",
+  "input": {
+   "ats": "oracle",
+   "folder": "/x/F",
+   "submit": true,
+   "ds_ok": false
+  },
+  "expect": [
+   "run_oracle.py",
+   "--folder",
+   "/x/F",
+   "--wait-captcha",
+   "0",
+   "--submit"
+  ],
+  "spec": "Oracle → `run_oracle.py` ... each as `--folder <folder> --wait-captcha 0`. `--submit` is appended on a submit run."
+ },
+ {
+  "id": "c4",
+  "fn": "command",
+  "input": {
+   "ats": "workday",
+   "folder": "/x/F",
+   "submit": true,
+   "ds_ok": true
+  },
+  "expect": [
+   "run_wd.py",
+   "/x/F",
+   "--wait-min",
+   "0",
+   "--login-wait-min",
+   "0",
+   "--ds-ok",
+   "--submit"
+  ],
+  "ambiguous": true,
+  "note": "The spec fixes that --ds-ok appears only on a spot-checked submit and that --submit is appended on a submit run, but not the relative order of --ds-ok and --submit; --ds-ok placed with the base flags and --submit last is the reading assumed here.",
+  "spec": "Workday → `run_wd.py <folder> --wait-min 0 --login-wait-min 0` (+ `--ds-ok` only on a submit where Claude spot-checked the DeepSeek answers) ... `--submit` is appended on a submit run."
+ },
+ {
+  "id": "s1",
+  "fn": "size",
+  "input": {
+   "n": 10,
+   "max": null,
+   "login": false
+  },
+  "expect": null,
+  "spec": "Batch size: at most **10** jobs (Joey 2026-11-06: 8 recommended, cap 10)"
+ },
+ {
+  "id": "s2",
+  "fn": "size",
+  "input": {
+   "n": 6,
+   "max": null,
+   "login": true
+  },
+  "expect": "too many",
+  "spec": "at most **5** when any job is on a platform that needs a sign-in (Workday, Oracle, SuccessFactors, iCIMS); ... More → refuse before any work, saying how many were given."
+ },
+ {
+  "id": "s3",
+  "fn": "size",
+  "input": {
+   "n": 3,
+   "max": 2,
+   "login": false
+  },
+  "expect": "too many",
+  "spec": "`--max` may lower either cap. More → refuse before any work, saying how many were given."
+ },
+ {
+  "id": "f1",
+  "fn": "folder_name",
+  "input": {
+   "date": "2026-11-06",
+   "company": "Acme Corp",
+   "title": "Data Analyst"
+  },
+  "expect": "2026-11-06_Acme_Corp_Data_Analyst",
+  "spec": "Folder name = `<date>_<company: non-alphanumerics → \"_\", runs collapsed, trimmed, first 20 chars>_<title: same, first 40 chars>`."
+ },
+ {
+  "id": "f2",
+  "fn": "folder_name",
+  "input": {
+   "date": "2026-11-06",
+   "company": "International Business Machines",
+   "title": "Data Engineer"
+  },
+  "expect": "2026-11-06_International_Busine_Data_Engineer",
+  "spec": "Folder name = `<date>_<company: non-alphanumerics → \"_\", runs collapsed, trimmed, first 20 chars>_<title: same, first 40 chars>`."
+ },
+ {
+  "id": "f3",
+  "fn": "folder_name",
+  "input": {
+   "date": "2026-11-06",
+   "company": "  AT&T -- Inc  ",
+   "title": "Sr. Analyst (Remote)"
+  },
+  "expect": "2026-11-06_AT_T_Inc_Sr_Analyst_Remote",
+  "spec": "Folder name = `<date>_<company: non-alphanumerics → \"_\", runs collapsed, trimmed, first 20 chars>_<title: same, first 40 chars>`."
+ },
+ {
+  "id": "sp1",
+  "fn": "split",
+  "input": {
+   "jobs": [
+    {
+     "id": "a",
+     "url": "https://boards.greenhouse.io/acme/jobs/1234567"
+    },
+    {
+     "id": "b",
+     "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/job/Data-Analyst_R-1"
+    },
+    {
+     "id": "c",
+     "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/12345"
+    },
+    {
+     "id": "d",
+     "url": "https://jobs.lever.co/acme/abc-123"
+    },
+    {
+     "id": "e",
+     "url": "https://jobs.ashbyhq.com/acme/xyz"
+    }
+   ]
+  },
+  "expect": {
+   "gal": [
+    "a",
+    "d",
+    "e"
+   ],
+   "wd": [
+    "b"
+   ],
+   "own": [
+    "c"
+   ],
+   "none": []
+  },
+  "spec": "Prep routes: Greenhouse / Ashby / Lever → `prep_batch.py`; Workday → `prep_wd.py`; Oracle / SmartRecruiters / SuccessFactors / iCIMS / Workable → prepped by batch_apply itself (folder + job.json + jd.md); a batch may mix them"
+ },
+ {
+  "id": "sp2",
+  "fn": "split",
+  "input": {
+   "jobs": [
+    {
+     "id": "a",
+     "url": "https://www.tiktok.com/careers/position/123456"
+    },
+    {
+     "id": "b",
+     "url": "https://apply.workable.com/acme/j/ABC123/"
+    },
+    {
+     "id": "c",
+     "url": "https://jobs.smartrecruiters.com/Acme/12345-data-analyst"
+    }
+   ]
+  },
+  "expect": {
+   "gal": [],
+   "wd": [],
+   "own": [
+    "b",
+    "c"
+   ],
+   "none": [
+    "a"
+   ]
+  },
+  "ambiguous": true,
+  "note": "The spec defines prep routes only for the listed platforms and says other platforms get status `no runner in batch_apply`; it does not state which split bucket such a job lands in, so the 'none' bucket is assumed.",
+  "spec": "Prep routes: Greenhouse / Ashby / Lever → `prep_batch.py`; Workday → `prep_wd.py`; Oracle / SmartRecruiters / SuccessFactors / iCIMS / Workable → prepped by batch_apply itself ... Any other platform (TikTok / ByteDance included: Joey presses Submit there) → status `no runner in batch_apply`."
+ },
+ {
+  "id": "m1",
+  "fn": "merge",
+  "input": {
+   "stdout": {
+    "status": "dry-run",
+    "secs": 25,
+    "reasons": [
+     "dry-run"
+    ]
+   },
+   "results": {
+    "folder": "/x/F",
+    "status": "dry-run",
+    "problems": [
+     "batch not approved"
+    ]
+   }
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 25,
+   "reasons": [
+    "dry-run"
+   ]
+  },
+  "spec": "A runner's outcome: its stdout (STATUS / TIME / NOT submitted lines; `TIME <n>s` may also sit at the end of the STATUS line) merged with its newest `data/runner/results.jsonl` line for that folder: when stdout has no STATUS line the results line's status is used, and when stdout gives no reasons the results line's `problems` are the reasons."
+ },
+ {
+  "id": "m2",
+  "fn": "merge",
+  "input": {
+   "stdout": {
+    "status": null,
+    "secs": null,
+    "reasons": []
+   },
+   "results": {
+    "folder": "/x/F",
+    "status": "materials failed",
+    "problems": [
+     "ds_materials exit 1 after --fresh retry"
+    ]
+   }
+  },
+  "expect": {
+   "status": "materials failed",
+   "secs": null,
+   "reasons": [
+    "ds_materials exit 1 after --fresh retry"
+   ]
+  },
+  "spec": "when stdout has no STATUS line the results line's status is used, and when stdout gives no reasons the results line's `problems` are the reasons."
+ },
+ {
+  "id": "m3",
+  "fn": "merge",
+  "input": {
+   "stdout": {
+    "status": "dry-run",
+    "secs": 25,
+    "reasons": []
+   },
+   "results": {
+    "folder": "/x/F",
+    "status": "dry-run",
+    "problems": [
+     "CAPTCHA on step 2"
+    ]
+   }
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 25,
+   "reasons": [
+    "CAPTCHA on step 2"
+   ]
+  },
+  "spec": "when stdout gives no reasons the results line's `problems` are the reasons."
+ },
+ {
+  "id": "pa1",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS dry-run\nSTATUS crashed\nTIME 7s\nNOT submitted: plan not ready | CAPTCHA on step 2\n"
+  },
+  "expect": {
+   "status": "crashed",
+   "secs": 7,
+   "reasons": [
+    "plan not ready",
+    "CAPTCHA on step 2"
+   ]
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \")."
+ },
+ {
+  "id": "pa2",
+  "fn": "parse",
+  "input": {
+   "output": "opening folder /x/F\nTraceback (most recent call last):\n  File \"run.py\", line 12\nModuleNotFoundError: No module named 'playwright'\n"
+  },
+  "expect": {
+   "status": "crashed",
+   "secs": null,
+   "reasons": [
+    "ModuleNotFoundError: No module named 'playwright'"
+   ]
+  },
+  "ambiguous": true,
+  "note": "The spec says the last output line becomes 'the reason' (singular); it does not say whether the reasons field is a one-element list or a bare string. A one-element list is assumed for consistency with the `NOT submitted` reasons.",
+  "spec": "No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "pa3",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS dry-run TIME 25s\n"
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 25,
+   "reasons": []
+  },
+  "ambiguous": true,
+  "note": "The spec allows `TIME <n>s` to sit 'at the end of the STATUS line' but does not pin the exact line format; the form 'STATUS <word> TIME <n>s' is assumed and the word before TIME is taken as the status.",
+  "spec": "`TIME <n>s` may also sit at the end of the STATUS line"
+ },
+ {
+  "id": "rd1",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "dry-run"
+   ],
+   "output": "STATUS dry-run\nTIME 25s\n"
+  },
+  "expect": true,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "rd2",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "CAPTCHA on step 2"
+   ],
+   "output": "STATUS dry-run\nNOT submitted: CAPTCHA on step 2\n"
+  },
+  "expect": false,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "rd3",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "batch not approved (Joey hasn't replied yet)"
+   ],
+   "output": ""
+  },
+  "expect": true,
+  "spec": "A reason that starts with \"batch not approved\" counts like \"batch not approved\"."
+ },
+ {
+  "id": "rd4",
+  "fn": "ready",
+  "input": {
+   "status": "submitted",
+   "reasons": [],
+   "output": "STATUS submitted\nTIME 40s\n"
+  },
+  "expect": false,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ }
+]

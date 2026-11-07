@@ -1,0 +1,641 @@
+[
+ {
+  "name": "job_id_relative_basic",
+  "fn": "job_id",
+  "args": {
+   "url": "/job/data-intern/11528663"
+  },
+  "expect": "11528663"
+ },
+ {
+  "name": "job_id_full_builtin",
+  "fn": "job_id",
+  "args": {
+   "url": "https://builtin.com/job/data-intern/11528663"
+  },
+  "expect": "11528663"
+ },
+ {
+  "name": "job_id_trailing_slash",
+  "fn": "job_id",
+  "args": {
+   "url": "/job/data-intern/11528663/"
+  },
+  "expect": "11528663"
+ },
+ {
+  "name": "job_id_query_suffix",
+  "fn": "job_id",
+  "args": {
+   "url": "https://builtin.com/job/data-intern/11528663?utm_source=x"
+  },
+  "expect": "11528663"
+ },
+ {
+  "name": "job_id_missing_slug",
+  "fn": "job_id",
+  "args": {
+   "url": "/job/11528663"
+  },
+  "expect": ""
+ },
+ {
+  "name": "parse_remote_entry_posted",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "card1",
+    "href": "/job/data-intern/11528663",
+    "lines": [
+     "Acme Inc",
+     "Data Analyst Intern",
+     "Remote",
+     "New York, NY",
+     "28K-28K Annually",
+     "Entry level",
+     "Posted 3 Days Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "11528663",
+   "title": "Data Analyst Intern",
+   "company": "Acme Inc",
+   "location": "New York, NY",
+   "remote": "Yes",
+   "salary": "28K-28K Annually",
+   "posted": "2026-10-29",
+   "bi_level": "Entry level",
+   "url": "https://builtin.com/job/data-intern/11528663"
+  }
+ },
+ {
+  "name": "parse_office_or_remote_month",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "222",
+    "href": "/job/business-intelligence-intern/222",
+    "lines": [
+     "Beta Corp",
+     "Business Intelligence Intern",
+     "In-Office or Remote",
+     "Boston, MA",
+     "50-50 Annually",
+     "Internship",
+     "Reposted One Month Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "222",
+   "title": "Business Intelligence Intern",
+   "company": "Beta Corp",
+   "location": "Boston, MA",
+   "remote": "",
+   "salary": "50-50 Annually",
+   "posted": "2026-10-02",
+   "bi_level": "Internship",
+   "url": "https://builtin.com/job/business-intelligence-intern/222"
+  }
+ },
+ {
+  "name": "parse_easy_apply_location_suppressed",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "333",
+    "href": "/job/product-analyst/333",
+    "title": "Product Analyst Intern",
+    "company": "Gamma LLC",
+    "lines": [
+     "ignored0",
+     "ignored1",
+     "Hybrid",
+     "Easy Apply",
+     "55-10K Hourly",
+     "Mid level",
+     "Just now"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "333",
+   "title": "Product Analyst Intern",
+   "company": "Gamma LLC",
+   "location": "",
+   "remote": "",
+   "salary": "55-10K Hourly",
+   "posted": "2026-11-01",
+   "bi_level": "Mid level",
+   "url": "https://builtin.com/job/product-analyst/333"
+  }
+ },
+ {
+  "name": "parse_fallback_id_generated_url",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "987654",
+    "href": "/company/acme",
+    "lines": [
+     "Acme",
+     "Data Analyst Intern",
+     "Remote",
+     "Remote",
+     "2 Weeks Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "987654",
+   "title": "Data Analyst Intern",
+   "company": "Acme",
+   "location": "",
+   "remote": "Yes",
+   "salary": "",
+   "posted": "2026-10-18",
+   "bi_level": "",
+   "url": "https://builtin.com/job/data-analyst-intern/987654"
+  }
+ },
+ {
+  "name": "parse_none_empty_title",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "444",
+    "href": "/job/444",
+    "lines": [
+     "Acme",
+     "",
+     "Remote"
+    ]
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_none_empty_company",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "555",
+    "href": "/job/data-intern/555",
+    "lines": [
+     "",
+     "Data Intern",
+     "Remote"
+    ]
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_first_salary_and_level",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "666",
+    "href": "/job/ml-intern/666",
+    "lines": [
+     "Delta",
+     "Machine Learning Intern",
+     "Hybrid",
+     "Chicago, IL",
+     "20-30 Hourly",
+     "25-35 Hourly",
+     "Junior",
+     "Senior level",
+     "1 Year Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "666",
+   "title": "Machine Learning Intern",
+   "company": "Delta",
+   "location": "Chicago, IL",
+   "remote": "",
+   "salary": "20-30 Hourly",
+   "posted": "2025-11-01",
+   "bi_level": "Junior",
+   "url": "https://builtin.com/job/ml-intern/666"
+  }
+ },
+ {
+  "name": "parse_query_removed",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "777",
+    "href": "/job/ai-intern/777?utm=1",
+    "lines": [
+     "Epsilon",
+     "AI Intern",
+     "Remote or Hybrid",
+     "Austin, TX",
+     "Posted a Day Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "777",
+   "title": "AI Intern",
+   "company": "Epsilon",
+   "location": "Austin, TX",
+   "remote": "Yes",
+   "salary": "",
+   "posted": "2026-10-31",
+   "bi_level": "",
+   "url": "https://builtin.com/job/ai-intern/777"
+  }
+ },
+ {
+  "name": "parse_location_suppressed_by_salary",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "888",
+    "href": "/job/data-science-intern/888",
+    "lines": [
+     "Zeta",
+     "Data Science Intern",
+     "in-office",
+     "15-20 Hourly",
+     "10 Hours Ago"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "888",
+   "title": "Data Science Intern",
+   "company": "Zeta",
+   "location": "",
+   "remote": "",
+   "salary": "15-20 Hourly",
+   "posted": "2026-11-01",
+   "bi_level": "",
+   "url": "https://builtin.com/job/data-science-intern/888"
+  }
+ },
+ {
+  "name": "parse_full_href_kept",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "id": "card",
+    "href": "https://builtin.com/job/data-analyst/999",
+    "lines": [
+     "Eta",
+     "Data Analyst",
+     "Hybrid",
+     "Seattle, WA"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "999",
+   "title": "Data Analyst",
+   "company": "Eta",
+   "location": "Seattle, WA",
+   "remote": "",
+   "salary": "",
+   "posted": "",
+   "bi_level": "",
+   "url": "https://builtin.com/job/data-analyst/999"
+  }
+ },
+ {
+  "name": "known_basic_ids_and_pairs",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme, Inc.",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "url": "https://builtin.com/job/data-intern/11528663",
+     "ats_url": "https://boards.greenhouse.io/acme/jobs/999",
+     "elig_key": "bi:12345"
+    },
+    {
+     "company": "Beta LLC",
+     "title": "Business Intelligence Internship",
+     "url": "/job/bi-intern/222",
+     "ats_url": "",
+     "elig_key": ""
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    "11528663",
+    "12345",
+    "222"
+   ],
+   "pairs": [
+    [
+     "acme",
+     "data analyst"
+    ],
+    [
+     "beta",
+     "business intelligence"
+    ]
+   ]
+  }
+ },
+ {
+  "name": "known_ats_and_elig_key",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "The Weather Company",
+     "title": "New Grad Data Scientist 2028",
+     "url": "/job/data-scientist/333",
+     "ats_url": "https://builtin.com/job/data-scientist/444?utm=1",
+     "elig_key": "bi:555"
+    },
+    {
+     "company": "GlobalTech Solutions, Inc.",
+     "title": "AI/ML Intern",
+     "url": "",
+     "ats_url": "",
+     "elig_key": "bi:666"
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    "333",
+    "444",
+    "555",
+    "666"
+   ],
+   "pairs": [
+    [
+     "globaltech solutions",
+     "ai ml"
+    ],
+    [
+     "weather",
+     "data scientist"
+    ]
+   ]
+  }
+ },
+ {
+  "name": "known_invalid_urls_still_pair",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme & Sons LLC",
+     "title": "Data Analytics Intern",
+     "url": "/company/acme",
+     "ats_url": "/jobs?search=data",
+     "elig_key": "bi:notdigits"
+    },
+    {
+     "company": "Acme and Sons",
+     "title": "Business Intelligence Intern",
+     "url": "/job/bi-intern/777",
+     "ats_url": "",
+     "elig_key": "bi:7777"
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    "777",
+    "7777"
+   ],
+   "pairs": [
+    [
+     "acme and sons",
+     "business intelligence"
+    ],
+    [
+     "acme and sons",
+     "data analytics"
+    ]
+   ]
+  }
+ },
+ {
+  "name": "pick_basic_track_and_no_company_limit",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "1",
+     "title": "Data Analytics Intern",
+     "company": "Acme Inc",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "2",
+     "title": "Business Intelligence Intern",
+     "company": "Acme Inc",
+     "location": "3 Locations"
+    },
+    {
+     "job_id": "3",
+     "title": "Software Engineer Intern",
+     "company": "Acme Inc",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "1",
+   "2"
+  ]
+ },
+ {
+  "name": "pick_senior_and_season_drops",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "1",
+     "title": "Senior Data Analyst Intern",
+     "company": "Beta",
+     "location": "Boston, MA"
+    },
+    {
+     "job_id": "2",
+     "title": "Fall 2027 Data Analytics Intern",
+     "company": "Beta",
+     "location": "Boston, MA"
+    },
+    {
+     "job_id": "3",
+     "title": "Data Science Intern",
+     "company": "Beta",
+     "location": "Boston, MA"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "3"
+  ]
+ },
+ {
+  "name": "pick_non_us_and_wrong_year",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "1",
+     "title": "Data Analyst Intern",
+     "company": "Gamma",
+     "location": "London, UK"
+    },
+    {
+     "job_id": "2",
+     "title": "Data Analyst Intern 2026",
+     "company": "Gamma",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "3",
+     "title": "Data Analyst Intern 2027",
+     "company": "Gamma",
+     "location": "Chicago, IL"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "3"
+  ]
+ },
+ {
+  "name": "pick_new_grad_years_and_entry",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "1",
+     "title": "New Grad Data Scientist",
+     "company": "Delta",
+     "location": "Seattle, WA"
+    },
+    {
+     "job_id": "2",
+     "title": "New Grad Data Scientist 2028",
+     "company": "Epsilon",
+     "location": "Seattle, WA"
+    },
+    {
+     "job_id": "3",
+     "title": "New Grad Data Scientist 2029",
+     "company": "Zeta",
+     "location": "Seattle, WA"
+    },
+    {
+     "job_id": "4",
+     "title": "Entry Level Data Analyst",
+     "company": "Eta",
+     "location": "Austin, TX"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "1",
+   "2",
+   "4"
+  ]
+ },
+ {
+  "name": "pick_dynamic_id_and_pair",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "10",
+     "title": "Data Analyst Intern",
+     "company": "Acme Inc",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "10",
+     "title": "Business Intelligence Intern",
+     "company": "Beta LLC",
+     "location": "Remote"
+    },
+    {
+     "job_id": "11",
+     "title": "Data Analyst Intern (Remote)",
+     "company": "Acme",
+     "location": "Remote"
+    },
+    {
+     "job_id": "12",
+     "title": "Product Analytics Intern",
+     "company": "Acme Inc",
+     "location": "New York, NY"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "10",
+   "12"
+  ]
+ },
+ {
+  "name": "pick_initial_ids_pairs_and_senior",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "100",
+     "title": "Data Analyst Intern",
+     "company": "Acme",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "101",
+     "title": "Data Analyst Intern",
+     "company": "Acme",
+     "location": "New York, NY"
+    },
+    {
+     "job_id": "102",
+     "title": "Machine Learning Intern",
+     "company": "Beta",
+     "location": "Remote"
+    },
+    {
+     "job_id": "103",
+     "title": "Principal AI Intern",
+     "company": "Beta",
+     "location": "Remote"
+    }
+   ],
+   "ids": [
+    "100"
+   ],
+   "pairs": [
+    [
+     "acme",
+     "data analyst"
+    ]
+   ]
+  },
+  "expect": [
+   "102"
+  ]
+ }
+]

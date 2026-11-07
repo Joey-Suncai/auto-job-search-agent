@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//an employer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.jobagent.leverfill</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-lc</string>
+    <string>cd {{REPO}} &amp;&amp; exec {{VENV_PYTHON}} skills/auto-apply/lever_fill/server.py</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/tmp/jobagent_leverfill.log</string>
+  <key>StandardErrorPath</key><string>/tmp/jobagent_leverfill.err</string>
+</dict>
+</plist>

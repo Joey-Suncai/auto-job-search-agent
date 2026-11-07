@@ -1,0 +1,3 @@
+{
+ "near miss: application sent successfully (no has been / was)": {"verdict": "case", "why": "the spec listed the main variants only; the runner's DONE pattern has always taken 'application sent' (has been / was optional) and 'Application sent successfully.' is a real success message — the point of done_text is the before/after rule, which this case does not test"}
+}

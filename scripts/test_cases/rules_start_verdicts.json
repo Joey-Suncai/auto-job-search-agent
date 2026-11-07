@@ -1,0 +1,10 @@
+{
+ "start_q_available_to_start": {
+  "verdict": "case",
+  "why": "avail_season (earlier rule, deliberate): a general 'when are you available' text box gets the season 'Summer 2027' \u2014 also true; the date goes to date boxes and start-date wordings"
+ },
+ "start_q_earliest_available_start_date": {
+  "verdict": "case",
+  "why": "avail_season (earlier rule, deliberate): a general 'when are you available' text box gets the season 'Summer 2027' \u2014 also true; the date goes to date boxes and start-date wordings"
+ }
+}

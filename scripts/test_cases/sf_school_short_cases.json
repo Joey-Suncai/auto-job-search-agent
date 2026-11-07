@@ -1,0 +1,339 @@
+[
+ {
+  "name": "words_chicago_u_of",
+  "fn": "school_words",
+  "args": {
+   "name": "Chicago, U of"
+  },
+  "expect": [
+   "chicago"
+  ],
+  "spec_quote": "Examples: \"Chicago, U of\" → [\"chicago\"]; \"Illinois, U of/ChUrb\" → [\"illinois\", \"urbana\", \"champaign\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "words_illinois_churb",
+  "fn": "school_words",
+  "args": {
+   "name": "Illinois, U of/ChUrb"
+  },
+  "expect": [
+   "illinois",
+   "urbana",
+   "champaign"
+  ],
+  "spec_quote": "Examples: ... \"Illinois, U of/ChUrb\" → [\"illinois\", \"urbana\", \"champaign\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "words_illinois_chgo",
+  "fn": "school_words",
+  "args": {
+   "name": "Illinois, U of/Chgo"
+  },
+  "expect": [
+   "illinois",
+   "chicago"
+  ],
+  "spec_quote": "replace the campus hints ... \"chgo\" by \"chicago\" ... Examples: ... \"Illinois, U of/Chgo\" → [\"illinois\", \"chicago\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "words_texas_a_and_m",
+  "fn": "school_words",
+  "args": {
+   "name": "Texas A&M University"
+  },
+  "expect": [
+   "texas",
+   "a",
+   "m"
+  ],
+  "spec_quote": "\"&\" counts as \"and\"; ... drop the words ... \"university\", \"univ\", \"u\", \"of\", \"the\", \"at\", \"in\", \"and\", \"campus\", \"main\" ... Examples: ... \"Texas A&M University\" → [\"texas\", \"a\", \"m\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "words_trailing_paren_dropped",
+  "fn": "school_words",
+  "args": {
+   "name": "Chicago State U (IL)"
+  },
+  "expect": [
+   "chicago",
+   "state"
+  ],
+  "spec_quote": "Lower-case the name; drop a trailing parenthesised part (\"(IL)\"); ... drop the words ... \"u\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "words_urbana_hint_and_first_occurrence",
+  "fn": "school_words",
+  "args": {
+   "name": "Illinois, U of/Urbana (Illinois)"
+  },
+  "expect": [
+   "illinois",
+   "urbana",
+   "champaign"
+  ],
+  "spec_quote": "replace the campus hints \"churb\", \"urb\", \"urbana\", \"champaign\" by the two words \"urbana\", \"champaign\" ... keep the first occurrence of each word, in order.",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_chicago_u_of_for_A",
+  "fn": "school_fits",
+  "args": {
+   "option": "Chicago, U of",
+   "entry": "A"
+  },
+  "expect": true,
+  "spec_quote": "So \"Chicago, U of\", \"The University of Chicago\", \"Univ. of Chicago\" fit A",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_univ_of_chicago_for_A",
+  "fn": "school_fits",
+  "args": {
+   "option": "Univ. of Chicago",
+   "entry": "A"
+  },
+  "expect": true,
+  "spec_quote": "So \"Chicago, U of\", \"The University of Chicago\", \"Univ. of Chicago\" fit A",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_churb_for_B",
+  "fn": "school_fits",
+  "args": {
+   "option": "Illinois, U of/ChUrb",
+   "entry": "B"
+  },
+  "expect": true,
+  "spec_quote": "\"Illinois, U of/ChUrb\", \"University of Illinois at Urbana-Champaign\", \"Illinois, U of/Urb\" fit B",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_chgo_not_for_B",
+  "fn": "school_fits",
+  "args": {
+   "option": "Illinois, U of/Chgo",
+   "entry": "B"
+  },
+  "expect": false,
+  "spec_quote": "\"Illinois, U of/Chgo\", \"Loyola U Chicago\", \"Chicago State U\", \"Illinois State U\", \"Illinois, U of\" (no campus) fit neither",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_churb_not_for_A",
+  "fn": "school_fits",
+  "args": {
+   "option": "Illinois, U of/ChUrb",
+   "entry": "A"
+  },
+  "expect": false,
+  "spec_quote": "nothing fits both.",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_loyola_not_for_A",
+  "fn": "school_fits",
+  "args": {
+   "option": "Loyola U Chicago",
+   "entry": "A"
+  },
+  "expect": false,
+  "spec_quote": "\"Illinois, U of/Chgo\", \"Loyola U Chicago\", \"Chicago State U\", \"Illinois State U\", \"Illinois, U of\" (no campus) fit neither",
+  "ambiguous": false
+ },
+ {
+  "name": "fits_illinois_u_of_no_campus_for_B",
+  "fn": "school_fits",
+  "args": {
+   "option": "Illinois, U of",
+   "entry": "B"
+  },
+  "expect": false,
+  "spec_quote": "\"Illinois, U of\" (no campus) fit neither",
+  "ambiguous": false
+ },
+ {
+  "name": "query_entry_A",
+  "fn": "school_query",
+  "args": {
+   "entry": "A"
+  },
+  "expect": "Chicago",
+  "spec_quote": "The word to type into a searched list ... A → \"Chicago\", B → \"Illinois\"",
+  "ambiguous": false
+ },
+ {
+  "name": "query_entry_B",
+  "fn": "school_query",
+  "args": {
+   "entry": "B"
+  },
+  "expect": "Illinois",
+  "spec_quote": "A → \"Chicago\", B → \"Illinois\"",
+  "ambiguous": false
+ },
+ {
+  "name": "query_ohio_state_drops_the",
+  "fn": "school_query",
+  "args": {
+   "school": "The Ohio State University"
+  },
+  "expect": "Ohio",
+  "spec_quote": "\"The Ohio State University\" → \"Ohio\".",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_A_realistic_short_list",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "No Selection",
+    "Chicago, U of",
+    "Illinois, U of/ChUrb",
+    "Illinois, U of/Chgo",
+    "Chicago State U",
+    "Loyola U Chicago",
+    "Other"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   "Chicago, U of",
+   "match"
+  ],
+  "spec_quote": "Else the options that fit by rule 2 (the same text listed twice counts once): exactly one → [it, \"match\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_B_realistic_short_list_vs_chgo",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "No Selection",
+    "Chicago, U of",
+    "Illinois, U of/ChUrb",
+    "Illinois, U of/Chgo",
+    "Chicago State U",
+    "Loyola U Chicago",
+    "Other"
+   ],
+   "entry": "B"
+  },
+  "expect": [
+   "Illinois, U of/ChUrb",
+   "match"
+  ],
+  "spec_quote": "\"Illinois, U of/ChUrb\" ... fit B; \"Illinois, U of/Chgo\" ... fit neither ... exactly one → [it, \"match\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_B_two_fitting_options_ambiguous",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Illinois, U of/ChUrb",
+    "University of Illinois at Urbana-Champaign",
+    "Other"
+   ],
+   "entry": "B"
+  },
+  "expect": [
+   null,
+   "ambiguous"
+  ],
+  "spec_quote": "two or more different texts → [null, \"ambiguous\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_B_near_fit_beats_other",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Illinois, U of",
+    "Northwestern U",
+    "Other"
+   ],
+   "entry": "B"
+  },
+  "expect": [
+   null,
+   "ambiguous"
+  ],
+  "spec_quote": "Else, when an option NEARLY fits — its word set is non-empty, a proper subset of the words of the school or short name, and contains that name's first word (e.g. \"Illinois, U of\" for B) → [null, \"ambiguous\"] ... \"Other\" is never chosen when rule 2 or 3 applied.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_A_placeholders_only",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "No Selection",
+    "Select One",
+    "-",
+    "Loading…"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Placeholders are never options: \"No Selection\", \"Select\", \"Select One\", \"Please select\", \"-\", ... \"Loading…\", \"Searching…\". ... Else [null, null].",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_A_duplicate_option_counts_once",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Chicago, U of",
+    "Chicago, U of"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   "Chicago, U of",
+   "match"
+  ],
+  "spec_quote": "Else the options that fit by rule 2 (the same text listed twice counts once): exactly one → [it, \"match\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_A_rule1_beats_rule2",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "University of Chicago (IL)",
+    "Chicago, U of"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   "University of Chicago (IL)",
+   "match"
+  ],
+  "spec_quote": "1. An option whose name equals the school or short name once case, a trailing \"(…)\", the words \"the\" / \"at\" and every non-letter are ignored (\"University of Chicago (IL)\", \"UNIVERSITY OF CHICAGO\") → [that option, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_B_chgo_is_not_a_near_fit_so_other",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Illinois, U of/Chgo",
+    "Other"
+   ],
+   "entry": "B"
+  },
+  "expect": [
+   "Other",
+   "other"
+  ],
+  "spec_quote": "\"Illinois, U of/Chgo\" ... fit neither ... 4. Else an \"Other\" option: exactly \"Other\" first ... → [that option, \"other\"].",
+  "ambiguous": false
+ }
+]

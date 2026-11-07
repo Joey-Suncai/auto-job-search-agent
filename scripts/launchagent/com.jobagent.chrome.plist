@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//an employer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.jobagent.chrome</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>{{REPO}}/skills/auto-apply/runner/start_chrome.sh</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <!-- 如果 Chrome 中途被你退出，60 秒后自动再起一次；只在你登录期间有效 -->
+  <key>StartInterval</key><integer>60</integer>
+  <key>StandardOutPath</key><string>/tmp/jobagent_chrome.log</string>
+  <key>StandardErrorPath</key><string>/tmp/jobagent_chrome.err</string>
+</dict>
+</plist>

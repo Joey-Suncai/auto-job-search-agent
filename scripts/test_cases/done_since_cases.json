@@ -1,0 +1,991 @@
+[
+ {
+  "name": "entries_basic_multi_row_sorted_by_on",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J002",
+    "company": "Beta",
+    "title": "Analyst",
+    "action_done": [
+     {
+      "on": "2024-03-05",
+      "action": "Applied"
+     }
+    ]
+   },
+   {
+    "job_id": "J001",
+    "company": "Alpha",
+    "title": "Engineer",
+    "action_done": [
+     {
+      "on": "2024-03-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-03-10",
+      "action": "Interview"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-03-01",
+    "J001",
+    "Alpha",
+    "Engineer",
+    "Applied"
+   ],
+   [
+    "2024-03-05",
+    "J002",
+    "Beta",
+    "Analyst",
+    "Applied"
+   ],
+   [
+    "2024-03-10",
+    "J001",
+    "Alpha",
+    "Engineer",
+    "Interview"
+   ]
+  ]
+ },
+ {
+  "name": "entries_row_without_action_done_key_gives_nothing",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J003",
+    "company": "Gamma",
+    "title": "Intern"
+   },
+   {
+    "job_id": "J004",
+    "company": "Delta",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-01-02",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-01-02",
+    "J004",
+    "Delta",
+    "Dev",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "entries_null_and_empty_action_done_give_nothing",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J005",
+    "company": "Epsilon",
+    "title": "T1",
+    "action_done": null
+   },
+   {
+    "job_id": "J006",
+    "company": "Zeta",
+    "title": "T2",
+    "action_done": []
+   },
+   {
+    "job_id": "J007",
+    "company": "Eta",
+    "title": "T3",
+    "action_done": [
+     {
+      "on": "2024-02-02",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-02-02",
+    "J007",
+    "Eta",
+    "T3",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "entries_skips_non_objects_and_missing_or_empty_or_null_on",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J010",
+    "company": "Iota",
+    "title": "T",
+    "action_done": [
+     "not an object",
+     42,
+     null,
+     {
+      "action": "Applied"
+     },
+     {
+      "on": "",
+      "action": "Applied"
+     },
+     {
+      "on": null,
+      "action": "Applied"
+     },
+     {
+      "on": "2024-05-01",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-05-01",
+    "J010",
+    "Iota",
+    "T",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "entries_missing_job_id_company_title_become_empty_strings",
+  "fn": "entries",
+  "rows": [
+   {
+    "action_done": [
+     {
+      "on": "2024-04-01",
+      "action": "Applied"
+     }
+    ]
+   },
+   {
+    "job_id": "J100",
+    "action_done": [
+     {
+      "on": "2024-04-02",
+      "action": "Screen"
+     }
+    ]
+   },
+   {
+    "job_id": "J101",
+    "company": "Kappa",
+    "action_done": [
+     {
+      "on": "2024-04-03",
+      "action": "Offer"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-04-01",
+    "",
+    "",
+    "",
+    "Applied"
+   ],
+   [
+    "2024-04-02",
+    "J100",
+    "",
+    "",
+    "Screen"
+   ],
+   [
+    "2024-04-03",
+    "J101",
+    "Kappa",
+    "",
+    "Offer"
+   ]
+  ]
+ },
+ {
+  "name": "entries_same_on_tie_broken_by_job_id_as_text",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J300",
+    "company": "X",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-06-01",
+      "action": "A"
+     }
+    ]
+   },
+   {
+    "job_id": "J200",
+    "company": "Y",
+    "title": "U",
+    "action_done": [
+     {
+      "on": "2024-06-01",
+      "action": "B"
+     }
+    ]
+   },
+   {
+    "job_id": "J100",
+    "company": "Z",
+    "title": "V",
+    "action_done": [
+     {
+      "on": "2024-06-01",
+      "action": "C"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-06-01",
+    "J100",
+    "Z",
+    "V",
+    "C"
+   ],
+   [
+    "2024-06-01",
+    "J200",
+    "Y",
+    "U",
+    "B"
+   ],
+   [
+    "2024-06-01",
+    "J300",
+    "X",
+    "T",
+    "A"
+   ]
+  ]
+ },
+ {
+  "name": "entries_same_on_and_job_id_tie_broken_by_position_in_row",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J400",
+    "company": "C",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-07-01",
+      "action": "First"
+     },
+     {
+      "on": "2024-07-01",
+      "action": "Second"
+     },
+     {
+      "on": "2024-06-01",
+      "action": "Earlier"
+     }
+    ]
+   },
+   {
+    "job_id": "J401",
+    "company": "D",
+    "title": "U",
+    "action_done": [
+     {
+      "on": "2024-07-01",
+      "action": "Third"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-06-01",
+    "J400",
+    "C",
+    "T",
+    "Earlier"
+   ],
+   [
+    "2024-07-01",
+    "J400",
+    "C",
+    "T",
+    "First"
+   ],
+   [
+    "2024-07-01",
+    "J400",
+    "C",
+    "T",
+    "Second"
+   ],
+   [
+    "2024-07-01",
+    "J401",
+    "D",
+    "U",
+    "Third"
+   ]
+  ]
+ },
+ {
+  "name": "entries_entry_missing_action_gives_empty_string",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J500",
+    "company": "F",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-08-01"
+     },
+     {
+      "on": "2024-08-02",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-08-01",
+    "J500",
+    "F",
+    "T",
+    ""
+   ],
+   [
+    "2024-08-02",
+    "J500",
+    "F",
+    "T",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "entries_extra_keys_inside_entry_ignored_row_fields_used",
+  "fn": "entries",
+  "rows": [
+   {
+    "job_id": "J600",
+    "company": "G",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-09-01",
+      "action": "Applied",
+      "job_id": "WRONG",
+      "company": "WRONGCO",
+      "title": "WRONGT",
+      "note": "x"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "2024-09-01",
+    "J600",
+    "G",
+    "T",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "since_boundary_day_is_inclusive",
+  "fn": "since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "A",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-03-09",
+      "action": "Before"
+     },
+     {
+      "on": "2024-03-10",
+      "action": "OnDay"
+     },
+     {
+      "on": "2024-03-11",
+      "action": "After"
+     }
+    ]
+   }
+  ],
+  "day": "2024-03-10",
+  "expect": [
+   [
+    "2024-03-10",
+    "J001",
+    "A",
+    "T",
+    "OnDay"
+   ],
+   [
+    "2024-03-11",
+    "J001",
+    "A",
+    "T",
+    "After"
+   ]
+  ]
+ },
+ {
+  "name": "since_keeps_entries_order_after_filtering",
+  "fn": "since",
+  "rows": [
+   {
+    "job_id": "J002",
+    "company": "B",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-12-01",
+      "action": "Late"
+     }
+    ]
+   },
+   {
+    "job_id": "J001",
+    "company": "A",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-01-05",
+      "action": "Early"
+     },
+     {
+      "on": "2024-06-15",
+      "action": "Mid"
+     }
+    ]
+   }
+  ],
+  "day": "2024-01-05",
+  "expect": [
+   [
+    "2024-01-05",
+    "J001",
+    "A",
+    "T",
+    "Early"
+   ],
+   [
+    "2024-06-15",
+    "J001",
+    "A",
+    "T",
+    "Mid"
+   ],
+   [
+    "2024-12-01",
+    "J002",
+    "B",
+    "T",
+    "Late"
+   ]
+  ]
+ },
+ {
+  "name": "since_no_entry_on_or_after_day_gives_empty",
+  "fn": "since",
+  "rows": [
+   {
+    "job_id": "J003",
+    "company": "C",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2023-01-01",
+      "action": "Old"
+     },
+     {
+      "on": "2023-05-05",
+      "action": "Older"
+     }
+    ]
+   }
+  ],
+  "day": "2024-01-01",
+  "expect": []
+ },
+ {
+  "name": "since_skips_invalid_entries_before_filtering",
+  "fn": "since",
+  "rows": [
+   {
+    "job_id": "J004",
+    "company": "D",
+    "title": "T",
+    "action_done": [
+     "junk",
+     {
+      "action": "NoOn"
+     },
+     {
+      "on": null,
+      "action": "NullOn"
+     },
+     {
+      "on": "",
+      "action": "EmptyOn"
+     },
+     {
+      "on": "2024-05-05",
+      "action": "New"
+     }
+    ]
+   }
+  ],
+  "day": "2024-03-01",
+  "expect": [
+   [
+    "2024-05-05",
+    "J004",
+    "D",
+    "T",
+    "New"
+   ]
+  ]
+ },
+ {
+  "name": "since_empty_rows_gives_empty",
+  "fn": "since",
+  "rows": [],
+  "day": "2024-01-01",
+  "expect": []
+ },
+ {
+  "name": "since_ties_sorted_by_job_id_with_missing_job_id_first",
+  "fn": "since",
+  "rows": [
+   {
+    "job_id": "J900",
+    "company": "E",
+    "title": "T",
+    "action_done": [
+     {
+      "on": "2024-04-01",
+      "action": "A"
+     }
+    ]
+   },
+   {
+    "company": "F",
+    "title": "U",
+    "action_done": [
+     {
+      "on": "2024-04-01",
+      "action": "B"
+     }
+    ]
+   },
+   {
+    "job_id": "J800",
+    "company": "G",
+    "title": "V",
+    "action_done": [
+     {
+      "on": "2024-04-01",
+      "action": "C"
+     }
+    ]
+   }
+  ],
+  "day": "2024-04-01",
+  "expect": [
+   [
+    "2024-04-01",
+    "",
+    "F",
+    "U",
+    "B"
+   ],
+   [
+    "2024-04-01",
+    "J800",
+    "G",
+    "V",
+    "C"
+   ],
+   [
+    "2024-04-01",
+    "J900",
+    "E",
+    "T",
+    "A"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_nothing_new_all_present_in_before",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-01-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-02-01",
+      "action": "Screen"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ],
+   [
+    "2024-02-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Screen"
+   ]
+  ],
+  "expect": []
+ },
+ {
+  "name": "new_since_one_copy_in_before_two_copies_now_one_is_new",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-01-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-01-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-02-01",
+      "action": "Screen"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ]
+  ],
+  "expect": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ],
+   [
+    "2024-02-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Screen"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_undone_entry_not_returned_only_genuinely_new",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-01-01",
+      "action": "Applied"
+     }
+    ]
+   },
+   {
+    "job_id": "J002",
+    "company": "Beta",
+    "title": "Ops",
+    "action_done": [
+     {
+      "on": "2024-01-10",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ],
+   [
+    "2024-01-05",
+    "J001",
+    "Acme",
+    "Dev",
+    "Rejected"
+   ]
+  ],
+  "expect": [
+   [
+    "2024-01-10",
+    "J002",
+    "Beta",
+    "Ops",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_empty_before_all_entries_are_new_in_entries_order",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J005",
+    "company": "E",
+    "title": "T1",
+    "action_done": [
+     {
+      "on": "2024-03-02",
+      "action": "Applied"
+     }
+    ]
+   },
+   {
+    "job_id": "J004",
+    "company": "D",
+    "title": "T0",
+    "action_done": [
+     {
+      "on": "2024-03-01",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "before": [],
+  "expect": [
+   [
+    "2024-03-01",
+    "J004",
+    "D",
+    "T0",
+    "Applied"
+   ],
+   [
+    "2024-03-02",
+    "J005",
+    "E",
+    "T1",
+    "Applied"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_before_has_more_copies_than_rows_no_false_new",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-01-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-01-03",
+      "action": "Offer"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ],
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ],
+   [
+    "2024-01-02",
+    "J001",
+    "Acme",
+    "Dev",
+    "Screen"
+   ]
+  ],
+  "expect": [
+   [
+    "2024-01-03",
+    "J001",
+    "Acme",
+    "Dev",
+    "Offer"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_output_in_entries_order_not_before_order",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-12-01",
+      "action": "A2"
+     },
+     {
+      "on": "2024-01-01",
+      "action": "A1"
+     }
+    ]
+   },
+   {
+    "job_id": "J002",
+    "company": "Beta",
+    "title": "Ops",
+    "action_done": [
+     {
+      "on": "2024-07-01",
+      "action": "Screen"
+     },
+     {
+      "on": "2024-06-01",
+      "action": "Applied"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-06-01",
+    "J002",
+    "Beta",
+    "Ops",
+    "Applied"
+   ]
+  ],
+  "expect": [
+   [
+    "2024-01-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "A1"
+   ],
+   [
+    "2024-07-01",
+    "J002",
+    "Beta",
+    "Ops",
+    "Screen"
+   ],
+   [
+    "2024-12-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "A2"
+   ]
+  ]
+ },
+ {
+  "name": "new_since_near_miss_differing_only_in_action_is_new",
+  "fn": "new_since",
+  "rows": [
+   {
+    "job_id": "J001",
+    "company": "Acme",
+    "title": "Dev",
+    "action_done": [
+     {
+      "on": "2024-05-01",
+      "action": "Applied"
+     },
+     {
+      "on": "2024-05-01",
+      "action": "Screen"
+     }
+    ]
+   }
+  ],
+  "before": [
+   [
+    "2024-05-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Applied"
+   ]
+  ],
+  "expect": [
+   [
+    "2024-05-01",
+    "J001",
+    "Acme",
+    "Dev",
+    "Screen"
+   ]
+  ]
+ }
+]

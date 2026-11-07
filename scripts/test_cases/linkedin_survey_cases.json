@@ -1,0 +1,894 @@
+[
+ {
+  "name": "search_url_defaults",
+  "fn": "search_url",
+  "args": {
+   "keyword": "data analyst intern"
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "data analyst intern",
+    "geoId": "103644278",
+    "f_E": "1"
+   }
+  }
+ },
+ {
+  "name": "search_url_easy_true_with_start",
+  "fn": "search_url",
+  "args": {
+   "keyword": "software engineer intern",
+   "easy": true,
+   "start": 25
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "software engineer intern",
+    "geoId": "103644278",
+    "f_E": "1",
+    "f_AL": "true",
+    "start": "25"
+   }
+  }
+ },
+ {
+  "name": "search_url_special_chars_no_easy_no_start",
+  "fn": "search_url",
+  "args": {
+   "keyword": "C++ & Python intern",
+   "easy": false,
+   "start": 0
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "C++ & Python intern",
+    "geoId": "103644278",
+    "f_E": "1"
+   }
+  }
+ },
+ {
+  "name": "parse_count_thousands_comma",
+  "fn": "parse_count",
+  "args": {
+   "text": "Showing 1,234 results for your search"
+  },
+  "expect": 1234
+ },
+ {
+  "name": "parse_count_k_suffix_with_plus",
+  "fn": "parse_count",
+  "args": {
+   "text": "1K+ results"
+  },
+  "expect": 1000
+ },
+ {
+  "name": "parse_count_over_prefix_case_insensitive",
+  "fn": "parse_count",
+  "args": {
+   "text": "Over 1,000 Results"
+  },
+  "expect": 1000
+ },
+ {
+  "name": "parse_count_decimal_k_rounds",
+  "fn": "parse_count",
+  "args": {
+   "text": "About 2.5K results"
+  },
+  "expect": 2500
+ },
+ {
+  "name": "parse_count_no_matching_jobs",
+  "fn": "parse_count",
+  "args": {
+   "text": "No matching jobs found"
+  },
+  "expect": 0
+ },
+ {
+  "name": "parse_count_number_not_directly_before_results",
+  "fn": "parse_count",
+  "args": {
+   "text": "3 new results"
+  },
+  "expect": null
+ },
+ {
+  "name": "classify_button_easy_apply",
+  "fn": "classify_button",
+  "args": {
+   "text": "Easy Apply"
+  },
+  "expect": "easy"
+ },
+ {
+  "name": "classify_button_easy_apply_whitespace_runs",
+  "fn": "classify_button",
+  "args": {
+   "text": "Easy   Apply"
+  },
+  "expect": "easy"
+ },
+ {
+  "name": "classify_button_applied_beats_apply",
+  "fn": "classify_button",
+  "args": {
+   "text": "Applied"
+  },
+  "expect": "unknown"
+ },
+ {
+  "name": "classify_button_no_longer_accepting",
+  "fn": "classify_button",
+  "args": {
+   "text": "No longer accepting applications"
+  },
+  "expect": "unknown"
+ },
+ {
+  "name": "classify_button_apply_on_company_website",
+  "fn": "classify_button",
+  "args": {
+   "text": "Apply on company website"
+  },
+  "expect": "external"
+ },
+ {
+  "name": "classify_button_applicants_not_apply",
+  "fn": "classify_button",
+  "args": {
+   "text": "Applicants"
+  },
+  "expect": "unknown"
+ },
+ {
+  "name": "link_target_none",
+  "fn": "link_target",
+  "args": {
+   "href": null
+  },
+  "expect": ""
+ },
+ {
+  "name": "link_target_relative",
+  "fn": "link_target",
+  "args": {
+   "href": "/jobs/view/1"
+  },
+  "expect": ""
+ },
+ {
+  "name": "link_target_mailto",
+  "fn": "link_target",
+  "args": {
+   "href": "mailto:jobs@acme.com"
+  },
+  "expect": ""
+ },
+ {
+  "name": "link_target_linkedin_subdomain_is_linkedin",
+  "fn": "link_target",
+  "args": {
+   "href": "https://jobs.linkedin.com/jobs/view/9"
+  },
+  "expect": "linkedin"
+ },
+ {
+  "name": "link_target_redirect_decoded",
+  "fn": "link_target",
+  "args": {
+   "href": "https://www.linkedin.com/safety/go?url=https%3A%2F%2Fwww.acme.com%2Fcareers"
+  },
+  "expect": "acme.com"
+ },
+ {
+  "name": "link_target_www_and_port_removed",
+  "fn": "link_target",
+  "args": {
+   "href": "https://www.acme.com:8443/apply"
+  },
+  "expect": "acme.com"
+ },
+ {
+  "name": "card_easy_exact_line",
+  "fn": "card_easy",
+  "args": {
+   "lines": [
+    "Easy Apply"
+   ]
+  },
+  "expect": true
+ },
+ {
+  "name": "card_easy_stripped_case_insensitive",
+  "fn": "card_easy",
+  "args": {
+   "lines": [
+    "  easy apply  "
+   ]
+  },
+  "expect": true
+ },
+ {
+  "name": "card_easy_near_miss_not_equal",
+  "fn": "card_easy",
+  "args": {
+   "lines": [
+    "Easy Apply available soon"
+   ]
+  },
+  "expect": false
+ },
+ {
+  "name": "pick_sample_round_robin_short_group",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "a",
+     [
+      1,
+      2,
+      3
+     ]
+    ],
+    [
+     "b",
+     [
+      4,
+      5
+     ]
+    ]
+   ],
+   "n": 4
+  },
+  "expect": [
+   1,
+   4,
+   2,
+   5
+  ]
+ },
+ {
+  "name": "pick_sample_skips_duplicate_ids",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "a",
+     [
+      1,
+      2
+     ]
+    ],
+    [
+     "b",
+     [
+      1,
+      3
+     ]
+    ]
+   ],
+   "n": 3
+  },
+  "expect": [
+   1,
+   2,
+   3
+  ]
+ },
+ {
+  "name": "pick_sample_n_zero",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "a",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   "n": 0
+  },
+  "expect": []
+ },
+ {
+  "name": "share_one_third",
+  "fn": "share",
+  "args": {
+   "part": 1,
+   "total": 3
+  },
+  "expect": 0.333
+ },
+ {
+  "name": "share_two_thirds_rounds",
+  "fn": "share",
+  "args": {
+   "part": 2,
+   "total": 3
+  },
+  "expect": 0.667
+ },
+ {
+  "name": "share_total_zero_none",
+  "fn": "share",
+  "args": {
+   "part": 4,
+   "total": 0
+  },
+  "expect": null
+ },
+ {
+  "name": "search_url_easy_true_start_positive",
+  "fn": "search_url",
+  "args": {
+   "keyword": "data science intern",
+   "easy": true,
+   "start": 25
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "data science intern",
+    "geoId": "103644278",
+    "f_E": "1",
+    "f_AL": "true",
+    "start": "25"
+   }
+  },
+  "spec": "f_AL = true is present only when easy is true; absent otherwise. start is present only when start > 0 (its decimal value)."
+ },
+ {
+  "name": "search_url_encoded_keyword_start_zero_absent",
+  "fn": "search_url",
+  "args": {
+   "keyword": "C++ & R (entry-level)",
+   "easy": true,
+   "start": 0
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "C++ & R (entry-level)",
+    "geoId": "103644278",
+    "f_E": "1",
+    "f_AL": "true"
+   }
+  },
+  "spec": "keywords = the keyword exactly as given (URL-encoded) ... start is present only when start > 0 (its decimal value); absent when 0."
+ },
+ {
+  "name": "search_url_no_easy_flag_start_present",
+  "fn": "search_url",
+  "args": {
+   "keyword": "software engineering intern",
+   "easy": false,
+   "start": 50
+  },
+  "expect": {
+   "path": "/jobs/search/",
+   "query": {
+    "keywords": "software engineering intern",
+    "geoId": "103644278",
+    "f_E": "1",
+    "start": "50"
+   }
+  },
+  "spec": "f_AL = true is present only when easy is true; absent otherwise. No other parameters (in particular no f_TPR, no location parameter)."
+ },
+ {
+  "name": "parse_count_other_numbers_before_count",
+  "fn": "parse_count",
+  "args": {
+   "text": "Showing 1-20 of 2,345 results"
+  },
+  "expect": 2345,
+  "spec": "Find the FIRST place where a number is followed (optionally by \"+\", then optional spaces) by the word \"result\" or \"results\" ... Numbers may contain thousands commas (\"12,345\" → 12345)."
+ },
+ {
+  "name": "parse_count_number_not_directly_before_results_r2",
+  "fn": "parse_count",
+  "args": {
+   "text": "3 new results for your search — see all 128 results"
+  },
+  "expect": 128,
+  "spec": "A number not directly followed by result/results (only \"+\" and spaces may sit between) is ignored: in \"3 new results\" the 3 is not a count."
+ },
+ {
+  "name": "parse_count_over_decimal_k_plus",
+  "fn": "parse_count",
+  "args": {
+   "text": "Over 2.5K+ results"
+  },
+  "expect": 2500,
+  "spec": "A preceding \"Over\" / \"About\" does not change the number ... A \"K\" / \"k\" suffix right after the number means thousands (\"2.5K results\" → 2500; round to the nearest whole number)."
+ },
+ {
+  "name": "parse_count_no_matching_jobs_mixed_case",
+  "fn": "parse_count",
+  "args": {
+   "text": "Sorry, no jobs here. No Matching Jobs Found for that search."
+  },
+  "expect": 0,
+  "spec": "If there is no such count but the text contains \"No matching jobs found\" (case-insensitive) → 0."
+ },
+ {
+  "name": "parse_count_jobs_and_lone_results_word_give_none",
+  "fn": "parse_count",
+  "args": {
+   "text": "25 new jobs. Results are loading."
+  },
+  "expect": null,
+  "spec": "Otherwise → None (e.g. empty text, text without a count, \"25 jobs\", \"results\" with no number before it)."
+ },
+ {
+  "name": "classify_button_easy_apply_wins_over_applied",
+  "fn": "classify_button",
+  "args": {
+   "text": "Applied on May 3 · Easy Apply"
+  },
+  "expect": "easy",
+  "spec": "1. Contains \"easy apply\" → \"easy\" ... The rules are checked in that order; the first that matches decides."
+ },
+ {
+  "name": "classify_button_applied_in_sentence",
+  "fn": "classify_button",
+  "args": {
+   "text": "You applied to this job"
+  },
+  "expect": "unknown",
+  "spec": "2. Else contains \"applied\", \"application submitted\" or \"no longer accepting\" → \"unknown\" (already applied / closed)."
+ },
+ {
+  "name": "classify_button_no_longer_accepting_r2",
+  "fn": "classify_button",
+  "args": {
+   "text": "No Longer Accepting Applications"
+  },
+  "expect": "unknown",
+  "spec": "Else contains \"applied\", \"application submitted\" or \"no longer accepting\" → \"unknown\" ... Compare case-insensitively with runs of whitespace treated as one space."
+ },
+ {
+  "name": "classify_button_whitespace_runs_external",
+  "fn": "classify_button",
+  "args": {
+   "text": "Apply   on   company\nwebsite"
+  },
+  "expect": "external",
+  "spec": "Else contains the whole word \"apply\" → \"external\" ... runs of whitespace treated as one space."
+ },
+ {
+  "name": "link_target_redirect_decoded_www_and_port",
+  "fn": "link_target",
+  "args": {
+   "href": "https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fwww.acme.com%3A8443%2Fcareers%2Fapply&trk=abc"
+  },
+  "expect": "acme.com",
+  "spec": "A LinkedIn redirect — host linkedin.com or www.linkedin.com, path starting /redir/redirect or /safety/go, with a query parameter url — → the host of the decoded url parameter (same lowercase / no-\"www.\" rule)."
+ },
+ {
+  "name": "link_target_redirect_without_url_param",
+  "fn": "link_target",
+  "args": {
+   "href": "https://www.linkedin.com/redir/redirect?trk=abc&refId=1"
+  },
+  "expect": "linkedin",
+  "spec": "A LinkedIn redirect ... with a query parameter url — → the host of the decoded url parameter. Any other URL whose host is linkedin.com or ends with .linkedin.com → \"linkedin\"."
+ },
+ {
+  "name": "link_target_redirect_non_http_url_param",
+  "fn": "link_target",
+  "args": {
+   "href": "https://www.linkedin.com/safety/go?url=mailto%3Ajobs%40acme.com"
+  },
+  "expect": "",
+  "spec": "→ the host of the decoded url parameter (same lowercase / no-\"www.\" rule; \"\" if that is not an http(s) URL)."
+ },
+ {
+  "name": "link_target_linkedin_subdomain",
+  "fn": "link_target",
+  "args": {
+   "href": "https://jobs.linkedin.com/jobs/view/42"
+  },
+  "expect": "linkedin",
+  "spec": "Any other URL whose host is linkedin.com or ends with .linkedin.com → \"linkedin\"."
+ },
+ {
+  "name": "card_easy_stripped_case_insensitive_r2",
+  "fn": "card_easy",
+  "args": {
+   "lines": [
+    "Acme Corp — Data Intern",
+    "  easy APPLY  ",
+    "2 days ago"
+   ]
+  },
+  "expect": true,
+  "spec": "True when any line, stripped, equals \"Easy Apply\" (case-insensitive); False otherwise."
+ },
+ {
+  "name": "card_easy_split_words_and_longer_line",
+  "fn": "card_easy",
+  "args": {
+   "lines": [
+    "Easy",
+    "Apply",
+    "Easy Apply available soon"
+   ]
+  },
+  "expect": false,
+  "spec": "True when any line, stripped, equals \"Easy Apply\" (case-insensitive); False otherwise (also for an empty list, or a line such as \"Easy Apply available soon\")."
+ },
+ {
+  "name": "card_easy_empty_list",
+  "fn": "card_easy",
+  "args": {
+   "lines": []
+  },
+  "expect": false,
+  "spec": "False otherwise (also for an empty list ...)."
+ },
+ {
+  "name": "pick_sample_n_larger_than_all_ids",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "a",
+     [
+      1,
+      2
+     ]
+    ],
+    [
+     "b",
+     [
+      3
+     ]
+    ]
+   ],
+   "n": 10
+  },
+  "expect": [
+   1,
+   3,
+   2
+  ],
+  "spec": "Take ids round-robin: the 1st id of each group in group order, then the 2nd id of each group, and so on ... stop at n ids or when every group is used up. Groups with fewer ids simply run out."
+ },
+ {
+  "name": "pick_sample_duplicate_id_skipped",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "a",
+     [
+      10,
+      11
+     ]
+    ],
+    [
+     "b",
+     [
+      11,
+      12
+     ]
+    ]
+   ],
+   "n": 3
+  },
+  "expect": [
+   10,
+   11,
+   12
+  ],
+  "spec": "Take ids round-robin ... skip an id already taken; stop at n ids."
+ },
+ {
+  "name": "pick_sample_n_zero_r2",
+  "fn": "pick_sample",
+  "args": {
+   "groups": [
+    [
+     "kw",
+     [
+      7,
+      8
+     ]
+    ]
+   ],
+   "n": 0
+  },
+  "expect": [],
+  "spec": "n ≤ 0 → []."
+ },
+ {
+  "name": "share_rounding_third",
+  "fn": "share",
+  "args": {
+   "part": 2,
+   "total": 3
+  },
+  "expect": 0.667,
+  "spec": "part / total rounded to 3 decimals."
+ },
+ {
+  "name": "share_total_zero",
+  "fn": "share",
+  "args": {
+   "part": 5,
+   "total": 0
+  },
+  "expect": null,
+  "spec": "None when total is 0 or None, or part is None."
+ },
+ {
+  "name": "share_part_null",
+  "fn": "share",
+  "args": {
+   "part": null,
+   "total": 10
+  },
+  "expect": null,
+  "spec": "None when total is 0 or None, or part is None."
+ },
+ {
+  "name": "search_url_defaults_no_extra_params",
+  "fn": "search_url",
+  "args": {
+   "keyword": "data analyst"
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "data analyst",
+    "geoId": "103644278"
+   }
+  }
+ },
+ {
+  "name": "search_url_easy_true_adds_f_AL",
+  "fn": "search_url",
+  "args": {
+   "keyword": "software engineer intern",
+   "easy": true
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "software engineer intern",
+    "geoId": "103644278",
+    "f_AL": "true"
+   }
+  }
+ },
+ {
+  "name": "search_url_start_25_no_easy",
+  "fn": "search_url",
+  "args": {
+   "keyword": "marketing intern",
+   "start": 25
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "marketing intern",
+    "geoId": "103644278",
+    "start": "25"
+   }
+  }
+ },
+ {
+  "name": "search_url_start_50_with_easy",
+  "fn": "search_url",
+  "args": {
+   "keyword": "data science",
+   "easy": true,
+   "start": 50
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "data science",
+    "geoId": "103644278",
+    "f_AL": "true",
+    "start": "50"
+   }
+  }
+ },
+ {
+  "name": "search_url_keyword_with_ampersand",
+  "fn": "search_url",
+  "args": {
+   "keyword": "R&D engineer",
+   "easy": false,
+   "start": 0
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "R&D engineer",
+    "geoId": "103644278"
+   }
+  }
+ },
+ {
+  "name": "search_url_keyword_with_plus_signs",
+  "fn": "search_url",
+  "args": {
+   "keyword": "C++ developer",
+   "easy": true,
+   "start": 0
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "C++ developer",
+    "geoId": "103644278",
+    "f_AL": "true"
+   }
+  }
+ },
+ {
+  "name": "search_url_keyword_spaces_dash_start_25_easy",
+  "fn": "search_url",
+  "args": {
+   "keyword": "intern - machine learning",
+   "easy": true,
+   "start": 25
+  },
+  "expect": {
+   "path": "/jobs/search-results/",
+   "query": {
+    "keywords": "intern - machine learning",
+    "geoId": "103644278",
+    "f_AL": "true",
+    "start": "25"
+   }
+  }
+ },
+ {
+  "name": "card_title_first_nonempty_line",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "Data Analyst Intern",
+    "Acme Corp",
+    "Easy Apply"
+   ]
+  },
+  "expect": "Data Analyst Intern"
+ },
+ {
+  "name": "card_title_leading_blank_lines_skipped",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "",
+    "   ",
+    "\t",
+    "Marketing Intern",
+    "Acme Corp"
+   ]
+  },
+  "expect": "Marketing Intern"
+ },
+ {
+  "name": "card_title_verified_job_suffix_removed",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "Data Science Intern (Verified job)",
+    "Acme Corp",
+    "Easy Apply"
+   ]
+  },
+  "expect": "Data Science Intern"
+ },
+ {
+  "name": "card_title_verified_job_uppercase_and_spaces_removed",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "Software Engineer Intern   (VERIFIED JOB)"
+   ]
+  },
+  "expect": "Software Engineer Intern"
+ },
+ {
+  "name": "card_title_verified_job_not_trailing_kept",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "(Verified job) Intern | Data Science",
+    "Acme"
+   ]
+  },
+  "expect": "(Verified job) Intern | Data Science"
+ },
+ {
+  "name": "card_title_empty_list",
+  "fn": "card_title",
+  "args": {
+   "lines": []
+  },
+  "expect": ""
+ },
+ {
+  "name": "card_title_only_blank_lines",
+  "fn": "card_title",
+  "args": {
+   "lines": [
+    "",
+    "  ",
+    "\t "
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "name": "intern_title_plain_intern",
+  "fn": "intern_title",
+  "args": {
+   "title": "Data Science Intern"
+  },
+  "expect": true
+ },
+ {
+  "name": "intern_title_internship_word",
+  "fn": "intern_title",
+  "args": {
+   "title": "Software Engineering Internship"
+  },
+  "expect": true
+ },
+ {
+  "name": "intern_title_internal_is_false",
+  "fn": "intern_title",
+  "args": {
+   "title": "Internal Audit Analyst"
+  },
+  "expect": false
+ },
+ {
+  "name": "intern_title_international_is_false",
+  "fn": "intern_title",
+  "args": {
+   "title": "International Data Analyst"
+  },
+  "expect": false
+ },
+ {
+  "name": "intern_title_coop_hyphenated",
+  "fn": "intern_title",
+  "args": {
+   "title": "Co-op Developer"
+  },
+  "expect": true
+ },
+ {
+  "name": "intern_title_intern_hyphenated",
+  "fn": "intern_title",
+  "args": {
+   "title": "Intern-Data"
+  },
+  "expect": true
+ },
+ {
+  "name": "intern_title_none_is_false",
+  "fn": "intern_title",
+  "args": {
+   "title": null
+  },
+  "expect": false
+ }
+]

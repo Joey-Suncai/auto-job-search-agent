@@ -1,0 +1,588 @@
+[
+ {
+  "name": "empty_settings_yields_empty_list",
+  "args": {
+   "settings": {}
+  },
+  "expect": [],
+  "spec_quote": "Output: the list of (id, name) that are ENABLED and NOT allowed.",
+  "ambiguous": false
+ },
+ {
+  "name": "only_allowed_ids_enabled_no_false_alarm",
+  "args": {
+   "settings": {
+    "fcoeoabgfenejglbffodgkkbkcdhcgfn": {
+     "manifest": {
+      "name": "Claude"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/claude"
+    },
+    "ghbmnnjooekpmoecnnnilnnbdlolhkhi": {
+     "manifest": {
+      "name": "Docs Offline"
+     },
+     "location": 1,
+     "path": "/x/docs_offline"
+    },
+    "nmmhkkegccagdldgiimedpiccmgmieda": {
+     "manifest": {
+      "name": "Chrome Web Store Payments"
+     },
+     "location": 1,
+     "path": "/x/wsp"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Allowed (never listed): the Claude extension id fcoeoabgfenejglbffodgkkbkcdhcgfn; Chrome defaults ghbmnnjooekpmoecnnnilnnbdlolhkhi (Docs Offline) and nmmhkkegccagdldgiimedpiccmgmieda (Web Store Payments); any entry with location 5 or 10 (Chrome component); an UNPACKED entry (location 4) whose path contains \"lever_fill\".",
+  "ambiguous": false
+ },
+ {
+  "name": "claude_id_enabled_not_listed_regardless_of_location",
+  "args": {
+   "settings": {
+    "fcoeoabgfenejglbffodgkkbkcdhcgfn": {
+     "manifest": {
+      "name": "Claude"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/claude"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Allowed (never listed): the Claude extension id fcoeoabgfenejglbffodgkkbkcdhcgfn;",
+  "ambiguous": false
+ },
+ {
+  "name": "icloud_passwords_enabled_is_listed",
+  "args": {
+   "settings": {
+    "pejdijmoenmkgeppbflobdenhhabjlaj": {
+     "manifest": {
+      "name": "iCloud Passwords"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/icloud"
+    }
+   }
+  },
+  "expect": [
+   [
+    "pejdijmoenmkgeppbflobdenhhabjlaj",
+    "iCloud Passwords"
+   ]
+  ],
+  "spec_quote": "Everything else enabled is listed: password managers (iCloud Passwords pejdijmoenmkgeppbflobdenhhabjlaj), autofill (Simplify pbanhockgagggenencehbnadejlgchfc), AI sidebars, userscript managers, any other unpacked folder.",
+  "ambiguous": false
+ },
+ {
+  "name": "simplify_autofill_enabled_is_listed",
+  "args": {
+   "settings": {
+    "pbanhockgagggenencehbnadejlgchfc": {
+     "manifest": {
+      "name": "Simplify - Autofill"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/simplify"
+    }
+   }
+  },
+  "expect": [
+   [
+    "pbanhockgagggenencehbnadejlgchfc",
+    "Simplify - Autofill"
+   ]
+  ],
+  "spec_quote": "Everything else enabled is listed: password managers (iCloud Passwords pejdijmoenmkgeppbflobdenhhabjlaj), autofill (Simplify pbanhockgagggenencehbnadejlgchfc), AI sidebars, userscript managers, any other unpacked folder.",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed_allowed_and_bad_preserves_settings_order",
+  "args": {
+   "settings": {
+    "fcoeoabgfenejglbffodgkkbkcdhcgfn": {
+     "manifest": {
+      "name": "Claude"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/claude"
+    },
+    "pejdijmoenmkgeppbflobdenhhabjlaj": {
+     "manifest": {
+      "name": "iCloud Passwords"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/icloud"
+    },
+    "ghbmnnjooekpmoecnnnilnnbdlolhkhi": {
+     "manifest": {
+      "name": "Docs Offline"
+     },
+     "location": 1,
+     "path": "/x/docs"
+    },
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "Some AI Sidebar"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/ai"
+    }
+   }
+  },
+  "expect": [
+   [
+    "pejdijmoenmkgeppbflobdenhhabjlaj",
+    "iCloud Passwords"
+   ],
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "Some AI Sidebar"
+   ]
+  ],
+  "spec_quote": "Output: the list of (id, name) that are ENABLED and NOT allowed.",
+  "ambiguous": false
+ },
+ {
+  "name": "stub_entry_without_manifest_ignored",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "location": 1,
+     "disable_reasons": [],
+     "path": ""
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "An entry with no manifest is a stub → ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "stub_without_manifest_does_not_shift_listing_of_real_bad_ext",
+  "args": {
+   "settings": {
+    "oooooooooooooooooooooooooooooooo": {
+     "location": 1,
+     "disable_reasons": [],
+     "path": "",
+     "state": 1
+    },
+    "pejdijmoenmkgeppbflobdenhhabjlaj": {
+     "manifest": {
+      "name": "iCloud Passwords"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/icloud"
+    }
+   }
+  },
+  "expect": [
+   [
+    "pejdijmoenmkgeppbflobdenhhabjlaj",
+    "iCloud Passwords"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0. An entry with no manifest is a stub → ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_manifest_object_treated_as_stub",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {},
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/empty"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": true
+ },
+ {
+  "name": "blocklisted_entry_not_listed",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "Blocked Ext"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "blacklist_state": true,
+     "path": "/x/blocked"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "blacklist_state_false_is_still_enabled_and_listed",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "Not Blocked Ext"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "blacklist_state": false,
+     "path": "/x/notblocked"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "Not Blocked Ext"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "state_zero_not_enabled_not_listed",
+  "args": {
+   "settings": {
+    "pejdijmoenmkgeppbflobdenhhabjlaj": {
+     "manifest": {
+      "name": "iCloud Passwords"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "state": 0,
+     "path": "/x/icloud"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "state_one_is_enabled_and_listed",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "UserScript Manager"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "state": 1,
+     "path": "/x/userscripts"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "UserScript Manager"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "disable_reasons_nonempty_not_enabled",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "Disabled Ext"
+     },
+     "location": 1,
+     "disable_reasons": [
+      1
+     ],
+     "path": "/x/disabled"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "disable_reasons_empty_list_is_enabled",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "UserScript Manager"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/userscripts"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "UserScript Manager"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "disable_reasons_null_is_enabled",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "AI Sidebar"
+     },
+     "location": 1,
+     "disable_reasons": null,
+     "path": "/x/ai"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "AI Sidebar"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "disable_reasons_missing_is_enabled",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "AI Sidebar"
+     },
+     "location": 1,
+     "path": "/x/ai"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "AI Sidebar"
+   ]
+  ],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_id_with_location_5_component_allowed",
+  "args": {
+   "settings": {
+    "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm": {
+     "manifest": {
+      "name": "Chrome Component A"
+     },
+     "location": 5,
+     "disable_reasons": [],
+     "path": "/x/component_a"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Allowed (never listed): ... any entry with location 5 or 10 (Chrome component) ...",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_id_with_location_10_component_allowed",
+  "args": {
+   "settings": {
+    "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn": {
+     "manifest": {
+      "name": "Chrome Component B"
+     },
+     "location": 10,
+     "disable_reasons": [],
+     "path": "/x/component_b"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Allowed (never listed): ... any entry with location 5 or 10 (Chrome component) ...",
+  "ambiguous": false
+ },
+ {
+  "name": "unpacked_lever_fill_path_allowed",
+  "args": {
+   "settings": {
+    "oooooooooooooooooooooooooooooooo": {
+     "manifest": {
+      "name": "lever_fill"
+     },
+     "location": 4,
+     "disable_reasons": [],
+     "path": "/Users/dev/lever_fill"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Allowed (never listed): ... an UNPACKED entry (location 4) whose path contains \"lever_fill\".",
+  "ambiguous": false
+ },
+ {
+  "name": "unpacked_other_folder_is_listed",
+  "args": {
+   "settings": {
+    "oooooooooooooooooooooooooooooooo": {
+     "manifest": {
+      "name": "My Dev Extension"
+     },
+     "location": 4,
+     "disable_reasons": [],
+     "path": "/home/dev/my-userscript-manager"
+    }
+   }
+  },
+  "expect": [
+   [
+    "oooooooooooooooooooooooooooooooo",
+    "My Dev Extension"
+   ]
+  ],
+  "spec_quote": "Everything else enabled is listed: ... any other unpacked folder.",
+  "ambiguous": false
+ },
+ {
+  "name": "claude_id_disabled_is_not_listed",
+  "args": {
+   "settings": {
+    "fcoeoabgfenejglbffodgkkbkcdhcgfn": {
+     "manifest": {
+      "name": "Claude"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "state": 0,
+     "path": "/x/claude"
+    }
+   }
+  },
+  "expect": [],
+  "spec_quote": "Enabled = the entry has a non-empty manifest AND disable_reasons is missing, null or an empty list AND it is not blocklisted (blacklist_state truthy) AND state is not 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "several_bad_extensions_with_filters_mixed",
+  "args": {
+   "settings": {
+    "abcdefghijklmnopabcdefghijklmnop": {
+     "manifest": {
+      "name": "Some AI Sidebar"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "path": "/x/ai"
+    },
+    "ponmlkjihgfedcbaponmlkjihgfedcba": {
+     "manifest": {
+      "name": "UserScript Manager"
+     },
+     "location": 1,
+     "disable_reasons": null,
+     "path": "/x/userscripts"
+    },
+    "oooooooooooooooooooooooooooooooo": {
+     "manifest": {
+      "name": "My Dev Extension"
+     },
+     "location": 4,
+     "path": "/home/dev/other"
+    },
+    "pejdijmoenmkgeppbflobdenhhabjlaj": {
+     "manifest": {
+      "name": "iCloud Passwords"
+     },
+     "location": 1,
+     "disable_reasons": [],
+     "state": 0,
+     "path": "/x/icloud"
+    },
+    "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm": {
+     "manifest": {
+      "name": "Chrome Component A"
+     },
+     "location": 5,
+     "disable_reasons": [],
+     "path": "/x/component_a"
+    }
+   }
+  },
+  "expect": [
+   [
+    "abcdefghijklmnopabcdefghijklmnop",
+    "Some AI Sidebar"
+   ],
+   [
+    "ponmlkjihgfedcbaponmlkjihgfedcba",
+    "UserScript Manager"
+   ],
+   [
+    "oooooooooooooooooooooooooooooooo",
+    "My Dev Extension"
+   ]
+  ],
+  "spec_quote": "Everything else enabled is listed: password managers (iCloud Passwords pejdijmoenmkgeppbflobdenhhabjlaj), autofill (Simplify pbanhockgagggenencehbnadejlgchfc), AI sidebars, userscript managers, any other unpacked folder.",
+  "ambiguous": false
+ },
+ {
+  "name": "chrome_defaults_enabled_but_other_unpacked_listed",
+  "args": {
+   "settings": {
+    "ghbmnnjooekpmoecnnnilnnbdlolhkhi": {
+     "manifest": {
+      "name": "Docs Offline"
+     },
+     "location": 1,
+     "path": "/x/docs"
+    },
+    "nmmhkkegccagdldgiimedpiccmgmieda": {
+     "manifest": {
+      "name": "Chrome Web Store Payments"
+     },
+     "location": 5,
+     "disable_reasons": [],
+     "path": "/x/wsp"
+    },
+    "oooooooooooooooooooooooooooooooo": {
+     "manifest": {
+      "name": "My Dev Extension"
+     },
+     "location": 4,
+     "disable_reasons": [],
+     "path": "/home/dev/other"
+    }
+   }
+  },
+  "expect": [
+   [
+    "oooooooooooooooooooooooooooooooo",
+    "My Dev Extension"
+   ]
+  ],
+  "spec_quote": "Allowed (never listed): the Claude extension id fcoeoabgfenejglbffodgkkbkcdhcgfn; Chrome defaults ghbmnnjooekpmoecnnnilnnbdlolhkhi (Docs Offline) and nmmhkkegccagdldgiimedpiccmgmieda (Web Store Payments); any entry with location 5 or 10 (Chrome component); an UNPACKED entry (location 4) whose path contains \"lever_fill\".",
+  "ambiguous": false
+ }
+]

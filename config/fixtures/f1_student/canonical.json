@@ -1,0 +1,284 @@
+{
+ "version": 1,
+ "note": "TEST FIXTURE (fictional F-1 student) — High-stakes form fields. A selected value that does not match is a HARD block (never submit). 'accept_exact' is compared after normalisation, 'accept'/'reject' are regexes; reject only applies once accept matched.",
+ "order": [
+  "work_auth_any_employer",
+  "work_auth_today",
+  "work_permit",
+  "sponsorship_countries",
+  "sponsorship_now",
+  "sponsorship_future",
+  "immigration_status",
+  "degree_level",
+  "education_field",
+  "school",
+  "veteran_status",
+  "gender",
+  "ethnicity",
+  "disability",
+  "source_channel"
+ ],
+ "fields": {
+  "work_auth_any_employer": {
+   "label_re": "any employer",
+   "want": "No",
+   "accept_exact": [
+    "no"
+   ],
+   "accept": [
+    "^no\\b"
+   ],
+   "evidence": "candidate-profile Standard answers: 'Authorized to work for ANY employer now (no restriction) = No (F-1; CPT is employer-specific)'"
+  },
+  "work_auth_today": {
+   "label_re": "as of today|effective as of|as of the date|authori[sz]ed to work (in the u\\.?s\\.? )?(as of|today|now)|right to work (as of|today|now)",
+   "want": "No",
+   "accept_exact": [
+    "no"
+   ],
+   "accept": [
+    "^no\\b"
+   ],
+   "evidence": "decisions-log 2026-10-28 / answer_rules auth_today: F-1, CPT not effective today = No"
+  },
+  "sponsorship_future": {
+   "label_re": "sponsor",
+   "want": "Yes",
+   "accept_exact": [
+    "yes"
+   ],
+   "accept": [
+    "^yes\\b",
+    "^(i )?(will |would )?(requires?|needs?) (visa |immigration |employer |employment |h-?1b )?sponsorship"
+   ],
+   "reject": [
+    "\\bnot\\b",
+    "\\bno\\b",
+    "\\bnever\\b"
+   ],
+   "evidence": "candidate-profile: 'Require sponsorship now or in the future = Yes'; statement options 'I require sponsorship to work in this country' (Central Hudson 2026-11-01)",
+   "label_not": "check all that apply|which office|relocation support|select (all|both)|(type|kind|category) of (visa |immigration )?sponsorship|sponsorship (type|category)|arbitrat|plans?.? sponsors|benefit plan|(event|executive|plan|corporate|title) sponsors?\\b|by checking this box"
+  },
+  "sponsorship_now": {
+   "label_re": "^(?!.*future)(?!.*(after graduat|at any time|any time after|later|eventually|going forward|upon graduation|full[- ]time))(?=.*(\\bnow\\b|\\bcurrently\\b|at this time|to (begin|start) (the|this) internship)).*sponsor",
+   "want": "No",
+   "accept_exact": [
+    "no"
+   ],
+   "accept": [
+    "^no\\b"
+   ],
+   "evidence": "candidate-profile: 'Sponsorship asked separately: now = No (internship on CPT)'",
+   "label_not": "check all that apply|which office|relocation support|select (all|both)"
+  },
+  "immigration_status": {
+   "label_re": "immigration status|work authori[sz]ation (type|category|status)|visa (type|status|category)|type of visa|current status",
+   "label_not": "provide details|details (on|of|about)|please (describe|explain)|^\\s*(are|will|do|does|have|can|would|is) (you|your)\\b|legally (qualified|authori[sz]ed|eligible)|sponsorship|expir(e|es|ed|ation|y)\\b",
+   "want": "F-1",
+   "accept_exact": [
+    "f-1",
+    "f1",
+    "f-1 student",
+    "f1 student"
+   ],
+   "accept": [
+    "^f-?1( student)?$",
+    "^(i )?(will |would )?(requires?|needs?) (visa |immigration |employer |employment |h-?1b )?sponsorship"
+   ],
+   "reject": [
+    "cpt",
+    "\\bopt\\b",
+    "h-?1b",
+    "j-?1",
+    "green card",
+    "permanent resident"
+   ],
+   "evidence": "ats-workday #41 / decisions-log 2026-10-28: plain F-1 over F-1 CPT; yes/no questions that only mention visa status are not this field (EMC 2026-11-01)"
+  },
+  "degree_level": {
+   "label_re": "^\\s*(?:education\\s*\\d*\\s*\\|\\|\\s*)?degree\\b|degree\\s*(?:level)?\\s*$|highest (?:level of )?education|diploma|highest degree",
+   "want": "level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science",
+   "accept_exact": [
+    "masters",
+    "master",
+    "master's",
+    "ms",
+    "m.s.",
+    "bachelors",
+    "bachelor",
+    "bachelor's",
+    "ba",
+    "bs",
+    "b.s.",
+    "master of science"
+   ],
+   "accept": [
+    "^masters?$",
+    "^bachelors?$",
+    "^m\\.?s\\.?$",
+    "^masters? of science",
+    "masters of arts or science",
+    "master.*\\bscience\\b",
+    "bachelors? of arts or science",
+    "bachelor.*\\bscience\\b",
+    "^masters? \\(",
+    "^bachelors? \\(",
+    "^master'?s\\b",
+    "^bachelor'?s\\b",
+    "^b\\.?\\s?a\\.?$",
+    "^m\\.?\\s?s\\.?$",
+    "^bachelor of arts\\b",
+    "^master'?s? degree$",
+    "^bachelor'?s? degree$",
+    "^post ?-?graduate( degree)?$",
+    "^under ?-?graduate( degree)?$",
+    "^graduate( degree)?$"
+   ],
+   "reject": [
+    "technology",
+    "^mba\\b",
+    "master of business administration",
+    "doctor",
+    "ph\\.?d",
+    "associate"
+   ],
+   "evidence": "candidate-profile Education: UChicago M.S. Applied Data Science, UIUC B.A. Economics. Level pickers offer bare 'Masters'/'Bachelors' (a Workday employer 10-28) — that is correct (a Workday employer 2026-11-01 offers only Undergraduate / Graduate / Executive Master → Graduate); a full degree NAME must say Science (a Workday employer went in as 'Masters of Technology', wrong). decisions-log 2026-10-28.",
+   "label_not": "school name|degree program and school|name of (the )?(school|university)|(name|location|address) (and location )?of (the |your )?high school|high school (name|attended)|received (my|your) (high school )?diploma|high school diploma|diploma or equivalent|\\bged\\b|month|year|date"
+  },
+  "education_field": {
+   "label_re": "field of study|\\bmajor\\b",
+   "want": "Data Science → Applied Data Science → Data Analytics → Computer Science → Information Systems → Statistics (his order, 2026-10-28)",
+   "accept": [
+    "data scien",
+    "applied data science",
+    "data analytic",
+    "computer",
+    "information system",
+    "statistic",
+    "analytic",
+    "economics",
+    "quantitative"
+   ],
+   "reject": [
+    "accounting",
+    "teaching",
+    "nursing",
+    "biology",
+    "marketing"
+   ],
+   "evidence": "candidate-profile Education: Applied Data Science (UChicago), Economics (UIUC); decisions-log 2026-10-28 a Workday employer Field = Applied Statistics",
+   "label_not": "\\bwhat (school|university|college)\\b|\\b(school|university|college|institution) (are|do|did) you\\b|\\bgpa\\b|grade point"
+  },
+  "school": {
+   "label_re": "\\bschool\\b|university|institution",
+   "want": "University of Chicago / University of Illinois",
+   "accept": [
+    "chicago",
+    "illinois"
+   ],
+   "reject": [
+    "xjtlu",
+    "liverpool",
+    "high school"
+   ],
+   "evidence": "candidate-profile Education; rule 8: XJTLU never on an application",
+   "label_not": "employ|government|public (sector|institution)|work experience|\\?|enrolled|return to school|date|graduat|result scale|gpa|grade|country|location|located|city|state|address|high school|tell us|describe|accomplish|example|explain|share|walk us|from school or|when (will |do )?you (will )?(complete|finish)"
+  },
+  "veteran_status": {
+   "label_re": "veteran",
+   "want": "I am not a protected veteran",
+   "accept_exact": [
+    "no",
+    "i am not a veteran",
+    "i am not a protected veteran",
+    "i am not a veteran, just not a protected veteran",
+    "not applicable"
+   ],
+   "accept": [
+    "^(no,? )?i am not a (protected )?veteran\\.?( \\((united states( of america)?|u\\.?s\\.?a?\\.?|i (did|have) not serve(d)? in the (u\\.?s\\.? )?(military|armed forces))\\))?\\.?$",
+    "never served",
+    "^no,? i do not (believe|identify)\\b.{0,60}(categor|classification)\\w* .{0,30}appl",
+    "^not a (protected )?veteran\\.?$",
+    "^(no,? )?i am not a [\"'“”]?protected veteran[\"'“”]?( as (described|defined|listed) above)?\\.?$",
+    "^no,? i am not a veteran( or (an )?active (duty )?member)?\\.?$"
+   ],
+   "evidence": "candidate-profile EEO: 'I am not a protected veteran' + confirmed not a veteran (2026-10-26); ats-workday #8; a Workday employer 2026-10-30: 'I am not a Veteran (United States of America)'; a Workday employer 2026-11-01: 'I am not a Veteran (I did not serve in the military).'; a Workday employer 2026-11-01: 'Not a Veteran'; Arrowstreet 2026-11-01: 'I am NOT a \"Protected Veteran\" as described above'"
+  },
+  "gender": {
+   "label_re": "gender|\\bsex\\b|male or female",
+   "label_not": "transgender|\\btrans\\b|cisgender|pronoun|orientation",
+   "want": "I don't wish to answer",
+   "accept_exact": [],
+   "accept": [
+    "decline|prefer not|don'?t wish|do not wish"
+   ],
+   "evidence": "example profile"
+  },
+  "ethnicity": {
+   "label_re": "race|ethnic",
+   "want": "I don't wish to answer",
+   "accept": [
+    "decline|prefer not|don'?t wish|do not wish"
+   ],
+   "evidence": "example profile",
+   "label_not": "hispanic|latino",
+   "accept_exact": []
+  },
+  "disability": {
+   "label_re": "disabilit",
+   "want": "No",
+   "accept_exact": [
+    "no",
+    "no, i do not have a disability",
+    "no, i do not have a disability and have not had one in the past"
+   ],
+   "accept": [
+    "^no\\b",
+    "do not have a disability"
+   ],
+   "evidence": "candidate-profile EEO: 'No, I do not have a disability' (+ not in the past)"
+  },
+  "source_channel": {
+   "label_re": "how did you (hear|find|learn)|referral source|where did you (hear|find)|^source$",
+   "want": "the first option of the menu (Joey 2026-10-30 ~03:00: 固定选下拉栏的第一个)",
+   "accept": [
+    "."
+   ],
+   "reject": [],
+   "evidence": "Joey 2026-10-30: 「How did you hear about us 直接选拉开表单的第一个即可」; options that imply a referrer / person stay out (truth rule)"
+  },
+  "work_permit": {
+   "label_re": "work permit",
+   "want": "Yes",
+   "accept_exact": [
+    "yes"
+   ],
+   "accept": [
+    "^yes\\b"
+   ],
+   "evidence": "candidate-profile Standard answers: 'Valid work permit in the country of the position (U.S.) = Yes' (Joey 2026-10-30, HPE)",
+   "label_not": "details|describe|explain|type and expiry|what type|which type|kind of|expir|list|upload|copy|number|other than|export"
+  },
+  "sponsorship_countries": {
+   "label_re": "(locations?|countr(y|ies)).{0,160}sponsor|sponsor.{0,160}(locations?|countr(y|ies)).{0,60}(separate|list|indicate)",
+   "want": "United States",
+   "accept_exact": [
+    "united states",
+    "united states of america",
+    "us",
+    "usa"
+   ],
+   "accept": [
+    "united states",
+    "\\busa?\\b"
+   ],
+   "reject": [
+    "^n/?a$",
+    "^none$",
+    "not applicable"
+   ],
+   "evidence": "candidate-profile: 'Require sponsorship now or in the future = Yes' — on a country-list question that is the U.S. (HPE 2026-10-30)",
+   "label_not": "check all that apply|which office|relocation support|select (all|both)|^\\s*(are|do|does|will|would|can|could|have|is)\\s+you\\b"
+  }
+ }
+}

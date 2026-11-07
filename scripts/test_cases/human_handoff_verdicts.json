@@ -1,0 +1,9 @@
+{
+ "message_question_cut_200_parked_false": "Case miscounts: its question is 201 characters, the spec cuts to 200, but its expected line holds only 170. The code keeps 200 (checked by length).",
+ "pending_complex_last_events_sorted": "Case misreads 'last event': the spec says rows are in file order and a folder's LAST event counts; D's last row in the file is 'resolved', so D is not open. The case picked D's event by time instead.",
+ "summary_single_row_one_question": "The case's rows have no 'ats' field; it put the 'at' timestamp where the spec says <ats>.",
+ "summary_two_rows_captcha_and_join": "Same as summary_single_row_one_question: 'at' used as <ats> (rows have no ats). The join and CAPTCHA parts match.",
+ "summary_question_cut_80": "Same 'at'-as-<ats> mix-up; the 80-character cut itself matches.",
+ "summary_whitespace_collapse_and_join": "Same 'at'-as-<ats> mix-up; whitespace collapse and ' | ' join match.",
+ "summary_options_not_shown": "Same 'at'-as-<ats> mix-up; options are not shown in the summary, as the case wants."
+}

@@ -1,0 +1,281 @@
+[
+ {
+  "name": "parse_job basic with trailing slash",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://careers.nevwynost.com/job/Dallas-IT-Data-Analytics-Intern-TX-75219/1430072400/"
+  },
+  "expect": {
+   "host": "careers.nevwynost.com",
+   "id": "1430072400"
+  },
+  "spec_quote": "\"https://<host>/[<one path segment>/]job/<slug>/<7 or more digits>[/][?…|#…]\" → {\"host\": host in lower case, \"id\": digits}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job one extra path segment before job",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://jobs.grainger.com/ImperialSupplies/job/GREEN-BAY-X/1234567/"
+  },
+  "expect": {
+   "host": "jobs.grainger.com",
+   "id": "1234567"
+  },
+  "spec_quote": "Example: jobs.grainger.com/ImperialSupplies/job/GREEN-BAY-X/1234567/ .",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job uppercase host lowercased",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://Careers.Nevwynost.COM/job/some-slug/1234567890/"
+  },
+  "expect": {
+   "host": "careers.nevwynost.com",
+   "id": "1234567890"
+  },
+  "spec_quote": "→ {\"host\": host in lower case, \"id\": digits}.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job with query string and no trailing slash",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://example.com/job/some-slug/1234567?utm=abc"
+  },
+  "expect": {
+   "host": "example.com",
+   "id": "1234567"
+  },
+  "spec_quote": "\"https://<host>/[<one path segment>/]job/<slug>/<7 or more digits>[/][?…|#…]\"",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job only six digits",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://example.com/job/some-slug/123456/"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (fewer than 7 digits, no /job/, two extra path segments before job, not http) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job two extra path segments before job",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://example.com/a/b/job/some-slug/1234567/"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (fewer than 7 digits, no /job/, two extra path segments before job, not http) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job missing job segment",
+  "fn": "parse_job",
+  "args": {
+   "url": "https://example.com/careers/some-slug/1234567/"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (fewer than 7 digits, no /job/, two extra path segments before job, not http) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_job non-http scheme",
+  "fn": "parse_job",
+  "args": {
+   "url": "ftp://example.com/job/some-slug/1234567/"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (fewer than 7 digits, no /job/, two extra path segments before job, not http) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label drops leading asterisk",
+  "fn": "clean_label",
+  "args": {
+   "text": "*Job Title"
+  },
+  "expect": "Job Title",
+  "spec_quote": "Collapse whitespace, drop a leading \"*\" (and spaces after it) and a trailing \":\" (and spaces before it), trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label drops trailing colon",
+  "fn": "clean_label",
+  "args": {
+   "text": "Job Title:"
+  },
+  "expect": "Job Title",
+  "spec_quote": "Collapse whitespace, drop a leading \"*\" (and spaces after it) and a trailing \":\" (and spaces before it), trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label combined star, colon, extra whitespace",
+  "fn": "clean_label",
+  "args": {
+   "text": "  *  Job   Title  :  "
+  },
+  "expect": "Job Title",
+  "spec_quote": "Collapse whitespace, drop a leading \"*\" (and spaces after it) and a trailing \":\" (and spaces before it), trim.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label internal whitespace collapse",
+  "fn": "clean_label",
+  "args": {
+   "text": "Phone    Number"
+  },
+  "expect": "Phone Number",
+  "spec_quote": "Collapse whitespace",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_label trailing asterisk is not dropped",
+  "fn": "clean_label",
+  "args": {
+   "text": "First Name*"
+  },
+  "expect": "First Name*",
+  "spec_quote": "drop a leading \"*\" (and spaces after it) and a trailing \":\" (and spaces before it)",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name resume index 0",
+  "fn": "attached_name",
+  "args": {
+   "text": "Attachments Resume Download document resume_2024.pdf Cover letter Download document cover.docx",
+   "index": 0
+  },
+  "expect": "resume_2024.pdf",
+  "spec_quote": "\"Resume Download document <name>\" (index 0) or \"Cover letter Download document <name>\" (index 1)",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name cover letter index 1",
+  "fn": "attached_name",
+  "args": {
+   "text": "Attachments Resume Download document resume_2024.pdf Cover letter Download document cover.docx",
+   "index": 1
+  },
+  "expect": "cover.docx",
+  "spec_quote": "\"Resume Download document <name>\" (index 0) or \"Cover letter Download document <name>\" (index 1)",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name cover letter requested but nothing attached",
+  "fn": "attached_name",
+  "args": {
+   "text": "Attachments Resume Download document resume.pdf",
+   "index": 1
+  },
+  "expect": "",
+  "spec_quote": "Nothing attached / other index → \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name uppercase extension",
+  "fn": "attached_name",
+  "args": {
+   "text": "Resume Download document My_Resume.PDF",
+   "index": 0
+  },
+  "expect": "My_Resume.PDF",
+  "spec_quote": "<name> is a run of non-space characters ending in .pdf, .doc, .docx, .txt or .rtf (case-insensitive) → <name>",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name unsupported extension",
+  "fn": "attached_name",
+  "args": {
+   "text": "Resume Download document resume.pages",
+   "index": 0
+  },
+  "expect": "",
+  "spec_quote": "<name> is a run of non-space characters ending in .pdf, .doc, .docx, .txt or .rtf (case-insensitive) → <name>",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name other index",
+  "fn": "attached_name",
+  "args": {
+   "text": "Resume Download document resume.pdf Cover letter Download document cover.txt",
+   "index": 2
+  },
+  "expect": "",
+  "spec_quote": "Nothing attached / other index → \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "attached_name whitespace collapsed before match",
+  "fn": "attached_name",
+  "args": {
+   "text": "Resume\n   Download    document\n  cv.rtf",
+   "index": 0
+  },
+  "expect": "cv.rtf",
+  "spec_quote": "In the page text (whitespace collapsed), \"Resume Download document <name>\" (index 0)",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text If Other please specify",
+  "fn": "other_text",
+  "args": {
+   "label": "If Other, please specify"
+  },
+  "expect": true,
+  "spec_quote": "True when the label starts with \"If Other\" or \"If Other Source\" and within 40 characters says specify / explain / list / enter",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text If Other Source explain",
+  "fn": "other_text",
+  "args": {
+   "label": "If Other Source, explain below"
+  },
+  "expect": true,
+  "spec_quote": "True when the label starts with \"If Other\" or \"If Other Source\" and within 40 characters says specify / explain / list / enter",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text starts with Please specify",
+  "fn": "other_text",
+  "args": {
+   "label": "Please specify"
+  },
+  "expect": true,
+  "spec_quote": "or starts with \"Please specify\".",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text Other with please specify",
+  "fn": "other_text",
+  "args": {
+   "label": "Other (please specify)"
+  },
+  "expect": true,
+  "spec_quote": "or starts with \"Other\" and within 30 characters says \"free text\" / \"specify\" / \"please\"",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text employee referral near miss",
+  "fn": "other_text",
+  "args": {
+   "label": "If Employee Referral, list employee's name here"
+  },
+  "expect": false,
+  "spec_quote": "False otherwise (\"If Employee Referral, list employee's name here\", \"Other Name(s) known by\").",
+  "ambiguous": false
+ },
+ {
+  "name": "other_text Other Name(s) near miss",
+  "fn": "other_text",
+  "args": {
+   "label": "Other Name(s) known by"
+  },
+  "expect": false,
+  "spec_quote": "False otherwise (\"If Employee Referral, list employee's name here\", \"Other Name(s) known by\").",
+  "ambiguous": false
+ }
+]

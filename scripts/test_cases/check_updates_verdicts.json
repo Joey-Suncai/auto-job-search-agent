@@ -1,0 +1,1 @@
+{"profile-no-session-log-no-bundle": {"verdict": "case", "why": "Rule 7 counts only code or skills (*.py, *.js, *.sh, *.plist, SKILL.md); config/profile.json is a .json data file, so no session-log NOTE. The case itself flags this as ambiguous."}}

@@ -1,0 +1,634 @@
+[
+ {
+  "name": "apply_url lifeattiktok search id",
+  "fn": "apply_url",
+  "args": [
+   "https://lifeattiktok.com/search/7123456789"
+  ],
+  "expect": "https://lifeattiktok.com/resume/7123456789/apply",
+  "spec_quote": "`https://lifeattiktok.com/search/<id>`, `https://careers.tiktok.com/position/<id>` (also `/resume/<id>/...`) → `https://lifeattiktok.com/resume/<id>/apply`",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_url careers.tiktok with www and http",
+  "fn": "apply_url",
+  "args": [
+   "http://www.careers.tiktok.com/position/7234567890123"
+  ],
+  "expect": "https://lifeattiktok.com/resume/7234567890123/apply",
+  "spec_quote": "`www.` is allowed; `http` or `https`.",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_url bytedance en position detail",
+  "fn": "apply_url",
+  "args": [
+   "https://jobs.bytedance.com/en/position/7456789012345/detail"
+  ],
+  "expect": "https://jobs.bytedance.com/en/resume/7456789012345/apply",
+  "spec_quote": "`https://jobs.bytedance.com/en/position/<id>/detail` (also without `/en`, or `/resume/<id>/apply`) ... → `https://jobs.bytedance.com/en/resume/<id>/apply`",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_url bytedance without en",
+  "fn": "apply_url",
+  "args": [
+   "https://jobs.bytedance.com/position/7456789012345/detail"
+  ],
+  "expect": "https://jobs.bytedance.com/en/resume/7456789012345/apply",
+  "spec_quote": "`https://jobs.bytedance.com/en/position/<id>/detail` (also without `/en`, or `/resume/<id>/apply`) ... → `https://jobs.bytedance.com/en/resume/<id>/apply`",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_url joinbytedance search",
+  "fn": "apply_url",
+  "args": [
+   "https://joinbytedance.com/search/7567890123456"
+  ],
+  "expect": "https://jobs.bytedance.com/en/resume/7567890123456/apply",
+  "spec_quote": "`https://joinbytedance.com/search/<id>` → `https://jobs.bytedance.com/en/resume/<id>/apply`",
+  "ambiguous": false
+ },
+ {
+  "name": "apply_url id shorter than 10 digits",
+  "fn": "apply_url",
+  "args": [
+   "https://lifeattiktok.com/search/12345"
+  ],
+  "expect": null,
+  "spec_quote": "`<id>` is a run of at least 10 digits. ... an id shorter than 10 digits ... → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_slots exact banner from spec",
+  "fn": "parse_slots",
+  "args": [
+   "From 2026-07-01 to 2026-12-31, you can submit up to 2 job applications (including referrals) within the “Undergraduate/Master Intern - 2027 Start” recruitment project. You currently have 1 application(s) remaining."
+  ],
+  "expect": {
+   "limit": 2,
+   "project": "Undergraduate/Master Intern - 2027 Start",
+   "remaining": 1
+  },
+  "spec_quote": "Reads the form's limit banner, e.g. `From 2026-07-01 to 2026-12-31, you can submit up to 2 job applications (including referrals) within the “Undergraduate/Master Intern - 2027 Start” recruitment project. You currently have 1 application(s) remaining.` → `{limit: 2, project: \"Undergraduate/Master Intern - 2027 Start\", remaining: 1}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_slots embedded with line breaks and singular application",
+  "fn": "parse_slots",
+  "args": [
+   "Intro text\nFrom 2026-07-01 to 2026-12-31,   you can submit up to 3 job application within the \"Project Intern - 2027 Start\" recruitment project.\nYou currently have 0 application(s) remaining.\nMore text"
+  ],
+  "expect": {
+   "limit": 3,
+   "project": "Project Intern - 2027 Start",
+   "remaining": 0
+  },
+  "spec_quote": "The banner can sit inside other page text; line breaks and repeated spaces anywhere count as one space. ... \"application\" may be singular.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_slots no banner",
+  "fn": "parse_slots",
+  "args": [
+   "Welcome to the application form. Please fill in your details."
+  ],
+  "expect": null,
+  "spec_quote": "No banner (Project Intern and PhD roles have none) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_slots two digit limit and remaining",
+  "fn": "parse_slots",
+  "args": [
+   "From 2026-03-01 to 2026-09-30, you can submit up to 10 job applications (including referrals) within the “PhD Researcher - 2027 Start” recruitment project. You currently have 10 application(s) remaining."
+  ],
+  "expect": {
+   "limit": 10,
+   "project": "PhD Researcher - 2027 Start",
+   "remaining": 10
+  },
+  "spec_quote": "Reads the form's limit banner ... → `{limit: 2, project: \"Undergraduate/Master Intern - 2027 Start\", remaining: 1}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "field_of M.S. abbreviation",
+  "fn": "field_of",
+  "args": [
+   "M.S. Applied Data Science"
+  ],
+  "expect": "Applied Data Science",
+  "spec_quote": "`M.S. Applied Data Science` → `Applied Data Science`;",
+  "ambiguous": false
+ },
+ {
+  "name": "field_of B.A. abbreviation",
+  "fn": "field_of",
+  "args": [
+   "B.A. Economics"
+  ],
+  "expect": "Economics",
+  "spec_quote": "`B.A. Economics` → `Economics`;",
+  "ambiguous": false
+ },
+ {
+  "name": "field_of no abbreviation is trimmed",
+  "fn": "field_of",
+  "args": [
+   "  Economics  "
+  ],
+  "expect": "Economics",
+  "spec_quote": "a string without such an abbreviation is returned trimmed;",
+  "ambiguous": false
+ },
+ {
+  "name": "month slash format",
+  "fn": "month",
+  "args": [
+   "08/2025"
+  ],
+  "expect": "2025-08",
+  "spec_quote": "`08/2025` → `2025-08`;",
+  "ambiguous": false
+ },
+ {
+  "name": "month dot format",
+  "fn": "month",
+  "args": [
+   "2025.8"
+  ],
+  "expect": "2025-08",
+  "spec_quote": "`2025.8` → `2025-08`;",
+  "ambiguous": false
+ },
+ {
+  "name": "month without numeric month",
+  "fn": "month",
+  "args": [
+   "Aug 2025"
+  ],
+  "expect": "",
+  "spec_quote": "Anything without a year+month (`2025`, `Aug 2025`, empty) → `\"\"`.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_plan basic master and bachelor matches",
+  "fn": "edu_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "school": "UNIVERSITY OF CHICAGO"
+    },
+    {
+     "idx": 1,
+     "school": "UNIVERSITY OF ILLINOIS URBANA-CHAMPAIGN"
+    }
+   ],
+   [
+    {
+     "school": "University of Chicago",
+     "match_re": "chicago",
+     "level": "master",
+     "degree": "M.S. Applied Data Science"
+    },
+    {
+     "school": "University of Illinois Urbana-Champaign",
+     "match_re": "illinois",
+     "level": "bachelor",
+     "degree": "B.A. Economics"
+    }
+   ],
+   [
+    {
+     "match": "chicago",
+     "From_month": "2026-09",
+     "To_month": "2027-12"
+    },
+    {
+     "match": "illinois|urbana|uiuc",
+     "From_month": "2024-08",
+     "To_month": "2026-05"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "school": "University of Chicago",
+     "degree": "Master's degree",
+     "field": "Applied Data Science",
+     "start": "2026-09",
+     "end": "2027-12"
+    },
+    {
+     "idx": 1,
+     "school": "University of Illinois Urbana-Champaign",
+     "degree": "Bachelor's degree",
+     "field": "Economics",
+     "start": "2024-08",
+     "end": "2026-05"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "A matched block → plan item `{idx, school (profile name), degree, field, start, end}` where degree is TikTok's option: master → \"Master's degree\", bachelor → \"Bachelor's degree\" ...; field = field_of(profile degree); start/end from the matching wd_education entry",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_plan master Chicago must not match Illinois Chicago",
+  "fn": "edu_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "school": "UNIVERSITY OF ILLINOIS CHICAGO"
+    }
+   ],
+   [
+    {
+     "school": "University of Chicago",
+     "match_re": "chicago",
+     "level": "master",
+     "degree": "M.S. Applied Data Science"
+    }
+   ],
+   [
+    {
+     "match": "chicago",
+     "From_month": "2026-09",
+     "To_month": "2027-12"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 2,
+   "problems_mention": [
+    "0",
+    "University of Chicago"
+   ]
+  },
+  "spec_quote": "A master-level profile school never matches a block whose text names Illinois / Urbana / UIUC unless the profile school itself is in Illinois (so \"University of Illinois Chicago\" is not UChicago). ... A block with an empty school or a school not in the profile → a problem string that names the block idx ... A profile school that matched no block → a problem string that names the school.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_plan empty school block is a problem",
+  "fn": "edu_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "school": ""
+    }
+   ],
+   [],
+   []
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 1,
+   "problems_mention": [
+    "0"
+   ]
+  },
+  "spec_quote": "A block with an empty school or a school not in the profile → a problem string that names the block idx; it is not in the plan.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_plan unmatched profile school is a problem",
+  "fn": "edu_plan",
+  "args": [
+   [],
+   [
+    {
+     "school": "University of Chicago",
+     "match_re": "chicago",
+     "level": "master",
+     "degree": "M.S. Applied Data Science"
+    }
+   ],
+   []
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 1,
+   "problems_mention": [
+    "University of Chicago"
+   ]
+  },
+  "spec_quote": "A profile school that matched no block → a problem string that names the school.",
+  "ambiguous": false
+ },
+ {
+  "name": "edu_plan associate and mba degree mapping with no wd match",
+  "fn": "edu_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "school": "MIAMI DADE COLLEGE"
+    },
+    {
+     "idx": 1,
+     "school": "KELLOGG SCHOOL OF MANAGEMENT"
+    }
+   ],
+   [
+    {
+     "school": "Miami Dade College",
+     "match_re": "miami",
+     "level": "associate",
+     "degree": "A.A. Business"
+    },
+    {
+     "school": "Kellogg School of Management",
+     "match_re": "kellogg",
+     "level": "mba",
+     "degree": "M.B.A. Management"
+    }
+   ],
+   []
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "school": "Miami Dade College",
+     "degree": "Associate degree",
+     "field": "Business",
+     "start": "",
+     "end": ""
+    },
+    {
+     "idx": 1,
+     "school": "Kellogg School of Management",
+     "degree": "MBA",
+     "field": "Management",
+     "start": "",
+     "end": ""
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "... associate → \"Associate degree\"; field = field_of(profile degree); start/end from the matching wd_education entry (\"\" when none matches).",
+  "ambiguous": false
+ },
+ {
+  "name": "lang_plan basic Mandarin and English matches",
+  "fn": "lang_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "language": "Mandarin Chinese"
+    },
+    {
+     "idx": 1,
+     "language": "English"
+    }
+   ],
+   [
+    {
+     "match": "chinese|mandarin",
+     "tiktok": "Native or bilingual"
+    },
+    {
+     "match": "english",
+     "tiktok": "Professional working"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "language": "Mandarin Chinese",
+     "proficiency": "Native or bilingual"
+    },
+    {
+     "idx": 1,
+     "language": "English",
+     "proficiency": "Professional working"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "A block whose language matches a `match` regex (case-insensitive) → `{idx, language, proficiency: tiktok}`;",
+  "ambiguous": false
+ },
+ {
+  "name": "lang_plan Cantonese matches chinese entry",
+  "fn": "lang_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "language": "Cantonese"
+    }
+   ],
+   [
+    {
+     "match": "chinese",
+     "tiktok": "Native or bilingual"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "language": "Cantonese",
+     "proficiency": "Native or bilingual"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "\"Mandarin\" or \"Cantonese\" also match an entry whose `match` contains \"chinese\".",
+  "ambiguous": false
+ },
+ {
+  "name": "lang_plan no match and missing tiktok level are problems",
+  "fn": "lang_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "language": "Spanish"
+    },
+    {
+     "idx": 1,
+     "language": "French"
+    }
+   ],
+   [
+    {
+     "match": "french"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 2,
+   "problems_mention": [
+    "0",
+    "1"
+   ]
+  },
+  "spec_quote": "No match, or a matching entry without a `tiktok` level → a problem naming the block idx.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_plan basic internship and work matches",
+  "fn": "work_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "kind": "internship",
+     "company": "Acme Corp"
+    },
+    {
+     "idx": 1,
+     "kind": "work",
+     "company": "Beta LLC"
+    }
+   ],
+   [
+    {
+     "match": "acme",
+     "Job Title": "Software Engineer Intern",
+     "From": "08/2025",
+     "To": "12/2025"
+    },
+    {
+     "match": "beta",
+     "Job Title": "Analyst",
+     "From": "2024-01",
+     "To": "2024-06"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "kind": "internship",
+     "title": "Software Engineer Intern",
+     "start": "2025-08",
+     "end": "2025-12"
+    },
+    {
+     "idx": 1,
+     "kind": "work",
+     "title": "Analyst",
+     "start": "2024-01",
+     "end": "2024-06"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "A block whose company matches a `match` regex (case-insensitive) → `{idx, kind, title, start: month(From), end: month(To)}`;",
+  "ambiguous": false
+ },
+ {
+  "name": "work_plan unmatched company is a problem naming idx and company",
+  "fn": "work_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "kind": "work",
+     "company": "Unknown Inc"
+    }
+   ],
+   [
+    {
+     "match": "acme",
+     "Job Title": "Intern",
+     "From": "08/2025",
+     "To": "12/2025"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 1,
+   "problems_mention": [
+    "0",
+    "Unknown Inc"
+   ]
+  },
+  "spec_quote": "otherwise a problem naming the block idx and the company.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_plan case-insensitive company and alternate month formats",
+  "fn": "work_plan",
+  "args": [
+   [
+    {
+     "idx": 0,
+     "kind": "internship",
+     "company": "ACME CORP"
+    }
+   ],
+   [
+    {
+     "match": "acme",
+     "Job Title": "Intern",
+     "From": "2025.8",
+     "To": "2026/5"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": 0,
+     "kind": "internship",
+     "title": "Intern",
+     "start": "2025-08",
+     "end": "2026-05"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "A block whose company matches a `match` regex (case-insensitive) → `{idx, kind, title, start: month(From), end: month(To)}`;",
+  "ambiguous": false
+ },
+ {
+  "name": "same whitespace-normalized case-insensitive equality",
+  "fn": "same",
+  "args": [
+   "  Hello   World ",
+   "hello world"
+  ],
+  "expect": true,
+  "spec_quote": "Whitespace-normalized, case-insensitive equality.",
+  "ambiguous": false
+ },
+ {
+  "name": "same phone last ten digits",
+  "fn": "same",
+  "args": [
+   "+1 (555) 123-4567",
+   "5551234567"
+  ],
+  "expect": true,
+  "spec_quote": "If `want` looks like a phone number (only digits, spaces, `()+.-`, at least 7 characters) the last 10 digits are compared.",
+  "ambiguous": false
+ },
+ {
+  "name": "same multi-select sorted parts",
+  "fn": "same",
+  "args": [
+   "A | B | C",
+   "C | A | B"
+  ],
+  "expect": true,
+  "spec_quote": "If either side contains \" | \" (a multi-select), compare the sorted parts.",
+  "ambiguous": false
+ }
+]

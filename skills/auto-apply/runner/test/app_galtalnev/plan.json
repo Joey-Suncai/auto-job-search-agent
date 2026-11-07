@@ -1,0 +1,478 @@
+{
+ "version": 1,
+ "nonce": "efdba18663a63cd7",
+ "created": "2026-10-30T14:21:58",
+ "folder": "app_galtalnev",
+ "url": "https://job-boards.greenhouse.io/galtalnev/jobs/0",
+ "ats": "greenhouse",
+ "ready": false,
+ "needs_user": [
+  {
+   "key": "question_69874410",
+   "label": "Why would you be a good fit for this role? Please explain:",
+   "why": "no rule",
+   "options": [],
+   "required": true
+  }
+ ],
+ "fields": [
+  {
+   "key": "first_name",
+   "label": "First Name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#first_name",
+   "answer": "Alex",
+   "status": "ok",
+   "source": "rules:first_name"
+  },
+  {
+   "key": "last_name",
+   "label": "Last Name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#last_name",
+   "answer": "Sun",
+   "status": "ok",
+   "source": "rules:last_name"
+  },
+  {
+   "key": "preferred_name",
+   "label": "Preferred First Name",
+   "type": "text",
+   "required": false,
+   "options": [],
+   "sel": "#preferred_name",
+   "answer": "Joey",
+   "status": "ok",
+   "source": "rules:preferred_name"
+  },
+  {
+   "key": "email",
+   "label": "Email",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#email",
+   "answer": "alex.rivera@example.com",
+   "status": "ok",
+   "source": "rules:email"
+  },
+  {
+   "key": "phone",
+   "label": "Phone",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#phone",
+   "answer": "555-010-2030",
+   "status": "ok",
+   "source": "rules:phone"
+  },
+  {
+   "key": "country",
+   "label": "Country",
+   "type": "combo",
+   "required": true,
+   "options": [],
+   "sel": "#country",
+   "answer": "United States",
+   "status": "ok",
+   "source": "rules:country",
+   "accept": [
+    "United States",
+    "+1"
+   ]
+  },
+  {
+   "key": "resume",
+   "label": "Resume/CV",
+   "type": "file",
+   "required": false,
+   "options": [],
+   "sel": "#resume",
+   "status": "file",
+   "source": "runner"
+  },
+  {
+   "key": "question_69874406",
+   "label": "What level of schooling are you in?",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874406",
+   "answer": "Master's",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874407",
+   "label": "What is your major (s):",
+   "type": "textarea",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874407",
+   "answer": "Applied Data Science (M.S.), Economics (B.A.)",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874408",
+   "label": "When are you available to start an internship working 30+ hours a week?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Immediately available",
+    "Winter (Jan - March)",
+    "Spring (April - June)",
+    "Summer (June - August)",
+    "Fall (September - December)"
+   ],
+   "sel": "#question_69874408",
+   "answer": "Summer (June - August)",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874409",
+   "label": "Please select the collegiate institution you currently attend or previously attended.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Iowa State University",
+    "Colorado School of Mines",
+    "Georgia Institute of Technology",
+    "Other"
+   ],
+   "sel": "#question_69874409",
+   "answer": "Other",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874410",
+   "label": "Why would you be a good fit for this role? Please explain:",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874410",
+   "status": "needs_user",
+   "source": null
+  },
+  {
+   "key": "question_69874411",
+   "label": "1.1 Do you live OUTSIDE of the United States? Only U.S. based candidates (who live within one of the 48 contiguous states) will be considered for this role.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "I live OUTSIDE of the United States.",
+    "I live INSIDE the United States."
+   ],
+   "sel": "#question_69874411",
+   "answer": "I live INSIDE the United States.",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874412",
+   "label": "1.2 Preferred name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874412",
+   "answer": "Alex Rivera",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874413",
+   "label": "1.3 Legal first name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874413",
+   "answer": "Alex",
+   "status": "ok",
+   "source": "rules:first_name"
+  },
+  {
+   "key": "question_69874414",
+   "label": "1.4 Middle initial",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874414",
+   "answer": "N/A",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874415",
+   "label": "1.5 Legal last name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874415",
+   "answer": "Sun",
+   "status": "ok",
+   "source": "rules:last_name"
+  },
+  {
+   "key": "question_69874416",
+   "label": "1.6 Please provide us with your current STREET ADDRESS",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874416",
+   "answer": "100 Main St",
+   "status": "ok",
+   "source": "rules:address"
+  },
+  {
+   "key": "question_69874417",
+   "label": "1.7 Please provide us with the NAME of YOUR CURRENT HOME CITY.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874417",
+   "answer": "Chicago",
+   "status": "ok",
+   "source": "rules:city"
+  },
+  {
+   "key": "question_69874418",
+   "label": "1.8 Please provide us with the NAME of YOUR CURRENT HOME STATE.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+   ],
+   "sel": "#question_69874418",
+   "answer": "Illinois",
+   "status": "ok",
+   "source": "rules:state"
+  },
+  {
+   "key": "question_69874419",
+   "label": "1.9 Please provide us YOUR CURRENT HOME ZIP CODE.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874419",
+   "answer": "62701",
+   "status": "ok",
+   "source": "rules:zip"
+  },
+  {
+   "key": "question_69874420",
+   "label": "2.0 Are you currently authorized to work in the United States?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874420",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "rules:authorized"
+  },
+  {
+   "key": "question_69874421",
+   "label": "2.1 Do you now, or in the future, require visa sponsorship to continue working in the United States?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874421",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "rules:spons_future"
+  },
+  {
+   "key": "question_69874422",
+   "label": "2.2 Have you previously been an employee of Galtalnev?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874422",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874423",
+   "label": "2.3 Do you have any family members who are currently employed by, or have previously worked for, Galtalnev?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874423",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874424",
+   "label": "2.4 Family member names and relationships",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874424",
+   "answer": "NONE",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874425",
+   "label": "2.5 Do you currently work for a client of Galtalnev?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874425",
+   "answer": "No",
+   "status": "ok",
+   "source": "rules:prev_employed"
+  },
+  {
+   "key": "question_69874426",
+   "label": "2.6 Current or last employer",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874426",
+   "answer": "University of Chicago",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874427",
+   "label": "2.8 LinkedIn profile",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874427",
+   "answer": "https://www.linkedin.com/in/example",
+   "status": "ok",
+   "source": "rules:linkedin"
+  },
+  {
+   "key": "question_69874428",
+   "label": "3.0 Certification of truthful answers and authorization to verify information",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874428",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874429",
+   "label": "3.1 Consent to receive text messages",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874429",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "rules:sms"
+  },
+  {
+   "key": "location",
+   "label": "Location (City)",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#candidate-location",
+   "answer": "Chicago, Illinois, United States",
+   "status": "ok",
+   "source": "rules:location"
+  },
+  {
+   "key": "latitude",
+   "label": "Location (City) (hidden)",
+   "type": "hidden",
+   "required": true,
+   "sel": "[name=\"latitude\"]",
+   "status": "check_only",
+   "source": "page"
+  },
+  {
+   "key": "longitude",
+   "label": "Location (City) (hidden)",
+   "type": "hidden",
+   "required": true,
+   "sel": "[name=\"longitude\"]",
+   "status": "check_only",
+   "source": "page"
+  }
+ ]
+}

@@ -1,0 +1,1306 @@
+[
+ {
+  "name": "reply_inside_run_window",
+  "msgs": [
+   {
+    "t": "2024-01-01T09:55:00",
+    "total": 100,
+    "new": 10
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/job/1",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     100,
+     10
+    ],
+    "direct_sum": [
+     100,
+     10
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     100,
+     10
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overlapping_run_windows_split",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:07:00",
+    "total": 100,
+    "new": 10
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:10:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T10:15:00",
+    "secs": 600,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     50,
+     5
+    ],
+    "direct_sum": [
+     50,
+     5
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     50,
+     5
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     50,
+     5
+    ],
+    "direct_sum": [
+     50,
+     5
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     50,
+     5
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "reply_between_runs_same_folder_span",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 40,
+    "new": 4
+   },
+   {
+    "t": "2024-01-01T10:30:00",
+    "total": 60,
+    "new": 6
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "A",
+    "at": "2024-01-01T11:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     100,
+     10
+    ],
+    "direct_sum": [
+     100,
+     10
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     100,
+     10
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overhead_split_two_platforms_one_day",
+  "msgs": [
+   {
+    "t": "2024-01-01T09:00:00",
+    "total": 90,
+    "new": 10
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T13:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     45,
+     5
+    ],
+    "all_in_per_app": [
+     45,
+     5
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     45,
+     5
+    ],
+    "all_in_per_app": [
+     45,
+     5
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overhead_day_without_runs_unallocated",
+  "msgs": [
+   {
+    "t": "2024-02-01T10:00:00",
+    "total": 20,
+    "new": 2
+   },
+   {
+    "t": "2024-02-02T10:00:00",
+    "total": 30,
+    "new": 3
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-02-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     20,
+     2
+    ],
+    "direct_sum": [
+     20,
+     2
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     20,
+     2
+    ]
+   },
+   "_unallocated": [
+    30,
+    3
+   ]
+  }
+ },
+ {
+  "name": "non_submitted_folder_null_stats",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 50,
+    "new": 5
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "needs-user"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 0,
+    "direct_median": null,
+    "direct_sum": [
+     50,
+     5
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": null
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "even_count_median_two_folders",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 100,
+    "new": 10
+   },
+   {
+    "t": "2024-01-01T11:00:00",
+    "total": 300,
+    "new": 50
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T11:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 2,
+    "direct_median": [
+     200,
+     30
+    ],
+    "direct_sum": [
+     400,
+     60
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     200,
+     30
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "secs_missing_treated_as_zero",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 40,
+    "new": 4
+   },
+   {
+    "t": "2024-01-01T10:00:01",
+    "total": 20,
+    "new": 2
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     40,
+     4
+    ],
+    "direct_sum": [
+     40,
+     4
+    ],
+    "overhead": [
+     20,
+     2
+    ],
+    "all_in_per_app": [
+     60,
+     6
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overlapping_spans_split",
+  "msgs": [
+   {
+    "t": "2024-01-01T11:30:00",
+    "total": 80,
+    "new": 8
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "A",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T11:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T13:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     40,
+     4
+    ],
+    "direct_sum": [
+     40,
+     4
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     40,
+     4
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     40,
+     4
+    ],
+    "direct_sum": [
+     40,
+     4
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     40,
+     4
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "window_beats_span",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 70,
+    "new": 7
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T09:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "A",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     0,
+     0
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     70,
+     7
+    ],
+    "direct_sum": [
+     70,
+     7
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     70,
+     7
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "three_folder_window_split",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 90,
+    "new": 9
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "C",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://jobs.lever.co/c",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     30,
+     3
+    ],
+    "direct_sum": [
+     30,
+     3
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     30,
+     3
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     30,
+     3
+    ],
+    "direct_sum": [
+     30,
+     3
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     30,
+     3
+    ]
+   },
+   "lever": {
+    "submitted": 1,
+    "direct_median": [
+     30,
+     3
+    ],
+    "direct_sum": [
+     30,
+     3
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     30,
+     3
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overhead_proportional_to_folder_count",
+  "msgs": [
+   {
+    "t": "2024-01-01T08:00:00",
+    "total": 120,
+    "new": 12
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T11:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "C",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/c",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 2,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     80,
+     8
+    ],
+    "all_in_per_app": [
+     40,
+     4
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     40,
+     4
+    ],
+    "all_in_per_app": [
+     40,
+     4
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "window_boundaries_inclusive",
+  "msgs": [
+   {
+    "t": "2024-01-01T09:50:00",
+    "total": 20,
+    "new": 2
+   },
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 30,
+    "new": 3
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     50,
+     5
+    ],
+    "direct_sum": [
+     50,
+     5
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     50,
+     5
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "just_outside_window_becomes_overhead",
+  "msgs": [
+   {
+    "t": "2024-01-01T09:49:59",
+    "total": 20,
+    "new": 2
+   },
+   {
+    "t": "2024-01-01T09:55:00",
+    "total": 100,
+    "new": 10
+   },
+   {
+    "t": "2024-01-01T10:00:01",
+    "total": 10,
+    "new": 1
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     100,
+     10
+    ],
+    "direct_sum": [
+     100,
+     10
+    ],
+    "overhead": [
+     30,
+     3
+    ],
+    "all_in_per_app": [
+     130,
+     13
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "overhead_three_to_one_folder_ratio",
+  "msgs": [
+   {
+    "t": "2024-01-01T08:00:00",
+    "total": 400,
+    "new": 40
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "C",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/c",
+    "status": "submitted"
+   },
+   {
+    "folder": "D",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://jobs.lever.co/d",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 3,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     300,
+     30
+    ],
+    "all_in_per_app": [
+     100,
+     10
+    ]
+   },
+   "lever": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     100,
+     10
+    ],
+    "all_in_per_app": [
+     100,
+     10
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "even_count_median_four_folders",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 10,
+    "new": 2
+   },
+   {
+    "t": "2024-01-01T11:00:00",
+    "total": 20,
+    "new": 4
+   },
+   {
+    "t": "2024-01-01T12:00:00",
+    "total": 30,
+    "new": 6
+   },
+   {
+    "t": "2024-01-01T13:00:00",
+    "total": 40,
+    "new": 8
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T11:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "C",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/c",
+    "status": "submitted"
+   },
+   {
+    "folder": "D",
+    "at": "2024-01-01T13:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/d",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 4,
+    "direct_median": [
+     25,
+     5
+    ],
+    "direct_sum": [
+     100,
+     20
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     25,
+     5
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "same_folder_two_overlapping_windows_no_double_count",
+  "msgs": [
+   {
+    "t": "2024-01-01T09:58:00",
+    "total": 60,
+    "new": 6
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:05:00",
+    "secs": 600,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     60,
+     6
+    ],
+    "direct_sum": [
+     60,
+     6
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     60,
+     6
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "window_split_two_folders_ignores_third_span",
+  "msgs": [
+   {
+    "t": "2024-01-01T10:00:00",
+    "total": 90,
+    "new": 6
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T09:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "A",
+    "at": "2024-01-01T12:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   },
+   {
+    "folder": "C",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://jobs.lever.co/c",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     0,
+     0
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     45,
+     3
+    ],
+    "direct_sum": [
+     45,
+     3
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     45,
+     3
+    ]
+   },
+   "lever": {
+    "submitted": 1,
+    "direct_median": [
+     45,
+     3
+    ],
+    "direct_sum": [
+     45,
+     3
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     45,
+     3
+    ]
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "no_submitted_all_in_null_overhead_kept",
+  "msgs": [
+   {
+    "t": "2024-01-01T08:00:00",
+    "total": 50,
+    "new": 5
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-01-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "handoff"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 0,
+    "direct_median": null,
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     50,
+     5
+    ],
+    "all_in_per_app": null
+   },
+   "_unallocated": [
+    0,
+    0
+   ]
+  }
+ },
+ {
+  "name": "multi_day_mixed_with_unallocated",
+  "msgs": [
+   {
+    "t": "2024-03-01T10:00:00",
+    "total": 100,
+    "new": 10
+   },
+   {
+    "t": "2024-03-02T12:00:00",
+    "total": 25,
+    "new": 5
+   },
+   {
+    "t": "2024-03-03T08:00:00",
+    "total": 40,
+    "new": 4
+   }
+  ],
+  "results": [
+   {
+    "folder": "A",
+    "at": "2024-03-01T10:00:00",
+    "secs": 0,
+    "url": "https://x.myworkday.com/a",
+    "status": "submitted"
+   },
+   {
+    "folder": "B",
+    "at": "2024-03-03T10:00:00",
+    "secs": 0,
+    "url": "https://boards.greenhouse.io/b",
+    "status": "submitted"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "submitted": 1,
+    "direct_median": [
+     100,
+     10
+    ],
+    "direct_sum": [
+     100,
+     10
+    ],
+    "overhead": [
+     0,
+     0
+    ],
+    "all_in_per_app": [
+     100,
+     10
+    ]
+   },
+   "greenhouse": {
+    "submitted": 1,
+    "direct_median": [
+     0,
+     0
+    ],
+    "direct_sum": [
+     0,
+     0
+    ],
+    "overhead": [
+     40,
+     4
+    ],
+    "all_in_per_app": [
+     40,
+     4
+    ]
+   },
+   "_unallocated": [
+    25,
+    5
+   ]
+  }
+ }
+]

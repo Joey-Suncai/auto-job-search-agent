@@ -1,0 +1,3 @@
+{
+ "validate oversized body 413": "DeepSeek's output for this case was cut off inside the 94 KB body: the case has no expect_code / payload. Its name says 413; the code returns 413 for any body > 1024 bytes (checked by hand: validate(..., 94 KB) \u2192 413)."
+}

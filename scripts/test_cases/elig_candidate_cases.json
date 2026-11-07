@@ -1,0 +1,314 @@
+[
+ {
+  "name": "baseline_default_candidate_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-12"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Chicago, IL",
+  "level": "Internship",
+  "text": "Northline Logistics is hiring a Data Analyst Intern for Summer 2027 in Chicago, IL. You will build weekly dashboards in Tableau, write SQL queries against our operations warehouse, and help the analytics team clean and document shipment datasets. You will partner with analysts and engineers, present findings to stakeholders, and support ad hoc reporting requests. Qualifications: currently enrolled in a bachelor's program, coursework in statistics or economics, comfort with Excel and SQL, and strong written communication. We welcome applicants from all backgrounds and review applications on a rolling basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "baseline_experienced_candidate_eligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": true,
+   "grad": "2027-06"
+  },
+  "title": "Business Intelligence Intern, Summer 2027",
+  "loc": "Austin, TX",
+  "level": "Internship",
+  "text": "Cedar Park Health is hiring a Business Intelligence Intern for Summer 2027 in Austin, TX. You will maintain Power BI reports used by clinic operations, write SQL to pull appointment and billing data, and help analysts validate new metrics before release. You will join weekly planning meetings, document data definitions, and present a summer project to the analytics team. Qualifications include enrollment in a bachelor's program, familiarity with Excel or SQL, and clear written communication. We review applications on a rolling basis and provide a structured mentorship program.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "no_sponsorship_text_needs_sponsorship_true_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Harborlight Analytics is hiring a Data Analyst Intern for Summer 2027 in Boston, MA. You will build dashboards in Tableau, write SQL queries against our reporting warehouse, and support monthly reporting for client teams. You will work with senior analysts to clean datasets, document metric definitions, and prepare summaries for stakeholders. Qualifications: currently enrolled in a bachelor's program, coursework in statistics or economics, and comfort with Excel. Please note that we are unable to sponsor visas for this internship. Applications are reviewed on a rolling basis.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "no_sponsorship_text_needs_sponsorship_false_eligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Harborlight Analytics is hiring a Data Analyst Intern for Summer 2027 in Boston, MA. You will build dashboards in Tableau, write SQL queries against our reporting warehouse, and support monthly reporting for client teams. You will work with senior analysts to clean datasets, document metric definitions, and prepare summaries for stakeholders. Qualifications: currently enrolled in a bachelor's program, coursework in statistics or economics, and comfort with Excel. Please note that we are unable to sponsor visas for this internship. Applications are reviewed on a rolling basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "no_sponsorship_must_not_require_phrase_true_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Denver, CO",
+  "level": "Internship",
+  "text": "Summit Grid Energy is hiring a Data Analyst Intern for Summer 2027 in Denver, CO. Responsibilities include building Excel and SQL reports on grid usage, cleaning sensor datasets, and preparing weekly summaries for the operations team. You will partner with engineers and analysts, document assumptions, and present findings at the end of the summer. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or engineering, and strong attention to detail. Candidates must not require sponsorship now or in the future. We provide housing stipends and mentorship.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "no_sponsorship_must_not_require_phrase_false_eligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Denver, CO",
+  "level": "Internship",
+  "text": "Summit Grid Energy is hiring a Data Analyst Intern for Summer 2027 in Denver, CO. Responsibilities include building Excel and SQL reports on grid usage, cleaning sensor datasets, and preparing weekly summaries for the operations team. You will partner with engineers and analysts, document assumptions, and present findings at the end of the summer. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or engineering, and strong attention to detail. Candidates must not require sponsorship now or in the future. We provide housing stipends and mentorship.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "no_sponsorship_with_sponsor_exception_true_review",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Chicago, IL",
+  "level": "Internship",
+  "text": "Lakeshore Retail Group is hiring a Data Analyst Intern for Summer 2027 in Chicago, IL. You will analyze store sales data in SQL, build Tableau dashboards for category managers, and support weekly forecasting work. You will collaborate with analysts and merchants, clean messy product data, and present a summer project to leadership. Qualifications: enrolled in a bachelor's program, coursework in statistics or business, comfort with Excel, and clear communication. We are unable to sponsor visas for most candidates; however, we can sponsor exceptional applicants on a case-by-case basis.",
+  "expect": "Review"
+ },
+ {
+  "name": "no_sponsorship_with_sponsor_exception_false_eligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Chicago, IL",
+  "level": "Internship",
+  "text": "Lakeshore Retail Group is hiring a Data Analyst Intern for Summer 2027 in Chicago, IL. You will analyze store sales data in SQL, build Tableau dashboards for category managers, and support weekly forecasting work. You will collaborate with analysts and merchants, clean messy product data, and present a summer project to leadership. Qualifications: enrolled in a bachelor's program, coursework in statistics or business, comfort with Excel, and clear communication. We are unable to sponsor visas for most candidates; however, we can sponsor exceptional applicants on a case-by-case basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "sponsorship_offered_statement_needs_true_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "New York, NY",
+  "level": "Internship",
+  "text": "Brightpath Media is hiring a Data Analyst Intern for Summer 2027 in New York, NY. You will build dashboards in Looker, write SQL against our audience warehouse, and support weekly reporting for content teams. You will work with analysts to clean datasets, define metrics, and summarize experiment results for stakeholders. Qualifications: currently enrolled in a bachelor's program, coursework in statistics or economics, and comfort with SQL and spreadsheets. We are pleased to offer visa sponsorship to international candidates who need it. Applications are reviewed on a rolling basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "citizenship_requirement_non_citizen_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Huntsville, AL",
+  "level": "Internship",
+  "text": "Ironvale Defense Systems is hiring a Data Analyst Intern for Summer 2027 in Huntsville, AL. You will build SQL reports on program metrics, maintain Excel trackers for engineering teams, and support monthly reviews with clean, documented datasets. You will work alongside analysts and project leads, prepare briefing charts, and present a summer project summary. Qualifications: enrolled in a bachelor's program, coursework in statistics, math, or engineering, and strong attention to detail. Applicants must be U.S. citizens or permanent residents. We offer mentorship and a housing stipend.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "citizenship_requirement_citizen_review",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": true,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Huntsville, AL",
+  "level": "Internship",
+  "text": "Ironvale Defense Systems is hiring a Data Analyst Intern for Summer 2027 in Huntsville, AL. You will build SQL reports on program metrics, maintain Excel trackers for engineering teams, and support monthly reviews with clean, documented datasets. You will work alongside analysts and project leads, prepare briefing charts, and present a summer project summary. Qualifications: enrolled in a bachelor's program, coursework in statistics, math, or engineering, and strong attention to detail. Applicants must be U.S. citizens or permanent residents. We offer mentorship and a housing stipend.",
+  "expect": "Review"
+ },
+ {
+  "name": "security_clearance_non_citizen_ineligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Tucson, AZ",
+  "level": "Internship",
+  "text": "Northgate Aerospace is hiring a Data Analyst Intern for Summer 2027 in Tucson, AZ. You will support program analysts with SQL queries, Excel models, and weekly status dashboards covering production schedules. You will help document data sources, check reporting accuracy, and prepare charts for engineering reviews. Qualifications: enrolled in a bachelor's program, coursework in statistics or engineering, and comfort with spreadsheets. This position requires an active U.S. security clearance, and candidates must be U.S. citizens to be eligible for it. Mentorship and relocation support are provided.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "security_clearance_citizen_review",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": true,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Tucson, AZ",
+  "level": "Internship",
+  "text": "Northgate Aerospace is hiring a Data Analyst Intern for Summer 2027 in Tucson, AZ. You will support program analysts with SQL queries, Excel models, and weekly status dashboards covering production schedules. You will help document data sources, check reporting accuracy, and prepare charts for engineering reviews. Qualifications: enrolled in a bachelor's program, coursework in statistics or engineering, and comfort with spreadsheets. This position requires an active U.S. security clearance, and candidates must be U.S. citizens to be eligible for it. Mentorship and relocation support are provided.",
+  "expect": "Review"
+ },
+ {
+  "name": "export_control_non_citizen_ineligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Portland, OR",
+  "level": "Internship",
+  "text": "Meridian Semiconductor is hiring a Data Analyst Intern for Summer 2027 in Portland, OR. You will analyze fabrication yield data with SQL and Python, build dashboards for process engineers, and document data definitions for weekly reviews. You will partner with engineers and analysts, validate reporting logic, and present findings at the end of the summer. Qualifications: enrolled in a bachelor's program, coursework in statistics, engineering, or computer science, and comfort with spreadsheets. Because this role supports export-controlled technology, applicants must be a U.S. person as defined under ITAR.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "export_control_citizen_review",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": true,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Portland, OR",
+  "level": "Internship",
+  "text": "Meridian Semiconductor is hiring a Data Analyst Intern for Summer 2027 in Portland, OR. You will analyze fabrication yield data with SQL and Python, build dashboards for process engineers, and document data definitions for weekly reviews. You will partner with engineers and analysts, validate reporting logic, and present findings at the end of the summer. Qualifications: enrolled in a bachelor's program, coursework in statistics, engineering, or computer science, and comfort with spreadsheets. Because this role supports export-controlled technology, applicants must be a U.S. person as defined under ITAR.",
+  "expect": "Review"
+ },
+ {
+  "name": "citizenship_not_required_near_miss_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Seattle, WA",
+  "level": "Internship",
+  "text": "Civic Loop is hiring a Data Analyst Intern for Summer 2027 in Seattle, WA. You will build dashboards in Tableau, write SQL against our program data warehouse, and support monthly reporting for partner organizations. You will work with analysts to clean survey data, document metric definitions, and prepare short summaries for stakeholders. Qualifications: currently enrolled in a bachelor's program, coursework in statistics or public policy, and comfort with Excel. U.S. citizenship is not required for this internship, and we welcome international candidates. Applications are reviewed on a rolling basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "grad_window_inside_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-03"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Minneapolis, MN",
+  "level": "Internship",
+  "text": "Fairmont Foods is hiring a Data Analyst Intern for Summer 2027 in Minneapolis, MN. You will build SQL reports on supply and sales data, maintain Excel trackers for the category team, and support weekly forecasting reviews. You will work with analysts and planners, clean product data, document assumptions, and present a summer project to leadership. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or supply chain, and comfort with spreadsheets. Candidates must be graduating between December 2026 and June 2027.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "grad_window_just_before_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2026-11"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Minneapolis, MN",
+  "level": "Internship",
+  "text": "Fairmont Foods is hiring a Data Analyst Intern for Summer 2027 in Minneapolis, MN. You will build SQL reports on supply and sales data, maintain Excel trackers for the category team, and support weekly forecasting reviews. You will work with analysts and planners, clean product data, document assumptions, and present a summer project to leadership. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or supply chain, and comfort with spreadsheets. Candidates must be graduating between December 2026 and June 2027.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "grad_window_after_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-12"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Sacramento, CA",
+  "level": "Internship",
+  "text": "Redwood Grocers is hiring a Data Analyst Intern for Summer 2027 in Sacramento, CA. You will write SQL queries on basket and sales data, build Tableau dashboards for merchandising teams, and support weekly reporting on promotions. You will work with analysts to clean product records, define metrics, and present a summer project to store operations leaders. Qualifications: enrolled in a bachelor's program, coursework in statistics or economics, and comfort with Excel. Candidates must be graduating between December 2026 and June 2027.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "class_of_2027_or_later_inside_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2028-05"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Memphis, TN",
+  "level": "Internship",
+  "text": "Atlas Freight is hiring a Data Analyst Intern for Summer 2027 in Memphis, TN. You will build dashboards in Power BI, write SQL against shipment data, and support weekly on-time delivery reporting for operations. You will work with analysts and dispatchers, clean messy records, define metrics, and present a summer project to the team. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or logistics, and comfort with Excel. This internship is open to the class of 2027 or later. Mentorship and a housing stipend are provided.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "class_of_2027_or_later_outside_ineligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2026-05"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Memphis, TN",
+  "level": "Internship",
+  "text": "Atlas Freight is hiring a Data Analyst Intern for Summer 2027 in Memphis, TN. You will build dashboards in Power BI, write SQL against shipment data, and support weekly on-time delivery reporting for operations. You will work with analysts and dispatchers, clean messy records, define metrics, and present a summer project to the team. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or logistics, and comfort with Excel. This internship is open to the class of 2027 or later. Mentorship and a housing stipend are provided.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "graduation_mention_without_window_default_eligible",
+  "candidate": {
+   "needs_sponsorship": true,
+   "citizen_or_pr": false,
+   "grad": "2027-12"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Raleigh, NC",
+  "level": "Internship",
+  "text": "Willow Analytics is hiring a Data Analyst Intern for Summer 2027 in Raleigh, NC. You will write SQL queries against client datasets, build Tableau dashboards, and prepare weekly summaries for project managers. You will partner with analysts to clean data, document metric definitions, and check reporting accuracy before release. Qualifications: strong Excel skills, coursework in statistics or economics, and clear written communication. You will graduate with a bachelor's degree in statistics, economics, or a related field before the internship begins. We review applications on a rolling basis.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "no_sponsorship_false_with_grad_window_outside_ineligible",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": false,
+   "grad": "2026-11"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Hartford, CT",
+  "level": "Internship",
+  "text": "Pinecrest Insurance is hiring a Data Analyst Intern for Summer 2027 in Hartford, CT. You will build SQL reports on claims data, maintain Excel trackers for the analytics team, and support monthly reporting reviews. You will work with analysts to clean datasets, document assumptions, and present a summer project summary to managers. Qualifications: enrolled in a bachelor's program, coursework in statistics, economics, or mathematics, and comfort with spreadsheets. Please note we are unable to sponsor visas for this role. Candidates must be graduating between December 2026 and June 2027.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "no_sponsorship_false_with_citizenship_requirement_citizen_review",
+  "candidate": {
+   "needs_sponsorship": false,
+   "citizen_or_pr": true,
+   "grad": "2027-06"
+  },
+  "title": "Data Analyst Intern, Summer 2027",
+  "loc": "Arlington, VA",
+  "level": "Internship",
+  "text": "Stonebridge Federal Partners is hiring a Data Analyst Intern for Summer 2027 in Arlington, VA. You will build SQL reports and Excel models for program teams, maintain dashboards for monthly reviews, and document data definitions used across projects. You will work with analysts and project leads, check reporting accuracy, and present a summer project at the end of the program. Qualifications: enrolled in a bachelor's program, coursework in statistics or public policy, and comfort with spreadsheets. Applicants must be U.S. citizens or permanent residents. Please note we are unable to sponsor visas for this position.",
+  "expect": "Review"
+ }
+]

@@ -1,0 +1,275 @@
+[
+ {
+  "name": "age_lower_ashby",
+  "label": "age",
+  "options": [
+   "Under 30",
+   "30-39",
+   "40-49",
+   "50-59",
+   "60 or older",
+   "I prefer not to answer"
+  ],
+  "is_age_band": true,
+  "expect": "Under 30"
+ },
+ {
+  "name": "current_age_question_lever",
+  "label": "Current age?",
+  "options": [
+   "18-24",
+   "25-34",
+   "35-44",
+   "45-54",
+   "55+"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "your_age_question",
+  "label": "Your age?",
+  "options": [
+   "18-24",
+   "25-34"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "your_current_age_mixed_case",
+  "label": "Your Current Age",
+  "options": [
+   "21-29",
+   "30-39"
+  ],
+  "is_age_band": true,
+  "expect": "21-29"
+ },
+ {
+  "name": "what_is_your_age_question",
+  "label": "What is your age?",
+  "options": [
+   "20 to 29",
+   "30 to 39"
+  ],
+  "is_age_band": true,
+  "expect": "20 to 29"
+ },
+ {
+  "name": "what_is_your_current_age_no_question",
+  "label": "What is your current age",
+  "options": [
+   "Under 25",
+   "25-34"
+  ],
+  "is_age_band": true,
+  "expect": "Under 25"
+ },
+ {
+  "name": "whats_your_age_question",
+  "label": "What's your age?",
+  "options": [
+   "18-24",
+   "25-34"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "whats_your_current_age_no_question",
+  "label": "What's your current age",
+  "options": [
+   "21-29",
+   "30-39"
+  ],
+  "is_age_band": true,
+  "expect": "21-29"
+ },
+ {
+  "name": "how_old_are_you_question",
+  "label": "How old are you?",
+  "options": [
+   "Under 18",
+   "18-24",
+   "25+"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "age_range_question",
+  "label": "What is your age range?",
+  "options": [
+   "18-24",
+   "25-34",
+   "35-44"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "age_group_mixed_case",
+  "label": "Please select your AGE GROUP",
+  "options": [
+   "Under 20",
+   "20-29",
+   "30-39"
+  ],
+  "is_age_band": true,
+  "expect": "20-29"
+ },
+ {
+  "name": "age_bracket_question",
+  "label": "Age bracket?",
+  "options": [
+   "18-24",
+   "25-34"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "age_band_question",
+  "label": "What is your age band?",
+  "options": [
+   "Under 30",
+   "30-39"
+  ],
+  "is_age_band": true,
+  "expect": "Under 30"
+ },
+ {
+  "name": "age_no_band_contains_23",
+  "label": "Age",
+  "options": [
+   "30-39",
+   "40-49",
+   "I prefer not to answer"
+  ],
+  "is_age_band": true,
+  "expect": ""
+ },
+ {
+  "name": "age_lever_style",
+  "label": "Age",
+  "options": [
+   "18-24",
+   "25-34",
+   "35-44",
+   "45-54",
+   "55+"
+  ],
+  "is_age_band": true,
+  "expect": "18-24"
+ },
+ {
+  "name": "eligibility_at_least_18",
+  "label": "Are you at least 18 years of age?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "eligibility_under_18",
+  "label": "Are you under the age of 18?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "eligibility_18_or_older",
+  "label": "Are you 18 years of age or older?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "legal_working_age",
+  "label": "Are you of legal working age?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "date_of_birth",
+  "label": "Date of birth",
+  "options": [
+   "MM/DD/YYYY"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "average_word",
+  "label": "What is your average daily commute?",
+  "options": [
+   "Under 30 min",
+   "30-60 min"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "language_word",
+  "label": "Primary language",
+  "options": [
+   "English",
+   "Spanish"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "page_word",
+  "label": "Page number",
+  "options": [
+   "1",
+   "2"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "stage_word",
+  "label": "Hiring stage",
+  "options": [
+   "Applied",
+   "Interview"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "wage_word",
+  "label": "Expected wage",
+  "options": [
+   "Hourly",
+   "Salary"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ },
+ {
+  "name": "recognized_label_in_longer_sentence",
+  "label": "Do you have an age requirement for travel?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "is_age_band": false,
+  "expect": ""
+ }
+]

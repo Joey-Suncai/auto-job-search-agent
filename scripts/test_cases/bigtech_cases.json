@@ -1,0 +1,471 @@
+[
+ {
+  "name": "amazon_basic_job_path_normalized",
+  "fn": "parse_amazon",
+  "args": [
+   {
+    "jobs": [
+     {
+      "title": "  Software   Engineer ",
+      "normalized_location": " Seattle,   WA ",
+      "job_path": "/en/jobs/123"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Software Engineer",
+    "location": "Seattle, WA",
+    "url": "https://www.amazon.jobs/en/jobs/123"
+   }
+  ]
+ },
+ {
+  "name": "amazon_location_fallback",
+  "fn": "parse_amazon",
+  "args": [
+   {
+    "jobs": [
+     {
+      "title": "Data Scientist",
+      "location": " New   York, NY ",
+      "job_path": "/en/jobs/456"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Data Scientist",
+    "location": "New York, NY",
+    "url": "https://www.amazon.jobs/en/jobs/456"
+   }
+  ]
+ },
+ {
+  "name": "amazon_id_icims_fallback",
+  "fn": "parse_amazon",
+  "args": [
+   {
+    "jobs": [
+     {
+      "title": "Product Manager",
+      "normalized_location": "Remote",
+      "id_icims": "999"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Product Manager",
+    "location": "Remote",
+    "url": "https://www.amazon.jobs/en/jobs/999"
+   }
+  ]
+ },
+ {
+  "name": "amazon_job_path_preferred_over_id",
+  "fn": "parse_amazon",
+  "args": [
+   {
+    "jobs": [
+     {
+      "title": "SDE",
+      "normalized_location": "Seattle",
+      "job_path": "/en/jobs/abc",
+      "id_icims": "999"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "SDE",
+    "location": "Seattle",
+    "url": "https://www.amazon.jobs/en/jobs/abc"
+   }
+  ]
+ },
+ {
+  "name": "amazon_skip_missing_title_or_route",
+  "fn": "parse_amazon",
+  "args": [
+   {
+    "jobs": [
+     {
+      "normalized_location": "Nowhere",
+      "job_path": "/en/jobs/1"
+     },
+     {
+      "title": "Valid Role",
+      "normalized_location": "Austin",
+      "job_path": "/en/jobs/2"
+     },
+     {
+      "title": "No Route",
+      "normalized_location": "Boston"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Valid Role",
+    "location": "Austin",
+    "url": "https://www.amazon.jobs/en/jobs/2"
+   }
+  ]
+ },
+ {
+  "name": "apple_res_wrapper_multi_location",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "res": {
+     "searchResults": [
+      {
+       "postingTitle": "  iOS   Engineer ",
+       "positionId": "P1",
+       "transformedPostingTitle": "ios-engineer",
+       "locations": [
+        {
+         "name": " Cupertino,   CA "
+        },
+        {
+         "name": "Austin, TX"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "title": "iOS Engineer",
+    "location": "Cupertino, CA",
+    "url": "https://jobs.apple.com/en-us/details/P1/ios-engineer"
+   },
+   {
+    "title": "iOS Engineer",
+    "location": "Austin, TX",
+    "url": "https://jobs.apple.com/en-us/details/P1/ios-engineer"
+   }
+  ]
+ },
+ {
+  "name": "apple_bare_searchResults_wrapper",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "searchResults": [
+     {
+      "postingTitle": "Designer",
+      "positionId": "P2",
+      "transformedPostingTitle": "designer",
+      "locations": [
+       {
+        "name": "Remote"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Designer",
+    "location": "Remote",
+    "url": "https://jobs.apple.com/en-us/details/P2/designer"
+   }
+  ]
+ },
+ {
+  "name": "apple_missing_slug_uses_role",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "res": {
+     "searchResults": [
+      {
+       "postingTitle": "QA Engineer",
+       "positionId": "P3",
+       "locations": [
+        {
+         "name": "Boston"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "title": "QA Engineer",
+    "location": "Boston",
+    "url": "https://jobs.apple.com/en-us/details/P3/role"
+   }
+  ]
+ },
+ {
+  "name": "apple_posting_without_locations",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "searchResults": [
+     {
+      "postingTitle": "Researcher",
+      "positionId": "P4",
+      "transformedPostingTitle": "researcher"
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Researcher",
+    "location": "",
+    "url": "https://jobs.apple.com/en-us/details/P4/researcher"
+   }
+  ]
+ },
+ {
+  "name": "apple_skip_missing_positionId",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "res": {
+     "searchResults": [
+      {
+       "postingTitle": "No ID",
+       "locations": [
+        {
+         "name": "NYC"
+        }
+       ]
+      },
+      {
+       "postingTitle": "Good",
+       "positionId": "P5",
+       "transformedPostingTitle": "good",
+       "locations": [
+        {
+         "name": "LA"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "expect": [
+   {
+    "title": "Good",
+    "location": "LA",
+    "url": "https://jobs.apple.com/en-us/details/P5/good"
+   }
+  ]
+ },
+ {
+  "name": "apple_skip_missing_title",
+  "fn": "parse_apple",
+  "args": [
+   {
+    "searchResults": [
+     {
+      "positionId": "P6",
+      "transformedPostingTitle": "bad",
+      "locations": [
+       {
+        "name": "Chicago"
+       }
+      ]
+     },
+     {
+      "postingTitle": "Analyst",
+      "positionId": "P7",
+      "transformedPostingTitle": "analyst",
+      "locations": [
+       {
+        "name": "Dallas"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "title": "Analyst",
+    "location": "Dallas",
+    "url": "https://jobs.apple.com/en-us/details/P7/analyst"
+   }
+  ]
+ },
+ {
+  "name": "google_relative_href_with_query",
+  "fn": "parse_google_list",
+  "args": [
+   "<html><body><a href='./jobs/results/123-software-engineer?foo=bar' aria-label='Learn more about Software Engineer'>Software Engineer</a></body></html>"
+  ],
+  "expect": [
+   {
+    "title": "Software Engineer",
+    "location": "",
+    "url": "https://www.google.com/about/careers/applications/jobs/results/123-software-engineer"
+   }
+  ]
+ },
+ {
+  "name": "google_absolute_about_href",
+  "fn": "parse_google_list",
+  "args": [
+   "<a href='/about/careers/applications/jobs/results/456-data-scientist' aria-label='Learn more about Data Scientist'>Data Scientist</a>"
+  ],
+  "expect": [
+   {
+    "title": "Data Scientist",
+    "location": "",
+    "url": "https://www.google.com/about/careers/applications/jobs/results/456-data-scientist"
+   }
+  ]
+ },
+ {
+  "name": "google_duplicate_url_kept_once",
+  "fn": "parse_google_list",
+  "args": [
+   "<a href='./jobs/results/789-product-manager?src=1' aria-label='Learn more about Product Manager'>One</a><a href='/about/careers/applications/jobs/results/789-product-manager?src=2' aria-label='Learn more about Product Manager'>Two</a>"
+  ],
+  "expect": [
+   {
+    "title": "Product Manager",
+    "location": "",
+    "url": "https://www.google.com/about/careers/applications/jobs/results/789-product-manager"
+   }
+  ]
+ },
+ {
+  "name": "google_ignore_no_aria_or_no_digits",
+  "fn": "parse_google_list",
+  "args": [
+   "<a href='./jobs/results/111-no-aria'>No aria</a><a href='./jobs/results/abc' aria-label='Learn more about Bad'>Bad</a>"
+  ],
+  "expect": []
+ },
+ {
+  "name": "google_multiple_results_page_order",
+  "fn": "parse_google_list",
+  "args": [
+   "<a href='./jobs/results/111-first' aria-label='Learn more about First'>First</a><a href='./jobs/results/no-digits'>Ignored</a><a href='/about/careers/applications/jobs/results/222-second?x=y' aria-label='Learn more about Second'>Second</a>"
+  ],
+  "expect": [
+   {
+    "title": "First",
+    "location": "",
+    "url": "https://www.google.com/about/careers/applications/jobs/results/111-first"
+   },
+   {
+    "title": "Second",
+    "location": "",
+    "url": "https://www.google.com/about/careers/applications/jobs/results/222-second"
+   }
+  ]
+ },
+ {
+  "name": "bigtech_amazon_case_insensitive",
+  "fn": "big_tech",
+  "args": [
+   "aMaZoN"
+  ],
+  "expect": [
+   [
+    "amazon",
+    "amazon"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_amazon_web_services_alias",
+  "fn": "big_tech",
+  "args": [
+   "Amazon Web Services (AWS)"
+  ],
+  "expect": [
+   [
+    "amazon",
+    "amazon"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_aws_alias",
+  "fn": "big_tech",
+  "args": [
+   "aws"
+  ],
+  "expect": [
+   [
+    "amazon",
+    "amazon"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_amazon_robotics_prefix",
+  "fn": "big_tech",
+  "args": [
+   "Amazon Robotics"
+  ],
+  "expect": [
+   [
+    "amazon",
+    "amazon"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_apple_inc_prefix",
+  "fn": "big_tech",
+  "args": [
+   "Apple Inc."
+  ],
+  "expect": [
+   [
+    "apple",
+    "apple"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_applied_materials_none",
+  "fn": "big_tech",
+  "args": [
+   "Pellwyndel"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bigtech_google_llc_prefix",
+  "fn": "big_tech",
+  "args": [
+   "Google LLC"
+  ],
+  "expect": [
+   [
+    "google",
+    "google"
+   ]
+  ]
+ },
+ {
+  "name": "bigtech_google_deepmind_none",
+  "fn": "big_tech",
+  "args": [
+   "Google DeepMind"
+  ],
+  "expect": []
+ }
+]

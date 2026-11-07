@@ -1,0 +1,703 @@
+[
+ {
+  "name": "Valid minimal request, no origin header, host localhost without port → 200",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   200,
+   {
+    "id": "J12345",
+    "pref": "up"
+   }
+  ],
+  "spec_quote": "The origin header must be absent, the literal \"null\", or \"http://localhost\" / \"http://127.0.0.1\" optionally with \":port\" ... Otherwise → [200, {\"id\": id, \"pref\": pref}].",
+  "ambiguous": false
+ },
+ {
+  "name": "Path with query string, host and origin with port, content-type with charset → 200",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref?ref=dashboard",
+  "headers": {
+   "host": "127.0.0.1:8766",
+   "origin": "http://127.0.0.1:8766",
+   "x-jsa-pref": "1",
+   "content-type": "application/json; charset=utf-8"
+  },
+  "body": "{\"id\":\"J987654\",\"pref\":\"down\"}",
+  "expect": [
+   200,
+   {
+    "id": "J987654",
+    "pref": "down"
+   }
+  ],
+  "spec_quote": "The path without its query string must be exactly \"/pref\" ... parameters like \"; charset=utf-8\" are fine ... Otherwise → [200, {\"id\": id, \"pref\": pref}].",
+  "ambiguous": false
+ },
+ {
+  "name": "Host check wins over path and method: bad host with GET /prefs → 421",
+  "kind": "validate",
+  "method": "GET",
+  "path": "/prefs",
+  "headers": {
+   "host": "example.com:8766",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   421,
+   {
+    "error": "bad host"
+   }
+  ],
+  "spec_quote": "Checks, in this order (the first that fails decides the answer) ... The host header must be \"localhost\" or \"127.0.0.1\", optionally followed by \":\" and a port of 1–5 digits (anything else, or no host header) → 421 \"bad host\"",
+  "ambiguous": false
+ },
+ {
+  "name": "No host header at all → 421 bad host",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "x-jsa-pref": "1",
+   "content-type": "application/json",
+   "origin": "http://localhost"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   421,
+   {
+    "error": "bad host"
+   }
+  ],
+  "spec_quote": "(anything else, or no host header) → 421 \"bad host\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Host port with 6 digits → 421 bad host",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost:123456",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   421,
+   {
+    "error": "bad host"
+   }
+  ],
+  "spec_quote": "optionally followed by \":\" and a port of 1–5 digits (anything else, or no host header) → 421 \"bad host\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Trailing slash path /pref/ → 404 unknown path",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref/",
+  "headers": {
+   "host": "127.0.0.1:8766",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   404,
+   {
+    "error": "unknown path"
+   }
+  ],
+  "spec_quote": "The path without its query string must be exactly \"/pref\" → 404 \"unknown path\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Path check runs before method: GET on /other → 404 not 405",
+  "kind": "validate",
+  "method": "GET",
+  "path": "/other",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   404,
+   {
+    "error": "unknown path"
+   }
+  ],
+  "spec_quote": "Checks, in this order (the first that fails decides the answer) ... 2. The path without its query string must be exactly \"/pref\" → 404 \"unknown path\" 3. The method must be \"POST\" → 405 \"POST only\"",
+  "ambiguous": false
+ },
+ {
+  "name": "GET on /pref → 405 POST only",
+  "kind": "validate",
+  "method": "GET",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   405,
+   {
+    "error": "POST only"
+   }
+  ],
+  "spec_quote": "The method must be \"POST\" → 405 \"POST only\"",
+  "ambiguous": false
+ },
+ {
+  "name": "https origin → 403 origin not allowed",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "127.0.0.1:8766",
+   "origin": "https://localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   403,
+   {
+    "error": "origin not allowed"
+   }
+  ],
+  "spec_quote": "the literal \"null\", or \"http://localhost\" / \"http://127.0.0.1\" optionally with \":port\" (1–5 digits) and nothing else (no path, no https, no other host) → 403 \"origin not allowed\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Origin with extra path → 403 origin not allowed",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "127.0.0.1:8766",
+   "origin": "http://localhost:3000/some/path",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   403,
+   {
+    "error": "origin not allowed"
+   }
+  ],
+  "spec_quote": "optionally with \":port\" (1–5 digits) and nothing else (no path, no https, no other host) → 403 \"origin not allowed\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Literal \"null\" origin is allowed → 200",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost:8766",
+   "origin": "null",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J123456\",\"pref\":\"clear\"}",
+  "expect": [
+   200,
+   {
+    "id": "J123456",
+    "pref": "clear"
+   }
+  ],
+  "spec_quote": "The origin header must be absent, the literal \"null\", or \"http://localhost\" / \"http://127.0.0.1\" ... Otherwise → [200, {\"id\": id, \"pref\": pref}].",
+  "ambiguous": false
+ },
+ {
+  "name": "Missing x-jsa-pref header → 403 missing X-JSA-Pref header",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   403,
+   {
+    "error": "missing X-JSA-Pref header"
+   }
+  ],
+  "spec_quote": "The x-jsa-pref header must be exactly \"1\" → 403 \"missing X-JSA-Pref header\"",
+  "ambiguous": false
+ },
+ {
+  "name": "x-jsa-pref value \"true\" is not exactly \"1\" → 403",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "true",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   403,
+   {
+    "error": "missing X-JSA-Pref header"
+   }
+  ],
+  "spec_quote": "The x-jsa-pref header must be exactly \"1\" → 403 \"missing X-JSA-Pref header\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Missing content-type header → 415",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}",
+  "expect": [
+   415,
+   {
+    "error": "Content-Type must be application/json"
+   }
+  ],
+  "spec_quote": "The content-type header must start with \"application/json\" (case-insensitive; parameters like \"; charset=utf-8\" are fine) → 415 \"Content-Type must be application/json\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Upper-case content-type with parameter → 200 (case-insensitive)",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "127.0.0.1:8766",
+   "x-jsa-pref": "1",
+   "content-type": "APPLICATION/JSON; charset=UTF-8"
+  },
+  "body": "{\"id\":\"J543210\",\"pref\":\"down\"}",
+  "expect": [
+   200,
+   {
+    "id": "J543210",
+    "pref": "down"
+   }
+  ],
+  "spec_quote": "The content-type header must start with \"application/json\" (case-insensitive; parameters like \"; charset=utf-8\" are fine) ... Otherwise → [200, {\"id\": id, \"pref\": pref}].",
+  "ambiguous": false
+ },
+ {
+  "name": "Body of 1025 bytes (valid JSON padded with spaces) → 413 body too large",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json; charset=utf-8"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ",
+  "expect": [
+   413,
+   {
+    "error": "body too large"
+   }
+  ],
+  "spec_quote": "The body must be at most 1024 bytes → 413 \"body too large\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Content-type check precedes size check: text/plain with oversized body → 415",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "text/plain"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\"}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ",
+  "expect": [
+   415,
+   {
+    "error": "Content-Type must be application/json"
+   }
+  ],
+  "spec_quote": "Checks, in this order (the first that fails decides the answer) ... 6. The content-type header must start with \"application/json\" ... → 415 ... 7. The body must be at most 1024 bytes → 413",
+  "ambiguous": false
+ },
+ {
+  "name": "Non-JSON body → 400 body is not JSON",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "this is not json",
+  "expect": [
+   400,
+   {
+    "error": "body is not JSON"
+   }
+  ],
+  "spec_quote": "The body must parse as JSON → 400 \"body is not JSON\"",
+  "ambiguous": false
+ },
+ {
+  "name": "JSON array body (not an object) → 400 body must be a JSON object {id, pref}",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "[1,2,3]",
+  "expect": [
+   400,
+   {
+    "error": "body must be a JSON object {id, pref}"
+   }
+  ],
+  "spec_quote": "It must be a JSON object whose keys are exactly \"id\" and \"pref\" (no more, no fewer) → 400 \"body must be a JSON object {id, pref}\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Object with an extra key → 400 body must be a JSON object {id, pref}",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"up\",\"extra\":\"x\"}",
+  "expect": [
+   400,
+   {
+    "error": "body must be a JSON object {id, pref}"
+   }
+  ],
+  "spec_quote": "It must be a JSON object whose keys are exactly \"id\" and \"pref\" (no more, no fewer) → 400 \"body must be a JSON object {id, pref}\"",
+  "ambiguous": false
+ },
+ {
+  "name": "id with only 3 digits → 400 bad id",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J123\",\"pref\":\"up\"}",
+  "expect": [
+   400,
+   {
+    "error": "bad id"
+   }
+  ],
+  "spec_quote": "id must be a string: \"J\" followed by 4 to 6 digits, nothing else → 400 \"bad id\"",
+  "ambiguous": false
+ },
+ {
+  "name": "pref \"UP\" (wrong case) → 400 pref must be up, down or clear",
+  "kind": "validate",
+  "method": "POST",
+  "path": "/pref",
+  "headers": {
+   "host": "localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"id\":\"J12345\",\"pref\":\"UP\"}",
+  "expect": [
+   400,
+   {
+    "error": "pref must be up, down or clear"
+   }
+  ],
+  "spec_quote": "pref must be one of \"up\", \"down\", \"clear\" (exact, lower case) → 400 \"pref must be up, down or clear\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Apply up to a single id without prior preference",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00001",
+    "company": "Acme",
+    "title": "Data Analyst Intern"
+   }
+  ],
+  "ids": [
+   "J00001"
+  ],
+  "pref": "up",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00001": "up"
+   },
+   "log_lines": 1
+  },
+  "spec_quote": "pref \"up\" sets joey_pref = \"up\" and joey_pref_on = today's date (YYYY-MM-DD) on each id ... one log line per id is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "Apply down to two ids, one of which was already up",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00001",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "joey_pref": "up",
+    "joey_pref_on": "2024-05-01"
+   },
+   {
+    "id": "J00002",
+    "company": "Beta",
+    "title": "BI Analyst"
+   }
+  ],
+  "ids": [
+   "J00001",
+   "J00002"
+  ],
+  "pref": "down",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00001": "down",
+    "J00002": "down"
+   },
+   "log_lines": 2
+  },
+  "spec_quote": "\"down\" likewise with \"down\" ... one log line per id is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "Apply clear to a row that had a preference",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00003",
+    "company": "Gamma",
+    "title": "Quant Intern",
+    "joey_pref": "down",
+    "joey_pref_on": "2024-04-04"
+   }
+  ],
+  "ids": [
+   "J00003"
+  ],
+  "pref": "clear",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00003": null
+   },
+   "log_lines": 1
+  },
+  "spec_quote": "\"clear\" removes both fields (a row without them stays without them) ... one log line per id is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "Apply clear to a row that had no preference: unchanged, still one log line",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00004",
+    "company": "Delta",
+    "title": "Ops Intern"
+   }
+  ],
+  "ids": [
+   "J00004"
+  ],
+  "pref": "clear",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00004": null
+   },
+   "log_lines": 1
+  },
+  "spec_quote": "\"clear\" removes both fields (a row without them stays without them) ... one log line per id is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "One unknown id in the list: nothing written, no log lines",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00005",
+    "company": "Eps",
+    "title": "ML Intern",
+    "joey_pref": "up",
+    "joey_pref_on": "2024-01-02"
+   }
+  ],
+  "ids": [
+   "J00005",
+   "J99999"
+  ],
+  "pref": "down",
+  "expect": {
+   "error": "unknown",
+   "prefs_after": {
+    "J00005": "up"
+   },
+   "log_lines": 0
+  },
+  "spec_quote": "If any id is not in the table, nothing is written (table and log unchanged) and the unknown ids are reported.",
+  "ambiguous": false
+ },
+ {
+  "name": "Only the listed id changes; other rows keep their preferences",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00010",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "joey_pref": "up",
+    "joey_pref_on": "2024-02-02"
+   },
+   {
+    "id": "J00011",
+    "company": "Beta",
+    "title": "BI Analyst",
+    "joey_pref": "down",
+    "joey_pref_on": "2024-03-03"
+   },
+   {
+    "id": "J00012",
+    "company": "Gamma",
+    "title": "Ops Intern"
+   }
+  ],
+  "ids": [
+   "J00010"
+  ],
+  "pref": "down",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00010": "down",
+    "J00011": "down",
+    "J00012": null
+   },
+   "log_lines": 1
+  },
+  "spec_quote": "Rows other than the given ids are not changed by the preference. ... one log line per id is appended",
+  "ambiguous": false
+ },
+ {
+  "name": "Unknown id (J88888) among otherwise valid ids: no writes at all",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00020",
+    "company": "Acme",
+    "title": "Data Analyst Intern"
+   },
+   {
+    "id": "J00021",
+    "company": "Beta",
+    "title": "BI Analyst",
+    "joey_pref": "up",
+    "joey_pref_on": "2024-06-06"
+   }
+  ],
+  "ids": [
+   "J00020",
+   "J88888"
+  ],
+  "pref": "up",
+  "expect": {
+   "error": "unknown",
+   "prefs_after": {
+    "J00020": null,
+    "J00021": "up"
+   },
+   "log_lines": 0
+  },
+  "spec_quote": "If any id is not in the table, nothing is written (table and log unchanged) and the unknown ids are reported.",
+  "ambiguous": false
+ },
+ {
+  "name": "Apply up to three ids in a four-row table: three log lines, fourth row untouched",
+  "kind": "apply",
+  "jobs": [
+   {
+    "id": "J00030",
+    "company": "Acme",
+    "title": "Data Analyst Intern"
+   },
+   {
+    "id": "J00031",
+    "company": "Beta",
+    "title": "BI Analyst",
+    "joey_pref": "down",
+    "joey_pref_on": "2024-07-07"
+   },
+   {
+    "id": "J00032",
+    "company": "Gamma",
+    "title": "Ops Intern"
+   },
+   {
+    "id": "J00033",
+    "company": "Delta",
+    "title": "Quant Intern",
+    "joey_pref": "down",
+    "joey_pref_on": "2024-08-08"
+   }
+  ],
+  "ids": [
+   "J00030",
+   "J00031",
+   "J00032"
+  ],
+  "pref": "up",
+  "expect": {
+   "error": null,
+   "prefs_after": {
+    "J00030": "up",
+    "J00031": "up",
+    "J00032": "up",
+    "J00033": "down"
+   },
+   "log_lines": 3
+  },
+  "spec_quote": "\"up\" sets joey_pref = \"up\" ... on each id ... Rows other than the given ids are not changed by the preference. ... one log line per id is appended",
+  "ambiguous": false
+ }
+]

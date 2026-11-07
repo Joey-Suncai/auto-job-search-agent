@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "args": {"label": str, "type": "radio" | "select", "options": ["Yes", "No"]}, "expect": {"value": "Yes" | "No"}, "spec_quote": str, "ambiguous": false}.
+Write 24 cases: 8 future / after-graduation "without sponsorship" questions (rule 2), 8 now / internship / this-position "without sponsorship" questions (rule 3), 8 require/need questions (rule 4: 4 future-or-now → Yes, 4 now-only → No). Vary wording like real application forms (authorized, eligible, able, legally permitted; employer / visa / immigration sponsorship).

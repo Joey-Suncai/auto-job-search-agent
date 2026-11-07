@@ -1,0 +1,151 @@
+[
+ {
+  "name": "removed-posting text (mixed case) in longer page text, no controls → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "LinkedIn Jobs | Sign in | Join now | Job ID PROVIDED MAY NOT BE VALID — This job might have expired. Browse similar jobs below."
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "job posting has been removed text in longer page text, no controls → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "Skip to main content. LinkedIn. Home. Jobs. The job posting has been removed by the poster. Explore other opportunities at Acme."
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "This job is no longer available (all caps) in longer page text, no controls → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "LinkedIn — Jobs — THIS JOB IS NO LONGER AVAILABLE. See similar jobs from Acme below."
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "removed-posting text in head but a real external Apply control present → external decides",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "LinkedIn Jobs. This job is no longer available — Job ID provided may not be valid."
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4476043330",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4476043330"
+  }
+ },
+ {
+  "name": "removed-posting text in head but an Easy Apply control present → easy decides",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "https://www.linkedin.com/jobs/view/4476043330/apply",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "LinkedIn Jobs. The job posting has been removed. Job ID provided may not be valid."
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "head without any removed-posting text, no controls → unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "LinkedIn Jobs. Data Intern at Acme. Full-time · Remote. About the job: build dashboards."
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "empty head, no controls → unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": ""
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "removed-posting text in head with a non-Apply control present → rule 0 does not fire, unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "Save this job",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "LinkedIn Jobs. This job is no longer available."
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ }
+]

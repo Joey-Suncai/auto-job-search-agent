@@ -1,0 +1,106 @@
+[
+ {
+  "name": "runner_status of tiktok is testing",
+  "fn": "runner_status",
+  "args": {
+   "platform": "tiktok"
+  },
+  "expect": "testing",
+  "spec": "\"testing\" — platforms with a runner that is not certified yet: ... icims, jibe, tiktok (dry run only)"
+ },
+ {
+  "name": "runner_status of bytedance is none (known platform without a runner)",
+  "fn": "runner_status",
+  "args": {
+   "platform": "bytedance"
+  },
+  "expect": "none",
+  "spec": "\"none\" — any other known platform name ...; joinbytedance.com / jobs.bytedance.com → bytedance (a known platform without a runner)"
+ },
+ {
+  "name": "lifeattiktok.com url gives tiktok/testing",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://lifeattiktok.com/careers/apply"
+   }
+  },
+  "expect": {
+   "platform": "tiktok",
+   "runner": "testing"
+  },
+  "spec": "lifeattiktok.com / careers.tiktok.com → tiktok; \"testing\" — ... tiktok (dry run only)"
+ },
+ {
+  "name": "www subdomain of lifeattiktok.com still gives tiktok",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://www.lifeattiktok.com/jobs/123"
+   }
+  },
+  "expect": {
+   "platform": "tiktok",
+   "runner": "testing"
+  },
+  "spec": "lifeattiktok.com / careers.tiktok.com → tiktok; (subdomains count, e.g. boards.greenhouse.io, acme.wd5.myworkdayjobs.com)"
+ },
+ {
+  "name": "careers.tiktok.com in ats_url gives tiktok",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://careers.tiktok.com/position/456",
+    "url": "https://example.com/job"
+   }
+  },
+  "expect": {
+   "platform": "tiktok",
+   "runner": "testing"
+  },
+  "spec": "The platform is found from \"ats_url\" first, then \"url\", by the host name: ... lifeattiktok.com / careers.tiktok.com → tiktok"
+ },
+ {
+  "name": "joinbytedance.com url gives bytedance with no runner",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://joinbytedance.com/careers"
+   }
+  },
+  "expect": {
+   "platform": "bytedance",
+   "runner": "none"
+  },
+  "spec": "joinbytedance.com / jobs.bytedance.com → bytedance (a known platform without a runner); \"none\" — any other known platform name"
+ },
+ {
+  "name": "jobs.bytedance.com in ats_url gives bytedance with no runner",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://jobs.bytedance.com/en/position/789"
+   }
+  },
+  "expect": {
+   "platform": "bytedance",
+   "runner": "none"
+  },
+  "spec": "joinbytedance.com / jobs.bytedance.com → bytedance (a known platform without a runner)"
+ },
+ {
+  "name": "ats_url ByteDance page wins over a LinkedIn url",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://jobs.bytedance.com/en/position/321",
+    "url": "https://www.linkedin.com/jobs/view/654"
+   }
+  },
+  "expect": {
+   "platform": "bytedance",
+   "runner": "none"
+  },
+  "spec": "The platform is found from \"ats_url\" first, then \"url\", by the host name: ... joinbytedance.com / jobs.bytedance.com → bytedance"
+ }
+]

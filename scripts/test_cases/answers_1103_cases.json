@@ -1,0 +1,172 @@
+[
+ {
+  "name": "previous_employee_certify_no",
+  "label": "Please certify whether you are a previous employee.",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "former_employee_acme_no",
+  "label": "Are you a former employee of Acme?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "previously_employed_globex_no",
+  "label": "Have you previously been employed by Globex?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "prior_employee_initech_no",
+  "label": "Are you a prior employee of Initech?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "ever_worked_umbrella_no",
+  "label": "Have you ever worked for Umbrella Corporation?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "former_employee_hooli_no",
+  "label": "Were you a former employee of Hooli?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "previously_worked_stark_no",
+  "label": "Have you previously worked for Stark Industries?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "previous_employee_wayne_no",
+  "label": "Please certify whether you are a previous employee of Wayne Enterprises.",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "former_employee_cyberdyne_no",
+  "label": "Are you a former employee of Cyberdyne Systems?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "previously_employed_wonka_no",
+  "label": "Have you previously been employed by Wonka Industries?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "date_available_begin_employment",
+  "label": "Date available to begin employment?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "date_available_to_start",
+  "label": "Date you are available to start",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "earliest_start_date",
+  "label": "What is your earliest start date?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "available_start_date",
+  "label": "Available start date",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "when_available_begin_work",
+  "label": "When are you available to begin work?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "available_start_employment_date",
+  "label": "What date are you available to start employment?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "earliest_available_start_date",
+  "label": "Earliest available start date?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "available_start_date_for_employment",
+  "label": "What is your available start date for employment?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "date_can_begin_work",
+  "label": "Date you can begin work",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ },
+ {
+  "name": "earliest_available_employment_start_date",
+  "label": "What is your earliest available employment start date?",
+  "type": "date",
+  "options": [],
+  "expect": "06/14/2027"
+ }
+]

@@ -1,0 +1,464 @@
+[
+ {
+  "name": "submit_gate_no_advance_wins_over_unknowns",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   true,
+   [
+    {
+     "fields": [
+      {
+       "label": "First Name",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [
+      "Are you legally authorized to work?"
+     ],
+     "errors": []
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "dry-run",
+   "no-advance"
+  ],
+  "spec": "1. `no_advance` true → `[\"dry-run\", \"no-advance\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_not_approved_wins_over_unknowns_and_problems",
+  "fn": "submit_gate",
+  "args": [
+   false,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Email",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [
+      "Which office do you prefer?"
+     ],
+     "errors": []
+    },
+    {
+     "fields": [
+      {
+       "label": "Phone",
+       "required": true,
+       "ok": false
+      }
+     ],
+     "problems": [
+      "Phone number could not be verified"
+     ],
+     "unknown": [],
+     "errors": []
+    }
+   ],
+   "ask"
+  ],
+  "expect": [
+   "dry-run",
+   "not-approved"
+  ],
+  "spec": "2. `submit` false → `[\"dry-run\", \"not-approved\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_unknown_wins_over_problems_check",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Name",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [
+      "What is your salary expectation?"
+     ],
+     "errors": []
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "needs-user",
+   "unknown"
+  ],
+  "spec": "3. any step has a non-empty `unknown` list → `[\"needs-user\", \"unknown\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_step_problem_readback",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Resume",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [
+      "Resume could not be attached"
+     ],
+     "unknown": [],
+     "errors": []
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "needs-user",
+   "readback"
+  ],
+  "spec": "4. any step has a non-empty `problems` list, or any field in any step whose `ok` is not true → `[\"needs-user\", \"readback\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_field_without_ok_is_not_ok",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Work Authorization",
+       "required": true
+      }
+     ],
+     "problems": [],
+     "unknown": [],
+     "errors": []
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "needs-user",
+   "readback"
+  ],
+  "spec": "A field with `ok` missing counts as not ok. … any field in any step whose `ok` is not true → `[\"needs-user\", \"readback\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_no_fields_at_all_is_empty",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [],
+     "problems": [],
+     "unknown": [],
+     "errors": []
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "needs-user",
+   "empty"
+  ],
+  "spec": "5. no fields at all across every step → `[\"needs-user\", \"empty\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_inactivity_notice_and_earlier_step_errors_ignored",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Name",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [],
+     "errors": [
+      "Please correct the highlighted errors."
+     ]
+    },
+    {
+     "fields": [
+      {
+       "label": "Questions",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [],
+     "errors": [
+      "You will be logged out in 45 seconds due to inactivity"
+     ]
+    }
+   ],
+   "ok"
+  ],
+  "expect": [
+   "press",
+   "ok"
+  ],
+  "spec": "The inactivity notice \"You will be logged out in N seconds due to inactivity\" (any N, any case) is not a real error, and neither is an empty / whitespace-only string. Errors of earlier steps are ignored (those steps already moved on).",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_gate_page_error_wins_over_consent_ask",
+  "fn": "submit_gate",
+  "args": [
+   true,
+   false,
+   [
+    {
+     "fields": [
+      {
+       "label": "Name",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [],
+     "errors": []
+    },
+    {
+     "fields": [
+      {
+       "label": "SSN",
+       "required": true,
+       "ok": true
+      }
+     ],
+     "problems": [],
+     "unknown": [],
+     "errors": [
+      "Error: This field is invalid."
+     ]
+    }
+   ],
+   "ask"
+  ],
+  "expect": [
+   "needs-user",
+   "page-error"
+  ],
+  "spec": "6. the LAST step's `errors` contain a real error → `[\"needs-user\", \"page-error\"]`.",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_done_no_step_bar",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/thank-you",
+   "Thank you for applying! We will be in touch.",
+   null
+  ],
+  "expect": "done",
+  "spec": "\"done\" when the text contains a thank-you / submitted sentence (case-insensitive) … AND either there is no step bar, or the current step is the last one (n = m) …",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_done_with_bar_on_last_step",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/review",
+   "Step 1 of 4. Candidate Profile (Complete Step) Step 4 of 4. Review (Current Step) Your application has been submitted.",
+   3
+  ],
+  "expect": "done",
+  "spec": "\"done\" when the text contains a thank-you / submitted sentence (case-insensitive) … AND either there is no step bar, or the current step is the last one (n = m) …",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_thank_you_on_ordinary_step_is_next",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/questions",
+   "Step 2 of 4. Candidate Questions (Current Step) Step 3 of 4. Assessments (Incomplete Step) Thank you for applying",
+   1
+  ],
+  "expect": "next",
+  "spec": "A thank-you sentence on an earlier, ordinary step (e.g. \"Step 2 of 4. Candidate Questions (Current Step)\") is not \"done\". … otherwise \"next\" when there is a step bar and `before` is null, or its current step number is greater than `before`.",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_next_with_null_before",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/profile",
+   "Step 1 of 4. Candidate Profile (Current Step) Step 2 of 4. Candidate Questions (Incomplete Step)",
+   null
+  ],
+  "expect": "next",
+  "spec": "otherwise \"next\" when there is a step bar and `before` is null, or its current step number is greater than `before`.",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_refused_when_step_does_not_advance",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/assessments",
+   "Step 1 of 4. Candidate Profile (Complete Step) Step 3 of 4. Assessments (Current Step) Step 4 of 4. Review (Incomplete Step)",
+   3
+  ],
+  "expect": "refused",
+  "spec": "otherwise \"refused\" when there is a step bar whose current step number is equal to or smaller than `before` (the page did not move forward) …",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_refused_no_bar_with_error_word",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/review",
+   "We could not save your application. Please check the required fields and try again.",
+   2
+  ],
+  "expect": "refused",
+  "spec": "… or when there is no step bar, `before` is a number, and the text contains an error word: \"required\", \"please correct\", \"please check\", \"invalid\", \"error\".",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_blank_page_pending",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/review",
+   "",
+   null
+  ],
+  "expect": "pending",
+  "spec": "otherwise \"pending\" (blank page, redirect, unrelated text, a login page) — the runner keeps waiting and then looks for the company's receipt e-mail.",
+  "ambiguous": false
+ },
+ {
+  "name": "after_submit_thank_you_for_interest_alone_is_pending",
+  "fn": "after_submit",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/questions",
+   "Thank you for your interest in Acme. Sign in to your account to continue.",
+   null
+  ],
+  "expect": "pending",
+  "spec": "\"thank you for your interest\" alone is not a thank-you sentence.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_gate_empty_text_ok",
+  "fn": "consent_gate",
+  "args": [
+   "",
+   []
+  ],
+  "expect": "ok",
+  "spec": "empty / whitespace-only / null text (no consent box) → \"ok\".",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_gate_privacy_notice_ok",
+  "fn": "consent_gate",
+  "args": [
+   "We collect and process your personal data for the purposes of this application, as described in our privacy notice.",
+   []
+  ],
+  "expect": "ok",
+  "spec": "anything else → \"ok\": a privacy notice / data-processing consent for this application …",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_gate_interview_terms_ok",
+  "fn": "consent_gate",
+  "args": [
+   "I acknowledge the interview terms: no AI tools may be used during interviews, no photos or recordings are permitted in interviews, and I agree to a background check.",
+   []
+  ],
+  "expect": "ok",
+  "spec": "anything else → \"ok\": … and the interview terms the candidate accepted on 2026-11-03: no AI tools during interviews, photos or recordings in interviews, a background check.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_gate_text_messages_beyond_application_ask",
+  "fn": "consent_gate",
+  "args": [
+   "I agree to receive text messages from Acme about my application and other marketing communications.",
+   []
+  ],
+  "expect": "ask",
+  "spec": "\"ask\" when the text contains wording beyond the application (case-insensitive): … \"marketing\", … or a consent / agreement to calls, text messages, texts or SMS (\"I agree to receive text messages\", \"consent to SMS\").",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_gate_beyond_wording_with_approved_snippet_ok",
+  "fn": "consent_gate",
+  "args": [
+   "I AGREE to receive   text messages from Acme.",
+   [
+    {
+     "contains": "agree to receive text messages"
+    }
+   ]
+  ],
+  "expect": "ok",
+  "spec": "… unless the text also contains one of the `approved` snippets (list of strings or of objects `{\"contains\": str}`), compared case- and whitespace-insensitively; an empty snippet never matches → then \"ok\".",
+  "ambiguous": false
+ },
+ {
+  "name": "posting_key_classic_tenant_with_slug",
+  "fn": "posting_key",
+  "args": [
+   "https://careers-acme.icims.com/jobs/12345/software-engineer/candidate"
+  ],
+  "expect": "careers-acme.icims.com/jobs/12345",
+  "spec": "`https://<tenant>.icims.com/jobs/<id>/<anything>` (any path after the id: `/login`, `/job`, `/<slug>/candidate`, any query or fragment) → `\"<tenant>.icims.com/jobs/<id>\"` with the host lower-cased …",
+  "ambiguous": false
+ },
+ {
+  "name": "posting_key_login_icims_default_rule",
+  "fn": "posting_key",
+  "args": [
+   "https://login.icims.com/login?redirect=%2Fjobs%2F12345#top"
+  ],
+  "expect": "https://login.icims.com/login",
+  "spec": "`login.icims.com/…` is not a posting: it falls through to the default rule (the URL without its query and fragment).",
+  "ambiguous": false
+ },
+ {
+  "name": "posting_key_posting_with_query_and_uppercase_host",
+  "fn": "posting_key",
+  "args": [
+   "https://USCareers-Acme.iCIMS.com/jobs/987/senior-analyst?ref=abc#apply"
+  ],
+  "expect": "uscareers-acme.icims.com/jobs/987",
+  "spec": "`https://<tenant>.icims.com/jobs/<id>/<anything>` (any path after the id: `/login`, `/job`, `/<slug>/candidate`, any query or fragment) → `\"<tenant>.icims.com/jobs/<id>\"` with the host lower-cased; `<tenant>` may contain letters, digits, dots and dashes (e.g. `careers-acme`, `uscareers-acme`).",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,137 @@
+[
+ {
+  "id": "n1",
+  "fn": "last_note",
+  "input": {
+   "output": "prep done\nopened form\nWaiting for Joey to sign in to Ashby"
+  },
+  "expect": "Waiting for Joey to sign in to Ashby",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n2",
+  "fn": "last_note",
+  "input": {
+   "output": "opened form\nanswer needed: visa sponsorship?\nSTATUS login-timeout"
+  },
+  "expect": "answer needed: visa sponsorship?",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n3",
+  "fn": "last_note",
+  "input": {
+   "output": "STATUS login-timeout\nTIME 12s"
+  },
+  "expect": "",
+  "spec": "the last stdout line that is not a STATUS / TIME line ... \"\" when there is none."
+ },
+ {
+  "id": "n4",
+  "fn": "last_note",
+  "input": {
+   "output": "answer needed: salary expectation\nTIME 43s"
+  },
+  "expect": "answer needed: salary expectation",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n5",
+  "fn": "last_note",
+  "input": {
+   "output": "handed CAPTCHA to Joey\n\n\n"
+  },
+  "expect": "handed CAPTCHA to Joey",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n6",
+  "fn": "last_note",
+  "input": {
+   "output": "opened form\nSTATUS dry-run\nmore info needed\nSTATUS login-timeout"
+  },
+  "expect": "more info needed",
+  "spec": "the last `STATUS <word>` line is the status ... the reason is the last stdout line that is not a STATUS / TIME line."
+ },
+ {
+  "id": "n7",
+  "fn": "last_note",
+  "input": {
+   "output": "needs sign-in\n- 2026-11-06T02:18:18 STATUS login-timeout\n- 2026-11-06T02:18:18 TIME 12s"
+  },
+  "expect": "needs sign-in",
+  "spec": "a STATUS / TIME line may also carry the \"- <time> \" log prefix ... the reason is the last stdout line that is not a STATUS / TIME line."
+ },
+ {
+  "id": "n8",
+  "fn": "last_note",
+  "input": {
+   "output": "- 2026-11-06T02:18:18 handed sign-in to Joey\n- 2026-11-06T02:18:20 STATUS login-timeout"
+  },
+  "expect": "handed sign-in to Joey",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n9",
+  "fn": "last_note",
+  "input": {
+   "output": "- 2026-11-06T02:18:18 STATUS login-timeout\n- 2026-11-06T02:18:18 TIME 12s"
+  },
+  "expect": "",
+  "spec": "the last stdout line that is not a STATUS / TIME line ... \"\" when there is none."
+ },
+ {
+  "id": "n10",
+  "fn": "last_note",
+  "input": {
+   "output": "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\nSTATUS login-timeout"
+  },
+  "expect": "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
+  "spec": "last_note(output) returns ... at most 200 characters."
+ },
+ {
+  "id": "n11",
+  "fn": "last_note",
+  "input": {
+   "output": "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789\nSTATUS ok"
+  },
+  "expect": "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
+  "spec": "last_note(output) returns ... at most 200 characters."
+ },
+ {
+  "id": "n12",
+  "fn": "last_note",
+  "input": {
+   "output": ""
+  },
+  "expect": "",
+  "spec": "last_note(output) returns ... \"\" when there is none."
+ },
+ {
+  "id": "n13",
+  "fn": "last_note",
+  "input": {
+   "output": "- 2026-11-06T02:18:18 NOT submitted: CAPTCHA\n- 2026-11-06T02:18:19 STATUS login-timeout"
+  },
+  "expect": "NOT submitted: CAPTCHA",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ },
+ {
+  "id": "n14",
+  "fn": "last_note",
+  "input": {
+   "output": "checked gates\nNOT submitted: batch not approved\nSTATUS login-timeout"
+  },
+  "expect": "NOT submitted: batch not approved",
+  "spec": "A reason that starts with \"batch not approved\" counts like \"batch not approved\"."
+ },
+ {
+  "id": "n15",
+  "fn": "last_note",
+  "input": {
+   "output": "STATUS dry-run\n- 2026-11-06T02:18:18 CAPTCHA waiting\nTIME 12s"
+  },
+  "expect": "CAPTCHA waiting",
+  "spec": "the reason is the last stdout line that is not a STATUS / TIME line, without its \"- <time> \" log prefix."
+ }
+]

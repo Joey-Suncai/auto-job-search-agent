@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "options": [str], "expect": str, "spec_quote": str, "ambiguous": false}. expect = the exact option text, or "none". Write 14 cases: 9 bonus questions (shuffled orders, "Less than 5%", "0-5%", "Prefer not to say" mixed in, different wordings), 5 not bonus (salary, relocation, start date).

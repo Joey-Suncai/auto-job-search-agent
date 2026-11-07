@@ -1,0 +1,382 @@
+[
+ {
+  "name": "empty data_compliance list produces no boxes",
+  "data_compliance": [],
+  "expect": [],
+  "spec_quote": "Missing or empty `data_compliance` → no boxes.",
+  "ambiguous": false
+ },
+ {
+  "name": "null data_compliance produces no boxes",
+  "data_compliance": null,
+  "expect": [],
+  "spec_quote": "Missing or empty `data_compliance` → no boxes.",
+  "ambiguous": false
+ },
+ {
+  "name": "processing consent only",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "`gdpr_processing_consent_given` when `requires_processing_consent` is true — required.",
+  "ambiguous": false
+ },
+ {
+  "name": "retention consent only",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_retention_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "`gdpr_retention_consent_given` when `requires_retention_consent` is true — required.",
+  "ambiguous": false
+ },
+ {
+  "name": "demographic consent only is not required",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_demographic_data_consent_given",
+    false
+   ]
+  ],
+  "spec_quote": "`gdpr_demographic_data_consent_given` when `demographic_data_consent_applies` is true — not required.",
+  "ambiguous": false
+ },
+ {
+  "name": "all three consent boxes in specified order",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": true,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_retention_consent_given",
+    true
+   ],
+   [
+    "gdpr_demographic_data_consent_given",
+    false
+   ]
+  ],
+  "spec_quote": "For each gdpr entry, the form shows these checkboxes, in this order: `gdpr_processing_consent_given` when `requires_processing_consent` is true — required. `gdpr_retention_consent_given` when `requires_retention_consent` is true — required. `gdpr_demographic_data_consent_given` when `demographic_data_consent_applies` is true — not required.",
+  "ambiguous": false
+ },
+ {
+  "name": "requires_consent alone adds no boxes",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": true,
+    "requires_processing_consent": false,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [],
+  "spec_quote": "`requires_consent` alone adds nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "non-gdpr eeoc entry is ignored",
+  "data_compliance": [
+   {
+    "type": "eeoc",
+    "requires_consent": true,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [],
+  "spec_quote": "Only entries with `\"type\": \"gdpr\"` matter; others (e.g. \"eeoc\") add nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "eeoc entry ignored while gdpr processing box appears",
+  "data_compliance": [
+   {
+    "type": "eeoc",
+    "requires_consent": true,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": true
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "Only entries with `\"type\": \"gdpr\"` matter; others (e.g. \"eeoc\") add nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "two gdpr entries with distinct boxes preserve entry order",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_retention_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "For each gdpr entry, the form shows these checkboxes, in this order:",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate processing box across two gdpr entries appears once",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "The same box is never listed twice, even if two gdpr entries ask for it.",
+  "ambiguous": false
+ },
+ {
+  "name": "gdpr entry with all booleans false adds no boxes",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [],
+  "spec_quote": "`requires_consent` alone adds nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "processing box appears even when requires_consent is false",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "`gdpr_processing_consent_given` when `requires_processing_consent` is true — required.",
+  "ambiguous": false
+ },
+ {
+  "name": "three gdpr entries each requesting one distinct box",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": false,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_retention_consent_given",
+    true
+   ],
+   [
+    "gdpr_demographic_data_consent_given",
+    false
+   ]
+  ],
+  "spec_quote": "For each gdpr entry, the form shows these checkboxes, in this order:",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate processing and retention boxes across two gdpr entries appear once each",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "gdpr",
+    "requires_consent": false,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_retention_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "The same box is never listed twice, even if two gdpr entries ask for it.",
+  "ambiguous": false
+ },
+ {
+  "name": "gdpr processing and retention with non-gdpr demographic ignored",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": true,
+    "requires_processing_consent": true,
+    "requires_retention_consent": true,
+    "demographic_data_consent_applies": false
+   },
+   {
+    "type": "eeoc",
+    "requires_consent": true,
+    "requires_processing_consent": false,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_retention_consent_given",
+    true
+   ]
+  ],
+  "spec_quote": "Only entries with `\"type\": \"gdpr\"` matter; others (e.g. \"eeoc\") add nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "gdpr entry with processing and demographic boxes in order",
+  "data_compliance": [
+   {
+    "type": "gdpr",
+    "requires_consent": true,
+    "requires_processing_consent": true,
+    "requires_retention_consent": false,
+    "demographic_data_consent_applies": true
+   }
+  ],
+  "expect": [
+   [
+    "gdpr_processing_consent_given",
+    true
+   ],
+   [
+    "gdpr_demographic_data_consent_given",
+    false
+   ]
+  ],
+  "spec_quote": "For each gdpr entry, the form shows these checkboxes, in this order: `gdpr_processing_consent_given` when `requires_processing_consent` is true — required. ... `gdpr_demographic_data_consent_given` when `demographic_data_consent_applies` is true — not required.",
+  "ambiguous": false
+ }
+]

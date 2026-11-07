@@ -1,0 +1,1060 @@
+[
+ {
+  "name": "role_pm_positive",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "If a feature level is always chosen whenever it differs (and nothing else differs), its weight is positive",
+  "ambiguous": false
+ },
+ {
+  "name": "role_pm_negative",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "negative": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "always rejected → negative",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsor_offers_positive",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "offers",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "sponsor:offers"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "If a feature level is always chosen whenever it differs (and nothing else differs), its weight is positive",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsor_offers_negative",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "offers",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "negative": [
+    "sponsor:offers"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "always rejected → negative",
+  "ambiguous": false
+ },
+ {
+  "name": "green_card_positive",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": true
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "green_card"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "If a feature level is always chosen whenever it differs (and nothing else differs), its weight is positive",
+  "ambiguous": false
+ },
+ {
+  "name": "green_card_negative",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": true
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "negative": [
+    "green_card"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "always rejected → negative",
+  "ambiguous": false
+ },
+ {
+  "name": "no_usable_choices",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {},
+  "expect": {
+   "zero": [
+    "role:pm",
+    "sponsor:offers",
+    "green_card",
+    "role:ai_pm"
+   ],
+   "n_choices": 0
+  },
+  "spec_quote": "With no usable choices, every weight is 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_answer_ignored",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Pairs whose answer is missing or not \"A\"/\"B\" are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid_answer_ignored",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "C"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Pairs whose answer is missing or not \"A\"/\"B\" are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "repeat_not_used_for_fitting",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "repeat_of": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1,
+   "consistency_same": [
+    true
+   ]
+  },
+  "spec_quote": "A pair marked `repeat_of: q0` is not used for fitting; it is reported in `consistency` with `same` = true when the job chosen (by id) is the same as in pair q0.",
+  "ambiguous": false
+ },
+ {
+  "name": "repeat_consistency_false",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "repeat_of": 1,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1,
+   "consistency_same": [
+    false
+   ]
+  },
+  "spec_quote": "A pair marked `repeat_of: q0` is not used for fitting; it is reported in `consistency` with `same` = true when the job chosen (by id) is the same as in pair q0.",
+  "ambiguous": false
+ },
+ {
+  "name": "repeat_same_id_different_orientation",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "repeat_of": 1,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "B"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1,
+   "consistency_same": [
+    true
+   ]
+  },
+  "spec_quote": "A pair marked `repeat_of: q0` is not used for fitting; it is reported in `consistency` with `same` = true when the job chosen (by id) is the same as in pair q0.",
+  "ambiguous": false
+ },
+ {
+  "name": "swap_ab_equiv",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Swapping A/B in a pair together with its answer gives the same weights.",
+  "ambiguous": false
+ },
+ {
+  "name": "perfect_separation_prior",
+  "prior_sd": 0.5,
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 3,
+    "a": {
+     "id": "J5",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J6",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 4,
+    "a": {
+     "id": "J7",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J8",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 5,
+    "a": {
+     "id": "J9",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J10",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "A",
+   "3": "A",
+   "4": "A",
+   "5": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 5
+  },
+  "spec_quote": "Weights are finite even when the choices are perfectly separable (the prior keeps them bounded); a smaller prior_sd gives weights closer to 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "model_v1_h1b_positive",
+  "model": "v1",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 1000
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 0
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "h1b_log10"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Its weight is positive when the larger company is always chosen with roles equal, negative when always rejected.",
+  "ambiguous": false
+ },
+ {
+  "name": "model_v1_h1b_negative",
+  "model": "v1",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 1000
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 0
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "negative": [
+    "h1b_log10"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Its weight is positive when the larger company is always chosen with roles equal, negative when always rejected.",
+  "ambiguous": false
+ },
+ {
+  "name": "model_v1_missing_h1b",
+  "model": "v1",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 1000
+    }
+   }
+  ],
+  "answers": {
+   "1": "B"
+  },
+  "expect": {
+   "positive": [
+    "h1b_log10"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "one continuous feature h1b_log10 = log10(1 + h1b_fy25) of the card (a missing count = 0). Its weight is positive when the larger company is always chosen with roles equal",
+  "ambiguous": false
+ },
+ {
+  "name": "model_v1_role_weights",
+  "model": "v1",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 100
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 100
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Model \"v1\" (the default since 2026-11-03): role weights (baseline data) plus one continuous feature h1b_log10 = log10(1 + h1b_fy25) of the card (a missing count = 0).",
+  "ambiguous": false
+ },
+ {
+  "name": "model_v1_greater",
+  "model": "v1",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "ai_pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 100
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false,
+     "h1b_fy25": 100
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "greater": [
+    [
+     "role:ai_pm",
+     "role:pm"
+    ]
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "role weights (baseline data)",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsor_strong_greater",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "data",
+     "sponsor": "offers",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "strong",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "greater": [
+    [
+     "sponsor:offers",
+     "sponsor:strong"
+    ]
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "P(choose a over b) = sigmoid(value(a) − value(b)).",
+  "ambiguous": false
+ },
+ {
+  "name": "green_card_with_role_same",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": true
+    },
+    "b": {
+     "id": "J2",
+     "role": "pm",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "green_card"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "If a feature level is always chosen whenever it differs (and nothing else differs), its weight is positive",
+  "ambiguous": false
+ },
+ {
+  "name": "unobserved_feature_zero",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "zero": [
+    "role:ai_pm",
+    "sponsor:offers",
+    "green_card"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Weights are the maximum a posteriori estimate under an independent normal prior N(0, prior_sd²) per weight (default prior_sd = 2).",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_features",
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "a": {
+     "id": "J3",
+     "role": "data",
+     "sponsor": "offers",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "unknown",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm",
+    "sponsor:offers"
+   ],
+   "n_choices": 2
+  },
+  "spec_quote": "If a feature level is always chosen whenever it differs (and nothing else differs), its weight is positive",
+  "ambiguous": false
+ },
+ {
+  "name": "loo_all_predicted_simple",
+  "loo_all_predicted": true,
+  "pairs": [
+   {
+    "q": 1,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 2,
+    "a": {
+     "id": "J3",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J4",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 3,
+    "a": {
+     "id": "J5",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J6",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "1": "A",
+   "2": "A",
+   "3": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 3
+  },
+  "spec_quote": "With all choices identical in direction and features, every left-out choice is predicted (k = n).",
+  "ambiguous": false
+ },
+ {
+  "name": "round_merge_q_offset",
+  "pairs": [
+   {
+    "q": 101,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "101": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1
+  },
+  "spec_quote": "Several rounds can be merged: round r's question numbers get +100·r (a repeat_of moves with them), answers follow.",
+  "ambiguous": false
+ },
+ {
+  "name": "repeat_with_round_offset",
+  "pairs": [
+   {
+    "q": 101,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   },
+   {
+    "q": 102,
+    "repeat_of": 101,
+    "a": {
+     "id": "J1",
+     "role": "pm",
+     "sponsor": "some",
+     "green_card": false
+    },
+    "b": {
+     "id": "J2",
+     "role": "data",
+     "sponsor": "some",
+     "green_card": false
+    }
+   }
+  ],
+  "answers": {
+   "101": "A",
+   "102": "A"
+  },
+  "expect": {
+   "positive": [
+    "role:pm"
+   ],
+   "n_choices": 1,
+   "consistency_same": [
+    true
+   ]
+  },
+  "spec_quote": "Several rounds can be merged: round r's question numbers get +100·r (a repeat_of moves with them), answers follow.",
+  "ambiguous": false
+ }
+]

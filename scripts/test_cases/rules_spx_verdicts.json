@@ -1,0 +1,6 @@
+{
+ "unrelated-signature-date": {
+  "verdict": "case",
+  "why": "An existing rule (signature_date) fills today's date for 'Signature date' \u2014 that is the right answer; the spec listed it as unrelated only to keep it out of the signature-name rule, which it is."
+ }
+}

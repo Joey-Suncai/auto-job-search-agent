@@ -1,0 +1,242 @@
+[
+ {
+  "name": "captcha_status_keeps_tab",
+  "args": {
+   "status": "captcha",
+   "keep_tab": false
+  },
+  "expect": true,
+  "spec_quote": "The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\"): that tab stays, since the user solves it in that very page.",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha_with_spaces_and_case",
+  "args": {
+   "status": " CAPTCHA ",
+   "keep_tab": false
+  },
+  "expect": true,
+  "spec_quote": "Status text may come in any case or with surrounding spaces. / The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\"): that tab stays.",
+  "ambiguous": false
+ },
+ {
+  "name": "dry_run_closes_tab",
+  "args": {
+   "status": "dry-run",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "close them after dry runs too ... when an application run ends, its tab is CLOSED whatever the outcome — dry run finished",
+  "ambiguous": false
+ },
+ {
+  "name": "needs_user_closes_tab",
+  "args": {
+   "status": "needs-user",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... needs the user's answer to a question",
+  "ambiguous": false
+ },
+ {
+  "name": "blocked_closes_tab",
+  "args": {
+   "status": "blocked",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... blocked by a check",
+  "ambiguous": false
+ },
+ {
+  "name": "submitted_closes_tab",
+  "args": {
+   "status": "submitted",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — dry run finished, submitted, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "unconfirmed_closes_tab",
+  "args": {
+   "status": "unconfirmed",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... failed, unconfirmed, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "login_timeout_closes_tab",
+  "args": {
+   "status": "login-timeout",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... login timed out, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "filled_closes_tab",
+  "args": {
+   "status": "filled",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "stopped mid-way (\"filled\", \"review\", \"handoff\") — because a stopped run is always started again later in a fresh tab.",
+  "ambiguous": false
+ },
+ {
+  "name": "review_closes_tab",
+  "args": {
+   "status": "review",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "stopped mid-way (\"filled\", \"review\", \"handoff\") — because a stopped run is always started again later in a fresh tab.",
+  "ambiguous": false
+ },
+ {
+  "name": "handoff_closes_tab",
+  "args": {
+   "status": "handoff",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "stopped mid-way (\"filled\", \"review\", \"handoff\") — because a stopped run is always started again later in a fresh tab.",
+  "ambiguous": false
+ },
+ {
+  "name": "failed_closes_tab",
+  "args": {
+   "status": "failed",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... failed, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "closed_posting_closes_tab",
+  "args": {
+   "status": "closed",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome — ... closed posting",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_status_closes_tab",
+  "args": {
+   "status": "",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome ... The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\")",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_captcha",
+  "args": {
+   "status": "captcha",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_submitted",
+  "args": {
+   "status": "submitted",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_dry_run",
+  "args": {
+   "status": "dry-run",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_failed",
+  "args": {
+   "status": "failed",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_blocked",
+  "args": {
+   "status": "blocked",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "keep_tab_with_empty_status",
+  "args": {
+   "status": "",
+   "keep_tab": true
+  },
+  "expect": true,
+  "spec_quote": "A keep-tab option set by the user keeps the tab whatever the status.",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha_solved_is_not_captcha",
+  "args": {
+   "status": "captcha-solved",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\"): that tab stays ... Status text may come in any case or with surrounding spaces. (only case/whitespace normalisation is allowed, so \"captcha-solved\" is a different status)",
+  "ambiguous": false
+ },
+ {
+  "name": "no_captcha_string_is_not_captcha",
+  "args": {
+   "status": "no captcha",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\"): that tab stays ... when an application run ends, its tab is CLOSED whatever the outcome",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha_mixed_case_keeps_tab",
+  "args": {
+   "status": "Captcha",
+   "keep_tab": false
+  },
+  "expect": true,
+  "spec_quote": "Status text may come in any case or with surrounding spaces. / The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\"): that tab stays.",
+  "ambiguous": false
+ },
+ {
+  "name": "none_string_closes_tab",
+  "args": {
+   "status": "none",
+   "keep_tab": false
+  },
+  "expect": false,
+  "spec_quote": "when an application run ends, its tab is CLOSED whatever the outcome ... The ONE exception is a run parked on a CAPTCHA / human check (status \"captcha\")",
+  "ambiguous": false
+ }
+]

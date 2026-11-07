@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "args": {"label": str, "type": "radio" | "select", "options": [str]}, "expect": {"value": "Yes" | "No"}, "spec_quote": str, "ambiguous": false}.
+Write 24 cases: rule 1 = 12 (at least 3 with nested parentheses inside the example group, 2 with "or can you obtain", 2 with a bare "e.g." clause, options in both orders), rule 2 = 8, rule 3 = 4. Use realistic application-form wording (Oracle, Workday, Greenhouse style).

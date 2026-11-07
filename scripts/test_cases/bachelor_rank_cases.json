@@ -1,0 +1,270 @@
+[
+ {
+  "name": "ba_exact_over_bs",
+  "options": [
+   "Bachelor of Science",
+   "Bachelor of Arts",
+   "Master of Science",
+   "Associate of Arts",
+   "Bachelor of Fine Arts"
+  ],
+  "expect": "Bachelor of Arts",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first."
+ },
+ {
+  "name": "ba_abbreviation_over_plain",
+  "options": [
+   "Bachelor's Degree",
+   "B.A.",
+   "Bachelor of Science",
+   "Master of Arts"
+  ],
+  "expect": "B.A.",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first; then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"."
+ },
+ {
+  "name": "ba_short_over_plain",
+  "options": [
+   "Bachelor's Degree",
+   "BA",
+   "Bachelor of Business Administration",
+   "Doctor of Philosophy"
+  ],
+  "expect": "BA",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first; then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"."
+ },
+ {
+  "name": "bachelors_of_arts_variant",
+  "options": [
+   "Bachelor of Science",
+   "Bachelor's of Arts",
+   "Bachelor's",
+   "Associate of Science"
+  ],
+  "expect": "Bachelor's of Arts",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first."
+ },
+ {
+  "name": "plain_bachelors_degree_no_ba",
+  "options": [
+   "Bachelor of Science",
+   "Bachelor's Degree",
+   "Master's Degree",
+   "Associate's Degree"
+  ],
+  "expect": "Bachelor's Degree",
+  "spec": "then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"."
+ },
+ {
+  "name": "plain_tie_keeps_list_order",
+  "options": [
+   "Baccalaureate",
+   "Bachelor's",
+   "Bachelor of Science",
+   "Master of Arts"
+  ],
+  "expect": "Baccalaureate",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "ba_tie_keeps_list_order",
+  "options": [
+   "B.A.",
+   "Bachelor of Arts",
+   "Bachelor's Degree",
+   "Bachelor of Science"
+  ],
+  "expect": "B.A.",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "combined_arts_or_science_only",
+  "options": [
+   "Bachelor of Science",
+   "Bachelor of Arts or Science",
+   "Master of Arts",
+   "Associate of Arts"
+  ],
+  "expect": "Bachelor of Arts or Science",
+  "spec": "then an option that combines Arts with another degree (\"Bachelor of Arts or Science\")."
+ },
+ {
+  "name": "plain_preferred_over_combined",
+  "options": [
+   "Bachelor of Arts or Science",
+   "Bachelor's Degree",
+   "Bachelor of Science",
+   "Master of Science"
+  ],
+  "expect": "Bachelor's Degree",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first; then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"; then an option that combines Arts with another degree."
+ },
+ {
+  "name": "ba_preferred_over_combined",
+  "options": [
+   "Bachelor of Arts or Science",
+   "Bachelor of Arts",
+   "Bachelor of Science",
+   "Master of Arts"
+  ],
+  "expect": "Bachelor of Arts",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first; then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"; then an option that combines Arts with another degree."
+ },
+ {
+  "name": "never_bs_alone_null",
+  "options": [
+   "Bachelor of Science",
+   "Master of Science",
+   "Associate of Science",
+   "Doctor of Philosophy"
+  ],
+  "expect": null,
+  "spec": "Never choose a different bachelor's: Bachelor of Science (B.S., BSc) alone."
+ },
+ {
+  "name": "never_bfa_music_null",
+  "options": [
+   "Bachelor of Fine Arts",
+   "Bachelor of Music",
+   "Master of Arts",
+   "Associate of Arts"
+  ],
+  "expect": null,
+  "spec": "Never choose a different bachelor's: ... Bachelor of Fine Arts (BFA), music."
+ },
+ {
+  "name": "never_nursing_education_engineering_socialwork_null",
+  "options": [
+   "Bachelor of Science in Nursing (BSN)",
+   "Bachelor of Education",
+   "Bachelor of Engineering",
+   "Bachelor of Social Work"
+  ],
+  "expect": null,
+  "spec": "Never choose a different bachelor's: ... nursing (BSN), education (B.Ed), engineering (B.E., B.Eng), social work (BSW)."
+ },
+ {
+  "name": "never_bba_law_divinity_applied_pharmacy_technology_architecture_null",
+  "options": [
+   "Bachelor of Business Administration",
+   "Bachelor of Laws",
+   "Bachelor of Divinity",
+   "Bachelor of Applied Science",
+   "Bachelor of Pharmacy",
+   "Bachelor of Technology",
+   "Bachelor of Architecture"
+  ],
+  "expect": null,
+  "spec": "Never choose a different bachelor's: ... business administration (BBA), pharmacy, technology, law (LLB), divinity, applied science."
+ },
+ {
+  "name": "advanced_and_hs_never_chosen_null",
+  "options": [
+   "Master of Arts",
+   "Associate of Arts",
+   "Doctor of Philosophy",
+   "High School Diploma"
+  ],
+  "expect": null,
+  "spec": "Master's, associate, doctorate and high-school options are never chosen."
+ },
+ {
+  "name": "bachelor_of_arts_over_bachelors_of_arts_tie",
+  "options": [
+   "Bachelor's of Arts",
+   "Bachelor of Arts",
+   "Bachelor's Degree",
+   "Bachelor of Science"
+  ],
+  "expect": "Bachelor's of Arts",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "b_a_over_ba_tie",
+  "options": [
+   "BA",
+   "B.A.",
+   "Bachelor of Arts",
+   "Bachelor of Science"
+  ],
+  "expect": "BA",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "plain_bachelors_over_bachelors_tie",
+  "options": [
+   "Bachelors",
+   "Bachelor's",
+   "Bachelor of Arts or Science",
+   "Bachelor of Science"
+  ],
+  "expect": "Bachelors",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "baccalaureate_vs_bachelors_degree_tie",
+  "options": [
+   "Bachelor's Degree",
+   "Baccalaureate",
+   "Bachelor of Science",
+   "Master of Arts"
+  ],
+  "expect": "Bachelor's Degree",
+  "spec": "Ties keep the list order."
+ },
+ {
+  "name": "plain_bachelors_variant_over_combined",
+  "options": [
+   "Bachelor of Arts or Science",
+   "Bachelors",
+   "Bachelor of Science",
+   "Master of Science"
+  ],
+  "expect": "Bachelors",
+  "spec": "then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"; then an option that combines Arts with another degree."
+ },
+ {
+  "name": "combined_with_forbidden_only",
+  "options": [
+   "Bachelor of Science",
+   "Bachelor of Arts or Science",
+   "Bachelor of Fine Arts",
+   "Master of Arts"
+  ],
+  "expect": "Bachelor of Arts or Science",
+  "spec": "then an option that combines Arts with another degree (\"Bachelor of Arts or Science\")."
+ },
+ {
+  "name": "bsc_abbrev_null",
+  "options": [
+   "BSc",
+   "Bachelor of Science (B.S.)",
+   "Master of Science",
+   "Associate of Science"
+  ],
+  "expect": null,
+  "spec": "Never choose a different bachelor's: Bachelor of Science (B.S., BSc) alone."
+ },
+ {
+  "name": "ba_over_plain_and_combined_all_present",
+  "options": [
+   "Bachelor of Arts or Science",
+   "Bachelor's Degree",
+   "Bachelor of Arts",
+   "Bachelor of Science"
+  ],
+  "expect": "Bachelor of Arts",
+  "spec": "Prefer \"Bachelor of Arts\" / \"Bachelor's of Arts\" / \"B.A.\" / \"BA\" first; then a plain \"Bachelor's Degree\" / \"Bachelors\" / \"Bachelor's\" / \"Baccalaureate\"; then an option that combines Arts with another degree."
+ },
+ {
+  "name": "ba_exact_with_architecture_and_bba_distractors",
+  "options": [
+   "Bachelor of Architecture",
+   "Bachelor of Business Administration",
+   "Bachelor of Arts",
+   "Master of Architecture"
+  ],
+  "expect": "Bachelor of Arts",
+  "spec": "Never choose a different bachelor's: ... business administration (BBA), ... architecture."
+ }
+]

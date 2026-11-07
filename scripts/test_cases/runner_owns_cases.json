@@ -1,0 +1,301 @@
+[
+ {
+  "name": "basic_owned_true",
+  "mark": {
+   "ts": 1000,
+   "pid": 42,
+   "at": "x",
+   "phase": "submit",
+   "url": "u"
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "\"The result is true only if alive(pid) is truthy\" and no earlier rule fails; age 500 is within limits."
+ },
+ {
+  "name": "mark_null_false",
+  "mark": null,
+  "now_ts": 1500,
+  "alive_pids": [],
+  "expect": false,
+  "reason": "\"mark = the parsed mark file, or null when there is none ... Anything that is not an object → false.\""
+ },
+ {
+  "name": "mark_string_false",
+  "mark": "owned",
+  "now_ts": 1500,
+  "alive_pids": [],
+  "expect": false,
+  "reason": "\"Anything that is not an object → false.\""
+ },
+ {
+  "name": "mark_number_false",
+  "mark": 12345,
+  "now_ts": 1500,
+  "alive_pids": [],
+  "expect": false,
+  "reason": "\"Anything that is not an object → false.\""
+ },
+ {
+  "name": "ts_missing_false",
+  "mark": {
+   "pid": 42
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"ts must be a number ... → otherwise false.\" A missing ts is not a number, so false even though the pid is alive."
+ },
+ {
+  "name": "ts_string_false",
+  "mark": {
+   "ts": "1000",
+   "pid": 42
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"a string such as \\\"1700000000\\\" is not a number\" → false."
+ },
+ {
+  "name": "ts_boolean_false",
+  "mark": {
+   "ts": true,
+   "pid": 42
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"a boolean is not a number\" → false."
+ },
+ {
+  "name": "stale_7201_false",
+  "mark": {
+   "ts": 1000,
+   "pid": 42
+  },
+  "now_ts": 8201,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"age greater than 7200 seconds (2 hours) → false (stale).\" Here age = 7201."
+ },
+ {
+  "name": "age_exactly_7200_true",
+  "mark": {
+   "ts": 1000,
+   "pid": 42
+  },
+  "now_ts": 8200,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "\"age exactly 7200 → still owned (if the process lives).\""
+ },
+ {
+  "name": "age_7199_true",
+  "mark": {
+   "ts": 1000,
+   "pid": 42
+  },
+  "now_ts": 8199,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "age 7199 is not greater than 7200, so the folder is still owned."
+ },
+ {
+  "name": "future_61_false",
+  "mark": {
+   "ts": 1061,
+   "pid": 42
+  },
+  "now_ts": 1000,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"A ts in the future by more than 60 seconds (age < −60) → false.\" Here age = −61."
+ },
+ {
+  "name": "future_60_true",
+  "mark": {
+   "ts": 1060,
+   "pid": 42
+  },
+  "now_ts": 1000,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "\"up to 60 s in the future is accepted (clock skew).\" Here age = −60 exactly."
+ },
+ {
+  "name": "future_50_true",
+  "mark": {
+   "ts": 1050,
+   "pid": 42
+  },
+  "now_ts": 1000,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "A ts 50 s in the future is within the accepted clock skew, so the folder is owned."
+ },
+ {
+  "name": "pid_missing_false",
+  "mark": {
+   "ts": 1000
+  },
+  "now_ts": 1500,
+  "alive_pids": [],
+  "expect": false,
+  "reason": "\"pid must be present and truthy (0, null, \\\"\\\" or missing → false).\""
+ },
+ {
+  "name": "pid_zero_false",
+  "mark": {
+   "ts": 1000,
+   "pid": 0
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   0
+  ],
+  "expect": false,
+  "reason": "\"pid must be present and truthy (0 ... → false).\" The result is false even though alive(0) would be truthy."
+ },
+ {
+  "name": "pid_null_false",
+  "mark": {
+   "ts": 1000,
+   "pid": null
+  },
+  "now_ts": 1500,
+  "alive_pids": [],
+  "expect": false,
+  "reason": "\"pid must be present and truthy (0, null, \\\"\\\" or missing → false).\""
+ },
+ {
+  "name": "pid_empty_string_false",
+  "mark": {
+   "ts": 1000,
+   "pid": ""
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   ""
+  ],
+  "expect": false,
+  "reason": "\"pid must be present and truthy (0, null, \\\"\\\" or missing → false).\""
+ },
+ {
+  "name": "pid_not_alive_false",
+  "mark": {
+   "ts": 1000,
+   "pid": 42
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   7,
+   8
+  ],
+  "expect": false,
+  "reason": "\"Then alive(pid) decides: the result is true only if alive(pid) is truthy.\" 42 is not in alive_pids."
+ },
+ {
+  "name": "pid_alive_true",
+  "mark": {
+   "ts": 1000,
+   "pid": 99
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   99
+  ],
+  "expect": true,
+  "reason": "All rules pass and alive(99) is truthy, so the runner owns the folder."
+ },
+ {
+  "name": "float_ts_true",
+  "mark": {
+   "ts": 1000.5,
+   "pid": 42
+  },
+  "now_ts": 2000.5,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "\"ts must be a number (int or float ...)\"; a float ts with a live pid and age 1000 is owned."
+ },
+ {
+  "name": "float_age_7200_5_false",
+  "mark": {
+   "ts": 1000,
+   "pid": 42
+  },
+  "now_ts": 8200.5,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"age greater than 7200 seconds (2 hours) → false.\" Here age = 7200.5."
+ },
+ {
+  "name": "other_keys_irrelevant_true",
+  "mark": {
+   "ts": 1000,
+   "pid": 42,
+   "at": null,
+   "phase": 123,
+   "url": []
+  },
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": true,
+  "reason": "\"The other keys (at, phase, url) never matter.\" Only ts/pid/alive decide, so this is owned."
+ },
+ {
+  "name": "huge_negative_age_false",
+  "mark": {
+   "ts": 11000,
+   "pid": 42
+  },
+  "now_ts": 1000,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "reason": "\"A ts in the future by more than 60 seconds (age < −60) → false.\" Here age = −10000."
+ },
+ {
+  "name": "mark_array_value",
+  "mark": [
+   1000,
+   42
+  ],
+  "now_ts": 1500,
+  "alive_pids": [
+   42
+  ],
+  "expect": false,
+  "ambiguous": true,
+  "reason": "\"Anything that is not an object → false\" — a JSON array is not a mark object, so false is expected, but the spec does not explicitly state whether an array counts as an object; marked ambiguous for that reason."
+ }
+]

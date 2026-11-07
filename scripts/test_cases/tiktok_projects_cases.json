@@ -1,0 +1,1087 @@
+[
+ {
+  "name": "club_role_block_becomes_problem_real_project_matched",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "minister of the organization department"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Campus Recommendation System"
+    }
+   ],
+   [
+    {
+     "name": "Campus Recommendation System",
+     "match_re": "recommendation",
+     "role": "Backend Developer",
+     "start": "2025-09",
+     "end": "2026-01",
+     "description": "Built a recommender"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[2]",
+     "name": "Campus Recommendation System",
+     "role": "Backend Developer",
+     "start": "2025-09",
+     "end": "2026-01",
+     "desc": "Built a recommender"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[1]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "A block that matches no config project → no plan item, and one problem string that contains the block's idx and the words \"not in config\"",
+  "ambiguous": false
+ },
+ {
+  "name": "unmatched_config_project_added_with_null_idx",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation Engine"
+    }
+   ],
+   [
+    {
+     "name": "Recommendation Engine",
+     "match_re": "recommendation",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "description": "d1"
+    },
+    {
+     "name": "Chat App",
+     "match_re": "chat",
+     "role": "",
+     "start": "2024-05",
+     "end": null,
+     "description": ""
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation Engine",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "desc": "d1"
+    },
+    {
+     "idx": null,
+     "name": "Chat App",
+     "role": "",
+     "start": "2024-05",
+     "end": "Present",
+     "desc": ""
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "Every config project that no block matched → a plan item with \"idx\": null (the runner adds a new block for it), after all the matched items, in config order.",
+  "ambiguous": false
+ },
+ {
+  "name": "ongoing_end_null_gives_present",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Open Source Contribution"
+    }
+   ],
+   [
+    {
+     "name": "Open Source Contribution",
+     "match_re": "open source",
+     "role": "Contributor",
+     "start": "2025-11",
+     "end": null,
+     "description": "PRs"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Open Source Contribution",
+     "role": "Contributor",
+     "start": "2025-11",
+     "end": "Present",
+     "desc": "PRs"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "`end` null (or missing / empty) means the project is ongoing. ... \"end\": \"YYYY-MM\" or \"Present\" when ongoing",
+  "ambiguous": false
+ },
+ {
+  "name": "ongoing_end_key_missing_gives_present",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Data Viz"
+    }
+   ],
+   [
+    {
+     "name": "Data Viz",
+     "match_re": "data viz",
+     "role": "Dev",
+     "start": "2025-02",
+     "description": "charts"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Data Viz",
+     "role": "Dev",
+     "start": "2025-02",
+     "end": "Present",
+     "desc": "charts"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "`end` null (or missing / empty) means the project is ongoing.",
+  "ambiguous": false
+ },
+ {
+  "name": "ongoing_end_empty_string_gives_present",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Portfolio Site"
+    }
+   ],
+   [
+    {
+     "name": "Portfolio Site",
+     "match_re": "portfolio",
+     "role": "Frontend",
+     "start": "2025-03",
+     "end": "",
+     "description": "personal site"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Portfolio Site",
+     "role": "Frontend",
+     "start": "2025-03",
+     "end": "Present",
+     "desc": "personal site"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "`end` null (or missing / empty) means the project is ongoing.",
+  "ambiguous": false
+ },
+ {
+  "name": "month_formats_slash_and_dot_normalized",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Inventory System"
+    }
+   ],
+   [
+    {
+     "name": "Inventory System",
+     "match_re": "inventory",
+     "role": "Dev",
+     "start": "09/2025",
+     "end": "2026.3",
+     "description": "inv"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Inventory System",
+     "role": "Dev",
+     "start": "2025-09",
+     "end": "2026-03",
+     "desc": "inv"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "`start` / `end` are months such as \"2026-03\", \"03/2026\" or \"2026.3\"",
+  "ambiguous": false
+ },
+ {
+  "name": "config_project_used_at_most_once",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "TikTok Clone"
+    },
+    {
+     "idx": "project[2]",
+     "name": "tiktok clone v2"
+    }
+   ],
+   [
+    {
+     "name": "TikTok Clone",
+     "match_re": "tiktok",
+     "role": "Fullstack",
+     "start": "2025-03",
+     "end": "2025-08",
+     "description": "video app"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "TikTok Clone",
+     "role": "Fullstack",
+     "start": "2025-03",
+     "end": "2025-08",
+     "desc": "video app"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[2]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "Each config project is used at most once.",
+  "ambiguous": false
+ },
+ {
+  "name": "first_matching_config_in_config_order_wins",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Web App Portal"
+    }
+   ],
+   [
+    {
+     "name": "Web Portal",
+     "match_re": "web",
+     "role": "Frontend",
+     "start": "2025-01",
+     "end": "2025-05",
+     "description": "portal"
+    },
+    {
+     "name": "Web App Suite",
+     "match_re": "web app",
+     "role": "Backend",
+     "start": "2025-06",
+     "end": "2025-09",
+     "description": "suite"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Web Portal",
+     "role": "Frontend",
+     "start": "2025-01",
+     "end": "2025-05",
+     "desc": "portal"
+    },
+    {
+     "idx": null,
+     "name": "Web App Suite",
+     "role": "Backend",
+     "start": "2025-06",
+     "end": "2025-09",
+     "desc": "suite"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "a block takes the first config project (in config order) that is not used yet and whose pattern is found in the block's name",
+  "ambiguous": false
+ },
+ {
+  "name": "blocks_matched_in_page_order",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Alpha Project"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Beta Project"
+    }
+   ],
+   [
+    {
+     "name": "P1",
+     "match_re": "beta",
+     "role": "r1",
+     "start": "2025-01",
+     "end": "2025-02",
+     "description": "one"
+    },
+    {
+     "name": "P2",
+     "match_re": "alpha",
+     "role": "r2",
+     "start": "2025-03",
+     "end": "2025-04",
+     "description": "two"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "P2",
+     "role": "r2",
+     "start": "2025-03",
+     "end": "2025-04",
+     "desc": "two"
+    },
+    {
+     "idx": "project[2]",
+     "name": "P1",
+     "role": "r1",
+     "start": "2025-01",
+     "end": "2025-02",
+     "desc": "one"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "Blocks are matched in page order: a block takes the first config project (in config order) that is not used yet and whose pattern is found in the block's name.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_match_re_uses_config_name_literally_case_insensitive",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "SMART HOME HUB"
+    }
+   ],
+   [
+    {
+     "name": "Smart Home Hub",
+     "role": "Embedded",
+     "start": "2025-04",
+     "end": "2025-10",
+     "description": "IoT"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Smart Home Hub",
+     "role": "Embedded",
+     "start": "2025-04",
+     "end": "2025-10",
+     "desc": "IoT"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "when `match_re` is missing, the config `name` itself is searched (literally, case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_match_re_is_literal_dot_not_regex",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "NodeXjs API"
+    },
+    {
+     "idx": "project[2]",
+     "name": "node.js api"
+    }
+   ],
+   [
+    {
+     "name": "Node.js API",
+     "role": "Backend",
+     "start": "2025-01",
+     "end": "2025-05",
+     "description": "api"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[2]",
+     "name": "Node.js API",
+     "role": "Backend",
+     "start": "2025-01",
+     "end": "2025-05",
+     "desc": "api"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[1]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "when `match_re` is missing, the config `name` itself is searched (literally, case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "match_re_present_means_config_name_is_not_used",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Smart Campus Platform"
+    }
+   ],
+   [
+    {
+     "name": "Smart Campus",
+     "match_re": "smart-campus",
+     "role": "Dev",
+     "start": "2025-02",
+     "end": "2025-07",
+     "description": "campus"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": null,
+     "name": "Smart Campus",
+     "role": "Dev",
+     "start": "2025-02",
+     "end": "2025-07",
+     "desc": "campus"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[1]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "`match_re` is a case-insensitive regular expression searched in the parsed name; when `match_re` is missing, the config `name` itself is searched",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_name_block_matches_nothing",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": ""
+    }
+   ],
+   [
+    {
+     "name": "Recommendation Engine",
+     "match_re": "recommendation",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "description": "rec"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": null,
+     "name": "Recommendation Engine",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "desc": "rec"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[1]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "A block with an empty name matches nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "null_name_block_matches_nothing",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": null
+    }
+   ],
+   [
+    {
+     "name": "Chat App",
+     "match_re": "chat",
+     "role": "Mobile",
+     "start": "2024-05",
+     "end": null,
+     "description": "chat"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": null,
+     "name": "Chat App",
+     "role": "Mobile",
+     "start": "2024-05",
+     "end": "Present",
+     "desc": "chat"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[1]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "`name` may be empty, null ... A block with an empty name matches nothing.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_config_list_every_block_is_problem",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation System"
+    },
+    {
+     "idx": "project[2]",
+     "name": "minister of the organization department"
+    }
+   ],
+   []
+  ],
+  "expect": {
+   "plan": [],
+   "problems_count": 2,
+   "problems_mention": [
+    "project[1]",
+    "project[2]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "An empty config list → every block is a problem, plan empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "extra_spaces_and_line_breaks_count_as_one_space",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "  Data\nPipeline  "
+    }
+   ],
+   [
+    {
+     "name": "Data Pipeline",
+     "role": "Data Engineer",
+     "start": "2025-05",
+     "end": "2025-11",
+     "description": "etl"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Data Pipeline",
+     "role": "Data Engineer",
+     "start": "2025-05",
+     "end": "2025-11",
+     "desc": "etl"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "`name` may be empty, null, or have extra spaces / line breaks (count them as one space).",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_role_and_description_default_to_empty_string",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Weather App"
+    }
+   ],
+   [
+    {
+     "name": "Weather App",
+     "match_re": "weather",
+     "start": "2024-11",
+     "end": "2025-02"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Weather App",
+     "role": "",
+     "start": "2024-11",
+     "end": "2025-02",
+     "desc": ""
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "\"role\": <config role, \"\" if missing> ... \"desc\": <config description, \"\" if missing>",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_order_matched_in_page_order_then_extras_in_config_order",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Gamma App"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Minister of the Organization Department"
+    },
+    {
+     "idx": "project[3]",
+     "name": "Alpha App"
+    }
+   ],
+   [
+    {
+     "name": "A",
+     "match_re": "alpha",
+     "role": "ra",
+     "start": "2025-01",
+     "end": "2025-02",
+     "description": "a"
+    },
+    {
+     "name": "B",
+     "match_re": "beta",
+     "role": "rb",
+     "start": "2025-03",
+     "end": "2025-04",
+     "description": "b"
+    },
+    {
+     "name": "C",
+     "match_re": "gamma",
+     "role": "rc",
+     "start": "2025-05",
+     "end": "2025-06",
+     "description": "c"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "C",
+     "role": "rc",
+     "start": "2025-05",
+     "end": "2025-06",
+     "desc": "c"
+    },
+    {
+     "idx": "project[3]",
+     "name": "A",
+     "role": "ra",
+     "start": "2025-01",
+     "end": "2025-02",
+     "desc": "a"
+    },
+    {
+     "idx": null,
+     "name": "B",
+     "role": "rb",
+     "start": "2025-03",
+     "end": "2025-04",
+     "desc": "b"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[2]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "Every config project that no block matched → a plan item with \"idx\": null ..., after all the matched items, in config order.",
+  "ambiguous": false
+ },
+ {
+  "name": "all_matched_no_problems_no_extras",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Beta Project"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Alpha Project"
+    }
+   ],
+   [
+    {
+     "name": "Alpha",
+     "match_re": "alpha",
+     "role": "A",
+     "start": "2025-01",
+     "end": "2025-02",
+     "description": "a"
+    },
+    {
+     "name": "Beta",
+     "match_re": "beta",
+     "role": "B",
+     "start": "2025-03",
+     "end": "2025-04",
+     "description": "b"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Beta",
+     "role": "B",
+     "start": "2025-03",
+     "end": "2025-04",
+     "desc": "b"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Alpha",
+     "role": "A",
+     "start": "2025-01",
+     "end": "2025-02",
+     "desc": "a"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "A matched block → one plan item ... Every config project that no block matched → a plan item with \"idx\": null",
+  "ambiguous": false
+ },
+ {
+  "name": "no_blocks_all_config_projects_added_as_new_blocks",
+  "fn": "project_plan",
+  "args": [
+   [],
+   [
+    {
+     "name": "Chat App",
+     "match_re": "chat",
+     "role": "Mobile",
+     "start": "2024-05",
+     "end": null,
+     "description": "c"
+    },
+    {
+     "name": "Rec Engine",
+     "match_re": "rec",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "description": "r"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": null,
+     "name": "Chat App",
+     "role": "Mobile",
+     "start": "2024-05",
+     "end": "Present",
+     "desc": "c"
+    },
+    {
+     "idx": null,
+     "name": "Rec Engine",
+     "role": "ML",
+     "start": "2025-01",
+     "end": "2025-06",
+     "desc": "r"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "Every config project that no block matched → a plan item with \"idx\": null (the runner adds a new block for it), after all the matched items, in config order.",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple_unmatched_blocks_each_get_own_problem_with_its_idx",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Minister of the Organization Department"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Alpha App"
+    },
+    {
+     "idx": "project[3]",
+     "name": "Volunteer Teaching"
+    }
+   ],
+   [
+    {
+     "name": "Alpha",
+     "match_re": "alpha",
+     "role": "r",
+     "start": "2025-01",
+     "end": "2025-04",
+     "description": "d"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[2]",
+     "name": "Alpha",
+     "role": "r",
+     "start": "2025-01",
+     "end": "2025-04",
+     "desc": "d"
+    }
+   ],
+   "problems_count": 2,
+   "problems_mention": [
+    "project[1]",
+    "project[3]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "A block that matches no config project → no plan item, and one problem string that contains the block's idx and the words \"not in config\"",
+  "ambiguous": false
+ },
+ {
+  "name": "two_identical_config_names_each_used_once",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Todo App"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Todo App v2"
+    }
+   ],
+   [
+    {
+     "name": "Todo App",
+     "match_re": "todo",
+     "role": "Lead",
+     "start": "2025-01",
+     "end": "2025-03",
+     "description": "first"
+    },
+    {
+     "name": "Todo App",
+     "match_re": "todo",
+     "role": "Member",
+     "start": "2025-04",
+     "end": "2025-06",
+     "description": "second"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Todo App",
+     "role": "Lead",
+     "start": "2025-01",
+     "end": "2025-03",
+     "desc": "first"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Todo App",
+     "role": "Member",
+     "start": "2025-04",
+     "end": "2025-06",
+     "desc": "second"
+    }
+   ],
+   "problems_count": 0
+  },
+  "spec_quote": "Each config project is used at most once. Blocks are matched in page order: a block takes the first config project (in config order) that is not used yet and whose pattern is found in the block's name.",
+  "ambiguous": false
+ },
+ {
+  "name": "match_re_is_regex_with_anchor",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation System"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Campus Rec System"
+    }
+   ],
+   [
+    {
+     "name": "Recommendation Engine",
+     "match_re": "^re(c|commend)",
+     "role": "ML",
+     "start": "2025-02",
+     "end": "2025-08",
+     "description": "rec"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation Engine",
+     "role": "ML",
+     "start": "2025-02",
+     "end": "2025-08",
+     "desc": "rec"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[2]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "`match_re` is a case-insensitive regular expression searched in the parsed name",
+  "ambiguous": false
+ },
+ {
+  "name": "match_re_is_case_insensitive",
+  "fn": "project_plan",
+  "args": [
+   [
+    {
+     "idx": "project[1]",
+     "name": "recommendation engine"
+    },
+    {
+     "idx": "project[2]",
+     "name": "Recruiting Portal"
+    }
+   ],
+   [
+    {
+     "name": "Recommendation Engine",
+     "match_re": "RECOMMEND",
+     "role": "ML Engineer",
+     "start": "2025-07",
+     "end": "2025-12",
+     "description": "rec"
+    }
+   ]
+  ],
+  "expect": {
+   "plan": [
+    {
+     "idx": "project[1]",
+     "name": "Recommendation Engine",
+     "role": "ML Engineer",
+     "start": "2025-07",
+     "end": "2025-12",
+     "desc": "rec"
+    }
+   ],
+   "problems_count": 1,
+   "problems_mention": [
+    "project[2]",
+    "not in config"
+   ]
+  },
+  "spec_quote": "`match_re` is a case-insensitive regular expression searched in the parsed name",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,1119 @@
+[
+ {
+  "name": "rule1_basic_successful_read_overwrites_row",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "上次读不到",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "old ev",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-20",
+   "elig_read_on": "2026-09-15"
+  },
+  "result": {
+   "v": "Eligible",
+   "c": "NO_SPONSORSHIP",
+   "e": "ev new",
+   "key": "k_new"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev new",
+   "elig_key": "k_new",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-31",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Successful read → the row takes the new result: elig = the verdict word, elig_codes = the new codes, elig_evidence and elig_key = the new ones, elig_checked = today, elig_read_on = today, and there is no elig_read_fail.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_success_after_failed_check_clears_read_fail_and_sets_read_on",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "（2026-09-01 读到的 JD；2026-10-30 读不到）",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "stale ev",
+   "elig_key": "k_stale",
+   "elig_checked": "2026-10-30",
+   "elig_read_on": "2026-09-01",
+   "elig_read_fail": "2026-10-30"
+  },
+  "result": {
+   "v": "Eligible",
+   "c": "SPONSORSHIP_OK",
+   "e": "fresh ev",
+   "key": "k_fresh"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "fresh ev",
+   "elig_key": "k_fresh",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-31",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Successful read → the row takes the new result: elig = the verdict word, elig_codes = the new codes, elig_evidence and elig_key = the new ones, elig_checked = today, elig_read_on = today, and there is no elig_read_fail.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_closed_is_a_successful_read",
+  "today": "2026-11-05",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "符合",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "e1",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-10-01"
+  },
+  "result": {
+   "v": "Closed",
+   "c": "CLOSED",
+   "e": "jd closed",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "已关闭",
+   "elig_codes": "CLOSED",
+   "elig_evidence": "jd closed",
+   "elig_key": "k2",
+   "elig_checked": "2026-11-05",
+   "elig_read_on": "2026-11-05",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Any other result is a **successful read** (including Closed, and including Review for reasons such as BACHELORS_WORDING or NO_TEXT).",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_review_bachelors_wording_is_successful_read",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "e_old",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-25"
+  },
+  "result": {
+   "v": "Review",
+   "c": "BACHELORS_WORDING",
+   "e": "wording text",
+   "key": "k3"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "wording text",
+   "elig_key": "k3",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-31",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Any other result is a **successful read** (including Closed, and including Review for reasons such as BACHELORS_WORDING or NO_TEXT).",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_empty_code_list_is_still_successful_read",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "符合",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "old",
+   "elig_key": "k_old",
+   "elig_checked": "2026-09-01",
+   "elig_read_on": "2026-09-01"
+  },
+  "result": {
+   "v": "Review",
+   "c": "",
+   "e": "",
+   "key": "k4"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "",
+   "elig_evidence": "",
+   "elig_key": "k4",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-31",
+   "elig_read_fail": null
+  },
+  "spec_quote": "A result is a **read failure** when its codes contain UNREADABLE or FETCH_ERROR. Any other result is a **successful read**",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_no_previous_row_at_all",
+  "today": "2026-10-31",
+  "row": {},
+  "result": {
+   "v": "Ineligible",
+   "c": "NO_SPONSORSHIP,CLOSED",
+   "e": "ev",
+   "key": "k5"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NO_SPONSORSHIP,CLOSED",
+   "elig_evidence": "ev",
+   "elig_key": "k5",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-31",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Successful read → the row takes the new result: elig = the verdict word, elig_codes = the new codes, elig_evidence and elig_key = the new ones, elig_checked = today, elig_read_on = today, and there is no elig_read_fail.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_unverified_with_no_text_is_successful_read",
+  "today": "2026-12-02",
+  "row": {
+   "elig": "不可投",
+   "elig_reason": "无 sponsor",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "e0",
+   "elig_key": "k0",
+   "elig_checked": "2026-11-30",
+   "elig_read_on": "2026-11-30"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "NO_TEXT",
+   "e": "no text",
+   "key": "k6"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "NO_TEXT",
+   "elig_evidence": "no text",
+   "elig_key": "k6",
+   "elig_checked": "2026-12-02",
+   "elig_read_on": "2026-12-02",
+   "elig_read_fail": null
+  },
+  "spec_quote": "Any other result is a **successful read** (including Closed, and including Review for reasons such as BACHELORS_WORDING or NO_TEXT).",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_failure_keeps_previous_verdict_codes_evidence_key",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "不可投",
+   "elig_reason": "岗位不提供 sponsor",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "jd text",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-10",
+   "elig_read_on": "2026-10-10"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "new ev",
+   "key": "k_new"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "jd text",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-10",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "岗位不提供 sponsor（2026-10-10 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before; elig_checked = today; elig_read_on = the previous elig_read_on if it had one, else the previous elig_checked; elig_read_fail = today; elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_no_previous_read_on_falls_back_to_previous_checked",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "本科措辞",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "e1",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-12"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "timeout",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "e1",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-12",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "本科措辞（2026-10-12 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "elig_read_on = the previous elig_read_on if it had one, else the previous elig_checked; elig_read_fail = today; elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_existing_bracket_note_is_replaced_not_appended",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "不可投",
+   "elig_reason": "岗位不提供 sponsor（2026-09-20 读到的 JD；2026-10-01 读不到）",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev0",
+   "elig_key": "k0",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-09-20"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev0",
+   "elig_key": "k0",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-09-20",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "岗位不提供 sponsor（2026-09-20 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "If the previous reason already ends with such a bracket note, that note is replaced, not added twice.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_fetch_error_result_uses_rule2",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "一切正常",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-05",
+   "elig_read_on": "2026-10-05"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "boom",
+   "key": "k9"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-05",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "一切正常（2026-10-05 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "A result is a **read failure** when its codes contain UNREADABLE or FETCH_ERROR.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_previous_closed_verdict_is_kept",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "已关闭",
+   "elig_reason": "岗位关闭",
+   "elig_codes": "CLOSED",
+   "elig_evidence": "closed ev",
+   "elig_key": "k_c",
+   "elig_checked": "2026-10-02",
+   "elig_read_on": "2026-10-02"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "已关闭",
+   "elig_codes": "CLOSED",
+   "elig_evidence": "closed ev",
+   "elig_key": "k_c",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-02",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "岗位关闭（2026-10-02 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_second_consecutive_failure_keeps_original_read_on",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "不可投",
+   "elig_reason": "无 sponsor（2026-09-20 读到的 JD；2026-10-01 读不到）",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev",
+   "elig_key": "k",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-09-20"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "still broken",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev",
+   "elig_key": "k",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-09-20",
+   "elig_read_fail": "2026-11-15",
+   "elig_reason": "无 sponsor（2026-09-20 读到的 JD；2026-11-15 读不到）"
+  },
+  "spec_quote": "elig_read_on = the previous elig_read_on if it had one, else the previous elig_checked; elig_read_fail = today; elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_previous_row_without_codes_counts_as_successful_read",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "符合",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-15"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "err",
+   "key": "k8"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": null,
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-15",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "符合（2026-10-15 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "The row's **previous read was successful** when it has an elig_checked date and its elig_codes contain neither UNREADABLE nor FETCH_ERROR.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_new_evidence_and_key_are_not_taken",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "需人工",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "old evidence text",
+   "elig_key": "old_key",
+   "elig_checked": "2026-10-08",
+   "elig_read_on": "2026-10-08"
+  },
+  "result": {
+   "v": "Eligible",
+   "c": "UNREADABLE",
+   "e": "brand new evidence",
+   "key": "new_key"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "old evidence text",
+   "elig_key": "old_key",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-08",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "需人工（2026-10-08 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_no_previous_check_takes_failure_result_and_no_read_on",
+  "today": "2026-10-31",
+  "row": {},
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "err",
+   "key": "k7"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "err",
+   "elig_key": "k7",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": null,
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "Read failure and the previous read was not successful (or there was no previous check) → the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_previous_check_was_itself_unreadable_takes_new_failure_codes",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "旧",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "e_old",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-20"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "fetch err",
+   "key": "k_new"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "fetch err",
+   "elig_key": "k_new",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": null,
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "Read failure and the previous read was not successful (or there was no previous check) → the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_previous_codes_with_fetch_error_is_not_a_successful_read",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "旧结论",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "old ev",
+   "elig_key": "old key",
+   "elig_checked": "2026-10-28"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "pdf broken",
+   "key": "k10"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "pdf broken",
+   "elig_key": "k10",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": null,
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "The row's **previous read was successful** when it has an elig_checked date and its elig_codes contain neither UNREADABLE nor FETCH_ERROR.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_previous_stale_verdict_is_replaced_by_waiting_verdict",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "不可投",
+   "elig_reason": "旧结论",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "e_old",
+   "elig_key": "k_old",
+   "elig_checked": "2026-10-29"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "e_new",
+   "key": "k_new"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "e_new",
+   "elig_key": "k_new",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": null,
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "Read failure and the previous read was not successful (or there was no previous check) → the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_row_without_checked_date_is_not_successful_even_with_verdict_and_reason",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_reason": "手工结论",
+   "elig_evidence": "manual ev",
+   "elig_key": "manual key"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "cannot parse",
+   "key": "k11"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "cannot parse",
+   "elig_key": "k11",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": null,
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "The row's **previous read was successful** when it has an elig_checked date and its elig_codes contain neither UNREADABLE nor FETCH_ERROR.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_existing_read_on_not_changed_by_failure",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "待核实",
+   "elig_reason": "旧",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-29",
+   "elig_read_on": "2026-09-01"
+  },
+  "result": {
+   "v": "Review",
+   "c": "FETCH_ERROR",
+   "e": "err",
+   "key": "k12"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "err",
+   "elig_key": "k12",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-09-01",
+   "elig_read_fail": "2026-10-31"
+  },
+  "spec_quote": "the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": true,
+  "note": "The spec does not say whether 'not set or changed' means an existing elig_read_on stays as-is or is cleared; this case assumes it stays unchanged, but a strict reader could also expect null."
+ },
+ {
+  "name": "rule2_previous_reason_absent_bracket_note_only",
+  "today": "2026-10-31",
+  "row": {
+   "elig": "可投",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-10",
+   "elig_read_on": "2026-10-10"
+  },
+  "result": {
+   "v": "Review",
+   "c": "UNREADABLE",
+   "e": "err",
+   "key": "k13"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": "SPONSORSHIP_OK",
+   "elig_evidence": "e",
+   "elig_key": "k",
+   "elig_checked": "2026-10-31",
+   "elig_read_on": "2026-10-10",
+   "elig_read_fail": "2026-10-31",
+   "elig_reason": "（2026-10-10 读到的 JD；2026-10-31 读不到）"
+  },
+  "spec_quote": "elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": true,
+  "note": "The spec does not define the result when there is no previous elig_reason (empty prefix vs. omitted bracket entirely); this case assumes the bracket note is appended to an empty prefix."
+ },
+ {
+  "name": "r4_foreign_city_abu_dhabi_failure_overrides_rule2_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Eligible",
+   "elig_reason": "可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "old evidence",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-10-01",
+   "location": "Abu Dhabi"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "new evidence",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Abu Dhabi",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": "2026-10-01"
+  },
+  "spec_quote": "Read failure and the row's own `location` field is clearly outside the U.S. (a foreign country, a foreign city such as \"Abu Dhabi\", \"Doha\", \"Toronto\", or a region such as \"Europe\"; a U.S. state / city or \"Remote\" is not) → this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_foreign_region_europe_no_prior_read_on_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Review",
+   "elig_reason": "需要核实",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "ev",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-02",
+   "location": "Europe"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR",
+   "e": "ev2",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Europe",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "Read failure and the row's own `location` field is clearly outside the U.S. (... a region such as \"Europe\" ...) → this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_beats_rule3_when_previous_read_failed_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Unverified",
+   "elig_reason": "读不到",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-20",
+   "location": "Doha"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "",
+   "key": ""
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Doha",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_no_previous_check_foreign_city_toronto_r4",
+  "today": "2026-11-15",
+  "row": {
+   "location": "Toronto"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR",
+   "e": "",
+   "key": ""
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Toronto",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "Read failure and the row's own `location` field is clearly outside the U.S. (a foreign country, a foreign city such as \"Abu Dhabi\", \"Doha\", \"Toronto\" ...) → this rule wins over rules 2 and 3: elig = 不可投 ...",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_foreign_country_both_failure_codes_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Ineligible",
+   "elig_reason": "不可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "old",
+   "elig_key": "k1",
+   "elig_checked": "2026-09-01",
+   "elig_read_on": "2026-09-01",
+   "location": "China"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE,FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "China",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": "2026-09-01"
+  },
+  "spec_quote": "A result is a read failure when its codes contain UNREADABLE or FETCH_ERROR. ... this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_remote_location_failure_uses_rule2_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Eligible",
+   "elig_reason": "可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-10-01",
+   "location": "Remote"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "Eligible",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-10-01",
+   "elig_read_fail": "2026-11-15",
+   "elig_reason": "可投（2026-10-01 读到的 JD；2026-11-15 读不到）"
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 2: Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before; elig_checked = today; elig_read_on = the previous elig_read_on if it had one ... elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_us_state_texas_failure_uses_rule3_r4",
+  "today": "2026-11-15",
+  "row": {
+   "location": "Texas"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "e",
+   "key": "k"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 3: Read failure and the previous read was not successful (or there was no previous check) → the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_empty_location_failure_uses_rule2_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Review",
+   "elig_reason": "需要学士学位",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-09-15",
+   "elig_read_on": "2026-09-15",
+   "location": ""
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "Review",
+   "elig_codes": "BACHELORS_WORDING",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-09-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_reason": "需要学士学位（2026-09-15 读到的 JD；2026-11-15 读不到）"
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 2: Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before ... elig_read_fail = today; elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_us_city_new_york_read_on_from_checked_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Eligible",
+   "elig_reason": "可投",
+   "elig_codes": "",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-05",
+   "location": "New York"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "Eligible",
+   "elig_codes": "",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-10-05",
+   "elig_read_fail": "2026-11-15",
+   "elig_reason": "可投（2026-10-05 读到的 JD；2026-11-15 读不到）"
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 2: ... elig_read_on = the previous elig_read_on if it had one, else the previous elig_checked ... elig_reason = the previous reason followed by \"（\" + elig_read_on + \" 读到的 JD；\" + today + \" 读不到）\".",
+  "ambiguous": false
+ },
+ {
+  "name": "foreign_location_successful_read_is_rule1_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Unverified",
+   "elig_reason": "读不到",
+   "elig_codes": "UNREADABLE",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-01",
+   "location": "Abu Dhabi"
+  },
+  "result": {
+   "v": "Eligible",
+   "c": "NO_SPONSORSHIP",
+   "e": "ev2",
+   "key": "k2"
+  },
+  "expect": {
+   "elig": "可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev2",
+   "elig_key": "k2",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-11-15",
+   "elig_read_fail": null
+  },
+  "spec_quote": "A successful read is always rule 1, whatever the location. Rule 1: Successful read → the row takes the new result: elig = the verdict word, elig_codes = the new codes, elig_evidence and elig_key = the new ones, elig_checked = today, elig_read_on = today, and there is no elig_read_fail.",
+  "ambiguous": false
+ },
+ {
+  "name": "foreign_region_successful_read_closed_is_rule1_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Review",
+   "elig_reason": "需要核实",
+   "elig_codes": "UNREADABLE,NO_TEXT",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-10-01",
+   "location": "Europe"
+  },
+  "result": {
+   "v": "Closed",
+   "c": "CLOSED",
+   "e": "closed evidence",
+   "key": "kc"
+  },
+  "expect": {
+   "elig": "已关闭",
+   "elig_codes": "CLOSED",
+   "elig_evidence": "closed evidence",
+   "elig_key": "kc",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-11-15",
+   "elig_read_fail": null
+  },
+  "spec_quote": "A successful read is always rule 1, whatever the location. ... Any other result is a successful read (including Closed ...).",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_replaces_bracket_note_in_previous_reason_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Eligible",
+   "elig_reason": "可投（2026-09-01 读到的 JD；2026-10-01 读不到）",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "old",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-01",
+   "elig_read_on": "2026-09-01",
+   "location": "Toronto"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Toronto",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": "2026-09-01"
+  },
+  "spec_quote": "this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_no_location_field_failure_uses_rule2_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Ineligible",
+   "elig_reason": "不可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-03",
+   "elig_read_on": "2026-10-03"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "Ineligible",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "ev1",
+   "elig_key": "k1",
+   "elig_checked": "2026-11-15",
+   "elig_read_on": "2026-10-03",
+   "elig_read_fail": "2026-11-15",
+   "elig_reason": "不可投（2026-10-03 读到的 JD；2026-11-15 读不到）"
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 2: Read failure and the previous read was successful → the row KEEPS elig, elig_codes, elig_evidence and elig_key from before; elig_checked = today; elig_read_on = the previous elig_read_on if it had one ... elig_reason = the previous reason followed by ...",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_us_location_previous_failure_uses_rule3_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Unverified",
+   "elig_reason": "读不到",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-20",
+   "location": "California"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE",
+   "e": "e",
+   "key": "k"
+  },
+  "expect": {
+   "elig": "待核实",
+   "elig_codes": "UNREADABLE",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "a U.S. state / city or \"Remote\" is not [outside the U.S.]; Rule 3: Read failure and the previous read was not successful (or there was no previous check) → the row takes the new result as in rule 1 (elig 待核实, the failure codes), except that elig_read_on is not set or changed, and elig_read_fail = today.",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_singapore_no_prior_read_on_stays_unset_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Eligible",
+   "elig_reason": "可投",
+   "elig_codes": "NO_SPONSORSHIP",
+   "elig_evidence": "old",
+   "elig_key": "k1",
+   "elig_checked": "2026-10-01",
+   "location": "Singapore"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Singapore",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": null
+  },
+  "spec_quote": "Read failure and the row's own `location` field is clearly outside the U.S. (a foreign country ...) → this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "r4_beats_rule3_foreign_region_with_both_failure_codes_r4",
+  "today": "2026-11-15",
+  "row": {
+   "elig": "Unverified",
+   "elig_reason": "读不到",
+   "elig_codes": "FETCH_ERROR",
+   "elig_evidence": "",
+   "elig_key": "",
+   "elig_checked": "2026-10-20",
+   "elig_read_on": "2026-09-30",
+   "location": "Europe"
+  },
+  "result": {
+   "v": "Unverified",
+   "c": "UNREADABLE,FETCH_ERROR",
+   "e": "x",
+   "key": "y"
+  },
+  "expect": {
+   "elig": "不可投",
+   "elig_codes": "NON_US",
+   "elig_evidence": "Europe",
+   "elig_reason": "不在美国",
+   "elig_checked": "2026-11-15",
+   "elig_read_fail": "2026-11-15",
+   "elig_read_on": "2026-09-30"
+  },
+  "spec_quote": "this rule wins over rules 2 and 3: elig = 不可投, elig_codes = \"NON_US\", elig_evidence = the location, elig_reason = \"不在美国\", elig_checked = today, elig_read_fail = today, elig_read_on is not set or changed.",
+  "ambiguous": false
+ }
+]

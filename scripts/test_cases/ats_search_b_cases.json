@@ -1,0 +1,183 @@
+[
+ {
+  "name": "Single posting in a different US city with country suffix is rejected (null)",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/101",
+     "Pensacola, FL, United States"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "A location such as \"Phoenix, AZ, United States\" or \"Pensacola, FL, United States\" is NOT wide — it names a city, so a row in Sunrise, FL does not match it.",
+  "ambiguous": false
+ },
+ {
+  "name": "Posting in the same city with country suffix matches (url)",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/102",
+     "Sunrise, FL, United States"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/102",
+  "spec_quote": "it is rejected (null) when ... the city does not appear in the posting's location (or in the row's title) — here the city \"Sunrise\" does appear in the posting's location, so no rejection.",
+  "ambiguous": false
+ },
+ {
+  "name": "Posting location is only the country \"United States\" -> wide -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/103",
+     "United States"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/103",
+  "spec_quote": "\"Wide\" = the posting location mentions \"<n> locations\", \"remote\", \"multiple\" or \"nationwide\", or is ONLY the country (\"United States\", \"United States of America\", \"US\", \"USA\", any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "Posting location is only \"USA\" -> wide -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/104",
+     "USA"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/104",
+  "spec_quote": "\"Wide\" = ... or is ONLY the country (\"United States\", \"United States of America\", \"US\", \"USA\", any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "Posting location mentions \"Remote\" -> wide -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/105",
+     "Remote"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/105",
+  "spec_quote": "\"Wide\" = the posting location mentions \"<n> locations\", \"remote\", \"multiple\" or \"nationwide\"...",
+  "ambiguous": false
+ },
+ {
+  "name": "Posting location \"Multiple Locations\" -> wide -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/106",
+     "Multiple Locations"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/106",
+  "spec_quote": "\"Wide\" = the posting location mentions \"<n> locations\", \"remote\", \"multiple\" or \"nationwide\"...",
+  "ambiguous": false
+ },
+ {
+  "name": "Row city empty (no text before first comma) -> no city check -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://careers.acme.com/jobs/107",
+     "Pensacola, FL, United States"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/107",
+  "spec_quote": "it is rejected (null) when the row's city (the part of the row's location before the first comma, \"remote\" words removed) is set, ... — with an empty row location the city is not set, so the unique best posting is accepted.",
+  "ambiguous": false
+ },
+ {
+  "name": "Row's title names the city -> no rejection -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Sunrise Senior Software Engineer Backend Platform",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Senior Software Engineer Backend Platform",
+     "https://careers.acme.com/jobs/108",
+     "Pensacola, FL, United States"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/108",
+  "spec_quote": "it is rejected (null) when ... the city does not appear in the posting's location (or in the row's title) — here \"Sunrise\" appears in the row's title, so the rejection condition fails.",
+  "ambiguous": false
+ },
+ {
+  "name": "Titles differing only by trailing \"- City, ST\" tail with different cities",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer - Sunrise, FL",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Software Engineer - Pensacola, FL",
+     "https://careers.acme.com/jobs/109",
+     "Pensacola, FL, United States"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "When exactly one posting has the best title score: it is rejected (null) when the row's city ... is set, the posting's location is set, the city does not appear in the posting's location (or in the row's title), AND the posting's location is not \"wide\". … a trailing \"- City, ST\" in a title is dropped before scoring.",
+  "ambiguous": true,
+  "why_ambiguous": "Both titles reduce to \"software engineer\" after the trailing \"- City, ST\" tail is dropped, so the posting is the unique best (Jaccard 1.0) and is in a non-wide, different city. But the guard says the city must not appear in \"the row's title\": the raw row title \"Software Engineer - Sunrise, FL\" does contain \"Sunrise\" (giving the url), while the title with its trailing city tail dropped does not (giving null). The spec does not say whether the stripped or raw title is used for this check; expectation here assumes the stripped title."
+ },
+ {
+  "name": "Trailing \"- City, ST\" tail dropped before scoring lifts Jaccard over 0.75 -> url",
+  "fn": "match_posting",
+  "args": {
+   "title": "Senior Software Engineer",
+   "location": "Sunrise, FL",
+   "postings": [
+    [
+     "Senior Software Engineer - Sunrise, FL",
+     "https://careers.acme.com/jobs/110",
+     "Sunrise, FL, United States"
+    ]
+   ]
+  },
+  "expect": "https://careers.acme.com/jobs/110",
+  "spec_quote": "Title score: normalised titles, Jaccard ≥ 0.75; a trailing \"- City, ST\" in a title is dropped before scoring.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="90">
+<title>Job-search agent — live map</title>
+<style>
+:root{--bg:#0b0f14;--panel:#121821;--line:#1f2a37;--txt:#e6edf3;--dim:#8b98a5;--acc:#4dd4ac;--warn:#f0b429;--bad:#f26d6d;--blue:#5aa9e6;--purple:#a78bfa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif}
+a{color:var(--acc);text-decoration:none}
+header{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;padding:16px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,15,20,.95);backdrop-filter:blur(6px);z-index:5}
+h1{font-size:17px;margin:0;letter-spacing:.2px}
+header .meta{color:var(--dim);font-size:12px}
+header .meta b{color:var(--txt);font-weight:600}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);margin-right:6px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.wrap{display:grid;grid-template-columns:200px 1fr 340px;gap:0;min-height:calc(100vh - 60px)}
+nav{border-right:1px solid var(--line);padding:14px 10px}
+nav button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--dim);padding:8px 10px;border-radius:7px;cursor:pointer;font:inherit}
+nav button:hover{background:#16202b;color:var(--txt)}
+nav button.on{background:#17222e;color:var(--txt);box-shadow:inset 2px 0 0 var(--acc)}
+main{padding:18px 22px;overflow:auto}
+aside{border-left:1px solid var(--line);padding:16px;overflow:auto;background:#0e141b}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.card .v{font-size:20px;font-weight:650;margin-top:2px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);margin:22px 0 10px}
+svg{width:100%;height:auto;display:block}
+svg .node{cursor:pointer}
+svg .node rect{fill:#131b25;stroke:#26333f;stroke-width:1.4;rx:9}
+svg .node:hover rect{stroke:var(--acc)}
+svg .node.sel rect{stroke:var(--acc);stroke-width:2.2}
+svg text{fill:var(--txt);font-size:12px;font-family:inherit}
+svg .sub{fill:var(--dim);font-size:10.5px}
+svg .edge{stroke:#2c3b4a;stroke-width:1.6;fill:none;stroke-dasharray:5 4;animation:flow 22s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-220}}
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.step{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:8px;padding:9px 11px;cursor:pointer}
+.step:hover{border-left-color:var(--acc)}
+.step b{display:block;font-size:12.5px}
+.step span{color:var(--dim);font-size:11.5px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.tag{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;border:1px solid var(--line);color:var(--dim)}
+.tag.acc{color:var(--acc);border-color:#1e4b3f}
+.tag.warn{color:var(--warn);border-color:#4a3a12}
+.tag.bad{color:var(--bad);border-color:#4a1f1f}
+code{background:#0e141b;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12px}
+aside h3{margin:0 0 6px;font-size:14px}
+aside p{margin:6px 0;color:var(--dim);font-size:12.5px}
+aside ul{margin:6px 0 0 16px;padding:0;color:var(--dim);font-size:12.5px}
+.hide{display:none}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.stagehead{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.stagehead b{font-size:13.5px}
+.stage dl{display:grid;grid-template-columns:96px 1fr;gap:3px 12px;margin:0}
+.stage dt{color:var(--dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;padding-top:2px}
+.stage dd{margin:0;font-size:12.5px}
+.stage dd.dim{color:#7d8b99}
+.legend{color:var(--dim);font-size:12px;margin:0 0 12px}
+footer{padding:10px 22px;color:#5d6b7a;font-size:11.5px;border-top:1px solid var(--line)}
+</style></head><body>
+<header>
+<h1>Job-search agent — live map</h1>
+<span class="meta"><span class="dot"></span>built <b>__BUILT__</b> · auto-refresh 90s</span>
+<span class="meta">branch <b id="h-branch"></b> · head <b id="h-head"></b> · <b id="h-dirty"></b></span>
+<span class="meta">remote <b id="h-remote"></b></span>
+</header>
+<div class="wrap">
+<nav id="nav"></nav>
+<main id="main"></main>
+<aside id="side"><h3>What is this?</h3><p>A read-only picture of the agent, generated from the repo itself. Click any box, step or row.</p><p>It is <b>not</b> part of the agent: nothing here writes, submits or decides.</p><p class="small">Rebuild: <code>python3 scripts/map/build_map.py</code></p></aside>
+</div>
+<footer>Source: the repository at build time · regenerate with scripts/map/build_map.py · the page reloads itself so file changes appear</footer>
+<script>window.DATA=__DATA__;</script>
+<script>const D = window.DATA;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; });
+$("#h-branch").textContent = D.branch;
+$("#h-head").textContent = D.head;
+$("#h-dirty").textContent = D.dirty ? D.dirty + " uncommitted" : "clean";
+$("#h-remote").textContent = D.remote || "-";
+
+var NODES = [
+  {id:"local", x:20, y:20, w:200, h:60, label:"Local repo", sub:"the only master", body:"Skills, applications, resumes, data and the runner live here and nowhere else. Every session ends with commit + push.", facts:["shell sandboxed to this folder","written by DSH / Claude Code / Joey"]},
+  {id:"git", x:260, y:20, w:200, h:60, label:"Private GitHub", sub:"origin · history", body:"History, diff, rollback. Since 2026-10-29 also the code source for 08:45 and 10:00 (Claude GitHub App, no PAT).", facts:["clone at run start","commit hash in the run log"]},
+  {id:"tasks", x:500, y:20, w:200, h:60, label:"Cloud tasks", sub:"08:15 · 08:45 · 10:00", body:"Three routines write the datasets. 08:15 reads the local repo through the device bridge; 08:45 and 10:00 read GitHub.", facts:["08:15 needs the Mac awake","a failure stops without writing"]},
+  {id:"dash", x:740, y:20, w:200, h:60, label:"Dashboard", sub:"read-only view", body:"The page reads datasets/* pointers to immutable JSON assets. Only a claude.ai session can write it (ArtifactData).", facts:["if_version on every write","assets are immutable"]},
+  {id:"skills", x:20, y:170, w:200, h:60, label:"Skills", sub:"how to judge", body:"Instructions for the decision-maker, not code. Platform skills hold the pitfalls; materials skills hold the wording rules.", facts:["read by Claude / Claude Code","the runner never reads them"]},
+  {id:"runner", x:260, y:170, w:200, h:60, label:"Runner", sub:"Playwright · CDP 9222", body:"Fills the live form one page at a time. verify.js compares page and plan, canon.py compares plan and facts.", facts:["Greenhouse: submits on gates","Workday: stops at Review"]},
+  {id:"dsets", x:500, y:170, w:200, h:60, label:"datasets", sub:"jobs · applications · emails", body:"The live state the dashboard reads. Written by the tasks and by claude.ai sessions, always with if_version.", facts:["elig_manual survives the daily gate","read the version before writing"]},
+  {id:"joey", x:740, y:170, w:200, h:60, label:"Joey", sub:"signs, logs in, CAPTCHA", body:"Batch approval, Workday Submit, tenant logins, verification codes, and any answer only he knows.", facts:["approval = one yes per batch","no passwords for an agent"]}
+];
+
+var EDGES = [
+  ["local","git","push"],["git","tasks","clone"],["tasks","dsets","write"],["dsets","dash","asset"],
+  ["local","runner","code"],["skills","runner","rules"],["runner","joey","handoff"],["joey","runner","submit"],["runner","local","records"]
+];
+
+function edgePath(a, b) {
+  var A = a, B = b;
+  var x1 = A.x + A.w / 2, y1 = A.y + A.h / 2, x2 = B.x + B.w / 2, y2 = B.y + B.h / 2;
+  var dx = (x2 - x1) / 2;
+  return "M" + x1 + "," + y1 + " C" + (x1 + dx) + "," + y1 + " " + (x2 - dx) + "," + y2 + " " + x2 + "," + y2;
+}
+
+function svgMap() {
+  var by = {}; NODES.forEach(function (n) { by[n.id] = n; });
+  var s = "<svg viewBox=\"0 0 960 260\" role=\"img\" aria-label=\"agent map\">";
+  EDGES.forEach(function (e) {
+    if (!by[e[0]] || !by[e[1]]) return;
+    s += "<path class=\"edge\" d=\"" + edgePath(by[e[0]], by[e[1]]) + "\"/>";
+  });
+  NODES.forEach(function (n) {
+    s += "<g class=\"node\" data-id=\"" + n.id + "\" transform=\"translate(" + n.x + "," + n.y + ")\">" +
+         "<rect width=\"" + n.w + "\" height=\"" + n.h + "\" rx=\"9\"/>" +
+         "<text x=\"12\" y=\"24\">" + esc(n.label) + "</text>" +
+         "<text class=\"sub\" x=\"12\" y=\"44\">" + esc(n.sub) + "</text></g>";
+  });
+  return s + "</svg>";
+}
+
+function detail(html) { $("#side").innerHTML = html; }
+
+function showNode(id) {
+  var n = NODES.filter(function (x) { return x.id === id; })[0];
+  if (!n) return;
+  document.querySelectorAll("svg .node").forEach(function (g) { g.classList.toggle("sel", g.getAttribute("data-id") === id); });
+  detail("<h3>" + esc(n.label) + "</h3><p>" + esc(n.body) + "</p><ul>" + n.facts.map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul>");
+}
+
+function viewOverview() {
+  $("#main").innerHTML =
+    "<div class=\"cards\">" +
+      card("tracked files", D.counts.tracked) + card("application folders", D.counts.applications) +
+      card("skills", D.counts.skills) + card("scripts", D.counts.scripts) +
+    "</div>" +
+    "<h2>The four layers</h2>" + svgMap() +
+    "<h2>Pipeline — one application, eleven stages</h2>" +
+    "<p class=\"legend\">Click a stage for the short version, or read the detail below: what it calls, what goes in and out, what counts as passing, and what happens when it fails.</p>" +
+    "<div class=\"pipe\">" +
+      D.stages.map(function (s) { return "<div class=\"step\" data-stage=\"" + s.id + "\"><b>" + esc(s.name) + "</b><span>" + esc(s.who) + "</span></div>"; }).join("") +
+    "</div>" +
+    "<h2>How each stage actually runs</h2>" +
+    D.stages.map(function (s) {
+      return "<div class=\"stage\"><div class=\"stagehead\"><b>" + esc(s.name) + "</b><span class=\"tag\">" + esc(s.who) + "</span></div>" +
+        "<dl>" +
+        "<dt>calls</dt><dd><code>" + esc(s.tool) + "</code></dd>" +
+        "<dt>input</dt><dd>" + esc(s["in"] || "") + "</dd>" +
+        "<dt>output</dt><dd>" + esc(s.out || "") + "</dd>" +
+        "<dt>passes</dt><dd>" + esc(s.pass || "") + "</dd>" +
+        "<dt>fails</dt><dd>" + esc(s.fail || "") + "</dd>" +
+        "<dt>example</dt><dd class=\"dim\">" + esc(s.ex || "") + "</dd>" +
+        "</dl></div>";
+    }).join("");
+  document.querySelectorAll("svg .node").forEach(function (g) { g.addEventListener("click", function () { showNode(g.getAttribute("data-id")); }); });
+  document.querySelectorAll("[data-stage]").forEach(function (el) {
+    el.addEventListener("click", function () {
+      var s = D.stages.filter(function (x) { return x.id === el.getAttribute("data-stage"); })[0];
+      detail("<h3>" + esc(s.name) + "</h3><p>who: " + esc(s.who) + "</p><p>tool: <code>" + esc(s.tool) + "</code></p><p>" + esc(s.note) + "</p>");
+    });
+  });
+}
+
+function card(k, v) { return "<div class=\"card\"><div class=\"k\">" + esc(k) + "</div><div class=\"v\">" + esc(v) + "</div></div>"; }
+
+function viewPipeline() {
+  $("#main").innerHTML = "<h2>Where each stage runs</h2>" + D.stages.map(function (s) {
+    return "<div class=\"step\" style=\"margin-bottom:8px\"><b>" + esc(s.name) + " — " + esc(s.who) + "</b><span><code>" + esc(s.tool) + "</code> · " + esc(s.note) + "</span></div>";
+  }).join("");
+  detail("<h3>Reading the pipeline</h3><p>Steps 1-3 are judgement (a human or Claude), 4-6 are scripts, 7-9 are the runner and its gates, 10-11 are signature and record.</p>");
+}
+
+function viewFlow() {
+  $("#main").innerHTML = "<h2>Artifacts — what each step leaves behind</h2>" +
+    "<p class=\"legend\">Each row is a file on disk. Read it top to bottom and you can replay the whole application from evidence, without asking anybody.</p>" +
+    D.artifacts.map(function (a) {
+      return "<div class=\"stage\"><div class=\"stagehead\"><b><code>" + esc(a.f) + "</code></b></div><dl>" +
+        "<dt>written by</dt><dd>" + esc(a.by) + "</dd>" +
+        "<dt>read by</dt><dd>" + esc(a.to) + "</dd>" +
+        "<dt>holds</dt><dd>" + esc(a.what) + "</dd>" +
+        "<dt>lifetime</dt><dd class=\"dim\">" + esc(a.life) + "</dd></dl></div>";
+    }).join("");
+  detail("<h3>The chain</h3><p>jd.md -> requirements.json -> materials + manifest -> plan.json -> verify.json / canon.json -> confirmation -> application_record.md -> tracker row -> dashboard.</p><p>Everything before <code>submitted_confirmation.png</code> is reversible. After it, the only honest record is the evidence.</p>");
+}
+
+function viewFailures() {
+  var rows = D.failures.map(function (f) {
+    return "<tr><td><b>" + esc(f.sym) + "</b></td><td>" + esc(f.why) + "</td><td>" + esc(f.who) + "</td><td>" + esc(f.fix) + "</td></tr>";
+  }).join("");
+  $("#main").innerHTML = "<h2>Failure playbook</h2>" +
+    "<p class=\"legend\">Every row is a real failure seen in this project. Symptom first: that is what you actually see.</p>" +
+    "<table><tr><th>what you see</th><th>why</th><th>who handles it</th><th>what to do</th></tr>" + rows + "</table>";
+  detail("<h3>Two rules</h3><p>1. A failure that writes nothing is better than a half-written dataset.</p><p>2. A model never judges its own work: verify.js and canon.py decide, then a human signs.</p>");
+}
+
+function viewTasks() {
+  var rows = D.tasks.map(function (t) {
+    return "<tr><td><b>" + esc(t.name) + "</b><br><span class=\"tag\">" + esc(t.id || "") + "</span></td><td>" + esc(t.when) + "</td><td>" + esc(t.what) + "</td></tr>";
+  }).join("");
+  $("#main").innerHTML = "<h2>Routines (parsed from CLAUDE.md)</h2><table><tr><th>task</th><th>when</th><th>what it does</th></tr>" + rows + "</table>";
+  detail("<h3>Failures</h3><p>A task that cannot read its code stops without writing. That is deliberate: half-written datasets are worse than a missed day.</p>");
+}
+
+function viewSkills() {
+  var rows = D.skills.map(function (s) {
+    return "<tr><td><code>" + esc(s.name) + "</code></td><td>" + esc(s.role) + "</td><td>" + esc(s.when) + "</td></tr>";
+  }).join("");
+  $("#main").innerHTML = "<h2>Skills and when they are read</h2><table><tr><th>skill</th><th>role</th><th>read when</th></tr>" + rows + "</table>";
+  detail("<h3>Not executable</h3><p>Skills are instructions. The runner follows code and JSON; a skill only changes what the decision-maker chooses.</p>");
+}
+
+function viewGates() {
+  $("#main").innerHTML = "<h2>Gates before a submit</h2>" + D.gates.map(function (g) {
+    return "<div class=\"step\" style=\"margin-bottom:8px\"><b>" + esc(g.name) + " — " + esc(g.q) + "</b><span>" + esc(g.layers) + "</span></div>";
+  }).join("");
+  detail("<h3>Why two gates</h3><p>verify.js answers \"did I fill what I meant to fill\"; canon.py answers \"was what I meant to fill true\". A wrong plan passes the first and fails the second.</p>");
+}
+
+function freshLine(st) {
+  if (!st || st.error) return "<p class=\"tag bad\">store not readable" + (st && st.error ? ": " + esc(st.error) : "") + "</p>";
+  var cls = st.problems ? "tag bad" : "tag acc";
+  return "<p class=\"" + cls + "\">data/store · last write " + esc(st.updated_at) + (st.problems ? " · " + st.problems + " schema problems" : " · check clean") + "</p>";
+}
+
+function backlogView() {
+  var b = D.backlog || {};
+  var c = b.counts || {};
+  var counts = "<p class=\"legend\">" + esc("todo " + (c.todo || 0) + " · doing " + (c.doing || 0) +
+    " · blocked " + (c.blocked || 0) + " · done " + (c.done || 0)) + "</p>";
+  if (!b.next || !b.next.length) return counts + "<p class=\"tag warn\">no open rows — add one to BACKLOG.md</p>";
+  var rows = b.next.map(function (r) {
+    var cls = r.pri === "P0" ? "bad" : (r.pri === "P1" ? "warn" : "acc");
+    return "<tr><td><code>" + esc(r.id) + "</code></td><td><span class=\"tag " + cls + "\">" + esc(r.pri) +
+      "</span></td><td>" + esc(r.area) + "</td><td>" + esc(r.item) + "</td><td>" + esc(r.status) + "</td></tr>";
+  }).join("");
+  return counts + "<table><tr><th>ID</th><th>pri</th><th>area</th><th>item</th><th>status</th></tr>" +
+    rows + "</table>";
+}
+
+function viewState() {
+  var st = D.store || {};
+  var c = st.counts || {};
+  $("#main").innerHTML = "<h2>Data (data/store)</h2>" + freshLine(st) + "<div class=\"cards\">" +
+    card("jobs", c.jobs == null ? "?" : c.jobs) +
+    card("applications", c.applications == null ? "?" : c.applications) +
+    card("applied", st.applied == null ? "?" : st.applied) +
+    card("in motion", st.in_motion == null ? "?" : st.in_motion) +
+    card("emails", c.emails == null ? "?" : c.emails) +
+    card("working tree", D.dirty ? D.dirty + " dirty" : "clean") +
+    "</div>" + (st.daily_tail && st.daily_tail.length ? "<h2>Local routines (" + esc(st.daily_log) + ")</h2><pre>" + esc(st.daily_tail.join("\n")) + "</pre>" : "") +
+    "<h2>Latest commits</h2><table><tr><th>hash</th><th>when</th><th>subject</th></tr>" +
+    D.commits.map(function (c) { return "<tr><td><code>" + esc(c.hash) + "</code></td><td>" + esc(c.when) + "</td><td>" + esc(c.subject) + "</td></tr>"; }).join("") +
+    "</table><h2>Next up (BACKLOG.md)</h2>" + backlogView();
+  detail("<h3>" + esc(D.log.file || "no log") + "</h3><p>The counts are read from <code>data/store/</code> by <code>scripts/store/store.py</code> on every rebuild (ADR-0004), so they are never stale. The routine lines are the tail of <code>data/runner/daily/&lt;date&gt;.md</code>.</p><p>Next up comes from <code>BACKLOG.md</code> through <code>scripts/backlog.py --next 3</code>.</p>");
+}
+
+var VIEWS = [["overview","Overview",viewOverview],["pipeline","Pipeline",viewPipeline],["flow","Data flow",viewFlow],["failures","Failures",viewFailures],["tasks","Tasks",viewTasks],["skills","Skills",viewSkills],["gates","Gates",viewGates],["state","State",viewState]];
+VIEWS.forEach(function (v, i) {
+  var b = document.createElement("button");
+  b.textContent = v[1]; b.setAttribute("data-view", v[0]);
+  if (i === 0) b.className = "on";
+  b.addEventListener("click", function () {
+    document.querySelectorAll("nav button").forEach(function (x) { x.classList.remove("on"); });
+    b.classList.add("on"); v[2]();
+  });
+  $("#nav").appendChild(b);
+});
+viewOverview();
+</script></body></html>

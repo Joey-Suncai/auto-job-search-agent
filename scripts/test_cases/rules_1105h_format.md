@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "rule": int (1-5), "args": {"label": str, "type": "text" | "textarea" | "select" | "radio", "options": [str]}, "expect": {"value": str} exact answer | {"not_contains": [str]} if answered, contains none of these, "spec_quote": str, "ambiguous": false}.
+Write 16 cases: rule 1 = 5, rule 2 = 3, rule 3 = 2, rule 4 = 3, rule 5 = 3. Realistic Greenhouse / Lever / Workday wording.

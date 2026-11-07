@@ -1,0 +1,241 @@
+[
+ {
+  "name": "error_something_went_wrong_no_sections_upload_ok",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "Something went wrong. Please try again later.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: \"Something went wrong\" ... This wins over everything else"
+ },
+ {
+  "name": "error_session_expired_beats_work_section_and_failed_upload",
+  "sections": [
+   "Work Experience"
+  ],
+  "upload_ok": false,
+  "body_text": "Your session expired. Please sign in again.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"session expired\" ... This wins over everything else (an old draft / expired session — rerun fresh, then the candidate withdraws the draft)."
+ },
+ {
+  "name": "error_session_has_expired_uppercase",
+  "sections": [
+   "Resume/CV"
+  ],
+  "upload_ok": true,
+  "body_text": "YOUR SESSION HAS EXPIRED",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"session has expired\" ... (case-insensitive)."
+ },
+ {
+  "name": "error_session_timed_out",
+  "sections": [],
+  "upload_ok": false,
+  "body_text": "Session timed out after 20 minutes of inactivity.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"session timed out\" ... (case-insensitive)."
+ },
+ {
+  "name": "error_an_error_occurred_beats_education_section",
+  "sections": [
+   "Education"
+  ],
+  "upload_ok": true,
+  "body_text": "An error occurred while saving your changes.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"an error occurred\" ... This wins over everything else"
+ },
+ {
+  "name": "error_an_error_has_occurred_uppercase",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "AN ERROR HAS OCCURRED. Please refresh.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"an error has occurred\" ... (case-insensitive)."
+ },
+ {
+  "name": "error_page_not_available_beats_resume_only",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "Page not available",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"page not available\" / \"page is unavailable\" (case-insensitive). This wins over everything else"
+ },
+ {
+  "name": "error_page_is_unavailable_with_language_section",
+  "sections": [
+   "Languages"
+  ],
+  "upload_ok": false,
+  "body_text": "This page is unavailable right now.",
+  "expect": "error",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"page is unavailable\" ... This wins over everything else"
+ },
+ {
+  "name": "near_miss_generic_word_error_no_phrase",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "No errors were found on this page.",
+  "expect": "resume-only",
+  "spec": "\"error\" when the page text shows a Workday error: \"Something went wrong\", \"session expired\" / \"session has expired\" / \"session timed out\", \"an error occurred\" / \"an error has occurred\", \"page not available\" / \"page is unavailable\" (case-insensitive). — none of these phrases is present."
+ },
+ {
+  "name": "near_miss_session_not_expired",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "Your session is not expired.",
+  "expect": "resume-only",
+  "spec": "\"error\" when the page text shows a Workday error: ... \"session expired\" / \"session has expired\" / \"session timed out\" ... — the phrase \"session expired\" does not appear here."
+ },
+ {
+  "name": "no_sections_with_successful_upload",
+  "sections": [],
+  "upload_ok": true,
+  "body_text": "My Experience",
+  "expect": "resume-only",
+  "spec": "No sections at all + upload successful = \"resume-only\"."
+ },
+ {
+  "name": "resume_cv_and_attachments_headings_only",
+  "sections": [
+   "Resume/CV",
+   "Attachments"
+  ],
+  "upload_ok": true,
+  "body_text": "Resume/CV Attachments",
+  "expect": "resume-only",
+  "spec": "A section whose heading names the résumé, CV, curriculum vitae or attachments does not count as such a section even if it also contains one of those words (e.g. \"Resume/CV\", \"Attachments\")."
+ },
+ {
+  "name": "websites_and_social_network_urls_headings_only",
+  "sections": [
+   "Websites",
+   "Social Network URLs"
+  ],
+  "upload_ok": true,
+  "body_text": "Websites Social Network URLs",
+  "expect": "resume-only",
+  "spec": "Other headings like \"Websites\" or \"Social Network URLs\" do not count either."
+ },
+ {
+  "name": "curriculum_vitae_heading_only",
+  "sections": [
+   "Curriculum Vitae"
+  ],
+  "upload_ok": true,
+  "body_text": "Curriculum Vitae",
+  "expect": "resume-only",
+  "spec": "A section whose heading names the résumé, CV, curriculum vitae or attachments does not count as such a section"
+ },
+ {
+  "name": "work_experience_section_present_nothing_rendered",
+  "sections": [
+   "Work Experience"
+  ],
+  "upload_ok": true,
+  "body_text": "Work Experience",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered"
+ },
+ {
+  "name": "education_section_with_successful_upload",
+  "sections": [
+   "Education"
+  ],
+  "upload_ok": true,
+  "body_text": "Education",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered"
+ },
+ {
+  "name": "languages_section_with_successful_upload",
+  "sections": [
+   "Languages"
+  ],
+  "upload_ok": true,
+  "body_text": "Languages",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered"
+ },
+ {
+  "name": "no_sections_but_upload_not_successful",
+  "sections": [],
+  "upload_ok": false,
+  "body_text": "My Experience",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: ... or the upload is not successful. The runner then stops and never advances unchecked."
+ },
+ {
+  "name": "websites_only_but_upload_failed",
+  "sections": [
+   "Websites"
+  ],
+  "upload_ok": false,
+  "body_text": "Websites",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: ... or the upload is not successful."
+ },
+ {
+  "name": "resume_cv_only_but_upload_failed",
+  "sections": [
+   "Resume/CV"
+  ],
+  "upload_ok": false,
+  "body_text": "Resume/CV",
+  "expect": "empty",
+  "spec": "\"resume-only\" when there is no error, the résumé upload is successful, and none of the sections is a work / employment / experience / education / academic / school / language section. — upload not successful, so it falls through to \"empty\" ... or the upload is not successful."
+ },
+ {
+  "name": "professional_experience_heading",
+  "sections": [
+   "Professional Experience"
+  ],
+  "upload_ok": true,
+  "body_text": "Professional Experience",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered"
+ },
+ {
+  "name": "resume_and_work_experience_heading_combined",
+  "sections": [
+   "Resume and Work Experience",
+   "Attachments"
+  ],
+  "upload_ok": true,
+  "body_text": "Resume and Work Experience Attachments",
+  "expect": "resume-only",
+  "ambiguous": true,
+  "spec": "A section whose heading names the résumé, CV, curriculum vitae or attachments does not count as such a section even if it also contains one of those words (e.g. \"Resume/CV\", \"Attachments\"). — Ambiguous: the only worked example (\"Resume/CV\") contains no work/education trigger word, so it is unclear whether the exemption really overrides a heading that also names \"Work Experience\"."
+ },
+ {
+  "name": "academic_background_heading",
+  "sections": [
+   "Academic Background"
+  ],
+  "upload_ok": true,
+  "body_text": "Academic Background",
+  "expect": "empty",
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered — \"academic\" sections are listed among those that block resume-only."
+ },
+ {
+  "name": "employment_history_heading_upload_ok",
+  "sections": [
+   "Employment History"
+  ],
+  "upload_ok": true,
+  "body_text": "Employment History",
+  "expect": "empty",
+  "spec": "\"resume-only\" when ... none of the sections is a work / employment / experience / education / academic / school / language section. — \"Employment History\" is such a section, so the result is \"empty\"."
+ },
+ {
+  "name": "uppercase_education_heading_only",
+  "sections": [
+   "EDUCATION"
+  ],
+  "upload_ok": true,
+  "body_text": "EDUCATION",
+  "expect": "empty",
+  "ambiguous": true,
+  "spec": "\"empty\" otherwise: a work / education / language section exists but nothing rendered. — Ambiguous: case-insensitivity is stated only for the error phrases, not for section headings, so matching \"EDUCATION\" to \"education\" is an assumption."
+ }
+]

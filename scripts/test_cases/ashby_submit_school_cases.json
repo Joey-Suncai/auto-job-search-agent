@@ -1,0 +1,373 @@
+[
+ {
+  "name": "date_same_numeric_exact",
+  "fn": "date_same",
+  "args": [
+   "06/14/2027",
+   "06/14/2027"
+  ],
+  "expect": true,
+  "spec_quote": "Same numbers in any order/format: want \"06/14/2027\" matches got \"06/14/2027\", \"2027-06-14\" and \"14/06/2027\".",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_month_word_vs_mm_dd",
+  "fn": "date_same",
+  "args": [
+   "June 14, 2027",
+   "06/14/2027"
+  ],
+  "expect": true,
+  "spec_quote": "A want written with the month as a word and a day (\"June 14, 2027\", \"Jun 14 2027\", \"14 June 2027\", \"June 14th, 2027\") or as YYYY-MM-DD names that full date: it matches got \"06/14/2027\" (and the other forms above), never another day, month or year (\"06/15/2027\", \"07/14/2027\", \"06/14/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_day_first_month_word",
+  "fn": "date_same",
+  "args": [
+   "14 June 2027",
+   "06/14/2027"
+  ],
+  "expect": true,
+  "spec_quote": "A want written with the month as a word and a day (\"June 14, 2027\", \"Jun 14 2027\", \"14 June 2027\", \"June 14th, 2027\") or as YYYY-MM-DD names that full date: it matches got \"06/14/2027\" (and the other forms above), never another day, month or year (\"06/15/2027\", \"07/14/2027\", \"06/14/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_wrong_day",
+  "fn": "date_same",
+  "args": [
+   "06/14/2027",
+   "06/15/2027"
+  ],
+  "expect": false,
+  "spec_quote": "it matches got \"06/14/2027\" (and the other forms above), never another day, month or year (\"06/15/2027\", \"07/14/2027\", \"06/14/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_month_year_any_day",
+  "fn": "date_same",
+  "args": [
+   "December 2027",
+   "12/31/2027"
+  ],
+  "expect": true,
+  "spec_quote": "A want given as \"<Month name> <year>\" (e.g. \"December 2027\", \"Jun 2027\") names a month: it matches a got date with three numbers when that month and year appear (e.g. \"12/01/2027\", \"12/31/2027\", \"2027-12-01\"), whatever the day.",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_month_year_wrong_month",
+  "fn": "date_same",
+  "args": [
+   "December 2027",
+   "11/01/2027"
+  ],
+  "expect": false,
+  "spec_quote": "It does not match another month or year (\"11/01/2027\", \"12/01/2028\").",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_nondate_same_text_case",
+  "fn": "date_same",
+  "args": [
+   "Summer 2027",
+   "summer 2027"
+  ],
+  "expect": true,
+  "spec_quote": "A want that is not a date at all (\"Summer 2027\", \"ASAP\") matches only exactly the same text (case and spaces ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "date_same_empty_got",
+  "fn": "date_same",
+  "args": [
+   "06/14/2027",
+   ""
+  ],
+  "expect": false,
+  "spec_quote": "An empty got never matches.",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_month_word",
+  "fn": "date_value",
+  "args": [
+   "June 14, 2027"
+  ],
+  "expect": [
+   "06/14/2027",
+   null
+  ],
+  "spec_quote": "A full date in any unambiguous form → [MM/DD/YYYY with two-digit month and day, null]: \"June 14, 2027\" → [\"06/14/2027\", null]; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_short_numeric",
+  "fn": "date_value",
+  "args": [
+   "6/4/2027"
+  ],
+  "expect": [
+   "06/04/2027",
+   null
+  ],
+  "spec_quote": "A full date in any unambiguous form → [MM/DD/YYYY with two-digit month and day, null]: ... \"6/4/2027\" → [\"06/04/2027\", null]; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_iso",
+  "fn": "date_value",
+  "args": [
+   "2027-06-14"
+  ],
+  "expect": [
+   "06/14/2027",
+   null
+  ],
+  "spec_quote": "A full date in any unambiguous form → [MM/DD/YYYY with two-digit month and day, null]: ... \"2027-06-14\" → [\"06/14/2027\", null]; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_day_first_word_month",
+  "fn": "date_value",
+  "args": [
+   "14 June 2027"
+  ],
+  "expect": [
+   "06/14/2027",
+   null
+  ],
+  "spec_quote": "A full date in any unambiguous form → [MM/DD/YYYY with two-digit month and day, null]: ... \"14 June 2027\" → [\"06/14/2027\", null]; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_month_year_kept",
+  "fn": "date_value",
+  "args": [
+   "December 2027"
+  ],
+  "expect": [
+   "December 2027",
+   null
+  ],
+  "spec_quote": "\"<Month name> <year>\" (\"December 2027\") is kept as it is: [\"December 2027\", null].",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_day_first_above_12_refused",
+  "fn": "date_value",
+  "args": [
+   "14/06/2027"
+  ],
+  "expect": [
+   null,
+   "any"
+  ],
+  "spec_quote": "Anything else → [null, reason] where reason is a non-empty text: ... a day-first date whose first number is above 12 (\"14/06/2027\"), ...",
+  "ambiguous": false
+ },
+ {
+  "name": "date_value_nonexistent_refused",
+  "fn": "date_value",
+  "args": [
+   "02/30/2027"
+  ],
+  "expect": [
+   null,
+   "any"
+  ],
+  "spec_quote": "Anything else → [null, reason] where reason is a non-empty text: ... a date that does not exist (\"02/30/2027\", \"June 31, 2027\"), ...",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_exact_the_prefix",
+  "fn": "pick_school",
+  "args": [
+   [
+    "The University of Chicago",
+    "Loyola University Chicago"
+   ],
+   "University of Chicago"
+  ],
+  "expect": 0,
+  "spec_quote": "An option equal to the school after that normalisation wins (\"The University of Chicago\" and \"university of chicago\" are both the school \"University of Chicago\"); when several are equal, the first of them.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_exact_lowercase_option",
+  "fn": "pick_school",
+  "args": [
+   [
+    "university of chicago"
+   ],
+   "University of Chicago"
+  ],
+  "expect": 0,
+  "spec_quote": "An option equal to the school after that normalisation wins (\"The University of Chicago\" and \"university of chicago\" are both the school \"University of Chicago\"); when several are equal, the first of them.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_multiple_equal_first",
+  "fn": "pick_school",
+  "args": [
+   [
+    "University of Chicago",
+    "The University of Chicago",
+    "University of Chicago"
+   ],
+   "University of Chicago"
+  ],
+  "expect": 0,
+  "spec_quote": "when several are equal, the first of them.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_unique_containment",
+  "fn": "pick_school",
+  "args": [
+   [
+    "University of Chicago (Chicago, IL)",
+    "Loyola University Chicago"
+   ],
+   "University of Chicago"
+  ],
+  "expect": 0,
+  "spec_quote": "Otherwise, when exactly one option contains the whole normalised school name as a run of whole words (e.g. \"University of Chicago (Chicago, IL)\" for \"University of Chicago\"), that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_two_containments_null",
+  "fn": "pick_school",
+  "args": [
+   [
+    "University of Chicago Booth School of Business",
+    "University of Chicago Laboratory Schools"
+   ],
+   "University of Chicago"
+  ],
+  "expect": null,
+  "spec_quote": "Two or more such options (e.g. \"University of Chicago Booth School of Business\" and \"University of Chicago Laboratory Schools\") → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_shared_words_null",
+  "fn": "pick_school",
+  "args": [
+   [
+    "Loyola University Chicago",
+    "Chicago State University"
+   ],
+   "University of Chicago"
+  ],
+  "expect": null,
+  "spec_quote": "A name that only shares words is not the school: \"Loyola University Chicago\" and \"Chicago State University\" are not \"University of Chicago\"; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_illinois_shared_words_null",
+  "fn": "pick_school",
+  "args": [
+   [
+    "University of Illinois Chicago"
+   ],
+   "University of Illinois Urbana-Champaign"
+  ],
+  "expect": null,
+  "spec_quote": "\"University of Illinois Chicago\" is not \"University of Illinois Urbana-Champaign\".",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_empty_options",
+  "fn": "pick_school",
+  "args": [
+   [],
+   "University of Chicago"
+  ],
+  "expect": null,
+  "spec_quote": "An empty option list or an empty school → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_red_box_with_labels",
+  "fn": "submit_errors",
+  "args": [
+   "Your form needs corrections\nMissing entry for required field: School\nPlease select a valid date\nEducation*\nSchool*\nSubmit Application"
+  ],
+  "expect": [
+   "School",
+   "Please select a valid date"
+  ],
+  "spec_quote": "A line \"Missing entry for required field: <Field>\" anywhere on the page gives \"<Field>\" (the field name alone, trimmed). After the heading \"Your form needs corrections\", each following non-empty line that reads as an error message ... is part of the list; the first non-empty line that is not an error message ends the list.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_heading_no_error_line",
+  "fn": "submit_errors",
+  "args": [
+   "Your form needs corrections\nSchool*\nSubmit Application"
+  ],
+  "expect": [
+   "form needs corrections"
+  ],
+  "spec_quote": "The heading with no error line after it gives [\"form needs corrections\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_thank_you_page",
+  "fn": "submit_errors",
+  "args": [
+   "Thank you for applying\nYour application has been submitted"
+  ],
+  "expect": [],
+  "spec_quote": "Return what the box lists, in order; [] when the page shows no such errors (for example the thank-you page, or the form before Submit): ... text such as \"Thank you for applying\" is not an error.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_form_before_submit",
+  "fn": "submit_errors",
+  "args": [
+   "Education*\nSchool*\nSubmit Application"
+  ],
+  "expect": [],
+  "spec_quote": "[] when the page shows no such errors (for example the thank-you page, or the form before Submit). A field label that ends in \"*\" (a required marker) is not an error.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_duplicate_field_once",
+  "fn": "submit_errors",
+  "args": [
+   "Your form needs corrections\nMissing entry for required field: School\nMissing entry for required field: School\nPlease enter a valid date\n"
+  ],
+  "expect": [
+   "School",
+   "Please enter a valid date"
+  ],
+  "spec_quote": "A \"Missing entry …\" line in the list gives the field name as above; other lines are returned whole (trimmed). ... the same field is listed once.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_non_error_ends_list",
+  "fn": "submit_errors",
+  "args": [
+   "Your form needs corrections\nMissing entry for required field: School\nThank you for applying\nPlease select a valid date\n"
+  ],
+  "expect": [
+   "School"
+  ],
+  "spec_quote": "the first non-empty line that is not an error message ends the list. ... text such as \"Thank you for applying\" is not an error.",
+  "ambiguous": false
+ },
+ {
+  "name": "submit_errors_other_messages_trimmed",
+  "fn": "submit_errors",
+  "args": [
+   "Your form needs corrections\n  Invalid entry for Date of Birth  \n  This field is required  \n  Must be at least 18  \n  Submit\n"
+  ],
+  "expect": [
+   "Invalid entry for Date of Birth",
+   "This field is required",
+   "Must be at least 18"
+  ],
+  "spec_quote": "each following non-empty line that reads as an error message (it contains \"required\", \"invalid\", \"must\", \"please enter\", \"please select\", \"not valid\" or \"missing\", case ignored) is part of the list; ... other lines are returned whole (trimmed).",
+  "ambiguous": false
+ }
+]

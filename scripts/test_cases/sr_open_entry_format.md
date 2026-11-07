@@ -1,0 +1,3 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "open_entry", "args": {"button_y": int | null, "hidden": bool, "opens_after_clicks": int | null}, "expect": true | false, "spec_quote": str, "ambiguous": false}.
+args: button_y = the button's distance in pixels from the page top on a 700-pixel-high window (null = no button on the page); hidden = the button has zero size; opens_after_clicks = the form appears after that many clicks on the button (1, 2, 3 …; null = never).
+Write 12 cases: in view and far below the window, opens on the first / second / third click, no button, hidden button, never opens.

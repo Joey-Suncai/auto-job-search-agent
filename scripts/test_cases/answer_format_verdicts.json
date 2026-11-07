@@ -1,0 +1,3 @@
+{
+ "multi_comma_part_not_option_refused": "The case misreads its own data: options are ['A', 'B', 'D'], so both comma parts of 'A, D' ARE options and the spec reads the string as the list → 'A | D' (code). The case name says a part is not an option, which would need D missing from the options."
+}

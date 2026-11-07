@@ -1,0 +1,284 @@
+[
+ {
+  "name": "joey_by_bare_page_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "by": "joey",
+    "confirmed_by": "page"
+   },
+   "shot": false
+  },
+  "expect": false,
+  "spec_quote": "If line.by is \"joey\" → false (Joey's own submits never count by the page).",
+  "ambiguous": false
+ },
+ {
+  "name": "joey_by_missing_cb_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "by": "joey"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "If line.by is \"joey\" → false (Joey's own submits never count by the page).",
+  "ambiguous": false
+ },
+ {
+  "name": "joey_by_page_marker_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "by": "joey",
+    "confirmed_by": "page (my-profile: Applied on 11/04)"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "If line.by is \"joey\" → false (Joey's own submits never count by the page).",
+  "ambiguous": false
+ },
+ {
+  "name": "email_exact_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "email"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "If line.confirmed_by is exactly \"email\" → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "email_exact_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "email"
+   },
+   "shot": false
+  },
+  "expect": false,
+  "spec_quote": "If line.confirmed_by is exactly \"email\" → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_bare_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "page"
+   },
+   "shot": true
+  },
+  "expect": true,
+  "spec_quote": "If line.confirmed_by is a string starting with \"page\" (e.g. \"page\", \"page (my-profile: Applied on 11/04)\") → true, whether or not there is a screenshot.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_bare_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "page"
+   },
+   "shot": false
+  },
+  "expect": true,
+  "spec_quote": "If line.confirmed_by is a string starting with \"page\" (e.g. \"page\", \"page (my-profile: Applied on 11/04)\") → true, whether or not there is a screenshot.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_variant_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "page (my-profile: Applied on 11/04)"
+   },
+   "shot": true
+  },
+  "expect": true,
+  "spec_quote": "If line.confirmed_by is a string starting with \"page\" (e.g. \"page\", \"page (my-profile: Applied on 11/04)\") → true, whether or not there is a screenshot.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_variant_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "page (my-profile: Applied on 11/04)"
+   },
+   "shot": false
+  },
+  "expect": true,
+  "spec_quote": "If line.confirmed_by is a string starting with \"page\" (e.g. \"page\", \"page (my-profile: Applied on 11/04)\") → true, whether or not there is a screenshot.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_cb_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted"
+   },
+   "shot": true
+  },
+  "expect": true,
+  "spec_quote": "If confirmed_by is missing or empty → true only when shot is true.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_cb_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "by": "anna"
+   },
+   "shot": false
+  },
+  "expect": false,
+  "spec_quote": "If confirmed_by is missing or empty → true only when shot is true.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_cb_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": ""
+   },
+   "shot": true
+  },
+  "expect": true,
+  "spec_quote": "If confirmed_by is missing or empty → true only when shot is true.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_cb_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": ""
+   },
+   "shot": false
+  },
+  "expect": false,
+  "spec_quote": "If confirmed_by is missing or empty → true only when shot is true.",
+  "ambiguous": false
+ },
+ {
+  "name": "capital_Page_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "Page"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "Any other confirmed_by value → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "pagination_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "pagination"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "Any other confirmed_by value → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "manual_no_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "manual"
+   },
+   "shot": false
+  },
+  "expect": false,
+  "spec_quote": "Any other confirmed_by value → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "receipt_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "receipt"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "Any other confirmed_by value → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "email_page_marker_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "email (page)"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "If line.confirmed_by is exactly \"email\" → false. ... Any other confirmed_by value → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_prefix_plus_screenshot_false",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "by": "joey",
+    "confirmed_by": "email"
+   },
+   "shot": true
+  },
+  "expect": false,
+  "spec_quote": "If line.by is \"joey\" → false (Joey's own submits never count by the page).",
+  "ambiguous": false
+ },
+ {
+  "name": "pageant_prefix_with_shot",
+  "fn": "page_proof",
+  "args": {
+   "line": {
+    "status": "submitted",
+    "confirmed_by": "pageant"
+   },
+   "shot": true
+  },
+  "expect": true,
+  "spec_quote": "If line.confirmed_by is a string starting with \"page\" (e.g. \"page\", \"page (my-profile: Applied on 11/04)\") → true, whether or not there is a screenshot.",
+  "ambiguous": true
+ }
+]

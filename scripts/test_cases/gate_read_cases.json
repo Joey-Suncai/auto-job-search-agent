@@ -1,0 +1,235 @@
+[
+ {
+  "name": "no_ats_url_loads_url_ok",
+  "row": {
+   "url": "u"
+  },
+  "load": {
+   "u": "ok"
+  },
+  "expect_from": "u",
+  "expect_loads": [
+   "u"
+  ],
+  "spec_quote": "It loads ats_url when the row has a non-empty ats_url, otherwise url.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_ats_url_loads_url_closed",
+  "row": {
+   "url": "u",
+   "ats_url": ""
+  },
+  "load": {
+   "u": "closed"
+  },
+  "expect_from": "u",
+  "expect_loads": [
+   "u"
+  ],
+  "spec_quote": "It loads ats_url when the row has a non-empty ats_url, otherwise url.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_ok_preferred_over_url",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "ok",
+   "u": "closed"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "It loads ats_url when the row has a non-empty ats_url, otherwise url. url is loaded at most once, ats_url at most once; when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_closed_stops_without_url_load",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "closed",
+   "u": "ok"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_unreadable_falls_back_to_url_ok",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "unreadable",
+   "u": "ok"
+  },
+  "expect_from": "u",
+  "expect_loads": [
+   "a",
+   "u"
+  ],
+  "spec_quote": "If that result is \"unreadable\" AND the row has a non-empty ats_url AND a non-empty url AND url differs from ats_url, it also loads url; if this second result is not \"unreadable\" (\"ok\" or \"closed\"), the second result is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_unreadable_falls_back_to_url_closed",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "unreadable",
+   "u": "closed"
+  },
+  "expect_from": "u",
+  "expect_loads": [
+   "a",
+   "u"
+  ],
+  "spec_quote": "If that result is \"unreadable\" AND the row has a non-empty ats_url AND a non-empty url AND url differs from ats_url, it also loads url; if this second result is not \"unreadable\" (\"ok\" or \"closed\"), the second result is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "both_unreadable_returns_first_result",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "unreadable",
+   "u": "unreadable"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a",
+   "u"
+  ],
+  "spec_quote": "In every other case the first result is returned (including when both are unreadable).",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_unreadable_empty_url_no_fallback",
+  "row": {
+   "url": "",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "unreadable"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "If that result is \"unreadable\" AND the row has a non-empty ats_url AND a non-empty url AND url differs from ats_url, it also loads url; if this second result is not \"unreadable\" (\"ok\" or \"closed\"), the second result is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_unreadable_same_url_no_second_load",
+  "row": {
+   "url": "same",
+   "ats_url": "same"
+  },
+  "load": {
+   "same": "unreadable"
+  },
+  "expect_from": "same",
+  "expect_loads": [
+   "same"
+  ],
+  "spec_quote": "If that result is \"unreadable\" AND the row has a non-empty ats_url AND a non-empty url AND url differs from ats_url, it also loads url; if this second result is not \"unreadable\" (\"ok\" or \"closed\"), the second result is returned. url is loaded at most once, ats_url at most once; when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_ok_does_not_load_unreadable_url",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "ok",
+   "u": "unreadable"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_ats_url_unreadable_returns_url",
+  "row": {
+   "url": "u"
+  },
+  "load": {
+   "u": "unreadable"
+  },
+  "expect_from": "u",
+  "expect_loads": [
+   "u"
+  ],
+  "spec_quote": "It loads ats_url when the row has a non-empty ats_url, otherwise url. In every other case the first result is returned (including when both are unreadable).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_url_with_ats_ok_no_url_load",
+  "row": {
+   "url": "",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "ok"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "It loads ats_url when the row has a non-empty ats_url, otherwise url. when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_closed_no_fallback_to_url_ok",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "closed",
+   "u": "ok"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "In every other case the first result is returned (including when both are unreadable). when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ },
+ {
+  "name": "ats_closed_no_fallback_to_url_unreadable",
+  "row": {
+   "url": "u",
+   "ats_url": "a"
+  },
+  "load": {
+   "a": "closed",
+   "u": "unreadable"
+  },
+  "expect_from": "a",
+  "expect_loads": [
+   "a"
+  ],
+  "spec_quote": "In every other case the first result is returned (including when both are unreadable). when the first result is \"ok\" or \"closed\", nothing else is loaded.",
+  "ambiguous": false
+ }
+]

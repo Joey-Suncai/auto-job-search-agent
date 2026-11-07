@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "expect": "now" | "future" | "other", "spec_quote": str, "ambiguous": false}. Write 24 cases: 10 future (every future wording family, incl. "now or at any time after graduation (E.g., H-1B, TN, etc.)" and no time word), 9 now (time word before and after "sponsorship"), 5 other.

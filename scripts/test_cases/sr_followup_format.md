@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "citizenship" | "followup", "label": str, "expect": bool, "spec_quote": str, "ambiguous": false}. Write 22 cases: citizenship 10 (5 true, 5 false), followup 12 (7 true incl. "If your selection is not your most recent Citizenship…", 5 false incl. "If hired" and "If offered employment").

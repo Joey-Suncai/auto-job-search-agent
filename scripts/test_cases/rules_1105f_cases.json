@@ -1,0 +1,386 @@
+[
+ {
+  "name": "Oracle Workday work authorization with nested OPT example",
+  "args": {
+   "label": "Are you legally authorized to work in the United States? In other words, do you currently hold or can you obtain valid US work authorization (e.g., currently hold H-1B status, or can commence employment based on F-1 Optional Practical Training (OPT))?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse legal authorization with nested F-1 OPT example",
+  "args": {
+   "label": "Are you legally authorized to work in the United States? (e.g., U.S. citizen, permanent resident, or F-1 student with OPT (Optional Practical Training) or CPT authorization)",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle valid work authorization with nested STEM OPT example",
+  "args": {
+   "label": "Do you have valid work authorization for this internship? (for example, U.S. citizenship, permanent residency, or F-1 CPT/OPT (including STEM OPT (24-month extension)))",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday hold or obtain authorization with OPT example",
+  "args": {
+   "label": "Do you currently hold or can you obtain valid work authorization in the US (e.g., H-1B, F-1 OPT, CPT)?",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse eligible to work with for example OPT/CPT",
+  "args": {
+   "label": "Are you eligible to work in the United States? (for example, citizen, permanent resident, asylee, or F-1 student with OPT/CPT)",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle bare e.g. authorization clause",
+  "args": {
+   "label": "Are you authorized to work in the U.S.? e.g. U.S. citizen, green card, OPT, etc.",
+   "type": "radio",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday bare e.g. legal right to work clause",
+  "args": {
+   "label": "Do you have the legal right to work in the United States, e.g. citizen, permanent resident, F-1 OPT, or CPT?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse parenthesized authorization list with OPT",
+  "args": {
+   "label": "Are you legally eligible for employment in the U.S. (U.S. citizen, green card, OPT, etc.)?",
+   "type": "radio",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle authorized for Summer 2027 internship with such as example",
+  "args": {
+   "label": "Are you authorized to work in the U.S. for this Summer 2027 internship? (such as U.S. citizen, permanent resident, or F-1 student with CPT/OPT)",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday hold or obtain valid work authorization with e.g. list",
+  "args": {
+   "label": "Do you currently hold or can you obtain valid work authorization? (e.g., H-1B, L-1, F-1 OPT, CPT)",
+   "type": "radio",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse legally permitted to work with for example list",
+  "args": {
+   "label": "Are you legally permitted to work in the United States? (for example, U.S. citizen, green card, OPT, CPT)",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle authorized to work with nested or can obtain example",
+  "args": {
+   "label": "Are you authorized to work in the US? In other words, do you currently hold or can you obtain valid work authorization (e.g., H-1B status, or F-1 Optional Practical Training (OPT))?",
+   "type": "radio",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Work-authorization question with OPT / CPT only as an example → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday currently on OPT",
+  "args": {
+   "label": "Are you currently on OPT?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse STEM OPT question",
+  "args": {
+   "label": "Are you on STEM OPT?",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle currently working on F-1 OPT",
+  "args": {
+   "label": "Are you currently working on F-1 Optional Practical Training (OPT)?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday current work authorization is OPT",
+  "args": {
+   "label": "Is your current work authorization OPT?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse presently participating in OPT",
+  "args": {
+   "label": "Are you presently participating in Optional Practical Training (OPT)?",
+   "type": "radio",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle active F-1 OPT authorization",
+  "args": {
+   "label": "Do you have active F-1 OPT authorization?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday currently in OPT period",
+  "args": {
+   "label": "Are you currently in your OPT period?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse employment authorization based on OPT or STEM OPT",
+  "args": {
+   "label": "Is your employment authorization based on F-1 Optional Practical Training (OPT) or STEM OPT?",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that really asks whether he is ON OPT → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle without sponsorship for internship with OPT/CPT example",
+  "args": {
+   "label": "Are you able to work in the U.S. without sponsorship? (e.g., OPT, CPT)",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Without sponsorship (\"Are you able to work in the U.S. without sponsorship? (e.g., OPT, CPT)\"): the sponsorship answer flipped — only now / this internship → Yes; also the future (\"now or in the future\", \"at any time\", \"after graduation\") → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday without sponsorship for Summer 2027 internship",
+  "args": {
+   "label": "Are you authorized to work in the United States without sponsorship for this Summer 2027 internship? (e.g., OPT, CPT)",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "Without sponsorship (\"Are you able to work in the U.S. without sponsorship? (e.g., OPT, CPT)\"): the sponsorship answer flipped — only now / this internship → Yes; also the future (\"now or in the future\", \"at any time\", \"after graduation\") → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse without sponsorship now or in future",
+  "args": {
+   "label": "Are you able to work in the U.S. without sponsorship now or in the future? (e.g., OPT, CPT)",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "Without sponsorship (\"Are you able to work in the U.S. without sponsorship? (e.g., OPT, CPT)\"): the sponsorship answer flipped — only now / this internship → Yes; also the future (\"now or in the future\", \"at any time\", \"after graduation\") → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle without sponsorship at any time after graduation",
+  "args": {
+   "label": "Will you be able to work in the United States without sponsorship at any time after graduation? (e.g., OPT, CPT)",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "Without sponsorship (\"Are you able to work in the U.S. without sponsorship? (e.g., OPT, CPT)\"): the sponsorship answer flipped — only now / this internship → Yes; also the future (\"now or in the future\", \"at any time\", \"after graduation\") → No.",
+  "ambiguous": false
+ }
+]

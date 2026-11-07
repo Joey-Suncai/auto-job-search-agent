@@ -1,0 +1,152 @@
+[
+ {
+  "name": "q_has_hs_diploma",
+  "label": "Do you have a high school diploma?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS / holds / completed / earned a high school diploma ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_earned_hs_degree",
+  "label": "Have you earned a high school degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS / holds / completed / earned a high school diploma, high school degree ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_ged",
+  "label": "Do you have a GED?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS / holds / completed / earned a high school diploma, high school degree, GED ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_min_hs_or_equivalent",
+  "label": "Do you have a minimum of a High School Diploma or equivalent?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS ... a high school diploma ... or \"high school diploma or equivalent\" ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_secondary_diploma",
+  "label": "Do you hold a secondary school diploma?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS / holds ... or secondary school diploma → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_graduated_hs",
+  "label": "Did you graduate from high school?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "the candidate has a high school diploma (graduated 2022); Yes/No question asking whether he HAS / holds / completed / earned a high school diploma ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_text_confirm_hs_equiv",
+  "label": "Please confirm whether you have a high school diploma or equivalent.",
+  "type": "text",
+  "options": [],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS ... a high school diploma ... or \"high school diploma or equivalent\" ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_possess_hs_or_ged",
+  "label": "Do you possess a high school diploma or GED?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A Yes/No question asking whether he HAS / holds ... a high school diploma, high school degree, GED ... → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_grad_year",
+  "label": "When did you graduate from high school?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Questions asking WHEN / which year / the date / the NAME or location of the school are NOT this rule → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_which_year_diploma",
+  "label": "In which year did you receive your high school diploma?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Questions asking WHEN / which year / the date / the NAME or location of the school are NOT this rule → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_ged_date",
+  "label": "What is the date you obtained your GED?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Questions asking WHEN / which year / the date / the NAME or location of the school are NOT this rule → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_school_name",
+  "label": "What is the name of the high school you attended?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Questions asking WHEN / which year / the date / the NAME or location of the school are NOT this rule → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_where_hs",
+  "label": "Where did you go to high school?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Questions asking WHEN / which year / the date / the NAME or location of the school are NOT this rule → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "q_unrelated_driver_license",
+  "label": "Do you have a valid driver's license?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "Unrelated questions → \"none\".",
+  "ambiguous": false
+ }
+]

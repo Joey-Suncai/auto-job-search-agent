@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "args": {"label": str, "type": "text" | "textarea" | "select" | "radio", "options": [str]}, "expect": {"value": str} exact answer | {"ask": true} no answer | {"not_contains": [","]} if answered, contains none of these, "spec_quote": str, "ambiguous": false}.
+Write 12 cases: 6 lists (with / without Chicago, comma and semicolon separators, a non-U.S. place mixed in), 2 with no places listed, 2 Yes/No near misses (radio Yes/No), 2 other wordings ("Rank the following offices by preference: …").

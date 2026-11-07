@@ -1,0 +1,787 @@
+[
+ {
+  "name": "fc_top_level_basic",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/1",
+    "fields": [
+     {
+      "label": "Email",
+      "want": "a@b.c",
+      "value": "old@b.c",
+      "ok": true,
+      "required": true
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/1",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "Email",
+     "planned": "a@b.c",
+     "page": "old@b.c",
+     "ok": true,
+     "required": true
+    }
+   ]
+  },
+  "spec_quote": "Field keys: label (or key), want = planned, page = value on the page, rule or source or why = source, type or kind = type, required, ok, options.",
+  "ambiguous": false
+ },
+ {
+  "name": "fc_sections_nested",
+  "files": {
+   "form_check.json": {
+    "ats": "greenhouse",
+    "posting": "https://ex.com/j/2",
+    "sections": [
+     {
+      "name": "S1",
+      "fields": [
+       {
+        "label": "First",
+        "want": "Ann",
+        "value": "A",
+        "ok": true
+       },
+       {
+        "label": "Last",
+        "want": "Lee",
+        "value": "L",
+        "ok": false
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://ex.com/j/2",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "First",
+     "planned": "Ann",
+     "page": "A",
+     "ok": true,
+     "required": false
+    },
+    {
+     "index": 1,
+     "question": "Last",
+     "planned": "Lee",
+     "page": "L",
+     "ok": false,
+     "required": false
+    }
+   ]
+  },
+  "spec_quote": "fields in fields, or nested in sections[].fields / steps[].fields (all are collected, top-level first).",
+  "ambiguous": false
+ },
+ {
+  "name": "fc_steps_nested",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/3",
+    "steps": [
+     {
+      "fields": [
+       {
+        "label": "Phone",
+        "want": "555",
+        "value": "444",
+        "ok": true
+       }
+      ]
+     },
+     {
+      "fields": [
+       {
+        "label": "City",
+        "want": "NYC",
+        "value": "LA",
+        "ok": false
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/3",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "Phone",
+     "planned": "555",
+     "page": "444",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "question": "City",
+     "planned": "NYC",
+     "page": "LA",
+     "ok": false
+    }
+   ]
+  },
+  "spec_quote": "fields in fields, or nested in sections[].fields / steps[].fields (all are collected, top-level first).",
+  "ambiguous": true
+ },
+ {
+  "name": "fc_all_nesting_top_first",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/4",
+    "fields": [
+     {
+      "label": "TopQ",
+      "want": "t",
+      "value": "t0",
+      "ok": true
+     }
+    ],
+    "sections": [
+     {
+      "fields": [
+       {
+        "label": "SecQ",
+        "want": "s",
+        "value": "s0",
+        "ok": true
+       }
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "fields": [
+       {
+        "label": "StepQ",
+        "want": "p",
+        "value": "p0",
+        "ok": true
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/4",
+   "n_rows": 3,
+   "rows": [
+    {
+     "index": 0,
+     "question": "TopQ",
+     "planned": "t",
+     "page": "t0",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "fields in fields, or nested in sections[].fields / steps[].fields (all are collected, top-level first).",
+  "ambiguous": true
+ },
+ {
+  "name": "fc_alt_keys_key_why_kind",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "url": "https://ex.com/j/5",
+    "fields": [
+     {
+      "key": "WhyQ",
+      "want": "n",
+      "value": "y",
+      "why": "reason A",
+      "kind": "text",
+      "required": false,
+      "ok": true
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/5",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "WhyQ",
+     "planned": "n",
+     "page": "y",
+     "ok": true,
+     "required": false,
+     "source": "reason A"
+    }
+   ]
+  },
+  "spec_quote": "Field keys: label (or key), want = planned, page = value on the page, rule or source or why = source, type or kind = type, required, ok, options.",
+  "ambiguous": false
+ },
+ {
+  "name": "fc_ats_missing_url_from_url_key",
+  "files": {
+   "form_check.json": {
+    "url": "https://ex.com/j/6",
+    "fields": [
+     {
+      "label": "Q",
+      "want": "a",
+      "value": "b",
+      "ok": true
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": null,
+   "url": "https://ex.com/j/6",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "Q",
+     "planned": "a",
+     "page": "b",
+     "ok": true,
+     "required": false
+    }
+   ]
+  },
+  "spec_quote": "ats = the file's ats key (often absent → None); url = posting or url.",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_statuses_multi_page",
+  "files": {
+   "wd_log.json": {
+    "url": "https://wd.example/app/1",
+    "pages": [
+     {
+      "fields": [
+       {
+        "label": "A",
+        "answer": "x",
+        "value": "y",
+        "status": "ok"
+       },
+       {
+        "label": "B",
+        "answer": "b",
+        "value": "b0",
+        "status": "keep"
+       },
+       {
+        "label": "C",
+        "answer": "c",
+        "value": "c0",
+        "status": "skip"
+       },
+       {
+        "label": "D",
+        "answer": "d",
+        "value": "d0",
+        "status": "needs_user"
+       }
+      ]
+     },
+     {
+      "fields": [
+       {
+        "label": "E",
+        "answer": "e",
+        "value": "e0",
+        "status": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "workday",
+   "url": "https://wd.example/app/1",
+   "n_rows": 5,
+   "rows": [
+    {
+     "index": 0,
+     "question": "A",
+     "planned": "x",
+     "page": "y",
+     "ok": true
+    },
+    {
+     "index": 2,
+     "question": "C",
+     "planned": "c",
+     "page": "c0",
+     "ok": true
+    },
+    {
+     "index": 3,
+     "question": "D",
+     "planned": "d",
+     "page": "d0",
+     "ok": false
+    },
+    {
+     "index": 4,
+     "question": "E",
+     "planned": "e",
+     "page": "e0",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "ok = true when status is \"ok\", \"keep\" or \"skip\"; false for any other status (e.g. \"needs_user\"). ats = \"workday\", url = the file's url.",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_required_default_false",
+  "files": {
+   "wd_log.json": {
+    "url": "https://wd.example/app/2",
+    "pages": [
+     {
+      "fields": [
+       {
+        "label": "A",
+        "answer": "x",
+        "value": "y",
+        "status": "ok",
+        "required": true
+       },
+       {
+        "label": "B",
+        "answer": "y",
+        "value": "z",
+        "status": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "workday",
+   "url": "https://wd.example/app/2",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "A",
+     "required": true
+    },
+    {
+     "index": 1,
+     "question": "B",
+     "required": false
+    }
+   ]
+  },
+  "spec_quote": "required is always a boolean (missing → false).",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_all_ok_with_verify",
+  "files": {
+   "plan.json": {
+    "ats": "greenhouse",
+    "url": "https://gh.example/1",
+    "fields": [
+     {
+      "label": "L1",
+      "answer": "a1",
+      "status": "ok"
+     },
+     {
+      "label": "L2",
+      "answer": "a2",
+      "status": "ok"
+     }
+    ]
+   },
+   "verify.json": {
+    "pass": true,
+    "bad": []
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://gh.example/1",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "L1",
+     "planned": "a1",
+     "page": "a1",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "question": "L2",
+     "planned": "a2",
+     "page": "a2",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "A field is ok only when verify.json says pass: true, the field's label is not in verify.json bad, and the field's status is \"ok\"; then page = answer, otherwise page = null.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_bad_label_blocks_ok",
+  "files": {
+   "plan.json": {
+    "ats": "greenhouse",
+    "url": "https://gh.example/2",
+    "fields": [
+     {
+      "label": "L1",
+      "answer": "a1",
+      "status": "ok"
+     },
+     {
+      "label": "L2",
+      "answer": "a2",
+      "status": "ok"
+     }
+    ]
+   },
+   "verify.json": {
+    "pass": true,
+    "bad": [
+     "L2"
+    ]
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://gh.example/2",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "L1",
+     "planned": "a1",
+     "page": "a1",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "question": "L2",
+     "planned": "a2",
+     "page": null,
+     "ok": false
+    }
+   ]
+  },
+  "spec_quote": "A field is ok only when verify.json says pass: true, the field's label is not in verify.json bad, and the field's status is \"ok\"; then page = answer, otherwise page = null.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_without_verify_nothing_ok",
+  "files": {
+   "plan.json": {
+    "ats": "greenhouse",
+    "url": "https://gh.example/3",
+    "fields": [
+     {
+      "label": "L1",
+      "answer": "a1",
+      "status": "ok"
+     },
+     {
+      "label": "L2",
+      "answer": "a2",
+      "status": "ok"
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://gh.example/3",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "L1",
+     "planned": "a1",
+     "page": null,
+     "ok": false
+    },
+    {
+     "index": 1,
+     "question": "L2",
+     "planned": "a2",
+     "page": null,
+     "ok": false
+    }
+   ]
+  },
+  "spec_quote": "Without verify.json nothing is ok.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_default_ats_greenhouse",
+  "files": {
+   "plan.json": {
+    "url": "https://gh.example/4",
+    "fields": [
+     {
+      "label": "L1",
+      "answer": "a1",
+      "status": "ok"
+     }
+    ]
+   },
+   "verify.json": {
+    "pass": true,
+    "bad": []
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://gh.example/4",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "L1",
+     "planned": "a1",
+     "page": "a1",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "ats = plan's ats, default \"greenhouse\"; url = plan's url.",
+  "ambiguous": false
+ },
+ {
+  "name": "plan_status_not_ok_blocks_ok",
+  "files": {
+   "plan.json": {
+    "ats": "greenhouse",
+    "url": "https://gh.example/5",
+    "fields": [
+     {
+      "label": "L1",
+      "answer": "a1",
+      "status": "needs_user"
+     },
+     {
+      "label": "L2",
+      "answer": "a2",
+      "status": "ok"
+     }
+    ]
+   },
+   "verify.json": {
+    "pass": true,
+    "bad": []
+   }
+  },
+  "expect": {
+   "ats": "greenhouse",
+   "url": "https://gh.example/5",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "L1",
+     "planned": "a1",
+     "page": null,
+     "ok": false
+    },
+    {
+     "index": 1,
+     "question": "L2",
+     "planned": "a2",
+     "page": "a2",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "A field is ok only when verify.json says pass: true, the field's label is not in verify.json bad, and the field's status is \"ok\"; then page = answer, otherwise page = null.",
+  "ambiguous": false
+ },
+ {
+  "name": "precedence_fc_over_wd",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/7",
+    "fields": [
+     {
+      "label": "FCQ",
+      "want": "f",
+      "value": "f0",
+      "ok": true
+     }
+    ]
+   },
+   "wd_log.json": {
+    "url": "https://wd.example/app/3",
+    "pages": [
+     {
+      "fields": [
+       {
+        "label": "W1",
+        "answer": "w1",
+        "value": "w10",
+        "status": "ok"
+       },
+       {
+        "label": "W2",
+        "answer": "w2",
+        "value": "w20",
+        "status": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/7",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "FCQ",
+     "planned": "f",
+     "page": "f0",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "Files are tried in this order; the first that yields at least one row wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "precedence_fc_empty_falls_to_wd",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/8",
+    "fields": [],
+    "sections": [],
+    "steps": []
+   },
+   "wd_log.json": {
+    "url": "https://wd.example/app/4",
+    "pages": [
+     {
+      "fields": [
+       {
+        "label": "W1",
+        "answer": "w1",
+        "value": "w10",
+        "status": "ok"
+       },
+       {
+        "label": "W2",
+        "answer": "w2",
+        "value": "w20",
+        "status": "skip"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "workday",
+   "url": "https://wd.example/app/4",
+   "n_rows": 2,
+   "rows": [
+    {
+     "index": 0,
+     "question": "W1",
+     "planned": "w1",
+     "page": "w10",
+     "ok": true
+    },
+    {
+     "index": 1,
+     "question": "W2",
+     "planned": "w2",
+     "page": "w20",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "Files are tried in this order; the first that yields at least one row wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_folder_returns_none",
+  "files": {},
+  "expect": null,
+  "spec_quote": "A folder with none of these files, or only files with zero fields, gives None.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid_json_returns_none",
+  "files": {
+   "form_check.json": "INVALID"
+  },
+  "expect": null,
+  "spec_quote": "A file that is not valid JSON gives None.",
+  "ambiguous": true
+ },
+ {
+  "name": "question_truncated_to_300",
+  "files": {
+   "form_check.json": {
+    "ats": "lever",
+    "posting": "https://ex.com/j/9",
+    "fields": [
+     {
+      "label": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "want": "v",
+      "value": "v0",
+      "ok": true
+     }
+    ]
+   }
+  },
+  "expect": {
+   "ats": "lever",
+   "url": "https://ex.com/j/9",
+   "n_rows": 1,
+   "rows": [
+    {
+     "index": 0,
+     "question": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "planned": "v",
+     "page": "v0",
+     "ok": true
+    }
+   ]
+  },
+  "spec_quote": "question is the label cut to 300 characters.",
+  "ambiguous": false
+ }
+]

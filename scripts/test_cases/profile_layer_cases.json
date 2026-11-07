@@ -1,0 +1,382 @@
+[
+ {
+  "name": "resolve_env_set_and_exists_wins_over_all",
+  "fn": "resolve",
+  "env": "custom.json",
+  "env_exists": true,
+  "user": true,
+  "example": true,
+  "expect": "env"
+ },
+ {
+  "name": "resolve_env_set_but_missing_falls_to_user",
+  "fn": "resolve",
+  "env": "custom.json",
+  "env_exists": false,
+  "user": true,
+  "example": true,
+  "expect": "user"
+ },
+ {
+  "name": "resolve_env_missing_user_missing_falls_to_example",
+  "fn": "resolve",
+  "env": "custom.json",
+  "env_exists": false,
+  "user": false,
+  "example": true,
+  "expect": "example"
+ },
+ {
+  "name": "resolve_no_env_user_exists",
+  "fn": "resolve",
+  "env": null,
+  "env_exists": false,
+  "user": true,
+  "example": true,
+  "expect": "user"
+ },
+ {
+  "name": "resolve_no_env_only_example_exists",
+  "fn": "resolve",
+  "env": null,
+  "env_exists": false,
+  "user": false,
+  "example": true,
+  "expect": "example"
+ },
+ {
+  "name": "resolve_nothing_exists_is_error",
+  "fn": "resolve",
+  "env": null,
+  "env_exists": false,
+  "user": false,
+  "example": false,
+  "expect": "error"
+ },
+ {
+  "name": "resolve_env_set_but_missing_and_nothing_else_is_error",
+  "fn": "resolve",
+  "env": "custom.json",
+  "env_exists": false,
+  "user": false,
+  "example": false,
+  "expect": "error"
+ },
+ {
+  "name": "data_file_user_file_preferred_over_example",
+  "fn": "data_file",
+  "name_arg": "wd_profile.json",
+  "env_value": null,
+  "user": true,
+  "expect": "user"
+ },
+ {
+  "name": "data_file_falls_back_to_example",
+  "fn": "data_file",
+  "name_arg": "wd_profile.json",
+  "env_value": null,
+  "user": false,
+  "expect": "example"
+ },
+ {
+  "name": "data_file_env_override_wins_over_user_file",
+  "fn": "data_file",
+  "name_arg": "wd_profile.json",
+  "env_value": "/tmp/x.json",
+  "user": true,
+  "expect": "env"
+ },
+ {
+  "name": "data_file_env_override_wins_even_when_user_missing",
+  "fn": "data_file",
+  "name_arg": "wd_profile.json",
+  "env_value": "/tmp/x.json",
+  "user": false,
+  "expect": "env"
+ },
+ {
+  "name": "data_file_empty_env_value_is_not_set_falls_to_user",
+  "fn": "data_file",
+  "name_arg": "wd_profile.json",
+  "env_value": "",
+  "user": true,
+  "expect": "user"
+ },
+ {
+  "name": "get_nested_email_walks_objects",
+  "fn": "get",
+  "profile": {
+   "contact": {
+    "email": "alex@example.com"
+   }
+  },
+  "key": "contact.email",
+  "expect": "alex@example.com"
+ },
+ {
+  "name": "get_missing_leaf_returns_default",
+  "fn": "get",
+  "profile": {
+   "contact": {}
+  },
+  "key": "contact.email",
+  "default": "none@example.com",
+  "expect": "none@example.com"
+ },
+ {
+  "name": "get_walking_into_non_object_returns_default",
+  "fn": "get",
+  "profile": {
+   "contact": "alex@example.com"
+  },
+  "key": "contact.email",
+  "default": "fallback",
+  "expect": "fallback"
+ },
+ {
+  "name": "get_missing_top_level_key_returns_default",
+  "fn": "get",
+  "profile": {
+   "contact": {
+    "email": "sam@example.com"
+   }
+  },
+  "key": "work_auth.restricted",
+  "default": false,
+  "expect": false
+ },
+ {
+  "name": "get_present_false_is_not_default",
+  "fn": "get",
+  "profile": {
+   "work_auth": {
+    "restricted": false
+   }
+  },
+  "key": "work_auth.restricted",
+  "default": true,
+  "expect": false
+ },
+ {
+  "name": "get_present_null_is_not_default",
+  "fn": "get",
+  "profile": {
+   "contact": {
+    "phone": null
+   }
+  },
+  "key": "contact.phone",
+  "default": "555-0100",
+  "expect": null
+ },
+ {
+  "name": "get_present_zero_is_not_default",
+  "fn": "get",
+  "profile": {
+   "stats": {
+    "years": 0
+   }
+  },
+  "key": "stats.years",
+  "default": 5,
+  "expect": 0
+ },
+ {
+  "name": "get_present_empty_string_is_not_default",
+  "fn": "get",
+  "profile": {
+   "contact": {
+    "phone": ""
+   }
+  },
+  "key": "contact.phone",
+  "default": "555-0100",
+  "expect": ""
+ },
+ {
+  "name": "get_no_default_given_missing_returns_null",
+  "fn": "get",
+  "profile": {
+   "contact": {
+    "email": "kim@example.com"
+   }
+  },
+  "key": "contact.phone",
+  "expect": null
+ },
+ {
+  "name": "answer_first_name_free_text",
+  "fn": "answer",
+  "answers": {
+   "first_name": {
+    "text": "Alex"
+   }
+  },
+  "restricted": false,
+  "label": "First name",
+  "options": [],
+  "expect_status": "ok",
+  "expect_value": "Alex"
+ },
+ {
+  "name": "answer_email_free_text",
+  "fn": "answer",
+  "answers": {
+   "email": {
+    "text": "alex@example.com"
+   }
+  },
+  "restricted": false,
+  "label": "Email",
+  "options": [],
+  "expect_status": "ok",
+  "expect_value": "alex@example.com"
+ },
+ {
+  "name": "answer_phone_free_text",
+  "fn": "answer",
+  "answers": {
+   "phone": {
+    "text": "555-0142"
+   }
+  },
+  "restricted": false,
+  "label": "Phone number",
+  "options": [],
+  "expect_status": "ok",
+  "expect_value": "555-0142"
+ },
+ {
+  "name": "answer_gender_first_matching_pick_regex_wins",
+  "fn": "answer",
+  "answers": {
+   "gender": {
+    "pick": [
+     "/^Man$/",
+     "/^Woman$/i"
+    ]
+   }
+  },
+  "restricted": false,
+  "label": "Gender",
+  "options": [
+   "Woman",
+   "Man",
+   "Non-binary"
+  ],
+  "expect_status": "ok",
+  "expect_value": "Man"
+ },
+ {
+  "name": "answer_gender_free_text",
+  "fn": "answer",
+  "answers": {
+   "gender": {
+    "text": "Non-binary"
+   }
+  },
+  "restricted": false,
+  "label": "Gender",
+  "options": [],
+  "expect_status": "ok",
+  "expect_value": "Non-binary"
+ },
+ {
+  "name": "answer_spons_future_yes_no_without_text",
+  "fn": "answer",
+  "answers": {
+   "spons_future": {
+    "yes": true
+   }
+  },
+  "restricted": false,
+  "label": "Will you now or in the future require visa sponsorship?",
+  "options": [],
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "answer_authorized_restricted_prefers_with_restrictions_over_plain_yes",
+  "fn": "answer",
+  "answers": {
+   "authorized": {
+    "yes": true
+   }
+  },
+  "restricted": true,
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect_status": "ok",
+  "expect_value": "Yes, with restrictions"
+ },
+ {
+  "name": "answer_authorized_unrestricted_plain_yes_including_without_restrictions",
+  "fn": "answer",
+  "answers": {
+   "authorized": {
+    "yes": true
+   }
+  },
+  "restricted": false,
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes, without restrictions",
+   "No"
+  ],
+  "expect_status": "ok",
+  "expect_value": "Yes, without restrictions"
+ },
+ {
+  "name": "answer_authorized_restricted_never_picks_without_restrictions",
+  "fn": "answer",
+  "answers": {
+   "authorized": {
+    "yes": true
+   }
+  },
+  "restricted": true,
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes, without restrictions",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect_status": "ok",
+  "expect_value": "Yes, with restrictions"
+ },
+ {
+  "name": "answer_authorized_options_compared_trimmed_picks_plain_yes",
+  "fn": "answer",
+  "answers": {
+   "authorized": {
+    "yes": true
+   }
+  },
+  "restricted": false,
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "  Yes ",
+   " No"
+  ],
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "answer_missing_rule_is_unknown",
+  "fn": "answer",
+  "answers": {
+   "email": {
+    "text": "alex@example.com"
+   }
+  },
+  "restricted": false,
+  "label": "First name",
+  "options": [],
+  "expect_status": "unknown",
+  "expect_value": null
+ }
+]

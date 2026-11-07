@@ -1,0 +1,124 @@
+[
+ {
+  "name": "verify_you_are_human_example",
+  "label": "Please verify you are human, count the number of t in eeootteotto.",
+  "expect": true,
+  "spec": "Examples that are true: \"Please verify you are human, count the number of t in eeootteotto.\""
+ },
+ {
+  "name": "not_a_robot_example",
+  "label": "I'm not a robot",
+  "expect": true,
+  "spec": "Examples that are true: ..., \"I'm not a robot\""
+ },
+ {
+  "name": "captcha_type_letters_example",
+  "label": "CAPTCHA: type the letters",
+  "expect": true,
+  "spec": "Examples that are true: ..., \"CAPTCHA: type the letters\""
+ },
+ {
+  "name": "verify_that_you_are_a_human",
+  "label": "Verify that you are a human",
+  "expect": true,
+  "spec": "True when the label asks the applicant to prove they are a human: \"verify (that) you are (a) human\""
+ },
+ {
+  "name": "are_you_a_robot_uppercase",
+  "label": "ARE YOU A ROBOT",
+  "expect": true,
+  "spec": "Case-insensitive. ... \"are you a human\" / \"are you a robot\""
+ },
+ {
+  "name": "lowercase_captcha_word",
+  "label": "captcha",
+  "expect": true,
+  "spec": "True when the label asks the applicant to prove they are a human: ... mentions CAPTCHA ... Case-insensitive."
+ },
+ {
+  "name": "prove_you_are_human",
+  "label": "Prove you are human",
+  "expect": true,
+  "spec": "\"prove you are (a) human\" (up to ~20 characters between \"prove you\" and \"human\")"
+ },
+ {
+  "name": "prove_youre_a_human",
+  "label": "Prove you're a human",
+  "expect": true,
+  "spec": "\"prove you are (a) human\" (up to ~20 characters between \"prove you\" and \"human\")"
+ },
+ {
+  "name": "prove_you_are_a_human_then_type",
+  "label": "Prove you are a human by typing the words shown",
+  "expect": true,
+  "spec": "\"prove you are (a) human\" (up to ~20 characters between \"prove you\" and \"human\")"
+ },
+ {
+  "name": "are_you_a_human_question",
+  "label": "Are you a human?",
+  "expect": true,
+  "spec": "\"are you a human\" / \"are you a robot\""
+ },
+ {
+  "name": "please_confirm_not_a_robot",
+  "label": "Please confirm you are not a robot",
+  "expect": true,
+  "spec": "True when the label asks the applicant to prove they are a human: ... \"not a robot\""
+ },
+ {
+  "name": "please_complete_the_captcha_below",
+  "label": "Please complete the CAPTCHA below",
+  "expect": true,
+  "spec": "True when the label asks the applicant to prove they are a human: ... mentions CAPTCHA"
+ },
+ {
+  "name": "identity_verification_false",
+  "label": "Can you provide verification of your identity?",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: \"Can you provide verification of your identity?\""
+ },
+ {
+  "name": "human_resources_contact_false",
+  "label": "Human Resources contact",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: ..., \"Human Resources contact\""
+ },
+ {
+  "name": "verify_employment_eligibility_false",
+  "label": "Are you able to verify your employment eligibility?",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: ..., \"Are you able to verify your employment eligibility?\""
+ },
+ {
+  "name": "human_centered_design_false",
+  "label": "Do you have experience with human-centered design?",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: ..., \"Do you have experience with human-centered design?\""
+ },
+ {
+  "name": "robotics_experience_false",
+  "label": "Robotics experience",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: ..., \"Robotics experience\""
+ },
+ {
+  "name": "verify_your_email_false",
+  "label": "Please verify your email address",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification"
+ },
+ {
+  "name": "human_languages_spoken_false",
+  "label": "List the human languages you speak fluently",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification"
+ },
+ {
+  "name": "robot_enthusiast_near_miss",
+  "label": "Are you a robot enthusiast?",
+  "expect": false,
+  "spec": "False for ordinary questions that merely mention humans or verification: ..., \"Robotics experience\"",
+  "ambiguous": true,
+  "why": "The literal phrase \"are you a robot\" appears (a listed true trigger), but the label is an ordinary interest question, not a request to prove humanity, so the true-trigger and the false-for-ordinary-questions clauses conflict."
+ }
+]

@@ -1,0 +1,395 @@
+[
+ {
+  "name": "chat_phenom_chatbot_iframe_id",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "iframe",
+    "id": "phenomChatbotIframe",
+    "cls": "",
+    "title": "",
+    "name": "",
+    "src": "https://careers.acme.com/apply/123"
+   }
+  },
+  "expect": true,
+  "spec_quote": "True when it is a chat widget that may cover the \"Apply now\" button and should be hidden: any of id / class / title / name / src mentions a chat bot (\"chatbot\", \"chat bot\", \"phenomChatbotIframe\", \"Phenom Career Bot\", \"career bot\")",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_intercom_vendor_iframe",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "iframe",
+    "id": "intercom-frame",
+    "cls": "intercom-lightweight-app",
+    "title": "",
+    "name": "",
+    "src": "https://js.intercomcdn.com/frame.abc123.html"
+   }
+  },
+  "expect": true,
+  "spec_quote": "...or a known chat vendor (\"intercom\", \"drift\", \"zendesk\", \"messenger\", \"ada-embed\").",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_bare_word_chat_class",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "div",
+    "id": "",
+    "cls": "chat-widget-container",
+    "title": "",
+    "name": "",
+    "src": ""
+   }
+  },
+  "expect": true,
+  "spec_quote": "...live chat (\"livechat\", \"live chat\", \"chat-widget\", \"chat_widget\", a word \"chat\")...",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_onetrust_banner_also_mentions_chat",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "div",
+    "id": "onetrust-banner-sdk",
+    "cls": "onetrust-consent-banner",
+    "title": "We use cookies - chat with support",
+    "name": "",
+    "src": ""
+   }
+  },
+  "expect": false,
+  "spec_quote": "Never true for a cookie / consent banner (cookie, consent, OneTrust, TrustArc, GDPR, privacy)... even when the element also mentions chat.",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_recaptcha_iframe_with_chat_class",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "iframe",
+    "id": "",
+    "cls": "chat-widget",
+    "title": "recaptcha",
+    "name": "",
+    "src": "https://www.google.com/recaptcha/api2/anchor?k=xyz"
+   }
+  },
+  "expect": false,
+  "spec_quote": "Never true for ... a CAPTCHA (recaptcha, hcaptcha, captcha) ... even when the element also mentions chat.",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_youtube_embed_with_chat_in_title",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "iframe",
+    "id": "",
+    "cls": "",
+    "title": "Employee chat: life at Acme (YouTube video)",
+    "name": "",
+    "src": "https://www.youtube.com/embed/abc123"
+   }
+  },
+  "expect": false,
+  "spec_quote": "Never true for ... a video (YouTube, Vimeo, \"video\") ... even when the element also mentions chat.",
+  "ambiguous": false
+ },
+ {
+  "name": "chat_neutral_apply_iframe_no_keywords",
+  "fn": "chat_overlay",
+  "args": {
+   "el": {
+    "tag": "iframe",
+    "id": "apply-frame",
+    "cls": "apply-frame",
+    "title": "",
+    "name": "",
+    "src": "https://careers.acme.com/apply/123"
+   }
+  },
+  "expect": false,
+  "spec_quote": "An element with none of these words → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "label_veteran_placeholder_with_options",
+  "fn": "label_from_options",
+  "args": {
+   "label": "Please Select:",
+   "options": [
+    "I Am Not a Protected Veteran",
+    "I Choose Not to Self Identify"
+   ]
+  },
+  "expect": "Please Select (I Am Not a Protected Veteran / I Choose Not to Self Identify)",
+  "spec_quote": "return the cleaned label followed by a space and the options in parentheses joined by \" / \": \"Please Select (I Am Not a Protected Veteran / I Choose Not to Self Identify)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_star_prefix_and_empty_option_dropped",
+  "fn": "label_from_options",
+  "args": {
+   "label": "* Please select",
+   "options": [
+    "",
+    "Male",
+    "Female"
+   ]
+  },
+  "expect": "Please select (Male / Female)",
+  "spec_quote": "When the label — after dropping a leading \"*\", a trailing \":\" and extra spaces — is exactly one of \"Select\", \"Please select\", ... Empty options are left out.",
+  "ambiguous": false
+ },
+ {
+  "name": "label_real_question_containing_please_select_unchanged",
+  "fn": "label_from_options",
+  "args": {
+   "label": "Please select your gender",
+   "options": [
+    "Male",
+    "Female"
+   ]
+  },
+  "expect": "Please select your gender",
+  "spec_quote": "Any other label (a real question, even one that contains \"please select\", e.g. \"Please select your gender\") is returned unchanged;",
+  "ambiguous": false
+ },
+ {
+  "name": "label_only_dashes_with_options",
+  "fn": "label_from_options",
+  "args": {
+   "label": "---",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "--- (Yes / No)",
+  "spec_quote": "...or only dashes (case-insensitive), and there is at least one non-empty option, return the cleaned label followed by a space and the options in parentheses joined by \" / \"",
+  "ambiguous": false
+ },
+ {
+  "name": "label_placeholder_but_no_non_empty_options",
+  "fn": "label_from_options",
+  "args": {
+   "label": "Select one:",
+   "options": [
+    "",
+    ""
+   ]
+  },
+  "expect": "Select one:",
+  "spec_quote": "...with no non-empty options the label is returned unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "label_choose_from_the_list_with_options",
+  "fn": "label_from_options",
+  "args": {
+   "label": "Choose from the list:",
+   "options": [
+    "Option 1",
+    "Option 2"
+   ]
+  },
+  "expect": "Choose from the list (Option 1 / Option 2)",
+  "spec_quote": "...is exactly one of ... \"Choose from the list\", ... return the cleaned label followed by a space and the options in parentheses joined by \" / \"",
+  "ambiguous": false
+ },
+ {
+  "name": "label_select_with_extra_spaces",
+  "fn": "label_from_options",
+  "args": {
+   "label": "  Select  ",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "Select (Yes / No)",
+  "spec_quote": "When the label — after dropping a leading \"*\", a trailing \":\" and extra spaces — is exactly one of \"Select\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "split_employer_name_double_split",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "text",
+    "label": "Employer Name",
+    "value": "HYDE P ARK INVESTMENT S ERVICES"
+   }
+  },
+  "expect": true,
+  "spec_quote": "A repair joins a lone capital letter to the ALL-CAPS word (two or more capitals) that follows it after one space (\"HYDE PARK INVESTMENT SERVICES\")... the label names an employer, company, school, college, university, institution, organisation / organization, job title or title",
+  "ambiguous": false
+ },
+ {
+  "name": "split_address_box_indiana_not_split",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "text",
+    "label": "Street Address",
+    "value": "100 Main St"
+   }
+  },
+  "expect": false,
+  "spec_quote": "\"100 Main St\" stays (Indiana is not all caps). ... Otherwise false (e.g. an address box...).",
+  "ambiguous": false
+ },
+ {
+  "name": "split_combo_list_company_wrong_type",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "select-one",
+    "label": "Company",
+    "value": "FROST & S ULLIVAN"
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when ALL hold: type is \"text\" or \"textarea\"; ... Otherwise false (e.g. ... a combo list ...).",
+  "ambiguous": false
+ },
+ {
+  "name": "split_already_correct_university_value",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "University",
+    "value": "UNIVERSITY OF CHICAGO"
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when ALL hold: ... the repair changes the value; ... Otherwise false (e.g. ... an already-correct value).",
+  "ambiguous": false
+ },
+ {
+  "name": "split_job_title_textarea_split",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "textarea",
+    "label": "Job Title",
+    "value": "S ENIOR D IRECTOR OF E NGINEERING"
+   }
+  },
+  "expect": true,
+  "spec_quote": "A repair joins a lone capital letter to the ALL-CAPS word (two or more capitals) that follows it after one space... the label names ... job title or title",
+  "ambiguous": false
+ },
+ {
+  "name": "split_school_value_already_correct",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "text",
+    "label": "School",
+    "value": "Frost & Sullivan"
+   }
+  },
+  "expect": false,
+  "spec_quote": "True when ALL hold: ... the repair changes the value; ...",
+  "ambiguous": false
+ },
+ {
+  "name": "split_splittable_value_but_address_label",
+  "fn": "split_fix",
+  "args": {
+   "field": {
+    "type": "text",
+    "label": "Address Line 1",
+    "value": "FROST & S ULLIVAN"
+   }
+  },
+  "expect": false,
+  "spec_quote": "the label names an employer, company, school, college, university, institution, organisation / organization, job title or title (case-insensitive, anywhere in the label). Otherwise false (e.g. an address box...).",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_work_company_name_with_star_and_colon",
+  "fn": "canon_label",
+  "args": {
+   "label": "* Company Name:",
+   "kind": "work"
+  },
+  "expect": "Company",
+  "spec_quote": "The label (a leading \"*\" and trailing \":\" dropped, spaces trimmed, case-insensitive whole-label match) maps to a key: - work: \"Company\", \"Company Name\", \"Employer\", ... → \"Company\"",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_work_currently_employed_here",
+  "fn": "canon_label",
+  "args": {
+   "label": "Currently employed here?",
+   "kind": "work"
+  },
+  "expect": "Current",
+  "spec_quote": "- work: ... \"Present Employer\", \"Current Employer\", \"Present Employer?\", \"Currently employed here?\" → \"Current\"",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_work_position",
+  "fn": "canon_label",
+  "args": {
+   "label": "Position",
+   "kind": "work"
+  },
+  "expect": "Job Title",
+  "spec_quote": "- work: ... \"Job Title\", \"Title\", \"Position\", \"Position Title\", \"Job Position\" → \"Job Title\"",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_work_type_of_business_unchanged",
+  "fn": "canon_label",
+  "args": {
+   "label": "Type of Business",
+   "kind": "work"
+  },
+  "expect": "Type of Business",
+  "spec_quote": "Anything else, or another kind: the cleaned label unchanged (e.g. work \"Type of Business\" → \"Type of Business\"...).",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_work_degree_unchanged",
+  "fn": "canon_label",
+  "args": {
+   "label": "Degree:",
+   "kind": "work"
+  },
+  "expect": "Degree",
+  "spec_quote": "Anything else, or another kind: the cleaned label unchanged (e.g. ... work \"Degree\" → \"Degree\"...).",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_edu_college_university",
+  "fn": "canon_label",
+  "args": {
+   "label": "College/University:",
+   "kind": "edu"
+  },
+  "expect": "School Name",
+  "spec_quote": "- edu: \"School\", \"School Name\", \"Name of School\", \"College\", \"College/University\", \"University\", \"Institution\", \"Institution Name\" → \"School Name\"",
+  "ambiguous": false
+ },
+ {
+  "name": "canon_edu_company_name_unchanged",
+  "fn": "canon_label",
+  "args": {
+   "label": "Company Name",
+   "kind": "edu"
+  },
+  "expect": "Company Name",
+  "spec_quote": "Anything else, or another kind: the cleaned label unchanged (e.g. ... edu \"Company Name\" → \"Company Name\").",
+  "ambiguous": false
+ }
+]

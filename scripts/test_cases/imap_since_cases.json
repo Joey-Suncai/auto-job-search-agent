@@ -1,0 +1,82 @@
+[
+ {
+  "name": "utc_basic",
+  "since": "2026-11-03T12:34:56+00:00",
+  "expect": "02-Nov-2026"
+ },
+ {
+  "name": "utc_midnight_year_boundary",
+  "since": "2026-01-01T00:00:00+00:00",
+  "expect": "31-Dec-2025"
+ },
+ {
+  "name": "negative_offset_changes_utc_date",
+  "since": "2026-11-03T22:00:00-06:00",
+  "expect": "03-Nov-2026"
+ },
+ {
+  "name": "positive_offset_changes_utc_date",
+  "since": "2026-11-03T02:00:00+05:30",
+  "expect": "01-Nov-2026"
+ },
+ {
+  "name": "naive_treated_as_utc",
+  "since": "2026-03-15T23:59:59",
+  "expect": "14-Mar-2026"
+ },
+ {
+  "name": "leap_day_after_march_first",
+  "since": "2024-03-01T00:00:00+00:00",
+  "expect": "29-Feb-2024"
+ },
+ {
+  "name": "leap_day_itself",
+  "since": "2024-02-29T12:00:00+00:00",
+  "expect": "28-Feb-2024"
+ },
+ {
+  "name": "month_boundary_nonleap",
+  "since": "2026-03-01T10:00:00+00:00",
+  "expect": "28-Feb-2026"
+ },
+ {
+  "name": "month_boundary_31_day",
+  "since": "2026-05-01T00:00:00+00:00",
+  "expect": "30-Apr-2026"
+ },
+ {
+  "name": "positive_offset_year_boundary",
+  "since": "2026-01-01T03:00:00+05:30",
+  "expect": "30-Dec-2025"
+ },
+ {
+  "name": "negative_offset_forward_across_year",
+  "since": "2026-01-01T01:00:00-06:00",
+  "expect": "31-Dec-2025"
+ },
+ {
+  "name": "positive_offset_month_boundary",
+  "since": "2026-12-01T02:00:00+05:00",
+  "expect": "29-Nov-2026"
+ },
+ {
+  "name": "negative_offset_forward_across_month",
+  "since": "2026-11-30T23:00:00-06:00",
+  "expect": "30-Nov-2026"
+ },
+ {
+  "name": "naive_year_end",
+  "since": "2025-12-31T23:59:59",
+  "expect": "30-Dec-2025"
+ },
+ {
+  "name": "leap_day_with_negative_offset",
+  "since": "2024-02-29T23:30:00-06:00",
+  "expect": "29-Feb-2024"
+ },
+ {
+  "name": "positive_offset_extreme_previous_date",
+  "since": "2026-06-15T10:00:00+14:00",
+  "expect": "13-Jun-2026"
+ }
+]

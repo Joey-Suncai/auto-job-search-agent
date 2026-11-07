@@ -1,0 +1,178 @@
+[
+ {
+  "name": "citizenship_true_which_countries_pr",
+  "fn": "citizenship",
+  "label": "Do you hold Citizenship or Permanent Residency status from any of the following countries?",
+  "expect": true,
+  "spec_quote": "True when a form question asks which COUNTRY the candidate holds citizenship (or citizenship / permanent residency) of — e.g. \"Do you hold Citizenship or Permanent Residency status from any of the following countries…?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_true_what_country",
+  "fn": "citizenship",
+  "label": "What is your country of citizenship?",
+  "expect": true,
+  "spec_quote": "e.g. … \"What is your country of citizenship?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_true_countries_plural",
+  "fn": "citizenship",
+  "label": "Countries of citizenship",
+  "expect": true,
+  "spec_quote": "e.g. … \"Countries of citizenship\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_true_which_country_citizen",
+  "fn": "citizenship",
+  "label": "Which country are you a citizen of?",
+  "expect": true,
+  "spec_quote": "e.g. … \"Which country are you a citizen of?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_true_country_of_citizenship_field",
+  "fn": "citizenship",
+  "label": "Country of Citizenship",
+  "expect": true,
+  "spec_quote": "True when a form question asks which COUNTRY the candidate holds citizenship (or citizenship / permanent residency) of",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_false_are_you_us_citizen",
+  "fn": "citizenship",
+  "label": "Are you a U.S. citizen?",
+  "expect": false,
+  "spec_quote": "False for yes/no status questions such as \"Are you a U.S. citizen?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_false_citizen_or_lpr",
+  "fn": "citizenship",
+  "label": "Are you a U.S. Citizen, a Lawful Permanent Resident, or neither?",
+  "expect": false,
+  "spec_quote": "False for yes/no status questions such as … \"Are you a U.S. Citizen, a Lawful Permanent Resident …?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_false_authorized_to_work",
+  "fn": "citizenship",
+  "label": "Are you authorized to work in the United States?",
+  "expect": false,
+  "spec_quote": "False for yes/no status questions such as … \"Are you authorized to work…\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_false_permanent_resident_yesno",
+  "fn": "citizenship",
+  "label": "Are you a permanent resident of Canada?",
+  "expect": false,
+  "spec_quote": "False for yes/no status questions such as \"Are you a U.S. citizen?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "citizenship_false_unrelated_dob",
+  "fn": "citizenship",
+  "label": "What is your date of birth?",
+  "expect": false,
+  "spec_quote": "… and for unrelated questions.",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_selected_other",
+  "fn": "followup",
+  "label": "If you selected Other, please specify",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): \"If you selected Other\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_chose_lowercase",
+  "fn": "followup",
+  "label": "if you chose 'Prefer not to say', please explain",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If you chose …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_picked_country",
+  "fn": "followup",
+  "label": "If you picked a country other than the United States, list the country",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If you picked …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_answered_yes",
+  "fn": "followup",
+  "label": "If you answered Yes to the previous question, provide details",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If you answered …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_if_other",
+  "fn": "followup",
+  "label": "If other, please describe",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If other\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_your_selection_most_recent_citizenship",
+  "fn": "followup",
+  "label": "If your selection is not your most recent Citizenship…",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If your selection …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_true_if_yes_employer",
+  "fn": "followup",
+  "label": "If yes, please provide the name of your employer",
+  "expect": true,
+  "spec_quote": "recognised by how the label starts (case-insensitive): … \"If yes\", \"If no\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_false_if_hired",
+  "fn": "followup",
+  "label": "If hired, when can you start?",
+  "expect": false,
+  "spec_quote": "False for labels that do not start that way, including \"If hired, …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_false_if_offered_employment",
+  "fn": "followup",
+  "label": "If offered employment, would you accept this position?",
+  "expect": false,
+  "spec_quote": "False for labels that do not start that way, including … \"If offered employment, …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_false_if_you_are_under_18",
+  "fn": "followup",
+  "label": "If you are under 18, please provide a work permit",
+  "expect": false,
+  "spec_quote": "wait: \"If you are …\" is NOT in the list, so False",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_false_if_later_in_sentence",
+  "fn": "followup",
+  "label": "Describe your previous experience, if any",
+  "expect": false,
+  "spec_quote": "and any label where \"if\" appears later in the sentence.",
+  "ambiguous": false
+ },
+ {
+  "name": "followup_false_if_you_have_questions",
+  "fn": "followup",
+  "label": "If you have any questions, please contact the recruiter",
+  "expect": false,
+  "spec_quote": "False for labels that do not start that way, including … wait: \"If you are …\" is NOT in the list, so False",
+  "ambiguous": false
+ }
+]

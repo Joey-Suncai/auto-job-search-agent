@@ -1,0 +1,674 @@
+{
+ "title": "Business Intelligence Analyst Internship",
+ "questions": [
+  {
+   "required": true,
+   "label": "First Name",
+   "fields": [
+    {
+     "name": "first_name",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "Last Name",
+   "fields": [
+    {
+     "name": "last_name",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": false,
+   "label": "Preferred First Name",
+   "fields": [
+    {
+     "name": "preferred_name",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "Email",
+   "fields": [
+    {
+     "name": "email",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "Phone",
+   "fields": [
+    {
+     "name": "phone",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": false,
+   "label": "Resume/CV",
+   "fields": [
+    {
+     "name": "resume",
+     "type": "input_file",
+     "values": []
+    },
+    {
+     "name": "resume_text",
+     "type": "textarea",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "What level of schooling are you in?",
+   "fields": [
+    {
+     "name": "question_69874406",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "What is your major (s):",
+   "fields": [
+    {
+     "name": "question_69874407",
+     "type": "textarea",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "When are you available to start an internship working 30+ hours a week?",
+   "fields": [
+    {
+     "name": "question_69874408",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Immediately available",
+       "value": 0
+      },
+      {
+       "label": "Winter (Jan - March)",
+       "value": 1
+      },
+      {
+       "label": "Spring (April - June)",
+       "value": 2
+      },
+      {
+       "label": "Summer (June - August)",
+       "value": 3
+      },
+      {
+       "label": "Fall (September - December)",
+       "value": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "Please select the collegiate institution you currently attend or previously attended.",
+   "fields": [
+    {
+     "name": "question_69874409",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Iowa State University",
+       "value": 0
+      },
+      {
+       "label": "Colorado School of Mines",
+       "value": 1
+      },
+      {
+       "label": "Georgia Institute of Technology",
+       "value": 2
+      },
+      {
+       "label": "Other",
+       "value": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "Why would you be a good fit for this role? Please explain:",
+   "fields": [
+    {
+     "name": "question_69874410",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.1 Do you live OUTSIDE of the United States? Only U.S. based candidates (who live within one of the 48 contiguous states) will be considered for this role.",
+   "fields": [
+    {
+     "name": "question_69874411",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "I live OUTSIDE of the United States.",
+       "value": 0
+      },
+      {
+       "label": "I live INSIDE the United States.",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.2 Preferred name",
+   "fields": [
+    {
+     "name": "question_69874412",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.3 Legal first name",
+   "fields": [
+    {
+     "name": "question_69874413",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.4 Middle initial",
+   "fields": [
+    {
+     "name": "question_69874414",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.5 Legal last name",
+   "fields": [
+    {
+     "name": "question_69874415",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.6 Please provide us with your current STREET ADDRESS",
+   "fields": [
+    {
+     "name": "question_69874416",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.7 Please provide us with the NAME of YOUR CURRENT HOME CITY.",
+   "fields": [
+    {
+     "name": "question_69874417",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.8 Please provide us with the NAME of YOUR CURRENT HOME STATE.",
+   "fields": [
+    {
+     "name": "question_69874418",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Alabama",
+       "value": 0
+      },
+      {
+       "label": "Alaska",
+       "value": 1
+      },
+      {
+       "label": "Arizona",
+       "value": 2
+      },
+      {
+       "label": "Arkansas",
+       "value": 3
+      },
+      {
+       "label": "California",
+       "value": 4
+      },
+      {
+       "label": "Colorado",
+       "value": 5
+      },
+      {
+       "label": "Connecticut",
+       "value": 6
+      },
+      {
+       "label": "Delaware",
+       "value": 7
+      },
+      {
+       "label": "Florida",
+       "value": 8
+      },
+      {
+       "label": "Georgia",
+       "value": 9
+      },
+      {
+       "label": "Hawaii",
+       "value": 10
+      },
+      {
+       "label": "Idaho",
+       "value": 11
+      },
+      {
+       "label": "Illinois",
+       "value": 12
+      },
+      {
+       "label": "Indiana",
+       "value": 13
+      },
+      {
+       "label": "Iowa",
+       "value": 14
+      },
+      {
+       "label": "Kansas",
+       "value": 15
+      },
+      {
+       "label": "Kentucky",
+       "value": 16
+      },
+      {
+       "label": "Louisiana",
+       "value": 17
+      },
+      {
+       "label": "Maine",
+       "value": 18
+      },
+      {
+       "label": "Maryland",
+       "value": 19
+      },
+      {
+       "label": "Massachusetts",
+       "value": 20
+      },
+      {
+       "label": "Michigan",
+       "value": 21
+      },
+      {
+       "label": "Minnesota",
+       "value": 22
+      },
+      {
+       "label": "Mississippi",
+       "value": 23
+      },
+      {
+       "label": "Missouri",
+       "value": 24
+      },
+      {
+       "label": "Montana",
+       "value": 25
+      },
+      {
+       "label": "Nebraska",
+       "value": 26
+      },
+      {
+       "label": "Nevada",
+       "value": 27
+      },
+      {
+       "label": "New Hampshire",
+       "value": 28
+      },
+      {
+       "label": "New Jersey",
+       "value": 29
+      },
+      {
+       "label": "New Mexico",
+       "value": 30
+      },
+      {
+       "label": "New York",
+       "value": 31
+      },
+      {
+       "label": "North Carolina",
+       "value": 32
+      },
+      {
+       "label": "North Dakota",
+       "value": 33
+      },
+      {
+       "label": "Ohio",
+       "value": 34
+      },
+      {
+       "label": "Oklahoma",
+       "value": 35
+      },
+      {
+       "label": "Oregon",
+       "value": 36
+      },
+      {
+       "label": "Pennsylvania",
+       "value": 37
+      },
+      {
+       "label": "Rhode Island",
+       "value": 38
+      },
+      {
+       "label": "South Carolina",
+       "value": 39
+      },
+      {
+       "label": "South Dakota",
+       "value": 40
+      },
+      {
+       "label": "Tennessee",
+       "value": 41
+      },
+      {
+       "label": "Texas",
+       "value": 42
+      },
+      {
+       "label": "Utah",
+       "value": 43
+      },
+      {
+       "label": "Vermont",
+       "value": 44
+      },
+      {
+       "label": "Virginia",
+       "value": 45
+      },
+      {
+       "label": "Washington",
+       "value": 46
+      },
+      {
+       "label": "West Virginia",
+       "value": 47
+      },
+      {
+       "label": "Wisconsin",
+       "value": 48
+      },
+      {
+       "label": "Wyoming",
+       "value": 49
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "1.9 Please provide us YOUR CURRENT HOME ZIP CODE.",
+   "fields": [
+    {
+     "name": "question_69874419",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.0 Are you currently authorized to work in the United States?",
+   "fields": [
+    {
+     "name": "question_69874420",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.1 Do you now, or in the future, require visa sponsorship to continue working in the United States?",
+   "fields": [
+    {
+     "name": "question_69874421",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.2 Have you previously been an employee of Galtalnev?",
+   "fields": [
+    {
+     "name": "question_69874422",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.3 Do you have any family members who are currently employed by, or have previously worked for, Galtalnev?",
+   "fields": [
+    {
+     "name": "question_69874423",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.4 Family member names and relationships",
+   "fields": [
+    {
+     "name": "question_69874424",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.5 Do you currently work for a client of Galtalnev?",
+   "fields": [
+    {
+     "name": "question_69874425",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.6 Current or last employer",
+   "fields": [
+    {
+     "name": "question_69874426",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "2.8 LinkedIn profile",
+   "fields": [
+    {
+     "name": "question_69874427",
+     "type": "input_text",
+     "values": []
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "3.0 Certification of truthful answers and authorization to verify information",
+   "fields": [
+    {
+     "name": "question_69874428",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "required": true,
+   "label": "3.1 Consent to receive text messages",
+   "fields": [
+    {
+     "name": "question_69874429",
+     "type": "multi_value_single_select",
+     "values": [
+      {
+       "label": "Yes",
+       "value": 0
+      },
+      {
+       "label": "No",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "location_questions": [
+  {
+   "required": true,
+   "label": "Location (City)",
+   "fields": [
+    {
+     "name": "location",
+     "type": "input_text",
+     "values": []
+    },
+    {
+     "name": "latitude",
+     "type": "input_hidden",
+     "values": []
+    },
+    {
+     "name": "longitude",
+     "type": "input_hidden",
+     "values": []
+    }
+   ]
+  }
+ ]
+}

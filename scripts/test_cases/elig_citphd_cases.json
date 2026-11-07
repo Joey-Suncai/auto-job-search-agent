@@ -1,0 +1,314 @@
+[
+ {
+  "name": "only_us_citizens_will_be_considered_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the role: Our AI Research team in Boston is hiring a Summer 2027 intern to work on multimodal foundation models. You will collaborate with research scientists, run experiments, and present findings. Requirements: strong Python skills, coursework in machine learning, and excellent communication. Eligibility: only U.S. citizens will be considered for this position. The internship is 12 weeks with mentorship and a final presentation.",
+  "expect": "Ineligible",
+  "spec": "A description that says \"only U.S. citizens\" restricts the job to citizens; non-citizen candidate → Ineligible."
+ },
+ {
+  "name": "only_us_citizens_will_be_considered_citizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": true
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the role: Our AI Research team in Boston is hiring a Summer 2027 intern to work on multimodal foundation models. You will collaborate with research scientists, run experiments, and present findings. Requirements: strong Python skills, coursework in machine learning, and excellent communication. Eligibility: only U.S. citizens will be considered for this position. The internship is 12 weeks with mentorship and a final presentation.",
+  "expect": "Eligible",
+  "spec": "citizen candidate → this sentence alone does not block (Eligible if nothing else matters)."
+ },
+ {
+  "name": "us_citizens_only_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Join our Boston team to study multimodal foundation models, design experiments, and present results. Candidates should have strong Python skills and coursework in machine learning. Eligibility: U.S. citizens only. The internship lasts 12 weeks and includes mentorship, compute resources, and a final poster session. We are looking for curious students who enjoy collaborative research and clear communication.",
+  "expect": "Ineligible",
+  "spec": "\"U.S. citizens only\" restricts the job to citizens; non-citizen candidate → Ineligible."
+ },
+ {
+  "name": "us_citizens_only_citizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": true
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Join our Boston team to study multimodal foundation models, design experiments, and present results. Candidates should have strong Python skills and coursework in machine learning. Eligibility: U.S. citizens only. The internship lasts 12 weeks and includes mentorship, compute resources, and a final poster session. We are looking for curious students who enjoy collaborative research and clear communication.",
+  "expect": "Eligible",
+  "spec": "citizen candidate → this sentence alone does not block (Eligible if nothing else matters)."
+ },
+ {
+  "name": "open_to_only_united_states_citizens_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Summer 2027 AI Research Internship in Boston. You will work with our foundation-model team to run experiments, analyze results, and present findings. Requirements include strong Python skills and machine learning coursework. This opportunity is open to only United States citizens. The 12-week program offers mentorship, compute resources, and a final presentation. We value curiosity, collaboration, and clear communication.",
+  "expect": "Ineligible",
+  "spec": "\"open to only United States citizens\" restricts the job to citizens; non-citizen candidate → Ineligible."
+ },
+ {
+  "name": "open_to_only_united_states_citizens_citizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": true
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Summer 2027 AI Research Internship in Boston. You will work with our foundation-model team to run experiments, analyze results, and present findings. Requirements include strong Python skills and machine learning coursework. This opportunity is open to only United States citizens. The 12-week program offers mentorship, compute resources, and a final presentation. We value curiosity, collaboration, and clear communication.",
+  "expect": "Eligible",
+  "spec": "citizen candidate → this sentence alone does not block (Eligible if nothing else matters)."
+ },
+ {
+  "name": "us_citizens_and_visa_holders_welcome_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Our Boston team builds multimodal foundation models. You will design experiments, analyze results, and present findings. U.S. citizens and visa holders are welcome to apply. We sponsor visas for international candidates. The 12-week internship includes mentorship, compute resources, and a final presentation. Candidates should have strong Python skills and coursework in machine learning. We value curiosity, collaboration, and clear communication.",
+  "expect": "Eligible",
+  "spec": "Not a restriction: \"U.S. citizens and visa holders are welcome\" does not say \"only U.S. citizens\" / \"U.S. citizens only\"."
+ },
+ {
+  "name": "not_only_us_citizens_but_international_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Summer 2027 AI Research Internship in Boston. The intern will run experiments on multimodal foundation models, analyze results, and present findings to the research group. We welcome not only U.S. citizens but also international students. The company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Candidates should have strong Python skills and coursework in machine learning.",
+  "expect": "Eligible",
+  "spec": "Not a restriction: \"not only U.S. citizens but also international students\" does not say \"only U.S. citizens\" / \"U.S. citizens only\"."
+ },
+ {
+  "name": "citizenship_not_required_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Our Boston-based team studies multimodal foundation models and efficient training. You will design experiments, analyze results, and present findings. U.S. citizenship is not required; international students are encouraged to apply. The company sponsors visas for interns. The 12-week internship includes mentorship, compute resources, and a final presentation. Strong Python skills and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "Not a restriction: sentences that do not say \"only U.S. citizens\" / \"U.S. citizens only\"."
+ },
+ {
+  "name": "citizens_and_pr_welcome_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Summer 2027 AI Research Internship in Boston. The intern will work on multimodal foundation models, run experiments, and present results. U.S. citizens and permanent residents are welcome to apply, and international candidates are also encouraged. The company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Candidates should have strong Python skills and coursework in machine learning.",
+  "expect": "Eligible",
+  "spec": "Not a restriction: this sentence does not say \"only U.S. citizens\" / \"U.S. citizens only\"."
+ },
+ {
+  "name": "only_us_citizens_are_eligible_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Our Boston team studies multimodal foundation models and efficient training. You will design experiments, analyze results, and present findings. Eligibility: Only U.S. citizens are eligible to apply. The internship lasts 12 weeks and includes mentorship, compute resources, and a final poster session. We value curiosity, collaboration, and clear communication. Strong Python skills and machine learning coursework are expected.",
+  "expect": "Ineligible",
+  "spec": "A description that says \"only U.S. citizens\" restricts the job to citizens; non-citizen candidate → Ineligible."
+ },
+ {
+  "name": "phd_students_required_masters_noncitizen",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Our team builds multimodal models. You will implement experiments, analyze results, and present at team meetings. Required Qualifications: Ph.D. students in Computer Science or a related field. The company sponsors visas for interns. The internship lasts 12 weeks and includes mentorship, compute resources, and a final presentation. Candidates should have strong Python and machine learning coursework.",
+  "expect": "Ineligible",
+  "spec": "For a master's candidate, a requirement sentence that starts with \"Ph.D. students\" makes the job Ineligible."
+ },
+ {
+  "name": "phd_candidates_after_qualifications_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the internship: Join our AI Research team for Summer 2027. You will work on large language model evaluation, data curation, and ablation studies. Qualifications: PhD candidates in artificial intelligence, machine learning, or a closely related discipline. We sponsor visas for international interns. The role offers mentorship, weekly seminars, and a final poster session. Strong programming skills in Python and experience with PyTorch are expected.",
+  "expect": "Ineligible",
+  "spec": "For a master's candidate, a requirement sentence that follows \"Qualifications:\" and says \"PhD candidates\" makes the job Ineligible."
+ },
+ {
+  "name": "doctoral_students_start_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Doctoral students in computer science are required for this Summer 2027 AI Research Internship. The intern will design experiments, train models, and present findings to the research group. Our company sponsors visas for interns. Candidates should have strong Python skills and coursework in machine learning. The 12-week program includes mentorship, compute resources, and a final presentation. We are based in Boston and work on multimodal foundation models.",
+  "expect": "Ineligible",
+  "spec": "For a master's candidate, a requirement sentence that starts with \"Doctoral students\" makes the job Ineligible."
+ },
+ {
+  "name": "phd_students_are_welcome_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. The team studies multimodal foundation models and efficient training. You will run experiments, analyze results, and present findings. PhD students are welcome to apply, and we also consider candidates from other backgrounds. The company sponsors visas for interns. The 12-week internship includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "unless the sentence says PhD students \"are welcome\" (an invitation, not a requirement)."
+ },
+ {
+  "name": "phd_students_are_encouraged_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Our AI Research group in Boston is hiring a Summer 2027 intern to work on model evaluation and data curation. PhD students are encouraged to apply, but the internship is open to students from many programs. We sponsor visas for international interns. The role includes mentorship, weekly seminars, and a final poster session. Candidates should have strong Python skills and coursework in machine learning or a related area.",
+  "expect": "Eligible",
+  "spec": "unless the sentence says PhD students \"are encouraged\" (an invitation, not a requirement)."
+ },
+ {
+  "name": "phd_requirement_with_masters_named_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Required Qualifications: Ph.D. students in Computer Science or a related field. Master's students in their final year are also encouraged to apply. The Summer 2027 AI Research Intern will design experiments, train models, and present findings. Our company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "unless the description also names master's or bachelor's students anywhere (then it is not PhD-only)."
+ },
+ {
+  "name": "phd_requirement_with_bachelors_named_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Qualifications: Doctoral students in AI or machine learning. Bachelor's students with strong research experience may also be considered. The Summer 2027 intern will work on multimodal foundation models, run experiments, and present results. We sponsor visas for international interns. The internship includes mentorship, compute resources, and a final poster session. Candidates should have strong Python skills and coursework in machine learning.",
+  "expect": "Eligible",
+  "spec": "unless the description also names master's or bachelor's students anywhere (then it is not PhD-only)."
+ },
+ {
+  "name": "phd_candidate_phd_level",
+  "candidate": {
+   "degree_level": "phd",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Required Qualifications: Ph.D. students in Computer Science or a related field. The Summer 2027 AI Research Intern will design experiments, train models, and present findings to the research group. Our company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected. We are based in Boston and work on multimodal foundation models.",
+  "expect": "Eligible",
+  "spec": "A PhD candidate (degree_level \"phd\") is never blocked by this."
+ },
+ {
+  "name": "currently_pursuing_phd_required_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. The intern will implement experiments, analyze results, and present at team meetings. Applicants must be currently pursuing a PhD in computer science or a related field. The company sponsors visas for interns. The 12-week internship includes mentorship, compute resources, and a final presentation. Candidates should have strong Python skills and coursework in machine learning.",
+  "expect": "Ineligible",
+  "spec": "The old wording \"currently pursuing a PhD\" keeps working the same way."
+ },
+ {
+  "name": "currently_pursuing_phd_encouraged_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Our AI Research team is hiring a Summer 2027 intern to work on multimodal foundation models and evaluation. Applicants currently pursuing a PhD are encouraged to apply, and we welcome students from other degree programs as well. The company sponsors visas for interns. The 12-week internship includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "The old wording \"currently pursuing a PhD\" keeps working the same way; \"are encouraged\" is an invitation, not a requirement."
+ },
+ {
+  "name": "phd_students_required_citizen_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": true
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Required Qualifications: PhD students in Computer Science or a related field. The Summer 2027 AI Research Intern will design experiments, train models, and present findings to the research group. Our company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected. We are based in Boston and work on multimodal foundation models.",
+  "expect": "Ineligible",
+  "spec": "For a master's candidate, a requirement sentence that starts with \"PhD students\" makes the job Ineligible; citizenship does not override this."
+ },
+ {
+  "name": "phd_not_at_sentence_start_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "AI Research Intern, Summer 2027. Our team builds multimodal foundation models. The ideal candidate is a PhD student in AI or a related field. You will run experiments, analyze results, and present findings. We sponsor visas for international interns. The 12-week internship includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "The block applies to a requirement sentence that starts with (or follows \"Qualifications:\") \"Ph.D. students\" / \"PhD students\" / \"PhD candidates\" / \"Doctoral students\"; this sentence does not."
+ },
+ {
+  "name": "phd_students_required_but_masters_named_later_masters",
+  "candidate": {
+   "degree_level": "masters",
+   "citizen": false
+  },
+  "title": "AI Research Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "PhD students in computer science are required. However, master's students in their final year are also eligible for this Summer 2027 AI Research Internship. The intern will design experiments, train models, and present findings. Our company sponsors visas for interns. The 12-week program includes mentorship, compute resources, and a final presentation. Strong Python and machine learning coursework are expected.",
+  "expect": "Eligible",
+  "spec": "unless the description also names master's or bachelor's students anywhere (then it is not PhD-only)."
+ }
+]

@@ -1,0 +1,254 @@
+[
+ {
+  "name": "basic_kinds_in_file_order",
+  "fn": "parse_extra",
+  "text": "lever:acme\nashby:rhombus\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "uppercase_kind_and_board_normalized_lowercase",
+  "fn": "parse_extra",
+  "text": "LEVER:Acme\nAshby:Rhombus-Systems\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus-systems"
+   ]
+  ]
+ },
+ {
+  "name": "spaces_around_colon_allowed",
+  "fn": "parse_extra",
+  "text": "lever : acme\nashby: rhombus\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "whole_line_and_trailing_comments",
+  "fn": "parse_extra",
+  "text": "# comment\nlever:acme # trailing\nashby:rhombus#tight\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "blank_lines_skipped",
+  "fn": "parse_extra",
+  "text": "\n\nlever:acme\n\nashby:rhombus\n\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "exact_duplicate_first_kept",
+  "fn": "parse_extra",
+  "text": "lever:acme\nlever:acme\nashby:rhombus\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "duplicate_after_normalization_first_kept",
+  "fn": "parse_extra",
+  "text": "lever:Acme\nhttps://jobs.lever.co/acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "lever_board_url",
+  "fn": "parse_extra",
+  "text": "https://jobs.lever.co/acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "lever_eu_board_url",
+  "fn": "parse_extra",
+  "text": "https://jobs.eu.lever.co/acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "lever_job_url_uses_first_path_segment",
+  "fn": "parse_extra",
+  "text": "https://jobs.lever.co/acme/1234-abc\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "ashby_board_url",
+  "fn": "parse_extra",
+  "text": "https://jobs.ashbyhq.com/rhombus\n",
+  "expect": [
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "ashby_job_url_uses_first_path_segment",
+  "fn": "parse_extra",
+  "text": "https://jobs.ashbyhq.com/rhombus/abc-123\n",
+  "expect": [
+   [
+    "ashby",
+    "rhombus"
+   ]
+  ]
+ },
+ {
+  "name": "wrong_kind_dropped",
+  "fn": "parse_extra",
+  "text": "greenhouse:stripe\nlever:acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "other_host_dropped",
+  "fn": "parse_extra",
+  "text": "https://boards.greenhouse.io/stripe\nhttps://jobs.lever.co/acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "board_with_space_dropped",
+  "fn": "parse_extra",
+  "text": "lever:acme inc\nashby:valid-org\n",
+  "expect": [
+   [
+    "ashby",
+    "valid-org"
+   ]
+  ]
+ },
+ {
+  "name": "invalid_char_dropped_and_cross_kind_names_kept",
+  "fn": "parse_extra",
+  "text": "ashby:bad/org\nlever:acme\nashby:acme\n",
+  "expect": [
+   [
+    "lever",
+    "acme"
+   ],
+   [
+    "ashby",
+    "acme"
+   ]
+  ]
+ },
+ {
+  "name": "board_name_simple_hyphen",
+  "fn": "board_name",
+  "board": "rhombus-systems",
+  "expect": "Rhombus Systems"
+ },
+ {
+  "name": "board_name_underscore",
+  "fn": "board_name",
+  "board": "acme_corp",
+  "expect": "Acme Corp"
+ },
+ {
+  "name": "board_name_dot",
+  "fn": "board_name",
+  "board": "foo.bar",
+  "expect": "Foo Bar"
+ },
+ {
+  "name": "board_name_mixed_separators_and_trailing_empty",
+  "fn": "board_name",
+  "board": "rhombus-systems_inc.",
+  "expect": "Rhombus Systems Inc"
+ },
+ {
+  "name": "board_name_uppercase_input_lowercases_rest",
+  "fn": "board_name",
+  "board": "ACME-Corp",
+  "expect": "Acme Corp"
+ },
+ {
+  "name": "board_name_empty_input",
+  "fn": "board_name",
+  "board": "",
+  "expect": ""
+ },
+ {
+  "name": "board_name_consecutive_separators_drop_empty_parts",
+  "fn": "board_name",
+  "board": "foo--bar__baz..qux",
+  "expect": "Foo Bar Baz Qux"
+ },
+ {
+  "name": "board_name_leading_separator_drops_empty_part",
+  "fn": "board_name",
+  "board": "-acme",
+  "expect": "Acme"
+ }
+]

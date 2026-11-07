@@ -1,0 +1,10 @@
+[
+ {
+  "key": "degree_level",
+  "label": "Degree",
+  "value": "Masters of Technology",
+  "want": "level he holds: Masters (UChicago) / Bachelors (UIUC); full name must be Science",
+  "reason": "matched accept but also reject 'technology'",
+  "evidence": "candidate-profile Education: UChicago M.S. Applied Data Science, UIUC B.A. Economics. Level pickers offer bare 'Masters'/'Bachelors' (Osttalkel 10-28) — that is correct (KELROSCOR 2026-11-01 offers only Undergraduate / Graduate / Executive Master → Graduate); a full degree NAME must say Science (QUINSEVFEN went in as 'Masters of Technology', wrong). decisions-log 2026-10-28."
+ }
+]

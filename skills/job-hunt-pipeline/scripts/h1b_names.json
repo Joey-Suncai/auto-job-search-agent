@@ -1,0 +1,32 @@
+{
+ "_doc": "Name tables for h1b_match.py (JSA-103). families: one-word brands whose every '<word> ...' filer is the same employer group (checked against the DOL names 2026-11-03); any other one-word brand takes a prefix family only when all its candidates share one next word. entities: a posting name (raw, suffixes kept, or norm) -> the exact employer keys that are that employer; [] = the real employer has no filings in the data. not_family: employer keys that share a brand's first word but are another firm. Spec: scripts/test_cases/h1b_match_spec.md.",
+ "families": ["abbott", "abbvie", "acuity", "alcon", "ally", "amazon", "apple", "ascension", "barclays", "blackrock", "bosch",
+              "brookfield", "bunge", "cigna", "cummins", "danfoss", "dell", "deloitte", "disney", "emerson", "evercore", "fedex",
+              "globalfoundries", "grainger", "hearst", "hitachi", "hubbell", "intel", "ipsos", "iqvia", "koch", "labcorp", "lazard",
+              "leidos", "lenovo", "magna", "marsh", "meijer", "merck", "micron", "morningstar", "mufg", "nike", "nokia", "nomura",
+              "novartis", "optum", "parsons", "philips", "point72", "qualcomm", "rapp", "regeneron", "rivian", "rockstar", "samsung",
+              "sanofi", "scor", "siemens", "sony", "stantec", "telus", "toyota", "transunion", "veolia", "verizon", "visa", "zoom"],
+ "entities": {
+   "frontier technology": [], "apex technology inc": [], "the loomis company": [], "murphy usa": [], "propel labs": [],
+   "prudential plc": [], "millennium": [], "gemini": [], "spectrum": [], "genesis": [], "prolific": [], "armada": [],
+   "maxima": [], "vantage": [],
+   "citadel": ["citadel americas", "citadel enterprise americas", "citadel information"],
+   "archer": ["archer aviation", "archer aviation operating"], "harvey": ["counsel ai"],
+   "cadence": ["cadence design systems"], "flex": ["flextronics"], "galaxy": ["galaxy digital"],
+   "gallagher": ["arthur j gallagher service"], "hartford": ["hartford fire insurance"],
+   "impact": ["impact tech"], "intuitive": ["intuitive surgical", "intuitive surgical operations"],
+   "kodiak": ["kodiak robotics"], "mohawk": ["mohawk industries"], "nationwide": ["nationwide insurance"],
+   "parker": ["parker hannifin"], "pilot": ["pilot travel centers"], "planet": ["planet", "planet pbc"],
+   "polaris": ["polaris", "polaris industries"], "unity": ["unity sf"], "viking global": ["viking investors"],
+   "enova": ["enova financial"], "wing": ["wing aviation"]
+ },
+ "not_family": ["snap on", "snap on business solutions", "snap finance", "blackrock microsystems", "oracle robotics",
+                "aerospace testing engineering and certification", "anchorage school district", "blueprint medicines",
+                "cohere health", "datalab infotech", "ellipsis health", "emerson college", "flint healthcare",
+                "gallup mckinley county schools", "guidepoint security", "magna infotech", "momentum consulting",
+                "mosaic health system", "mutual of omaha insurance", "nash county board of education",
+                "nomura research institute", "penta engineering", "radiance informations", "rain drop foundation",
+                "rover resources", "segra software solutions", "seneca nursing home", "shepherd university",
+                "spectral md", "synergent tech solutions", "tessera therapeutics", "toyota technological institute at chicago",
+                "tyler independent school district", "vast data", "voyager therapeutics", "wonder porcelain", "yotta systems"]
+}

@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "args": {"status": str, "keep_tab": bool}, "expect": true | false (true = the tab stays open), "spec_quote": str, "ambiguous": false}.
+Write 24 cases: 14 different statuses without keep_tab (incl. "captcha", " CAPTCHA ", "dry-run", "needs-user", "blocked", "submitted", "unconfirmed", "login-timeout", "filled", "review", "handoff", "failed", "closed", ""), 6 with keep_tab true, 4 tricky strings ("captcha-solved", "no captcha", "Captcha", null-like "none").

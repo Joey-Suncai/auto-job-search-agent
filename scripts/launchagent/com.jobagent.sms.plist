@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//an employer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.jobagent.sms</string>
+  <!-- the job-agent venv (python.org 3.13, has the anthropic SDK) is started directly, no bash: its exec ends in /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app, which needs Full Disk Access for chat.db -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{VENV_PYTHON}}</string>
+    <string>{{REPO}}/scripts/daily/sms_check.py</string>
+  </array>
+  <key>WorkingDirectory</key><string>{{REPO}}</string>
+  <key>EnvironmentVariables</key>
+  <dict><key>PATH</key><string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
+  <!-- 07:30, then every 30 min 08:00–22:00 CT (JSA-140); each message is read once (seen_sms.json) -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>17</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>17</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>35</integer></dict>
+    <dict><key>Hour</key><integer>22</integer><key>Minute</key><integer>5</integer></dict>
+  </array>
+  <key>StandardOutPath</key><string>/tmp/jobagent_sms.log</string>
+  <key>StandardErrorPath</key><string>/tmp/jobagent_sms.err</string>
+</dict>
+</plist>

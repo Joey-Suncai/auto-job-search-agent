@@ -1,0 +1,938 @@
+[
+ {
+  "name": "clean-submit-goes-all-the-way",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "submitted",
+   "stopped_at": null,
+   "pressed": true,
+   "queued": 0,
+   "pushed": false,
+   "synced": true,
+   "form_opened": true
+  },
+  "spec_quote": "a submit run with no problem at all → `press` (the platform presses the button). / Status `submitted` → a confirmation screenshot exists in the folder, the tracker row is written (sync), every tab of that posting is closed.",
+  "ambiguous": false
+ },
+ {
+  "name": "already-submitted-submit-skipped",
+  "mode": "submit",
+  "already_submitted": true,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 0,
+   "status": null,
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": false
+  },
+  "spec_quote": "An application folder that already has a `submitted` result is never run again: the run prints \"already submitted\" and stops; nothing is written to the results ledger.",
+  "ambiguous": false
+ },
+ {
+  "name": "already-submitted-dry-skipped",
+  "mode": "dry-run",
+  "already_submitted": true,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 0,
+   "status": null,
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": false
+  },
+  "spec_quote": "An application folder that already has a `submitted` result is never run again: the run prints \"already submitted\" and stops; nothing is written to the results ledger.",
+  "ambiguous": false
+ },
+ {
+  "name": "already-submitted-beats-bad-materials",
+  "mode": "submit",
+  "already_submitted": true,
+  "materials_ok": false,
+  "approved": false,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 0,
+   "status": null,
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": false
+  },
+  "spec_quote": "An application folder that already has a `submitted` result is never run again: the run prints \"already submitted\" and stops; nothing is written to the results ledger.",
+  "ambiguous": false
+ },
+ {
+  "name": "materials-fail-submit-blocked-before-form",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": false,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": false
+  },
+  "spec_quote": "in a SUBMIT run: the run stops before filling; ONE results line with status `blocked`, `stopped_at` = `common_gate`; the folder is queued once for Joey; the form is never opened; nothing is pressed.",
+  "ambiguous": false
+ },
+ {
+  "name": "materials-fail-dry-reported-but-still-filled",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": false,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "in a DRY run: the problem is kept and reported at the end, the form is still filled and read back; nothing is queued. AMBIGUOUS: the spec does not say explicitly whether the kept materials problem also yields `stopped_at` = `common_gate` in a dry run (it is a common problem, and \"a clean dry run has `stopped_at` = null\" implies a non-clean one does not), so `common_gate` is the reading taken here.",
+  "ambiguous": true
+ },
+ {
+  "name": "materials-fail-submit-presses-inside-never-opens-form",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": false,
+  "approved": true,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": false
+  },
+  "spec_quote": "in a SUBMIT run: the run stops before filling; ONE results line with status `blocked`, `stopped_at` = `common_gate`; the folder is queued once for Joey; the form is never opened; nothing is pressed.",
+  "ambiguous": false
+ },
+ {
+  "name": "platform-problem-blocks-at-platform-page",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "blocked",
+   "problems": [
+    "form validation error"
+   ],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "any platform problem or unknown question → do not press; `stopped_at` = `platform_page`; / In a submit run that does not press, the status becomes `blocked` and the folder is queued for Joey once.",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown-question-submit-blocks-at-platform-page",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [
+    "Do you now or will you ever require sponsorship?"
+   ],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "any platform problem or unknown question → do not press; `stopped_at` = `platform_page`;",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown-question-dry-never-presses-never-queues",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [
+    "What is your desired salary?"
+   ],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "any platform problem or unknown question → do not press; `stopped_at` = `platform_page`; / a dry run never presses (decision `dry-run`). AMBIGUOUS: the spec never states the literal status string a dry-run results line carries (the mode/decision name `dry-run` is used here), nor whether an unknown question in a dry run still sets `stopped_at` = `platform_page`.",
+  "ambiguous": true
+ },
+ {
+  "name": "canon-mismatch-submit-blocks-at-common-gate",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": true
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "canonical audit of the irreversible fields (work authorization, sponsorship, degree, EEO …): a mismatch is a problem; / otherwise any common problem → do not press; `stopped_at` = `common_gate`;",
+  "ambiguous": false
+ },
+ {
+  "name": "readback-failure-submit-blocks-at-common-gate",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": false,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "read-back: any field whose `ok` is not true is a problem; / otherwise any common problem → do not press; `stopped_at` = `common_gate`;",
+  "ambiguous": false
+ },
+ {
+  "name": "no-fields-at-all-is-a-common-problem",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": true,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a result with no fields at all is a problem; / otherwise any common problem → do not press; `stopped_at` = `common_gate`;",
+  "ambiguous": false
+ },
+ {
+  "name": "batch-not-approved-submit-blocked",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": false,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "in a submit run, the folder's batch must be approved (approved_batches); not approved is a problem. / otherwise any common problem → do not press; `stopped_at` = `common_gate`;",
+  "ambiguous": false
+ },
+ {
+  "name": "clean-dry-run-no-press-no-stop",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a dry run never presses (decision `dry-run`); a clean dry run has `stopped_at` = null; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-not-approved-is-still-clean",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": false,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "in a submit run, the folder's batch must be approved (approved_batches); not approved is a problem. / a clean dry run has `stopped_at` = null;",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-canon-mismatch-stops-at-common-gate",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": true
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "otherwise any common problem → do not press; `stopped_at` = `common_gate`; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-readback-failure-stops-at-common-gate",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": false,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "read-back: any field whose `ok` is not true is a problem; / otherwise any common problem → do not press; `stopped_at` = `common_gate`; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-no-fields-stops-at-common-gate",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": true,
+   "canon_mismatch": false
+  },
+  "press_outcome": null,
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a result with no fields at all is a problem; / otherwise any common problem → do not press; `stopped_at` = `common_gate`; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "presses-inside-clean-confirmed",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "submitted",
+   "stopped_at": null,
+   "pressed": true,
+   "queued": 0,
+   "pushed": false,
+   "synced": true,
+   "form_opened": true
+  },
+  "spec_quote": "Some platforms press the button inside their own page loop; for them the same canonical audit + approval check runs right before that button, and a failure means the button is not pressed (status `blocked`, `stopped_at` = `common_gate`). / Status `submitted` → ... the tracker row is written (sync) ...",
+  "ambiguous": false
+ },
+ {
+  "name": "presses-inside-canon-mismatch-no-press",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": true
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "for them the same canonical audit + approval check runs right before that button, and a failure means the button is not pressed (status `blocked`, `stopped_at` = `common_gate`).",
+  "ambiguous": false
+ },
+ {
+  "name": "presses-inside-not-approved-no-press",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": false,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "for them the same canonical audit + approval check runs right before that button, and a failure means the button is not pressed (status `blocked`, `stopped_at` = `common_gate`).",
+  "ambiguous": false
+ },
+ {
+  "name": "presses-inside-unconfirmed",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "unconfirmed",
+  "expect": {
+   "results_lines": 1,
+   "status": "unconfirmed",
+   "stopped_at": null,
+   "pressed": true,
+   "queued": 1,
+   "pushed": true,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "Status `unconfirmed` (button pressed, no confirmation page, no receipt e-mail) → queued for Joey and pushed to him.",
+  "ambiguous": false
+ },
+ {
+  "name": "standard-press-unconfirmed-queued-and-pushed",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "unconfirmed",
+  "expect": {
+   "results_lines": 1,
+   "status": "unconfirmed",
+   "stopped_at": null,
+   "pressed": true,
+   "queued": 1,
+   "pushed": true,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a submit run with no problem at all → `press` (the platform presses the button). / Status `unconfirmed` (button pressed, no confirmation page, no receipt e-mail) → queued for Joey and pushed to him.",
+  "ambiguous": false
+ },
+ {
+  "name": "captcha-on-platform-page-no-press",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "captcha",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "captcha",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "Any other non-final status in a submit run (blocked, needs-user, captcha …) → queued once (never twice for the same run). AMBIGUOUS: the gate section says \"In a submit run that does not press, the status becomes `blocked`\" while the closing section lists captcha/needs-user as statuses that reach the results line; the platform-reported status is taken here, but either string is defensible.",
+  "ambiguous": true
+ },
+ {
+  "name": "needs-user-on-platform-page-no-press",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "needs-user",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "needs-user",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "Any other non-final status in a submit run (blocked, needs-user, captcha …) → queued once (never twice for the same run). AMBIGUOUS: same conflict as the captcha case — \"the status becomes `blocked`\" versus the closing section naming needs-user as a possible final status.",
+  "ambiguous": true
+ },
+ {
+  "name": "closed-posting-never-queued",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "closed",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "closed",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "A `closed` posting is not queued. AMBIGUOUS: the spec does not say what `stopped_at` (or the literal status string) is for a closed posting; it is a platform-reported status that stopped the page work, so `platform_page` / `closed` are used here.",
+  "ambiguous": true
+ },
+ {
+  "name": "platform-problem-outranks-common-problem",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": false,
+  "presses_inside": false,
+  "platform": {
+   "status": "blocked",
+   "problems": [
+    "page error"
+   ],
+   "unknown": [],
+   "fields_ok": false,
+   "no_fields": false,
+   "canon_mismatch": true
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "any platform problem or unknown question → do not press; `stopped_at` = `platform_page`; / otherwise any common problem → do not press; `stopped_at` = `common_gate`;",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-presses-inside-still-never-presses",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": true,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a dry run never presses (decision `dry-run`); a clean dry run has `stopped_at` = null; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple-common-problems-queue-only-once",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": false,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": false,
+   "no_fields": false,
+   "canon_mismatch": true
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "common_gate",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "otherwise any common problem → do not press; `stopped_at` = `common_gate`; / In a submit run that does not press, the status becomes `blocked` and the folder is queued for Joey once. / Exactly ONE results line per run",
+  "ambiguous": false
+ },
+ {
+  "name": "dry-run-with-unconfirmed-outcome-is-not-pushed",
+  "mode": "dry-run",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "dry-run",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "unconfirmed",
+  "expect": {
+   "results_lines": 1,
+   "status": "dry-run",
+   "stopped_at": null,
+   "pressed": false,
+   "queued": 0,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "a dry run never presses (decision `dry-run`); a clean dry run has `stopped_at` = null; / A dry run is never queued.",
+  "ambiguous": false
+ },
+ {
+  "name": "platform-status-stopped-with-no-listed-problems",
+  "mode": "submit",
+  "already_submitted": false,
+  "materials_ok": true,
+  "approved": true,
+  "presses_inside": false,
+  "platform": {
+   "status": "blocked",
+   "problems": [],
+   "unknown": [],
+   "fields_ok": true,
+   "no_fields": false,
+   "canon_mismatch": false
+  },
+  "press_outcome": "submitted",
+  "expect": {
+   "results_lines": 1,
+   "status": "blocked",
+   "stopped_at": "platform_page",
+   "pressed": false,
+   "queued": 1,
+   "pushed": false,
+   "synced": false,
+   "form_opened": true
+  },
+  "spec_quote": "any platform problem or unknown question → do not press; `stopped_at` = `platform_page`; / In a submit run that does not press, the status becomes `blocked` and the folder is queued for Joey once.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,235 @@
+[
+ {
+  "name": "lever_typical",
+  "options": [
+   "Under 18",
+   "18-24",
+   "25-34",
+   "35-44",
+   "45-54",
+   "55+"
+  ],
+  "age": 30,
+  "expect": "25-34"
+ },
+ {
+  "name": "workday_en_dash",
+  "options": [
+   "Age 16-20",
+   "Age 21–29",
+   "Age 30–39",
+   "Age 40+"
+  ],
+  "age": 21,
+  "expect": "Age 21–29"
+ },
+ {
+  "name": "em_dash_band",
+  "options": [
+   "18—24",
+   "25—34",
+   "35—44"
+  ],
+  "age": 44,
+  "expect": "35—44"
+ },
+ {
+  "name": "to_form",
+  "options": [
+   "18 to 24",
+   "25 to 34",
+   "35 to 44"
+  ],
+  "age": 25,
+  "expect": "25 to 34"
+ },
+ {
+  "name": "variable_spacing",
+  "options": [
+   "18 - 24",
+   "25   to   34",
+   "35-44"
+  ],
+  "age": 30,
+  "expect": "25   to   34"
+ },
+ {
+  "name": "open_top_plus",
+  "options": [
+   "Under 25",
+   "25-34",
+   "35-44",
+   "45+"
+  ],
+  "age": 60,
+  "expect": "45+"
+ },
+ {
+  "name": "open_top_or_older",
+  "options": [
+   "18-24",
+   "25-34",
+   "35 or older"
+  ],
+  "age": 35,
+  "expect": "35 or older"
+ },
+ {
+  "name": "open_bottom_or_younger",
+  "options": [
+   "20 or younger",
+   "21-29",
+   "30+"
+  ],
+  "age": 20,
+  "expect": "20 or younger"
+ },
+ {
+  "name": "lower_edge_range",
+  "options": [
+   "21-29",
+   "30-39"
+  ],
+  "age": 21,
+  "expect": "21-29"
+ },
+ {
+  "name": "upper_edge_range",
+  "options": [
+   "21-29",
+   "30-39"
+  ],
+  "age": 29,
+  "expect": "21-29"
+ },
+ {
+  "name": "edge_under_vs_range_low",
+  "options": [
+   "Under 21",
+   "21-29",
+   "30+"
+  ],
+  "age": 20,
+  "expect": "Under 21"
+ },
+ {
+  "name": "edge_under_vs_range_high",
+  "options": [
+   "Under 21",
+   "21-29",
+   "30+"
+  ],
+  "age": 21,
+  "expect": "21-29"
+ },
+ {
+  "name": "younger_than_boundary",
+  "options": [
+   "Younger than 18",
+   "18+"
+  ],
+  "age": 17,
+  "expect": "Younger than 18"
+ },
+ {
+  "name": "less_than_boundary",
+  "options": [
+   "Less than 25",
+   "25-34"
+  ],
+  "age": 24,
+  "expect": "Less than 25"
+ },
+ {
+  "name": "and_under_boundary",
+  "options": [
+   "20 and under",
+   "21-29"
+  ],
+  "age": 20,
+  "expect": "20 and under"
+ },
+ {
+  "name": "and_below_boundary",
+  "options": [
+   "18 and below",
+   "19-25"
+  ],
+  "age": 18,
+  "expect": "18 and below"
+ },
+ {
+  "name": "or_over_boundary",
+  "options": [
+   "55 or over",
+   "55 and under"
+  ],
+  "age": 55,
+  "expect": "55 or over"
+ },
+ {
+  "name": "and_up_top",
+  "options": [
+   "Under 55",
+   "55-64",
+   "65 and up"
+  ],
+  "age": 65,
+  "expect": "65 and up"
+ },
+ {
+  "name": "over_boundary",
+  "options": [
+   "Over 55",
+   "55 or under"
+  ],
+  "age": 55,
+  "expect": "55 or under"
+ },
+ {
+  "name": "older_than_boundary",
+  "options": [
+   "Older than 40",
+   "40 or younger"
+  ],
+  "age": 40,
+  "expect": "40 or younger"
+ },
+ {
+  "name": "no_match_empty",
+  "options": [
+   "18-24",
+   "25-34"
+  ],
+  "age": 50,
+  "expect": ""
+ },
+ {
+  "name": "non_numeric_only_empty",
+  "options": [
+   "Choose not to identify",
+   "Prefer not to say"
+  ],
+  "age": 30,
+  "expect": ""
+ },
+ {
+  "name": "non_numeric_then_match",
+  "options": [
+   "Prefer not to say",
+   "18-24",
+   "25-34"
+  ],
+  "age": 30,
+  "expect": "25-34"
+ },
+ {
+  "name": "first_match_overlap",
+  "options": [
+   "18 or older",
+   "18-24"
+  ],
+  "age": 18,
+  "expect": "18 or older"
+ }
+]

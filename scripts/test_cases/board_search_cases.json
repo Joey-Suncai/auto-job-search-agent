@@ -1,0 +1,191 @@
+[
+ {
+  "name": "lever_basic_board_lowercased",
+  "fn": "parse_board",
+  "url": "https://jobs.lever.co/QuinDelros/9f8e7d6c-5b4a-4c3d-8e2f-1a2b3c4d5e6f",
+  "expect": [
+   "lever",
+   "quindelros"
+  ]
+ },
+ {
+  "name": "lever_eu_subdomain",
+  "fn": "parse_board",
+  "url": "https://jobs.eu.lever.co/SomeBoard/abc123",
+  "expect": [
+   "lever",
+   "someboard"
+  ]
+ },
+ {
+  "name": "ashby_board_lowercased",
+  "fn": "parse_board",
+  "url": "https://jobs.ashbyhq.com/OpenAI/xyz",
+  "expect": [
+   "ashby",
+   "openai"
+  ]
+ },
+ {
+  "name": "ashby_api_host_is_null",
+  "fn": "parse_board",
+  "url": "https://api.ashbyhq.com/posting-api/job-board/openai",
+  "expect": null
+ },
+ {
+  "name": "greenhouse_is_null",
+  "fn": "parse_board",
+  "url": "https://boards.greenhouse.io/acme",
+  "expect": null
+ },
+ {
+  "name": "empty_url_is_null",
+  "fn": "parse_board",
+  "url": "",
+  "expect": null
+ },
+ {
+  "name": "posting_id_plain_uuid",
+  "fn": "posting_id",
+  "url": "https://jobs.lever.co/quindelros/9f8e7d6c-5b4a-4c3d-8e2f-1a2b3c4d5e6f",
+  "expect": "9f8e7d6c-5b4a-4c3d-8e2f-1a2b3c4d5e6f"
+ },
+ {
+  "name": "posting_id_uppercase_lowercased",
+  "fn": "posting_id",
+  "url": "https://jobs.ashbyhq.com/OpenAI/ABCDEF01-2345-6789-ABCD-EF0123456789",
+  "expect": "abcdef01-2345-6789-abcd-ef0123456789"
+ },
+ {
+  "name": "posting_id_absent_empty_string",
+  "fn": "posting_id",
+  "url": "https://jobs.lever.co/quindelros/apply",
+  "expect": ""
+ },
+ {
+  "name": "posting_id_in_query_string",
+  "fn": "posting_id",
+  "url": "https://jobs.lever.co/quindelros?jobId=0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
+  "expect": "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d"
+ },
+ {
+  "name": "keep_intern_us_city",
+  "fn": "keep_posting",
+  "title": "Software Engineer Intern",
+  "location": "San Francisco, CA",
+  "expect": true
+ },
+ {
+  "name": "keep_internship_remote_alone",
+  "fn": "keep_posting",
+  "title": "Data Science Internship",
+  "location": "Remote",
+  "expect": true
+ },
+ {
+  "name": "keep_plural_interns_with_2027",
+  "fn": "keep_posting",
+  "title": "2027 Software Engineering Interns",
+  "location": "New York, NY",
+  "expect": true
+ },
+ {
+  "name": "keep_intern_remote_us",
+  "fn": "keep_posting",
+  "title": "Machine Learning Intern",
+  "location": "Remote US",
+  "expect": true
+ },
+ {
+  "name": "keep_foreign_city_rescued_by_remote_us",
+  "fn": "keep_posting",
+  "title": "Backend Intern",
+  "location": "London, UK or Remote US",
+  "expect": true
+ },
+ {
+  "name": "drop_internal_not_intern",
+  "fn": "keep_posting",
+  "title": "Internal Tools Developer",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_international_not_intern",
+  "fn": "keep_posting",
+  "title": "International Sales Manager",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_london_location",
+  "fn": "keep_posting",
+  "title": "Software Engineer Intern",
+  "location": "London, UK",
+  "expect": false
+ },
+ {
+  "name": "drop_bangalore_location",
+  "fn": "keep_posting",
+  "title": "Software Engineer Intern",
+  "location": "Bangalore, India",
+  "expect": false
+ },
+ {
+  "name": "drop_year_2026_in_title",
+  "fn": "keep_posting",
+  "title": "Summer 2026 Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_fall_in_title",
+  "fn": "keep_posting",
+  "title": "Fall 2027 Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_coop_in_title",
+  "fn": "keep_posting",
+  "title": "Co-op Intern",
+  "location": "Boston, MA",
+  "expect": false
+ },
+ {
+  "name": "drop_part_time_in_title",
+  "fn": "keep_posting",
+  "title": "Part-Time Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_no_intern_word",
+  "fn": "keep_posting",
+  "title": "Software Engineer",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "drop_emea_region",
+  "fn": "keep_posting",
+  "title": "Software Engineer Intern",
+  "location": "EMEA",
+  "expect": false
+ },
+ {
+  "name": "drop_burnaby_location",
+  "fn": "keep_posting",
+  "title": "Software Engineer Intern",
+  "location": "Burnaby, BC",
+  "expect": false
+ },
+ {
+  "name": "zuru_auckland_regression",
+  "fn": "keep_posting",
+  "title": "UX/UI Design Intern",
+  "location": "Auckland, New Zealand",
+  "expect": false,
+  "source": "JSA-084 incident 2026-11-02 (Zuru, Lever dry run); not DeepSeek-written"
+ }
+]

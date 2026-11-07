@@ -1,0 +1,462 @@
+[
+ {
+  "name": "parse_section_lower_with_options",
+  "fn": "parse_unknown",
+  "input": "section 2: What is your name? (options: Alice / Bob)",
+  "expect": [
+   "What is your name?",
+   [
+    "Alice",
+    "Bob"
+   ]
+  ]
+ },
+ {
+  "name": "parse_step_mixedcase_with_options",
+  "fn": "parse_unknown",
+  "input": "Step 3: Choose a color (options: Red / Green / Blue)",
+  "expect": [
+   "Choose a color",
+   [
+    "Red",
+    "Green",
+    "Blue"
+   ]
+  ]
+ },
+ {
+  "name": "parse_page_upper_no_options",
+  "fn": "parse_unknown",
+  "input": "PAGE 1: Upload your resume",
+  "expect": [
+   "Upload your resume",
+   []
+  ]
+ },
+ {
+  "name": "parse_section_number_options_question_mark",
+  "fn": "parse_unknown",
+  "input": "Section 12: Why do you want this job? (options: Yes / No)",
+  "expect": [
+   "Why do you want this job?",
+   [
+    "Yes",
+    "No"
+   ]
+  ]
+ },
+ {
+  "name": "qnorm_numbering_dot",
+  "fn": "qnorm_same",
+  "a": "1. What is your name?",
+  "b": "what is your name",
+  "expect": true
+ },
+ {
+  "name": "qnorm_numbering_decimal",
+  "fn": "qnorm_same",
+  "a": "2.3 Do you agree",
+  "b": "do you agree",
+  "expect": true
+ },
+ {
+  "name": "qnorm_numbering_paren",
+  "fn": "qnorm_same",
+  "a": "a) Pick one",
+  "b": "pick one",
+  "expect": true
+ },
+ {
+  "name": "qnorm_numbering_qprefix",
+  "fn": "qnorm_same",
+  "a": "Q4. Explain",
+  "b": "explain",
+  "expect": true
+ },
+ {
+  "name": "qnorm_punctuation_hyphen",
+  "fn": "qnorm_same",
+  "a": "E-mail address?",
+  "b": "e mail address",
+  "expect": true
+ },
+ {
+  "name": "qnorm_different_questions",
+  "fn": "qnorm_same",
+  "a": "What is your name?",
+  "b": "What is your age?",
+  "expect": false
+ },
+ {
+  "name": "merge_two_folders_same_question",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "What is your name?",
+    "options": [],
+    "type": "text"
+   },
+   {
+    "folder": "B",
+    "question": "What is your name?",
+    "options": [],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "What is your name?",
+     "folders": [
+      "A",
+      "B"
+     ],
+     "options": [],
+     "kind": "fact"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_human_check_split",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "Please verify you are human",
+    "options": [],
+    "type": "text"
+   },
+   {
+    "folder": "B",
+    "question": "What is your name?",
+    "options": [],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "What is your name?",
+     "folders": [
+      "B"
+     ],
+     "options": [],
+     "kind": "fact"
+    }
+   ],
+   "human": 1
+  }
+ },
+ {
+  "name": "merge_why_no_options_is_essay",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "Why do you want this job?",
+    "options": [],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "Why do you want this job?",
+     "folders": [
+      "A"
+     ],
+     "options": [],
+     "kind": "essay"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_textarea_type_is_essay",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "Current salary",
+    "options": [],
+    "type": "textarea"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "Current salary",
+     "folders": [
+      "A"
+     ],
+     "options": [],
+     "kind": "essay"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_why_with_options_is_fact",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "Why do you want this job?",
+    "options": [
+     "A",
+     "B"
+    ],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "Why do you want this job?",
+     "folders": [
+      "A"
+     ],
+     "options": [
+      "A",
+      "B"
+     ],
+     "kind": "fact"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_empty_question_dropped",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "",
+    "options": [],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_order_count_then_alpha",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "A",
+    "question": "Zebra question?",
+    "options": [],
+    "type": "text"
+   },
+   {
+    "folder": "A",
+    "question": "Apple question?",
+    "options": [],
+    "type": "text"
+   },
+   {
+    "folder": "B",
+    "question": "Apple question?",
+    "options": [],
+    "type": "text"
+   },
+   {
+    "folder": "B",
+    "question": "Mango question?",
+    "options": [],
+    "type": "text"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "Apple question?",
+     "folders": [
+      "A",
+      "B"
+     ],
+     "options": [],
+     "kind": "fact"
+    },
+    {
+     "question_key_of": "Mango question?",
+     "folders": [
+      "B"
+     ],
+     "options": [],
+     "kind": "fact"
+    },
+    {
+     "question_key_of": "Zebra question?",
+     "folders": [
+      "A"
+     ],
+     "options": [],
+     "kind": "fact"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "merge_folder_firstseen_options_union",
+  "fn": "merge",
+  "items": [
+   {
+    "folder": "Zed",
+    "question": "Pick a color",
+    "options": [
+     "Red",
+     "Green"
+    ],
+    "type": "select"
+   },
+   {
+    "folder": "Alpha",
+    "question": "Pick a color",
+    "options": [
+     "Green",
+     "Blue"
+    ],
+    "type": "select"
+   }
+  ],
+  "expect": {
+   "entries": [
+    {
+     "question_key_of": "Pick a color",
+     "folders": [
+      "Zed",
+      "Alpha"
+     ],
+     "options": [
+      "Red",
+      "Green",
+      "Blue"
+     ],
+     "kind": "fact"
+    }
+   ],
+   "human": 0
+  }
+ },
+ {
+  "name": "qa_yes_with_options",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Pick one",
+   "options": [
+    "A",
+    "B"
+   ],
+   "answer": {
+    "yes": true
+   }
+  },
+  "source": "job",
+  "expect": [
+   "--q",
+   "Pick one",
+   "--source",
+   "job",
+   "--yes",
+   "--options",
+   "A|B"
+  ]
+ },
+ {
+  "name": "qa_no_no_options",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Name",
+   "options": [],
+   "answer": {
+    "no": true
+   }
+  },
+  "source": "job",
+  "expect": [
+   "--q",
+   "Name",
+   "--source",
+   "job",
+   "--no"
+  ]
+ },
+ {
+  "name": "qa_pick_with_options",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Pick",
+   "options": [
+    "X",
+    "Y"
+   ],
+   "answer": {
+    "pick": "X"
+   }
+  },
+  "source": "job",
+  "expect": [
+   "--q",
+   "Pick",
+   "--source",
+   "job",
+   "--pick",
+   "X",
+   "--options",
+   "X|Y"
+  ]
+ },
+ {
+  "name": "qa_text_no_options",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Explain",
+   "options": [],
+   "answer": {
+    "text": "Hello"
+   }
+  },
+  "source": "job",
+  "expect": [
+   "--q",
+   "Explain",
+   "--source",
+   "job",
+   "--text",
+   "Hello"
+  ]
+ },
+ {
+  "name": "qa_null_answer",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Q",
+   "options": [],
+   "answer": null
+  },
+  "source": "job",
+  "expect": null
+ },
+ {
+  "name": "qa_empty_answer",
+  "fn": "qa_args",
+  "entry": {
+   "question": "Q",
+   "options": [],
+   "answer": {}
+  },
+  "source": "job",
+  "expect": null
+ }
+]

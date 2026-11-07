@@ -1,0 +1,160 @@
+[
+ {
+  "name": "education_key_school_true",
+  "answered_keys": [
+   "Education 1||School or University"
+  ],
+  "review_text": "Review page with no relevant words",
+  "expect": true,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number."
+ },
+ {
+  "name": "education_key_number_12_true",
+  "answered_keys": [
+   "Education 12||School"
+  ],
+  "review_text": "",
+  "expect": true,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number."
+ },
+ {
+  "name": "education_key_zero_true",
+  "answered_keys": [
+   "Education 0||School"
+  ],
+  "review_text": "No relevant text",
+  "expect": true,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number."
+ },
+ {
+  "name": "education_key_no_school_label_true",
+  "answered_keys": [
+   "Education 2||Degree"
+  ],
+  "review_text": "",
+  "expect": true,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number."
+ },
+ {
+  "name": "education_key_without_number_false",
+  "answered_keys": [
+   "Education||School"
+  ],
+  "review_text": "",
+  "expect": false,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number. Otherwise false."
+ },
+ {
+  "name": "education_key_letter_not_number_false",
+  "answered_keys": [
+   "Education A||School"
+  ],
+  "review_text": "",
+  "expect": false,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number. Otherwise false."
+ },
+ {
+  "name": "non_education_key_only_false",
+  "answered_keys": [
+   "Work Experience 2||Company"
+  ],
+  "review_text": "Work Experience",
+  "expect": false,
+  "quote": "Otherwise false."
+ },
+ {
+  "name": "empty_inputs_false",
+  "answered_keys": [],
+  "review_text": "",
+  "expect": false,
+  "quote": "Otherwise false."
+ },
+ {
+  "name": "review_heading_education_true",
+  "answered_keys": [],
+  "review_text": "Education",
+  "expect": true,
+  "quote": "OR the review text contains the word \"education\" (as a word, any case)"
+ },
+ {
+  "name": "review_lowercase_education_true",
+  "answered_keys": [],
+  "review_text": "my education background",
+  "expect": true,
+  "quote": "OR the review text contains the word \"education\" (as a word, any case)"
+ },
+ {
+  "name": "review_uppercase_education_true",
+  "answered_keys": [],
+  "review_text": "EDUCATION",
+  "expect": true,
+  "quote": "OR the review text contains the word \"education\" (as a word, any case)"
+ },
+ {
+  "name": "review_highest_education_true",
+  "answered_keys": [],
+  "review_text": "Highest Education",
+  "expect": true,
+  "quote": "\"Education\" as a heading, \"Education 1\", \"Highest Education\" do."
+ },
+ {
+  "name": "review_school_or_university_phrase_true",
+  "answered_keys": [],
+  "review_text": "School or University",
+  "expect": true,
+  "quote": "OR the review text contains ... the phrase \"School or University\"."
+ },
+ {
+  "name": "review_school_or_university_sentence_true",
+  "answered_keys": [],
+  "review_text": "Please review School or University entries.",
+  "expect": true,
+  "quote": "OR the review text contains ... the phrase \"School or University\"."
+ },
+ {
+  "name": "review_coeducational_false",
+  "answered_keys": [],
+  "review_text": "A coeducational program",
+  "expect": false,
+  "quote": "Words merely containing \"education\" inside another word (e.g. \"coeducational\") do not count."
+ },
+ {
+  "name": "review_educational_false",
+  "answered_keys": [],
+  "review_text": "Educational background",
+  "expect": false,
+  "quote": "Words merely containing \"education\" inside another word ... do not count."
+ },
+ {
+  "name": "review_education1_no_word_false",
+  "answered_keys": [],
+  "review_text": "Education1",
+  "expect": false,
+  "quote": "OR the review text contains the word \"education\" (as a word, any case)"
+ },
+ {
+  "name": "non_education_key_but_review_phrase_true",
+  "answered_keys": [
+   "Work Experience 2||Company"
+  ],
+  "review_text": "School or University",
+  "expect": true,
+  "quote": "OR the review text contains ... the phrase \"School or University\"."
+ },
+ {
+  "name": "education_key_and_coeducational_review_true",
+  "answered_keys": [
+   "Education 3||School"
+  ],
+  "review_text": "coeducational",
+  "expect": true,
+  "quote": "Return true when ANY answered key's section starts with \"Education \" followed by a number."
+ },
+ {
+  "name": "review_physical_education_true",
+  "answered_keys": [],
+  "review_text": "Physical education requirement",
+  "expect": true,
+  "quote": "OR the review text contains the word \"education\" (as a word, any case)"
+ }
+]

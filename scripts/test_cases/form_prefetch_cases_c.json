@@ -1,0 +1,175 @@
+[
+ {
+  "name": "route_confident_rule_on_sponsorship_is_used",
+  "kind": "route",
+  "input": {
+   "question": "Will you now or in the future require sponsorship for employment visa status?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "confident",
+   "second_opinion": null,
+   "suggestion": null
+  },
+  "expect": {
+   "route": "used",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): DeepSeek never answers or suggests them — a confident rule answer from his facts is used (as in every submit today); anything else → Joey, one by one."
+ },
+ {
+  "name": "route_uncertain_high_risk_question_agreed_by_deepseek_still_goes_to_joey",
+  "kind": "route",
+  "input": {
+   "question": "Do you now or will you in the future require immigration sponsorship?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "uncertain",
+   "second_opinion": "agree",
+   "suggestion": null
+  },
+  "expect": {
+   "route": "joey",
+   "high_risk": true,
+   "derived_block": false
+  },
+  "spec_quote": "high-risk categories (visa, sponsorship, citizenship, export control, EEO, GPA, dates): DeepSeek never answers or suggests them — a confident rule answer from his facts is used (as in every submit today); anything else → Joey, one by one."
+ },
+ {
+  "name": "route_low_risk_named_fact_suggestion_goes_on_sheet_in_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "Preferred Last Name",
+   "options": [],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "Sun",
+    "fact": "last_name"
+   }
+  },
+  "expect": {
+   "route": "sheet",
+   "high_risk": false,
+   "derived_block": true
+  },
+  "spec_quote": "A suggestion is never used on its own — low-risk questions included (Joey 2026-11-06): it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Sun, from last_name) are listed together with their fact; Joey can accept the whole block with one click (still his confirm; each accepted item → qa_add.py)."
+ },
+ {
+  "name": "route_jd_dependent_fact_suggestion_not_in_derived_block",
+  "kind": "route",
+  "input": {
+   "question": "Do you have at least 1 year professional work experience?",
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "rule": "none",
+   "second_opinion": null,
+   "suggestion": {
+    "answer": "Yes",
+    "fact": "yoe_meets"
+   }
+  },
+  "expect": {
+   "route": "sheet",
+   "high_risk": false,
+   "derived_block": false
+  },
+  "ambiguous": true,
+  "why": "The spec says such a suggestion is 'listed one by one' but never says whether it still carries the one-click confirm on the sheet or must be answered by Joey himself. It is unambiguously excluded from the derived block, so 'sheet' with derived_block=false is the closest reading; 'joey' cannot be fully ruled out.",
+  "spec_quote": "A fact whose meaning depends on the posting (answer_rules `jd: true`, today `yoe_meets` = \"meets the JD's stated years\") never makes a suggestion derived: e.g. \"Do you have at least 1 year professional work experience?\" → Yes from yoe_meets is listed one by one."
+ },
+ {
+  "name": "rank_greedy_marginal_value_with_tier_and_frequency_tiebreak",
+  "kind": "rank",
+  "input": {
+   "jobs": {
+    "j1": {
+     "tier": "A",
+     "needs": [
+      "q1"
+     ]
+    },
+    "j2": {
+     "tier": "A",
+     "needs": [
+      "q2"
+     ]
+    },
+    "j3": {
+     "tier": "C",
+     "needs": [
+      "q2",
+      "q9"
+     ]
+    }
+   },
+   "max_questions": 2
+  },
+  "expect": {
+   "sheet": [
+    "q2",
+    "q1"
+   ],
+   "ready_after": 2,
+   "left_out": [
+    "q9"
+   ]
+  },
+  "spec_quote": "At most 20–30 questions per morning, ordered by marginal value: greedily, the question whose answer turns the most jobs fully ready (every remaining question answered) comes first — not raw frequency. / Tie-break when two questions would make the same number of jobs ready: the one more jobs ask comes first (tier A/B jobs counted before C/D), then the alphabetically smaller id."
+ },
+ {
+  "name": "stale_ok_job_read_two_days_ago_not_reread_under_three_day_recheck",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-02",
+    "status": "ok"
+   },
+   "today": "2026-11-04",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": false
+  },
+  "spec_quote": "New jobs daily; read jobs re-checked every few days; closed postings marked."
+ },
+ {
+  "name": "cache_same_question_and_options_but_new_facts_version_is_a_miss",
+  "kind": "cache",
+  "input": {
+   "a": {
+    "question": "Why do you want to work here?",
+    "options": [],
+    "facts_version": "facts-2026-11-06"
+   },
+   "b": {
+    "question": "Why do you want to work here?",
+    "options": [],
+    "facts_version": "facts-2026-11-08"
+   }
+  },
+  "expect": {
+   "same_answer_reused": false
+  },
+  "spec_quote": "DeepSeek results cached by hash(JD or question + options) + facts version → reruns are deterministic; a facts change re-reads only what it touches."
+ },
+ {
+  "name": "merge_case_numbering_and_punctuation_ignored",
+  "kind": "merge",
+  "input": {
+   "a": "Q3. Why do you want to work here?",
+   "b": "why do you want to work here"
+  },
+  "expect": {
+   "same": true
+  },
+  "spec_quote": "One sheet — wordings merged (`collect_batch.qnorm`), then DeepSeek groups wordings that ask the same thing into one question (one qa entry with a match pattern); ranked by job count."
+ }
+]

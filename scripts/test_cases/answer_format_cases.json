@@ -1,0 +1,287 @@
+[
+ {
+  "name": "date_slash_basic",
+  "fn": "date",
+  "value": "06/14/2027",
+  "expect": "06/14/2027",
+  "spec": "\"MM/DD/YYYY\" or \"M/D/YYYY\" (slashes, 4-digit year): result is zero-padded MM/DD/YYYY."
+ },
+ {
+  "name": "date_slash_single_digits_padded",
+  "fn": "date",
+  "value": "6/4/2027",
+  "expect": "06/04/2027",
+  "spec": "\"MM/DD/YYYY\" or \"M/D/YYYY\" (slashes, 4-digit year): result is zero-padded MM/DD/YYYY."
+ },
+ {
+  "name": "date_day_first_refused",
+  "fn": "date",
+  "value": "13/06/2027",
+  "expect": null,
+  "spec": "When the first number is greater than 12 it is a day-first date → refused (null + reason), never swapped."
+ },
+ {
+  "name": "date_iso_basic",
+  "fn": "date",
+  "value": "2027-06-14",
+  "expect": "06/14/2027",
+  "spec": "\"YYYY-MM-DD\" (ISO, 1- or 2-digit month/day allowed): converted to MM/DD/YYYY."
+ },
+ {
+  "name": "date_iso_single_digit_parts",
+  "fn": "date",
+  "value": "2027-6-4",
+  "expect": "06/04/2027",
+  "spec": "\"YYYY-MM-DD\" (ISO, 1- or 2-digit month/day allowed): converted to MM/DD/YYYY."
+ },
+ {
+  "name": "date_month_name_with_comma",
+  "fn": "date",
+  "value": "June 14, 2027",
+  "expect": "06/14/2027",
+  "spec": "\"<Month> <day>, <year>\" or \"<Month> <day> <year>\" (comma optional ...) ... converted."
+ },
+ {
+  "name": "date_month_name_no_comma_lowercase",
+  "fn": "date",
+  "value": "june 14 2027",
+  "expect": "06/14/2027",
+  "spec": "\"<Month> <day>, <year>\" or \"<Month> <day> <year>\" (comma optional ...) ... Month = full English name ... any letter case."
+ },
+ {
+  "name": "date_month_name_ordinal_suffix",
+  "fn": "date",
+  "value": "June 14th, 2027",
+  "expect": "06/14/2027",
+  "spec": "... ordinal suffix st/nd/rd/th allowed on the day ... converted."
+ },
+ {
+  "name": "date_day_month_year",
+  "fn": "date",
+  "value": "14 June 2027",
+  "expect": "06/14/2027",
+  "spec": "\"<day> <Month> <year>\" / \"<day> <Month>, <year>\": converted."
+ },
+ {
+  "name": "date_sept_abbreviation_with_dot",
+  "fn": "date",
+  "value": "Sep. 3, 2027",
+  "expect": "09/03/2027",
+  "spec": "Month = full English name, 3-letter abbreviation (optionally with a dot) or \"Sept\", any letter case."
+ },
+ {
+  "name": "date_month_year_kept_as_written",
+  "fn": "date",
+  "value": "December 2027",
+  "expect": "December 2027",
+  "spec": "\"<Month> <year>\" (no day, e.g. \"December 2027\"): kept exactly as written (after space normalisation), not refused."
+ },
+ {
+  "name": "date_surrounding_and_repeated_spaces",
+  "fn": "date",
+  "value": "  June   14,  2027 ",
+  "expect": "06/14/2027",
+  "spec": "Surrounding and repeated spaces are ignored."
+ },
+ {
+  "name": "date_nonexistent_feb_30_refused",
+  "fn": "date",
+  "value": "02/30/2027",
+  "expect": null,
+  "spec": "A date that does not exist (02/30/2027, 13th month in ISO form, day 0, \"Smarch 3, 2027\") → refused."
+ },
+ {
+  "name": "date_iso_month_13_refused",
+  "fn": "date",
+  "value": "2027-13-01",
+  "expect": null,
+  "spec": "A date that does not exist (02/30/2027, 13th month in ISO form, day 0, \"Smarch 3, 2027\") → refused."
+ },
+ {
+  "name": "date_season_refused",
+  "fn": "date",
+  "value": "Summer 2027",
+  "expect": null,
+  "spec": "Anything else → refused: seasons (\"Summer 2027\"), ..."
+ },
+ {
+  "name": "multi_list_basic",
+  "fn": "multi",
+  "value": [
+   "A",
+   "B"
+  ],
+  "options": [
+   "A",
+   "B",
+   "C"
+  ],
+  "expect": "A | B",
+  "spec": "Returns [\"A | B\", null] (parts joined with \" | \", in the order given, duplicates removed keeping the first)."
+ },
+ {
+  "name": "multi_pipe_string",
+  "fn": "multi",
+  "value": "A | B",
+  "options": [
+   "A",
+   "B",
+   "C"
+  ],
+  "expect": "A | B",
+  "spec": "A string containing \"|\" is split on \"|\"."
+ },
+ {
+  "name": "multi_duplicates_removed",
+  "fn": "multi",
+  "value": [
+   "A",
+   "B",
+   "A"
+  ],
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": "A | B",
+  "spec": "parts joined with \" | \", in the order given, duplicates removed keeping the first."
+ },
+ {
+  "name": "multi_space_normalisation",
+  "fn": "multi",
+  "value": "  A   |  B  ",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": "A | B",
+  "spec": "Each part is trimmed and inner runs of spaces collapse to one space; options are compared after the same normalisation."
+ },
+ {
+  "name": "multi_comma_fallback_split",
+  "fn": "multi",
+  "value": "A, B",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": "A | B",
+  "spec": "When the string has no \"|\" and is not itself an option, but contains commas and EVERY comma-separated part is an option, it is read as that list."
+ },
+ {
+  "name": "multi_option_containing_comma_whole",
+  "fn": "multi",
+  "value": "A, B",
+  "options": [
+   "A, B",
+   "C"
+  ],
+  "expect": "A, B",
+  "spec": "An option that itself contains a comma, given whole, stays one part."
+ },
+ {
+  "name": "multi_empty_parts_dropped",
+  "fn": "multi",
+  "value": "A || B",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": "A | B",
+  "spec": "Empty parts are dropped."
+ },
+ {
+  "name": "multi_all_parts_empty_refused",
+  "fn": "multi",
+  "value": "  |  ",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": null,
+  "spec": "Empty parts are dropped; nothing left → refused."
+ },
+ {
+  "name": "multi_empty_string_refused",
+  "fn": "multi",
+  "value": "",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": null,
+  "spec": "Empty parts are dropped; nothing left → refused."
+ },
+ {
+  "name": "multi_missing_option_refused",
+  "fn": "multi",
+  "value": "A | D",
+  "options": [
+   "A",
+   "B",
+   "C"
+  ],
+  "expect": null,
+  "spec": "When options is a non-empty list, every part must be one of them, else refused (the reason names the missing part)."
+ },
+ {
+  "name": "multi_case_sensitive_refused",
+  "fn": "multi",
+  "value": "a",
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": null,
+  "spec": "options are compared after the same normalisation (case-sensitive)."
+ },
+ {
+  "name": "multi_comma_part_not_option_refused",
+  "fn": "multi",
+  "value": "A, D",
+  "options": [
+   "A",
+   "B",
+   "D"
+  ],
+  "expect": null,
+  "spec": "When the string has no \"|\" and is not itself an option, but contains commas and EVERY comma-separated part is an option, it is read as that list."
+ },
+ {
+  "name": "multi_list_invalid_element_refused",
+  "fn": "multi",
+  "value": [
+   "A",
+   "ZZ"
+  ],
+  "options": [
+   "A",
+   "B"
+  ],
+  "expect": null,
+  "spec": "When options is a non-empty list, every part must be one of them, else refused (the reason names the missing part)."
+ },
+ {
+  "name": "multi_order_preserved",
+  "fn": "multi",
+  "value": [
+   "B",
+   "A"
+  ],
+  "options": [
+   "A",
+   "B",
+   "C"
+  ],
+  "expect": "B | A",
+  "spec": "Returns [\"A | B\", null] (parts joined with \" | \", in the order given ...)."
+ },
+ {
+  "name": "multi_empty_options_accepts_any",
+  "fn": "multi",
+  "value": "X | Y",
+  "options": [],
+  "expect": "X | Y",
+  "spec": "When options is empty or missing, any non-empty parts are accepted."
+ }
+]

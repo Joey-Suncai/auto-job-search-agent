@@ -1,0 +1,160 @@
+[
+ {
+  "name": "linkedin_listed_blank_options_null_source_and_url",
+  "fn": "board_pick",
+  "args": [
+   [
+    "",
+    "  ",
+    "LinkedIn",
+    "Indeed"
+   ],
+   null,
+   null,
+   [
+    "LinkedIn",
+    "Indeed"
+   ]
+  ],
+  "expect": "LinkedIn",
+  "reason": "Blank option texts are ignored, no board comes from source/url, so the default list's first entry LinkedIn is matched against the options: 'the first option whose text contains that board's words is returned (original text).'"
+ },
+ {
+  "name": "linkedin_missing_indeed_listed_from_default_list",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Indeed",
+    "Glassdoor"
+   ],
+   null,
+   null,
+   [
+    "LinkedIn",
+    "Indeed"
+   ]
+  ],
+  "expect": "Indeed",
+  "reason": "'then `default` — a board name such as \"LinkedIn\", or a LIST of board names tried in order (e.g. [\"LinkedIn\", \"Indeed\"])' — LinkedIn has no matching option, so the next default name Indeed matches."
+ },
+ {
+  "name": "board_list_but_neither_row_board_nor_linkedin_present",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Glassdoor"
+   ],
+   null,
+   null,
+   [
+    "LinkedIn",
+    "Indeed"
+   ]
+  ],
+  "expect": null,
+  "reason": "'If no option names any known board → null (it is not a job-board list). Otherwise try, in order, the row's board ... and then `default` ... null when neither is found.' — Glassdoor is a board so the list counts, but neither the row's board (none) nor LinkedIn/Indeed appear as options."
+ },
+ {
+  "name": "row_board_indeed_wins_over_linkedin_default",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed",
+    "Glassdoor"
+   ],
+   "indeed_search",
+   null,
+   [
+    "LinkedIn"
+   ]
+  ],
+  "expect": "Indeed",
+  "reason": "'Otherwise try, in order, the row's board (`board_of(source, url)`) and then `default`' — source 'indeed_search' names Indeed, which is tried before the default LinkedIn."
+ },
+ {
+  "name": "non_board_name_in_default_list_is_skipped",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed"
+   ],
+   null,
+   null,
+   [
+    "Hired",
+    "LinkedIn"
+   ]
+  ],
+  "expect": "LinkedIn",
+  "reason": "'a name that is not a known board is skipped' — 'Hired' is not one of the listed boards, so the default list continues to LinkedIn, which matches the option 'LinkedIn'."
+ },
+ {
+  "name": "empty_default_list_finds_nothing",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Indeed"
+   ],
+   null,
+   null,
+   []
+  ],
+  "expect": null,
+  "reason": "'null when neither is found.' — the row's board is null and the empty default list supplies no names, even though the options name boards."
+ },
+ {
+  "name": "handshake_source_joinhandshake_matches_option",
+  "fn": "board_pick",
+  "args": [
+   [
+    "LinkedIn",
+    "Handshake",
+    "Indeed"
+   ],
+   "joinhandshake",
+   null,
+   [
+    "LinkedIn"
+   ]
+  ],
+  "expect": "Handshake",
+  "reason": "'Look at `source` ... first' and 'Handshake \"handshake\" or \"joinhandshake\"' — the row's board is Handshake, tried before the default LinkedIn."
+ },
+ {
+  "name": "linkedin_url_host_gives_board_matching_option_spelling_linked_in",
+  "fn": "board_pick",
+  "args": [
+   [
+    "Linked In",
+    "Indeed"
+   ],
+   null,
+   "https://www.linkedin.com/jobs/view/123",
+   [
+    "Indeed"
+   ]
+  ],
+  "expect": "Linked In",
+  "reason": "'then the host part of `url` (scheme removed, everything after the first \"/\" dropped)' gives www.linkedin.com, i.e. board LinkedIn; 'LinkedIn \"linked\\s*in\"' matches the option text 'Linked In', and 'the first option whose text contains that board's words is returned (original text).'"
+ },
+ {
+  "name": "indeed_url_host_with_indeed_com_option_spelling",
+  "fn": "board_pick",
+  "args": [
+   [
+    "ZipRecruiter",
+    "Indeed.com"
+   ],
+   null,
+   "https://www.indeed.com/viewjob?jk=abc",
+   [
+    "LinkedIn"
+   ]
+  ],
+  "expect": "Indeed.com",
+  "reason": "'Look at `source` ... first, then the host part of `url`' — host www.indeed.com names Indeed ('Indeed \"indeed\"'), so the option 'Indeed.com' containing that word is returned rather than ZipRecruiter, which is not the row's board (row's board is tried before `default` and only board words in options are matched)."
+ }
+]

@@ -1,0 +1,761 @@
+[
+ {
+  "name": "revel-no-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Revel Systems",
+     "fy25": 10,
+     "total": 100,
+     "first": 2015
+    },
+    {
+     "name": "Revel Consulting",
+     "fy25": 20,
+     "total": 200,
+     "first": 2016
+    }
+   ],
+   "company": "Revel"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "medline-same-second",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Medline Industries",
+     "fy25": 50,
+     "total": 500,
+     "first": 2010
+    },
+    {
+     "name": "Medline Industries Solutions",
+     "fy25": 30,
+     "total": 300,
+     "first": 2012
+    }
+   ],
+   "company": "Medline"
+  },
+  "expect": {
+   "fy25": 80,
+   "total": 800,
+   "first": 2010,
+   "names": [
+    "Medline Industries",
+    "Medline Industries Solutions"
+   ]
+  }
+ },
+ {
+  "name": "apple-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Apple Inc.",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2005
+    },
+    {
+     "name": "Apple Computer",
+     "fy25": 50,
+     "total": 500,
+     "first": 2008
+    },
+    {
+     "name": "Apple Retail",
+     "fy25": 25,
+     "total": 250,
+     "first": 2010
+    }
+   ],
+   "company": "Apple"
+  },
+  "expect": {
+   "fy25": 175,
+   "total": 1750,
+   "first": 2005,
+   "names": [
+    "Apple Computer",
+    "Apple Inc.",
+    "Apple Retail"
+   ]
+  }
+ },
+ {
+  "name": "acme-exact-only",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Acme",
+     "fy25": 10,
+     "total": 100,
+     "first": 2010
+    },
+    {
+     "name": "Acme Systems",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    },
+    {
+     "name": "Acme Consulting",
+     "fy25": 30,
+     "total": 300,
+     "first": 2012
+    }
+   ],
+   "company": "Acme"
+  },
+  "expect": {
+   "fy25": 10,
+   "total": 100,
+   "first": 2010,
+   "names": [
+    "Acme"
+   ]
+  }
+ },
+ {
+  "name": "acme-it-excluded",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Acme IT Solutions",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Acme Systems",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    }
+   ],
+   "company": "Acme"
+  },
+  "expect": {
+   "fy25": 20,
+   "total": 200,
+   "first": 2011,
+   "names": [
+    "Acme Systems"
+   ]
+  }
+ },
+ {
+  "name": "acme-only-it-no-hit",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Acme IT Solutions",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    }
+   ],
+   "company": "Acme"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "american-generic-no-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "American Airlines",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "American Express",
+     "fy25": 200,
+     "total": 2000,
+     "first": 2011
+    }
+   ],
+   "company": "American"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "american-generic-exact",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "American",
+     "fy25": 10,
+     "total": 100,
+     "first": 2010
+    },
+    {
+     "name": "American Airlines",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2011
+    }
+   ],
+   "company": "American"
+  },
+  "expect": {
+   "fy25": 10,
+   "total": 100,
+   "first": 2010,
+   "names": [
+    "American"
+   ]
+  }
+ },
+ {
+  "name": "snap-on-not-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Snap-on",
+     "fy25": 10,
+     "total": 100,
+     "first": 2010
+    },
+    {
+     "name": "Snap-on Business Solutions",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    }
+   ],
+   "company": "Snap-on"
+  },
+  "expect": {
+   "fy25": 10,
+   "total": 100,
+   "first": 2010,
+   "names": [
+    "Snap-on"
+   ]
+  }
+ },
+ {
+  "name": "snap-on-only-not-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Snap-on Business Solutions",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    }
+   ],
+   "company": "Snap-on"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "blackrock-family-notfamily",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "BlackRock",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "BlackRock Microsystems",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    },
+    {
+     "name": "BlackRock Financial Management",
+     "fy25": 25,
+     "total": 250,
+     "first": 2012
+    }
+   ],
+   "company": "BlackRock"
+  },
+  "expect": {
+   "fy25": 125,
+   "total": 1250,
+   "first": 2010,
+   "names": [
+    "BlackRock",
+    "BlackRock Financial Management"
+   ]
+  }
+ },
+ {
+  "name": "apex-entities-empty",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Apex Technology Inc",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Apex Technology Solutions",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "Apex Technology, Inc."
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "apex-no-suffix-hits",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Apex Technology Inc",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Apex Technology Solutions",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "Apex Technology"
+  },
+  "expect": {
+   "fy25": 150,
+   "total": 1500,
+   "first": 2010,
+   "names": [
+    "Apex Technology Inc",
+    "Apex Technology Solutions"
+   ]
+  }
+ },
+ {
+  "name": "citadel-entities-exact",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Citadel Americas LLC",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Citadel Enterprise Americas",
+     "fy25": 200,
+     "total": 2000,
+     "first": 2011
+    },
+    {
+     "name": "Citadel Information Services",
+     "fy25": 50,
+     "total": 500,
+     "first": 2012
+    },
+    {
+     "name": "Citadel LLC",
+     "fy25": 10,
+     "total": 100,
+     "first": 2013
+    }
+   ],
+   "company": "Citadel"
+  },
+  "expect": {
+   "fy25": 350,
+   "total": 3500,
+   "first": 2010,
+   "names": [
+    "Citadel Americas LLC",
+    "Citadel Enterprise Americas",
+    "Citadel Information Services"
+   ]
+  }
+ },
+ {
+  "name": "polaris-entities-exact",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Polaris",
+     "fy25": 10,
+     "total": 100,
+     "first": 2010
+    },
+    {
+     "name": "Polaris Industries",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    },
+    {
+     "name": "Polaris Consulting",
+     "fy25": 30,
+     "total": 300,
+     "first": 2012
+    }
+   ],
+   "company": "Polaris"
+  },
+  "expect": {
+   "fy25": 30,
+   "total": 300,
+   "first": 2010,
+   "names": [
+    "Polaris",
+    "Polaris Industries"
+   ]
+  }
+ },
+ {
+  "name": "murphy-usa-entities-empty",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Murphy USA",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    }
+   ],
+   "company": "Murphy USA"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "murphy-norm-hits",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Murphy USA",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    }
+   ],
+   "company": "Murphy"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "Murphy USA"
+   ]
+  }
+ },
+ {
+  "name": "ibm-equals-exact",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "IBM Corporation",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "IBM India",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "IBM"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "IBM Corporation"
+   ]
+  }
+ },
+ {
+  "name": "bofa-equals-bank-of",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Bank of America",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "BofA Securities",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "BofA"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "Bank of America"
+   ]
+  }
+ },
+ {
+  "name": "us-bank-raw-alias",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "U.S. Bank",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "US Bank",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "US Bank"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "U.S. Bank"
+   ]
+  }
+ },
+ {
+  "name": "capital-group-raw-alias",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Capital Group Companies",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Capital Research and Management",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    },
+    {
+     "name": "Capital Group",
+     "fy25": 10,
+     "total": 100,
+     "first": 2012
+    }
+   ],
+   "company": "Capital Group"
+  },
+  "expect": {
+   "fy25": 150,
+   "total": 1500,
+   "first": 2010,
+   "names": [
+    "Capital Group Companies",
+    "Capital Research and Management"
+   ]
+  }
+ },
+ {
+  "name": "home-depot-multword-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Home Depot",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Home Depot Management",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "Home Depot"
+  },
+  "expect": {
+   "fy25": 150,
+   "total": 1500,
+   "first": 2010,
+   "names": [
+    "Home Depot",
+    "Home Depot Management"
+   ]
+  }
+ },
+ {
+  "name": "acme-careers-descriptor",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Acme Systems",
+     "fy25": 20,
+     "total": 200,
+     "first": 2011
+    }
+   ],
+   "company": "Acme Careers"
+  },
+  "expect": {
+   "fy25": 20,
+   "total": 200,
+   "first": 2011,
+   "names": [
+    "Acme Systems"
+   ]
+  }
+ },
+ {
+  "name": "veeam-alias-single",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Veeam Software",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    }
+   ],
+   "company": "Veeam Software"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "Veeam Software"
+   ]
+  }
+ },
+ {
+  "name": "telus-alias-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Telus Communications",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Telus Digital",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "Telus Digital"
+  },
+  "expect": {
+   "fy25": 150,
+   "total": 1500,
+   "first": 2010,
+   "names": [
+    "Telus Communications",
+    "Telus Digital"
+   ]
+  }
+ },
+ {
+  "name": "viking-entities-exact",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Viking Investors",
+     "fy25": 100,
+     "total": 1000,
+     "first": 2010
+    },
+    {
+     "name": "Viking Global",
+     "fy25": 50,
+     "total": 500,
+     "first": 2011
+    }
+   ],
+   "company": "Viking Global"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 1000,
+   "first": 2010,
+   "names": [
+    "Viking Investors"
+   ]
+  }
+ }
+]

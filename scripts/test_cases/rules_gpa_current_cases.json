@@ -1,0 +1,169 @@
+[
+ {
+  "name": "Rule 1 — current + grade point average (text)",
+  "label": "What is your current cumulative grade point average?",
+  "type": "text",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "The label contains the word \"current\" or \"present\" and, within the next 40 characters (no \"?\" in between), \"GPA\" (as a word) or \"grade point average\" — e.g. \"What is your current cumulative grade point average?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 1 — current GPA with parenthetical (text)",
+  "label": "Current GPA (if applicable)",
+  "type": "text",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "e.g. ... \"Current GPA (if applicable)\" ... The answer is the text \"N/A\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 1 — present GPA (textarea)",
+  "label": "Please enter your present GPA",
+  "type": "textarea",
+  "options": [],
+  "expect": "N/A",
+  "spec_quote": "e.g. ... \"Please enter your present GPA\". The answer is the text \"N/A\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 1 near miss — GPA more than 40 chars after 'current'",
+  "label": "Current enrollment status, degree program, and cumulative GPA",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "\"current\" or \"present\" must come before \"GPA\" / \"grade point average\" and it must be within the next 40 characters ... Any other GPA question → GPA_ON_FILE: the label contains \"GPA\" as a word ... and rule 1 does not apply",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 1 near miss — '?' between current and GPA",
+  "label": "Current student? Please provide your cumulative GPA",
+  "type": "textarea",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "within the next 40 characters (no \"?\" in between) ... Any other GPA question → GPA_ON_FILE: the label contains \"GPA\" as a word ... and rule 1 does not apply",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 2 — current undergraduate GPA",
+  "label": "Current undergraduate GPA",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "A label that mentions \"undergrad\" / \"undergraduate\" / \"under grad\", \"bachelor\", \"bachelor's\" or \"high school\" anywhere is never rule 1, even with \"current\" — e.g. \"Current undergraduate GPA\" → GPA_ON_FILE (rule 3).",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 2 — current GPA in bachelor's program",
+  "label": "What is your current GPA in your bachelor's program?",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "A label that mentions ... \"bachelor\" ... anywhere is never rule 1, even with \"current\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 2 — present high school grade point average",
+  "label": "Present high school grade point average",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "A label that mentions ... \"high school\" anywhere is never rule 1, even with \"current\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 3 — GPA appears before 'current'",
+  "label": "GPA (current or most recent)",
+  "type": "text",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "\"GPA (current or most recent)\"? — no: here \"current\" is followed by \" or most recent)\" and then nothing; \"GPA\" comes BEFORE \"current\", so rule 1 (which needs \"current\" first, then GPA) does not apply → GPA_ON_FILE.",
+  "ambiguous": false
+ },
+ {
+  "name": "Rule 3 — plain past-tense GPA question",
+  "label": "What was your GPA?",
+  "type": "textarea",
+  "options": [],
+  "expect": "GPA_ON_FILE",
+  "spec_quote": "Any other GPA question → GPA_ON_FILE: the label contains \"GPA\" as a word or \"grade point average\" and rule 1 does not apply — e.g. \"GPA\", \"Cumulative GPA\", \"What was your GPA?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — first exact N/A option",
+  "label": "Current GPA (if applicable)",
+  "type": "select",
+  "options": [
+   "N/A",
+   "GPA on file",
+   "Other"
+  ],
+  "expect": "N/A",
+  "spec_quote": "the pick is the first option that is exactly \"N/A\" or \"NA\" (slash optional)",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — first exact NA beats later N/A",
+  "label": "Please enter your present GPA",
+  "type": "select",
+  "options": [
+   "NA",
+   "N/A"
+  ],
+  "expect": "NA",
+  "spec_quote": "the pick is the first option that is exactly \"N/A\" or \"NA\" (slash optional)",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — 'not applicable' when no exact NA/N/A",
+  "label": "Current cumulative GPA",
+  "type": "select",
+  "options": [
+   "Yes",
+   "Not Applicable",
+   "No"
+  ],
+  "expect": "Not Applicable",
+  "spec_quote": "else one containing \"not applicable\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — option starting with 'N/A'",
+  "label": "Current overall GPA",
+  "type": "select",
+  "options": [
+   "N/A (no GPA yet)",
+   "Other",
+   "GPA on file"
+  ],
+  "expect": "N/A (no GPA yet)",
+  "spec_quote": "else one starting with \"N/A\", else one starting with \"Other\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — option starting with 'Other'",
+  "label": "What is your current grade point average?",
+  "type": "select",
+  "options": [
+   "Not sure",
+   "Other",
+   "GPA on file"
+  ],
+  "expect": "Other",
+  "spec_quote": "else one starting with \"N/A\", else one starting with \"Other\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Select — no matching option → none",
+  "label": "Current GPA",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Prefer not to say"
+  ],
+  "expect": "none",
+  "spec_quote": "if none of those exists the question is left unanswered (`none`)",
+  "ambiguous": false
+ }
+]

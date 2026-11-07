@@ -1,0 +1,7 @@
+# Python packages for the venv (setup.sh installs them into ~/.job-agent-venv). The daily routines
+# (refresh / gate / dashboard / map) need only the standard library; these are for the form runners and materials.
+playwright>=1.48        # form runners drive Chrome over CDP (run.py, run_wd.py, run_form.py)
+python-docx>=1.1        # resume / cover letter .docx (ds_materials.py)
+Pillow>=10              # resume fill check (fill.py)
+numpy>=1.26             # resume fill check (fill.py)
+anthropic>=0.40         # optional: Claude reads job e-mail / texts (scripts/daily/claude_reader.py)

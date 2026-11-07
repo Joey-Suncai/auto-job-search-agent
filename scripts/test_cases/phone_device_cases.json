@@ -1,0 +1,269 @@
+[
+ {
+  "name": "text_box_phone_device_type_star",
+  "label": "Phone Device Type*",
+  "type": "text",
+  "options": [],
+  "expect": "Mobile",
+  "why": "Rule 7: \"A text box (no options) with this label gets the text \\\"Mobile\\\".\""
+ },
+ {
+  "name": "select_mobile_present",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Mobile",
+   "Work"
+  ],
+  "expect": "Mobile",
+  "why": "Rule 1: \"When the options include a mobile / cell phone option, pick it.\" Mobile wordings include \"Mobile\"."
+ },
+ {
+  "name": "radio_cell_present",
+  "label": "Device Type",
+  "type": "radio",
+  "options": [
+   "Home",
+   "Cell",
+   "Work"
+  ],
+  "expect": "Cell",
+  "why": "Rule 1: \"When the options include a mobile / cell phone option, pick it.\" Mobile wordings include \"Cell\"."
+ },
+ {
+  "name": "select_cell_phone_present",
+  "label": "Phone Type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Cell Phone",
+   "Work"
+  ],
+  "expect": "Cell Phone",
+  "why": "Rule 1: \"When the options include a mobile / cell phone option, pick it.\" Mobile wordings include \"Cell Phone\"."
+ },
+ {
+  "name": "select_personal_cell_phone",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Personal Cell Phone",
+   "Work"
+  ],
+  "expect": "Personal Cell Phone",
+  "why": "Rule 1: \"When the options include a mobile / cell phone option, pick it.\" Mobile wordings include \"Personal Cell Phone\"."
+ },
+ {
+  "name": "radio_home_cellular_preferred_over_home",
+  "label": "Phone Device Type",
+  "type": "radio",
+  "options": [
+   "Home",
+   "Home Cellular"
+  ],
+  "expect": "Home Cellular",
+  "why": "Rule 2: \"An option that contains \\\"Cellular\\\" is a mobile phone even when it also says \\\"Home\\\" — \\\"Home Cellular\\\" is preferred over plain \\\"Home\\\".\""
+ },
+ {
+  "name": "select_no_mobile_unknown",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Work",
+   "Landline"
+  ],
+  "expect": "UNKNOWN",
+  "why": "Rule 5: \"When the options contain no mobile / cell / cellular option at all (e.g. only \\\"Home\\\", \\\"Work\\\", \\\"Landline\\\"), the answer is UNKNOWN (the question goes to the candidate) — never guess \\\"Home\\\".\""
+ },
+ {
+  "name": "radio_only_nonmobile_unknown",
+  "label": "Device Type",
+  "type": "radio",
+  "options": [
+   "Fax",
+   "Pager",
+   "Other"
+  ],
+  "expect": "UNKNOWN",
+  "why": "Rule 5: \"When the options contain no mobile / cell / cellular option at all ... the answer is UNKNOWN ... — never guess \\\"Home\\\".\""
+ },
+ {
+  "name": "exact_mobile_wins_over_mobile_phone",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Mobile Phone",
+   "Mobile"
+  ],
+  "expect": "Mobile",
+  "why": "Rule 4: \"When several mobile options exist, an option that is exactly \\\"Mobile\\\" wins; ...\""
+ },
+ {
+  "name": "exact_mobile_wins_over_cell_phone",
+  "label": "Phone Type",
+  "type": "radio",
+  "options": [
+   "Cell Phone",
+   "Mobile"
+  ],
+  "expect": "Mobile",
+  "why": "Rule 4: \"When several mobile options exist, an option that is exactly \\\"Mobile\\\" wins; ...\""
+ },
+ {
+  "name": "cell_start_wins_over_mobile_phone",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Mobile Phone",
+   "Cell Phone"
+  ],
+  "expect": "Cell Phone",
+  "why": "Rule 4: \"... otherwise one starting with \\\"Cell\\\"; otherwise one containing \\\"mobile\\\"; ...\""
+ },
+ {
+  "name": "cell_start_wins_over_personal_cell",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Personal Cell Phone",
+   "Cell Phone"
+  ],
+  "expect": "Cell Phone",
+  "why": "Rule 4: \"... otherwise one starting with \\\"Cell\\\"; otherwise one containing \\\"mobile\\\"; otherwise one containing \\\"cell\\\" as a word; ...\""
+ },
+ {
+  "name": "mobile_word_wins_over_cell_word",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Personal Cell Phone",
+   "Mobile Phone"
+  ],
+  "expect": "Mobile Phone",
+  "why": "Rule 4: \"... otherwise one containing \\\"mobile\\\"; otherwise one containing \\\"cell\\\" as a word; ...\""
+ },
+ {
+  "name": "cell_start_wins_over_cellular",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home Cellular",
+   "Cell Phone"
+  ],
+  "expect": "Cell Phone",
+  "why": "Rule 4: \"... otherwise one starting with \\\"Cell\\\"; ... otherwise one containing \\\"cellular\\\".\""
+ },
+ {
+  "name": "mobile_word_wins_over_cellular",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home Cellular",
+   "Mobile Phone"
+  ],
+  "expect": "Mobile Phone",
+  "why": "Rule 4: \"... otherwise one containing \\\"mobile\\\"; ... otherwise one containing \\\"cellular\\\".\""
+ },
+ {
+  "name": "among_equal_cellular_first_wins",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Work Cellular",
+   "Personal Cellular"
+  ],
+  "expect": "Work Cellular",
+  "why": "Rule 4: \"Among equals, the first in the list wins.\" Both fall into the containing \\\"cellular\\\" category."
+ },
+ {
+  "name": "case_and_spaces_ignored",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "  mobile  ",
+   "Home"
+  ],
+  "expect": "  mobile  ",
+  "why": "Rule 6: \"Matching ignores case and leading/trailing spaces.\" Rule 1 makes the mobile option the pick."
+ },
+ {
+  "name": "uppercase_mobile_phone",
+  "label": "Device Type",
+  "type": "radio",
+  "options": [
+   "MOBILE PHONE",
+   "Home"
+  ],
+  "expect": "MOBILE PHONE",
+  "why": "Rule 6: \"Matching ignores case and leading/trailing spaces.\" Rule 1 makes the mobile option the pick."
+ },
+ {
+  "name": "cell_start_over_mobile_word_with_case",
+  "label": "Phone Type",
+  "type": "select",
+  "options": [
+   "mobile phone",
+   "CELL"
+  ],
+  "expect": "CELL",
+  "why": "Rule 4: \"... otherwise one starting with \\\"Cell\\\"; otherwise one containing \\\"mobile\\\"; ...\" Rule 6 makes the match case-insensitive."
+ },
+ {
+  "name": "single_home_only_unknown",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home"
+  ],
+  "expect": "UNKNOWN",
+  "why": "Rule 5: \"When the options contain no mobile / cell / cellular option at all ... the answer is UNKNOWN ... — never guess \\\"Home\\\".\""
+ },
+ {
+  "name": "cellular_only_option_selected",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Work",
+   "Cellular"
+  ],
+  "expect": "Cellular",
+  "why": "Rule 1: \"When the options include a mobile / cell phone option, pick it.\" and \"any option containing the word \\\"Cellular\\\"\" is a mobile wording."
+ },
+ {
+  "name": "work_cellular_beats_plain_work",
+  "label": "Device Type",
+  "type": "radio",
+  "options": [
+   "Work",
+   "Work Cellular"
+  ],
+  "expect": "Work Cellular",
+  "why": "Rule 3: \"Never pick a plain \\\"Home\\\", \\\"Landline\\\", \\\"Work\\\", \\\"Fax\\\", \\\"Pager\\\" or \\\"Other\\\" option when a mobile / cell / cellular option exists.\" Rule 1 makes \\\"Work Cellular\\\" mobile."
+ },
+ {
+  "name": "personal_cellular_beats_landline",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Landline",
+   "Personal Cellular"
+  ],
+  "expect": "Personal Cellular",
+  "why": "Rule 3: \"Never pick a plain \\\"Home\\\", \\\"Landline\\\", \\\"Work\\\", \\\"Fax\\\", \\\"Pager\\\" or \\\"Other\\\" option when a mobile / cell / cellular option exists.\" Rule 1 makes \\\"Personal Cellular\\\" mobile."
+ },
+ {
+  "name": "home_cellular_vs_work_cellular_first",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Home Cellular",
+   "Work Cellular"
+  ],
+  "expect": "Home Cellular",
+  "why": "Rule 4: \"Among equals, the first in the list wins.\" Both are mobile via Rule 2/containing \\\"Cellular\\\"."
+ }
+]

@@ -1,0 +1,100 @@
+[
+ {
+  "name": "straight reliable transportation",
+  "label": "Do you have reliable transportation?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "reliable means of transportation phrasing",
+  "label": "Do you have a reliable means of transportation?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "own car",
+  "label": "Do you have your own car?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "own vehicle",
+  "label": "Do you have your own vehicle?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "vehicle to get to work",
+  "label": "Do you have a reliable vehicle to get to work?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "transportation to get to work each day",
+  "label": "Do you have reliable transportation to get to work each day?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "own car or vehicle for getting to work",
+  "label": "Do you own a car or vehicle for getting to work?",
+  "expect": "transport",
+  "spec_quote": "Classify a Yes/No question: \"transport\" when it asks whether he has reliable transportation / a reliable means of transportation / his own car or vehicle to get to work (expected answer \"No\")",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: driver's license",
+  "label": "Do you have a valid driver's license?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "near miss: Illinois driver's license",
+  "label": "Do you hold a valid Illinois driver's license?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "willingness to travel percentage",
+  "label": "Are you willing to travel up to 25% of the time?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "commute distance",
+  "label": "Are you within a 30-minute commute of the office?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "relocation",
+  "label": "Are you willing to relocate for this position?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "onsite work",
+  "label": "Are you able to work onsite at our downtown office?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ },
+ {
+  "name": "overnight travel",
+  "label": "Are you open to occasional overnight travel?",
+  "expect": "other",
+  "spec_quote": "\"other\" for driver's license questions, willingness to travel, commute distance, relocation, or anything else.",
+  "ambiguous": false
+ }
+]

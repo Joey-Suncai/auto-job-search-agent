@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//an employer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.jobagent.prefetch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-lc</string>
+    <string>cd {{REPO}} &amp;&amp; {{VENV_PYTHON}} skills/auto-apply/runner/form_prefetch.py --recheck-days 5 --ds-max 400</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>15</integer></dict>
+  <key>StandardOutPath</key><string>/tmp/jobagent_prefetch.log</string>
+  <key>StandardErrorPath</key><string>/tmp/jobagent_prefetch.err</string>
+</dict>
+</plist>

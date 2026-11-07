@@ -1,0 +1,822 @@
+[
+ {
+  "name": "norm-amazon-services-llc",
+  "fn": "norm",
+  "input": {
+   "name": "Amazon.com Services LLC"
+  },
+  "expect": {
+   "key": "amazon"
+  }
+ },
+ {
+  "name": "norm-citibank-na",
+  "fn": "norm",
+  "input": {
+   "name": "Citibank, N.A."
+  },
+  "expect": {
+   "key": "citibank"
+  }
+ },
+ {
+  "name": "norm-the-home-depot",
+  "fn": "norm",
+  "input": {
+   "name": "The Home Depot"
+  },
+  "expect": {
+   "key": "home depot"
+  }
+ },
+ {
+  "name": "norm-wal-mart-associates",
+  "fn": "norm",
+  "input": {
+   "name": "Wal-Mart Associates, Inc."
+  },
+  "expect": {
+   "key": "wal mart associates"
+  }
+ },
+ {
+  "name": "norm-at-and-t",
+  "fn": "norm",
+  "input": {
+   "name": "AT&T Inc."
+  },
+  "expect": {
+   "key": "at and t"
+  }
+ },
+ {
+  "name": "lookup-walmart-family-adds-up",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "WAL-MART ASSOCIATES, INC.",
+     "fy25": 500,
+     "total": 4000,
+     "first": 2010
+    },
+    {
+     "name": "Wal-Mart Associates Inc",
+     "fy25": 100,
+     "total": 500,
+     "first": 2016
+    }
+   ],
+   "company": "Walmart"
+  },
+  "expect": {
+   "fy25": 600,
+   "total": 4500,
+   "first": 2010,
+   "names": [
+    "WAL-MART ASSOCIATES, INC."
+   ]
+  }
+ },
+ {
+  "name": "lookup-walmart-global-tech-brand-alias",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "WAL-MART ASSOCIATES, INC.",
+     "fy25": 480,
+     "total": 3900,
+     "first": 2010
+    }
+   ],
+   "company": "Walmart Global Tech"
+  },
+  "expect": {
+   "fy25": 480,
+   "total": 3900,
+   "first": 2010,
+   "names": [
+    "WAL-MART ASSOCIATES, INC."
+   ]
+  }
+ },
+ {
+  "name": "lookup-amazon-three-entities-sum",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "AMAZON.COM SERVICES LLC",
+     "fy25": 1000,
+     "total": 6000,
+     "first": 2011
+    },
+    {
+     "name": "AMAZON WEB SERVICES, INC.",
+     "fy25": 400,
+     "total": 2000,
+     "first": 2012
+    },
+    {
+     "name": "AMAZON CORPORATE LLC",
+     "fy25": 100,
+     "total": 900,
+     "first": 2013
+    }
+   ],
+   "company": "Amazon"
+  },
+  "expect": {
+   "fy25": 1500,
+   "total": 8900,
+   "first": 2011,
+   "names": [
+    "AMAZON.COM SERVICES LLC",
+    "AMAZON WEB SERVICES, INC.",
+    "AMAZON CORPORATE LLC"
+   ]
+  }
+ },
+ {
+  "name": "lookup-apex-excludes-it-sibling",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "Apex Systems, LLC",
+     "fy25": 40,
+     "total": 300,
+     "first": 2012
+    },
+    {
+     "name": "Apex IT Solutions",
+     "fy25": 7,
+     "total": 20,
+     "first": 2018
+    }
+   ],
+   "company": "Apex"
+  },
+  "expect": {
+   "fy25": 40,
+   "total": 300,
+   "first": 2012,
+   "names": [
+    "Apex Systems, LLC"
+   ]
+  }
+ },
+ {
+  "name": "lookup-american-generic-no-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "AMERICAN AIRLINES, INC.",
+     "fy25": 60,
+     "total": 700,
+     "first": 2010
+    },
+    {
+     "name": "AMERICAN EXPRESS COMPANY",
+     "fy25": 30,
+     "total": 400,
+     "first": 2012
+    }
+   ],
+   "company": "American"
+  },
+  "expect": {
+   "fy25": 0,
+   "total": 0,
+   "first": null,
+   "names": []
+  }
+ },
+ {
+  "name": "lookup-bank-of-america-exact-key-only",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "BANK OF AMERICA, N.A.",
+     "fy25": 700,
+     "total": 5000,
+     "first": 2010
+    },
+    {
+     "name": "BANK OF THE WEST",
+     "fy25": 12,
+     "total": 90,
+     "first": 2014
+    }
+   ],
+   "company": "Bank of America"
+  },
+  "expect": {
+   "fy25": 700,
+   "total": 5000,
+   "first": 2010,
+   "names": [
+    "BANK OF AMERICA, N.A."
+   ]
+  }
+ },
+ {
+  "name": "lookup-bank-of-prefix-control",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "BANK OF AMERICA, N.A.",
+     "fy25": 700,
+     "total": 5000,
+     "first": 2010
+    },
+    {
+     "name": "BANK OF THE WEST",
+     "fy25": 12,
+     "total": 90,
+     "first": 2014
+    }
+   ],
+   "company": "Bank of"
+  },
+  "expect": {
+   "fy25": 712,
+   "total": 5090,
+   "first": 2010,
+   "names": [
+    "BANK OF AMERICA, N.A.",
+    "BANK OF THE WEST"
+   ]
+  }
+ },
+ {
+  "name": "lookup-us-bank-raw-alias",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "U.S. BANK NATIONAL ASSOCIATION",
+     "fy25": 90,
+     "total": 800,
+     "first": 2011
+    },
+    {
+     "name": "US BANCORP",
+     "fy25": 5,
+     "total": 40,
+     "first": 2016
+    }
+   ],
+   "company": "US Bank"
+  },
+  "expect": {
+   "fy25": 90,
+   "total": 800,
+   "first": 2011,
+   "names": [
+    "U.S. BANK NATIONAL ASSOCIATION"
+   ]
+  }
+ },
+ {
+  "name": "lookup-capital-group-raw-alias",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "CAPITAL RESEARCH AND MANAGEMENT COMPANY",
+     "fy25": 60,
+     "total": 500,
+     "first": 2012
+    },
+    {
+     "name": "CAPITAL ONE FINANCIAL CORPORATION",
+     "fy25": 25,
+     "total": 200,
+     "first": 2013
+    }
+   ],
+   "company": "Capital Group"
+  },
+  "expect": {
+   "fy25": 60,
+   "total": 500,
+   "first": 2012,
+   "names": [
+    "CAPITAL RESEARCH AND MANAGEMENT COMPANY"
+   ]
+  }
+ },
+ {
+  "name": "lookup-google-careers-descriptor-retry",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "GOOGLE LLC",
+     "fy25": 900,
+     "total": 8000,
+     "first": 2009
+    }
+   ],
+   "company": "Google Careers"
+  },
+  "expect": {
+   "fy25": 900,
+   "total": 8000,
+   "first": 2009,
+   "names": [
+    "GOOGLE LLC"
+   ]
+  }
+ },
+ {
+  "name": "lookup-snap-excludes-not-family",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "SNAP INC.",
+     "fy25": 100,
+     "total": 400,
+     "first": 2017
+    },
+    {
+     "name": "SNAP-ON INCORPORATED",
+     "fy25": 20,
+     "total": 150,
+     "first": 2011
+    }
+   ],
+   "company": "Snap"
+  },
+  "expect": {
+   "fy25": 100,
+   "total": 400,
+   "first": 2017,
+   "names": [
+    "SNAP INC."
+   ]
+  }
+ },
+ {
+  "name": "lookup-stripe-unknown-first-year",
+  "fn": "lookup",
+  "input": {
+   "records": [
+    {
+     "name": "STRIPE, INC.",
+     "fy25": 60,
+     "total": 200,
+     "first": 9999
+    }
+   ],
+   "company": "Stripe"
+  },
+  "expect": {
+   "fy25": 60,
+   "total": 200,
+   "first": null,
+   "names": [
+    "STRIPE, INC."
+   ]
+  }
+ },
+ {
+  "name": "groupkey-meta-facebook-same",
+  "fn": "group_key",
+  "input": {
+   "a": "Meta",
+   "b": "Facebook"
+  },
+  "expect": {
+   "same": true
+  }
+ },
+ {
+  "name": "groupkey-bank-of-america-variants-same",
+  "fn": "group_key",
+  "input": {
+   "a": "Bank of America",
+   "b": "Bank of America Corporation"
+  },
+  "expect": {
+   "same": true
+  }
+ },
+ {
+  "name": "groupkey-capital-group-vs-capital-one",
+  "fn": "group_key",
+  "input": {
+   "a": "Capital Group",
+   "b": "Capital One"
+  },
+  "expect": {
+   "same": false
+  }
+ },
+ {
+  "name": "groupkey-sams-club-vs-walmart",
+  "fn": "group_key",
+  "input": {
+   "a": "Sam's Club",
+   "b": "Walmart"
+  },
+  "expect": {
+   "same": true
+  }
+ },
+ {
+  "name": "refresh-missing-sponsorship-strong",
+  "fn": "refresh",
+  "input": {
+   "row": {
+    "company": "Stripe",
+    "open_roles": 2,
+    "referral": "Warm"
+   },
+   "facts": {
+    "fy25": 250,
+    "total": 120,
+    "first": 2015
+   }
+  },
+  "expect": {
+   "row": {
+    "company": "Stripe",
+    "open_roles": 2,
+    "referral": "Warm",
+    "h1b_fy25": 250,
+    "h1b_total": 120,
+    "h1b_since": 2015,
+    "sponsorship": "Strong H-1B sponsor"
+   }
+  }
+ },
+ {
+  "name": "refresh-keeps-posting-level-blocked",
+  "fn": "refresh",
+  "input": {
+   "row": {
+    "company": "Acme Corp",
+    "sponsorship": "Blocked: citizenship required",
+    "open_roles": 4
+   },
+   "facts": {
+    "fy25": 300,
+    "total": 2000,
+    "first": 2010
+   }
+  },
+  "expect": {
+   "row": {
+    "company": "Acme Corp",
+    "sponsorship": "Blocked: citizenship required",
+    "open_roles": 4,
+    "h1b_fy25": 300,
+    "h1b_total": 2000,
+    "h1b_since": 2010
+   }
+  }
+ },
+ {
+  "name": "refresh-keeps-posting-offers-sponsorship",
+  "fn": "refresh",
+  "input": {
+   "row": {
+    "company": "Globex",
+    "sponsorship": "Posting offers sponsorship"
+   },
+   "facts": {
+    "fy25": 5,
+    "total": 12,
+    "first": 2021
+   }
+  },
+  "expect": {
+   "row": {
+    "company": "Globex",
+    "sponsorship": "Posting offers sponsorship",
+    "h1b_fy25": 5,
+    "h1b_total": 12,
+    "h1b_since": 2021
+   }
+  }
+ },
+ {
+  "name": "refresh-empty-sponsorship-total-threshold",
+  "fn": "refresh",
+  "input": {
+   "row": {
+    "company": "Initech",
+    "sponsorship": ""
+   },
+   "facts": {
+    "fy25": 0,
+    "total": 1500,
+    "first": 2005
+   }
+  },
+  "expect": {
+   "row": {
+    "company": "Initech",
+    "sponsorship": "Strong H-1B sponsor",
+    "h1b_fy25": 0,
+    "h1b_total": 1500,
+    "h1b_since": 2005
+   }
+  }
+ },
+ {
+  "name": "refresh-recomputes-label-with-zero-facts",
+  "fn": "refresh",
+  "input": {
+   "row": {
+    "company": "Umbrella",
+    "sponsorship": "Some H-1B history",
+    "h1b_since": 2019
+   },
+   "facts": {
+    "fy25": 0,
+    "total": 0,
+    "first": null
+   }
+  },
+  "expect": {
+   "row": {
+    "company": "Umbrella",
+    "sponsorship": "Unknown — verify",
+    "h1b_since": "",
+    "h1b_fy25": 0,
+    "h1b_total": 0
+   }
+  }
+ },
+ {
+  "name": "merge-meta-facebook-fields",
+  "fn": "merge",
+  "input": {
+   "records": [
+    {
+     "name": "META PLATFORMS, INC.",
+     "fy25": 900,
+     "total": 5000,
+     "first": 2013
+    }
+   ],
+   "rows": [
+    {
+     "company": "Meta",
+     "open_roles": 5,
+     "internships": 2,
+     "new_grad": 1,
+     "a_roles": 3,
+     "best_score": 80,
+     "best_role": "SWE",
+     "best_tier": "T1",
+     "gc_sponsor": "Yes",
+     "gc_perm": 90,
+     "gc_months": 12,
+     "referral": "Cold",
+     "contacts": 4,
+     "warm_path": "",
+     "tracks": "Software; Data",
+     "sponsorship": "Strong H-1B sponsor"
+    },
+    {
+     "company": "Facebook",
+     "open_roles": 2,
+     "internships": 0,
+     "new_grad": 0,
+     "a_roles": 1,
+     "best_score": 91,
+     "best_role": "ML Engineer",
+     "best_tier": "T2",
+     "gc_sponsor": "No",
+     "gc_perm": 180,
+     "gc_months": 24,
+     "referral": "Warm",
+     "contacts": 0,
+     "warm_path": "alum referral",
+     "tracks": "Data; Product",
+     "sponsorship": "Some H-1B history"
+    }
+   ]
+  },
+  "expect": {
+   "rows": [
+    {
+     "company": "Meta",
+     "open_roles": 7,
+     "internships": 2,
+     "new_grad": 1,
+     "a_roles": 4,
+     "best_score": 91,
+     "best_role": "ML Engineer",
+     "best_tier": "T2",
+     "gc_sponsor": "No",
+     "gc_perm": 180,
+     "gc_months": 24,
+     "referral": "Warm",
+     "contacts": 4,
+     "warm_path": "alum referral",
+     "tracks": "Software; Data; Product",
+     "sponsorship": "Strong H-1B sponsor",
+     "h1b_fy25": 900,
+     "h1b_total": 5000,
+     "h1b_since": 2013
+    }
+   ],
+   "merged": {
+    "Meta": [
+     "Facebook"
+    ]
+   }
+  }
+ },
+ {
+  "name": "merge-google-alphabet-plus-standalone",
+  "fn": "merge",
+  "input": {
+   "records": [
+    {
+     "name": "GOOGLE LLC",
+     "fy25": 900,
+     "total": 8000,
+     "first": 2009
+    },
+    {
+     "name": "MICROSOFT CORPORATION",
+     "fy25": 800,
+     "total": 9000,
+     "first": 2010
+    }
+   ],
+   "rows": [
+    {
+     "company": "Google",
+     "open_roles": 5,
+     "tracks": "Backend; ML",
+     "sponsorship": "Some H-1B history",
+     "referral": "Cold"
+    },
+    {
+     "company": "Alphabet",
+     "open_roles": 2,
+     "tracks": "ML; Infra",
+     "sponsorship": "Strong H-1B sponsor",
+     "referral": "Warm"
+    },
+    {
+     "company": "Microsoft",
+     "open_roles": 3,
+     "tracks": "Cloud",
+     "sponsorship": "Strong H-1B sponsor",
+     "referral": "Cold"
+    }
+   ]
+  },
+  "expect": {
+   "rows": [
+    {
+     "company": "Google",
+     "open_roles": 7,
+     "tracks": "Backend; ML; Infra",
+     "sponsorship": "Strong H-1B sponsor",
+     "referral": "Warm",
+     "h1b_fy25": 900,
+     "h1b_total": 8000,
+     "h1b_since": 2009
+    },
+    {
+     "company": "Microsoft",
+     "open_roles": 3,
+     "tracks": "Cloud",
+     "sponsorship": "Strong H-1B sponsor",
+     "referral": "Cold",
+     "h1b_fy25": 800,
+     "h1b_total": 9000,
+     "h1b_since": 2010
+    }
+   ],
+   "merged": {
+    "Google": [
+     "Alphabet"
+    ]
+   }
+  }
+ },
+ {
+  "name": "merge-brunswick-not-same-stays-two",
+  "fn": "merge",
+  "input": {
+   "records": [
+    {
+     "name": "BRUNSWICK CORPORATION",
+     "fy25": 40,
+     "total": 300,
+     "first": 2011
+    }
+   ],
+   "rows": [
+    {
+     "company": "Brunswick",
+     "open_roles": 4,
+     "sponsorship": "Some H-1B history"
+    },
+    {
+     "company": "Brunswick Group",
+     "open_roles": 1,
+     "sponsorship": "Unknown — verify"
+    }
+   ]
+  },
+  "expect": {
+   "rows": [
+    {
+     "company": "Brunswick",
+     "open_roles": 4,
+     "sponsorship": "Some H-1B history",
+     "h1b_fy25": 40,
+     "h1b_total": 300,
+     "h1b_since": 2011
+    },
+    {
+     "company": "Brunswick Group",
+     "open_roles": 1,
+     "sponsorship": "Some H-1B history",
+     "h1b_fy25": 40,
+     "h1b_total": 300,
+     "h1b_since": 2011
+    }
+   ],
+   "merged": {}
+  }
+ },
+ {
+  "name": "merge-tie-break-shorter-name-kept",
+  "fn": "merge",
+  "input": {
+   "records": [
+    {
+     "name": "VERIZON COMMUNICATIONS INC.",
+     "fy25": 300,
+     "total": 2000,
+     "first": 2010
+    }
+   ],
+   "rows": [
+    {
+     "company": "Cellco Partnership",
+     "open_roles": 6,
+     "best_score": 70,
+     "best_role": "Network Eng",
+     "best_tier": "T2",
+     "gc_sponsor": "Yes",
+     "gc_perm": 30,
+     "gc_months": 6,
+     "referral": "Warm"
+    },
+    {
+     "company": "Verizon Wireless",
+     "open_roles": 6,
+     "best_score": 55,
+     "best_role": "RF Eng",
+     "best_tier": "T1",
+     "gc_sponsor": "No",
+     "gc_perm": 60,
+     "gc_months": 12,
+     "referral": "Cold"
+    }
+   ]
+  },
+  "expect": {
+   "rows": [
+    {
+     "company": "Verizon Wireless",
+     "open_roles": 12,
+     "best_score": 70,
+     "best_role": "Network Eng",
+     "best_tier": "T2",
+     "gc_sponsor": "No",
+     "gc_perm": 60,
+     "gc_months": 12,
+     "referral": "Warm",
+     "sponsorship": "Strong H-1B sponsor",
+     "h1b_fy25": 300,
+     "h1b_total": 2000,
+     "h1b_since": 2010
+    }
+   ],
+   "merged": {
+    "Verizon Wireless": [
+     "Cellco Partnership"
+    ]
+   }
+  }
+ }
+]

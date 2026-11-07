@@ -1,0 +1,312 @@
+[
+ {
+  "name": "privacy_true_review_accept_consent_statement",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Review and Accept Data Privacy Consent Statement"
+  },
+  "expect": true,
+  "spec_quote": "True when a link's text asks to open / read / review / view / accept a data-privacy document: \"<verb> … (data) privacy [consent|protection] statement|agreement|policy|notice\" (verb within ~30 characters before)",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_true_open_privacy_policy",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Open Privacy Policy"
+  },
+  "expect": true,
+  "spec_quote": "True when a link's text asks to open / read / review / view / accept a data-privacy document: \"<verb> … (data) privacy [consent|protection] statement|agreement|policy|notice\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_true_read_data_privacy_notice",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Read our data privacy notice"
+  },
+  "expect": true,
+  "spec_quote": "True when a link's text asks to open / read / review / view / accept a data-privacy document: \"<verb> … (data) privacy [consent|protection] statement|agreement|policy|notice\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_true_bare_data_privacy_agreement",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Data Privacy Agreement"
+  },
+  "expect": true,
+  "spec_quote": "or the bare text \"Data Privacy Statement\" / \"Data Privacy Agreement\" / \"Data Privacy Consent Statement\"",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_false_privacy_settings",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Privacy Settings"
+  },
+  "expect": false,
+  "spec_quote": "False for cookie or privacy *settings* links",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_false_privacy_alone",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Privacy"
+  },
+  "expect": false,
+  "spec_quote": "False for … \"Privacy\" alone",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_false_accept_cookies",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Accept cookies"
+  },
+  "expect": false,
+  "spec_quote": "False for cookie or privacy *settings* links, \"Privacy\" alone, \"Accept cookies\", \"Terms of use\".",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_false_terms_of_use",
+  "fn": "privacy_link",
+  "args": {
+   "text": "Terms of use"
+  },
+  "expect": false,
+  "spec_quote": "False for … \"Accept cookies\", \"Terms of use\".",
+  "ambiguous": false
+ },
+ {
+  "name": "site_board_dash_linkedin",
+  "fn": "site_board",
+  "args": {
+   "options": [
+    "Job Board - LinkedIn",
+    "Job Board - Indeed"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "True when any option looks like \"Job Board - <site>\" (also \"Job Board: X\", \"Job Board / X\")",
+  "ambiguous": false
+ },
+ {
+  "name": "site_board_colon_glassdoor",
+  "fn": "site_board",
+  "args": {
+   "options": [
+    "Job Board: Glassdoor"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "True when any option looks like \"Job Board - <site>\" (also \"Job Board: X\", \"Job Board / X\")",
+  "ambiguous": false
+ },
+ {
+  "name": "site_board_slash_handshake",
+  "fn": "site_board",
+  "args": {
+   "options": [
+    "Job Board / Handshake"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "True when any option looks like \"Job Board - <site>\" (also \"Job Board: X\", \"Job Board / X\")",
+  "ambiguous": false
+ },
+ {
+  "name": "site_board_plain_job_board_false",
+  "fn": "site_board",
+  "args": {
+   "options": [
+    "Job Board"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "a plain \"Job Board\" or \"Online job board\" option is False",
+  "ambiguous": false
+ },
+ {
+  "name": "site_board_online_job_board_false",
+  "fn": "site_board",
+  "args": {
+   "options": [
+    "Online job board"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "a plain \"Job Board\" or \"Online job board\" option is False",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_own_board_from_source",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - LinkedIn",
+    "Job Board - Indeed"
+   ],
+   "source": "Indeed",
+   "url": null
+  },
+  "expect": "Job Board - Indeed",
+  "spec_quote": "picks the option naming the job row's own board (from its source value or URL host: LinkedIn, Indeed, Glassdoor, Handshake, ZipRecruiter …)",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_own_board_from_url_host",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - LinkedIn",
+    "Job Board - Glassdoor"
+   ],
+   "source": null,
+   "url": "https://www.glassdoor.com/job/123"
+  },
+  "expect": "Job Board - Glassdoor",
+  "spec_quote": "picks the option naming the job row's own board (from its source value or URL host: LinkedIn, Indeed, Glassdoor, Handshake, ZipRecruiter …)",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_own_board_missing_default_linkedin",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - LinkedIn",
+    "Job Board - Indeed"
+   ],
+   "source": "ZipRecruiter",
+   "url": null
+  },
+  "expect": "Job Board - LinkedIn",
+  "spec_quote": "if the list does not have it, the option naming the first default that is listed (defaults = [\"LinkedIn\", \"Indeed\"])",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_no_linkedin_then_indeed",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - Indeed",
+    "Job Board - ZipRecruiter"
+   ],
+   "source": "Glassdoor",
+   "url": null
+  },
+  "expect": "Job Board - Indeed",
+  "spec_quote": "if the list does not have it, the option naming the first default that is listed (defaults = [\"LinkedIn\", \"Indeed\"])",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_aggregator_simplify_defaults",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - LinkedIn",
+    "Job Board - Indeed"
+   ],
+   "source": "Simplify",
+   "url": "https://simplify.jobs/p/abc"
+  },
+  "expect": "Job Board - LinkedIn",
+  "spec_quote": "Aggregators (Simplify, jobright, a GitHub list) are not boards → defaults apply.",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_no_board_options_null",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board",
+    "Online job board"
+   ],
+   "source": "LinkedIn",
+   "url": null
+  },
+  "expect": null,
+  "spec_quote": "None when no option names a known board or none of those are listed.",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_source_linkedin_listed_second",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - Indeed",
+    "Job Board - LinkedIn"
+   ],
+   "source": "LinkedIn",
+   "url": null
+  },
+  "expect": "Job Board - LinkedIn",
+  "spec_quote": "picks the option naming the job row's own board (from its source value or URL host: LinkedIn, Indeed, Glassdoor, Handshake, ZipRecruiter …)",
+  "ambiguous": false
+ },
+ {
+  "name": "board_pick_aggregator_defaults_absent_null",
+  "fn": "board_pick",
+  "args": {
+   "options": [
+    "Job Board - Glassdoor"
+   ],
+   "source": "jobright",
+   "url": "https://jobright.ai/jobs/1"
+  },
+  "expect": null,
+  "spec_quote": "Aggregators (Simplify, jobright, a GitHub list) are not boards → defaults apply. … None when no option names a known board or none of those are listed.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_zero_width_space_trailing",
+  "fn": "norm",
+  "args": {
+   "text": "I am not a protected veteran​"
+  },
+  "expect": "i am not a protected veteran",
+  "spec_quote": "zero-width space / joiner / non-joiner / word joiner / BOM / soft hyphen removed, so \"I am not a protected veteran​\" equals \"i am not a protected veteran\"",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_bom_and_zwj",
+  "fn": "norm",
+  "args": {
+   "text": "﻿Data‍ Analyst"
+  },
+  "expect": "data analyst",
+  "spec_quote": "lower-case, … whitespace collapsed, … and zero-width space / joiner / non-joiner / word joiner / BOM / soft hyphen removed",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_trailing_period",
+  "fn": "norm",
+  "args": {
+   "text": "Remote."
+  },
+  "expect": "remote",
+  "spec_quote": "lower-case, quotes / dashes normalised, whitespace collapsed, trailing \".\" dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_whitespace_collapsed",
+  "fn": "norm",
+  "args": {
+   "text": "Multiple    spaces"
+  },
+  "expect": "multiple spaces",
+  "spec_quote": "whitespace collapsed",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_word_joiner_and_soft_hyphen",
+  "fn": "norm",
+  "args": {
+   "text": "Senior⁠ Engineer­"
+  },
+  "expect": "senior engineer",
+  "spec_quote": "zero-width space / joiner / non-joiner / word joiner / BOM / soft hyphen removed",
+  "ambiguous": false
+ }
+]

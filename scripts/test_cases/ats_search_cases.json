@@ -1,0 +1,535 @@
+[
+ {
+  "name": "root_domain strips subdomains to last two labels",
+  "fn": "root_domain",
+  "args": {
+   "host": "careers.jobs.acme.com"
+  },
+  "expect": "acme.com",
+  "spec_quote": "Lower-cases and strips dots at the ends, then keeps the last two labels: `www.acme.com` → `acme.com`, `careers.jobs.acme.com` → `acme.com`.",
+  "ambiguous": false
+ },
+ {
+  "name": "root_domain keeps three labels for ccTLD under co/com/org/ac/gov/net",
+  "fn": "root_domain",
+  "args": {
+   "host": "shop.acme.com.au"
+  },
+  "expect": "acme.com.au",
+  "spec_quote": "When the second-to-last label is one of co / com / org / ac / gov / net AND the last label has exactly 2 letters (a country code), keeps the last three labels: `www.acme.co.uk` → `acme.co.uk`, `shop.acme.com.au` → `acme.com.au`.",
+  "ambiguous": false
+ },
+ {
+  "name": "career_hosts derives careers/jobs hosts from company domain root",
+  "fn": "career_hosts",
+  "args": {
+   "site": "https://careers.acme.co.uk/about"
+  },
+  "expect": [
+   "careers.acme.co.uk",
+   "jobs.acme.co.uk"
+  ],
+  "spec_quote": "Company site → `['careers.<root>', 'jobs.<root>']` in that order, root = root_domain(site).",
+  "ambiguous": true,
+  "ambiguity_note": "The spec calls the argument `site` and does not say whether a full URL with a path (as opposed to a bare host) is acceptable input; root_domain is only specified for hosts, so stripping the scheme/path is not explicitly stated."
+ },
+ {
+  "name": "clean_ident icims keeps careers-prefixed employee-facing label",
+  "fn": "clean_ident",
+  "args": {
+   "system": "icims",
+   "ident": "careers-acme.icims.com"
+  },
+  "expect": "careers-acme.icims.com",
+  "spec_quote": "**icims**: must be exactly `<label>.icims.com`. Null when the label is vendor infrastructure — `www`, `i`, `login`, `cdn` or `cdn` + digits, `images`, `assets`, `static`, `cookie-policy-scripts`, `api`, `app`, `careers`, `jobs` ... `careers-acme.icims.com` → kept",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident icims rejects www vendor label",
+  "fn": "clean_ident",
+  "args": {
+   "system": "icims",
+   "ident": "www.icims.com"
+  },
+  "expect": null,
+  "spec_quote": "**icims**: must be exactly `<label>.icims.com`. Null when the label is vendor infrastructure — `www`, `i`, `login`, `cdn` or `cdn` + digits, `images`, `assets`, `static`, `cookie-policy-scripts`, `api`, `app`, `careers`, `jobs`",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident taleo strips leftover url-encoded 2f prefix",
+  "fn": "clean_ident",
+  "args": {
+   "system": "taleo",
+   "ident": "2fhdr.taleo.net"
+  },
+  "expect": "hdr.taleo.net",
+  "spec_quote": "a leading `2f` glued directly to a host label (a URL-encoded \"/\" left over, as in `2fhdr.taleo.net`) is removed.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident ultipro normalizes tenant upper-case and board id lower-case",
+  "fn": "clean_ident",
+  "args": {
+   "system": "ultipro",
+   "ident": "recruiting.ultipro.com/abc123/JobBoard/12345678-1234-1234-1234-123456789012"
+  },
+  "expect": "recruiting.ultipro.com/ABC123/JobBoard/12345678-1234-1234-1234-123456789012",
+  "spec_quote": "**ultipro**: must be `<host>/<tenant>/JobBoard/<36-character board id>` ... Returned as `<host>/<TENANT upper-case>/JobBoard/<board id lower-case>`.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident ultipro without board id is null",
+  "fn": "clean_ident",
+  "args": {
+   "system": "ultipro",
+   "ident": "recruiting2.ultipro.com/abc123"
+  },
+  "expect": null,
+  "spec_quote": "Without the board id (e.g. `recruiting2.ultipro.com/abc123`) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident oraclecloud rejects dev host",
+  "fn": "clean_ident",
+  "args": {
+   "system": "oraclecloud",
+   "ident": "eofe-dev3.fa.us2.oraclecloud.com"
+  },
+  "expect": null,
+  "spec_quote": "**oraclecloud**: must be `<label>.fa.<region>.oraclecloud.com`; null when the first label ends with `-dev`, `-test` or `-stage` (optionally followed by digits). ... `eofe-dev3.fa.us2.oraclecloud.com` → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident oraclecloud keeps production requisition host",
+  "fn": "clean_ident",
+  "args": {
+   "system": "oraclecloud",
+   "ident": "eofe.fa.us2.oraclecloud.com"
+  },
+  "expect": "eofe.fa.us2.oraclecloud.com",
+  "spec_quote": "**oraclecloud**: must be `<label>.fa.<region>.oraclecloud.com`; null when the first label ends with `-dev`, `-test` or `-stage` (optionally followed by digits). `eofe.fa.us2.oraclecloud.com` → kept",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident teamtailor drops @site suffix",
+  "fn": "clean_ident",
+  "args": {
+   "system": "teamtailor",
+   "ident": "acme.teamtailor.com@acme.com"
+  },
+  "expect": "acme.teamtailor.com",
+  "spec_quote": "First: anything after an `@` is dropped (the `@site` suffix), whitespace and slashes at the ends are stripped, the result is lower-cased",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident workable accepts plain slug and lower-cases it",
+  "fn": "clean_ident",
+  "args": {
+   "system": "workable",
+   "ident": "Acme-Inc"
+  },
+  "expect": "acme-inc",
+  "spec_quote": "**smartrecruiters / workable / jobvite / rippling**: ident is a slug: letters, digits, `_`, `-` only (starting with a letter or digit); null when it is vendor infrastructure (`api`, `embed`, `cdn-cgi`, `job-api`, `de-de`, `en-us`, `www`, …).",
+  "ambiguous": false
+ },
+ {
+  "name": "with_site appends @site only to successfactors/phenom/eightfold/teamtailor",
+  "fn": "with_site",
+  "args": {
+   "systems": [
+    [
+     "successfactors",
+     "acme.successfactors.com"
+    ],
+    [
+     "icims",
+     "careers-acme.icims.com"
+    ]
+   ],
+   "site": "acme.com"
+  },
+  "expect": [
+   [
+    "successfactors",
+    "acme.successfactors.com@acme.com"
+   ],
+   [
+    "icims",
+    "careers-acme.icims.com"
+   ]
+  ],
+  "spec_quote": "For successfactors, phenom, eightfold and teamtailor whose ident is a string without `@`, the ident becomes `<ident>@<site>`. Every other pair is unchanged, order kept.",
+  "ambiguous": false
+ },
+ {
+  "name": "with_site empty site leaves list unchanged",
+  "fn": "with_site",
+  "args": {
+   "systems": [
+    [
+     "teamtailor",
+     "acme.teamtailor.com"
+    ],
+    [
+     "taleo",
+     "hdr.taleo.net"
+    ]
+   ],
+   "site": ""
+  },
+  "expect": [
+   [
+    "teamtailor",
+    "acme.teamtailor.com"
+   ],
+   [
+    "taleo",
+    "hdr.taleo.net"
+   ]
+  ],
+  "spec_quote": "Empty site → the list unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_icims takes title from h3, url up to /job, location from preceding field label, ignores foreign host",
+  "fn": "parse_icims",
+  "args": {
+   "page": "<div><span class=\"sr-only field-label\">Location</span><span>US-VA-Arlington</span></div><a href=\"https://careers-acme.icims.com/jobs/12345/data-analyst/job?mode=job&amp;iis=Job+Board\"><span>Data Analyst</span><h3>Data Analyst</h3></a><a href=\"https://evil.example.com/jobs/999/other/job\"><h3>Other Job</h3></a>",
+   "host": "careers-acme.icims.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "US-VA-Arlington",
+    "url": "https://careers-acme.icims.com/jobs/12345/data-analyst/job"
+   }
+  ],
+  "spec_quote": "each `<a href=\"https://<host>/jobs/<digits>/<slug>/job…\">` whose content is an optional `<span>…</span>` then `<h3>Title</h3>` is a posting; url = the href up to `/job` (query string dropped). location = the last `Location` field label ... within the 1,500 characters before the link, else \"\". Links to another host are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_icims posting without a preceding Location label gets empty location",
+  "fn": "parse_icims",
+  "args": {
+   "page": "<a href=\"https://careers-acme.icims.com/jobs/55555/engineer/job\"><h3>Engineer</h3></a>",
+   "host": "careers-acme.icims.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "",
+    "url": "https://careers-acme.icims.com/jobs/55555/engineer/job"
+   }
+  ],
+  "spec_quote": "location = the last `Location` field label (`<span class=\"sr-only field-label\">Location</span><span>US-VA-Arlington</span>`) within the 1,500 characters before the link, else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_rmk joins base url, location from jobLocation, duplicate href collapses to one posting",
+  "fn": "parse_rmk",
+  "args": {
+   "page": "<div class=\"job-list\"><a class=\"jobTitle-link\" href=\"/job/data-analyst/12345/\">Data Analyst</a><span class=\"jobLocation\">Arlington, VA</span><a href=\"/job/data-analyst/12345/\" class=\"jobTitle-link\">Data Analyst</a><span class=\"jobLocation\">Arlington, VA</span></div>",
+   "base": "https://careers.acme.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "url": "https://careers.acme.com/job/data-analyst/12345/"
+   }
+  ],
+  "spec_quote": "`<a … href=\"/job/<slug>/<digits>/\" … class=\"jobTitle-link…\">Title</a>` (attribute order either way). url = base joined with the href. The same href twice → one posting. location = the first `class=\"jobLocation…\"` element's text within 2,500 characters after the link, else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_phenom strips /apply on ATS applyUrl and falls back to baseUrl+job/id for non-ATS applyUrl",
+  "fn": "parse_phenom",
+  "args": {
+   "page": "<script>{\"eagerLoadRefineSearch\":{\"baseUrl\":\"https://careers.acme.com/\",\"data\":{\"jobs\":[{\"jobId\":\"88231\",\"title\":\"Data Analyst\",\"cityStateCountry\":\"Arlington, VA, US\",\"applyUrl\":\"https://boards.greenhouse.io/acme/jobs/88231/apply\"},{\"jobId\":\"88232\",\"title\":\"Data Engineer\",\"location\":\"Remote\",\"applyUrl\":\"https://careers.acme.com/en/jobs/88232\"}]}}}</script>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA, US",
+    "url": "https://boards.greenhouse.io/acme/jobs/88231"
+   },
+   {
+    "title": "Data Engineer",
+    "location": "Remote",
+    "url": "https://careers.acme.com/job/88232"
+   }
+  ],
+  "spec_quote": "url = the job's applyUrl with a trailing `/apply` removed when applyUrl is on myworkdayjobs.com / myworkdaysite.com / greenhouse.io / lever.co / ashbyhq.com; otherwise `<baseUrl>job/<jobId>` ... location = cityStateCountry, else location, else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_phenom without eagerLoadRefineSearch returns empty list",
+  "fn": "parse_phenom",
+  "args": {
+   "page": "<html><body><h1>Careers</h1><script>var x = {\"other\":1};</script></body></html>"
+  },
+  "expect": [],
+  "spec_quote": "No eagerLoadRefineSearch or broken JSON → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_oracle builds hcmUI url and skips entries without Id",
+  "fn": "parse_oracle",
+  "args": {
+   "d": {
+    "items": [
+     {
+      "requisitionList": [
+       {
+        "Id": "12345",
+        "Title": "Data Analyst",
+        "PrimaryLocation": "Arlington, VA, US"
+       },
+       {
+        "Title": "No Id Job",
+        "PrimaryLocation": "Nowhere"
+       }
+      ]
+     }
+    ]
+   },
+   "host": "eofe.fa.us2.oraclecloud.com",
+   "site": "AcmeSite"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA, US",
+    "url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/AcmeSite/job/12345"
+   }
+  ],
+  "spec_quote": "postings = items[0].requisitionList; url = `https://<host>/hcmUI/CandidateExperience/en/sites/<site>/job/<Id>`, location = PrimaryLocation. Entries without Id skipped; no items → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_taleo joins JSON-list location with semicolons and skips entry without contestNo",
+  "fn": "parse_taleo",
+  "args": {
+   "d": {
+    "requisitionList": [
+     {
+      "contestNo": "98765",
+      "column": [
+       "Data Analyst",
+       "[\"Arlington, VA\",\"US\"]"
+      ]
+     },
+     {
+      "column": [
+       "Ignored Job",
+       "Nowhere"
+      ]
+     }
+    ]
+   },
+   "host": "hdr.taleo.net",
+   "cs": "acme"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA; US",
+    "url": "https://hdr.taleo.net/careersection/acme/jobdetail.ftl?job=98765&lang=en"
+   }
+  ],
+  "spec_quote": "each requisitionList entry with a column list and contestNo → title = column[0]; location = column[1] — when it is a JSON list string (`[\"A\",\"B\"]`) its items joined with \"; \"; url = `https://<host>/careersection/<cs>/jobdetail.ftl?job=<contestNo>&lang=en`.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_jazz reads location after map-marker icon",
+  "fn": "parse_jazz",
+  "args": {
+   "page": "<li><a href=\"https://acme.applytojob.com/apply/AbC123/data-analyst\">Data Analyst</a><div><i class='fa fa-map-marker'></i> Arlington, VA</div></li>",
+   "host": "acme.applytojob.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "url": "https://acme.applytojob.com/apply/AbC123/data-analyst"
+   }
+  ],
+  "spec_quote": "**parse_jazz(page, host)**: `<a href=\"https://<host>/apply/<id>/<slug>\">Title</a>`; location = the text after the next `fa-map-marker'></i>` within 600 characters, else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_jobvite builds jobs.jobvite.com url and strips tags from location cell",
+  "fn": "parse_jobvite",
+  "args": {
+   "page": "<tr><td><a href=\"/acme/job/oQ12345\">Data Analyst</a></td><td class=\"jv-job-list-location\"><span>Arlington, VA</span></td></tr><tr><td><a href=\"https://other.example.com/x/job/oQ9\">Other</a></td></tr>",
+   "slug": "acme"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "url": "https://jobs.jobvite.com/acme/job/oQ12345"
+   }
+  ],
+  "spec_quote": "**parse_jobvite(page, slug)**: `<a … href=\"/<slug>/job/<id>\">Title</a>`; url = `https://jobs.jobvite.com/<slug>/job/<id>`; location = text of the next `jv-job-list-location\">…</td` within 1,500 characters (tags removed), else \"\".",
+  "ambiguous": true,
+  "ambiguity_note": "The spec pattern is `href=\"/<slug>/job/<id>\"`; it does not state whether a link whose href is an absolute URL not matching that relative form is ignored, so the second anchor's treatment is inferred (expected to be skipped) rather than quoted."
+ },
+ {
+  "name": "parse_rss decodes CDATA title and leaves location empty",
+  "fn": "parse_rss",
+  "args": {
+   "xml": "<rss><channel><item><title><![CDATA[Data Analyst &amp; Reporting]]></title><link>https://acme.applytojob.com/apply/AbC123/data-analyst</link></item><item><title>No Link Job</title></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst & Reporting",
+    "location": "",
+    "url": "https://acme.applytojob.com/apply/AbC123/data-analyst"
+   }
+  ],
+  "spec_quote": "**parse_rss(xml)**: each `<item>` with `<title>` and `<link>`; CDATA wrappers removed; location \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "postings returns empty for a system outside the supported list without a request",
+  "fn": "postings_offline",
+  "args": {
+   "system": "adp",
+   "ident": "acme.adp.com",
+   "query": "data analyst"
+  },
+  "expect": [],
+  "spec_quote": "A system outside the list (icims, oraclecloud, successfactors, taleo, smartrecruiters, workable, jobvite, bamboohr, ultipro, eightfold, phenom, avature, jazzhr, rippling, breezy, recruitee, teamtailor, pinpoint) → [] without any request.",
+  "ambiguous": false
+ },
+ {
+  "name": "postings returns empty when clean_ident rejects the ident without a request",
+  "fn": "postings_offline",
+  "args": {
+   "system": "icims",
+   "ident": "www.icims.com",
+   "query": "data analyst"
+  },
+  "expect": [],
+  "spec_quote": "An ident clean_ident rejects → [] without any request. Never raises.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide matches an icims posting by title and returns its url",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "icims",
+     "careers-acme.icims.com"
+    ]
+   ],
+   "postings": {
+    "icims:careers-acme.icims.com": [
+     [
+      "Data Analyst",
+      "https://careers-acme.icims.com/jobs/12345/data-analyst/job",
+      "US-VA-Arlington"
+     ]
+    ]
+   }
+  },
+  "expect": {
+   "code": "match",
+   "system": "icims",
+   "ats_url": "https://careers-acme.icims.com/jobs/12345/data-analyst/job"
+  },
+  "spec_quote": "A row whose systems include one of the systems above with an ident clean_ident accepts is searched like Workday / Greenhouse: a posting matching the title → code \"match\" with its url; none → code \"no_match\", system = that system.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide reports no_match with the searched system when titles differ",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "jobvite",
+     "acme"
+    ]
+   ],
+   "postings": {
+    "jobvite:acme": [
+     [
+      "Sales Manager",
+      "https://jobs.jobvite.com/acme/job/oQ1",
+      "New York, NY"
+     ]
+    ]
+   }
+  },
+  "expect": {
+   "code": "no_match",
+   "system": "jobvite"
+  },
+  "spec_quote": "none → code \"no_match\", system = that system.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide falls back to other_system when the only system is unsupported",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "adp",
+     "acme.adp.com"
+    ]
+   ],
+   "postings": {}
+  },
+  "expect": {
+   "code": "other_system",
+   "system": "adp"
+  },
+  "spec_quote": "Systems whose ident clean_ident rejects, or systems not in the list (adp, paycom, …), are not searched; when nothing searchable is left → code \"other_system\", system = the first system in the list.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide other_system names the first system in the list even when it is a rejected ident",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Data Analyst",
+    "location": "Arlington, VA",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "icims",
+     "www.icims.com"
+    ],
+    [
+     "adp",
+     "acme.adp.com"
+    ]
+   ],
+   "postings": {}
+  },
+  "expect": {
+   "code": "other_system",
+   "system": "icims"
+  },
+  "spec_quote": "Systems whose ident clean_ident rejects, or systems not in the list (adp, paycom, …), are not searched; when nothing searchable is left → code \"other_system\", system = the first system in the list.",
+  "ambiguous": false
+ }
+]

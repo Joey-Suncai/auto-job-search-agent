@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "type": "select"|"radio"|"text", "options": [str], "expect": str, "spec_quote": str, "ambiguous": false}. Write 22 cases covering every bullet at least 3 times with different wording.

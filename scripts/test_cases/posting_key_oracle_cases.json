@@ -1,0 +1,58 @@
+[
+ {
+  "name": "Oracle job posting base URL",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/12345",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "Oracle Recruiting Cloud (`<host>.oraclecloud.com/hcmUI/CandidateExperience/<lang>/sites/<site>/job/<id>` or `…/requisitions/preview/<id>`): \"<host in lower case>/job/<id>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle requisitions preview URL",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/requisitions/preview/67890",
+  "expect": "acme.oraclecloud.com/job/67890",
+  "spec_quote": "`…/requisitions/preview/<id>`): \"<host in lower case>/job/<id>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle job apply/email page",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/12345/apply/email",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "the same for every page of that job's apply flow (/apply/email, /apply/section/3, ?query)",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle job apply section 3 page",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/12345/apply/section/3",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "the same for every page of that job's apply flow (/apply/email, /apply/section/3, ?query)",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle job URL with query string",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/12345?query=abc&utm_source=x",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "the same for every page of that job's apply flow (/apply/email, /apply/section/3, ?query)",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle upper-case host is lower-cased in key",
+  "url": "https://ACME.OracleCloud.COM/hcmUI/CandidateExperience/en/sites/CX_1001/job/12345",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "\"<host in lower case>/job/<id>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle same job id under different lang and site",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/fr/sites/CX_2002/job/12345",
+  "expect": "acme.oraclecloud.com/job/12345",
+  "spec_quote": "\"<host in lower case>/job/<id>\" — the same for every page of that job's apply flow",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle second job on same tenant gets distinct key",
+  "url": "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/54321",
+  "expect": "acme.oraclecloud.com/job/54321",
+  "spec_quote": "\"<host in lower case>/job/<id>\"",
+  "ambiguous": false
+ }
+]

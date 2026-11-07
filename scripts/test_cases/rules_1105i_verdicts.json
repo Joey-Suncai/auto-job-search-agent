@@ -1,0 +1,4 @@
+{
+ "Yes/No near miss: 'Are you open to relocating?'": "Case misreads the spec: the spec only says a Yes/No relocation question is NOT a ranking question (never a list of places); the relocate rule answering Yes (candidate-profile: willing to relocate anywhere in the U.S.) is right, and no list is given.",
+ "Yes/No near miss: relocation willingness phrased with U.S. locations": "Same as above: not a ranking question; relocate = Yes from the profile, no list of places — what the spec guards."
+}

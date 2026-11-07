@@ -1,0 +1,280 @@
+[
+ {
+  "name": "bg_check_basic",
+  "label": "Are you willing to submit to a background check?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "bg_screen_drug",
+  "label": "Willing to submit to a background screen and/or drug test",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Prefer not to say"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "bg_investigation",
+  "label": "Are you willing to submit to a background investigation?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "bg_drug_screen_only",
+  "label": "Are you willing to submit to a drug screen?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "bg_combo_long",
+  "label": "Willing to submit to a background check, background screen, background investigation and/or drug screen / drug test",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "bg_with_decline",
+  "label": "Are you willing to submit to a background check and drug test?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Decline"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "dl_us_valid",
+  "label": "Do you have a valid U.S. driver's license?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "dl_driver_license",
+  "label": "Has a valid driver license",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "dl_driving_licence",
+  "label": "Do you hold a valid driving licence?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "dl_us_no_period",
+  "label": "Valid US driver's license",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Not applicable"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "dl_variant",
+  "label": "Do you possess a valid U.S. driver license?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "work_arrangement_onsite",
+  "label": "What is your preferred work arrangement?",
+  "type": "select",
+  "options": [
+   "Onsite (in-office)",
+   "Hybrid",
+   "Remote"
+  ],
+  "expect": "Onsite (in-office)"
+ },
+ {
+  "name": "work_model_onsite",
+  "label": "Preferred working model",
+  "type": "select",
+  "options": [
+   "Remote",
+   "On-site",
+   "Hybrid"
+  ],
+  "expect": "On-site"
+ },
+ {
+  "name": "work_environment_in_office",
+  "label": "Preferred work environment",
+  "type": "select",
+  "options": [
+   "In office",
+   "Remote",
+   "Hybrid"
+  ],
+  "expect": "In office"
+ },
+ {
+  "name": "work_which_prefer",
+  "label": "Which work arrangement would you prefer?",
+  "type": "select",
+  "options": [
+   "Hybrid",
+   "In office",
+   "Remote"
+  ],
+  "expect": "In office"
+ },
+ {
+  "name": "work_mode_onsite",
+  "label": "Preferred working mode",
+  "type": "select",
+  "options": [
+   "Remote",
+   "Hybrid",
+   "Onsite (in-office)"
+  ],
+  "expect": "Onsite (in-office)"
+ },
+ {
+  "name": "work_arrangement_short",
+  "label": "What is your preferred work arrangement?",
+  "type": "select",
+  "options": [
+   "On-site",
+   "Remote"
+  ],
+  "expect": "On-site"
+ },
+ {
+  "name": "phone_mobile",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Mobile",
+   "Landline",
+   "Work"
+  ],
+  "expect": "Mobile"
+ },
+ {
+  "name": "phone_cell",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Cell",
+   "Home",
+   "Work"
+  ],
+  "expect": "Cell"
+ },
+ {
+  "name": "phone_personal_cell",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Personal Cell Phone",
+   "Landline"
+  ],
+  "expect": "Personal Cell Phone"
+ },
+ {
+  "name": "phone_mobile_phone",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Mobile Phone",
+   "Home",
+   "Work",
+   "Landline"
+  ],
+  "expect": "Mobile Phone"
+ },
+ {
+  "name": "phone_order",
+  "label": "Phone Device Type",
+  "type": "select",
+  "options": [
+   "Landline",
+   "Mobile"
+  ],
+  "expect": "Mobile"
+ },
+ {
+  "name": "dl_state_class",
+  "label": "Please provide the State and Class for your driver's license",
+  "type": "select",
+  "options": [
+   "Illinois, Class D",
+   "Illinois, Class M",
+   "Indiana, Class D"
+  ],
+  "expect": "Illinois, Class D"
+ },
+ {
+  "name": "dl_state_class_4",
+  "label": "Please provide the State and Class for your driver's license",
+  "type": "select",
+  "options": [
+   "Illinois, Class D",
+   "Illinois, Class A",
+   "Wisconsin, Class D",
+   "Iowa, Class C"
+  ],
+  "expect": "Illinois, Class D"
+ },
+ {
+  "name": "dl_state_class_2",
+  "label": "Please provide the State and Class for your driver's license",
+  "type": "select",
+  "options": [
+   "Illinois, Class D",
+   "Illinois, Class B"
+  ],
+  "expect": "Illinois, Class D"
+ },
+ {
+  "name": "dl_state_class_5",
+  "label": "Please provide the State and Class for your driver's license",
+  "type": "select",
+  "options": [
+   "Illinois, Class M",
+   "Illinois, Class D",
+   "Missouri, Class D",
+   "Illinois, Class C",
+   "Illinois, Class A"
+  ],
+  "expect": "Illinois, Class D"
+ }
+]

@@ -1,0 +1,380 @@
+[
+ {
+  "name": "kind: jobright job info URL",
+  "fn": "kind",
+  "args": {
+   "url": "https://jobright.ai/jobs/info/673abc123def"
+  },
+  "expect": "jobright",
+  "spec_quote": "**kind(url)** → \"jobright\" for `jobright.ai/jobs/info/…`",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: handshake URL",
+  "fn": "kind",
+  "args": {
+   "url": "https://joinhandshake.com/jobs/1234567"
+  },
+  "expect": "handshake",
+  "spec_quote": "\"handshake\" for any `joinhandshake.com` URL",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: linkedin jobs view",
+  "fn": "kind",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/view/3901234567"
+  },
+  "expect": "linkedin",
+  "spec_quote": "\"linkedin\" for `linkedin.com/jobs/view/…` or `linkedin.com/comm/jobs/view/…` (any case, with or without www)",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: linkedin comm jobs view, mixed case, no www",
+  "fn": "kind",
+  "args": {
+   "url": "https://LinkedIn.com/comm/jobs/view/3901234567"
+  },
+  "expect": "linkedin",
+  "spec_quote": "\"linkedin\" for `linkedin.com/jobs/view/…` or `linkedin.com/comm/jobs/view/…` (any case, with or without www)",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: linkedin company page is a near miss → null",
+  "fn": "kind",
+  "args": {
+   "url": "https://www.linkedin.com/company/acme-corp"
+  },
+  "expect": null,
+  "spec_quote": "anything else (a LinkedIn company page, a profile, a Greenhouse link) → null",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: greenhouse link is a near miss → null",
+  "fn": "kind",
+  "args": {
+   "url": "https://boards.greenhouse.io/acmetoken"
+  },
+  "expect": null,
+  "spec_quote": "anything else (a LinkedIn company page, a profile, a Greenhouse link) → null",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: brassring host",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://sjobs.brassring.com/TGnewUI/Search/Home/Home?partnerid=25012\">Apply now</a>"
+  },
+  "expect": [
+   [
+    "brassring",
+    "sjobs.brassring.com"
+   ]
+  ],
+  "spec_quote": "brassring (`jobs.brassring.com`, `sjobs.brassring.com`, `ts.brassring.com` → that host)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: jazzhr both host forms",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://acme.applytojob.com/apply/xYz\">A</a> <a href=\"https://app.jazz.co/apply/abc\">B</a>"
+  },
+  "expect": [
+   [
+    "jazzhr",
+    "acme.applytojob.com"
+   ],
+   [
+    "jazzhr",
+    "app.jazz.co"
+   ]
+  ],
+  "spec_quote": "jazzhr (`<x>.applytojob.com` or `app.jazz.co` → that host)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: clearcompany both host forms",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://apply.clearcompany.com/v1/jobs/abc\">A</a> <a href=\"https://acme.hrmdirect.com/employment/job-openings.php\">B</a>"
+  },
+  "expect": [
+   [
+    "clearcompany",
+    "apply.clearcompany.com"
+   ],
+   [
+    "clearcompany",
+    "acme.hrmdirect.com"
+   ]
+  ],
+  "spec_quote": "clearcompany (`apply.clearcompany.com` or `<x>.hrmdirect.com` → host)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: paycom",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://paycomonline.net/v4/ats/web.php/jobs?clientkey=ABC\">Careers</a>"
+  },
+  "expect": [
+   [
+    "paycom",
+    "paycomonline.net"
+   ]
+  ],
+  "spec_quote": "paycom (`paycomonline.net` → \"paycomonline.net\")",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: rippling slug",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://ats.rippling.com/acme-corp/jobs/1234\">Job</a>"
+  },
+  "expect": [
+   [
+    "rippling",
+    "acme-corp"
+   ]
+  ],
+  "spec_quote": "rippling (`ats.rippling.com/<slug>` → slug)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: breezy host lower-cased",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://Acme.Breezy.HR/p/abc123\">Open roles</a>"
+  },
+  "expect": [
+   [
+    "breezy",
+    "acme.breezy.hr"
+   ]
+  ],
+  "spec_quote": "breezy (`<x>.breezy.hr` → host) ... Hosts are lower-case.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: recruitee and teamtailor in fixed order",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://acme.teamtailor.com/jobs/1\">T</a> <a href=\"https://acme.recruitee.com/o/senior-engineer\">R</a>"
+  },
+  "expect": [
+   [
+    "recruitee",
+    "acme.recruitee.com"
+   ],
+   [
+    "teamtailor",
+    "acme.teamtailor.com"
+   ]
+  ],
+  "spec_quote": "recruitee (`<x>.recruitee.com` → host), teamtailor (`<x>.teamtailor.com` → host)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: pinpoint host",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://acme.pinpointhq.com/post/123\">Jobs</a>"
+  },
+  "expect": [
+   [
+    "pinpoint",
+    "acme.pinpointhq.com"
+   ]
+  ],
+  "spec_quote": "pinpoint (`<x>.pinpointhq.com` → host)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: dover apply slug",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://app.dover.com/apply/acme/abc-123\">Apply</a>"
+  },
+  "expect": [
+   [
+    "dover",
+    "acme"
+   ]
+  ],
+  "spec_quote": "dover (`app.dover.com/apply/<slug>` or `app.dover.io/apply/<slug>` → slug)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: ultipro n<digits> host plus first path part, lower-cased",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://n1234.ultipro.com/Acme/JobBoard/abc-def\">Careers</a>"
+  },
+  "expect": [
+   [
+    "ultipro",
+    "n1234.ultipro.com/acme"
+   ]
+  ],
+  "spec_quote": "ultipro also matches `n<digits>.ultipro.com/<path>` (as well as recruiting.ultipro.com / recruiting2.ultipro.com) → ident = host + \"/\" + first path part, lower-case.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: smartrecruiters www — vendor page ignored, real slug kept and lower-cased",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://www.smartrecruiters.com/customers/tesla\">Customers</a> <a href=\"https://www.smartrecruiters.com/AcmeCorp/74400001234\">Jobs</a>"
+  },
+  "expect": [
+   [
+    "smartrecruiters",
+    "acmecorp"
+   ]
+  ],
+  "spec_quote": "smartrecruiters also matches `www.smartrecruiters.com/<Slug>` → slug lower-case, but NOT when the first path part is one of the vendor's own pages: company, customers, resources, blog, about, platform, pricing, product, solutions, demo, legal, privacy, jobs, careers, integrations (any case), and the slug must start with a letter.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_ats: ordering — new systems come after all earlier ones",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://app.dover.io/apply/acme/x\">d</a> <a href=\"https://acme.breezy.hr/p/1\">b</a> <a href=\"https://boards.greenhouse.io/acmetoken\">g</a> <a href=\"https://ats.rippling.com/acme/jobs/1\">r</a> <a href=\"https://acme.applytojob.com/apply/1\">j</a>"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acmetoken"
+   ],
+   [
+    "rippling",
+    "acme"
+   ],
+   [
+    "breezy",
+    "acme.breezy.hr"
+   ],
+   [
+    "jazzhr",
+    "acme.applytojob.com"
+   ],
+   [
+    "dover",
+    "acme"
+   ]
+  ],
+  "spec_quote": "detect_ats also records these systems by name, after all the systems listed above, in this order: brassring ..., jazzhr ..., clearcompany ..., paycom ..., rippling ..., breezy ..., recruitee ..., teamtailor ..., pinpoint ..., dover ...",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title: removes (Multiple openings)",
+  "fn": "norm_title",
+  "args": {
+   "t": "Data Scientist (Multiple openings)"
+  },
+  "expect": "Data Scientist",
+  "spec_quote": "**norm_title** also removes \"(Multiple openings)\", \"(Several positions)\", \"(3 roles)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title: removes numbered roles parenthetical, any case",
+  "fn": "norm_title",
+  "args": {
+   "t": "Software Engineer (3 ROLES)"
+  },
+  "expect": "Software Engineer",
+  "spec_quote": "i.e. \"(\" + multiple / several / a number + opening(s) / position(s) / role(s) + \")\" (any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title: removes (Several positions)",
+  "fn": "norm_title",
+  "args": {
+   "t": "Quantitative Researcher (Several positions)"
+  },
+  "expect": "Quantitative Researcher",
+  "spec_quote": "**norm_title** also removes \"(Multiple openings)\", \"(Several positions)\", \"(3 roles)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title: trailing ' in <City>, <ST>' with final period",
+  "fn": "norm_title",
+  "args": {
+   "t": "Data Scientist in Cupertino, CA."
+  },
+  "expect": "Data Scientist",
+  "spec_quote": "and a trailing \" in <City>, <ST>\" with an optional final period (\"Data Scientist in Cupertino, CA.\" → \"Data Scientist\").",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_title: near miss — (Multiple Teams) is not the openings/positions/roles pattern",
+  "fn": "norm_title",
+  "args": {
+   "t": "Data Analyst (Multiple Teams)"
+  },
+  "expect": "Data Analyst (Multiple Teams)",
+  "spec_quote": "i.e. \"(\" + multiple / several / a number + opening(s) / position(s) / role(s) + \")\" (any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_queries: two-word title yields one query",
+  "fn": "wd_queries",
+  "args": {
+   "title": "Data Scientist"
+  },
+  "expect": [
+   "Data Scientist"
+  ],
+  "spec_quote": "first norm_title(title); then, only when that has more than three words ... its first three words joined by spaces",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_queries: exactly three words — no truncation entry",
+  "fn": "wd_queries",
+  "args": {
+   "title": "Senior Data Scientist"
+  },
+  "expect": [
+   "Senior Data Scientist"
+  ],
+  "spec_quote": "then, only when that has more than three words (words = runs of letters / digits / & / +, punctuation dropped), its first three words joined by spaces",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_queries: five words → full title then first three words",
+  "fn": "wd_queries",
+  "args": {
+   "title": "Senior Machine Learning Engineer, NLP"
+  },
+  "expect": [
+   "Senior Machine Learning Engineer, NLP",
+   "Senior Machine Learning Engineer"
+  ],
+  "spec_quote": "first norm_title(title); then, only when that has more than three words (words = runs of letters / digits / & / +, punctuation dropped), its first three words joined by spaces",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_queries: abbreviation expanded before counting words",
+  "fn": "wd_queries",
+  "args": {
+   "title": "Sr. Machine Learning Engineer II"
+  },
+  "expect": [
+   "Senior Machine Learning Engineer II",
+   "Senior Machine Learning Engineer"
+  ],
+  "spec_quote": "norm_title also expands abbreviations, whole words, any case, an optional trailing dot: Sr → senior ... **wd_queries(title)** → ... first norm_title(title); then ... its first three words joined by spaces",
+  "ambiguous": false
+ },
+ {
+  "name": "wd_queries: title that normalizes to empty produces no queries",
+  "fn": "wd_queries",
+  "args": {
+   "title": "(Remote)"
+  },
+  "expect": [],
+  "spec_quote": "No empty or duplicate entries.",
+  "ambiguous": false
+ }
+]

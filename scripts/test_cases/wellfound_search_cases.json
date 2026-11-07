@@ -1,0 +1,516 @@
+[
+ {
+  "name": "job_id_relative_path",
+  "fn": "job_id",
+  "args": {
+   "href": "/jobs/4897782-research-engineer-intern"
+  },
+  "expect": "4897782"
+ },
+ {
+  "name": "job_id_full_url_query",
+  "fn": "job_id",
+  "args": {
+   "href": "https://wellfound.com/jobs/123-x?ref=a"
+  },
+  "expect": "123"
+ },
+ {
+  "name": "job_id_other_site",
+  "fn": "job_id",
+  "args": {
+   "href": "https://example.com/jobs/55"
+  },
+  "expect": ""
+ },
+ {
+  "name": "job_id_non_numeric_slug",
+  "fn": "job_id",
+  "args": {
+   "href": "/jobs/abc-engineer"
+  },
+  "expect": ""
+ },
+ {
+  "name": "job_id_none",
+  "fn": "job_id",
+  "args": {
+   "href": null
+  },
+  "expect": ""
+ },
+ {
+  "name": "job_id_empty_string",
+  "fn": "job_id",
+  "args": {
+   "href": ""
+  },
+  "expect": ""
+ },
+ {
+  "name": "job_id_plain_numeric",
+  "fn": "job_id",
+  "args": {
+   "href": "/jobs/789"
+  },
+  "expect": "789"
+ },
+ {
+  "name": "job_id_relative_query",
+  "fn": "job_id",
+  "args": {
+   "href": "/jobs/555?ref=x"
+  },
+  "expect": "555"
+ },
+ {
+  "name": "posted_six_days",
+  "fn": "posted_date",
+  "args": {
+   "text": "POSTED 6 DAYS AGO"
+  },
+  "expect": "2026-10-28"
+ },
+ {
+  "name": "posted_two_weeks",
+  "fn": "posted_date",
+  "args": {
+   "text": "Posted 2 weeks ago"
+  },
+  "expect": "2026-10-20"
+ },
+ {
+  "name": "posted_one_month",
+  "fn": "posted_date",
+  "args": {
+   "text": "posted 1 month ago"
+  },
+  "expect": "2026-10-04"
+ },
+ {
+  "name": "posted_a_year",
+  "fn": "posted_date",
+  "args": {
+   "text": "Posted a year ago"
+  },
+  "expect": "2025-11-03"
+ },
+ {
+  "name": "posted_an_hour",
+  "fn": "posted_date",
+  "args": {
+   "text": "POSTED AN HOUR AGO"
+  },
+  "expect": "2026-11-03"
+ },
+ {
+  "name": "posted_yesterday",
+  "fn": "posted_date",
+  "args": {
+   "text": "posted yesterday"
+  },
+  "expect": "2026-11-02"
+ },
+ {
+  "name": "posted_no_phrase",
+  "fn": "posted_date",
+  "args": {
+   "text": "RECRUITER RECENTLY ACTIVE"
+  },
+  "expect": ""
+ },
+ {
+  "name": "parse_none_without_job_id",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/companies/acme",
+    "text": "Data Analyst\nRemote",
+    "company": "Acme"
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_none_without_title",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/111-engineer",
+    "text": "",
+    "company": "Acme"
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_none_blank_company",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/222-engineer",
+    "text": "Software Engineer\nRemote",
+    "company": "   "
+   }
+  },
+  "expect": null
+ },
+ {
+  "name": "parse_text_basic",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/333-product-management-intern?utm=1",
+    "text": "Product Management Intern\nIn officeNew York City$100k – $110k\nPOSTED 2 MONTHS AGO",
+    "company": " Acme Corp "
+   }
+  },
+  "expect": {
+   "job_id": "333",
+   "company": "Acme Corp",
+   "title": "Product Management Intern",
+   "location": "New York City",
+   "posted": "2026-09-04",
+   "url": "https://wellfound.com/jobs/333-product-management-intern"
+  }
+ },
+ {
+  "name": "parse_parts_multiple_locations",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/444-ba-intern",
+    "text": "ignored",
+    "company": "Beta",
+    "parts": [
+     "BA Intern",
+     "In office",
+     "Illinois",
+     "Downers Grove",
+     "POSTED 7 DAYS AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "444",
+   "company": "Beta",
+   "title": "BA Intern",
+   "location": "Illinois; Downers Grove",
+   "posted": "2026-10-27",
+   "url": "https://wellfound.com/jobs/444-ba-intern"
+  }
+ },
+ {
+  "name": "parse_remote_fallback_badge",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "https://wellfound.com/jobs/555-data-analyst?ref=x",
+    "text": "Data Analyst\nRemote\nRECRUITER RECENTLY ACTIVE\nPOSTED 1 WEEK AGO",
+    "company": "Gamma"
+   }
+  },
+  "expect": {
+   "job_id": "555",
+   "company": "Gamma",
+   "title": "Data Analyst",
+   "location": "Remote",
+   "posted": "2026-10-27",
+   "url": "https://wellfound.com/jobs/555-data-analyst"
+  }
+ },
+ {
+  "name": "parse_badge_and_no_posted",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/666-ai-intern",
+    "text": "AI Intern\nRECRUITER RECENTLY ACTIVE\nHybridAustinNo equity",
+    "company": "Delta"
+   }
+  },
+  "expect": {
+   "job_id": "666",
+   "company": "Delta",
+   "title": "AI Intern",
+   "location": "Austin",
+   "posted": "",
+   "url": "https://wellfound.com/jobs/666-ai-intern"
+  }
+ },
+ {
+  "name": "parse_onsite_percentage_cutoff",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/777-bi-intern",
+    "text": "BI Intern\nOn-siteChicago0.5% equity\nPOSTED 3 DAYS AGO",
+    "company": "Epsilon"
+   }
+  },
+  "expect": {
+   "job_id": "777",
+   "company": "Epsilon",
+   "title": "BI Intern",
+   "location": "Chicago",
+   "posted": "2026-10-31",
+   "url": "https://wellfound.com/jobs/777-bi-intern"
+  }
+ },
+ {
+  "name": "parse_parts_dedup_absolute_url",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "https://wellfound.com/jobs/888-remote-intern?foo=bar",
+    "text": "unused",
+    "company": "Zeta",
+    "parts": [
+     "Remote Intern",
+     "Remote",
+     "New York",
+     "New York",
+     "POSTED 1 DAY AGO"
+    ]
+   }
+  },
+  "expect": {
+   "job_id": "888",
+   "company": "Zeta",
+   "title": "Remote Intern",
+   "location": "New York",
+   "posted": "2026-11-02",
+   "url": "https://wellfound.com/jobs/888-remote-intern"
+  }
+ },
+ {
+  "name": "parse_text_only_first_location",
+  "fn": "parse_card",
+  "args": {
+   "rec": {
+    "href": "/jobs/999-data-intern",
+    "text": "Data Intern\nIn officeSeattle\nRemote\nPOSTED 1 WEEK AGO\nAustin",
+    "company": "Eta"
+   }
+  },
+  "expect": {
+   "job_id": "999",
+   "company": "Eta",
+   "title": "Data Intern",
+   "location": "Seattle",
+   "posted": "2026-10-27",
+   "url": "https://wellfound.com/jobs/999-data-intern"
+  }
+ },
+ {
+  "name": "pick_simple_kept_order",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "1",
+     "company": "Acme",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/1-data-analyst-intern"
+    },
+    {
+     "job_id": "2",
+     "company": "Beta",
+     "title": "Product Management Intern - Summer 2027",
+     "location": "Remote",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/2-product-management-intern"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "1",
+   "2"
+  ]
+ },
+ {
+  "name": "pick_drop_by_id_and_pair",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "10",
+     "company": "Acme",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/10-data-analyst-intern"
+    },
+    {
+     "job_id": "11",
+     "company": "Beta",
+     "title": "Product Management Intern - Summer 2027",
+     "location": "Remote",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/11-product-management-intern"
+    },
+    {
+     "job_id": "12",
+     "company": "Gamma",
+     "title": "BI Analyst Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/12-bi-analyst-intern"
+    }
+   ],
+   "ids": [
+    "10"
+   ],
+   "pairs": [
+    [
+     "beta",
+     "product management"
+    ]
+   ]
+  },
+  "expect": [
+   "12"
+  ]
+ },
+ {
+  "name": "pick_company_cap_two",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "21",
+     "company": "Acme Inc",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/21-data-analyst-intern"
+    },
+    {
+     "job_id": "22",
+     "company": "Acme LLC",
+     "title": "Product Management Intern (Summer 2027)",
+     "location": "Remote",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/22-product-management-intern"
+    },
+    {
+     "job_id": "23",
+     "company": "Acme",
+     "title": "BI Analyst Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/23-bi-analyst-intern"
+    },
+    {
+     "job_id": "24",
+     "company": "Acme Corp",
+     "title": "AI Research Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/24-ai-research-intern"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "21",
+   "22"
+  ]
+ },
+ {
+  "name": "pick_drop_not_kept",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "31",
+     "company": "Acme",
+     "title": "Senior Data Analyst Intern (Summer 2027)",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/31-senior-data-analyst-intern"
+    },
+    {
+     "job_id": "32",
+     "company": "Beta",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "location": "London, UK",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/32-data-analyst-intern"
+    },
+    {
+     "job_id": "33",
+     "company": "Gamma",
+     "title": "Software Engineer Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/33-software-engineer-intern"
+    },
+    {
+     "job_id": "34",
+     "company": "Delta",
+     "title": "AI Research Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/34-ai-research-intern"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "34"
+  ]
+ },
+ {
+  "name": "pick_drop_taken_earlier",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "job_id": "41",
+     "company": "Acme",
+     "title": "Data Analyst Intern (Summer 2027)",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/41-data-analyst-intern"
+    },
+    {
+     "job_id": "41",
+     "company": "Beta",
+     "title": "Product Management Intern (Summer 2027)",
+     "location": "Remote",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/41-product-management-intern"
+    },
+    {
+     "job_id": "42",
+     "company": "Acme Inc",
+     "title": "Data Analyst Intern - Summer 2027",
+     "location": "New York, NY",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/42-data-analyst-intern"
+    },
+    {
+     "job_id": "43",
+     "company": "Gamma",
+     "title": "BI Analyst Intern (Summer 2027)",
+     "location": "Seattle, WA",
+     "posted": "2026-10-27",
+     "url": "https://wellfound.com/jobs/43-bi-analyst-intern"
+    }
+   ],
+   "ids": [],
+   "pairs": []
+  },
+  "expect": [
+   "41",
+   "43"
+  ]
+ }
+]

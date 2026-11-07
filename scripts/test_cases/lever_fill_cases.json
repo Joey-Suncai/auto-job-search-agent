@@ -1,0 +1,863 @@
+[
+ {
+  "name": "already submitted wins over non-Lever and missing read-back",
+  "plan": {
+   "ats": "workday",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": null,
+  "submitted": true,
+  "expect": [
+   null,
+   "already submitted"
+  ],
+  "spec_quote": "1. already submitted → \"already submitted\"",
+  "ambiguous": false
+ },
+ {
+  "name": "non-Lever folder refused before missing read-back",
+  "plan": {
+   "ats": "workday",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": null,
+  "submitted": false,
+  "expect": [
+   null,
+   "not a Lever folder"
+  ],
+  "spec_quote": "2. plan ats is not \"lever\" → \"not a Lever folder\"",
+  "ambiguous": false
+ },
+ {
+  "name": "ats check is exact: 'Lever' is not 'lever'",
+  "plan": {
+   "ats": "Lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": null,
+  "submitted": false,
+  "expect": [
+   null,
+   "not a Lever folder"
+  ],
+  "spec_quote": "2. plan ats is not \"lever\" → \"not a Lever folder\"",
+  "ambiguous": false
+ },
+ {
+  "name": "missing read-back record",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": null,
+  "submitted": false,
+  "expect": [
+   null,
+   "no dry-run read-back yet (run run_form.py first)"
+  ],
+  "spec_quote": "3. no read-back record, or it has no fields → \"no dry-run read-back yet (run run_form.py first)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "read-back with no fields",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "no dry-run read-back yet (run run_form.py first)"
+  ],
+  "spec_quote": "3. no read-back record, or it has no fields → \"no dry-run read-back yet (run run_form.py first)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "empty read-back fields wins over non-empty problems",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [],
+   "problems": [
+    "bad"
+   ]
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "no dry-run read-back yet (run run_form.py first)"
+  ],
+  "spec_quote": "3. no read-back record, or it has no fields → \"no dry-run read-back yet (run run_form.py first)\"",
+  "ambiguous": false
+ },
+ {
+  "name": "problems joined with semicolon-space",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    }
+   ],
+   "problems": [
+    "bad date",
+    "missing file"
+   ]
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "the dry-run had problems: bad date; missing file"
+  ],
+  "spec_quote": "4. the read-back has problems (a non-empty list) → \"the dry-run had problems: \" + problems joined by \"; \"",
+  "ambiguous": false
+ },
+ {
+  "name": "problems win over ok false",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": false
+    }
+   ],
+   "problems": [
+    "problem"
+   ]
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "the dry-run had problems: problem"
+  ],
+  "spec_quote": "4. the read-back has problems (a non-empty list) → \"the dry-run had problems: \" + problems joined by \"; \"",
+  "ambiguous": false
+ },
+ {
+  "name": "single ok false field",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": false
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "a field did not read back: a"
+  ],
+  "spec_quote": "5. any read-back field has ok false → \"a field did not read back: \" + the keys of those fields joined by \", \"",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple ok false fields include extra read-back keys",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    },
+    {
+     "key": "b",
+     "type": "text",
+     "want": "B",
+     "ok": false
+    },
+    {
+     "key": "c",
+     "type": "text",
+     "want": "C",
+     "ok": false
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   null,
+   "a field did not read back: b, c"
+  ],
+  "spec_quote": "5. any read-back field has ok false → \"a field did not read back: \" + the keys of those fields joined by \", \"",
+  "ambiguous": false
+ },
+ {
+  "name": "basic successful fill",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "first"
+    },
+    {
+     "key": "last"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "first",
+     "type": "text",
+     "want": "Ada",
+     "ok": true
+    },
+    {
+     "key": "last",
+     "type": "text",
+     "want": "Lovelace",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "first",
+      "type": "text",
+      "value": "Ada"
+     },
+     {
+      "key": "last",
+      "type": "text",
+      "value": "Lovelace"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "Otherwise data = {\"fields\": [...], \"files\": [...]}:",
+  "ambiguous": false
+ },
+ {
+  "name": "missing type defaults to text",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "want": "hello",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "a",
+      "type": "text",
+      "value": "hello"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Any other → fields gets {\"key\", \"type\": its type (missing → \"text\"), \"value\": want as a string}.",
+  "ambiguous": false
+ },
+ {
+  "name": "file field goes to files",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "resume"
+    },
+    {
+     "key": "name"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "resume",
+     "type": "file",
+     "want": "cv.pdf",
+     "ok": true
+    },
+    {
+     "key": "name",
+     "type": "text",
+     "want": "Ada",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "name",
+      "type": "text",
+      "value": "Ada"
+     }
+    ],
+    "files": [
+     {
+      "key": "resume",
+      "name": "cv.pdf"
+     }
+    ]
+   },
+   null
+  ],
+  "spec_quote": "- A read-back field of type \"file\" → files gets {\"key\", \"name\": want}.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip plan key with no read-back entry",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "b",
+     "type": "text",
+     "want": "B",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "b",
+      "type": "text",
+      "value": "B"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Skip a key with no read-back entry, or whose want is null or \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "skip want null",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": null,
+     "ok": true
+    },
+    {
+     "key": "b",
+     "type": "text",
+     "want": "B",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "b",
+      "type": "text",
+      "value": "B"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Skip a key with no read-back entry, or whose want is null or \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "skip want empty string",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "",
+     "ok": true
+    },
+    {
+     "key": "b",
+     "type": "text",
+     "want": "B",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "b",
+      "type": "text",
+      "value": "B"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Skip a key with no read-back entry, or whose want is null or \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "skip file with null want",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "f"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "f",
+     "type": "file",
+     "want": null,
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Skip a key with no read-back entry, or whose want is null or \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "extra read-back keys appended in read-back order",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    },
+    {
+     "key": "x",
+     "type": "text",
+     "want": "X",
+     "ok": true
+    },
+    {
+     "key": "y",
+     "type": "text",
+     "want": "Y",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "a",
+      "type": "text",
+      "value": "A"
+     },
+     {
+      "key": "x",
+      "type": "text",
+      "value": "X"
+     },
+     {
+      "key": "y",
+      "type": "text",
+      "value": "Y"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Go through the keys in the plan's field order, then any read-back keys not in the plan (in read-back order).",
+  "ambiguous": false
+ },
+ {
+  "name": "plan field order dominates read-back order",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    },
+    {
+     "key": "c"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "c",
+     "type": "text",
+     "want": "C",
+     "ok": true
+    },
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    },
+    {
+     "key": "b",
+     "type": "text",
+     "want": "B",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "a",
+      "type": "text",
+      "value": "A"
+     },
+     {
+      "key": "b",
+      "type": "text",
+      "value": "B"
+     },
+     {
+      "key": "c",
+      "type": "text",
+      "value": "C"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Go through the keys in the plan's field order, then any read-back keys not in the plan (in read-back order).",
+  "ambiguous": false
+ },
+ {
+  "name": "combined plan order, extra keys, and file separation",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    },
+    {
+     "key": "b"
+    },
+    {
+     "key": "c"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "c",
+     "type": "text",
+     "want": "C",
+     "ok": true
+    },
+    {
+     "key": "x",
+     "type": "file",
+     "want": "X",
+     "ok": true
+    },
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    },
+    {
+     "key": "y",
+     "type": "text",
+     "want": "Y",
+     "ok": true
+    },
+    {
+     "key": "b",
+     "type": "file",
+     "want": "B",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "a",
+      "type": "text",
+      "value": "A"
+     },
+     {
+      "key": "c",
+      "type": "text",
+      "value": "C"
+     },
+     {
+      "key": "y",
+      "type": "text",
+      "value": "Y"
+     }
+    ],
+    "files": [
+     {
+      "key": "b",
+      "name": "B"
+     },
+     {
+      "key": "x",
+      "name": "X"
+     }
+    ]
+   },
+   null
+  ],
+  "spec_quote": "- Go through the keys in the plan's field order, then any read-back keys not in the plan (in read-back order).",
+  "ambiguous": false
+ },
+ {
+  "name": "zero want is not skipped and becomes string",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "n"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "n",
+     "type": "text",
+     "want": 0,
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "n",
+      "type": "text",
+      "value": "0"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Any other → fields gets {\"key\", \"type\": its type (missing → \"text\"), \"value\": want as a string}.",
+  "ambiguous": false
+ },
+ {
+  "name": "extra read-back key with empty want is skipped",
+  "plan": {
+   "ats": "lever",
+   "fields": [
+    {
+     "key": "a"
+    }
+   ]
+  },
+  "check": {
+   "fields": [
+    {
+     "key": "a",
+     "type": "text",
+     "want": "A",
+     "ok": true
+    },
+    {
+     "key": "extra",
+     "type": "text",
+     "want": "",
+     "ok": true
+    }
+   ],
+   "problems": []
+  },
+  "submitted": false,
+  "expect": [
+   {
+    "fields": [
+     {
+      "key": "a",
+      "type": "text",
+      "value": "A"
+     }
+    ],
+    "files": []
+   },
+   null
+  ],
+  "spec_quote": "- Skip a key with no read-back entry, or whose want is null or \"\".",
+  "ambiguous": false
+ }
+]

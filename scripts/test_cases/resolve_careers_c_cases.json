@@ -1,0 +1,357 @@
+[
+ {
+  "name": "same_name legal suffixes and case ignored",
+  "fn": "same_name",
+  "args": {
+   "a": "Acme, Inc.",
+   "b": "ACME LLC"
+  },
+  "expect": true,
+  "spec_quote": "true when the two company keys (lower-case, legal suffixes removed, punctuation → space, spaces collapsed) are equal",
+  "ambiguous": false
+ },
+ {
+  "name": "same_name equal after stripping non-alphanumerics",
+  "fn": "same_name",
+  "args": {
+   "a": "Rosfensev",
+   "b": "Rosfensev"
+  },
+  "expect": true,
+  "spec_quote": "or equal after removing every non-alphanumeric character (\"Rosfensev\" = \"Rosfensev\")",
+  "ambiguous": false
+ },
+ {
+  "name": "same_name empty name never matches",
+  "fn": "same_name",
+  "args": {
+   "a": "Inc.",
+   "b": "Inc."
+  },
+  "expect": false,
+  "spec_quote": "An empty name (nothing left after cleaning) is never the same as anything.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_name extra non-suffix word breaks equality",
+  "fn": "same_name",
+  "args": {
+   "a": "Acme Systems",
+   "b": "Acme"
+  },
+  "expect": false,
+  "spec_quote": "true when the two company keys (lower-case, legal suffixes removed, punctuation → space, spaces collapsed) are equal, or equal after removing every non-alphanumeric character",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_lookup keeps only matching name and lower-cases domain",
+  "fn": "pick_lookup",
+  "args": {
+   "company": "Qorvo",
+   "suggestions": [
+    {
+     "name": "Qorvo, Inc.",
+     "domain": "QORVO.com"
+    },
+    {
+     "name": "Qorvo Power",
+     "domain": "qorvopower.com"
+    }
+   ]
+  },
+  "expect": [
+   "qorvo.com"
+  ],
+  "spec_quote": "Returns the domains (lower-case, no duplicates, original order) of the suggestions whose name is same_name as the company. \"Qorvo Power\" is not \"Qorvo, Inc.\"; \"Qorvo\" is.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_lookup ignores non-objects and items without domain",
+  "fn": "pick_lookup",
+  "args": {
+   "company": "Acme",
+   "suggestions": [
+    null,
+    "notanobject",
+    {
+     "name": "Acme"
+    },
+    {
+     "name": "Acme, Inc.",
+     "domain": "ACME.com"
+    }
+   ]
+  },
+  "expect": [
+   "acme.com"
+  ],
+  "spec_quote": "Items that are not objects or have no domain are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_lookup dedupes preserving original order",
+  "fn": "pick_lookup",
+  "args": {
+   "company": "Acme",
+   "suggestions": [
+    {
+     "name": "Acme",
+     "domain": "acme.com"
+    },
+    {
+     "name": "Acme Inc",
+     "domain": "ACME.com"
+    },
+    {
+     "name": "Acme Corp",
+     "domain": "acme.io"
+    }
+   ]
+  },
+  "expect": [
+   "acme.com",
+   "acme.io"
+  ],
+  "spec_quote": "Returns the domains (lower-case, no duplicates, original order) of the suggestions whose name is same_name as the company.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_lookup Qorvo Power does not match Qorvo Inc",
+  "fn": "pick_lookup",
+  "args": {
+   "company": "Qorvo Power",
+   "suggestions": [
+    {
+     "name": "Qorvo, Inc.",
+     "domain": "qorvo.com"
+    },
+    {
+     "name": "Qorvo Power",
+     "domain": "qorvopower.com"
+    }
+   ]
+  },
+  "expect": [
+   "qorvopower.com"
+  ],
+  "spec_quote": "\"Qorvo Power\" is not \"Qorvo, Inc.\"; \"Qorvo\" is.",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains reduces subdomain to registrable domain",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme Inc",
+     "url": "https://careers.acme.com/jobs/1",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "acme.com"
+  ],
+  "spec_quote": "Reduce each host to its registrable domain: the last two labels (\"careers.acme.com\" → \"acme.com\")",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains skips aggregator and ats hosts",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://jobright.ai/x",
+     "ats_url": "https://boards.greenhouse.io/acme"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "skip hosts that contain any of: jobright, joinhandshake, linkedin, builtin, indeed, glassdoor, greenhouse.io, lever.co, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains three-label co.uk domain",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://jobs.acme.co.uk/apply",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "acme.co.uk"
+  ],
+  "spec_quote": "or the last three when the second-to-last label is co / com / org / ac (\"jobs.acme.co.uk\" → \"acme.co.uk\")",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains dedupe and first-seen order",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://careers.acme.com/x",
+     "ats_url": "https://acme.com/y"
+    },
+    {
+     "company": "Acme Inc.",
+     "url": "https://acme.co.uk/z",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "acme.com",
+   "acme.co.uk"
+  ],
+  "spec_quote": "Return them without duplicates in first-seen order.",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains skips non-matching company rows",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Globex",
+     "url": "https://globex.com",
+     "ats_url": ""
+    },
+    {
+     "company": "Acme",
+     "url": "https://acme.com",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [
+   "acme.com"
+  ],
+  "spec_quote": "For rows whose company is same_name, take the host of url and of ats_url",
+  "ambiguous": false
+ },
+ {
+  "name": "borrow_domains skips bit.ly and google hosts",
+  "fn": "borrow_domains",
+  "args": {
+   "company": "Acme",
+   "jobs": [
+    {
+     "company": "Acme",
+     "url": "https://bit.ly/abc",
+     "ats_url": "https://www.google.com/x"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "skip hosts that contain any of: jobright, joinhandshake, linkedin, builtin, indeed, glassdoor, greenhouse.io, lever.co, ashbyhq, myworkday, icims, smartrecruiters, workable, github, simplify, zapply, vansh, ziprecruiter, wellfound, \"google.\", bit.ly.",
+  "ambiguous": false
+ },
+ {
+  "name": "script_srcs keeps same-site, drops CDN",
+  "fn": "script_srcs",
+  "args": {
+   "page": "<html><head><script src=\"/js/app.js\"></script><script src=\"https://cdn.other.com/lib.js\"></script></head></html>",
+   "base": "https://acme.com/careers"
+  },
+  "expect": [
+   "https://acme.com/js/app.js"
+  ],
+  "spec_quote": "kept only when their host ends with the base host's last two labels (same site; a CDN on another domain is dropped)",
+  "ambiguous": false
+ },
+ {
+  "name": "script_srcs dedupes then applies limit 4",
+  "fn": "script_srcs",
+  "args": {
+   "page": "<script src=\"/a.js\"></script><script src=\"/a.js\"></script><script src=\"/b.js\"></script><script src=\"/c.js\"></script><script src=\"/d.js\"></script><script src=\"/e.js\"></script>",
+   "base": "https://acme.com/"
+  },
+  "expect": [
+   "https://acme.com/a.js",
+   "https://acme.com/b.js",
+   "https://acme.com/c.js",
+   "https://acme.com/d.js"
+  ],
+  "spec_quote": "no duplicates, at most limit.",
+  "ambiguous": false
+ },
+ {
+  "name": "script_srcs subdomain same-site kept, other site dropped",
+  "fn": "script_srcs",
+  "args": {
+   "page": "<script src=\"https://static.acme.com/main.js\"></script><script src=\"https://acme-cdn.net/file.js\"></script>",
+   "base": "https://www.acme.com/"
+  },
+  "expect": [
+   "https://static.acme.com/main.js"
+  ],
+  "spec_quote": "kept only when their host ends with the base host's last two labels (same site; a CDN on another domain is dropped)",
+  "ambiguous": false
+ },
+ {
+  "name": "script_srcs resolves relative src against base path",
+  "fn": "script_srcs",
+  "args": {
+   "page": "<script src=\"js/app.js\"></script>",
+   "base": "https://acme.com/company/about"
+  },
+  "expect": [
+   "https://acme.com/company/js/app.js"
+  ],
+  "spec_quote": "URLs from <script ... src=\"...\"> in the page, resolved against base",
+  "ambiguous": false
+ },
+ {
+  "name": "sitemap_career_urls keeps career and job paths in order",
+  "fn": "sitemap_career_urls",
+  "args": {
+   "xml": "<urlset><url><loc>https://acme.com/careers</loc></url><url><loc>https://acme.com/about</loc></url><url><loc>https://acme.com/jobs/123</loc></url></urlset>"
+  },
+  "expect": [
+   "https://acme.com/careers",
+   "https://acme.com/jobs/123"
+  ],
+  "spec_quote": "the <loc> URLs of a sitemap that contain \"career\" or a path word \"job\"/\"jobs\" (case-insensitive), in order, at most limit.",
+  "ambiguous": false
+ },
+ {
+  "name": "sitemap_career_urls case-insensitive matching",
+  "fn": "sitemap_career_urls",
+  "args": {
+   "xml": "<urlset><url><loc>https://acme.com/Careers</loc></url><url><loc>https://acme.com/JOBS/9</loc></url><url><loc>https://acme.com/products</loc></url></urlset>"
+  },
+  "expect": [
+   "https://acme.com/Careers",
+   "https://acme.com/JOBS/9"
+  ],
+  "spec_quote": "that contain \"career\" or a path word \"job\"/\"jobs\" (case-insensitive), in order, at most limit.",
+  "ambiguous": false
+ },
+ {
+  "name": "sitemap_career_urls caps at limit 4 in order",
+  "fn": "sitemap_career_urls",
+  "args": {
+   "xml": "<urlset><url><loc>https://acme.com/careers/1</loc></url><url><loc>https://acme.com/careers/2</loc></url><url><loc>https://acme.com/careers/3</loc></url><url><loc>https://acme.com/careers/4</loc></url><url><loc>https://acme.com/careers/5</loc></url><url><loc>https://acme.com/careers/6</loc></url></urlset>"
+  },
+  "expect": [
+   "https://acme.com/careers/1",
+   "https://acme.com/careers/2",
+   "https://acme.com/careers/3",
+   "https://acme.com/careers/4"
+  ],
+  "spec_quote": "in order, at most limit.",
+  "ambiguous": false
+ }
+]

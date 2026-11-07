@@ -1,0 +1,183 @@
+[
+ {
+  "id": "s1",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "dry-run"
+   ],
+   "submit": false
+  },
+  "expect": "dry-run",
+  "spec": "run.py `stop_status(reasons, submit)`: without submit → \"dry-run\"; on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s2",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "plan not ready: question_123; Why us?",
+    "required fields not in plan: x"
+   ],
+   "submit": false
+  },
+  "expect": "dry-run",
+  "spec": "run.py `stop_status(reasons, submit)`: without submit → \"dry-run\"; on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s3",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "plan not ready: question_123; Why us?"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s4",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "PLAN NOT READY: q"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s5",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    " plan not ready"
+   ],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s6",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "the plan not ready"
+   ],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s7",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "fill problems: required fields not in plan: company-name-0, title-0"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s8",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "required field not in plan"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s9",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "required fields not in the plan"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s10",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "REQUIRED FIELDS NOT IN PLAN"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s11",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "batch not approved"
+   ],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s12",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s13",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "verify failed",
+    "plan not ready: x"
+   ],
+   "submit": true
+  },
+  "expect": "needs-user",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s14",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "verify failed",
+    "field problems: q1: empty"
+   ],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ },
+ {
+  "id": "s15",
+  "fn": "stop_status",
+  "input": {
+   "reasons": [
+    "dry-run"
+   ],
+   "submit": true
+  },
+  "expect": "blocked",
+  "spec": "on a submit → \"needs-user\" when any reason starts with \"plan not ready\" or contains \"required field(s) not in (the) plan\" (case-insensitive), otherwise \"blocked\"."
+ }
+]

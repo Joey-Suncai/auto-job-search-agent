@@ -1,0 +1,164 @@
+[
+ {
+  "name": "Exact spec example: Chicago listed mid-list, comma separated",
+  "args": {
+   "label": "Please rank your location preference in order of most to least preferred: Austin, Chicago, Greenwich, Houston, New York. If you are not open to a location, do not rank it.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Chicago, Austin, Greenwich, Houston, New York"
+  },
+  "spec_quote": "every listed U.S. place, comma-separated, with Chicago first when it is listed, then the others in the order the question lists them (\"Chicago, Austin, Greenwich, Houston, New York\")",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicago not listed, comma separated",
+  "args": {
+   "label": "Please rank your location preference in order of most to least preferred: Austin, Houston, New York.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Austin, Houston, New York"
+  },
+  "spec_quote": "When Chicago is not listed → all U.S. places in the listed order.",
+  "ambiguous": false
+ },
+ {
+  "name": "Semicolon list with 'City, ST (USA)' entries, Chicago present, non-U.S. mixed in",
+  "args": {
+   "label": "Please rank your office preference in order of most to least preferred: Huntersville, NC (USA); Chicago; Houston, TX (USA); Toronto (CAN).",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Chicago, Huntersville, NC (USA), Houston, TX (USA)"
+  },
+  "spec_quote": "Places written \"City, ST (USA)\" separated by semicolons keep their full text (\"Huntersville, NC (USA)\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Non-U.S. places ('London, UK', 'Canada') left out, semicolon separated",
+  "args": {
+   "label": "Please rank your location preference from most to least preferred: Chicago; London, UK; Austin; Canada; New York. If you are not open to a location, do not rank it.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Chicago, Austin, New York"
+  },
+  "spec_quote": "Places outside the U.S. (marked \"(CAN)\", \"Canada\", \"London, UK\" …) are left out.",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicago listed last in question, still goes first",
+  "args": {
+   "label": "Please rank your location preferences in order of most to least preferred: Houston, New York, Chicago, Austin.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Chicago, Houston, New York, Austin"
+  },
+  "spec_quote": "with Chicago first when it is listed, then the others in the order the question lists them",
+  "ambiguous": false
+ },
+ {
+  "name": "Semicolon list, no Chicago, with 'City, ST (USA)' and a '(CAN)' entry",
+  "args": {
+   "label": "Rank your office preferences from most to least preferred: Austin, TX (USA); Greenwich; Toronto (CAN); Houston, TX (USA).",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Austin, TX (USA), Greenwich, Houston, TX (USA)"
+  },
+  "spec_quote": "When Chicago is not listed → all U.S. places in the listed order. ... Places outside the U.S. ... are left out. ... Places written \"City, ST (USA)\" separated by semicolons keep their full text",
+  "ambiguous": false
+ },
+ {
+  "name": "Ranking question that lists no places",
+  "args": {
+   "label": "Please rank your location preference in order of most to least preferred. If you are not open to a location, do not rank it.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "ask": true
+  },
+  "spec_quote": "A ranking question that does not list any places → no answer (ask).",
+  "ambiguous": false
+ },
+ {
+  "name": "Ranking-styled question with no places enumerated",
+  "args": {
+   "label": "Please rank the offices you would be most interested in.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "ask": true
+  },
+  "spec_quote": "A ranking question that does not list any places → no answer (ask).",
+  "ambiguous": false
+ },
+ {
+  "name": "Yes/No near miss: 'Are you open to relocating?'",
+  "args": {
+   "label": "Are you open to relocating?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "ask": true
+  },
+  "spec_quote": "A Yes/No question such as \"Are you open to relocating?\" is NOT a ranking question (never a list of places).",
+  "ambiguous": false
+ },
+ {
+  "name": "Yes/No near miss: relocation willingness phrased with U.S. locations",
+  "args": {
+   "label": "Are you willing to relocate to any U.S. location?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "ask": true
+  },
+  "spec_quote": "A Yes/No question such as \"Are you open to relocating?\" is NOT a ranking question (never a list of places).",
+  "ambiguous": false
+ },
+ {
+  "name": "Other wording: 'Rank the following offices by preference' with Chicago",
+  "args": {
+   "label": "Rank the following offices by preference: Austin, Chicago, Houston, New York.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Chicago, Austin, Houston, New York"
+  },
+  "spec_quote": "every listed U.S. place, comma-separated, with Chicago first when it is listed, then the others in the order the question lists them",
+  "ambiguous": false
+ },
+ {
+  "name": "Other wording: 'Rank the following offices' with a non-U.S. place and no Chicago",
+  "args": {
+   "label": "Rank the following offices by preference: New York, London, UK, Houston.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "New York, Houston"
+  },
+  "spec_quote": "Places outside the U.S. (marked \"(CAN)\", \"Canada\", \"London, UK\" …) are left out. When Chicago is not listed → all U.S. places in the listed order.",
+  "ambiguous": false
+ }
+]

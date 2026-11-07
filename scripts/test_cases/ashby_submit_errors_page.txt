@@ -1,0 +1,48 @@
+Applied Scientist Intern
+Location
+New York, NY (HQ)
+Employment Type
+Intern
+Overview
+Application
+Autofill from resume
+Upload your resume here to autofill key application fields.
+Upload file
+Your form needs corrections
+Missing entry for required field: School
+Legal Name*
+Alex Rivera
+Preferred First Name
+Alex
+Email*
+alex.rivera@example.com
+Phone*
+555-010-0123
+Check Yes or No to indicate your agreement to receive text message updates via SMS and/or WhatsApp.
+Resume*
+Alex_Rivera_Resume.pdf
+Replace
+or drag and drop here
+LinkedIn Profile*
+https://www.linkedin.com/in/example
+School*
+Education
+Delete
+School*
+Degree
+Field of Study
+Start Date
+End Date
+Still Student?
++ Add Education
+What is your graduation date?*
+12/01/2027
+Are you currently pursuing a Bachelor's, Master's, or PhD in a quantitative field?*
+Yes
+No
+Will you now or in the future require sponsorship for an employment visa?*
+Yes
+No
+Recruiting Privacy Policy
+Submit Application
+Powered by Ashby

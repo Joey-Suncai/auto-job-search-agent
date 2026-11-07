@@ -1,0 +1,3 @@
+{
+ "bofa-equals-bank-of": "Case misreads the spec. ALIASES bofa -> (\"=bank of\", \"bofa\"): only the first root carries \"=\". The second root \"bofa\" is longer than 3 characters, not GENERIC and has no \"=\", so step 2 gives it its prefix family; \"bofa securities\" is its only candidate, so the JSA-103 one-word rule keeps it. Expected hits are Bank of America + BofA Securities (150 / 1500), which is what the code returns — and what the JSA-098 audit checked by hand (BANK OF AMERICA N.A.; BOFA SECURITIES, INC.)."
+}

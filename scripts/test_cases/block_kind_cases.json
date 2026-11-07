@@ -1,0 +1,134 @@
+[
+ {
+  "name": "languages_heading_number",
+  "section": "Languages 1",
+  "expect": "languages",
+  "spec": "languages — the heading mentions language(s) (\"Languages 1\", \"Language Skills 2\")."
+ },
+ {
+  "name": "language_singular",
+  "section": "Language 4",
+  "expect": "languages",
+  "spec": "languages — the heading mentions language(s) (\"Languages 1\", \"Language Skills 2\")."
+ },
+ {
+  "name": "language_skills",
+  "section": "Language Skills 2",
+  "expect": "languages",
+  "spec": "languages — the heading mentions language(s) (\"Languages 1\", \"Language Skills 2\")."
+ },
+ {
+  "name": "language_experience",
+  "section": "Language Experience 3",
+  "expect": "languages",
+  "spec": "languages — the heading mentions language(s) (\"Languages 1\", \"Language Skills 2\")."
+ },
+ {
+  "name": "language_and_work",
+  "section": "Language and Work Experience 3",
+  "expect": "languages",
+  "spec": "languages — the heading mentions language(s) (\"Languages 1\", \"Language Skills 2\")."
+ },
+ {
+  "name": "education_heading",
+  "section": "Education 1",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "academic_experience",
+  "section": "Academic Experience 2",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "academic_history",
+  "section": "Academic History 1",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "educational_background",
+  "section": "Educational Background 3",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "education_experience",
+  "section": "Education Experience 4",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "academic_alone",
+  "section": "Academic",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "work_experience",
+  "section": "Work Experience 1",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "professional_experience",
+  "section": "Professional Experience 2",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "employment_history",
+  "section": "Employment History 3",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "work_history",
+  "section": "Work History 1",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "experience_alone",
+  "section": "Experience 1",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "volunteer_experience",
+  "section": "Volunteer Experience 1",
+  "expect": "work",
+  "spec": "work — otherwise, when it mentions work, experience or employment (\"Work Experience 1\", \"Professional Experience 2\", \"Employment History 3\", \"Work History 1\")."
+ },
+ {
+  "name": "work_and_education",
+  "section": "Work and Education 1",
+  "expect": "education",
+  "spec": "education — it mentions education or academic (\"Education 1\", \"Academic Experience 2\", \"Academic History 1\", \"Educational Background 3\"), even when it also contains the word \"Experience\"."
+ },
+ {
+  "name": "websites",
+  "section": "Websites 1",
+  "expect": null,
+  "spec": "null — none of these (\"Websites 1\", \"Certifications 2\", \"References 1\")."
+ },
+ {
+  "name": "certifications",
+  "section": "Certifications 2",
+  "expect": null,
+  "spec": "null — none of these (\"Websites 1\", \"Certifications 2\", \"References 1\")."
+ },
+ {
+  "name": "references",
+  "section": "References 1",
+  "expect": null,
+  "spec": "null — none of these (\"Websites 1\", \"Certifications 2\", \"References 1\")."
+ },
+ {
+  "name": "skills",
+  "section": "Skills 1",
+  "expect": null,
+  "spec": "null — none of these (\"Websites 1\", \"Certifications 2\", \"References 1\")."
+ }
+]

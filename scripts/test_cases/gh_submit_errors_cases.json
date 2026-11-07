@@ -1,0 +1,421 @@
+[
+ {
+  "name": "required_file_slot_helper_error",
+  "html": "<form><div class='field'><label for='resume'>Resume</label><input id='resume' name='resume' type='file' style='display:none'><p class='helper-text helper-text--error'>This field is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "resume",
+    "label": "Resume",
+    "sel": "#resume"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Resume",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "At the first ancestor that contains exactly one control (input / textarea / select, hidden ones included) matched by a plan field, the field is that plan field's label."
+ },
+ {
+  "name": "two_fields_with_errors",
+  "html": "<form><div class='field'><label>First name</label><input id='first' name='first'><p>This field is required.</p></div><div class='field'><label>Email</label><input id='email' name='email'><p>Invalid email</p></div></form>",
+  "plan": [
+   {
+    "key": "first",
+    "label": "First name",
+    "sel": "#first"
+   },
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "First name",
+    "msg": "This field is required."
+   },
+   {
+    "field": "Email",
+    "msg": "Invalid email"
+   }
+  ],
+  "quote": "Returns a list of {\"field\": str, \"msg\": str}, in document order, each field at most once (its first message)."
+ },
+ {
+  "name": "hidden_display_none_error",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p style='display:none'>This field is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "it is visible (not display:none / visibility:hidden, has a non-zero size)"
+ },
+ {
+  "name": "legend_indicates_required",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p class='error'>* indicates a required field</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "its text is not the legend (\"indicates a required field\", \"required fields are marked\")"
+ },
+ {
+  "name": "label_containing_required_is_not_error",
+  "html": "<form><div class='field'><label>Email <input id='email' name='email'> <span>This field is required</span></label></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "it is not inside a <label>, unless its own class contains error, invalid or helper (a label that says \"Email * required\" is not an error)"
+ },
+ {
+  "name": "description_not_error",
+  "html": "<form><div class='field'><label>Topics</label><select id='topics' name='topics'><option>One</option></select><div class='question-description'><p>Please select all that apply</p></div></div></form>",
+  "plan": [
+   {
+    "key": "topics",
+    "label": "Topics",
+    "sel": "#topics"
+   }
+  ],
+  "expect": [],
+  "quote": "it is not inside a description container (id ending in \"-description\", class \"question-description\", or a class containing \"description\") unless it is error-styled."
+ },
+ {
+  "name": "description_error_styled_included",
+  "html": "<form><div class='field'><label>Topics</label><select id='topics' name='topics'><option>One</option></select><div class='question-description'><p class='error'>Please select all that apply</p></div></div></form>",
+  "plan": [
+   {
+    "key": "topics",
+    "label": "Topics",
+    "sel": "#topics"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Topics",
+    "msg": "Please select all that apply"
+   }
+  ],
+  "quote": "it is not inside a description container (id ending in \"-description\", class \"question-description\", or a class containing \"description\") unless it is error-styled."
+ },
+ {
+  "name": "role_alert_included",
+  "html": "<form><div class='field'><label>Code</label><input id='code' name='code'><p role='alert'>Something went wrong</p></div></form>",
+  "plan": [
+   {
+    "key": "code",
+    "label": "Code",
+    "sel": "#code"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Code",
+    "msg": "Something went wrong"
+   }
+  ],
+  "quote": "OR it is error-styled (its own class or its parent's class contains \"error\" or \"invalid\", or it has role=\"alert\")"
+ },
+ {
+  "name": "aria_invalid_in_plan_and_not_in_plan",
+  "html": "<form><input id='email' name='email' aria-invalid='true'><input id='zip' name='postal' aria-invalid='true'></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "aria-invalid"
+   },
+   {
+    "field": "zip",
+    "msg": "aria-invalid"
+   }
+  ],
+  "quote": "Also every visible control with aria-invalid=\"true\": field = the label of the plan field it matches, else its id, else its name; msg = \"aria-invalid\"."
+ },
+ {
+  "name": "error_outside_plan_wrapper_uses_field_label",
+  "html": "<form><div class='field'><label>Phone</label><p>Please enter a phone number</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Phone",
+    "msg": "Please enter a phone number"
+   }
+  ],
+  "quote": "Without a match: the text of the first <label> in the message's closest ancestor matching `[class*=\"field\"], .application-question, fieldset, li`; without one, the message text itself."
+ },
+ {
+  "name": "wrapper_with_two_plan_fields_uses_first_label",
+  "html": "<form><div class='field'><label>First name</label><input id='first' name='first'><label>Last name</label><input id='last' name='last'><p>This field is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "first",
+    "label": "First name",
+    "sel": "#first"
+   },
+   {
+    "key": "last",
+    "label": "Last name",
+    "sel": "#last"
+   }
+  ],
+  "expect": [
+   {
+    "field": "First name",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "An ancestor that contains controls of two or more plan fields ends the walk without a match. Without a match: the text of the first <label> in the message's closest ancestor matching `[class*=\"field\"], .application-question, fieldset, li`; without one, the message text itself."
+ },
+ {
+  "name": "message_longer_than_160_excluded",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p>This field is required 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "its text (whitespace collapsed, trimmed) is non-empty and at most 160 characters"
+ },
+ {
+  "name": "no_errors_expect_empty",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p>Welcome</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "`submit_errors(plan_fields)` runs in the page and returns the visible validation errors of the application form"
+ },
+ {
+  "name": "same_field_two_messages_listed_once",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p>This field is required.</p><p>Invalid email</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "each field at most once (its first message)"
+ },
+ {
+  "name": "parent_class_invalid_style_includes_nonmatching_text",
+  "html": "<form><div class='field invalid'><label>Coupon</label><input id='coupon' name='coupon'><p>That code cannot be used</p></div></form>",
+  "plan": [
+   {
+    "key": "coupon",
+    "label": "Coupon",
+    "sel": "#coupon"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Coupon",
+    "msg": "That code cannot be used"
+   }
+  ],
+  "quote": "OR it is error-styled (its own class or its parent's class contains \"error\" or \"invalid\", or it has role=\"alert\")"
+ },
+ {
+  "name": "label_inner_helper_class_included",
+  "html": "<form><div class='field'><label>Email <input id='email' name='email'> <span class='helper'>This field is required.</span></label></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "it is not inside a <label>, unless its own class contains error, invalid or helper"
+ },
+ {
+  "name": "aria_invalid_hidden_control_ignored",
+  "html": "<form><input id='email' name='email' aria-invalid='true' style='display:none'></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [],
+  "quote": "Also every visible control with aria-invalid=\"true\""
+ },
+ {
+  "name": "aria_invalid_field_already_listed_not_repeated",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email' aria-invalid='true'><p>This field is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "a field already listed is not repeated"
+ },
+ {
+  "name": "matching_by_plan_sel",
+  "html": "<form><div class='field'><label>Email</label><input id='email-input' name='foo'><p>This field is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "emailField",
+    "label": "Email",
+    "sel": "#email-input"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "A control matches a plan field when its id or its name equals the plan field's key, or it matches the plan field's CSS selector `sel`."
+ },
+ {
+  "name": "message_ending_is_required_with_period",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p>Email is required.</p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "Email is required."
+   }
+  ],
+  "quote": "text ending in \"is required\" (an optional final \".\")"
+ },
+ {
+  "name": "message_cannot_be_blank",
+  "html": "<form><div class='field'><label>Password</label><input id='password' name='password'><p>Password cannot be blank</p></div></form>",
+  "plan": [
+   {
+    "key": "password",
+    "label": "Password",
+    "sel": "#password"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Password",
+    "msg": "Password cannot be blank"
+   }
+  ],
+  "quote": "\"cannot be blank\""
+ },
+ {
+  "name": "message_please_upload",
+  "html": "<form><div class='field'><label>Resume</label><input id='resume' name='resume'><p>Please upload your resume</p></div></form>",
+  "plan": [
+   {
+    "key": "resume",
+    "label": "Resume",
+    "sel": "#resume"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Resume",
+    "msg": "Please upload your resume"
+   }
+  ],
+  "quote": "\"please enter / select / fill / provide / complete / upload / attach\""
+ },
+ {
+  "name": "whitespace_collapsed_trimmed",
+  "html": "<form><div class='field'><label>Email</label><input id='email' name='email'><p>  This   field   is required.  </p></div></form>",
+  "plan": [
+   {
+    "key": "email",
+    "label": "Email",
+    "sel": "#email"
+   }
+  ],
+  "expect": [
+   {
+    "field": "Email",
+    "msg": "This field is required."
+   }
+  ],
+  "quote": "its text (whitespace collapsed, trimmed) is non-empty and at most 160 characters"
+ },
+ {
+  "name": "aria_invalid_after_messages_name_fallback",
+  "html": "<form><div class='field'><label>First name</label><input id='first' name='first'><p>This field is required.</p></div><input name='phone' aria-invalid='true'></form>",
+  "plan": [
+   {
+    "key": "first",
+    "label": "First name",
+    "sel": "#first"
+   }
+  ],
+  "expect": [
+   {
+    "field": "First name",
+    "msg": "This field is required."
+   },
+   {
+    "field": "phone",
+    "msg": "aria-invalid"
+   }
+  ],
+  "quote": "Listed after the messages; a field already listed is not repeated."
+ }
+]

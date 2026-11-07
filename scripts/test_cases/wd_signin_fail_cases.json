@@ -1,0 +1,405 @@
+[
+ {
+  "name": "mk_locked_explicit",
+  "fn": "message_kind",
+  "text": "Your account has been locked",
+  "expect": "locked",
+  "spec": "\"locked\": the account is locked, disabled or suspended, or there were too many (failed) sign-in attempts (\"Your account has been locked\", \"Account locked\", \"too many failed attempts\", \"temporarily disabled\")."
+ },
+ {
+  "name": "mk_locked_too_many_attempts",
+  "fn": "message_kind",
+  "text": "Too many failed attempts. Please try again in 30 minutes.",
+  "expect": "locked",
+  "spec": "\"locked\": the account is locked, disabled or suspended, or there were too many (failed) sign-in attempts (\"Your account has been locked\", \"Account locked\", \"too many failed attempts\", \"temporarily disabled\")."
+ },
+ {
+  "name": "mk_locked_case_insensitive",
+  "fn": "message_kind",
+  "text": "ACCOUNT LOCKED",
+  "expect": "locked",
+  "spec": "text = the error / alert messages the tenant shows on the sign-in or create-account page (may be empty). Case-insensitive. First matching rule wins: ... \"locked\": the account is locked, disabled or suspended ..."
+ },
+ {
+  "name": "mk_exists_already_in_use",
+  "fn": "message_kind",
+  "text": "This email address is already in use.",
+  "expect": "exists",
+  "spec": "\"exists\": an account with this e-mail already exists (\"already exists\", \"already in use\", \"already registered\", \"is already associated with an account\", \"An account with this email address already exists\")."
+ },
+ {
+  "name": "mk_exists_associated_with_account",
+  "fn": "message_kind",
+  "text": "The email address is already associated with an account.",
+  "expect": "exists",
+  "spec": "\"exists\": an account with this e-mail already exists (\"already exists\", \"already in use\", \"already registered\", \"is already associated with an account\", \"An account with this email address already exists\")."
+ },
+ {
+  "name": "mk_wrong_password_sign_in_failed_check_email",
+  "fn": "message_kind",
+  "text": "Sign in failed: check your email and password",
+  "expect": "wrong_password",
+  "spec": "\"Sign in failed: check your email and password\" counts as wrong_password, not verify."
+ },
+ {
+  "name": "mk_wrong_password_no_account",
+  "fn": "message_kind",
+  "text": "We could not sign you in: account doesn't exist",
+  "expect": "wrong_password",
+  "spec": "\"wrong_password\": the e-mail / username / password / credentials are wrong, invalid, incorrect or not recognised; \"could not sign you in\"; \"no account\" / \"account doesn't exist\" ..."
+ },
+ {
+  "name": "mk_verify_before_sign_in",
+  "fn": "message_kind",
+  "text": "Please verify your account before you sign in",
+  "expect": "verify",
+  "spec": "\"verify\": the tenant asks to verify / activate the account or e-mail, or to check the inbox for a verification e-mail (\"Please verify your account before you sign in\", \"We sent you a verification email\", \"Activate your account\")."
+ },
+ {
+  "name": "mk_verify_mail_sent",
+  "fn": "message_kind",
+  "text": "We sent you a verification email",
+  "expect": "verify",
+  "spec": "\"verify\": the tenant asks to verify / activate the account or e-mail, or to check the inbox for a verification e-mail (\"Please verify your account before you sign in\", \"We sent you a verification email\", \"Activate your account\")."
+ },
+ {
+  "name": "mk_none_empty_text",
+  "fn": "message_kind",
+  "text": "",
+  "expect": "none",
+  "spec": "\"none\": empty text or anything else (\"Sign In\", \"Loading\", \"Required\", \"Something went wrong\")."
+ },
+ {
+  "name": "fc_locked_beats_verify_mail_and_created",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": true,
+   "error": "locked",
+   "mails": [
+    {
+     "date": "2026-10-29",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "locked",
+  "spec": "Rules, in order; the first that holds wins: 1. \"locked\" — error is \"locked\"."
+ },
+ {
+  "name": "fc_locked_beats_exists_msg",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": true,
+   "verify_banner": false,
+   "verified": false,
+   "error": "locked",
+   "mails": [
+    {
+     "date": "2025-06-01",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "locked",
+  "spec": "Rules, in order; the first that holds wins: 1. \"locked\" — error is \"locked\"."
+ },
+ {
+  "name": "fc_old_account_via_exists_msg",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": true,
+   "verify_banner": false,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "2. \"old_account\" — the candidate's own earlier account, which the Keychain passwords do not open: exists_msg is true, OR there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since."
+ },
+ {
+  "name": "fc_old_account_via_other_mail_before_agent_since",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2025-03-04",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "2. \"old_account\" — ... OR there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since."
+ },
+ {
+  "name": "fc_agent_account_verify_mail_on_agent_since",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": true,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2026-10-28",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "agent_account_password",
+  "spec": "3. \"agent_account_password\" — a \"verify\" mail dated on or after agent_since exists (the agent created this account) and error is \"wrong_password\". ... A date equal to agent_since counts as on/after it."
+ },
+ {
+  "name": "fc_agent_account_verify_after_with_other_before",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": true,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2026-09-01",
+     "kind": "other"
+    },
+    {
+     "date": "2026-11-01",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "agent_account_password",
+  "spec": "2. \"old_account\" — ... there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since. / 3. \"agent_account_password\" — a \"verify\" mail dated on or after agent_since exists (the agent created this account) and error is \"wrong_password\"."
+ },
+ {
+  "name": "fc_agent_account_verify_banner_with_verify_mail",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": true,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2026-10-29",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "agent_account_password",
+  "spec": "3. \"agent_account_password\" — a \"verify\" mail dated on or after agent_since exists (the agent created this account) and error is \"wrong_password\"."
+ },
+ {
+  "name": "fc_no_verify_mail_created_wrong_password",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_verify_mail",
+  "spec": "4. \"no_verify_mail\" — created is true, there is no \"verify\" mail dated on or after agent_since, and error is \"wrong_password\" or \"none\" or verify_banner is true: a new account whose verification e-mail never came."
+ },
+ {
+  "name": "fc_no_verify_mail_verify_mail_only_before_agent_since",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2026-10-27",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_verify_mail",
+  "spec": "4. \"no_verify_mail\" — created is true, there is no \"verify\" mail dated on or after agent_since, and error is \"wrong_password\" or \"none\" or verify_banner is true: a new account whose verification e-mail never came."
+ },
+ {
+  "name": "fc_no_verify_mail_beats_no_answer_via_verify_banner",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": false,
+   "error": "none",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_verify_mail",
+  "spec": "4. \"no_verify_mail\" — created is true, there is no \"verify\" mail dated on or after agent_since, and error is \"wrong_password\" or \"none\" or verify_banner is true: a new account whose verification e-mail never came."
+ },
+ {
+  "name": "fc_old_account_beats_no_verify_mail",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [
+    {
+     "date": "2026-10-01",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "2. \"old_account\" — the candidate's own earlier account, which the Keychain passwords do not open: ... OR there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since."
+ },
+ {
+  "name": "fc_old_account_beats_no_answer",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "none",
+   "mails": [
+    {
+     "date": "2026-10-20",
+     "kind": "other"
+    },
+    {
+     "date": "2026-10-25",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "2. \"old_account\" — the candidate's own earlier account, which the Keychain passwords do not open: ... there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since."
+ },
+ {
+  "name": "fc_no_answer_created_false_error_none",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "none",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_answer",
+  "spec": "5. \"no_answer\" — error is \"none\" (the tenant gave no recognisable answer)."
+ },
+ {
+  "name": "fc_no_answer_created_false_verify_banner_none",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": true,
+   "verified": false,
+   "error": "none",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_answer",
+  "spec": "4. \"no_verify_mail\" — created is true, ... / 5. \"no_answer\" — error is \"none\" (the tenant gave no recognisable answer)."
+ },
+ {
+  "name": "fc_no_answer_created_false_with_verify_mail_after",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": true,
+   "error": "none",
+   "mails": [
+    {
+     "date": "2026-11-02",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "no_answer",
+  "spec": "5. \"no_answer\" — error is \"none\" (the tenant gave no recognisable answer)."
+ },
+ {
+  "name": "fc_other_wrong_password_created_false_no_mails",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "wrong_password",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "other",
+  "spec": "6. \"other\" — anything else."
+ },
+ {
+  "name": "fc_other_error_other_with_verify_mail",
+  "fn": "failure_code",
+  "t": {
+   "created": false,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "other",
+   "mails": [
+    {
+     "date": "2026-11-01",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "other",
+  "spec": "6. \"other\" — anything else."
+ },
+ {
+  "name": "fc_other_created_true_error_other_no_verify_banner",
+  "fn": "failure_code",
+  "t": {
+   "created": true,
+   "exists_msg": false,
+   "verify_banner": false,
+   "verified": false,
+   "error": "other",
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "other",
+  "spec": "4. \"no_verify_mail\" — created is true, there is no \"verify\" mail dated on or after agent_since, and error is \"wrong_password\" or \"none\" or verify_banner is true ... / 6. \"other\" — anything else."
+ }
+]

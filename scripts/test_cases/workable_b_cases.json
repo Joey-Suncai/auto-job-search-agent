@@ -1,0 +1,871 @@
+[
+ {
+  "name": "plan_fields_mixed_sections_page_order_and_skips",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Intro",
+     "fields": [
+      {
+       "id": "QA_name",
+       "type": "text",
+       "required": true,
+       "label": "Full  name"
+      },
+      {
+       "id": "CA_pronouns",
+       "type": "dropdown",
+       "required": false,
+       "label": "Pronouns",
+       "options": [
+        {
+         "name": "She/Her",
+         "value": "she"
+        },
+        {
+         "name": "He/Him",
+         "value": "he"
+        },
+        {
+         "name": "They/Them"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Docs",
+     "fields": [
+      {
+       "id": "QA_resume",
+       "type": "file",
+       "required": true,
+       "label": "Resume"
+      },
+      {
+       "id": "avatar",
+       "type": "file",
+       "required": false,
+       "label": "Photo"
+      },
+      {
+       "id": "QA_edu",
+       "type": "group",
+       "required": false,
+       "label": "Education"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_name",
+    "label": "Full name",
+    "type": "text",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "CA_pronouns",
+    "label": "Pronouns",
+    "type": "select",
+    "required": false,
+    "options": [
+     "She/Her",
+     "He/Him",
+     "They/Them"
+    ]
+   },
+   {
+    "key": "QA_resume",
+    "label": "Resume",
+    "type": "file",
+    "required": true,
+    "options": []
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_boolean_multiple_numeric_types",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Eligibility",
+     "fields": [
+      {
+       "id": "QA_work_auth",
+       "type": "boolean",
+       "required": true,
+       "label": "Authorized to work?"
+      },
+      {
+       "id": "QA_locations",
+       "type": "multiple",
+       "required": false,
+       "label": "Office  preferences",
+       "choices": [
+        {
+         "id": 1,
+         "body": "New York"
+        },
+        {
+         "id": 2,
+         "body": "London"
+        },
+        {
+         "id": 3,
+         "body": "  Remote   only "
+        }
+       ]
+      },
+      {
+       "id": "QA_years",
+       "type": "numeric",
+       "label": "Years of experience"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_work_auth",
+    "label": "Authorized to work?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ]
+   },
+   {
+    "key": "QA_locations",
+    "label": "Office preferences",
+    "type": "radio",
+    "required": false,
+    "options": [
+     "New York",
+     "London",
+     "Remote only"
+    ]
+   },
+   {
+    "key": "QA_years",
+    "label": "Years of experience",
+    "type": "text",
+    "required": false,
+    "options": []
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_choices_body_else_name",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Source",
+     "fields": [
+      {
+       "id": "QA_source",
+       "type": "dropdown",
+       "required": true,
+       "label": "How did you hear about us?",
+       "choices": [
+        {
+         "id": 11,
+         "name": "LinkedIn"
+        },
+        {
+         "id": 12,
+         "body": "Job  board ",
+         "name": "ignored"
+        },
+        {
+         "id": 13,
+         "name": "Referral"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_source",
+    "label": "How did you hear about us?",
+    "type": "select",
+    "required": true,
+    "options": [
+     "LinkedIn",
+     "Job board",
+     "Referral"
+    ]
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_unknown_types_fall_back_to_text",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Misc",
+     "fields": [
+      {
+       "id": "QA_website",
+       "type": "url",
+       "label": "Website"
+      },
+      {
+       "id": "QA_start",
+       "type": "date",
+       "label": "Earliest  start  date",
+       "required": true
+      },
+      {
+       "id": "QA_exp",
+       "type": "group",
+       "label": "Experience",
+       "required": false
+      },
+      {
+       "id": "QA_salary",
+       "type": "currency",
+       "label": "Salary expectation"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_website",
+    "label": "Website",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "QA_start",
+    "label": "Earliest start date",
+    "type": "date",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "QA_salary",
+    "label": "Salary expectation",
+    "type": "text",
+    "required": false,
+    "options": []
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_boolean_ignores_choices_yes_no",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Visa",
+     "fields": [
+      {
+       "id": "QA_sponsorship",
+       "type": "boolean",
+       "required": true,
+       "label": "  Need   sponsorship?  ",
+       "choices": [
+        {
+         "id": 1,
+         "body": "Maybe"
+        },
+        {
+         "id": 2,
+         "body": "No"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_sponsorship",
+    "label": "Need sponsorship?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ]
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_CA_options_value_else_name",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Diversity",
+     "fields": [
+      {
+       "id": "CA_gender",
+       "type": "multiple",
+       "required": false,
+       "label": "Gender  identity",
+       "options": [
+        {
+         "name": "Woman",
+         "value": "woman"
+        },
+        {
+         "name": "Man",
+         "value": "man"
+        },
+        {
+         "name": "Non-binary"
+        }
+       ]
+      },
+      {
+       "id": "CA_race",
+       "type": "dropdown",
+       "label": "Race",
+       "required": false,
+       "options": [
+        {
+         "value": "asian",
+         "name": "Asian"
+        },
+        {
+         "name": "White"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "CA_gender",
+    "label": "Gender identity",
+    "type": "radio",
+    "required": false,
+    "options": [
+     "Woman",
+     "Man",
+     "Non-binary"
+    ]
+   },
+   {
+    "key": "CA_race",
+    "label": "Race",
+    "type": "select",
+    "required": false,
+    "options": [
+     "Asian",
+     "White"
+    ]
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "plan_fields_empty_sections_and_required_default",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Empty",
+     "fields": []
+    },
+    {
+     "name": "A",
+     "fields": [
+      {
+       "id": "QA_a",
+       "type": "text",
+       "label": "A"
+      }
+     ]
+    },
+    {
+     "name": "B",
+     "fields": []
+    },
+    {
+     "name": "C",
+     "fields": [
+      {
+       "id": "QA_c",
+       "type": "email",
+       "label": "C",
+       "required": true
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_a",
+    "label": "A",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "QA_c",
+    "label": "C",
+    "type": "text",
+    "required": true,
+    "options": []
+   }
+  ],
+  "ambiguous": true,
+  "why": "The spec says each plan field is {key, label, type, required, options} and that missing required is false, but it never states what 'options' is for fields with no choices/options; [] is assumed here while null would also fit the wording."
+ },
+ {
+  "name": "plan_fields_whitespace_collapse_labels_and_options",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Details",
+     "fields": [
+      {
+       "id": "QA_phone",
+       "type": "phone",
+       "required": false,
+       "label": "  Mobile    number  "
+      },
+      {
+       "id": "QA_why",
+       "type": "paragraph",
+       "required": true,
+       "label": "Why  us?"
+      },
+      {
+       "id": "QA_attach",
+       "type": "file",
+       "label": "Attach  CV"
+      },
+      {
+       "id": "CA_hear",
+       "type": "dropdown",
+       "label": "Referral  source",
+       "options": [
+        {
+         "name": "  A   friend ",
+         "value": "friend"
+        },
+        {
+         "name": "Careers   page",
+         "value": "careers"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "QA_phone",
+    "label": "Mobile number",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "QA_why",
+    "label": "Why us?",
+    "type": "textarea",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "QA_attach",
+    "label": "Attach CV",
+    "type": "file",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "CA_hear",
+    "label": "Referral source",
+    "type": "select",
+    "required": false,
+    "options": [
+     "A friend",
+     "Careers page"
+    ]
+   }
+  ],
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_choices_numeric_ids_stringified",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "QA_locations",
+       "type": "multiple",
+       "label": "Locations",
+       "choices": [
+        {
+         "id": 101,
+         "body": "New York"
+        },
+        {
+         "id": 102,
+         "body": "London"
+        }
+       ]
+      },
+      {
+       "id": "QA_name",
+       "type": "text",
+       "label": "Name"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_locations": {
+    "New York": "101",
+    "London": "102"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_booleans_yes_true_no_false",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "QA_auth",
+       "type": "boolean",
+       "required": true,
+       "label": "Authorized?"
+      },
+      {
+       "id": "QA_sponsor",
+       "type": "boolean",
+       "label": "Need sponsorship?"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_auth": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "QA_sponsor": {
+    "Yes": "true",
+    "No": "false"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_CA_options_id_is_name_else_value",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "D",
+     "fields": [
+      {
+       "id": "CA_gender",
+       "type": "multiple",
+       "label": "Gender",
+       "options": [
+        {
+         "name": "Woman",
+         "value": "woman"
+        },
+        {
+         "name": "Man",
+         "value": "man"
+        }
+       ]
+      },
+      {
+       "id": "CA_vet",
+       "type": "dropdown",
+       "label": "Veteran",
+       "options": [
+        {
+         "value": "vet_yes",
+         "name": "I am a veteran"
+        },
+        {
+         "value": "vet_no"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "CA_gender": {
+    "Woman": "woman",
+    "Man": "man"
+   },
+   "CA_vet": {
+    "I am a veteran": "vet_yes",
+    "vet_no": "vet_no"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_choice_missing_body_and_missing_id",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "QA_source",
+       "type": "dropdown",
+       "label": "Source",
+       "choices": [
+        {
+         "id": 7,
+         "name": "LinkedIn"
+        },
+        {
+         "name": "Referral"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_source": {
+    "LinkedIn": "7",
+    "Referral": "Referral"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_fields_without_options_left_out",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "QA_name",
+       "type": "text",
+       "required": true,
+       "label": "Name"
+      },
+      {
+       "id": "QA_bio",
+       "type": "paragraph",
+       "label": "Bio",
+       "choices": []
+      },
+      {
+       "id": "QA_ok",
+       "type": "boolean",
+       "label": "OK"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_ok": {
+    "Yes": "true",
+    "No": "false"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_multiple_sections_and_file_field_omitted",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "A",
+     "fields": [
+      {
+       "id": "QA_dep",
+       "type": "dropdown",
+       "label": "Department",
+       "choices": [
+        {
+         "id": 1,
+         "body": "Engineering"
+        },
+        {
+         "id": 2,
+         "body": "Design"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "B",
+     "fields": [
+      {
+       "id": "QA_team",
+       "type": "dropdown",
+       "label": "Team",
+       "choices": [
+        {
+         "id": 3,
+         "body": "Design"
+        }
+       ]
+      },
+      {
+       "id": "QA_resume",
+       "type": "file",
+       "label": "Resume"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_dep": {
+    "Engineering": "1",
+    "Design": "2"
+   },
+   "QA_team": {
+    "Design": "3"
+   }
+  },
+  "ambiguous": false
+ },
+ {
+  "name": "choice_map_boolean_with_choices_only_yes_no",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "QA_flag",
+       "type": "boolean",
+       "label": "Flag",
+       "choices": [
+        {
+         "id": 9,
+         "body": "Maybe"
+        }
+       ]
+      },
+      {
+       "id": "QA_pick",
+       "type": "multiple",
+       "label": "Pick",
+       "choices": [
+        {
+         "id": "abc",
+         "body": "Option A"
+        },
+        {
+         "id": "def",
+         "name": "Option B"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_flag": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "QA_pick": {
+    "Option A": "abc",
+    "Option B": "def"
+   }
+  },
+  "ambiguous": true,
+  "why": "The spec says booleans map Yes/'true', No/'false' and that fields with choices/options are mapped, but it does not say whether a boolean field that also carries a 'choices' list should additionally include those choice texts; only the Yes/No mapping is assumed here."
+ },
+ {
+  "name": "choice_map_empty_options_list_and_whitespace_in_choice_body",
+  "fn": "choice_map",
+  "args": [
+   [
+    {
+     "name": "S",
+     "fields": [
+      {
+       "id": "CA_other",
+       "type": "multiple",
+       "label": "Other",
+       "options": []
+      },
+      {
+       "id": "QA_dept",
+       "type": "dropdown",
+       "label": "Dept",
+       "choices": [
+        {
+         "id": "42",
+         "body": "  Engineering   &  Ops "
+        },
+        {
+         "id": "43",
+         "body": "Design"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": {
+   "QA_dept": {
+    "Engineering & Ops": "42",
+    "Design": "43"
+   }
+  },
+  "ambiguous": true,
+  "why": "The whitespace-collapse rule is stated for plan_fields' labels and option texts; whether choice_map keys are likewise collapsed/trimmed is not stated explicitly, so keys are assumed collapsed here. The empty-options field is dropped per 'Fields without options are left out'."
+ }
+]

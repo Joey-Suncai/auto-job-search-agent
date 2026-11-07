@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "text": str, "expect": bool, "spec_quote": str, "ambiguous": false}. Write 20 cases: 10 True (different degree words and sentence shapes), 10 False (Applied Data Science, no degree word, other fields, degree word far away in another sentence, empty).

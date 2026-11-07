@@ -1,0 +1,761 @@
+[
+ {
+  "name": "top_all_factors_max",
+  "job": {
+   "id": "J1",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "score": 55,
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_value": 70,
+   "s_referral": 1.0,
+   "s_timing": 1.0,
+   "s_sponsor": 1.0,
+   "s_fresh": 1.0,
+   "s_chance": 1.0,
+   "score": 100.0,
+   "tier_orig": "A",
+   "tier": "A",
+   "score_v1": 55,
+   "score_version": "v2"
+  },
+  "spec_quote": "\"top\" if `joey_pref` is \"up\" or the role is ai_pm ... s_chance = 0.40·s_referral + 0.25·s_timing + 0.20·s_sponsor + 0.15·s_fresh, rounded to 3 decimals ... score = s_value + 30·s_chance, rounded to 1 decimal ... score_version = \"v2\"",
+  "ambiguous": false
+ },
+ {
+  "name": "top_ai_pm_role",
+  "job": {
+   "id": "J2",
+   "title": "AI Product Manager Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Some H-1B history",
+   "referral": "School alumni",
+   "posted": "2026-09-01",
+   "added": "2026-10-05",
+   "sources": "Simplify"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_value": 70,
+   "s_referral": 0.4,
+   "s_timing": 0.5,
+   "s_sponsor": 0.6,
+   "s_fresh": 0.3,
+   "s_chance": 0.45,
+   "score": 83.5,
+   "tier_orig": "A",
+   "tier": "A"
+  },
+  "spec_quote": "\"top\" if `joey_pref` is \"up\" or the role is ai_pm. / \"Some H-1B history\" → 0.6 / else contains \"summer\" or \"2027\" → 0.8; else 0.5 / ≤ 90 → 0.3",
+  "ambiguous": false
+ },
+ {
+  "name": "standard_tier_B",
+  "job": {
+   "id": "J3",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Strong H-1B sponsor",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2026"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_value": 40,
+   "s_timing": 0.8,
+   "s_chance": 0.91,
+   "score": 67.3,
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "otherwise \"standard\" ... s_value = 70 for top, 40 for standard ... tier_orig = ... \"B\" for standard with s_chance ≥ 0.5 ... else contains \"summer\" or \"2027\" → 0.8",
+  "ambiguous": false
+ },
+ {
+  "name": "standard_tier_C_does_not_sponsor",
+  "job": {
+   "id": "J4",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Does not sponsor",
+   "referral": "Cold",
+   "posted": "2026-07-01",
+   "added": "2026-09-20",
+   "sources": "Simplify"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_value": 40,
+   "s_referral": 0.0,
+   "s_timing": 0.5,
+   "s_sponsor": 0.4,
+   "s_fresh": 0.3,
+   "s_chance": 0.25,
+   "score": 47.5,
+   "tier_orig": "C",
+   "tier": "C"
+  },
+  "spec_quote": "anything else → 0.4 (a \"Blocked…\" value → 0.0) ... else 0.5 ... \"C\" for standard with s_chance < 0.5",
+  "ambiguous": false
+ },
+ {
+  "name": "exclude_joey_down",
+  "job": {
+   "id": "J5",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "School alumni",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "joey_pref": "down"
+  },
+  "expect": {
+   "v_level": "exclude",
+   "s_value": 0,
+   "s_chance": 0.76,
+   "score": 22.8,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "\"exclude\" if `joey_pref` is \"down\" ... s_value = ... 0 for exclude and off_target ... \"D\" for exclude and off_target",
+  "ambiguous": false
+ },
+ {
+  "name": "exclude_hardware_firmware",
+  "job": {
+   "id": "J6",
+   "title": "Firmware Engineering Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Some H-1B history",
+   "referral": "Cold",
+   "posted": "2026-10-01",
+   "added": "2026-10-12",
+   "sources": "Summer 2026"
+  },
+  "expect": {
+   "v_level": "exclude",
+   "s_value": 0,
+   "s_fresh": 0.8,
+   "s_sponsor": 0.6,
+   "s_chance": 0.44,
+   "score": 13.2,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "\"exclude\" if ... the title has a hardware word (hardware, firmware, embedded, silicon, chip, VLSI, ASIC, FPGA, RF, mechanical, electrical)",
+  "ambiguous": false
+ },
+ {
+  "name": "exclude_ai_eng_ml",
+  "job": {
+   "id": "J7",
+   "title": "Machine Learning Engineer Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Strong H-1B sponsor",
+   "referral": "Warm intro",
+   "posted": "2026-10-20",
+   "added": "2026-10-27",
+   "sources": "Simplify Summer 2027"
+  },
+  "expect": {
+   "v_level": "exclude",
+   "s_value": 0,
+   "s_referral": 0.6,
+   "s_timing": 1.0,
+   "s_chance": 0.8,
+   "score": 24.0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "or the role is ai_engineering and the title says machine learning / ML / computer vision / deep learning, unless it also names a client-facing function ... starting \"Warm\" → 0.6",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_eng_ml_forward_deployed_is_standard",
+  "job": {
+   "id": "J8",
+   "title": "Machine Learning Engineer Intern, Forward Deployed",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Some H-1B history",
+   "referral": "Cold",
+   "posted": "2026-10-20",
+   "added": "2026-10-27",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_value": 40,
+   "s_chance": 0.52,
+   "score": 55.6,
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "unless it also names a client-facing function (forward deployed, solutions, customer, field, consultant, consulting, implementation)",
+  "ambiguous": false
+ },
+ {
+  "name": "joey_up_beats_hardware_word",
+  "job": {
+   "id": "J9",
+   "title": "Embedded Systems Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Some H-1B history",
+   "referral": "School alumni",
+   "posted": "2026-10-20",
+   "added": "2026-10-27",
+   "sources": "Summer 2026",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_value": 70,
+   "s_chance": 0.63,
+   "score": 88.9,
+   "tier_orig": "A",
+   "tier": "A"
+  },
+  "spec_quote": "`joey_pref` \"up\" / \"down\" wins over everything above except the target gate (an off-target row stays off_target).",
+  "ambiguous": false
+ },
+ {
+  "name": "off_target_non_intern_level",
+  "job": {
+   "id": "J10",
+   "title": "Software Engineer Intern",
+   "level": "Full-time",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "off_target",
+   "s_value": 0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "The row is *on target* only if `level` is \"Internship\" ... Off-target rows get v_level \"off_target\" ... `joey_pref` \"up\" / \"down\" wins over everything above except the target gate (an off-target row stays off_target).",
+  "ambiguous": false
+ },
+ {
+  "name": "off_target_fall_lowercase",
+  "job": {
+   "id": "J11",
+   "title": "Data Analyst Intern - fall 2026",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Simplify",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "off_target",
+   "s_value": 0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "the title does not name an off-cycle term (fall, spring, winter, autumn, co-op, part-time, year-round, semester — whole words, any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "off_target_co_op",
+  "job": {
+   "id": "J12",
+   "title": "Software Engineer Co-Op",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "v_level": "off_target",
+   "s_value": 0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "the title does not name an off-cycle term (fall, spring, winter, autumn, co-op, part-time, year-round, semester — whole words, any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "off_target_part_time",
+  "job": {
+   "id": "J13",
+   "title": "Data Science Intern (Part-Time)",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "v_level": "off_target",
+   "s_value": 0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "the title does not name an off-cycle term (fall, spring, winter, autumn, co-op, part-time, year-round, semester — whole words, any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "target_gate_near_miss_fallback",
+  "job": {
+   "id": "J14",
+   "title": "Software Engineering Intern, Fallback Platform",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_value": 70,
+   "s_chance": 1.0,
+   "score": 100.0,
+   "tier_orig": "A",
+   "tier": "A"
+  },
+  "spec_quote": "the title does not name an off-cycle term (fall, ... — whole words, any case). Off-target rows get v_level \"off_target\"",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_second_degree_zero",
+  "job": {
+   "id": "J15",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "2nd-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_referral": 0.0,
+   "s_chance": 0.6,
+   "score": 58.0,
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "s_referral: `referral` starting \"1st-degree\" → 1.0; ... anything else / missing → 0.0",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_warm",
+  "job": {
+   "id": "J16",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Warm intro",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_referral": 0.6,
+   "s_chance": 0.84,
+   "score": 65.2,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "starting \"Warm\" → 0.6",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_school_alumni",
+  "job": {
+   "id": "J17",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "School alumni",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_referral": 0.4,
+   "s_chance": 0.76,
+   "score": 62.8,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "\"School alumni\" → 0.4",
+  "ambiguous": false
+ },
+ {
+  "name": "referral_linkedin",
+  "job": {
+   "id": "J18",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "LinkedIn outreach",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_referral": 0.8,
+   "s_chance": 0.92,
+   "score": 67.6,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "containing \"LinkedIn\" → 0.8",
+  "ambiguous": false
+ },
+ {
+  "name": "timing_from_title_2027_summer",
+  "job": {
+   "id": "J19",
+   "title": "2027 Summer Software Engineer Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "posted": "2026-10-20",
+   "added": "2026-10-27",
+   "sources": "Simplify",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_timing": 1.0,
+   "s_chance": 0.6,
+   "score": 88.0,
+   "tier_orig": "A",
+   "tier": "A"
+  },
+  "spec_quote": "s_timing: title or `sources` contains \"summer 2027\" / \"2027 summer\" (any case) → 1.0",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsor_blocked_zero_and_tier_blocked",
+  "job": {
+   "id": "J20",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Blocked - no sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_sponsor": 0.0,
+   "s_chance": 0.8,
+   "score": 64.0,
+   "tier_orig": "B",
+   "tier": "Blocked"
+  },
+  "spec_quote": "anything else → 0.4 (a \"Blocked…\" value → 0.0) ... tier = \"Blocked\" if ... `sponsorship` starts with \"Blocked\"; otherwise tier = tier_orig",
+  "ambiguous": false
+ },
+ {
+  "name": "tier_blocked_by_elig",
+  "job": {
+   "id": "J21",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "不可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "joey_pref": "up"
+  },
+  "expect": {
+   "v_level": "top",
+   "s_value": 70,
+   "s_chance": 1.0,
+   "score": 100.0,
+   "tier_orig": "A",
+   "tier": "Blocked"
+  },
+  "spec_quote": "tier = \"Blocked\" if `elig` is 不可投, 已关闭 or 重复, or `sponsorship` starts with \"Blocked\"; otherwise tier = tier_orig.",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_14_days_boundary",
+  "job": {
+   "id": "J22",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "posted": "2026-10-01",
+   "added": "2026-10-15",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_fresh": 0.8,
+   "s_chance": 0.57,
+   "score": 57.1,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "≤ 7 → 1.0; ≤ 14 → 0.8; ≤ 30 → 0.6; ≤ 90 → 0.3",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_31_days",
+  "job": {
+   "id": "J23",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "posted": "2026-09-01",
+   "added": "2026-10-02",
+   "sources": "Simplify"
+  },
+  "expect": {
+   "s_fresh": 0.3,
+   "s_timing": 0.5,
+   "s_chance": 0.37,
+   "score": 51.1,
+   "v_level": "standard",
+   "tier_orig": "C",
+   "tier": "C"
+  },
+  "spec_quote": "≤ 30 → 0.6; ≤ 90 → 0.3 ... \"C\" for standard with s_chance < 0.5",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_negative_age_counts_zero",
+  "job": {
+   "id": "J24",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "posted": "2026-10-25",
+   "added": "2026-10-20",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_fresh": 1.0,
+   "s_chance": 0.6,
+   "score": 58.0,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "older, negative age counts as 0 days, missing / unreadable date → 0.2",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_missing_posted",
+  "job": {
+   "id": "J25",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "added": "2026-10-20",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_fresh": 0.2,
+   "s_chance": 0.48,
+   "score": 54.4,
+   "v_level": "standard",
+   "tier_orig": "C",
+   "tier": "C"
+  },
+  "spec_quote": "missing / unreadable date → 0.2 ... \"C\" for standard with s_chance < 0.5",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_timestamp_truncated_to_10_chars",
+  "job": {
+   "id": "J26",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Cold",
+   "posted": "2026-10-20T14:30:00Z",
+   "added": "2026-10-27T09:00:00Z",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_fresh": 1.0,
+   "s_chance": 0.6,
+   "score": 58.0,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "age = days from `posted` to `added` (both YYYY-MM-DD; a date is used up to its first 10 characters): ≤ 7 → 1.0",
+  "ambiguous": false
+ },
+ {
+  "name": "score_v1_not_overwritten",
+  "job": {
+   "id": "J27",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "score": 82,
+   "score_v1": 61
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_chance": 1.0,
+   "score": 70.0,
+   "tier_orig": "B",
+   "tier": "B",
+   "score_v1": 61
+  },
+  "spec_quote": "The first time a row is scored, its previous `score` is copied to `score_v1` (if `score_v1` is not already present).",
+  "ambiguous": false
+ },
+ {
+  "name": "idempotent_rescore",
+  "job": {
+   "id": "J28",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "2nd-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "score": 58.0,
+   "score_v1": 33,
+   "score_version": "v2",
+   "v_level": "standard",
+   "s_value": 40,
+   "s_referral": 0.0,
+   "s_timing": 1.0,
+   "s_sponsor": 1.0,
+   "s_fresh": 1.0,
+   "s_chance": 0.6,
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "expect": {
+   "v_level": "standard",
+   "s_value": 40,
+   "s_referral": 0.0,
+   "s_timing": 1.0,
+   "s_sponsor": 1.0,
+   "s_fresh": 1.0,
+   "s_chance": 0.6,
+   "score": 58.0,
+   "tier_orig": "B",
+   "tier": "B",
+   "score_v1": 33,
+   "score_version": "v2"
+  },
+  "spec_quote": "Input rows are not mutated; scoring a scored row again gives the same row (idempotent).",
+  "ambiguous": false
+ },
+ {
+  "name": "fresh_8_days_near_miss_for_week",
+  "job": {
+   "id": "J29",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "Warm intro",
+   "posted": "2026-10-01",
+   "added": "2026-10-09",
+   "sources": "Summer 2027"
+  },
+  "expect": {
+   "s_fresh": 0.8,
+   "s_chance": 0.81,
+   "score": 64.3,
+   "v_level": "standard",
+   "tier_orig": "B",
+   "tier": "B"
+  },
+  "spec_quote": "≤ 7 → 1.0; ≤ 14 → 0.8",
+  "ambiguous": false
+ },
+ {
+  "name": "off_target_beats_joey_down",
+  "job": {
+   "id": "J30",
+   "title": "Data Analyst Intern - Spring 2027",
+   "level": "Internship",
+   "elig": "可投",
+   "sponsorship": "Posting offers sponsorship",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "joey_pref": "down"
+  },
+  "expect": {
+   "v_level": "off_target",
+   "s_value": 0,
+   "tier_orig": "D",
+   "tier": "D"
+  },
+  "spec_quote": "Off-target rows get v_level \"off_target\". ... `joey_pref` \"up\" / \"down\" wins over everything above except the target gate (an off-target row stays off_target).",
+  "ambiguous": false
+ }
+]

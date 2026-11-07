@@ -1,0 +1,284 @@
+[
+ {
+  "name": "key phone always wins over combo and phone-text options",
+  "field": {
+   "key": "phone",
+   "type": "combo",
+   "label": "Would you like to receive SMS… we will only contact you via email and/or phone calls",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "key \"phone\" → yes, always.",
+  "ambiguous": false
+ },
+ {
+  "name": "key phone always wins even with unrelated label and options",
+  "field": {
+   "key": "phone",
+   "label": "Email address",
+   "options": [
+    "a"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "key \"phone\" → yes, always.",
+  "ambiguous": false
+ },
+ {
+  "name": "text field labeled Phone with no options",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Phone",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing type counts as text for Phone label",
+  "field": {
+   "key": "contact",
+   "label": "Phone",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "tel field labeled Mobile phone",
+  "field": {
+   "key": "contact",
+   "type": "tel",
+   "label": "Mobile phone",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "text field labeled Phone number",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Phone number",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "text field labeled Cell phone",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Cell phone",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase phone as separate word",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "please enter phone",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "phone with punctuation still separate word",
+  "field": {
+   "key": "contact",
+   "type": "tel",
+   "label": "Phone:",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "textarea is not an allowed type even with Phone label",
+  "field": {
+   "key": "contact",
+   "type": "textarea",
+   "label": "Phone",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "combo type is never a phone box even with Phone label",
+  "field": {
+   "key": "contact",
+   "type": "combo",
+   "label": "Phone",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "A Yes/No or other choice question (type combo, select, radio, checkbox, or any field with options) is never a phone box, even when its text talks about phones, e.g. \"Would you like to receive SMS… we will only contact you via email and/or phone calls\" with options Yes/No.",
+  "ambiguous": false
+ },
+ {
+  "name": "select type with Phone label and options is false",
+  "field": {
+   "key": "contact",
+   "type": "select",
+   "label": "Phone",
+   "options": [
+    "Mobile",
+    "Home"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "A Yes/No or other choice question (type combo, select, radio, checkbox, or any field with options) is never a phone box, even when its text talks about phones, e.g. \"Would you like to receive SMS… we will only contact you via email and/or phone calls\" with options Yes/No.",
+  "ambiguous": false
+ },
+ {
+  "name": "radio type with Phone label and options is false",
+  "field": {
+   "key": "contact",
+   "type": "radio",
+   "label": "Phone",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "A Yes/No or other choice question (type combo, select, radio, checkbox, or any field with options) is never a phone box, even when its text talks about phones, e.g. \"Would you like to receive SMS… we will only contact you via email and/or phone calls\" with options Yes/No.",
+  "ambiguous": false
+ },
+ {
+  "name": "checkbox type with Phone label and options is false",
+  "field": {
+   "key": "contact",
+   "type": "checkbox",
+   "label": "Phone",
+   "options": [
+    "Yes"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "A Yes/No or other choice question (type combo, select, radio, checkbox, or any field with options) is never a phone box, even when its text talks about phones, e.g. \"Would you like to receive SMS… we will only contact you via email and/or phone calls\" with options Yes/No.",
+  "ambiguous": false
+ },
+ {
+  "name": "text type with Phone label but options is false",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Phone",
+   "options": [
+    "Mobile",
+    "Home"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing type with Phone label but options is false",
+  "field": {
+   "key": "contact",
+   "label": "Phone",
+   "options": [
+    "Yes"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "Telephone is not the word phone",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Telephone",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "\"telephone\" / \"smartphone\" / \"headphones\" are not the word \"phone\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Smartphone is not the word phone",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Smartphone",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "\"telephone\" / \"smartphone\" / \"headphones\" are not the word \"phone\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Headphones is not the word phone",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Headphones",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "\"telephone\" / \"smartphone\" / \"headphones\" are not the word \"phone\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Phonebook contains phone but not as a separate word",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Phonebook",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "text field with no phone word is false",
+  "field": {
+   "key": "contact",
+   "type": "text",
+   "label": "Email address",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "Otherwise yes only when the type is \"text\" or \"tel\" (a missing type counts as \"text\"), the label contains \"phone\" as a separate word (\"Phone\", \"Mobile phone\", \"Phone number\", \"Cell phone\"), and the field has no options.",
+  "ambiguous": false
+ },
+ {
+  "name": "SMS Yes/No radio with phone wording is false",
+  "field": {
+   "key": "sms_contact",
+   "type": "radio",
+   "label": "Would you like to receive SMS… we will only contact you via email and/or phone calls",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "A Yes/No or other choice question (type combo, select, radio, checkbox, or any field with options) is never a phone box, even when its text talks about phones, e.g. \"Would you like to receive SMS… we will only contact you via email and/or phone calls\" with options Yes/No.",
+  "ambiguous": false
+ }
+]

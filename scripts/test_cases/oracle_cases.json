@@ -1,0 +1,295 @@
+[
+ {
+  "name": "parse_job_page",
+  "fn": "parse_posting",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491"
+  ],
+  "expect": {
+   "host": "acme.fa.us2.oraclecloud.com",
+   "lang": "en",
+   "site": "CX_1",
+   "job": "8491"
+  }
+ },
+ {
+  "name": "parse_apply_page_query_fragment",
+  "fn": "parse_posting",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491/apply/email?source=linkedin#form"
+  ],
+  "expect": {
+   "host": "acme.fa.us2.oraclecloud.com",
+   "lang": "en",
+   "site": "CX_1",
+   "job": "8491"
+  }
+ },
+ {
+  "name": "parse_requisitions_preview",
+  "fn": "parse_posting",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/requisitions/preview/8491"
+  ],
+  "expect": {
+   "host": "acme.fa.us2.oraclecloud.com",
+   "lang": "en",
+   "site": "CX_1",
+   "job": "8491"
+  }
+ },
+ {
+  "name": "parse_non_fa_host_null",
+  "fn": "parse_posting",
+  "args": [
+   "https://acme.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491"
+  ],
+  "expect": null
+ },
+ {
+  "name": "apply_url_from_job_page",
+  "fn": "apply_url",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491"
+  ],
+  "expect": "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491/apply/email"
+ },
+ {
+  "name": "apply_url_non_oracle_null",
+  "fn": "apply_url",
+  "args": [
+   "https://example.com/jobs/8491"
+  ],
+  "expect": null
+ },
+ {
+  "name": "classify_closed",
+  "fn": "classify",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491",
+   "This job posting is no longer open."
+  ],
+  "expect": "closed"
+ },
+ {
+  "name": "classify_done",
+  "fn": "classify",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491/apply/email",
+   "Thank you for your application. Your application has been submitted."
+  ],
+  "expect": "done"
+ },
+ {
+  "name": "classify_limited",
+  "fn": "classify",
+  "args": [
+   "https://acme.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/8491/apply/email",
+   "Too many attempts. Please try again later."
+  ],
+  "expect": "limited"
+ },
+ {
+  "name": "is_final_submit_any_case",
+  "fn": "is_final",
+  "args": [
+   "SUBMIT"
+  ],
+  "expect": true
+ },
+ {
+  "name": "is_final_continue_false",
+  "fn": "is_final",
+  "args": [
+   "Continue"
+  ],
+  "expect": false
+ },
+ {
+  "name": "is_final_empty_false",
+  "fn": "is_final",
+  "args": [
+   ""
+  ],
+  "expect": false
+ },
+ {
+  "name": "clean_label_trailing_star",
+  "fn": "clean_label",
+  "args": [
+   "Country *"
+  ],
+  "expect": "Country"
+ },
+ {
+  "name": "clean_label_required_paren",
+  "fn": "clean_label",
+  "args": [
+   "First Name (required)"
+  ],
+  "expect": "First Name"
+ },
+ {
+  "name": "clean_label_leading_star",
+  "fn": "clean_label",
+  "args": [
+   "*Email"
+  ],
+  "expect": "Email"
+ },
+ {
+  "name": "pick_option_exact_case_insensitive",
+  "fn": "pick_option",
+  "args": [
+   "yes",
+   [
+    "No",
+    "YES"
+   ]
+  ],
+  "expect": "YES"
+ },
+ {
+  "name": "pick_option_unique_starts_with",
+  "fn": "pick_option",
+  "args": [
+   "New",
+   [
+    "New York",
+    "Old"
+   ]
+  ],
+  "expect": "New York"
+ },
+ {
+  "name": "pick_option_contains_multiple_null",
+  "fn": "pick_option",
+  "args": [
+   "York",
+   [
+    "New York",
+    "City of York"
+   ]
+  ],
+  "expect": null
+ },
+ {
+  "name": "geo_same_state_code",
+  "fn": "geo_same",
+  "args": [
+   "Illinois",
+   "IL"
+  ],
+  "expect": true
+ },
+ {
+  "name": "geo_same_city_first_comma",
+  "fn": "geo_same",
+  "args": [
+   "Chicago",
+   "Chicago, Cook, IL"
+  ],
+  "expect": true
+ },
+ {
+  "name": "geo_pick_exact",
+  "fn": "geo_pick",
+  "args": [
+   "62701",
+   [
+    "62701",
+    "60606"
+   ]
+  ],
+  "expect": "62701"
+ },
+ {
+  "name": "geo_pick_unique_first_comma",
+  "fn": "geo_pick",
+  "args": [
+   "Chicago",
+   [
+    "Chicago, Cook, IL",
+    "Naperville, DuPage, IL"
+   ]
+  ],
+  "expect": "Chicago, Cook, IL"
+ },
+ {
+  "name": "geo_pick_state_disambiguates",
+  "fn": "geo_pick",
+  "args": [
+   "Springfield",
+   [
+    "Springfield, Sangamon, IL",
+    "Springfield, Greene, MO"
+   ],
+   "MO"
+  ],
+  "expect": "Springfield, Greene, MO"
+ },
+ {
+  "name": "email_consent_privacy_only_tick",
+  "fn": "email_consent",
+  "args": [
+   "I acknowledge the privacy notice and consent to data processing for this application."
+  ],
+  "expect": "tick"
+ },
+ {
+  "name": "email_consent_arbitration_ask",
+  "fn": "email_consent",
+  "args": [
+   "I agree to be bound by arbitration."
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "email_consent_terms_missing_ask",
+  "fn": "email_consent",
+  "args": [
+   "I agree to the terms and conditions."
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "is_other_followup_true",
+  "fn": "is_other_followup",
+  "args": [
+   "If other, please specify"
+  ],
+  "expect": true
+ },
+ {
+  "name": "is_other_followup_false_other_names",
+  "fn": "is_other_followup",
+  "args": [
+   "Do you have any other names?"
+  ],
+  "expect": false
+ },
+ {
+  "name": "same_phone_last_ten",
+  "fn": "same",
+  "args": [
+   "+1 (312) 555-1234",
+   "312-555-1234"
+  ],
+  "expect": true
+ },
+ {
+  "name": "same_multiselect_set",
+  "fn": "same",
+  "args": [
+   [
+    "A",
+    "B"
+   ],
+   [
+    "B",
+    "A"
+   ]
+  ],
+  "expect": true
+ }
+]

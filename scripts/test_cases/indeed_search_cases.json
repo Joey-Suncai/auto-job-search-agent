@@ -1,0 +1,182 @@
+[
+ {
+  "name": "data_analyst_intern_remote",
+  "fn": "keep_card",
+  "title": "Data Analyst Intern",
+  "location": "Remote",
+  "expect": true
+ },
+ {
+  "name": "bi_2027_summer_intern",
+  "fn": "keep_card",
+  "title": "2027 Summer Intern - Business Intelligence",
+  "location": "New York, NY",
+  "expect": true
+ },
+ {
+  "name": "ai_new_grad_2027",
+  "fn": "keep_card",
+  "title": "AI New Grad 2027",
+  "location": "San Francisco, CA",
+  "expect": true
+ },
+ {
+  "name": "machine_learning_intern_2027",
+  "fn": "keep_card",
+  "title": "Machine Learning Engineer Intern (Summer 2027)",
+  "location": "Austin, TX",
+  "expect": true
+ },
+ {
+  "name": "analytics_entry_level",
+  "fn": "keep_card",
+  "title": "Analytics Engineer - Entry Level",
+  "location": "Chicago, IL",
+  "expect": true
+ },
+ {
+  "name": "senior_data_intern",
+  "fn": "keep_card",
+  "title": "Senior Data Analyst Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "data_analyst_no_level",
+  "fn": "keep_card",
+  "title": "Data Analyst",
+  "location": "Boston, MA",
+  "expect": false
+ },
+ {
+  "name": "data_intern_2026",
+  "fn": "keep_card",
+  "title": "Data Analyst Intern (Summer 2026)",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "data_intern_toronto",
+  "fn": "keep_card",
+  "title": "Data Analyst Intern",
+  "location": "Toronto, ON",
+  "expect": false
+ },
+ {
+  "name": "marketing_intern",
+  "fn": "keep_card",
+  "title": "Marketing Intern",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "product_manager_ii_intern",
+  "fn": "keep_card",
+  "title": "Product Manager II Intern",
+  "location": "Seattle, WA",
+  "expect": false
+ },
+ {
+  "name": "ai_intern_london",
+  "fn": "keep_card",
+  "title": "AI Intern",
+  "location": "London, UK",
+  "expect": false
+ },
+ {
+  "name": "level_intern_2027",
+  "fn": "level_of",
+  "title": "Data Analyst Intern (Summer 2027)",
+  "expect": "Internship"
+ },
+ {
+  "name": "level_intern_2026",
+  "fn": "level_of",
+  "title": "Summer 2026 Intern - Data Analyst",
+  "expect": null
+ },
+ {
+  "name": "level_intern_no_year",
+  "fn": "level_of",
+  "title": "Intern",
+  "expect": "Internship"
+ },
+ {
+  "name": "level_intern_fall",
+  "fn": "level_of",
+  "title": "Data Analyst Intern - Fall 2027",
+  "expect": null
+ },
+ {
+  "name": "level_bi_intern_2027",
+  "fn": "level_of",
+  "title": "2027 Summer Intern - Business Intelligence",
+  "expect": "Internship"
+ },
+ {
+  "name": "level_new_grad_2028",
+  "fn": "level_of",
+  "title": "New Grad Data Analyst 2028",
+  "expect": "New Grad / Entry"
+ },
+ {
+  "name": "level_year_2026",
+  "fn": "level_of",
+  "title": "Data Analyst 2026",
+  "expect": null
+ },
+ {
+  "name": "level_junior",
+  "fn": "level_of",
+  "title": "Junior Data Analyst",
+  "expect": "New Grad / Entry"
+ },
+ {
+  "name": "level_plain_analyst",
+  "fn": "level_of",
+  "title": "Data Analyst",
+  "expect": null
+ },
+ {
+  "name": "level_associate_product_manager",
+  "fn": "level_of",
+  "title": "Associate Product Manager",
+  "expect": "New Grad / Entry"
+ },
+ {
+  "name": "key_data_analyst_intern",
+  "fn": "title_key",
+  "title": "Data Analyst Intern (Summer 2027)",
+  "expect": "data analyst"
+ },
+ {
+  "name": "key_bi_intern",
+  "fn": "title_key",
+  "title": "2027 Summer Intern - Business Intelligence",
+  "expect": "business intelligence"
+ },
+ {
+  "name": "key_ai_ml_remote",
+  "fn": "title_key",
+  "title": "AI/ML Intern [Remote]",
+  "expect": "ai ml"
+ },
+ {
+  "name": "key_sr_data_us",
+  "fn": "title_key",
+  "title": "Sr. Data Analyst — US",
+  "expect": "sr data analyst"
+ },
+ {
+  "name": "key_new_graduate_pm_2028",
+  "fn": "title_key",
+  "title": "New Graduate Product Manager 2028",
+  "expect": "product manager"
+ },
+ {
+  "name": "key_bi_internship_usa",
+  "fn": "title_key",
+  "title": "Business Intelligence Internship - USA",
+  "expect": "business intelligence"
+ }
+]

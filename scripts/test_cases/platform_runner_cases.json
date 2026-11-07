@@ -1,0 +1,266 @@
+[
+ {
+  "name": "runner_status_greenhouse_ready",
+  "fn": "runner_status",
+  "args": {
+   "platform": "greenhouse"
+  },
+  "expect": "ready"
+ },
+ {
+  "name": "runner_status_workday_ready",
+  "fn": "runner_status",
+  "args": {
+   "platform": "workday"
+  },
+  "expect": "ready"
+ },
+ {
+  "name": "runner_status_ashby_ready",
+  "fn": "runner_status",
+  "args": {
+   "platform": "ashby"
+  },
+  "expect": "ready"
+ },
+ {
+  "name": "runner_status_lever_ready",
+  "fn": "runner_status",
+  "args": {
+   "platform": "lever"
+  },
+  "expect": "ready"
+ },
+ {
+  "name": "runner_status_oracle_testing",
+  "fn": "runner_status",
+  "args": {
+   "platform": "oracle"
+  },
+  "expect": "testing"
+ },
+ {
+  "name": "runner_status_icims_testing_dry_run",
+  "fn": "runner_status",
+  "args": {
+   "platform": "icims"
+  },
+  "expect": "testing"
+ },
+ {
+  "name": "runner_status_rippling_none",
+  "fn": "runner_status",
+  "args": {
+   "platform": "rippling"
+  },
+  "expect": "none"
+ },
+ {
+  "name": "runner_status_ukg_none",
+  "fn": "runner_status",
+  "args": {
+   "platform": "ukg"
+  },
+  "expect": "none"
+ },
+ {
+  "name": "runner_status_null_unknown",
+  "fn": "runner_status",
+  "args": {
+   "platform": null
+  },
+  "expect": "unknown"
+ },
+ {
+  "name": "runner_status_empty_string_unknown",
+  "fn": "runner_status",
+  "args": {
+   "platform": ""
+  },
+  "expect": "unknown"
+ },
+ {
+  "name": "runner_fields_ats_greenhouse_wins_over_linkedin_url",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://boards.greenhouse.io/acme",
+    "url": "https://www.linkedin.com/jobs/view/123"
+   }
+  },
+  "expect": {
+   "platform": "greenhouse",
+   "runner": "ready"
+  }
+ },
+ {
+  "name": "runner_fields_ats_ashby_wins_over_lever_url",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://jobs.ashbyhq.com/acme",
+    "url": "https://jobs.lever.co/acme"
+   }
+  },
+  "expect": {
+   "platform": "ashby",
+   "runner": "ready"
+  }
+ },
+ {
+  "name": "runner_fields_ats_unmatched_falls_back_to_url",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "https://www.linkedin.com/jobs/view/123",
+    "url": "https://boards.greenhouse.io/acme"
+   }
+  },
+  "expect": {
+   "platform": "greenhouse",
+   "runner": "ready"
+  }
+ },
+ {
+  "name": "runner_fields_only_url_workday_subdomain",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://acme.wd5.myworkdayjobs.com/en-US/foo"
+   }
+  },
+  "expect": {
+   "platform": "workday",
+   "runner": "ready"
+  }
+ },
+ {
+  "name": "runner_fields_only_url_greenhouse_subdomain",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://boards.greenhouse.io/acme"
+   }
+  },
+  "expect": {
+   "platform": "greenhouse",
+   "runner": "ready"
+  }
+ },
+ {
+  "name": "runner_fields_linkedin_only_unknown",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://www.linkedin.com/jobs/view/123"
+   }
+  },
+  "expect": {
+   "platform": "",
+   "runner": "unknown"
+  }
+ },
+ {
+  "name": "runner_fields_wellfound_only_unknown",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://wellfound.com/jobs/123"
+   }
+  },
+  "expect": {
+   "platform": "",
+   "runner": "unknown"
+  }
+ },
+ {
+  "name": "runner_fields_missing_keys_unknown",
+  "fn": "runner_fields",
+  "args": {
+   "row": {}
+  },
+  "expect": {
+   "platform": "",
+   "runner": "unknown"
+  }
+ },
+ {
+  "name": "runner_fields_empty_strings_unknown",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "ats_url": "",
+    "url": ""
+   }
+  },
+  "expect": {
+   "platform": "",
+   "runner": "unknown"
+  }
+ },
+ {
+  "name": "runner_fields_rippling_none",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://www.rippling.com/careers"
+   }
+  },
+  "expect": {
+   "platform": "rippling",
+   "runner": "none"
+  }
+ },
+ {
+  "name": "runner_fields_ukg_ultipro_none",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://acme.ultipro.com/careers"
+   }
+  },
+  "expect": {
+   "platform": "ukg",
+   "runner": "none"
+  }
+ },
+ {
+  "name": "runner_fields_successfactors_eu_testing",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://acme.successfactors.eu/careers"
+   }
+  },
+  "expect": {
+   "platform": "successfactors",
+   "runner": "testing"
+  }
+ },
+ {
+  "name": "runner_fields_smartrecruiters_testing",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://jobs.smartrecruiters.com/acme"
+   }
+  },
+  "expect": {
+   "platform": "smartrecruiters",
+   "runner": "testing"
+  }
+ },
+ {
+  "name": "runner_fields_jibe_dry_run_testing",
+  "fn": "runner_fields",
+  "args": {
+   "row": {
+    "url": "https://acme.jibeapply.com/careers"
+   }
+  },
+  "expect": {
+   "platform": "jibe",
+   "runner": "testing"
+  }
+ }
+]

@@ -1,0 +1,512 @@
+[
+ {
+  "name": "detect_workday_wd_locale_site",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://acme.wd5.myworkdayjobs.com/en-US/AcmeCareers/job/Engineer/12345\">Apply now</a>"
+  },
+  "expect": [
+   [
+    "workday",
+    [
+     "acme.wd5.myworkdayjobs.com",
+     "acme",
+     "AcmeCareers"
+    ]
+   ]
+  ],
+  "spec_quote": "workday: `https://<tenant>.wd<N>.myworkdayjobs.com/[<locale like en-US>/]<site>/...` → ident = [host, tenant, site] (host lower-case, e.g. \"acme.wd5.myworkdayjobs.com\", tenant = first host label, site = first path part that is not a locale).",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_workday_wday_path_ignored",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<p>Careers: <a href=\"https://acme.wd1.myworkdayjobs.com/wday/en-US/AcmeCareers\">see openings</a></p>"
+  },
+  "expect": [],
+  "spec_quote": "A Workday URL with no site part (just the host, or the path starts with \"wday\" or \"job\") is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_greenhouse_embed_for_token",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<iframe src=\"https://boards.greenhouse.io/embed/job_board?for=acmetoken&b=acme\"></iframe>"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acmetoken"
+   ]
+  ],
+  "spec_quote": "greenhouse: `boards.greenhouse.io/<token>`, `job-boards.greenhouse.io/<token>`, `boards.greenhouse.io/embed/job_board?for=<token>`, `boards-api.greenhouse.io/v1/boards/<token>` → ident = token (case kept).",
+  "ambiguous": true,
+  "why": "The explicitly listed embed form uses 'embed' as a path segment, but 'embed' is also listed among the tokens that 'are not boards → ignored'; the spec does not say which rule wins for the embed URL."
+ },
+ {
+  "name": "detect_greenhouse_stopword_token_ignored",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<a href=\"https://job-boards.greenhouse.io/jobs/123456\">View all jobs</a>"
+  },
+  "expect": [],
+  "spec_quote": "Tokens \"embed\", \"jobs\", \"v1\", \"boards\", \"api\", \"www\", \"static\", \"assets\", \"js\", \"css\", \"search\" (any case) are not boards → ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_multi_system_order_and_host_case",
+  "fn": "detect_ats",
+  "args": {
+   "text": "<ul><li><a href=\"https://jobs.ashbyhq.com/AcmeCorp\">ashby</a></li><li><a href=\"https://Acme.icims.com/jobs\">icims</a></li><li><a href=\"https://jobs.lever.co/AcmeCorp\">lever</a></li><li><a href=\"https://jobs.smartrecruiters.com/AcmeCo\">sr</a></li><li><a href=\"https://boards.greenhouse.io/AcmeCorp\">gh</a></li></ul>"
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "AcmeCorp"
+   ],
+   [
+    "lever",
+    "AcmeCorp"
+   ],
+   [
+    "ashby",
+    "AcmeCorp"
+   ],
+   [
+    "icims",
+    "acme.icims.com"
+   ],
+   [
+    "smartrecruiters",
+    "acmeco"
+   ]
+  ],
+  "spec_quote": "Result order: by system in this fixed order: workday, greenhouse, lever, ashby, icims, oraclecloud, successfactors, taleo, smartrecruiters, workable, ... icims: host `<x>.icims.com` → ident = that host, lower-case. ... smartrecruiters: `jobs.smartrecruiters.com/<slug>` or `careers.smartrecruiters.com/<slug>` → slug lower-case.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_boozallen_label_inside_key",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Home</title></head><body>Welcome to our site.</body></html>",
+   "company": "Booz Allen Hamilton",
+   "final_url": "https://www.boozallen.com/careers"
+  },
+  "expect": true,
+  "spec_quote": "Passes if some distinctive word of ≥ 3 letters is inside the label, or the label is inside the company key squashed (lower-case, suffixes removed, all non-alphanumerics removed), or the label equals the initials of the company key's words.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_linkedin_redirect_guard",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Acme Corp Careers</title></head><body>Acme Corp</body></html>",
+   "company": "Acme Corp",
+   "final_url": "https://www.linkedin.com/company/acme-corp"
+  },
+  "expect": false,
+  "spec_quote": "Otherwise → false (e.g. a guessed domain that redirected to linkedin.com or a domain-parking site).",
+  "ambiguous": false
+ },
+ {
+  "name": "names_no_distinctive_words",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>International Health Systems</title><meta property=\"og:site_name\" content=\"International Health Systems\"></head></html>",
+   "company": "International Health Systems",
+   "final_url": "https://www.internationalhealthsystems.com/"
+  },
+  "expect": false,
+  "spec_quote": "then generic words dropped: ... services, solutions, systems, international, global, national, american, america, ... health, bank, ...; and one-letter words dropped. No distinctive words left → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "names_og_site_name_squashed_match",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Careers</title><meta property=\"og:site_name\" content=\"Initech Inc\"></head><body>Join us.</body></html>",
+   "company": "Initech",
+   "final_url": ""
+  },
+  "expect": true,
+  "spec_quote": "2. Name check on the page's `<title>` plus `og:site_name` content (HTML entities decoded, lower-case): true if the distinctive words joined with no spaces appear inside that text with all non-alphanumerics removed",
+  "ambiguous": false
+ },
+ {
+  "name": "names_first_two_words_rule",
+  "fn": "names_company",
+  "args": {
+   "page": "<html><head><title>Careers at Bright Path</title></head><body>Open roles</body></html>",
+   "company": "Bright Path Analytics",
+   "final_url": ""
+  },
+  "expect": true,
+  "spec_quote": "otherwise true only if EVERY one of the first two distinctive words appears as a whole word in the text.",
+  "ambiguous": false
+ },
+ {
+  "name": "challenge_title_just_a_moment",
+  "fn": "is_challenge",
+  "args": {
+   "status": 200,
+   "page": "<html><head><title>Just a moment...</title></head><body>Checking your browser before accessing.</body></html>"
+  },
+  "expect": true,
+  "spec_quote": "True if the page `<title>` begins with \"Just a moment\", \"Attention Required\", \"Access Denied\" or \"Security check\" (any case, any status).",
+  "ambiguous": false
+ },
+ {
+  "name": "challenge_captcha_only_in_body_200",
+  "fn": "is_challenge",
+  "args": {
+   "status": 200,
+   "page": "<html><head><title>Careers at Acme</title></head><body><p>Please complete the captcha to submit your application.</p></body></html>"
+  },
+  "expect": false,
+  "spec_quote": "A 200 page that merely mentions \"captcha\" in its body (no such title) → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "challenge_429_cf_chl",
+  "fn": "is_challenge",
+  "args": {
+   "status": 429,
+   "page": "<html><head><title>Too Many Requests</title></head><body><div id=\"cf-chl-widget-9x\"></div></body></html>"
+  },
+  "expect": true,
+  "spec_quote": "Also true if status is 403, 429 or 503 and the first 20,000 characters contain any of: \"just a moment...\", \"cf-chl\", \"challenge-platform\", \"attention required\", \"captcha\", \"are you a robot\", \"access denied\", \"perimeterx\", \"px-captcha\", \"_incapsula_\".",
+  "ambiguous": false
+ },
+ {
+  "name": "challenge_404_access_denied_body",
+  "fn": "is_challenge",
+  "args": {
+   "status": 404,
+   "page": "<html><head><title>Page Not Found</title></head><body>access denied</body></html>"
+  },
+  "expect": false,
+  "spec_quote": "A 404 → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_fulltime_remote_suffix",
+  "fn": "norm_title",
+  "args": {
+   "t": "Software Engineer (Full-Time) - Remote"
+  },
+  "expect": "Software Engineer",
+  "spec_quote": "Removes \"(Full-Time)\", ... (any case), the words ... ; a trailing \" - Remote\" / \" - Hybrid\" / \" - United States\"; ... collapses spaces.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_city_tail_dash",
+  "fn": "norm_title",
+  "args": {
+   "t": "Data Analyst - New York, NY"
+  },
+  "expect": "Data Analyst",
+  "spec_quote": "then a trailing city tail \" - <City>, <ST>\" or \", <City>, <ST>\" (ST = two capital letters); collapses spaces.",
+  "ambiguous": false
+ },
+ {
+  "name": "norm_city_tail_comma",
+  "fn": "norm_title",
+  "args": {
+   "t": "Store Manager, Austin, TX"
+  },
+  "expect": "Store Manager",
+  "spec_quote": "then a trailing city tail \" - <City>, <ST>\" or \", <City>, <ST>\" (ST = two capital letters); collapses spaces.",
+  "ambiguous": false
+ },
+ {
+  "name": "city_plus_n",
+  "fn": "city_of",
+  "args": {
+   "location": "New York, NY + 2"
+  },
+  "expect": "new york",
+  "spec_quote": "\"New York, NY + 2\" → \"new york\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city_remote_or",
+  "fn": "city_of",
+  "args": {
+   "location": "Remote or Freeport, IL + 8"
+  },
+  "expect": "freeport",
+  "spec_quote": "\"Remote or Freeport, IL + 8\" → \"freeport\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city_drop_word_city",
+  "fn": "city_of",
+  "args": {
+   "location": "New York City, NY"
+  },
+  "expect": "new york",
+  "spec_quote": "\"New York City, NY\" → \"new york\".",
+  "ambiguous": false
+ },
+ {
+  "name": "match_duplicate_urls_same_posting",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     ""
+    ],
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     ""
+    ],
+    [
+     "Product Manager",
+     "https://a.example/2",
+     ""
+    ]
+   ]
+  },
+  "expect": "https://a.example/1",
+  "spec_quote": "All postings with the best score share one URL → that posting, unless: the row has a city (city_of(location) non-empty), ...",
+  "ambiguous": false
+ },
+ {
+  "name": "match_below_floor",
+  "fn": "match_posting",
+  "args": {
+   "title": "Senior Software Engineer",
+   "location": "",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     ""
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Best similarity < 0.75 (or no postings) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "match_same_title_other_city_null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     "Denver, CO"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "unless: the row has a city (city_of(location) non-empty), the posting location is non-empty, the posting location does not contain the city, the posting location does not say \"<N> Locations\", \"remote\", \"multiple\", \"united states\", \"nationwide\" or equal \"us\", and the row's title does not contain the city → null (same title in another city = a different opening).",
+  "ambiguous": false
+ },
+ {
+  "name": "match_n_locations_exception",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     "2 Locations"
+    ]
+   ]
+  },
+  "expect": "https://a.example/1",
+  "spec_quote": "the posting location does not say \"<N> Locations\", \"remote\", \"multiple\", \"united states\", \"nationwide\" or equal \"us\", ... → null",
+  "ambiguous": false
+ },
+ {
+  "name": "match_tie_broken_by_city",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer",
+   "location": "Austin, TX",
+   "postings": [
+    [
+     "Software Engineer",
+     "https://a.example/1",
+     "Austin, TX"
+    ],
+    [
+     "Software Engineer",
+     "https://a.example/2",
+     "Denver, CO"
+    ]
+   ]
+  },
+  "expect": "https://a.example/1",
+  "spec_quote": "Several postings tie on the best score with different URLs → the single one whose location contains the row's city; none, or more than one with different URLs → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide_already_has_ats_url",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Software Engineer",
+    "location": "",
+    "ats_url": "https://acme.example/careers/job/1"
+   },
+   "systems": [
+    [
+     "greenhouse",
+     "acme"
+    ]
+   ],
+   "postings": {
+    "greenhouse:acme": [
+     [
+      "Software Engineer",
+      "https://boards.greenhouse.io/acme/jobs/9",
+      ""
+     ]
+    ]
+   }
+  },
+  "expect": {
+   "code": "already"
+  },
+  "spec_quote": "row has a non-empty ats_url → code \"already\".",
+  "ambiguous": true,
+  "why": "The spec defines only the code for this branch; it does not say what `system` (or why) must be returned, so only the code is asserted."
+ },
+ {
+  "name": "decide_no_system",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Data Engineer",
+    "location": "",
+    "ats_url": ""
+   },
+   "systems": [],
+   "postings": {}
+  },
+  "expect": {
+   "code": "no_system",
+   "system": ""
+  },
+  "spec_quote": "systems empty → code \"no_system\", system \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "decide_match_greenhouse",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Software Engineer",
+    "location": "",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "greenhouse",
+     "acme"
+    ]
+   ],
+   "postings": {
+    "greenhouse:acme": [
+     [
+      "Software Engineer",
+      "https://boards.greenhouse.io/acme/jobs/9",
+      ""
+     ]
+    ]
+   }
+  },
+  "expect": {
+   "code": "match",
+   "system": "greenhouse",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/9"
+  },
+  "spec_quote": "Try each searchable system (workday, greenhouse, lever, ashby) in the given order; postings_of(system, ident, title) gives postings; the first match_posting hit → code \"match\", ats_url = the posting URL, system = that system.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide_no_match_reports_first_searchable",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Software Engineer",
+    "location": "",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "greenhouse",
+     "acme"
+    ],
+    [
+     "lever",
+     "acmeco"
+    ]
+   ],
+   "postings": {
+    "greenhouse:acme": [
+     [
+      "Data Scientist",
+      "https://g.example/1",
+      ""
+     ]
+    ],
+    "lever:acmeco": [
+     [
+      "Barista",
+      "https://l.example/1",
+      ""
+     ]
+    ]
+   }
+  },
+  "expect": {
+   "code": "no_match",
+   "system": "greenhouse"
+  },
+  "spec_quote": "Searchable systems present but no hit → code \"no_match\", system = first searchable system.",
+  "ambiguous": false
+ },
+ {
+  "name": "decide_other_system_only_non_searchable",
+  "fn": "decide",
+  "args": {
+   "row": {
+    "title": "Software Engineer",
+    "location": "",
+    "ats_url": ""
+   },
+   "systems": [
+    [
+     "taleo",
+     "acme.taleo.net"
+    ],
+    [
+     "icims",
+     "acme.icims.com"
+    ]
+   ],
+   "postings": {}
+  },
+  "expect": {
+   "code": "other_system",
+   "system": "taleo"
+  },
+  "spec_quote": "Only non-searchable systems (icims, taleo, …) → code \"other_system\", system = the first system in the list; no ats_url.",
+  "ambiguous": false
+ }
+]

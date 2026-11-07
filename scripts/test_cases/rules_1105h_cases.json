@@ -1,0 +1,245 @@
+[
+ {
+  "name": "Greenhouse combined now-or-future textarea",
+  "rule": 1,
+  "args": {
+   "label": "Will you now or in the future require sponsorship for employment visa status (e.g., H-1B visa status)? If yes, please explain.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "spec_quote": "A free-text box that asks whether he will need sponsorship now or in the future AND says \"If yes, please explain / describe / provide details\" → exactly the saved explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Lever 'describe' wording combined question",
+  "rule": 1,
+  "args": {
+   "label": "Do you now or will you in the future need sponsorship to work in the United States? If yes, please describe.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "spec_quote": "A free-text box that asks whether he will need sponsorship now or in the future AND says \"If yes, please explain / describe / provide details\" → exactly the saved explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday 'provide details' combined textarea",
+  "rule": 1,
+  "args": {
+   "label": "Will you require immigration sponsorship now or in the future? If yes, please provide details.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "spec_quote": "A free-text box that asks whether he will need sponsorship now or in the future AND says \"If yes, please explain / describe / provide details\" → exactly the saved explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Combined question as single-line text input",
+  "rule": 1,
+  "args": {
+   "label": "Do you require visa sponsorship now or in the future? If yes, please explain",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "spec_quote": "A free-text box that asks whether he will need sponsorship now or in the future AND says \"If yes, please explain / describe / provide details\" → exactly the saved explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Combined question phrased as future-inclusive with explain prompt",
+  "rule": 1,
+  "args": {
+   "label": "Will you need sponsorship for employment authorization either now or in the future? If yes, please explain.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "Yes. F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"
+  },
+  "spec_quote": "A free-text box that asks whether he will need sponsorship now or in the future AND says \"If yes, please explain / describe / provide details\" → exactly the saved explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Yes/No select for future sponsorship",
+  "rule": 2,
+  "args": {
+   "label": "Will you in the future require sponsorship for employment visa status (e.g., H-1B)?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "The same question as a Yes / No select or radio (options Yes, No) → \"Yes\" (never the explanation text).",
+  "ambiguous": false
+ },
+ {
+  "name": "Yes/No radio for now-or-future sponsorship",
+  "rule": 2,
+  "args": {
+   "label": "Do you now or in the future require sponsorship to work in the United States?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "The same question as a Yes / No select or radio (options Yes, No) → \"Yes\" (never the explanation text).",
+  "ambiguous": false
+ },
+ {
+  "name": "Yes/No select with standard EEO-style options",
+  "rule": 2,
+  "args": {
+   "label": "Will you require immigration sponsorship now or in the future?",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "The same question as a Yes / No select or radio (options Yes, No) → \"Yes\" (never the explanation text).",
+  "ambiguous": false
+ },
+ {
+  "name": "Current-internship-only sponsorship textarea",
+  "rule": 3,
+  "args": {
+   "label": "Do you currently require sponsorship to work this internship? If yes, please explain.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A text box that asks ONLY about sponsorship now / for this internship (\"Do you currently require sponsorship to work this internship? If yes, please explain.\") → \"No\" (he needs none now) — never the explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Now-only sponsorship text input for the summer role",
+  "rule": 3,
+  "args": {
+   "label": "Do you require visa sponsorship now to be eligible to work this summer internship? If yes, please explain.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A text box that asks ONLY about sponsorship now / for this internship (\"Do you currently require sponsorship to work this internship? If yes, please explain.\") → \"No\" (he needs none now) — never the explanation text.",
+  "ambiguous": false
+ },
+ {
+  "name": "Phonetic name pronunciation textarea",
+  "rule": 4,
+  "args": {
+   "label": "Please write out how your name is pronounced phonetically",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": {
+   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+  },
+  "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
+  "ambiguous": false
+ },
+ {
+  "name": "Short 'Name pronunciation' field",
+  "rule": 4,
+  "args": {
+   "label": "Name pronunciation",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+  },
+  "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
+  "ambiguous": false
+ },
+ {
+  "name": "'How do you pronounce your name?' question",
+  "rule": 4,
+  "args": {
+   "label": "How do you pronounce your name?",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+  },
+  "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
+  "ambiguous": false
+ },
+ {
+  "name": "Phone field must not get pronunciation",
+  "rule": 5,
+  "args": {
+   "label": "Phone",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "not_contains": [
+    "TSIGH-jwin-ee",
+    "SOON",
+    "Joey",
+    "pronounced"
+   ]
+  },
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Preferred name field must get Joey, not pronunciation",
+  "rule": 5,
+  "args": {
+   "label": "Preferred name",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "value": "Joey"
+  },
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Legal name field must not get pronunciation",
+  "rule": 5,
+  "args": {
+   "label": "Legal name",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "not_contains": [
+    "TSIGH-jwin-ee",
+    "SOON",
+    "pronounced",
+    "555-010-2030"
+   ]
+  },
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "ambiguous": false
+ }
+]

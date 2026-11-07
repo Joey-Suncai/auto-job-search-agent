@@ -1,0 +1,447 @@
+[
+ {
+  "name": "form_url keeps API identifier case",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/sevwynver/123456789",
+   "api": {
+    "uuid": "abc-123",
+    "active": true,
+    "company": {
+     "identifier": "SEVWYNVER"
+    },
+    "applyUrl": "https://jobs.smartrecruiters.com/sevwynver/123456789",
+    "postingUrl": "https://jobs.smartrecruiters.com/sevwynver/123456789"
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/SEVWYNVER/publication/abc-123?dcr_ci=SEVWYNVER",
+  "spec_quote": "<C> = the company identifier **exactly as the API writes it** (the form is case-sensitive: `sevwynver` opens an \"expired\" page, `SEVWYNVER` the real form): `api.company.identifier`",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url falls back to first applyUrl path part",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/oldco/98765",
+   "api": {
+    "uuid": "uuid-2",
+    "active": true,
+    "company": {},
+    "applyUrl": "https://jobs.smartrecruiters.com/AcmeCorp/98765",
+    "postingUrl": "https://jobs.smartrecruiters.com/OtherCo/98765"
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/AcmeCorp/publication/uuid-2?dcr_ci=AcmeCorp",
+  "spec_quote": "if that is missing, the first path part of `api.applyUrl`, else of `api.postingUrl` (a path part `oneclick-ui` does not count); if none of these exist, the company as written in the store URL.",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url falls back to first postingUrl path part",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/oldco/55555",
+   "api": {
+    "uuid": "uuid-3",
+    "active": true,
+    "postingUrl": "https://jobs.smartrecruiters.com/BetaCo/55555-slug"
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/BetaCo/publication/uuid-3?dcr_ci=BetaCo",
+  "spec_quote": "if that is missing, the first path part of `api.applyUrl`, else of `api.postingUrl` (a path part `oneclick-ui` does not count); if none of these exist, the company as written in the store URL.",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url falls back to store URL company",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/StoreCo/44444",
+   "api": {
+    "uuid": "uuid-4",
+    "active": true
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/StoreCo/publication/uuid-4?dcr_ci=StoreCo",
+  "spec_quote": "if none of these exist, the company as written in the store URL.",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url returns null when inactive",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/sevwynver/123456789",
+   "api": {
+    "uuid": "uuid-5",
+    "active": false,
+    "company": {
+     "identifier": "SEVWYNVER"
+    }
+   }
+  },
+  "expect": null,
+  "spec_quote": "The result is null when `api.uuid` is missing or `api.active` is false (the posting is closed).",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url returns null when uuid missing",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/sevwynver/123456789",
+   "api": {
+    "active": true,
+    "company": {
+     "identifier": "SEVWYNVER"
+    }
+   }
+  },
+  "expect": null,
+  "spec_quote": "The result is null when `api.uuid` is missing or `api.active` is false (the posting is closed).",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url ERROR on oneclick-ui URL uses store company and lower-cased uuid",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/oneclick-ui/company/LowerCo/publication/ABC-UUID-123",
+   "api": "ERROR"
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/LowerCo/publication/abc-uuid-123?dcr_ci=LowerCo",
+  "spec_quote": "When the lookup fails (\"ERROR\"): for a oneclick-ui store URL the form URL is built from the store URL's own company and uuid (lower-cased uuid);",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url ERROR on numeric-id URL raises",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/StoreCo/12345",
+   "api": "ERROR"
+  },
+  "expect": "RAISES",
+  "spec_quote": "for a numeric-id store URL the program raises an error — the case expects the string \"RAISES\".",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url uses api.uuid not store numeric id",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/StoreCo/999999",
+   "api": {
+    "uuid": "real-uuid-9",
+    "active": true,
+    "company": {
+     "identifier": "StoreCo"
+    }
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/StoreCo/publication/real-uuid-9?dcr_ci=StoreCo",
+  "spec_quote": "`<uuid>` = `api.uuid`;",
+  "ambiguous": false
+ },
+ {
+  "name": "form_url oneclick-ui store URL uses API identifier over store company",
+  "fn": "form_url",
+  "args": {
+   "store_url": "https://jobs.smartrecruiters.com/oneclick-ui/company/sevwynver/publication/store-uuid",
+   "api": {
+    "uuid": "api-uuid-10",
+    "active": true,
+    "company": {
+     "identifier": "SEVWYNVER"
+    }
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/oneclick-ui/company/SEVWYNVER/publication/api-uuid-10?dcr_ci=SEVWYNVER",
+  "spec_quote": "<C> = the company identifier **exactly as the API writes it** (the form is case-sensitive: `sevwynver` opens an \"expired\" page, `SEVWYNVER` the real form): `api.company.identifier`",
+  "ambiguous": false
+ },
+ {
+  "name": "DOB for minors free-text leave empty",
+  "fn": "answer",
+  "args": {
+   "label": "For individuals under 18, please provide your date of birth. Otherwise, you may skip this question.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "A free-text (or date) box that asks for the date of birth / birth date / DOB only of people under 16–21 or of \"minors\" ... → `{\"leave\": true}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "DOB for minors date box leave empty",
+  "fn": "answer",
+  "args": {
+   "label": "Date of birth (if under 21)",
+   "type": "date",
+   "options": []
+  },
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "A free-text (or date) box that asks for the date of birth / birth date / DOB only of people under 16–21 or of \"minors\" ... → `{\"leave\": true}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "under-18 DOB radio answers No",
+  "fn": "answer",
+  "args": {
+   "label": "Are you under 18? If so, provide your date of birth",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "When the same kind of question comes with Yes / No options (e.g. \"Are you under 18? If so, provide your date of birth\" as a radio) → `{\"value\": \"No\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "plain under-18 Yes/No answers No",
+  "fn": "answer",
+  "args": {
+   "label": "Are you under 18?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A plain Yes/No \"Are you under 18?\" → `{\"value\": \"No\"}`; \"Are you at least 18 years of age?\" → `{\"value\": \"Yes\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "at-least-18 Yes/No answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "Are you at least 18 years of age?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A plain Yes/No \"Are you under 18?\" → `{\"value\": \"No\"}`; \"Are you at least 18 years of age?\" → `{\"value\": \"Yes\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "truthfulness certification exact answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "I certify that all information provided in this form and in my resume is truthful, complete, and accurate.",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "\"I certify that all information provided in this form and in my resume is truthful, complete, and accurate.\" — as a Yes/No radio → `{\"value\": \"Yes\"}`;",
+  "ambiguous": false
+ },
+ {
+  "name": "truthfulness certification alternate wording answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "I certify that the information in this application is true and correct",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "the same certification in other wordings (\"I certify that the information in this application is true and correct\", \"I certify that all answers given are accurate\") → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "truthfulness certification answers accurate answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "I certify that all answers given are accurate",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "the same certification in other wordings (\"I certify that the information in this application is true and correct\", \"I certify that all answers given are accurate\") → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "previous-employee certification near miss answers No",
+  "fn": "answer",
+  "args": {
+   "label": "Do you certify whether you are a previous employee?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A question that only asks him to \"certify whether you are a previous employee\" is NOT a certification of truthfulness → `{\"value\": \"No\"}` (he never worked there).",
+  "ambiguous": false
+ },
+ {
+  "name": "without sponsorship now or future answers No",
+  "fn": "answer",
+  "args": {
+   "label": "Are you eligible to work at SEVWYNVER without required sponsorship now or in the future?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A Yes/No question that asks whether he can / is eligible / is authorized to work *without* (required / visa / employer) sponsorship, now or in the future (\"Are you eligible to work at SEVWYNVER without required sponsorship now or in the future?\", \"Can you work in the U.S. without the need for visa sponsorship in the future?\") → `{\"value\": \"No\"}`, because he will need sponsorship.",
+  "ambiguous": false
+ },
+ {
+  "name": "without visa sponsorship in future answers No",
+  "fn": "answer",
+  "args": {
+   "label": "Can you work in the U.S. without the need for visa sponsorship in the future?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "No"
+  },
+  "spec_quote": "A Yes/No question that asks whether he can / is eligible / is authorized to work *without* (required / visa / employer) sponsorship, now or in the future (\"Are you eligible to work at SEVWYNVER without required sponsorship now or in the future?\", \"Can you work in the U.S. without the need for visa sponsorship in the future?\") → `{\"value\": \"No\"}`, because he will need sponsorship.",
+  "ambiguous": false
+ },
+ {
+  "name": "currently without sponsorship answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "Can you currently work without sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "One that asks only about NOW (\"Can you currently work without sponsorship?\", \"…without sponsorship at this time?\") → `{\"value\": \"Yes\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "without sponsorship at this time answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "Can you work without sponsorship at this time?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "One that asks only about NOW (\"Can you currently work without sponsorship?\", \"…without sponsorship at this time?\") → `{\"value\": \"Yes\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "require sponsorship now or future answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "Will you now or in the future require sponsorship for employment visa status?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES sponsorship (\"Will you now or in the future require sponsorship …?\") → `{\"value\": \"Yes\"}` even when a note after the question mark mentions \"without sponsorship\".",
+  "ambiguous": false
+ },
+ {
+  "name": "require sponsorship with without-sponsorship note answers Yes",
+  "fn": "answer",
+  "args": {
+   "label": "Will you now or in the future require sponsorship to work in the U.S.? (You can work without sponsorship now.)",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "value": "Yes"
+  },
+  "spec_quote": "A question that asks whether he REQUIRES sponsorship (\"Will you now or in the future require sponsorship …?\") → `{\"value\": \"Yes\"}` even when a note after the question mark mentions \"without sponsorship\".",
+  "ambiguous": false
+ },
+ {
+  "name": "suggested-by-company type N/A text box avoids auth_kind rule",
+  "fn": "answer",
+  "args": {
+   "label": "Did someone from our company suggest you apply? If so, please provide their name – if not type N/A.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "not_rule": "auth_kind"
+  },
+  "spec_quote": "A text box whose instruction uses \"type\" as a verb (\"Did someone from our company suggest you apply? If so, please provide their name – if not type N/A.\", \"If you were referred, enter the name; if not, type N/A\") → `{\"not_rule\": \"auth_kind\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "referred-name type N/A text box avoids auth_kind rule",
+  "fn": "answer",
+  "args": {
+   "label": "If you were referred, enter the name; if not, type N/A",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "not_rule": "auth_kind"
+  },
+  "spec_quote": "A text box whose instruction uses \"type\" as a verb (\"Did someone from our company suggest you apply? If so, please provide their name – if not type N/A.\", \"If you were referred, enter the name; if not, type N/A\") → `{\"not_rule\": \"auth_kind\"}`.",
+  "ambiguous": false
+ },
+ {
+  "name": "referral-name type N/A text box avoids auth_kind rule",
+  "fn": "answer",
+  "args": {
+   "label": "Please enter the name of the person who referred you; if not, type N/A.",
+   "type": "text",
+   "options": []
+  },
+  "expect": {
+   "not_rule": "auth_kind"
+  },
+  "spec_quote": "A text box whose instruction uses \"type\" as a verb (\"Did someone from our company suggest you apply? If so, please provide their name – if not type N/A.\", \"If you were referred, enter the name; if not, type N/A\") → `{\"not_rule\": \"auth_kind\"}`.",
+  "ambiguous": false
+ }
+]

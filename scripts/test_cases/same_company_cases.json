@@ -1,0 +1,532 @@
+[
+ {
+  "name": "single_row_confirmation",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "rejection_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Rejection",
+  "expect": null
+ },
+ {
+  "name": "interview_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Interview",
+  "expect": null
+ },
+ {
+  "name": "offer_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Offer",
+  "expect": null
+ },
+ {
+  "name": "assessment_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Assessment",
+  "expect": null
+ },
+ {
+  "name": "action_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Action",
+  "expect": null
+ },
+ {
+  "name": "other_unmatched",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Other",
+  "expect": null
+ },
+ {
+  "name": "empty_ids",
+  "ids": [],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": null
+ },
+ {
+  "name": "unknown_ids_only",
+  "ids": [
+   "JX",
+   "JY"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": null
+ },
+ {
+  "name": "duplicate_ids_count_once",
+  "ids": [
+   "J1",
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-01-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-02-01"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "confirmed_row_dropped",
+  "ids": [
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-01-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-02-01"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "type": "Confirmation"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "all_rows_confirmed",
+  "ids": [
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-01-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-02-01"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "type": "Confirmation"
+   },
+   {
+    "job_id": "J2",
+    "type": "Confirmation"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": null
+ },
+ {
+  "name": "assessment_does_not_drop",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "type": "Assessment"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "rejection_recorded_does_not_drop",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "type": "Rejection"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "earliest_applied_on_wins",
+  "ids": [
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-05-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-01-15"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "empty_applied_on_sorts_first",
+  "ids": [
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-01-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": ""
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "tie_smaller_job_id",
+  "ids": [
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-03-03"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-03-03"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "tie_both_empty_applied_on",
+  "ids": [
+   "J2",
+   "J3"
+  ],
+  "apps": [
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": ""
+   },
+   {
+    "job_id": "J3",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": ""
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "three_rows_earliest",
+  "ids": [
+   "J1",
+   "J2",
+   "J3"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-06-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-02-01"
+   },
+   {
+    "job_id": "J3",
+    "company": "Acme",
+    "title": "Data Engineer",
+    "applied_on": "2026-04-01"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "mixed_unknown_and_duplicates",
+  "ids": [
+   "J1",
+   "J9",
+   "J1",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-03-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-01-01"
+   }
+  ],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": "J2"
+ },
+ {
+  "name": "empty_apps",
+  "ids": [],
+  "apps": [],
+  "emails": [],
+  "kind": "Confirmation",
+  "expect": null
+ },
+ {
+  "name": "confirmation_for_nonlisted_id_ignored",
+  "ids": [
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-10-31"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J2",
+    "type": "Confirmation"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": "J1"
+ },
+ {
+  "name": "duplicate_ids_all_confirmed",
+  "ids": [
+   "J1",
+   "J1",
+   "J2",
+   "J2"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-01-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-02-01"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J1",
+    "type": "Confirmation"
+   },
+   {
+    "job_id": "J2",
+    "type": "Confirmation"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": null
+ },
+ {
+  "name": "confirmed_earliest_dropped_next_chosen",
+  "ids": [
+   "J2",
+   "J2",
+   "J1"
+  ],
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "title": "Data Intern",
+    "applied_on": "2026-02-01"
+   },
+   {
+    "job_id": "J2",
+    "company": "Acme",
+    "title": "Data Analyst",
+    "applied_on": "2026-01-01"
+   }
+  ],
+  "emails": [
+   {
+    "job_id": "J2",
+    "type": "Confirmation"
+   }
+  ],
+  "kind": "Confirmation",
+  "expect": "J1"
+ }
+]

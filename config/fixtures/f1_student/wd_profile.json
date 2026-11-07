@@ -1,0 +1,98 @@
+{
+ "_source": "skills/_shared/candidate-profile.md (Education + Experience), 2026-10-28. Resume entries only (XJTLU stays off, rule 8). Update together with the profile.",
+ "work": [
+  {
+   "match": "hyde park",
+   "Job Title": "Business Analyst Intern",
+   "Company": "Hyde Park Investment Services, Inc.",
+   "Location": "Champaign, Illinois",
+   "From": "08/2025",
+   "To": "10/2025",
+   "current": false,
+   "Description": "Designed a 0–5 scoring rubric for ChatGPT-assisted MD&A review, requiring cited evidence and senior analyst validation; contributed to a workflow that cut end-to-end review time by 70%. Cleaned Finviz and Yahoo Finance data and built standardized Excel forecast models for 14 companies so senior analysts could compare annual revenue, margins, and FCF consistently. Applied ROIC, FCF margin, and net debt/EBITDA factors to screen U.S. equities into a 30-stock investment shortlist."
+  },
+  {
+   "match": "frost",
+   "Job Title": "Consulting Assistant Intern",
+   "Company": "Frost & Sullivan",
+   "Location": "Shanghai, China",
+   "From": "06/2024",
+   "To": "08/2024",
+   "current": false,
+   "Description": "Created tables and charts for 60+ pages of client-ready decks using Think-cell and Excel, supporting 40% faster turnaround with zero errors. Co-built, with a consultant, a levelized-cost model for Fortune 500 clients to assess green methanol's cost competitiveness and investment feasibility vs. grey methanol across carbon-price levels."
+  }
+ ],
+ "education": [
+  {
+   "match": "chicago",
+   "School": "University of Chicago",
+   "Degree": "master",
+   "Field": "Data Science",
+   "From": "2026",
+   "To": "2027",
+   "GPA": "",
+   "Field_alts": [
+    "Applied Data Science",
+    "Data Analytics and Data Science"
+   ],
+   "Field_real": "M.S. Applied Data Science (a data science master: statistics, machine learning, data engineering)",
+   "Field_prefs": [
+    "Data Science",
+    "Applied Data Science",
+    "Data Analytics",
+    "Computer Science",
+    "Information Systems",
+    "Applied Statistics",
+    "Statistics"
+   ],
+   "Field_search": [
+    "Data",
+    "Statist",
+    "Analytic",
+    "Computer",
+    "Information"
+   ],
+   "Field_fallback_note": "Joey 2026-10-28: if no data-science option, prefer Computer Science then Information Systems (before Statistics)"
+  },
+  {
+   "match": "illinois|urbana|uiuc",
+   "School": "University of Illinois Urbana-Champaign",
+   "Degree": "bachelor",
+   "Field": "Economics",
+   "From": "2024",
+   "To": "2026",
+   "GPA": "3.50",
+   "Field_alts": [
+    "Economics (B.A.)",
+    "Other"
+   ],
+   "School_alts": [
+    "University of Illinois at Urbana - Champaign",
+    "University of Illinois at Urbana-Champaign",
+    "University of Illinois Urbana Champaign"
+   ],
+   "Field_real": "B.A. Economics",
+   "Field_prefs": [
+    "Economics"
+   ],
+   "Field_search": [
+    "Econom"
+   ]
+  }
+ ],
+ "_note_alts": "Field_alts = exact tenant spellings tried by the script. Not offered → run_wd collects the full list and DeepSeek picks along Field_prefs (handoff 2026-10-28b); NONE → optional empty / required ask Joey. UChicago 'Other' removed 10-28b (Joey chose empty on a Workday employer, Applied Statistics on a Workday employer).",
+ "languages": [
+  {
+   "match": "chinese|mandarin",
+   "level": "4 - Fluent",
+   "fluent": true
+  },
+  {
+   "match": "english",
+   "level": "4 - Fluent",
+   "fluent": true
+  }
+ ],
+ "_languages_source": "Joey 2026-10-28 13:17: Chinese and English — all levels 4 - Fluent, fluent box checked",
+ "_description_source": "candidate-profile.md Experience bullets marked (resume) / confirmed 2026-10-24; Frost model = 'co-built with a consultant'."
+}

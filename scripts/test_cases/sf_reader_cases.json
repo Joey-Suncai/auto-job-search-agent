@@ -1,0 +1,254 @@
+[
+ {
+  "name": "url_ats_param_after_question_mark",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://careers.acme.com/jobs/12345?ats=successfactors"
+  },
+  "expect": true,
+  "spec_quote": "True for a SuccessFactors career-site job URL: it has the query parameter \"ats=successfactors\" (after ? or &)",
+  "ambiguous": false
+ },
+ {
+  "name": "url_ats_param_after_ampersand",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://careers.acme.com/apply?job=9&ats=successfactors&src=web"
+  },
+  "expect": true,
+  "spec_quote": "it has the query parameter \"ats=successfactors\" (after ? or &)",
+  "ambiguous": false
+ },
+ {
+  "name": "url_host_successfactors_com",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://career.successfactors.com/careers?company=ACME"
+  },
+  "expect": true,
+  "spec_quote": "or the host contains \".successfactors.com\" / \".successfactors.eu\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_host_successfactors_eu",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://acme.successfactors.eu/careers/job/98765"
+  },
+  "expect": true,
+  "spec_quote": "or the host contains \".successfactors.com\" / \".successfactors.eu\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_host_career_digits_sapsf",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://career4.sapsf.com/careers/job/123"
+  },
+  "expect": true,
+  "spec_quote": "or \"career<digits>.sapsf.\" (e.g. career4.sapsf.com)",
+  "ambiguous": false
+ },
+ {
+  "name": "url_jobs_sap_com_with_6_digits",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://jobs.sap.com/job/Engineer/123456"
+  },
+  "expect": true,
+  "spec_quote": "or it is \"jobs.sap.com/job/…\", or its path is \"/job/<slug>/<7 or more digits>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_path_7_digits_at_end",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://www.example.com/job/senior-engineer/1234567"
+  },
+  "expect": true,
+  "spec_quote": "or its path is \"/job/<slug>/<7 or more digits>\" optionally followed by \"/\" and then the end, \"?\" or \"#\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_path_8_digits_trailing_slash",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://www.example.com/job/senior-engineer/12345678/"
+  },
+  "expect": true,
+  "spec_quote": "or its path is \"/job/<slug>/<7 or more digits>\" optionally followed by \"/\" and then the end, \"?\" or \"#\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_path_8_digits_then_fragment",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://www.example.com/job/senior-engineer/12345678#apply"
+  },
+  "expect": true,
+  "spec_quote": "or its path is \"/job/<slug>/<7 or more digits>\" optionally followed by \"/\" and then the end, \"?\" or \"#\"",
+  "ambiguous": false
+ },
+ {
+  "name": "url_path_6_digits_is_false",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://www.example.com/job/senior-engineer/123456"
+  },
+  "expect": false,
+  "spec_quote": "False for Workday, Greenhouse, Lever, LinkedIn and other URLs, and for \"/job/<slug>/<6 or fewer digits>\".",
+  "ambiguous": false
+ },
+ {
+  "name": "url_workday_is_false",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://acme.wd3.myworkdayjobs.com/en-US/ACME/job/Berlin/Engineer_R-12345"
+  },
+  "expect": false,
+  "spec_quote": "False for Workday, Greenhouse, Lever, LinkedIn and other URLs",
+  "ambiguous": false
+ },
+ {
+  "name": "url_path_digits_followed_by_segment_is_false",
+  "fn": "sf_url",
+  "args": {
+   "url": "https://www.example.com/job/senior-engineer/12345678/apply"
+  },
+  "expect": false,
+  "spec_quote": "or its path is \"/job/<slug>/<7 or more digits>\" optionally followed by \"/\" and then the end, \"?\" or \"#\"",
+  "ambiguous": false
+ },
+ {
+  "name": "html_full_page_with_footer_tag",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Senior Engineer</div><div class=\"jobGeoLocation\">Berlin, Germany</div><div itemprop=\"description\"><p>Build   reliable systems.</p></div><footer>(c) 2024 ACME</footer>"
+  },
+  "expect": {
+   "title": "Senior Engineer",
+   "text": "Build reliable systems.",
+   "loc": "Berlin, Germany"
+  },
+  "spec_quote": "text = everything after the description element's opening tag, up to the first of class=\"jobfooter\", id=\"footer\" or \"<footer\" that comes after it (or 30000 characters), with <script>/<style> blocks and all tags removed and whitespace collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "html_no_footer_text_runs_to_end",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Data Analyst</div><div itemprop=\"description\">Analyze data   carefully. Report findings.</div>"
+  },
+  "expect": {
+   "title": "Data Analyst",
+   "text": "Analyze data carefully. Report findings.",
+   "loc": ""
+  },
+  "spec_quote": "Missing title / location → \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "html_missing_title_and_location",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"description\">Plain job text with no title or location.</div>"
+  },
+  "expect": {
+   "title": "",
+   "text": "Plain job text with no title or location.",
+   "loc": ""
+  },
+  "spec_quote": "Missing title / location → \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "html_no_description_element",
+  "fn": "sf_text",
+  "args": {
+   "html": "<html><body><h1>Careers</h1><p>Nothing here.</p></body></html>"
+  },
+  "expect": null,
+  "spec_quote": "If it has no `itemprop=\"description\"` → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "html_whitespace_only_description",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Ghost Job</div><div class=\"jobGeoLocation\">Remote</div><div itemprop=\"description\">   \n  </div>"
+  },
+  "expect": null,
+  "spec_quote": "If that text is empty → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "html_script_inside_description",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Dev</div><div itemprop=\"description\"><script>var a = 1;</script>Real   content here</div>"
+  },
+  "expect": {
+   "title": "Dev",
+   "text": "Real content here",
+   "loc": ""
+  },
+  "spec_quote": "with <script>/<style> blocks and all tags removed and whitespace collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "html_style_inside_description",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"description\"><style>.x { color: red; }</style>Styled   text here</div>"
+  },
+  "expect": {
+   "title": "",
+   "text": "Styled text here",
+   "loc": ""
+  },
+  "spec_quote": "with <script>/<style> blocks and all tags removed and whitespace collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "html_id_footer_terminator",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Dev</div><div class=\"jobGeoLocation\">Paris</div><div itemprop=\"description\">Job body text</div><div id=\"footer\">(c) ACME</div>"
+  },
+  "expect": {
+   "title": "Dev",
+   "text": "Job body text",
+   "loc": "Paris"
+  },
+  "spec_quote": "up to the first of class=\"jobfooter\", id=\"footer\" or \"<footer\" that comes after it ... with <script>/<style> blocks and all tags removed",
+  "ambiguous": true
+ },
+ {
+  "name": "html_jobfooter_class_terminator",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"title\">Dev</div><div itemprop=\"description\">Job body text</div><div class=\"jobfooter\">More jobs</div>"
+  },
+  "expect": {
+   "title": "Dev",
+   "text": "Job body text",
+   "loc": ""
+  },
+  "spec_quote": "up to the first of class=\"jobfooter\", id=\"footer\" or \"<footer\" that comes after it ... with <script>/<style> blocks and all tags removed",
+  "ambiguous": true
+ },
+ {
+  "name": "html_title_and_location_after_description",
+  "fn": "sf_text",
+  "args": {
+   "html": "<div itemprop=\"description\">Do work </div><div itemprop=\"title\">QA Engineer </div><div class=\"jobGeoLocation\">Paris</div>"
+  },
+  "expect": {
+   "title": "QA Engineer",
+   "text": "Do work QA Engineer Paris",
+   "loc": "Paris"
+  },
+  "spec_quote": "text = everything after the description element's opening tag, up to the first of class=\"jobfooter\", id=\"footer\" or \"<footer\" that comes after it ... with <script>/<style> blocks and all tags removed and whitespace collapsed.",
+  "ambiguous": false
+ }
+]

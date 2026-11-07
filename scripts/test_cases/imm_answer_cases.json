@@ -1,0 +1,112 @@
+[
+ {
+  "name": "exact_f1_hyphen",
+  "answer": "F-1",
+  "expect": true
+ },
+ {
+  "name": "exact_f1_no_hyphen",
+  "answer": "F1",
+  "expect": true
+ },
+ {
+  "name": "exact_f1_student",
+  "answer": "F-1 Student",
+  "expect": true
+ },
+ {
+  "name": "require_sponsorship_work_country",
+  "answer": "I require sponsorship to work in this country",
+  "expect": true
+ },
+ {
+  "name": "will_require_visa_sponsorship",
+  "answer": "I will require visa sponsorship",
+  "expect": true
+ },
+ {
+  "name": "need_employer_sponsorship",
+  "answer": "I need employer sponsorship",
+  "expect": true
+ },
+ {
+  "name": "require_sponsorship_short",
+  "answer": "I require sponsorship",
+  "expect": true
+ },
+ {
+  "name": "need_sponsorship_short",
+  "answer": "I need sponsorship",
+  "expect": true
+ },
+ {
+  "name": "will_require_sponsorship",
+  "answer": "I will require sponsorship",
+  "expect": true
+ },
+ {
+  "name": "requires_sponsorship",
+  "answer": "Requires sponsorship",
+  "expect": true
+ },
+ {
+  "name": "needs_visa_sponsorship",
+  "answer": "Needs visa sponsorship",
+  "expect": true
+ },
+ {
+  "name": "us_citizen",
+  "answer": "U.S. Citizen",
+  "expect": false
+ },
+ {
+  "name": "permanent_resident",
+  "answer": "Permanent Resident",
+  "expect": false
+ },
+ {
+  "name": "green_card",
+  "answer": "Green Card",
+  "expect": false
+ },
+ {
+  "name": "h1b",
+  "answer": "H-1B",
+  "expect": false
+ },
+ {
+  "name": "j1",
+  "answer": "J-1",
+  "expect": false
+ },
+ {
+  "name": "opt",
+  "answer": "OPT",
+  "expect": false
+ },
+ {
+  "name": "f1_cpt",
+  "answer": "F-1 CPT",
+  "expect": false
+ },
+ {
+  "name": "cpt",
+  "answer": "CPT",
+  "expect": false
+ },
+ {
+  "name": "authorized_without_sponsorship",
+  "answer": "I am authorized to work without sponsorship",
+  "expect": false
+ },
+ {
+  "name": "do_not_require_sponsorship",
+  "answer": "I do not require sponsorship",
+  "expect": false
+ },
+ {
+  "name": "empty_answer",
+  "answer": "",
+  "expect": false
+ }
+]

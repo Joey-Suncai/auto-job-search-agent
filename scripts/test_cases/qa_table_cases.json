@@ -1,0 +1,553 @@
+[
+ {
+  "name": "exact match ignores case and punctuation",
+  "qa": [
+   {
+    "q": "Do you have a forklift certificate?",
+    "text": "Yes, valid until 2027"
+   }
+  ],
+  "label": "do you have a forklift certificate",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "Yes, valid until 2027"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "star and required parenthetical are ignored",
+  "qa": [
+   {
+    "q": "Preferred shift?",
+    "pick": "Morning"
+   }
+  ],
+  "label": "Preferred shift * (required)",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Morning"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "curly apostrophe equals straight apostrophe",
+  "qa": [
+   {
+    "q": "What’s your typing speed?",
+    "text": "65 WPM"
+   }
+  ],
+  "label": "What's your typing speed?",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "65 WPM"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "runs of spaces collapse",
+  "qa": [
+   {
+    "q": "Languages   spoken",
+    "text": "English, Spanish"
+   }
+  ],
+  "label": "Languages spoken",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "English, Spanish"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "long saved question matches added help text with yes-no",
+  "qa": [
+   {
+    "q": "Are you able to work occasional weekend shifts",
+    "yes": true
+   }
+  ],
+  "label": "Are you able to work occasional weekend shifts? This includes Saturdays.",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Yes"
+  },
+  "spec_quote": "A saved question at least 40 characters long (after normalisation) also matches a form question that starts with it and adds more text after it (help text).",
+  "ambiguous": false
+ },
+ {
+  "name": "short saved question does not match longer label",
+  "qa": [
+   {
+    "q": "Forklift certificate",
+    "text": "12345"
+   }
+  ],
+  "label": "Forklift certificate number",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "none"
+  },
+  "spec_quote": "A saved question at least 40 characters long (after normalisation) also matches a form question that starts with it and adds more text after it (help text). Anything else (a shorter or different question, a question that only contains a short saved question in the middle) does not match.",
+  "ambiguous": false
+ },
+ {
+  "name": "regex entry matches shift preference and picks option",
+  "qa": [
+   {
+    "q": "Shift preference",
+    "match": "/shift\\s+pref(erence)?/i",
+    "pick": "Evening"
+   }
+  ],
+  "label": "Which shift preference do you have?",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Evening"
+  },
+  "spec_quote": "An entry with a regex also matches any form question the regex finds.",
+  "ambiguous": false
+ },
+ {
+  "name": "regex entry with yes-no answer on radio list",
+  "qa": [
+   {
+    "q": "Driver license",
+    "match": "/driver'?s? licen[cs]e/i",
+    "yes": true
+   }
+  ],
+  "label": "Do you hold a valid driver's license?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Yes"
+  },
+  "spec_quote": "An entry with a regex also matches any form question the regex finds.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick option matches case-insensitively",
+  "qa": [
+   {
+    "q": "Preferred shift",
+    "pick": "morning"
+   }
+  ],
+  "label": "Preferred shift",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Morning"
+  },
+  "spec_quote": "A list (options): the saved pick option (case-insensitive exact text); else the option equal to the saved text; else for a Yes/No answer the option that starts with \"Yes\" / \"No\". No such option → no answer (left to the user).",
+  "ambiguous": false
+ },
+ {
+  "name": "saved text equals an option on a list",
+  "qa": [
+   {
+    "q": "Preferred shift",
+    "text": "Evening"
+   }
+  ],
+  "label": "Preferred shift",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Evening"
+  },
+  "spec_quote": "A list (options): the saved pick option (case-insensitive exact text); else the option equal to the saved text; else for a Yes/No answer the option that starts with \"Yes\" / \"No\". No such option → no answer (left to the user).",
+  "ambiguous": false
+ },
+ {
+  "name": "yes answer on list picks option starting with Yes",
+  "qa": [
+   {
+    "q": "Do you have a forklift certificate?",
+    "yes": true
+   }
+  ],
+  "label": "Do you have a forklift certificate?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I don't"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Yes, I do"
+  },
+  "spec_quote": "A list (options): the saved pick option (case-insensitive exact text); else the option equal to the saved text; else for a Yes/No answer the option that starts with \"Yes\" / \"No\". No such option → no answer (left to the user).",
+  "ambiguous": false
+ },
+ {
+  "name": "no answer on list picks option starting with No",
+  "qa": [
+   {
+    "q": "Do you have a forklift certificate?",
+    "yes": false
+   }
+  ],
+  "label": "Do you have a forklift certificate?",
+  "type": "select",
+  "options": [
+   "Yes, I do",
+   "No, I don't"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "No, I don't"
+  },
+  "spec_quote": "A list (options): the saved pick option (case-insensitive exact text); else the option equal to the saved text; else for a Yes/No answer the option that starts with \"Yes\" / \"No\". No such option → no answer (left to the user).",
+  "ambiguous": false
+ },
+ {
+  "name": "list with no matching option yields no answer",
+  "qa": [
+   {
+    "q": "Preferred shift",
+    "pick": "Weekend"
+   }
+  ],
+  "label": "Preferred shift",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "none"
+  },
+  "spec_quote": "A list (options): the saved pick option (case-insensitive exact text); else the option equal to the saved text; else for a Yes/No answer the option that starts with \"Yes\" / \"No\". No such option → no answer (left to the user).",
+  "ambiguous": false
+ },
+ {
+  "name": "yes-no answer in text box becomes Yes",
+  "qa": [
+   {
+    "q": "Do you have a forklift certificate?",
+    "yes": true
+   }
+  ],
+  "label": "Do you have a forklift certificate?",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "Yes"
+  },
+  "spec_quote": "A text box (no options): the saved text, or \"Yes\" / \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "punctuation in saved question is ignored",
+  "qa": [
+   {
+    "q": "Typing speed (words per minute)",
+    "text": "70"
+   }
+  ],
+  "label": "Typing speed words per minute",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "70"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "required word and star are ignored",
+  "qa": [
+   {
+    "q": "Languages spoken required",
+    "text": "English"
+   }
+  ],
+  "label": "Languages spoken *",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "English"
+  },
+  "spec_quote": "The form's question equals the saved question after normalisation: case ignored, punctuation ignored, curly apostrophes = straight ones, \"*\" and the word \"required\" / \"(required)\" ignored, runs of spaces collapsed.",
+  "ambiguous": false
+ },
+ {
+  "name": "long saved question matches added help text and picks option",
+  "qa": [
+   {
+    "q": "Which of the following languages do you speak fluently",
+    "pick": "Spanish"
+   }
+  ],
+  "label": "Which of the following languages do you speak fluently? Select all that apply.",
+  "type": "select",
+  "options": [
+   "English",
+   "Spanish",
+   "French"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Spanish"
+  },
+  "spec_quote": "A saved question at least 40 characters long (after normalisation) also matches a form question that starts with it and adds more text after it (help text).",
+  "ambiguous": false
+ },
+ {
+  "name": "long saved question matches added help text with radio yes-no",
+  "qa": [
+   {
+    "q": "Do you have a valid forklift operator certification",
+    "yes": true
+   }
+  ],
+  "label": "Do you have a valid forklift operator certification? Please upload a copy.",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Yes"
+  },
+  "spec_quote": "A saved question at least 40 characters long (after normalisation) also matches a form question that starts with it and adds more text after it (help text).",
+  "ambiguous": false
+ },
+ {
+  "name": "short saved question contained in middle does not match",
+  "qa": [
+   {
+    "q": "Shift",
+    "pick": "Night"
+   }
+  ],
+  "label": "Which shift do you prefer?",
+  "type": "select",
+  "options": [
+   "Morning",
+   "Evening",
+   "Night"
+  ],
+  "expect": {
+   "source": "none"
+  },
+  "spec_quote": "Anything else (a shorter or different question, a question that only contains a short saved question in the middle) does not match.",
+  "ambiguous": false
+ },
+ {
+  "name": "different question does not match",
+  "qa": [
+   {
+    "q": "Preferred shift",
+    "pick": "Morning"
+   }
+  ],
+  "label": "Preferred lunch break",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "none"
+  },
+  "spec_quote": "Anything else (a shorter or different question, a question that only contains a short saved question in the middle) does not match.",
+  "ambiguous": false
+ },
+ {
+  "name": "regex entry with text answer",
+  "qa": [
+   {
+    "q": "Typing",
+    "match": "/typing\\s+speed/i",
+    "text": "80 WPM"
+   }
+  ],
+  "label": "What is your typing speed?",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "qa",
+   "value": "80 WPM"
+  },
+  "spec_quote": "An entry with a regex also matches any form question the regex finds.",
+  "ambiguous": false
+ },
+ {
+  "name": "regex entry matches and picks list option",
+  "qa": [
+   {
+    "q": "Certification",
+    "match": "/certif/i",
+    "pick": "Forklift"
+   }
+  ],
+  "label": "Which certification do you hold?",
+  "type": "select",
+  "options": [
+   "Forklift",
+   "Welding",
+   "None"
+  ],
+  "expect": {
+   "source": "qa",
+   "value": "Forklift"
+  },
+  "spec_quote": "An entry with a regex also matches any form question the regex finds.",
+  "ambiguous": false
+ },
+ {
+  "name": "first name standard question uses rule over table",
+  "qa": [
+   {
+    "q": "What is your first name?",
+    "text": "Alex"
+   }
+  ],
+  "label": "First name",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "rule"
+  },
+  "spec_quote": "Built-in rules exist for the standard questions — first / last name, e-mail, phone, city, work authorization, visa sponsorship (now / in the future), gender, race / ethnicity, veteran status, disability, how did you hear about us, willingness to relocate. For those the table is never used, even when it holds the same question; the rule's answer stands.",
+  "ambiguous": false
+ },
+ {
+  "name": "email standard question uses rule over table",
+  "qa": [
+   {
+    "q": "Email address",
+    "text": "alex@example.com"
+   }
+  ],
+  "label": "E-mail",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "rule"
+  },
+  "spec_quote": "Built-in rules exist for the standard questions — first / last name, e-mail, phone, city, work authorization, visa sponsorship (now / in the future), gender, race / ethnicity, veteran status, disability, how did you hear about us, willingness to relocate. For those the table is never used, even when it holds the same question; the rule's answer stands.",
+  "ambiguous": false
+ },
+ {
+  "name": "phone standard question uses rule over table",
+  "qa": [
+   {
+    "q": "Phone number",
+    "text": "555-0100"
+   }
+  ],
+  "label": "Phone",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "rule"
+  },
+  "spec_quote": "Built-in rules exist for the standard questions — first / last name, e-mail, phone, city, work authorization, visa sponsorship (now / in the future), gender, race / ethnicity, veteran status, disability, how did you hear about us, willingness to relocate. For those the table is never used, even when it holds the same question; the rule's answer stands.",
+  "ambiguous": false
+ },
+ {
+  "name": "work authorization standard question uses rule over table",
+  "qa": [
+   {
+    "q": "Are you authorized to work in this country?",
+    "yes": true
+   }
+  ],
+  "label": "Are you legally authorized to work?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "source": "rule"
+  },
+  "spec_quote": "Built-in rules exist for the standard questions — first / last name, e-mail, phone, city, work authorization, visa sponsorship (now / in the future), gender, race / ethnicity, veteran status, disability, how did you hear about us, willingness to relocate. For those the table is never used, even when it holds the same question; the rule's answer stands.",
+  "ambiguous": false
+ },
+ {
+  "name": "willingness to relocate standard question uses rule over table",
+  "qa": [
+   {
+    "q": "Are you willing to relocate?",
+    "yes": false
+   }
+  ],
+  "label": "Willing to relocate?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "source": "rule"
+  },
+  "spec_quote": "Built-in rules exist for the standard questions — first / last name, e-mail, phone, city, work authorization, visa sponsorship (now / in the future), gender, race / ethnicity, veteran status, disability, how did you hear about us, willingness to relocate. For those the table is never used, even when it holds the same question; the rule's answer stands.",
+  "ambiguous": false
+ },
+ {
+  "name": "no matching table entry and no rule yields none",
+  "qa": [
+   {
+    "q": "Preferred shift",
+    "pick": "Morning"
+   }
+  ],
+  "label": "What is your favorite color?",
+  "type": "text",
+  "options": [],
+  "expect": {
+   "source": "none"
+  },
+  "spec_quote": "Anything else (a shorter or different question, a question that only contains a short saved question in the middle) does not match.",
+  "ambiguous": false
+ }
+]

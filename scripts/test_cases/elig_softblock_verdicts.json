@@ -1,0 +1,5 @@
+{
+ "class_rising_junior_senior_preferred_review": "Case misreads the spec: its text also says \"Master's students are welcome to apply\" — spec item 4 applies the class-year rule only when the posting has no master's / graduate mention, so a junior/senior preference is moot and Eligible is right (Claude 2026-11-06).",
+ "class_junior_senior_standing_preferred_review": "Same as class_rising_junior_senior_preferred_review: the text welcomes master's students, so the preference does not apply to this candidate; Eligible is right (Claude 2026-11-06).",
+ "sponsor_no_visa_ineligible": "spec changed: JSA-238 (Joey 2026-11-06 「如果只是说不提供担保，但是可以实习的话就不拦。如果是实习都不能实习，就拦掉。」) — an internship runs on CPT; a plain no-sponsorship no longer blocks, 'now or in the future' is a review"
+}

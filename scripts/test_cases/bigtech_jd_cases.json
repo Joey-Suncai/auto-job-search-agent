@@ -1,0 +1,270 @@
+[
+ {
+  "name": "js_string_after: simple double-quoted string after marker",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"hello world\")",
+   "JSON.parse("
+  ],
+  "expect": "hello world"
+ },
+ {
+  "name": "js_string_after: escaped quotes and backslashes kept as pairs",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"{\\\"title\\\":\\\"Back\\\\slash\\\"}\")",
+   "JSON.parse("
+  ],
+  "expect": "{\\\"title\\\":\\\"Back\\\\slash\\\"}"
+ },
+ {
+  "name": "js_string_after: missing marker returns None",
+  "fn": "js_string_after",
+  "args": [
+   "<html><body>nothing</body></html>",
+   "JSON.parse("
+  ],
+  "expect": null
+ },
+ {
+  "name": "js_string_after: unterminated string returns None",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"never closed",
+   "JSON.parse("
+  ],
+  "expect": null
+ },
+ {
+  "name": "js_string_after: escaped quotes do not terminate the string",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"say \\\"hi\\\"\")",
+   "JSON.parse("
+  ],
+  "expect": "say \\\"hi\\\""
+ },
+ {
+  "name": "js_string_after: empty string returns empty string (not None)",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"\")",
+   "JSON.parse("
+  ],
+  "expect": ""
+ },
+ {
+  "name": "js_string_after: backslash-n escape is kept literally, not decoded",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"line1\\nline2\")",
+   "JSON.parse("
+  ],
+  "expect": "line1\\nline2"
+ },
+ {
+  "name": "js_string_after: stops at first unescaped closing quote, trailing text ignored",
+  "fn": "js_string_after",
+  "args": [
+   "JSON.parse(\"abc\") and \"def\"",
+   "JSON.parse("
+  ],
+  "expect": "abc"
+ },
+ {
+  "name": "apple_parse: en_US posting with HTML in description and locations",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"en_US\\\":{\\\"postingTitle\\\":\\\"Software Engineer\\\",\\\"jobSummary\\\":\\\"Build great products\\\",\\\"description\\\":\\\"<b>Write code</b>\\\",\\\"minimumQualifications\\\":\\\"BS in CS\\\",\\\"preferredQualifications\\\":\\\"MS in CS\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"Cupertino\\\",\\\"countryName\\\":\\\"United States\\\"}]}}}}\")"
+  ],
+  "expect": {
+   "title": "Software Engineer",
+   "text": "Build great products\nWrite code\nBS in CS\nMS in CS",
+   "loc": "Cupertino, United States"
+  },
+  "ambiguous": true,
+  "why": "The spec says text = 'those four joined' without naming a separator, and loc = names 'with their countryName' without naming the joining punctuation; newline and 'name, countryName' are assumed."
+ },
+ {
+  "name": "apple_parse: only en_UK localization is used when en_US absent",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"en_UK\\\":{\\\"postingTitle\\\":\\\"UK Engineer\\\",\\\"jobSummary\\\":\\\"UK summary\\\",\\\"description\\\":\\\"UK desc\\\",\\\"minimumQualifications\\\":\\\"UK min\\\",\\\"preferredQualifications\\\":\\\"UK pref\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"London\\\",\\\"countryName\\\":\\\"United Kingdom\\\"}]}}}}\")"
+  ],
+  "expect": {
+   "title": "UK Engineer",
+   "text": "UK summary\nUK desc\nUK min\nUK pref",
+   "loc": "London, United Kingdom"
+  },
+  "ambiguous": true,
+  "why": "Separator between the four text fields and the loc 'name + countryName' format are not specified."
+ },
+ {
+  "name": "apple_parse: falls back to any localization (fr_FR) when neither en_US nor en_UK",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"fr_FR\\\":{\\\"postingTitle\\\":\\\"FR Title\\\",\\\"jobSummary\\\":\\\"FR sum\\\",\\\"description\\\":\\\"FR desc\\\",\\\"minimumQualifications\\\":\\\"FR min\\\",\\\"preferredQualifications\\\":\\\"FR pref\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"Paris\\\",\\\"countryName\\\":\\\"France\\\"}]}}}}\")"
+  ],
+  "expect": {
+   "title": "FR Title",
+   "text": "FR sum\nFR desc\nFR min\nFR pref",
+   "loc": "Paris, France"
+  },
+  "ambiguous": true,
+  "why": "Separator between the four text fields and the loc 'name + countryName' format are not specified."
+ },
+ {
+  "name": "apple_parse: en_US wins over en_UK even when en_UK is listed first",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"en_UK\\\":{\\\"postingTitle\\\":\\\"UK Title\\\",\\\"jobSummary\\\":\\\"UK sum\\\",\\\"description\\\":\\\"UK desc\\\",\\\"minimumQualifications\\\":\\\"UK min\\\",\\\"preferredQualifications\\\":\\\"UK pref\\\"},\\\"en_US\\\":{\\\"postingTitle\\\":\\\"US Title\\\",\\\"jobSummary\\\":\\\"US sum\\\",\\\"description\\\":\\\"US desc\\\",\\\"minimumQualifications\\\":\\\"US min\\\",\\\"preferredQualifications\\\":\\\"US pref\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"Cupertino\\\",\\\"countryName\\\":\\\"United States\\\"}]}}}}\")"
+  ],
+  "expect": {
+   "title": "US Title",
+   "text": "US sum\nUS desc\nUS min\nUS pref",
+   "loc": "Cupertino, United States"
+  },
+  "ambiguous": true,
+  "why": "Separator between the four text fields and the loc 'name + countryName' format are not specified."
+ },
+ {
+  "name": "apple_parse: loader data without jobDetails is a closed posting",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"root\\\":{\\\"initialData\\\":\\\"x\\\"}}}\")"
+  ],
+  "expect": {
+   "closed": true
+  }
+ },
+ {
+  "name": "apple_parse: 'no longer available' sentence in translations is not enough when jobDetails exists",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"en_US\\\":{\\\"postingTitle\\\":\\\"T6\\\",\\\"jobSummary\\\":\\\"S6\\\",\\\"description\\\":\\\"D6\\\",\\\"minimumQualifications\\\":\\\"M6\\\",\\\"preferredQualifications\\\":\\\"P6\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"Cupertino\\\",\\\"countryName\\\":\\\"United States\\\"}]}},\\\"translations\\\":{\\\"notFound\\\":\\\"Page not found. This job is no longer available.\\\"}}}\")"
+  ],
+  "expect": {
+   "title": "T6",
+   "text": "S6\nD6\nM6\nP6",
+   "loc": "Cupertino, United States"
+  },
+  "ambiguous": true,
+  "why": "Separator between the four text fields and the loc 'name + countryName' format are not specified."
+ },
+ {
+  "name": "apple_parse: page with no JSON.parse loader marker returns None",
+  "fn": "apple_parse",
+  "args": [
+   "<html><body><h1>Jobs at Apple</h1></body></html>"
+  ],
+  "expect": null
+ },
+ {
+  "name": "apple_parse: multiple locations joined with '; '",
+  "fn": "apple_parse",
+  "args": [
+   "JSON.parse(\"{\\\"loaderData\\\":{\\\"jobDetails\\\":{\\\"jobsData\\\":{\\\"localizations\\\":{\\\"en_US\\\":{\\\"postingTitle\\\":\\\"Multi\\\",\\\"jobSummary\\\":\\\"S\\\",\\\"description\\\":\\\"D\\\",\\\"minimumQualifications\\\":\\\"M\\\",\\\"preferredQualifications\\\":\\\"P\\\"}},\\\"locations\\\":[{\\\"name\\\":\\\"Cupertino\\\",\\\"countryName\\\":\\\"United States\\\"},{\\\"name\\\":\\\"Austin\\\",\\\"countryName\\\":\\\"United States\\\"}]}}}}\")"
+  ],
+  "expect": {
+   "title": "Multi",
+   "text": "S\nD\nM\nP",
+   "loc": "Cupertino, United States; Austin, United States"
+  },
+  "ambiguous": true,
+  "why": "The '; '-join is specified, but the per-location 'name with countryName' formatting and the four-field text separator are not."
+ },
+ {
+  "name": "google_parse: og:title, place line, Minimum qualifications to end of page",
+  "fn": "google_parse",
+  "args": [
+   "<html><head><meta property=\"og:title\" content=\"Software Engineer, Search\"/></head><body><div class=\"icon\">place</div><div class=\"loc\">Mountain View, CA, USA</div><h3>Minimum qualifications:</h3><ul><li>Bachelor's degree or equivalent practical experience.</li><li>2 years of coding experience.</li></ul></body></html>"
+  ],
+  "expect": {
+   "title": "Software Engineer, Search",
+   "text": "Software Engineer, Search Minimum qualifications: Bachelor's degree or equivalent practical experience. 2 years of coding experience.",
+   "loc": "Mountain View, CA, USA"
+  }
+ },
+ {
+  "name": "google_parse: About the job start and equal-opportunity end line",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"Data Analyst\"><p>About the job</p><p>Analyze data at scale.</p><p>Google is proud to be an equal opportunity workplace.</p><p>This must not appear.</p>"
+  ],
+  "expect": {
+   "title": "Data Analyst",
+   "text": "Data Analyst About the job Analyze data at scale.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "google_parse: 'Minimum qualifications' without colon and no place line gives loc ''",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"Product Manager\"><p>Minimum qualifications</p><p>Experience shipping products.</p>"
+  ],
+  "expect": {
+   "title": "Product Manager",
+   "text": "Product Manager Minimum qualifications Experience shipping products.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "google_parse: no JD start line at all returns None (even with a place line)",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"Recruiter\"><p>place</p><p>New York, NY, USA</p><p>We are looking for a recruiter.</p>"
+  ],
+  "expect": null
+ },
+ {
+  "name": "google_parse: JD cut off at 'Information collected and processed' line",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"SRE\"><p>Minimum qualifications:</p><p>Systems experience.</p><p>Information collected and processed</p><p>Google collects data.</p>"
+  ],
+  "expect": {
+   "title": "SRE",
+   "text": "SRE Minimum qualifications: Systems experience.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "google_parse: script/style removed, tags become line breaks, entities decoded",
+  "fn": "google_parse",
+  "args": [
+   "<html><head><meta property=\"og:title\" content=\"Engineer\"></head><body><script>var t = \"Minimum qualifications\";</script><style>.a{color:red}</style><div>About the job</div><div>Work on R&amp;D tools.</div><div>A &lt; B problems.</div></body></html>"
+  ],
+  "expect": {
+   "title": "Engineer",
+   "text": "Engineer About the job Work on R&D tools. A < B problems.",
+   "loc": ""
+  }
+ },
+ {
+  "name": "google_parse: Minimum qualifications preferred over an earlier About the job heading",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"UX Designer\"><div>About the job</div><div>We design things.</div><div>Minimum qualifications:</div><div>Portfolio required.</div>"
+  ],
+  "expect": {
+   "title": "UX Designer",
+   "text": "UX Designer Minimum qualifications: Portfolio required.",
+   "loc": ""
+  },
+  "ambiguous": true,
+  "why": "'the first \"Minimum qualifications\" ... (else \"About the job\")' can be read as preferring the Minimum qualifications marker anywhere, or as whichever marker occurs first in the page; the preference reading is assumed."
+ },
+ {
+  "name": "google_parse: place line appearing after the JD start does not set loc",
+  "fn": "google_parse",
+  "args": [
+   "<meta property=\"og:title\" content=\"Analyst\"><div>Minimum qualifications:</div><div>SQL experience.</div><div>place</div><div>Mountain View, CA, USA</div>"
+  ],
+  "expect": {
+   "title": "Analyst",
+   "text": "Analyst Minimum qualifications: SQL experience. place Mountain View, CA, USA",
+   "loc": ""
+  }
+ }
+]

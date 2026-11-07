@@ -1,0 +1,238 @@
+[
+ {
+  "name": "contact_current_employer",
+  "label": "May we contact your current employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_present_employer",
+  "label": "Can we contact your present employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_previous_employer",
+  "label": "May we contact your previous employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_former_employer",
+  "label": "Can we contact your former employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_current_supervisor",
+  "label": "May we contact your current supervisor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_previous_manager",
+  "label": "Can we contact your previous manager?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_former_supervisor",
+  "label": "May we contact your former supervisor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_uppercase_former_manager",
+  "label": "CAN WE CONTACT YOUR FORMER MANAGER?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "contact_present_supervisor",
+  "label": "Can we contact your present supervisor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“May we contact your current employer?” (or present / previous / former employer, supervisor or manager; “Can we contact …”) → “Yes”."
+ },
+ {
+  "name": "travel_assistance_in_person",
+  "label": "Would you require travel assistance to attend an interview in person?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_reimbursement_on_site",
+  "label": "Do you need travel reimbursement to attend an on-site interview?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_support_at_office",
+  "label": "Will you need travel support to attend an interview at an office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_assistance_on_site",
+  "label": "Would you require travel assistance to attend an interview on site?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_reimbursement_in_person",
+  "label": "Do you need travel reimbursement to attend an interview in person?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_support_at_office_interview",
+  "label": "Would you need travel support to attend an interview at an office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_assistance_at_office",
+  "label": "Do you require travel assistance to attend an interview at an office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_support_onsite",
+  "label": "Would you need travel support to attend an interview on-site?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "travel_assistance_in_person_office_combination",
+  "label": "Do you need travel assistance to attend an interview in person at our office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "A question asking whether he would require / need travel assistance, travel reimbursement or travel support to attend an interview (in person, on site, at an office) → “No”."
+ },
+ {
+  "name": "current_employer_text",
+  "label": "Current employer",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec": "“Current employer” / “Most recent employer” as a text box → “University of Chicago”."
+ },
+ {
+  "name": "most_recent_employer_text",
+  "label": "Most recent employer",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec": "“Current employer” / “Most recent employer” as a text box → “University of Chicago”."
+ },
+ {
+  "name": "willing_travel_25_percent",
+  "label": "Are you willing to travel up to 25% for this role?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“Are you willing to travel up to 25% for this role?” → “Yes”."
+ },
+ {
+  "name": "able_work_in_person_chicago",
+  "label": "Are you able to work in person in our Chicago office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "“Are you able to work in person in our Chicago office?” → “Yes”."
+ }
+]

@@ -1,0 +1,348 @@
+[
+ {
+  "name": "Example heading 'Highest Level of Education Completed' is opened",
+  "sections": [
+   {
+    "id": "s1",
+    "head": "Highest Level of Education Completed",
+    "empty": true,
+    "add": "add1"
+   }
+  ],
+  "expect": [
+   "s1"
+  ],
+  "spec_quote": "Examples of headings that ARE returned: \"Highest Level of Education Completed\", \"Education Details\", \"Degrees\", \"Academic Background\", \"School Information\"."
+ },
+ {
+  "name": "Plural 'Degrees' is opened",
+  "sections": [
+   {
+    "id": "s2",
+    "head": "Degrees",
+    "empty": true,
+    "add": "add2"
+   }
+  ],
+  "expect": [
+   "s2"
+  ],
+  "spec_quote": "the heading is about education: it contains (case-insensitive, as a whole word) \"education\", \"degree\" / \"degrees\", \"school\" / \"schools\" / \"schooling\", or \"academic\";"
+ },
+ {
+  "name": "'Academic Background' is opened",
+  "sections": [
+   {
+    "id": "s3",
+    "head": "Academic Background",
+    "empty": true,
+    "add": "add3"
+   }
+  ],
+  "expect": [
+   "s3"
+  ],
+  "spec_quote": "Examples of headings that ARE returned: ... \"Academic Background\" ..."
+ },
+ {
+  "name": "'School Information' is opened",
+  "sections": [
+   {
+    "id": "s4",
+    "head": "School Information",
+    "empty": true,
+    "add": "add4"
+   }
+  ],
+  "expect": [
+   "s4"
+  ],
+  "spec_quote": "Examples of headings that ARE returned: ... \"School Information\"."
+ },
+ {
+  "name": "'Education Details' is opened",
+  "sections": [
+   {
+    "id": "s5",
+    "head": "Education Details",
+    "empty": true,
+    "add": "add5"
+   }
+  ],
+  "expect": [
+   "s5"
+  ],
+  "spec_quote": "Examples of headings that ARE returned: ... \"Education Details\" ..."
+ },
+ {
+  "name": "Heading exactly 'Education' is left to the other module",
+  "sections": [
+   {
+    "id": "s6",
+    "head": "Education",
+    "empty": true,
+    "add": "add6"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "the heading (after trimming spaces and a leading \"*\") is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case) — another module adds those sections' rows itself."
+ },
+ {
+  "name": "Leading star on 'Education' still excluded",
+  "sections": [
+   {
+    "id": "s7",
+    "head": "*Education",
+    "empty": true,
+    "add": "add7"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "the heading (after trimming spaces and a leading \"*\") is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case)"
+ },
+ {
+  "name": "Leading star on 'Formal Education' still excluded",
+  "sections": [
+   {
+    "id": "s8",
+    "head": "*Formal Education",
+    "empty": true,
+    "add": "add8"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "the heading (after trimming spaces and a leading \"*\") is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case)"
+ },
+ {
+  "name": "Odd case 'EDUCATION HISTORY' excluded",
+  "sections": [
+   {
+    "id": "s9",
+    "head": "EDUCATION HISTORY",
+    "empty": true,
+    "add": "add9"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "the heading (after trimming spaces and a leading \"*\") is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case)"
+ },
+ {
+  "name": "Lowercase 'education' excluded",
+  "sections": [
+   {
+    "id": "s10",
+    "head": "education",
+    "empty": true,
+    "add": "add10"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "the heading ... is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case)"
+ },
+ {
+  "name": "Education section that already has rows is not opened",
+  "sections": [
+   {
+    "id": "s11",
+    "head": "Highest Level of Education Completed",
+    "empty": false,
+    "add": "add11"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "`empty` is true; ... Everything else (... a section with rows ...) is not returned."
+ },
+ {
+  "name": "Empty education section with no Add control is not opened",
+  "sections": [
+   {
+    "id": "s12",
+    "head": "Degrees",
+    "empty": true,
+    "add": ""
+   }
+  ],
+  "expect": [],
+  "spec_quote": "`add` is a non-empty string; ... Everything else (... a section with no Add control) is not returned."
+ },
+ {
+  "name": "'school' embedded in another word does not count",
+  "sections": [
+   {
+    "id": "s13",
+    "head": "Preschooler Care",
+    "empty": true,
+    "add": "add13"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "it contains (case-insensitive, as a whole word) \"education\", \"degree\" / \"degrees\", \"school\" / \"schools\" / \"schooling\", or \"academic\""
+ },
+ {
+  "name": "'Previous Employment' is not an education section",
+  "sections": [
+   {
+    "id": "s14",
+    "head": "Previous Employment",
+    "empty": true,
+    "add": "add14"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "Everything else (work experience, references, languages, certifications, licenses, a section with rows, a section with no Add control) is not returned."
+ },
+ {
+  "name": "'References' is not an education section",
+  "sections": [
+   {
+    "id": "s15",
+    "head": "References",
+    "empty": true,
+    "add": "add15"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "Everything else (work experience, references, languages, certifications, licenses, a section with rows, a section with no Add control) is not returned."
+ },
+ {
+  "name": "'Languages' is not an education section",
+  "sections": [
+   {
+    "id": "s16",
+    "head": "Languages",
+    "empty": true,
+    "add": "add16"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "Everything else (work experience, references, languages, certifications, licenses, a section with rows, a section with no Add control) is not returned."
+ },
+ {
+  "name": "Certifications, Licenses and Skills all skipped",
+  "sections": [
+   {
+    "id": "c1",
+    "head": "Certifications",
+    "empty": true,
+    "add": "addC"
+   },
+   {
+    "id": "c2",
+    "head": "Licenses",
+    "empty": true,
+    "add": "addL"
+   },
+   {
+    "id": "c3",
+    "head": "Skills",
+    "empty": true,
+    "add": "addS"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "Everything else (work experience, references, languages, certifications, licenses, a section with rows, a section with no Add control) is not returned."
+ },
+ {
+  "name": "Empty input list returns empty list",
+  "sections": [],
+  "expect": [],
+  "spec_quote": "It returns the list of `id`s (in input order) whose Add is clicked once"
+ },
+ {
+  "name": "Excluded 'Education' plus empty 'Degrees' returns only Degrees",
+  "sections": [
+   {
+    "id": "e1",
+    "head": "Education",
+    "empty": true,
+    "add": "addE"
+   },
+   {
+    "id": "d1",
+    "head": "Degrees",
+    "empty": true,
+    "add": "addD"
+   }
+  ],
+  "expect": [
+   "d1"
+  ],
+  "spec_quote": "A section is returned only when ALL hold: ... the heading ... is NOT exactly \"Education\", \"Formal Education\" or \"Education History\" (any case) — another module adds those sections' rows itself."
+ },
+ {
+  "name": "Mixed form returns only qualifying education ids in input order",
+  "sections": [
+   {
+    "id": "m1",
+    "head": "Education History",
+    "empty": true,
+    "add": "addM1"
+   },
+   {
+    "id": "m2",
+    "head": "Previous Employment",
+    "empty": true,
+    "add": "addM2"
+   },
+   {
+    "id": "m3",
+    "head": "Academic Background",
+    "empty": true,
+    "add": "addM3"
+   },
+   {
+    "id": "m4",
+    "head": "References",
+    "empty": true,
+    "add": "addM4"
+   },
+   {
+    "id": "m5",
+    "head": "Highest Level of Education Completed",
+    "empty": true,
+    "add": "addM5"
+   },
+   {
+    "id": "m6",
+    "head": "Education",
+    "empty": true,
+    "add": "addM6"
+   }
+  ],
+  "expect": [
+   "m3",
+   "m5"
+  ],
+  "spec_quote": "It returns the list of `id`s (in input order) whose Add is clicked once, so the runner can then fill the new row."
+ },
+ {
+  "name": "'Schooling History' matches the whole word 'schooling'",
+  "sections": [
+   {
+    "id": "s21",
+    "head": "Schooling History",
+    "empty": true,
+    "add": "add21"
+   }
+  ],
+  "expect": [
+   "s21"
+  ],
+  "spec_quote": "it contains (case-insensitive, as a whole word) \"education\", \"degree\" / \"degrees\", \"school\" / \"schools\" / \"schooling\", or \"academic\""
+ },
+ {
+  "name": "Singular 'Degree' heading is opened",
+  "sections": [
+   {
+    "id": "s22",
+    "head": "Degree",
+    "empty": true,
+    "add": "add22"
+   }
+  ],
+  "expect": [
+   "s22"
+  ],
+  "spec_quote": "it contains (case-insensitive, as a whole word) \"education\", \"degree\" / \"degrees\", \"school\" / \"schools\" / \"schooling\", or \"academic\""
+ }
+]

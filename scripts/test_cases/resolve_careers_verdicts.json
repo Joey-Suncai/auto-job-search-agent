@@ -1,0 +1,62 @@
+{
+ "names_boozallen_label_inside_key": {
+  "verdict": "case",
+  "why": "the host check is only the first gate; the spec's step 2 still needs the <title> / og:site_name to name the company, and the page title is just 'Home' → false"
+ },
+ "norm_city_tail_comma": {
+  "verdict": "code",
+  "why": "fixed: the city tail regex needed a space before the comma; now ', Austin, TX' is dropped too"
+ },
+ "names_no_distinctive_words": {
+  "verdict": "case",
+  "why": "written against the first spec; the 2026-11-03 addition says a name with no distinctive word falls back to its own words (Bank of America → bank, america), so this page names the company → true"
+ },
+ "norm_title expands Quant and Assoc with trailing dot": {
+  "verdict": "case",
+  "why": "the spec only says abbreviations are expanded; it never says the rest of the title is lower-cased (the first set's 'Store Manager' case keeps case). Case does not matter for similarity"
+ },
+ "norm_title expands Sr dot and Eng after removing trailing - Remote": {
+  "verdict": "case",
+  "why": "the spec only says abbreviations are expanded; it never says the rest of the title is lower-cased (the first set's 'Store Manager' case keeps case). Case does not matter for similarity"
+ },
+ "board_guesses does not drop and-sons part": {
+  "verdict": "code",
+  "why": "fixed: '&' was kept in the slug; punctuation now becomes a space as the spec says"
+ },
+ "detect_ats: ordering — new systems come after all earlier ones": {
+  "verdict": "case",
+  "why": "the spec lists the new systems in the order brassring, jazzhr, clearcompany, paycom, rippling, breezy, …, dover; the case put jazzhr after rippling and breezy"
+ },
+ "wd_queries: five words → full title then first three words": {
+  "verdict": "case",
+  "why": "norm_title expands ML to 'machine learning' first (spec: wd_queries starts from norm_title), so the first three words are 'Senior Machine Learning'; the case counted the unexpanded title"
+ },
+ "wd_queries: abbreviation expanded before counting words": {
+  "verdict": "case",
+  "why": "same as the five-word case: after expansion the first three words are 'senior Machine Learning'; the case took four. Lower-case 'senior' is how norm_title expands Sr (case does not matter to the search)"
+ },
+ "decide_other_system_only_non_searchable": {
+  "verdict": "case",
+  "why": "superseded by JSA-112 (2026-11-03): taleo is now searched through ats_search.py, so a real taleo board with no matching posting is no_match; other_system stays for systems ats_search cannot read (adp, paycom, …) or a vendor-infrastructure ident (covered in ats_search_cases.json)"
+ },
+ "career_links: duplicates removed and result capped at 6": {
+  "verdict": "case",
+  "why": "'acme.myworkdayjobs.com/…' has no wdN part, so detect_ats does not recognise it (the spec ranks by what detect_ats finds); the six recognised ATS links (Jobvite included) come first. Its other ask — the greenhouse / lever / ashby links that say neither careers nor jobs must be kept — found a real bug: ATS links were not selected; fixed (career_links now keeps any link detect_ats recognises)."
+ },
+ "career_links: ATS posting links come first (page order), then a 'see all openings' link": {
+  "verdict": "code",
+  "why": "fixed 2026-11-03 f: links into a recognised ATS are now selected even when their text says neither careers nor jobs"
+ },
+ "detect_ats: brassring host": {
+  "verdict": "case",
+  "why": "superseded by JSA-112 (Joey 「补上」 2026-11-03): BrassRing is now searched through ats_search.py, so ATS_RX keeps the URL with partnerid / siteid; host-only stays only when the page shows nothing more. Cases for the new form: ats_search_d_cases.json"
+ },
+ "detect_ats: clearcompany both host forms": {
+  "verdict": "case",
+  "why": "superseded by JSA-112 (Joey 「补上」 2026-11-03): ClearCompany is now searched through ats_search.py, so ATS_RX keeps the apply.clearcompany.com/<slug> path (here 'v1', which clean_ident rejects); host-only stays only when the page shows nothing more. Cases for the new form: ats_search_d_cases.json"
+ },
+ "hint_of: non-phenom/successfactors file with unrecognised URL yields null": {
+  "verdict": "case",
+  "why": "superseded by JSA-137 (2026-11-04): Gem is now a system detect_ats recognises (jobs.gem.com/<slug>), so the row gives [\"gem\", \"x\"]; an unrecognised url in a non-phenom / successfactors file still gives null"
+ }
+}

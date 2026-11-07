@@ -1,0 +1,595 @@
+[
+ {
+  "name": "select_above_uses_page_value_when_no_rows",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "No"
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "full_name",
+   "rows": []
+  },
+  "expect": {
+   "label": "Will you require sponsorship?",
+   "answer": "No"
+  },
+  "spec_quote": "It returns the nearest choice question ABOVE `f` (kind one of select / pills / pills_multi / radio / checks) as `{\"label\", \"answer\"}`; the answer is the `want` of the latest row with that field's key and a non-null `want`, else the field's own page `value`",
+  "ambiguous": false
+ },
+ {
+  "name": "latest_row_wins_over_earlier_row_and_page_value",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "Yes"
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "full_name",
+   "rows": [
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "want": "No"
+    },
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "want": "Maybe"
+    }
+   ]
+  },
+  "expect": {
+   "label": "Will you require sponsorship?",
+   "answer": "Maybe"
+  },
+  "spec_quote": "the answer is the `want` of the latest row with that field's key and a non-null `want`, else the field's own page `value`",
+  "ambiguous": false
+ },
+ {
+  "name": "latest_row_with_null_want_is_skipped",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "authorization",
+     "kind": "radio",
+     "label": "Are you authorized to work?",
+     "value": null
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "full_name",
+   "rows": [
+    {
+     "key": "authorization",
+     "kind": "radio",
+     "want": "Yes"
+    },
+    {
+     "key": "authorization",
+     "kind": "radio",
+     "want": null
+    }
+   ]
+  },
+  "expect": {
+   "label": "Are you authorized to work?",
+   "answer": "Yes"
+  },
+  "spec_quote": "the answer is the `want` of the latest row with that field's key and a non-null `want`, else the field's own page `value`",
+  "ambiguous": false
+ },
+ {
+  "name": "list_answer_is_joined_with_pipe",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "locations",
+     "kind": "pills_multi",
+     "label": "Which locations?",
+     "value": [
+      "Remote",
+      "Hybrid"
+     ]
+    },
+    {
+     "key": "notes",
+     "kind": "textarea",
+     "label": "Notes",
+     "value": ""
+    }
+   ],
+   "f_key": "notes",
+   "rows": []
+  },
+  "expect": {
+   "label": "Which locations?",
+   "answer": "Remote | Hybrid"
+  },
+  "spec_quote": "a list answer is joined with \" | \"",
+  "ambiguous": false
+ },
+ {
+  "name": "file_upload_rows_without_key_are_ignored",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "resume",
+     "kind": "file",
+     "label": "Resume",
+     "value": null
+    },
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "No"
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "full_name",
+   "rows": [
+    {
+     "kind": "file",
+     "want": "/tmp/resume.pdf"
+    }
+   ]
+  },
+  "expect": {
+   "label": "Will you require sponsorship?",
+   "answer": "No"
+  },
+  "spec_quote": "Rows for file uploads (resume, cover letter, transcript) have NO `key` at all — they must simply be ignored, never raise.",
+  "ambiguous": false
+ },
+ {
+  "name": "file_upload_rows_mixed_with_real_row_still_use_row_want",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "cover_letter",
+     "kind": "file",
+     "label": "Cover letter",
+     "value": null
+    },
+    {
+     "key": "sponsorship",
+     "kind": "checks",
+     "label": "Do you now or in the future require sponsorship?",
+     "value": "No"
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "full_name",
+   "rows": [
+    {
+     "kind": "file",
+     "want": "/tmp/resume.pdf"
+    },
+    {
+     "key": "sponsorship",
+     "kind": "checks",
+     "want": "Yes"
+    },
+    {
+     "kind": "file",
+     "want": "/tmp/cover.pdf"
+    }
+   ]
+  },
+  "expect": {
+   "label": "Do you now or in the future require sponsorship?",
+   "answer": "Yes"
+  },
+  "spec_quote": "Rows for file uploads (resume, cover letter, transcript) have NO `key` at all — they must simply be ignored, never raise.",
+  "ambiguous": false
+ },
+ {
+  "name": "nothing_above_f_returns_none",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    },
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "No"
+    }
+   ],
+   "f_key": "full_name",
+   "rows": []
+  },
+  "expect": null,
+  "spec_quote": "None when no choice question is above `f` (or `f` is not in `order`).",
+  "ambiguous": false
+ },
+ {
+  "name": "f_not_in_order_returns_none",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "No"
+    },
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    }
+   ],
+   "f_key": "ghost_field",
+   "rows": []
+  },
+  "expect": null,
+  "spec_quote": "None when no choice question is above `f` (or `f` is not in `order`).",
+  "ambiguous": false
+ },
+ {
+  "name": "nearest_choice_above_skips_plain_text_between",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "sponsorship",
+     "kind": "select",
+     "label": "Will you require sponsorship?",
+     "value": "Yes"
+    },
+    {
+     "key": "middle_name",
+     "kind": "text",
+     "label": "Middle name",
+     "value": ""
+    },
+    {
+     "key": "work_auth",
+     "kind": "pills",
+     "label": "Work authorization status",
+     "value": "Citizen"
+    },
+    {
+     "key": "notes",
+     "kind": "textarea",
+     "label": "Notes",
+     "value": ""
+    }
+   ],
+   "f_key": "notes",
+   "rows": []
+  },
+  "expect": {
+   "label": "Work authorization status",
+   "answer": "Citizen"
+  },
+  "spec_quote": "It returns the nearest choice question ABOVE `f` (kind one of select / pills / pills_multi / radio / checks) as `{\"label\", \"answer\"}`",
+  "ambiguous": false
+ },
+ {
+  "name": "choice_question_below_f_is_not_used",
+  "fn": "related_question",
+  "args": {
+   "order": [
+    {
+     "key": "full_name",
+     "kind": "text",
+     "label": "Full name",
+     "value": ""
+    },
+    {
+     "key": "sponsorship",
+     "kind": "checks",
+     "label": "Will you require sponsorship?",
+     "value": "No"
+    }
+   ],
+   "f_key": "full_name",
+   "rows": [
+    {
+     "key": "sponsorship",
+     "kind": "checks",
+     "want": "Yes"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "None when no choice question is above `f` (or `f` is not in `order`).",
+  "ambiguous": false
+ },
+ {
+  "name": "email_exact_match_true",
+  "fn": "email_value_ok",
+  "args": {
+   "value": "jane.doe@example.com",
+   "email": "jane.doe@example.com"
+  },
+  "expect": true,
+  "spec_quote": "True only when the box holds our address (case and surrounding spaces ignored)",
+  "ambiguous": false
+ },
+ {
+  "name": "email_case_and_surrounding_spaces_ignored_true",
+  "fn": "email_value_ok",
+  "args": {
+   "value": "   Jane.Doe@Example.COM  ",
+   "email": "jane.doe@example.com"
+  },
+  "expect": true,
+  "spec_quote": "True only when the box holds our address (case and surrounding spaces ignored)",
+  "ambiguous": false
+ },
+ {
+  "name": "email_empty_string_false",
+  "fn": "email_value_ok",
+  "args": {
+   "value": "",
+   "email": "jane.doe@example.com"
+  },
+  "expect": false,
+  "spec_quote": "False for empty / None / a different address",
+  "ambiguous": false
+ },
+ {
+  "name": "email_none_false",
+  "fn": "email_value_ok",
+  "args": {
+   "value": null,
+   "email": "jane.doe@example.com"
+  },
+  "expect": false,
+  "spec_quote": "False for empty / None / a different address",
+  "ambiguous": false
+ },
+ {
+  "name": "email_different_address_false",
+  "fn": "email_value_ok",
+  "args": {
+   "value": "john.smith@example.com",
+   "email": "jane.doe@example.com"
+  },
+  "expect": false,
+  "spec_quote": "False for empty / None / a different address",
+  "ambiguous": false
+ },
+ {
+  "name": "email_our_own_address_empty_false",
+  "fn": "email_value_ok",
+  "args": {
+   "value": "",
+   "email": ""
+  },
+  "expect": false,
+  "spec_quote": "False when our own address is empty",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_no_row_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": null,
+   "f": {
+    "kind": "text",
+    "value": "Jane Doe"
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_want_none_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "text",
+    "want": null
+   },
+   "f": {
+    "kind": "text",
+    "value": "Jane Doe"
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_row_with_error_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "text",
+    "want": "Jane Doe",
+    "error": "element not interactable"
+   },
+   "f": {
+    "kind": "text",
+    "value": "Jane Doe"
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_row_gone_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "pills",
+    "want": "Citizen",
+    "gone": true
+   },
+   "f": {
+    "kind": "pills",
+    "value": "",
+    "options": [
+     "Citizen",
+     "Visa"
+    ]
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_geo_address_list_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "text",
+    "want": "123 Main St"
+   },
+   "f": {
+    "kind": "text",
+    "value": "123 Main St",
+    "geo": [
+     {
+      "city": "Springfield"
+     }
+    ]
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_unsupported_kind_false",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "file",
+    "want": "/tmp/resume.pdf"
+   },
+   "f": {
+    "kind": "file",
+    "value": null
+   }
+  },
+  "expect": false,
+  "spec_quote": "False when there is no row, `want` is None, the row has an error or is gone, the field is a geo (address) list, or the kind is not one of radio / pills / checkbox / select / text / textarea / phone.",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_checkbox_boolean_mismatch_true",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "checkbox",
+    "want": true
+   },
+   "f": {
+    "kind": "checkbox",
+    "value": false
+   }
+  },
+  "expect": true,
+  "spec_quote": "Checkbox: True when bool(value) != bool(want).",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_radio_mismatch_true",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "radio",
+    "want": "Yes"
+   },
+   "f": {
+    "kind": "radio",
+    "value": "No",
+    "options": [
+     "Yes",
+     "No"
+    ]
+   }
+  },
+  "expect": true,
+  "spec_quote": "Radio / pills / select: True unless the page value matches the wanted option (case-insensitive, spaces collapsed).",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_text_differs_true",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "text",
+    "want": "Jonathan Smith"
+   },
+   "f": {
+    "kind": "text",
+    "value": "Jon Smith"
+   }
+  },
+  "expect": true,
+  "spec_quote": "Text: True when the page value differs from want (case-insensitive, spaces collapsed).",
+  "ambiguous": false
+ },
+ {
+  "name": "retry_phone_different_last_ten_digits_true",
+  "fn": "needs_retry",
+  "args": {
+   "row": {
+    "kind": "phone",
+    "want": "+1-555-123-4567"
+   },
+   "f": {
+    "kind": "phone",
+    "value": "+1 (555) 123-4568"
+   }
+  },
+  "expect": true,
+  "spec_quote": "Phone: compare the last 10 digits.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,220 @@
+[
+ {
+  "name": "basic two blocks and limit removal",
+  "fn": "open_answers",
+  "args": {
+   "text": "## question_123 — Name of School\nHarvard\n\n## cards[0a6f-…][field0] — Why us?\nLine one\nlimit: 300\nLine two\n"
+  },
+  "expect": [
+   [
+    "Name of School",
+    "Harvard"
+   ],
+   [
+    "Why us?",
+    "Line one\nLine two"
+   ]
+  ],
+  "spec_quote": "load_open_answers(text of open_answers.md) → [(label, answer)]: blocks start with \"## <field id> — <label>\" on one line; the id is any run of non-space characters (\"question_123\", \"cards[0a6f-…][field0]\", \"eeo[gender]\"); the answer is the following lines with lines starting \"limit:\" removed, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "ASK answers are skipped case-insensitively",
+  "fn": "open_answers",
+  "args": {
+   "text": "## question_1 — Essay\nASK\n## question_2 — School\nask\n## question_3 — Name\n  aSk  \n## question_4 — Keep\nOk\n"
+  },
+  "expect": [
+   [
+    "Keep",
+    "Ok"
+   ]
+  ],
+  "spec_quote": "An empty answer or exactly \"ASK\" (any case) is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty and limit-only answers are skipped",
+  "fn": "open_answers",
+  "args": {
+   "text": "## q1 — Empty\n\n## q2 — Only Limit\nlimit: 10\n\n## q3 — Answer\n  Hello  \n"
+  },
+  "expect": [
+   [
+    "Answer",
+    "Hello"
+   ]
+  ],
+  "spec_quote": "An empty answer or exactly \"ASK\" (any case) is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "label whitespace is normalised",
+  "fn": "open_answers",
+  "args": {
+   "text": "## question_9 —   Name   of\tSchool  \n  Harvard  \n"
+  },
+  "expect": [
+   [
+    "Name of School",
+    "Harvard"
+   ]
+  ],
+  "spec_quote": "Labels are whitespace-normalised.",
+  "ambiguous": false
+ },
+ {
+  "name": "complex field ids and labels are parsed",
+  "fn": "open_answers",
+  "args": {
+   "text": "## cards[0a6f-…][field0] — Describe   your school\n  We did X.\n\n## eeo[gender] — Gender\nNonbinary\n"
+  },
+  "expect": [
+   [
+    "Describe your school",
+    "We did X."
+   ],
+   [
+    "Gender",
+    "Nonbinary"
+   ]
+  ],
+  "spec_quote": "the id is any run of non-space characters (\"question_123\", \"cards[0a6f-…][field0]\", \"eeo[gender]\")",
+  "ambiguous": false
+ },
+ {
+  "name": "only lines starting limit colon are removed",
+  "fn": "open_answers",
+  "args": {
+   "text": "## q — Prompt\nLine A\nlimit: 100\nlimits: keep\nLine B\n"
+  },
+  "expect": [
+   [
+    "Prompt",
+    "Line A\nlimits: keep\nLine B"
+   ]
+  ],
+  "spec_quote": "the answer is the following lines with lines starting \"limit:\" removed, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "School is the school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "School"
+  },
+  "expect": true,
+  "spec_quote": "\"School\", \"Name of School\", \"University\" are the school field.",
+  "ambiguous": false
+ },
+ {
+  "name": "Name of School is the school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "Name of School"
+  },
+  "expect": true,
+  "spec_quote": "\"School\", \"Name of School\", \"University\" are the school field.",
+  "ambiguous": false
+ },
+ {
+  "name": "University is the school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "University"
+  },
+  "expect": true,
+  "spec_quote": "\"School\", \"Name of School\", \"University\" are the school field.",
+  "ambiguous": false
+ },
+ {
+  "name": "describe makes it an essay not school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "Describe your school"
+  },
+  "expect": false,
+  "spec_quote": "A label containing (case-insensitive) \"tell us\", \"describe\", \"accomplish\", \"example\", \"explain\", \"share\", \"walk us\" or \"from school or\" is not the school field (an essay that mentions school), nor is anything with \"?\" (e.g. \"What school do you attend?\" is answered elsewhere).",
+  "ambiguous": false
+ },
+ {
+  "name": "question mark makes it not school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "What school do you attend?"
+  },
+  "expect": false,
+  "spec_quote": "nor is anything with \"?\" (e.g. \"What school do you attend?\" is answered elsewhere).",
+  "ambiguous": false
+ },
+ {
+  "name": "share and from school or make it not school field",
+  "fn": "canon_school",
+  "args": {
+   "label": "Share an example from school or community"
+  },
+  "expect": false,
+  "spec_quote": "A label containing (case-insensitive) \"tell us\", \"describe\", \"accomplish\", \"example\", \"explain\", \"share\", \"walk us\" or \"from school or\" is not the school field (an essay that mentions school), nor is anything with \"?\" (e.g. \"What school do you attend?\" is answered elsewhere).",
+  "ambiguous": false
+ },
+ {
+  "name": "MM/YYYY format is fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Start date (MM/YYYY)"
+  },
+  "expect": true,
+  "spec_quote": "true when the label asks for a value in a given format — \"MM/YYYY\", \"MM/DD/YYYY\" (spaces around \"/\" allowed), the word \"YYYY\", \"in the format\" / \"in format\", \"date format\".",
+  "ambiguous": false
+ },
+ {
+  "name": "MM/DD/YYYY with spaces around slash is fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Date (MM / DD / YYYY)"
+  },
+  "expect": true,
+  "spec_quote": "true when the label asks for a value in a given format — \"MM/YYYY\", \"MM/DD/YYYY\" (spaces around \"/\" allowed), the word \"YYYY\", \"in the format\" / \"in format\", \"date format\".",
+  "ambiguous": false
+ },
+ {
+  "name": "word YYYY is fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Graduation YYYY"
+  },
+  "expect": true,
+  "spec_quote": "true when the label asks for a value in a given format — \"MM/YYYY\", \"MM/DD/YYYY\" (spaces around \"/\" allowed), the word \"YYYY\", \"in the format\" / \"in format\", \"date format\".",
+  "ambiguous": false
+ },
+ {
+  "name": "in format phrase is fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Start date in format"
+  },
+  "expect": true,
+  "spec_quote": "true when the label asks for a value in a given format — \"MM/YYYY\", \"MM/DD/YYYY\" (spaces around \"/\" allowed), the word \"YYYY\", \"in the format\" / \"in format\", \"date format\".",
+  "ambiguous": false
+ },
+ {
+  "name": "date format phrase is fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Preferred date format"
+  },
+  "expect": true,
+  "spec_quote": "true when the label asks for a value in a given format — \"MM/YYYY\", \"MM/DD/YYYY\" (spaces around \"/\" allowed), the word \"YYYY\", \"in the format\" / \"in format\", \"date format\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Why this role is not fact format",
+  "fn": "fact_format",
+  "args": {
+   "label": "Why this role?"
+  },
+  "expect": false,
+  "spec_quote": "Otherwise false (e.g. \"Describe a project\", \"Why this role?\").",
+  "ambiguous": false
+ }
+]

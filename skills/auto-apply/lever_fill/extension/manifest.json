@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Job agent — Lever fill",
+  "version": "0.2.1",
+  "description": "Fills a Lever application in Joey's own browser (Edge) with the answers the job agent already verified. Never clicks Submit; CAPTCHAs stay with Joey.",
+  "host_permissions": ["http://127.0.0.1:8765/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["https://jobs.lever.co/*/apply*", "https://jobs.eu.lever.co/*/apply*"], "js": ["fill.js"], "run_at": "document_idle" },
+    { "matches": ["https://jobs.lever.co/*/thanks*", "https://jobs.eu.lever.co/*/thanks*"], "js": ["thanks.js"], "run_at": "document_idle" }
+  ]
+}

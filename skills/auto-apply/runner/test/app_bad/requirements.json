@@ -1,0 +1,13 @@
+{
+ "ats": "greenhouse",
+ "source": "test_fixture",
+ "requirements": [
+  {
+   "kind": "resume",
+   "required": true,
+   "evidence": "fixture",
+   "selector": "resume",
+   "source": "test_fixture"
+  }
+ ]
+}

@@ -1,0 +1,156 @@
+[
+ {
+  "name": "campus-only posting dropped for row that does not name the school",
+  "fn": "match_posting",
+  "args": {
+   "title": "Junior Quantitative Developer, 2027",
+   "location": "",
+   "postings": [
+    [
+     "Junior Quant Developer 2027 | Harvard",
+     "https://boards.greenhouse.io/acme/jobs/1",
+     ""
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "match_posting first drops every posting whose title names a school that the row's title does not name. ... \"Junior Quant Developer 2027 | Harvard\" is dropped for the row \"Junior Quantitative Developer, 2027\"",
+  "ambiguous": false
+ },
+ {
+  "name": "same posting kept because the row title names Harvard",
+  "fn": "match_posting",
+  "args": {
+   "title": "Junior Quantitative Developer 2027 - Harvard",
+   "location": "",
+   "postings": [
+    [
+     "Junior Quant Developer 2027 | Harvard",
+     "https://boards.greenhouse.io/acme/jobs/1",
+     ""
+    ]
+   ]
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/1",
+  "spec_quote": "\"Junior Quant Developer 2027 | Harvard\" ... kept for the row \"Junior Quantitative Developer 2027 - Harvard\"",
+  "ambiguous": false
+ },
+ {
+  "name": "generic posting next to a campus-only one: campus dropped, generic matched",
+  "fn": "match_posting",
+  "args": {
+   "title": "Software Engineer, 2027",
+   "location": "",
+   "postings": [
+    [
+     "Software Engineer 2027 | Stanford",
+     "https://boards.greenhouse.io/acme/jobs/stanford",
+     ""
+    ],
+    [
+     "Software Engineer 2027",
+     "https://boards.greenhouse.io/acme/jobs/generic",
+     ""
+    ]
+   ]
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/generic",
+  "spec_quote": "match_posting first drops every posting whose title names a school that the row's title does not name.",
+  "ambiguous": false
+ },
+ {
+  "name": "\"University\" in both titles: posting kept and matched",
+  "fn": "match_posting",
+  "args": {
+   "title": "Research Assistant, University of Michigan",
+   "location": "",
+   "postings": [
+    [
+     "Research Assistant - University of Michigan",
+     "https://jobs.lever.co/acme/univ-asst",
+     ""
+    ]
+   ]
+  },
+  "expect": "https://jobs.lever.co/acme/univ-asst",
+  "spec_quote": "Schools = the whole words harvard, mit, stanford, princeton, yale, columbia, berkeley, cmu, carnegie, uchicago, \"chicago booth\", wharton, penn, cornell, caltech, waterloo, university, college (any case). [drop only when the row's title does not name it]",
+  "ambiguous": false
+ },
+ {
+  "name": "school word only in the location (Columbia, MD), never in a title: not a campus posting",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Scientist",
+   "location": "Columbia, MD",
+   "postings": [
+    [
+     "Data Scientist",
+     "https://jobs.ashbyhq.com/acme/ds-columbia",
+     "Columbia, MD"
+    ]
+   ]
+  },
+  "expect": "https://jobs.ashbyhq.com/acme/ds-columbia",
+  "spec_quote": "match_posting first drops every posting whose title names a school that the row's title does not name. [the rule is about titles; postings are then filtered by city: \"the posting location does not contain the city ... → null\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "posting title names MIT while the row names it only in the location: dropped",
+  "fn": "match_posting",
+  "args": {
+   "title": "Data Analyst",
+   "location": "Cambridge, MA",
+   "postings": [
+    [
+     "Data Analyst - MIT",
+     "https://boards.greenhouse.io/acme/jobs/mit",
+     "Cambridge, MA"
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "match_posting first drops every posting whose title names a school that the row's title does not name. Schools = the whole words harvard, mit, ... (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "whole-word near miss: \"Mitsubishi\" is not the school word \"mit\"",
+  "fn": "match_posting",
+  "args": {
+   "title": "Senior Data Engineer",
+   "location": "",
+   "postings": [
+    [
+     "Mitsubishi Senior Data Engineer",
+     "https://boards.greenhouse.io/acme/jobs/mitsu",
+     ""
+    ]
+   ]
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/mitsu",
+  "spec_quote": "Schools = the whole words harvard, mit, stanford, ... (any case). [whole word: \"mit\" inside \"Mitsubishi\" does not count; similarity 3/4 = 0.75 meets \"Floor = 0.75\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "all postings campus-only (two different schools): no posting survives → null",
+  "fn": "match_posting",
+  "args": {
+   "title": "Research Analyst",
+   "location": "",
+   "postings": [
+    [
+     "Research Analyst, Chicago Booth",
+     "https://boards.greenhouse.io/acme/jobs/booth",
+     ""
+    ],
+    [
+     "Research Analyst - UChicago",
+     "https://jobs.lever.co/acme/uchicago",
+     ""
+    ]
+   ]
+  },
+  "expect": null,
+  "spec_quote": "match_posting first drops every posting whose title names a school that the row's title does not name. Schools = ... uchicago, \"chicago booth\", ... [no postings left → \"(or no postings) → null\"]",
+  "ambiguous": false
+ }
+]

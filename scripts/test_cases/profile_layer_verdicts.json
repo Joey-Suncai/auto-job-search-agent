@@ -1,0 +1,1 @@
+{"answer_authorized_options_compared_trimmed_picks_plain_yes": "Case misreads the spec: options are COMPARED trimmed, but the value returned is the option exactly as offered (\"  Yes \") so the runner can click that exact option."}

@@ -1,0 +1,134 @@
+[
+ {
+  "name": "full_date_slash_day_box",
+  "answer": "06/14/2027",
+  "has_day": true,
+  "expect": "06142027"
+ },
+ {
+  "name": "full_date_slash_month_year_box",
+  "answer": "06/14/2027",
+  "has_day": false,
+  "expect": "062027"
+ },
+ {
+  "name": "full_date_single_digit_month_day_box",
+  "answer": "6/14/2027",
+  "has_day": true,
+  "expect": "06142027"
+ },
+ {
+  "name": "full_date_single_digit_month_month_year_box",
+  "answer": "6/14/2027",
+  "has_day": false,
+  "expect": "062027"
+ },
+ {
+  "name": "full_date_leading_zero_day_day_box",
+  "answer": "06/04/2027",
+  "has_day": true,
+  "expect": "06042027"
+ },
+ {
+  "name": "full_date_leading_zero_day_month_year_box",
+  "answer": "06/04/2027",
+  "has_day": false,
+  "expect": "062027"
+ },
+ {
+  "name": "full_date_december_day_box",
+  "answer": "12/31/2027",
+  "has_day": true,
+  "expect": "12312027"
+ },
+ {
+  "name": "full_date_december_month_year_box",
+  "answer": "12/31/2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "month_year_slash_day_box",
+  "answer": "12/2027",
+  "has_day": true,
+  "expect": "12012027"
+ },
+ {
+  "name": "month_year_slash_month_year_box",
+  "answer": "12/2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "month_year_hyphen_day_box",
+  "answer": "12-2027",
+  "has_day": true,
+  "expect": "12012027"
+ },
+ {
+  "name": "month_year_hyphen_month_year_box",
+  "answer": "12-2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "full_month_name_december_day_box",
+  "answer": "December 2027",
+  "has_day": true,
+  "expect": "12012027"
+ },
+ {
+  "name": "full_month_name_december_month_year_box",
+  "answer": "December 2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "three_letter_month_name_dec_day_box",
+  "answer": "Dec 2027",
+  "has_day": true,
+  "expect": "12012027"
+ },
+ {
+  "name": "three_letter_month_name_dec_month_year_box",
+  "answer": "Dec 2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "lowercase_full_month_name_december_day_box",
+  "answer": "december 2027",
+  "has_day": true,
+  "expect": "12012027"
+ },
+ {
+  "name": "uppercase_full_month_name_december_month_year_box",
+  "answer": "DECEMBER 2027",
+  "has_day": false,
+  "expect": "122027"
+ },
+ {
+  "name": "full_month_name_january_day_box",
+  "answer": "January 2027",
+  "has_day": true,
+  "expect": "01012027"
+ },
+ {
+  "name": "three_letter_month_name_jan_month_year_box",
+  "answer": "Jan 2027",
+  "has_day": false,
+  "expect": "012027"
+ },
+ {
+  "name": "full_month_name_september_day_box",
+  "answer": "September 2027",
+  "has_day": true,
+  "expect": "09012027"
+ },
+ {
+  "name": "uppercase_three_letter_month_name_sep_month_year_box",
+  "answer": "SEP 2027",
+  "has_day": false,
+  "expect": "092027"
+ }
+]

@@ -1,0 +1,255 @@
+[
+ {
+  "name": "intern_plain_no_sponsorship_basic",
+  "title": "Data Analyst Intern - Summer 2027",
+  "loc": "Chicago, IL",
+  "level": "Internship",
+  "text": "About the role: Our Analytics team is hiring a Data Analyst Intern for Summer 2027 (June 8 - August 21, 2027) in our Chicago office. This is a full-time, 11-week internship open to master's students in statistics, economics, computer science, or a related quantitative field. You will build dashboards in Looker, write SQL against our cloud warehouse, and partner with product managers to size experiments. Interns present findings to analytics leadership at the end of the program and receive weekly mentorship from a senior analyst. Compensation is competitive and a housing stipend is available. Please note: we do not offer visa sponsorship for this position.",
+  "expect": "Eligible",
+  "reason": "Item 1: internship whose posting only says the employer does not provide visa sponsorship → Eligible: CPT covers the internship."
+ },
+ {
+  "name": "intern_sponsorship_not_available",
+  "title": "Marketing Intern - Summer 2027",
+  "loc": "Austin, TX",
+  "level": "Internship",
+  "text": "Join our Brand Marketing team as a Marketing Intern for Summer 2027 (May 31 - August 13, 2027), based in Austin, TX. The program is open to master's students in marketing, communications, or business who want hands-on experience with campaign planning, content production, and channel analytics. Interns own a capstone project, present to the marketing leadership team, and work alongside a dedicated mentor throughout the ten-week program. You will help coordinate agency deliverables, draft social copy, and analyze campaign performance in our reporting tools. Sponsorship: Not Available.",
+  "expect": "Eligible",
+  "reason": "Item 1 lists 'Sponsorship: Not Available' as a no-sponsorship-only statement → Eligible."
+ },
+ {
+  "name": "intern_no_sponsorship_for_program",
+  "title": "Software Engineering Intern - Summer 2027",
+  "loc": "San Jose, CA",
+  "level": "Internship",
+  "text": "Our Platform Engineering group is hiring software engineering interns for Summer 2027 (June 15 - August 28, 2027). This internship is open to master's students in computer science or a related field. You will work on a small team shipping production code in Go and TypeScript, write tests, take part in code review, and present a demo at the end of the twelve-week program. Interns receive a dedicated mentor, weekly one-on-ones with their manager, and access to internal technical courses. Note that there is no sponsorship for this program. Meals and a housing stipend are provided for the duration of the internship.",
+  "expect": "Eligible",
+  "reason": "Item 1 lists 'no sponsorship for this program' as a no-sponsorship-only statement → Eligible (CPT covers the internship)."
+ },
+ {
+  "name": "intern_open_to_candidates_who_do_not_need_sponsorship",
+  "title": "Research Intern - Summer 2027",
+  "loc": "Cambridge, MA",
+  "level": "Internship",
+  "text": "The lab is seeking a Research Intern for Summer 2027 (June 1 - August 21, 2027). The internship is open to master's students in biomedical engineering, computational biology, or a related discipline. You will support an ongoing study on tissue imaging, help with data collection and analysis in Python, and contribute to a weekly lab meeting. Interns are paired with a postdoctoral mentor and are encouraged to attend seminars across the department. This role is open to candidates who do not need visa sponsorship. Funding for the twelve-week position is provided through the department's summer research program.",
+  "expect": "Eligible",
+  "reason": "Item 1 lists 'this role is open to candidates who do not need visa sponsorship' as a no-sponsorship-only statement → Eligible."
+ },
+ {
+  "name": "intern_unable_to_provide_immigration_sponsorship",
+  "title": "Finance Intern - Summer 2027",
+  "loc": "New York, NY",
+  "level": "Internship",
+  "text": "Our Corporate Finance team is hiring a Finance Intern for Summer 2027 (June 7 - August 20, 2027) in New York. The internship is open to master's students in finance, accounting, or economics. You will build monthly variance reports, support the quarterly forecast cycle, and help prepare materials for the operating review. Interns work directly with a senior financial analyst and present a process-improvement project to the CFO's leadership team in the final week. Unfortunately, we are unable to provide immigration sponsorship for this internship. We look forward to reviewing your application.",
+  "expect": "Eligible",
+  "reason": "Item 1: only a statement that the employer does not provide visa/immigration sponsorship → Eligible."
+ },
+ {
+  "name": "intern_visa_sponsorship_not_provided",
+  "title": "Product Management Intern - Summer 2027",
+  "loc": "Denver, CO",
+  "level": "Internship",
+  "text": "You will join the Product team as a Product Management Intern for Summer 2027 (June 2 - August 19, 2027) in Denver. The internship is open to master's students in business, engineering, or a related field. You will write product requirements, run customer interviews, and work with engineers and designers to ship a small feature by the end of the summer. Interns attend weekly product reviews and present their work to the broader organization. Visa sponsorship is not provided for this role. Housing support and a transit pass are included for the duration of the program.",
+  "expect": "Eligible",
+  "reason": "Item 1: posting only says the employer does not provide visa sponsorship → Eligible."
+ },
+ {
+  "name": "intern_no_employer_sponsored_visa_support",
+  "title": "UX Design Intern - Summer 2027",
+  "loc": "Remote (San Francisco, CA)",
+  "level": "Internship",
+  "text": "Our Design team is looking for a UX Design Intern for Summer 2027 (June 9 - August 22, 2027), working remotely or from our San Francisco office. The internship is open to master's students in human-computer interaction, design, or a related field. You will run usability sessions, produce wireframes and prototypes in Osttalnev, and partner with a product team on a live initiative. Interns join weekly design critiques and present a portfolio-ready case study at the end of the ten-week program. This internship does not include employer-sponsored visa support. Mentorship and a learning stipend are provided.",
+  "expect": "Eligible",
+  "reason": "Item 1: no-sponsorship-only sentence → Eligible (CPT covers the internship)."
+ },
+ {
+  "name": "intern_ruled_out_f1_opt_cpt_named",
+  "title": "Data Engineering Intern - Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "Our Data Platform team is hiring a Data Engineering Intern for Summer 2027 (June 8 - August 21, 2027) in Boston. The internship is open to master's students in computer science, information systems, or a related field. You will build and maintain batch pipelines in Spark, write SQL transformations, and help improve data quality checks for our analytics warehouse. Interns are matched with a senior engineer, participate in design reviews, and present a project demo in the final week. Please note that we are unable to sponsor any visa for this internship, including F-1 (OPT/CPT).",
+  "expect": "Ineligible",
+  "reason": "Item 2: 'unable to sponsor any visa, including F-1 (OPT/CPT)' rules out the internship itself → Ineligible."
+ },
+ {
+  "name": "intern_ruled_out_cpt_opt_not_eligible",
+  "title": "Machine Learning Intern - Summer 2027",
+  "loc": "Pittsburgh, PA",
+  "level": "Internship",
+  "text": "We are hiring a Machine Learning Intern for Summer 2027 (June 1 - August 14, 2027) to work with our applied research group. The internship is open to master's students in computer science, statistics, or a related field. You will train and evaluate models on real production datasets, run offline experiments, and write up results for the team. Interns present at the weekly research seminar and receive mentorship from staff scientists. CPT/OPT candidates are not eligible for this position. Our internship program includes housing assistance and a competitive hourly rate.",
+  "expect": "Ineligible",
+  "reason": "Item 2: 'CPT/OPT candidates are not eligible' → Ineligible."
+ },
+ {
+  "name": "intern_ruled_out_authorized_for_any_employer",
+  "title": "Operations Intern - Summer 2027",
+  "loc": "Memphis, TN",
+  "level": "Internship",
+  "text": "Join our Operations team as an Operations Intern for Summer 2027 (June 5 - August 15, 2027). The internship is open to master's students in supply chain, industrial engineering, or business analytics. You will analyze fulfillment data, shadow dock and inventory supervisors, and build a throughput model that the site team can use after you leave. Interns present recommendations to the site leadership team in the final week. Applicants must be authorized to work for any employer in the United States. The program includes a stipend for housing and a mentor throughout the summer.",
+  "expect": "Ineligible",
+  "reason": "Item 2: candidate must be authorized to work 'for any employer' → Ineligible."
+ },
+ {
+  "name": "intern_ruled_out_permanent_unrestricted_authorization",
+  "title": "Business Systems Intern - Summer 2027",
+  "loc": "Dallas, TX",
+  "level": "Internship",
+  "text": "Our Business Systems group is hiring an intern for Summer 2027 (June 2 - August 18, 2027) in Dallas. The role is open to master's students in information systems, business analytics, or a related field. You will document workflows, support the configuration of our ERP modules, and help build reporting for the finance organization. Interns work with a senior analyst and present an improvement plan at the end of the program. Candidates must have permanent, unrestricted U.S. work authorization to be considered. Relocation assistance and a housing stipend are provided.",
+  "expect": "Ineligible",
+  "reason": "Item 2: needs permanent / unrestricted U.S. work authorization → Ineligible."
+ },
+ {
+  "name": "intern_ruled_out_f1_visas_not_accepted",
+  "title": "Cybersecurity Intern - Summer 2027",
+  "loc": "Arlington, VA",
+  "level": "Internship",
+  "text": "Our Security Operations team is hiring a Cybersecurity Intern for Summer 2027 (June 7 - August 20, 2027). The internship is open to master's students in cybersecurity, computer science, or a related field. You will triage alerts, help tune detection rules, and contribute to incident response runbooks alongside senior analysts. Interns attend weekly threat briefings and present a tabletop exercise at the end of the program. Please note that F-1 student visas are not accepted for this internship. The program provides a dedicated mentor, a certification stipend, and flexible start dates.",
+  "expect": "Ineligible",
+  "reason": "Item 2: F-1 student visas named as not accepted → Ineligible."
+ },
+ {
+  "name": "intern_ruled_out_cpt_opt_not_considered",
+  "title": "Mechanical Engineering Intern - Summer 2027",
+  "loc": "Detroit, MI",
+  "level": "Internship",
+  "text": "Our Vehicle Systems team is hiring a Mechanical Engineering Intern for Summer 2027 (June 1 - August 21, 2027) in Detroit. The internship is open to master's students in mechanical engineering or a related discipline. You will support fixture design, run bench tests, and analyze results with the durability team. Interns work in the lab alongside full-time engineers and present findings at the end of the twelve-week program. Candidates who require CPT or OPT authorization will not be considered. The program includes a housing stipend and reimbursement for travel to the site.",
+  "expect": "Ineligible",
+  "reason": "Item 2: CPT/OPT authorization required → internship itself ruled out → Ineligible."
+ },
+ {
+  "name": "intern_future_now_or_in_future",
+  "title": "Product Analytics Intern - Summer 2027",
+  "loc": "Seattle, WA",
+  "level": "Internship",
+  "text": "Our Growth Analytics team is hiring a Product Analytics Intern for Summer 2027 (June 9 - August 22, 2027). The internship is open to master's students in statistics, economics, or a related quantitative field. You will define metrics, write SQL, and run experiments with the growth team. Interns present a readout to the analytics org in the final week and receive mentorship from a senior data scientist. Candidates must be able to work without sponsorship now or in the future. Housing support and a relocation stipend are available for the summer.",
+  "expect": "Review",
+  "reason": "Item 3: no-sponsorship sentence covers the future ('now or in the future') and names no F-1/CPT/OPT → Review."
+ },
+ {
+  "name": "intern_future_currently_or_in_the_future",
+  "title": "Supply Chain Analyst Intern - Summer 2027",
+  "loc": "Columbus, OH",
+  "level": "Internship",
+  "text": "We are hiring a Supply Chain Analyst Intern for Summer 2027 (June 3 - August 14, 2027). This internship is open to master's students in supply chain management, operations research, or industrial engineering. You will build demand forecasts, analyze carrier performance, and support the annual network review with the planning team. Interns present their project to the operations leadership team at the end of the program. This position does not offer visa sponsorship, currently or in the future. A housing stipend and a mentor are provided for the ten-week internship.",
+  "expect": "Review",
+  "reason": "Item 3: 'currently or in the future' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review."
+ },
+ {
+  "name": "intern_future_at_any_time",
+  "title": "Backend Engineering Intern - Summer 2027",
+  "loc": "Raleigh, NC",
+  "level": "Internship",
+  "text": "Our Infrastructure team is looking for a Backend Engineering Intern for Summer 2027 (June 8 - August 21, 2027) in Raleigh. The internship is open to master's students in computer science or a related field. You will build internal services in Python and Go, improve observability, and write tests for the deployment pipeline. Interns take part in on-call shadowing and present a project at the end of the program. Candidates must not require sponsorship at any time. The team provides a mentor, a laptop, and a housing stipend for the twelve-week internship.",
+  "expect": "Review",
+  "reason": "Item 3: 'at any time' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review."
+ },
+ {
+  "name": "intern_future_future_sponsorship",
+  "title": "Data Science Intern - Summer 2027",
+  "loc": "San Diego, CA",
+  "level": "Internship",
+  "text": "Join our Data Science team as an intern for Summer 2027 (June 15 - August 28, 2027). The internship is open to master's students in statistics, computer science, or a related field. You will build models for customer lifetime value, design A/B tests, and share results with marketing partners. Interns present at the end-of-summer analytics showcase and receive weekly mentorship. Please note that we do not offer future sponsorship for this role. The program includes a competitive hourly rate, a housing stipend, and social events with the broader analytics organization.",
+  "expect": "Review",
+  "reason": "Item 3: 'future sponsorship' language, no F-1/CPT/OPT named → Review (a return offer would need H-1B)."
+ },
+ {
+  "name": "fulltime_plain_no_sponsorship",
+  "title": "Data Scientist",
+  "loc": "Chicago, IL",
+  "level": "New grad",
+  "text": "About the role: We are hiring a Data Scientist to join our forecasting team. This is a full-time role based in Chicago and open to master's students graduating in 2027. You will build demand models, own experiment design, and partner with product and finance teams on planning. We use Python, dbt, and a modern cloud warehouse. The team meets weekly for model review and hosts an internal reading group. Please note: we do not offer visa sponsorship for this position. Compensation includes a competitive base salary, an annual bonus, and standard benefits from day one.",
+  "expect": "Ineligible",
+  "reason": "Item 4: full-time (non-intern) role with any 'no sponsorship' statement → Ineligible."
+ },
+ {
+  "name": "fulltime_sponsorship_not_available",
+  "title": "Software Engineer I",
+  "loc": "Seattle, WA",
+  "level": "New grad",
+  "text": "We are hiring a Software Engineer I for our payments platform team in Seattle. This is a full-time position open to master's students graduating in 2027. You will write services in Java and Go, participate in code review, and help operate what you build with the team's on-call rotation. New engineers are paired with a mentor for their first six months and have a structured ramp-up plan. Sponsorship: Not Available. The role includes a competitive salary, equity, and comprehensive health benefits, plus a learning budget for conferences and courses.",
+  "expect": "Ineligible",
+  "reason": "Item 4: full-time role with 'Sponsorship: Not Available' → Ineligible (item 1's internship carve-out does not apply)."
+ },
+ {
+  "name": "fulltime_future_scoped_no_sponsorship",
+  "title": "Business Analyst",
+  "loc": "New York, NY",
+  "level": "New grad",
+  "text": "Our Strategy and Operations group is hiring a Business Analyst in New York. This full-time role is open to master's students graduating in 2027 who want exposure to pricing, go-to-market planning, and operational reporting. You will build models, prepare executive materials, and work with regional teams on quarterly planning. The team invests in coaching and offers a clear path to senior analyst. Candidates must not require sponsorship now or in the future. Total compensation includes base salary, annual bonus, and full benefits starting on your first day.",
+  "expect": "Ineligible",
+  "reason": "Item 4: full-time role — any 'no sponsorship' statement → Ineligible (the item-3 future-scope Review rule is for internships only)."
+ },
+ {
+  "name": "intern_may_sponsor_case_by_case",
+  "title": "Machine Learning Intern - Summer 2027",
+  "loc": "San Francisco, CA",
+  "level": "Internship",
+  "text": "Our applied ML team is hiring a Machine Learning Intern for Summer 2027 (June 8 - August 21, 2027). The internship is open to master's students in computer science, statistics, or a related field. You will fine-tune models, run offline evaluations, and work with product engineers to ship an experiment. Interns present at the end-of-summer showcase and are paired with a staff engineer as a mentor. Sponsorship is reviewed case by case, and we may sponsor exceptional candidates for this role. Housing support and a learning stipend are included.",
+  "expect": "Eligible",
+  "ambiguous": true,
+  "reason": "Item 5 says a posting that also says the employer may sponsor / sponsors case by case is 'not a block (unchanged: Review or Eligible)'; the spec does not pin which of Review or Eligible applies, so the exact expected verdict is ambiguous — only that it must not be Ineligible."
+ },
+ {
+  "name": "coop_dated_fall_term",
+  "title": "Engineering Co-op - Fall 2026",
+  "loc": "Dayton, OH",
+  "level": "Internship",
+  "text": "Our Hardware Engineering team is hiring a co-op for the fall term. This position runs from September 8 to December 18, 2026 and is open to master's students in electrical or mechanical engineering. You will support board bring-up, run bench tests, and document results for the design team. Co-ops work alongside full-time engineers, join weekly design reviews, and present a summary at the end of the term. The program includes a housing stipend, and the team provides a mentor for the full sixteen weeks of the assignment.",
+  "expect": "Ineligible",
+  "reason": "Item 6: co-op (no 'summer' in title) with an off-summer term (fall 2026, Sep-Dec date range) → Ineligible."
+ },
+ {
+  "name": "coop_dated_spring_term",
+  "title": "Data Analytics Co-op - Spring 2027",
+  "loc": "Cincinnati, OH",
+  "level": "Internship",
+  "text": "This co-op position runs from January 11 to May 21, 2027 with our analytics team. The role is open to master's students in statistics, economics, or a related field. You will build dashboards, maintain reporting pipelines, and support the quarterly business review process. Co-ops are paired with a senior analyst, attend planning meetings, and present a final project to the analytics organization. The assignment includes a housing stipend and a transit pass for the full term. Applicants should have coursework in SQL and a strong interest in operations analytics.",
+  "expect": "Ineligible",
+  "reason": "Item 6: co-op with an off-summer (spring semester) date range that never touches June-August → Ineligible."
+ },
+ {
+  "name": "coop_no_term_dates_product_ops",
+  "title": "Product Operations Co-op",
+  "loc": "Atlanta, GA",
+  "level": "Internship",
+  "text": "Our Product Operations team hires co-op students throughout the year to support launch planning and cross-functional coordination. This co-op is open to master's students in business, engineering, or a related field. You will maintain launch trackers, run weekly status meetings, and help document processes for the go-to-market team. Co-ops work closely with a program manager and present a process improvement at the end of their assignment. The team offers a housing stipend and a mentor. Full details about the schedule and term will be shared during the interview process.",
+  "expect": "Review",
+  "reason": "Item 6: a co-op whose posting gives no term or dates at all → Review ('改成待核实')."
+ },
+ {
+  "name": "coop_no_term_dates_research",
+  "title": "Research Co-op",
+  "loc": "Ann Arbor, MI",
+  "level": "Internship",
+  "text": "Our research group partners with universities on applied projects and hires co-op students to support that work. This co-op is open to master's students in materials science, chemistry, or a related discipline. You will prepare samples, run characterization experiments, and document results in our electronic lab notebook. Co-ops attend the weekly group meeting and present a summary of their work. Compensation includes an hourly rate and a housing stipend. The exact assignment period is set with the university and will be discussed with candidates during the interview process.",
+  "expect": "Review",
+  "reason": "Item 6: co-op posting with no term or dates → Review (a person reads the posting)."
+ },
+ {
+  "name": "coop_summer_2027",
+  "title": "Summer 2027 Co-op - Mechanical Engineering",
+  "loc": "Greenville, SC",
+  "level": "Internship",
+  "text": "Our Mechanical Engineering team is hiring co-op students for Summer 2027, running from June 7 to August 28, 2027. This co-op is open to master's students in mechanical engineering or a related discipline. You will support fixture design, run durability tests, and analyze data with the test engineering team. Co-ops work alongside full-time engineers in the lab and present results at the end of the term. The program includes a housing stipend, a mentor, and reimbursement for travel to the site. Coursework in CAD and solid mechanics is expected.",
+  "expect": "Eligible",
+  "reason": "Item 6: a co-op in Summer 2027 → Eligible."
+ },
+ {
+  "name": "coop_offsummer_start_month_january",
+  "title": "Supply Chain Co-op",
+  "loc": "Louisville, KY",
+  "level": "Internship",
+  "text": "Our Supply Chain team is hiring a co-op student to support distribution planning. This is a six-month co-op starting in January, and the role is open to master's students in supply chain, operations research, or industrial engineering. You will build replenishment models, analyze carrier performance, and support the annual network review. Co-ops are paired with a senior planner and present their project to the operations leadership team. The assignment includes a housing stipend and a transit pass. Coursework in optimization or forecasting is a plus.",
+  "expect": "Ineligible",
+  "reason": "Item 6: off-summer start month next to the co-op ('starting in January') → Ineligible."
+ },
+ {
+  "name": "near_miss_future_of_mobility_and_prior_coop_experience",
+  "title": "Software Engineer Intern - Summer 2027",
+  "loc": "Portland, OR",
+  "level": "Internship",
+  "text": "About us: We are building the future of mobility, connecting cities with cleaner, more reliable transportation. Our engineering team is hiring a Software Engineer Intern for Summer 2027 (June 8 - August 21, 2027). The internship is open to master's students in computer science or a related field. You will ship code in TypeScript and Go, write tests, and take part in code review with your team. Prior internship or co-op experience in a related area is a plus. Interns are paired with a mentor and present a demo at the end of the summer.",
+  "expect": "Eligible",
+  "reason": "Item 7: 'the future of mobility' is not about sponsorship and 'Prior internship or co-op experience' describes the candidate, not the role; nothing blocks the internship → Eligible."
+ }
+]

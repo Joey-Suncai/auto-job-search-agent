@@ -1,0 +1,234 @@
+[
+ {
+  "name": "click_out_index: basic match after Cancel",
+  "fn": "click_out_index",
+  "args": {
+   "labels": [
+    "Cancel",
+    "Apply on website"
+   ]
+  },
+  "expect": 1,
+  "spec_quote": "Returns the index of the first label that is, as a whole (any case, surrounding spaces ignored), one of \"Apply on website\", \"Apply on the website\", \"Apply on company website\", \"Apply on the company website\", \"Apply on company's website\", \"Apply on the company's website\".",
+  "ambiguous": false
+ },
+ {
+  "name": "click_out_index: case-insensitive with surrounding spaces (company's variant)",
+  "fn": "click_out_index",
+  "args": {
+   "labels": [
+    "  APPLY ON THE COMPANY'S WEBSITE  ",
+    "Send application"
+   ]
+  },
+  "expect": 0,
+  "spec_quote": "Returns the index of the first label that is, as a whole (any case, surrounding spaces ignored), one of \"Apply on website\", \"Apply on the website\", \"Apply on company website\", \"Apply on the company website\", \"Apply on company's website\", \"Apply on the company's website\".",
+  "ambiguous": false
+ },
+ {
+  "name": "click_out_index: near misses and partial phrases never count",
+  "fn": "click_out_index",
+  "args": {
+   "labels": [
+    "Apply on website now",
+    "Click here to apply on website",
+    "Apply",
+    "Apply now",
+    "Send application",
+    "Submit"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Anything else never counts — \"Apply\", \"Apply now\", \"Send application\", \"Submit\", \"Cancel\", \"Apply on website now\", \"Click here to apply on website\", a label that only contains the phrase.",
+  "ambiguous": false
+ },
+ {
+  "name": "click_out_index: empty label list gives None",
+  "fn": "click_out_index",
+  "args": {
+   "labels": []
+  },
+  "expect": null,
+  "spec_quote": "`labels` = the visible control labels inside the dialog, in order (strings; may be empty or missing → None).",
+  "ambiguous": false
+ },
+ {
+  "name": "opened_stop: ordinary Workday posting opened by click-out",
+  "fn": "opened_stop",
+  "args": {
+   "info": {
+    "url": "https://acme.wd1.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-1234",
+    "title": "Data Intern - Acme",
+    "text": "Data Intern. Apply for this job. Full-time.",
+    "password": false
+   }
+  },
+  "expect": "",
+  "spec_quote": "\"\" otherwise (an ordinary company job page: its URL is only recorded).",
+  "ambiguous": false
+ },
+ {
+  "name": "opened_stop: challenge title detected",
+  "fn": "opened_stop",
+  "args": {
+   "info": {
+    "url": "https://boards.greenhouse.io/acme/jobs/4567890",
+    "title": "Just a moment...",
+    "text": "Checking your browser before accessing acme.",
+    "password": false
+   }
+  },
+  "expect": "blocked",
+  "spec_quote": "- \"blocked\": the title contains a challenge phrase (the list in classify step 1), or the text does and the text is shorter than 1500 characters;",
+  "ambiguous": false
+ },
+ {
+  "name": "opened_stop: company sign-in page with password field",
+  "fn": "opened_stop",
+  "args": {
+   "info": {
+    "url": "https://careers.acme.com/login",
+    "title": "Sign in to Acme Careers",
+    "text": "Please sign in to continue your application.",
+    "password": true
+   }
+  },
+  "expect": "signin",
+  "spec_quote": "- \"signin\": the url is on a Wellfound host with a sign-in path (classify step 2's list), or `password` is true (on any host — a company sign-in page);",
+  "ambiguous": false
+ },
+ {
+  "name": "opened_stop: Wellfound login URL opened by click-out",
+  "fn": "opened_stop",
+  "args": {
+   "info": {
+    "url": "https://wellfound.com/login?redirect=/jobs/4964451-data-intern",
+    "title": "Log in to Wellfound",
+    "text": "Welcome back. Log in to continue.",
+    "password": false
+   }
+  },
+  "expect": "signin",
+  "spec_quote": "- \"signin\": the url is on a Wellfound host with a sign-in path (classify step 2's list), or `password` is true (on any host — a company sign-in page);",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: peeked outside-Wellfound dialog, click-out opened a Greenhouse posting",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme",
+    "text": "Data Intern at Acme. Full-time. Remote.",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "modal": "This job is managed outside of Wellfound. Apply on website",
+    "opened": [
+     "https://boards.greenhouse.io/acme/jobs/4567890"
+    ],
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4567890",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4567890"
+  },
+  "spec_quote": "**external**: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\" (a board / careers page).",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: click-out opened a careers home page (not posting-like, so ats_url empty)",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme",
+    "text": "Data Intern at Acme. Full-time.",
+    "links": [
+     {
+      "href": "https://wellfound.com/jobs/applications",
+      "text": "Applied"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "modal": "This job is managed outside of Wellfound",
+    "opened": [
+     "https://www.acme.com/careers"
+    ],
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": "https://www.acme.com/careers"
+  },
+  "spec_quote": "**external**: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\" (a board / careers page).",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: click_out_stop signin wins over an opened Workday URL",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme",
+    "text": "Data Intern at Acme. Full-time.",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "modal": "Apply on website",
+    "opened": [
+     "https://acme.wd1.myworkdayjobs.com/en-US/careers/login"
+    ],
+    "peeked": true,
+    "click_out_stop": "signin"
+   }
+  },
+  "expect": {
+   "via": "signin",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "**signin**: `click_out_stop` is \"signin\"; or `url` is on a Wellfound host and its path starts with `/login`, ... (checked in this order; the first that holds wins)",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: click_out_stop blocked wins over an opened Greenhouse posting",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme",
+    "text": "Data Intern at Acme. Full-time.",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "modal": "Apply on website",
+    "opened": [
+     "https://boards.greenhouse.io/acme/jobs/4567890"
+    ],
+    "peeked": true,
+    "click_out_stop": "blocked"
+   }
+  },
+  "expect": {
+   "via": "blocked",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "1. **blocked**: the title contains a challenge phrase — ... — or the text does and the text is shorter than 1500 characters; or `click_out_stop` is \"blocked\".",
+  "ambiguous": false
+ }
+]

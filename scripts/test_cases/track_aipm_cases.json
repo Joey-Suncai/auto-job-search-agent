@@ -1,0 +1,170 @@
+[
+ {
+  "name": "canonical AI PM title",
+  "title": "AI Product Manager",
+  "expect": "AI Product Manager",
+  "quote": "\"AI Product Manager\": the title contains BOTH an AI word — ai, ... — AND a PM word — product manager / ...",
+  "note": "lower-cased contains whole word 'ai' and 'product manager'."
+ },
+ {
+  "name": "PM phrase first, AI word after",
+  "title": "Product Manager - Generative AI",
+  "expect": "AI Product Manager",
+  "quote": "the title contains BOTH an AI word — ... generative ... — AND a PM word — product manager ...",
+  "note": "order of the two words inside the title is irrelevant; match is 'anywhere in it'."
+ },
+ {
+  "name": "parenthesised AI",
+  "title": "Technical Product Manager (AI)",
+  "expect": "AI Product Manager",
+  "quote": "the title contains BOTH an AI word — ai ... — AND a PM word — product manager ...",
+  "note": "parentheses are non-word chars so 'ai' is still a whole word."
+ },
+ {
+  "name": "ML + product owner",
+  "title": "Machine Learning Product Owner",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ... machine learning ... — AND a PM word — product owner ...",
+  "note": "rule 1 must be checked before rule 2, which would also match 'machine learning'."
+ },
+ {
+  "name": "APM abbreviation with LLM",
+  "title": "APM Intern - LLM Platform",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ... llm ... — AND a PM word — ... apm ...",
+  "note": "lower-casing turns 'APM' into 'apm'."
+ },
+ {
+  "name": "product lead + agentic",
+  "title": "Product Lead, Agentic AI",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ... agent, agents, agentic ... — AND a PM word — ... product lead ...",
+  "note": "both 'agentic' and 'ai' are AI words; 'product lead' is a rule-1 PM word."
+ },
+ {
+  "name": "conversational AI PM",
+  "title": "Conversational AI Product Manager",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ... conversational — AND a PM word — product manager ...",
+  "note": "'conversational' alone would be rule 2, but rule 1 wins because it is checked first."
+ },
+ {
+  "name": "rule 1 must beat rule 2 when both apply",
+  "title": "AI Agents — Associate Product Manager",
+  "expect": "AI Product Manager",
+  "quote": "returns the FIRST track (in this order) whose pattern matches anywhere in it",
+  "note": "'ai'/'agents' would match rule 2, but 'associate product'/'product manager' plus an AI word makes rule 1 match, and rule 1 is first."
+ },
+ {
+  "name": "gen ai + product strategy",
+  "title": "Gen AI Product Strategy Lead",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ... genai, gen ai ... — AND a PM word — ... product strategy",
+  "note": "'gen ai' appears as two whole words."
+ },
+ {
+  "name": "dotted a.i. token",
+  "title": "A.I. Product Manager",
+  "expect": "AI Product Manager",
+  "quote": "an AI word — ai, a.i., artificial intelligence, ...",
+  "note": "spec explicitly enumerates 'a.i.' as an AI word; title is lower-cased before matching."
+ },
+ {
+  "name": "product manag* prefix + ai/ml",
+  "title": "Director of Product Management, AI/ML",
+  "expect": "AI Product Manager",
+  "quote": "a PM word — product manager / product management / product managers (any word starting with \"product manag\") ...",
+  "note": "'product management' matches the 'product manag' prefix; 'ai' and 'ml' are whole words around the slash."
+ },
+ {
+  "name": "associate product but no AI word",
+  "title": "Associate Product Manager",
+  "expect": "Product Manager",
+  "quote": "\"AI Product Manager\": the title contains BOTH an AI word ... AND a PM word",
+  "note": "rule 1 requires BOTH halves; there is no AI word here, so rule 1 cannot fire. Rule 5 matches 'associate product'/'product manager'."
+ },
+ {
+  "name": "PM intern without AI word",
+  "title": "Product Manager Intern",
+  "expect": "Product Manager",
+  "quote": "the title contains BOTH an AI word ... AND a PM word",
+  "note": "near miss for rule 1: PM word present, AI word absent; falls through to rule 5 'product manager'."
+ },
+ {
+  "name": "bare product near miss",
+  "title": "Retail Product Specialist",
+  "expect": "Product Manager",
+  "quote": "\"Product Manager\": ... product designer, product intern, product.",
+  "note": "must NOT be AI PM (no AI word). Bare 'product' only qualifies under rule 5."
+ },
+ {
+  "name": "AI + product but not a PM word",
+  "title": "AI Product Engineer",
+  "expect": "AI Agentic Eng",
+  "quote": "\"AI Agentic Eng\": ai, a.i., artificial intelligence, ...",
+  "note": "near miss: rule 1 needs a PM word; 'product engineer' is not one of product manager/owner/apm/associate product/product lead/product intern/product strategy. Rule 2 matches 'ai'."
+ },
+ {
+  "name": "AI engineer intern",
+  "title": "AI Engineer Intern",
+  "expect": "AI Agentic Eng",
+  "quote": "\"AI Agentic Eng\": ai, a.i., artificial intelligence, ...",
+  "note": "no PM word, so rule 1 is out; rule 2 matches 'ai'."
+ },
+ {
+  "name": "product designer with AI",
+  "title": "Product Designer AI",
+  "expect": "AI Agentic Eng",
+  "quote": "\"AI Agentic Eng\": ai, a.i., artificial intelligence, ...",
+  "note": "near miss for rule 1: 'product designer' is a rule-5 PM word, not a rule-1 PM word, so rule 1 fails; rule 2 matches 'ai' first."
+ },
+ {
+  "name": "AI product analyst",
+  "title": "AI Product Analyst",
+  "expect": "AI Agentic Eng",
+  "quote": "\"AI Agentic Eng\": ai, a.i., artificial intelligence, ...",
+  "note": "near miss: 'product analyst' is only a rule-5 PM word, not a rule-1 PM word; rule 2 matches 'ai' and precedes rule 5."
+ },
+ {
+  "name": "ai inside email",
+  "title": "Email Marketing Intern",
+  "expect": "Other",
+  "quote": "Words are whole words (\\b boundaries).",
+  "note": "'ai' inside 'email' is not a whole word; 'marketing intern' is not 'marketing analyst', so no rule matches."
+ },
+ {
+  "name": "ai inside mailroom",
+  "title": "Mailroom Assistant",
+  "expect": "Other",
+  "quote": "Words are whole words (\\b boundaries).",
+  "note": "'ai' inside 'mailroom' is not a whole word; no other pattern matches."
+ },
+ {
+  "name": "ai inside maintenance",
+  "title": "Maintenance Planner",
+  "expect": "Other",
+  "quote": "Words are whole words (\\b boundaries).",
+  "note": "'ai' inside 'maintenance' must not count as the AI word; nothing else matches, so the fallback applies: 'else \"Other\"'."
+ },
+ {
+  "name": "data engineer track",
+  "title": "Data Engineer",
+  "expect": "Data Engineer",
+  "quote": "\"Data Engineer\": data engineer(ing), analytics engineer, ...",
+  "note": "whole phrase match."
+ },
+ {
+  "name": "business intelligence to data analyst",
+  "title": "Business Intelligence Analyst",
+  "expect": "Data Analyst",
+  "quote": "\"Data Analyst\": ... bi analyst, business intelligence, ...",
+  "note": "'business intelligence' matches rule 4."
+ },
+ {
+  "name": "data scien prefix",
+  "title": "Data Scientist",
+  "expect": "Data Sci / Analytics",
+  "quote": "\"Data Sci / Analytics\": data scien…, data analy…, analytics, ...",
+  "note": "'data scientist' matches the 'data scien…' prefix in rule 6; rules 1-5 do not match."
+ }
+]

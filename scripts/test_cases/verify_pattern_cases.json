@@ -1,0 +1,170 @@
+[
+ {
+  "name": "exact_host_verify_true",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers/verify?token=abc",
+  "expect": true,
+  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. invesco.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "exact_host_activate_true",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com/activate-account?x=1",
+  "expect": true,
+  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. invesco.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "exact_host_confirm_case_insensitive_true",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://INVESCO.WD1.MYWORKDAYJOBS.COM/InvescoCareers/confirm?token=abc",
+  "expect": true,
+  "spec_quote": "Host comparison is case-insensitive."
+ },
+ {
+  "name": "exact_host_confirmation_substring_true",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com/account/confirmation?token=abc",
+  "expect": true,
+  "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "other_company_host_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://vsp.wd1.myworkdayjobs.com/verify?token=abc",
+  "expect": false,
+  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (invesco.wd5…), is false."
+ },
+ {
+  "name": "same_company_other_datacenter_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd5.myworkdayjobs.com/verify?token=abc",
+  "expect": false,
+  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (invesco.wd5…), is false."
+ },
+ {
+  "name": "exact_host_non_verify_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers/job/123",
+  "expect": false,
+  "spec_quote": "A link without verify/activat/confirm (e.g. a job posting link) is false."
+ },
+ {
+  "name": "exact_host_http_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "http://invesco.wd1.myworkdayjobs.com/verify?token=abc",
+  "expect": false,
+  "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "exact_host_no_trailing_slash_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com?verify=1",
+  "expect": false,
+  "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "exact_host_evil_suffix_false",
+  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://invesco.wd1.myworkdayjobs.com.evil.com/verify?token=abc",
+  "expect": false,
+  "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+ },
+ {
+  "name": "myworkdaysite_exact_tenant_verify_true",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd3.myworkdaysite.com/recruiting/acme/verify?token=1",
+  "expect": true,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_tenant_case_insensitive_true",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/Acme/External",
+  "link": "https://wd3.myworkdaysite.com/recruiting/acme/activate?token=1",
+  "expect": true,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_other_tenant_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd3.myworkdaysite.com/recruiting/other/verify?token=1",
+  "expect": false,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_tenant_prefix_not_exact_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd3.myworkdaysite.com/recruiting/acme-other/verify?token=1",
+  "expect": false,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_non_verify_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd3.myworkdaysite.com/recruiting/acme/job/123",
+  "expect": false,
+  "spec_quote": "A link without verify/activat/confirm (e.g. a job posting link) is false."
+ },
+ {
+  "name": "myworkdaysite_http_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "http://wd3.myworkdaysite.com/recruiting/acme/verify?token=1",
+  "expect": false,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_wrong_shared_host_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd5.myworkdaysite.com/recruiting/acme/verify?token=1",
+  "expect": false,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "myworkdaysite_token_before_tenant_false",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/acme/External",
+  "link": "https://wd3.myworkdaysite.com/verify/recruiting/acme?token=1",
+  "expect": false,
+  "spec_quote": "A tenant on wd3.myworkdaysite.com (shared host) is identified by host + \"/recruiting/<tenant>\"; the link must start with https://wd3.myworkdaysite.com/recruiting/<tenant>/ (same tenant name, case-insensitive) and contain verify/activat/confirm."
+ },
+ {
+  "name": "empty_page_myworkdayjobs_verify_true",
+  "page_url": "",
+  "link": "https://random.wd1.myworkdayjobs.com/verify?token=1",
+  "expect": true,
+  "spec_quote": "When page_url is empty or not a Workday URL, any https link on a myworkday/workday host that contains verify/activat/confirm is true."
+ },
+ {
+  "name": "empty_page_myworkdaysite_confirm_true",
+  "page_url": "",
+  "link": "https://wd3.myworkdaysite.com/recruiting/anything/confirm",
+  "expect": true,
+  "spec_quote": "When page_url is empty or not a Workday URL, any https link on a myworkday/workday host that contains verify/activat/confirm is true."
+ },
+ {
+  "name": "empty_page_myworkday_no_token_false",
+  "page_url": "",
+  "link": "https://foo.myworkdayjobs.com/careers/job/1",
+  "expect": false,
+  "spec_quote": "A link without verify/activat/confirm (e.g. a job posting link) is false."
+ },
+ {
+  "name": "non_workday_page_workday_activate_true",
+  "page_url": "https://example.com/jobs",
+  "link": "https://bar.wd1.myworkdayjobs.com/activate",
+  "expect": true,
+  "spec_quote": "When page_url is empty or not a Workday URL, any https link on a myworkday/workday host that contains verify/activat/confirm is true."
+ },
+ {
+  "name": "non_workday_page_http_workday_false",
+  "page_url": "https://example.com/jobs",
+  "link": "http://foo.myworkdayjobs.com/verify",
+  "expect": false,
+  "spec_quote": "When page_url is empty or not a Workday URL, any https link on a myworkday/workday host that contains verify/activat/confirm is true."
+ },
+ {
+  "name": "non_workday_page_workday_no_token_false",
+  "page_url": "https://example.com/jobs",
+  "link": "https://foo.myworkdayjobs.com/job/1",
+  "expect": false,
+  "spec_quote": "A link without verify/activat/confirm (e.g. a job posting link) is false."
+ }
+]

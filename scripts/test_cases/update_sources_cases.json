@@ -1,0 +1,1079 @@
+[
+ {
+  "name": "basic_counts_no_updates",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 99,
+    "owner": "x"
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 99
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "A; B"
+   },
+   {
+    "id": "J2",
+    "sources": [
+     "B"
+    ]
+   },
+   {
+    "id": "J3"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1,
+    "owner": "x"
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 2
+   }
+  ],
+  "spec_quote": "`in_dashboard` of every source row = number of jobs that carry its label (0 if none).",
+  "ambiguous": false
+ },
+ {
+  "name": "github_true_type_update",
+  "sources": [
+   {
+    "source": "GitHub A",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "GitHub B",
+    "type": "Curated GitHub list",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Curated GitHub list",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": true,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Curated GitHub list",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "GitHub A",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "GitHub B",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "If `github_ok` is true, every row whose `type` is \"Curated GitHub list\" gets `last_run` = today and `cadence` = \"Daily 08:15\".",
+  "ambiguous": false
+ },
+ {
+  "name": "github_false_keeps",
+  "sources": [
+   {
+    "source": "Curated",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Curated",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "If false, those rows keep their old last_run and cadence.",
+  "ambiguous": false
+ },
+ {
+  "name": "boards_true_updates_lever_ashby_not_others",
+  "sources": [
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "LinkedIn",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": true,
+  "expect": [
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "LinkedIn",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "If `boards_ok` is true, the rows \"Lever boards\" and \"Ashby boards\" get `last_run` = today and `cadence` = \"Daily 08:15 (board search)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "boards_false_keeps",
+  "sources": [
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "If false they keep theirs. Other rows (LinkedIn, Built In, Handshake, Greenhouse boards, Hacker News…) never get a new last_run or cadence from this function.",
+  "ambiguous": false
+ },
+ {
+  "name": "new_labels_mapping",
+  "sources": [],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Workday search; Cert supply"
+   },
+   {
+    "id": "J2",
+    "sources": [
+     "Workday search"
+    ]
+   },
+   {
+    "id": "J3",
+    "sources": "Brand New"
+   },
+   {
+    "id": "J4",
+    "sources": "Unknown"
+   },
+   {
+    "id": "J5"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Brand New",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Cert supply",
+    "type": "Certification test supply",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Workday search",
+    "type": "Company job boards (API)",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 2
+   }
+  ],
+  "spec_quote": "A label carried by at least one job but with no source row gets a new row: source = label, type = \"Company job boards (API)\" for \"Workday search\", \"Certification test supply\" for \"Cert supply\", \"Other\" for any other label; cadence = \"Daily 08:15\" for \"Workday search\", \"As needed\" otherwise; last_run = today; in_dashboard = its count. The label \"Unknown\" never gets a row.",
+  "ambiguous": false
+ },
+ {
+  "name": "new_label_multiple_jobs_existing_count",
+  "sources": [
+   {
+    "source": "Existing",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 99
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "New; Existing"
+   },
+   {
+    "id": "J2",
+    "sources": "New"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Existing",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   },
+   {
+    "source": "New",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 2
+   }
+  ],
+  "spec_quote": "`in_dashboard` of every source row = number of jobs that carry its label (0 if none). A label carried by at least one job but with no source row gets a new row.",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_never_new_row",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "A; Unknown"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "The label \"Unknown\" never gets a row.",
+  "ambiguous": false
+ },
+ {
+  "name": "split_on_semicolon_space_only",
+  "sources": [],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "A;B"
+   },
+   {
+    "id": "J2",
+    "sources": "A; B"
+   },
+   {
+    "id": "J3",
+    "sources": [
+     "C; D"
+    ]
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "A;B",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "C; D",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "A job's labels are its `sources` field split on \"; \" (a list is taken as is; a missing value has no labels).",
+  "ambiguous": false
+ },
+ {
+  "name": "list_and_missing_labels",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 9
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": [
+     "A",
+     "B"
+    ]
+   },
+   {
+    "id": "J2"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "A job's labels are its `sources` field split on \"; \" (a list is taken as is; a missing value has no labels).",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_updates_preserve_extra_and_sort",
+  "sources": [
+   {
+    "source": "Zeta",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 99,
+    "note": "keep"
+   },
+   {
+    "source": "Alpha",
+    "type": "Curated GitHub list",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 99,
+    "extra": 123
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 99
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Alpha; Zeta; New"
+   },
+   {
+    "id": "J2",
+    "sources": "Lever boards"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": true,
+  "boards_ok": true,
+  "expect": [
+   {
+    "source": "Alpha",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1,
+    "extra": 123
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "New",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Zeta",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1,
+    "note": "keep"
+   }
+  ],
+  "spec_quote": "Existing rows are never removed, their other fields are never changed, and the input is not mutated. Output is sorted by `source`.",
+  "ambiguous": false
+ },
+ {
+  "name": "idempotent_already_current",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "B",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "A; B"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": true,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "B",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "Running twice with the same inputs gives the same result.",
+  "ambiguous": false
+ },
+ {
+  "name": "zero_counts",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 5
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 5
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "B",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "`in_dashboard` of every source row = number of jobs that carry its label (0 if none).",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate_label_in_job_counts_once",
+  "sources": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "A; A"
+   },
+   {
+    "id": "J2",
+    "sources": "A"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "A",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 2
+   }
+  ],
+  "spec_quote": "`in_dashboard` of every source row = number of jobs that carry its label (0 if none).",
+  "ambiguous": false
+ },
+ {
+  "name": "existing_workday_not_retyped",
+  "sources": [
+   {
+    "source": "Workday search",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Workday search"
+   },
+   {
+    "id": "J2",
+    "sources": "Workday search"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Workday search",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 2
+   }
+  ],
+  "spec_quote": "A label carried by at least one job but with no source row gets a new row. Existing rows are never removed, their other fields are never changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "existing_cert_supply_not_retyped",
+  "sources": [
+   {
+    "source": "Cert supply",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Cert supply"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Cert supply",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "A label carried by at least one job but with no source row gets a new row. Existing rows are never removed, their other fields are never changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "boards_true_other_rows_unchanged",
+  "sources": [
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Built In",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Hacker News",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Handshake",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-05",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-06",
+    "in_dashboard": 5
+   },
+   {
+    "source": "LinkedIn",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-07",
+    "in_dashboard": 5
+   }
+  ],
+  "jobs": [],
+  "today": "2026-11-03",
+  "github_ok": true,
+  "boards_ok": true,
+  "expect": [
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Built In",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Hacker News",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Handshake",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-05",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 0
+   },
+   {
+    "source": "LinkedIn",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-07",
+    "in_dashboard": 0
+   }
+  ],
+  "spec_quote": "Other rows (LinkedIn, Built In, Handshake, Greenhouse boards, Hacker News…) never get a new last_run or cadence from this function.",
+  "ambiguous": false
+ },
+ {
+  "name": "github_false_boards_true_mixed",
+  "sources": [
+   {
+    "source": "Curated",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-03",
+    "in_dashboard": 5
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 5
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Curated; Lever boards"
+   },
+   {
+    "id": "J2",
+    "sources": "Ashby boards"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": true,
+  "expect": [
+   {
+    "source": "Ashby boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Curated",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Greenhouse boards",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-04",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Lever boards",
+    "type": "Other",
+    "cadence": "Daily 08:15 (board search)",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "If false, those rows keep their old last_run and cadence. If `boards_ok` is true, the rows \"Lever boards\" and \"Ashby boards\" get `last_run` = today and `cadence` = \"Daily 08:15 (board search)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "new_row_other_label_sorted_with_existing",
+  "sources": [
+   {
+    "source": "Zeta",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Alpha",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "Zeta; Beta"
+   },
+   {
+    "id": "J2",
+    "sources": "Beta"
+   },
+   {
+    "id": "J3",
+    "sources": "Alpha"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": false,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "Alpha",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-10-02",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Beta",
+    "type": "Other",
+    "cadence": "As needed",
+    "last_run": "2026-11-03",
+    "in_dashboard": 2
+   },
+   {
+    "source": "Zeta",
+    "type": "Other",
+    "cadence": "Monthly",
+    "last_run": "2026-10-01",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "Output is sorted by `source`. A label carried by at least one job but with no source row gets a new row.",
+  "ambiguous": false
+ },
+ {
+  "name": "github_true_updates_multiple_curated_rows_and_counts",
+  "sources": [
+   {
+    "source": "G1",
+    "type": "Curated GitHub list",
+    "cadence": "Weekly",
+    "last_run": "2026-09-01",
+    "in_dashboard": 0
+   },
+   {
+    "source": "G2",
+    "type": "Curated GitHub list",
+    "cadence": "Monthly",
+    "last_run": "2026-09-02",
+    "in_dashboard": 0
+   },
+   {
+    "source": "Other",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-09-03",
+    "in_dashboard": 0
+   }
+  ],
+  "jobs": [
+   {
+    "id": "J1",
+    "sources": "G1; Other"
+   },
+   {
+    "id": "J2",
+    "sources": "G2"
+   },
+   {
+    "id": "J3",
+    "sources": "G1"
+   }
+  ],
+  "today": "2026-11-03",
+  "github_ok": true,
+  "boards_ok": false,
+  "expect": [
+   {
+    "source": "G1",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 2
+   },
+   {
+    "source": "G2",
+    "type": "Curated GitHub list",
+    "cadence": "Daily 08:15",
+    "last_run": "2026-11-03",
+    "in_dashboard": 1
+   },
+   {
+    "source": "Other",
+    "type": "Other",
+    "cadence": "Weekly",
+    "last_run": "2026-09-03",
+    "in_dashboard": 1
+   }
+  ],
+  "spec_quote": "If `github_ok` is true, every row whose `type` is \"Curated GitHub list\" gets `last_run` = today and `cadence` = \"Daily 08:15\".",
+  "ambiguous": false
+ }
+]

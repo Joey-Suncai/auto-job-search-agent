@@ -1,0 +1,13 @@
+{
+  "name": "auto-job-search-agent",
+  "private": true,
+  "description": "Node helpers: answer-rule tests and the cover letter builder (Python does the rest).",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "dependencies": {
+    "docx": "^9.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0",
+    "jsdom": "^25.0.0"
+  }
+}

@@ -1,0 +1,510 @@
+[
+ {
+  "name": "autocomplete one-time-code is the code box",
+  "inputs": [
+   {
+    "id": "email",
+    "name": "email",
+    "label": "Email",
+    "auto": "email",
+    "maxlength": 0
+   },
+   {
+    "id": "otp-input",
+    "name": "otp",
+    "label": "Enter code",
+    "auto": "one-time-code",
+    "maxlength": 6
+   }
+  ],
+  "n": 6,
+  "expect": [
+   "otp-input"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "aria-label Security code",
+  "inputs": [
+   {
+    "id": "f-77",
+    "name": "field77",
+    "label": "Security code",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "f-77"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "aria-label Verification code",
+  "inputs": [
+   {
+    "id": "first",
+    "name": "firstName",
+    "label": "First name",
+    "auto": "given-name",
+    "maxlength": 0
+   },
+   {
+    "id": "vc",
+    "name": "vc",
+    "label": "Verification code",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "vc"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "aria-label One-time code",
+  "inputs": [
+   {
+    "id": "x1",
+    "name": "x1",
+    "label": "One-time code",
+    "auto": "",
+    "maxlength": 6
+   }
+  ],
+  "n": 6,
+  "expect": [
+   "x1"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "name attribute OTP",
+  "inputs": [
+   {
+    "id": "in-3",
+    "name": "OTP",
+    "label": "",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "in-3"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "id exactly code",
+  "inputs": [
+   {
+    "id": "code",
+    "name": "userCode",
+    "label": "",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "code"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "aria-label Confirmation code",
+  "inputs": [
+   {
+    "id": "c9",
+    "name": "c9",
+    "label": "Confirmation code",
+    "auto": "",
+    "maxlength": 10
+   }
+  ],
+  "n": 10,
+  "expect": [
+   "c9"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "aria-label Access code",
+  "inputs": [
+   {
+    "id": "ac",
+    "name": "ac",
+    "label": "Access code",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "ac"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "two qualifying inputs: only the first in page order",
+  "inputs": [
+   {
+    "id": "sc",
+    "name": "sc",
+    "label": "Security code",
+    "auto": "",
+    "maxlength": 8
+   },
+   {
+    "id": "otc",
+    "name": "otc",
+    "label": "Enter code",
+    "auto": "one-time-code",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [
+   "sc"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "security-input boxes returned in numeric order regardless of DOM order",
+  "inputs": [
+   {
+    "id": "security-input-2",
+    "name": "s2",
+    "label": "digit 3",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-0",
+    "name": "s0",
+    "label": "digit 1",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-1",
+    "name": "s1",
+    "label": "digit 2",
+    "auto": "",
+    "maxlength": 1
+   }
+  ],
+  "n": 3,
+  "expect": [
+   "security-input-0",
+   "security-input-1",
+   "security-input-2"
+  ],
+  "spec_quote": "If the page has boxes with ids `security-input-0`, `security-input-1`, … (one character each), return all of them ordered by their number (0, 1, 2 …), whatever order they appear in.",
+  "ambiguous": false
+ },
+ {
+  "name": "security-input boxes take precedence over a one-time-code field",
+  "inputs": [
+   {
+    "id": "otp",
+    "name": "otp",
+    "label": "Enter code",
+    "auto": "one-time-code",
+    "maxlength": 6
+   },
+   {
+    "id": "security-input-1",
+    "name": "s1",
+    "label": "digit 2",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-0",
+    "name": "s0",
+    "label": "digit 1",
+    "auto": "",
+    "maxlength": 1
+   }
+  ],
+  "n": 2,
+  "expect": [
+   "security-input-0",
+   "security-input-1"
+  ],
+  "spec_quote": "If the page has boxes with ids `security-input-0`, `security-input-1`, … (one character each), return all of them ordered by their number (0, 1, 2 …), whatever order they appear in.",
+  "ambiguous": false
+ },
+ {
+  "name": "security-input boxes ordered numerically, 10 after 9 not after 1",
+  "inputs": [
+   {
+    "id": "security-input-10",
+    "name": "s10",
+    "label": "digit 11",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-1",
+    "name": "s1",
+    "label": "digit 2",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-0",
+    "name": "s0",
+    "label": "digit 1",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-2",
+    "name": "s2",
+    "label": "digit 3",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-3",
+    "name": "s3",
+    "label": "digit 4",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-4",
+    "name": "s4",
+    "label": "digit 5",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-5",
+    "name": "s5",
+    "label": "digit 6",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-6",
+    "name": "s6",
+    "label": "digit 7",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-7",
+    "name": "s7",
+    "label": "digit 8",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-8",
+    "name": "s8",
+    "label": "digit 9",
+    "auto": "",
+    "maxlength": 1
+   },
+   {
+    "id": "security-input-9",
+    "name": "s9",
+    "label": "digit 10",
+    "auto": "",
+    "maxlength": 1
+   }
+  ],
+  "n": 11,
+  "expect": [
+   "security-input-0",
+   "security-input-1",
+   "security-input-2",
+   "security-input-3",
+   "security-input-4",
+   "security-input-5",
+   "security-input-6",
+   "security-input-7",
+   "security-input-8",
+   "security-input-9",
+   "security-input-10"
+  ],
+  "spec_quote": "If the page has boxes with ids `security-input-0`, `security-input-1`, … (one character each), return all of them ordered by their number (0, 1, 2 …), whatever order they appear in.",
+  "ambiguous": false
+ },
+ {
+  "name": "only a ZIP code input",
+  "inputs": [
+   {
+    "id": "zip",
+    "name": "zip",
+    "label": "ZIP code",
+    "auto": "postal-code",
+    "maxlength": 10
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "ZIP code first, real verification code second",
+  "inputs": [
+   {
+    "id": "zip",
+    "name": "zip",
+    "label": "Postal code",
+    "auto": "postal-code",
+    "maxlength": 10
+   },
+   {
+    "id": "vcode",
+    "name": "vcode",
+    "label": "Verification code",
+    "auto": "",
+    "maxlength": 6
+   }
+  ],
+  "n": 6,
+  "expect": [
+   "vcode"
+  ],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ },
+ {
+  "name": "only a promo code input",
+  "inputs": [
+   {
+    "id": "promo",
+    "name": "promo",
+    "label": "Promo code",
+    "auto": "",
+    "maxlength": 20
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "only a referral code input",
+  "inputs": [
+   {
+    "id": "ref",
+    "name": "referralCode",
+    "label": "Referral code",
+    "auto": "",
+    "maxlength": 12
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "discount code input is not the security code box",
+  "inputs": [
+   {
+    "id": "disc",
+    "name": "disc",
+    "label": "Discount code",
+    "auto": "",
+    "maxlength": 20
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "country code and phone number only",
+  "inputs": [
+   {
+    "id": "cc",
+    "name": "countryCode",
+    "label": "Country code",
+    "auto": "tel-country-code",
+    "maxlength": 3
+   },
+   {
+    "id": "phone",
+    "name": "phone",
+    "label": "Phone",
+    "auto": "tel-national",
+    "maxlength": 15
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "area code input only",
+  "inputs": [
+   {
+    "id": "area",
+    "name": "areaCode",
+    "label": "Area code",
+    "auto": "",
+    "maxlength": 3
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "invite code input only",
+  "inputs": [
+   {
+    "id": "invite",
+    "name": "invite",
+    "label": "Invite code",
+    "auto": "",
+    "maxlength": 8
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Never an input about something else that merely contains the word \"code\": ZIP code, postal code, post code, promo code, referral code, coupon / discount code, country code, area code, phone, invite code — even when it is the only input with \"code\" in its label. If nothing qualifies, return an empty list.",
+  "ambiguous": false
+ },
+ {
+  "name": "id merely containing code (code-search) is not exactly code",
+  "inputs": [
+   {
+    "id": "code-search",
+    "name": "codeSearch",
+    "label": "Search",
+    "auto": "",
+    "maxlength": 0
+   }
+  ],
+  "n": 8,
+  "expect": [],
+  "spec_quote": "Otherwise return the FIRST single input that is clearly the code box: autocomplete \"one-time-code\", or id/name/label mentioning \"security code\", \"verification code\", \"one-time code\", \"confirmation code\", \"access code\", \"OTP\", or a field whose id/name/label is exactly \"code\". Only one id is returned.",
+  "ambiguous": false
+ }
+]

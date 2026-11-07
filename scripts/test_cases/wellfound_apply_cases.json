@@ -1,0 +1,463 @@
+[
+ {
+  "name": "clean_url_tracking_dropped_gh_jid_kept",
+  "fn": "clean_url",
+  "args": {
+   "url": "https://boards.greenhouse.io/acme/jobs/4512345?gh_jid=4512345&utm_source=wellfound&gh_src=abc123"
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/4512345?gh_jid=4512345",
+  "spec": "Tracking parameters are dropped ... `utm_*`, `gh_src`, ... Every other parameter is kept in its order (e.g. `gh_jid` ...). When none is left there is no `?`."
+ },
+ {
+  "name": "clean_url_non_http_javascript_empty",
+  "fn": "clean_url",
+  "args": {
+   "url": "javascript:void(0)"
+  },
+  "expect": "",
+  "spec": "Not an http(s) URL (empty, None, `mailto:`, `javascript:`, a relative path) → \"\"."
+ },
+ {
+  "name": "clean_url_unwrap_wellfound_redirect_param",
+  "fn": "clean_url",
+  "args": {
+   "url": "https://wellfound.com/r/redirect?url=https%3A%2F%2Fjobs.ashbyhq.com%2Facme%2F8f2a1c3e-1111-4a2b-9c3d-1234567890ab"
+  },
+  "expect": "https://jobs.ashbyhq.com/acme/8f2a1c3e-1111-4a2b-9c3d-1234567890ab",
+  "spec": "Redirect wrappers are unwrapped: when the URL's host is NOT a known ATS host and one of its query parameters named `url`, `u`, `q`, ... holds an absolute http(s) URL (percent-encoded once or twice is fine), that inner URL replaces it."
+ },
+ {
+  "name": "clean_url_trim_entities_and_lowercase_scheme",
+  "fn": "clean_url",
+  "args": {
+   "url": "  HTTPS://jobs.lever.co/acme/1a2b3c4d?utm_campaign=x&amp;ref=wellfound  "
+  },
+  "expect": "https://jobs.lever.co/acme/1a2b3c4d",
+  "spec": "HTML entities are decoded and the value trimmed ... the scheme is lower-cased. / Tracking parameters are dropped (name case-insensitive): `utm_*`, ... `ref`, ..."
+ },
+ {
+  "name": "clean_url_double_encoded_wrapper_param_u",
+  "fn": "clean_url",
+  "args": {
+   "url": "https://go.wellfound.com/x?u=https%253A%252F%252Fjob-boards.greenhouse.io%252Facme%252Fjobs%252F7788990"
+  },
+  "expect": "https://job-boards.greenhouse.io/acme/jobs/7788990",
+  "spec": "Redirect wrappers are unwrapped ... holds an absolute http(s) URL (percent-encoded once or twice is fine), that inner URL replaces it; repeated up to 3 times."
+ },
+ {
+  "name": "posting_like_workday_digits_but_no_job_path_false",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/jobsearch/12345678"
+  },
+  "expect": false,
+  "spec": "Workday host: only when the path contains `/job/` or `/details/` (nothing else counts for Workday)."
+ },
+ {
+  "name": "posting_like_greenhouse_gh_jid_query_true",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://boards.greenhouse.io/acme?gh_jid=4512345"
+  },
+  "expect": true,
+  "spec": "Greenhouse host: path has `/jobs/<digits>` or a query `gh_jid=<digits>`."
+ },
+ {
+  "name": "posting_like_lever_board_home_false",
+  "fn": "posting_like",
+  "args": {
+   "url": "https://jobs.lever.co/acme"
+  },
+  "expect": false,
+  "spec": "Otherwise False (e.g. `https://jobs.lever.co/acme`, ...)."
+ },
+ {
+  "name": "pick_external_opened_ats_posting_wins",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-acme-senior-engineer",
+    "title": "Acme — Senior Engineer | Wellfound",
+    "text": "Acme is hiring a senior engineer.",
+    "opened": [
+     "https://jobs.lever.co/acme/1a2b3c4d-0000-1111-2222-333344445555"
+    ],
+    "links": [
+     {
+      "href": "https://acme.com/careers",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ],
+    "peeked": true
+   }
+  },
+  "expect": "https://jobs.lever.co/acme/1a2b3c4d-0000-1111-2222-333344445555",
+  "spec": "Best = known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS), then the rest; ties → earlier source, then earlier position."
+ },
+ {
+  "name": "pick_external_never_apply_and_plain_site_link_empty",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/2345678-acme-designer",
+    "title": "Acme — Designer | Wellfound",
+    "text": "Acme is hiring a designer.",
+    "links": [
+     {
+      "href": "https://www.linkedin.com/jobs/view/1234567890",
+      "text": "Apply on LinkedIn"
+     },
+     {
+      "href": "https://acme.com/careers",
+      "text": "acme.com"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": "",
+  "spec": "A candidate is dropped when its cleaned URL is \"\", is on a Wellfound host or a never-apply host ... A plain company-website link (label \"acme.com\", no \"apply\") is not a candidate unless rule (d) takes it."
+ },
+ {
+  "name": "pick_external_ats_board_beats_non_ats_posting",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/3456789-acme-platform-engineer",
+    "title": "Acme — Platform Engineer | Wellfound",
+    "text": "Acme is hiring a platform engineer.",
+    "links": [
+     {
+      "href": "https://careers.acme.com/apply/8f2a1c3e-1111-4a2b-9c3d-1234567890ab",
+      "text": "Apply"
+     },
+     {
+      "href": "https://boards.greenhouse.io/acme",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": "https://boards.greenhouse.io/acme",
+  "spec": "Best = known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS), then the rest; ties → earlier source, then earlier position."
+ },
+ {
+  "name": "pick_external_wellfound_host_link_dropped",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/7654321-acme-product-manager",
+    "title": "Acme — Product Manager | Wellfound",
+    "text": "Acme is hiring a product manager.",
+    "links": [
+     {
+      "href": "https://wellfound.com/jobs/7654321-acme-product-manager",
+      "text": "Apply now"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": "",
+  "spec": "A candidate is dropped when its cleaned URL is \"\", is on a Wellfound host or a never-apply host, or repeats an earlier one."
+ },
+ {
+  "name": "pick_external_data_url_deduped_against_ats_link",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4567890-acme-data-engineer",
+    "title": "Acme — Data Engineer | Wellfound",
+    "text": "Acme is hiring a data engineer.",
+    "links": [
+     {
+      "href": "https://jobs.smartrecruiters.com/Acme/12345678?utm_source=wellfound",
+      "text": "View job"
+     }
+    ],
+    "data_urls": [
+     {
+      "key": "applyUrl",
+      "url": "https://jobs.smartrecruiters.com/Acme/12345678?utm_source=wellfound"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": "https://jobs.smartrecruiters.com/Acme/12345678",
+  "spec": "Candidates ... (d) any other link href or data_url url that, cleaned, is on a known ATS host AND is posting_like. A candidate is dropped when ... it repeats an earlier one."
+ },
+ {
+  "name": "classify_blocked_title_phrase_long_text",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-acme-senior-engineer",
+    "title": "Just a moment...",
+    "text": "Checking your browser before accessing wellfound.com.",
+    "links": [
+     {
+      "href": "https://jobs.lever.co/acme/abc12345",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "blocked",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "blocked: the title contains a challenge phrase — ... \"just a moment\" ... (any case) — or the text does and the text is shorter than 1500 characters."
+ },
+ {
+  "name": "classify_captcha_in_long_text_not_blocked_external_ats",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/1234567-acme-senior-backend-engineer",
+    "title": "Acme — Senior Backend Engineer | Wellfound",
+    "text": "Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Acme builds developer tools for teams around the world and is hiring a senior backend engineer for its platform team. Please solve the captcha to continue.",
+    "links": [
+     {
+      "href": "https://jobs.ashbyhq.com/acme/4f9a2b1c-8d3e-4a5b-9c6d-7e8f90123456",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "https://jobs.ashbyhq.com/acme/4f9a2b1c-8d3e-4a5b-9c6d-7e8f90123456",
+   "apply_url": "https://jobs.ashbyhq.com/acme/4f9a2b1c-8d3e-4a5b-9c6d-7e8f90123456"
+  },
+  "spec": "blocked: ... or the text does and the text is shorter than 1500 characters. / external: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\"."
+ },
+ {
+  "name": "classify_signin_wellfound_login_path",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/login?next=%2Fjobs%2F1234567",
+    "title": "Sign in | Wellfound",
+    "text": "Sign in to Wellfound",
+    "links": [],
+    "buttons": []
+   }
+  },
+  "expect": {
+   "via": "signin",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "signin: `url` is on a Wellfound host and its path starts with `/login`, `/signin`, `/sign_in`, `/signup`, `/sign_up`, `/join` or `/onboarding`."
+ },
+ {
+  "name": "classify_closed_wellfound_url_without_job_digits_beats_external",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs",
+    "title": "Jobs | Wellfound",
+    "text": "Browse thousands of startup jobs.",
+    "links": [
+     {
+      "href": "https://boards.greenhouse.io/acme/jobs/4512345",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": []
+   }
+  },
+  "expect": {
+   "via": "closed",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "closed: `url` is on a Wellfound host and its path has no `/jobs/<digits>` (the job page redirected elsewhere, e.g. to `/jobs` or `/company/acme`). / Checked in this order; the first that holds wins."
+ },
+ {
+  "name": "classify_closed_position_filled_text",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/2345678-acme-product-designer",
+    "title": "Acme — Product Designer | Wellfound",
+    "text": "This position has been filled. Thanks for your interest!",
+    "links": [
+     {
+      "href": "https://jobs.lever.co/acme/xyz",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "closed",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "closed: ... or the title or text says the job is gone — ... \"position has been filled\" ... (any case)."
+ },
+ {
+  "name": "classify_external_lever_board_page_ats_url_empty",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/3456789-acme-data-engineer",
+    "title": "Acme — Data Engineer | Wellfound",
+    "text": "Acme is hiring a data engineer.",
+    "links": [
+     {
+      "href": "https://jobs.lever.co/acme",
+      "text": "Apply on company site"
+     }
+    ],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": "https://jobs.lever.co/acme"
+  },
+  "spec": "external: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\" (a board / careers page)."
+ },
+ {
+  "name": "classify_wellfound_modal_write_a_note",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4567890-acme-ios-engineer",
+    "title": "Acme — iOS Engineer | Wellfound",
+    "text": "Acme is hiring an iOS engineer.",
+    "modal": "Write a note to the hiring team to introduce yourself",
+    "peeked": true,
+    "links": [],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "wellfound: `modal` contains \"send application\", \"submit application\", \"write a note\", \"note to\", \"cover letter\", \"apply to\", \"your application\" or \"why are you\" / \"why do you\" (any case)."
+ },
+ {
+  "name": "classify_unknown_apply_button_exact_label",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/5678901-acme-marketing-lead",
+    "title": "Acme — Marketing Lead | Wellfound",
+    "text": "Acme is hiring a marketing lead.",
+    "modal": "",
+    "peeked": true,
+    "links": [],
+    "buttons": [
+     "Apply"
+    ]
+   }
+  },
+  "expect": {
+   "via": "unknown",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec": "unknown: a button whose label is exactly an apply label (reason says a peek is needed, or — when `peeked` is true — that the peek opened nothing readable)."
+ },
+ {
+  "name": "page_from_html_title_and_links_aria_label",
+  "fn": "page_from_html",
+  "args": {
+   "html": "<html><head><title>  Acme &amp; Co &#8212; Senior Software Engineer  </title></head><body><a href=\"/jobs/1234567-acme\">Apply now</a><a href=\"mailto:jobs@acme.com\">Email us</a><a href=\"#apply\">Skip</a><a href=\"https://jobs.lever.co/acme/1a2b3c4d\" aria-label=\"Apply on Lever\"><img src=\"logo.png\" alt=\"\"></a></body></html>",
+   "url": "https://wellfound.com/jobs/1234567-acme"
+  },
+  "expect": {
+   "title": "Acme & Co — Senior Software Engineer",
+   "links": [
+    {
+     "href": "https://wellfound.com/jobs/1234567-acme",
+     "text": "Apply now"
+    },
+    {
+     "href": "https://jobs.lever.co/acme/1a2b3c4d",
+     "text": "Apply on Lever"
+    }
+   ]
+  },
+  "spec": "title = the `<title>` text, entities decoded, whitespace collapsed, trimmed. / links = every `<a href=…>` (in page order) whose href, joined with `url` when relative ... text = the anchor's visible text (tags removed, entities decoded, whitespace collapsed), or its `aria-label` when that text is empty. Anchors without href, or `mailto:` / `javascript:` / `#` links, are left out."
+ },
+ {
+  "name": "page_from_html_buttons_and_data_urls",
+  "fn": "page_from_html",
+  "args": {
+   "html": "<html><head><title>Apply</title></head><body><button>Apply</button><button>  </button><button>Save <b>job</b></button><script type=\"application/json\">{\"applyUrl\":\"https:\\/\\/jobs.ashbyhq.com\\/acme\\/1234\",\"externalLink\":\"https://acme.com/careers?ref=wellfound\",\"companyName\":\"Acme\"}</script></body></html>",
+   "url": "https://wellfound.com/jobs/1234567-acme"
+  },
+  "expect": {
+   "buttons": [
+    "Apply",
+    "Save job"
+   ],
+   "data_urls": [
+    {
+     "key": "applyUrl",
+     "url": "https://jobs.ashbyhq.com/acme/1234"
+    },
+    {
+     "key": "externalLink",
+     "url": "https://acme.com/careers?ref=wellfound"
+    }
+   ]
+  },
+  "spec": "buttons = the visible text of every `<button>` (same cleaning), empty ones left out, in page order. / data_urls = from the content of every `<script>`: each JSON pair `\"<key>\": \"http…\"` whose key ends in `url`, `Url`, `URL`, `link`, `Link`, `href` or `Href` → {\"key\", \"url\"} in order, with `\\/` → `/` and `&` → `&`."
+ },
+ {
+  "name": "page_from_html_script_anchor_ignored_and_text_present",
+  "fn": "page_from_html",
+  "args": {
+   "html": "<html><head><title>Acme — Backend Engineer</title></head><body><div>Apply for this job</div><script>document.write('<a href=\"https://evil.example.com/track\">Apply</a>');</script><style>a{color:red}</style><a href=\"https://jobs.workable.com/view/abc123def456\">Apply on company site</a></body></html>",
+   "url": "https://wellfound.com/jobs/1234567-acme-backend-engineer"
+  },
+  "expect": {
+   "links": [
+    {
+     "href": "https://jobs.workable.com/view/abc123def456",
+     "text": "Apply on company site"
+    }
+   ],
+   "text_contains": [
+    "Apply for this job",
+    "Apply on company site"
+   ]
+  },
+  "spec": "Anchors inside `<script>` / `<style>` do not count. / text = the visible text (scripts and styles removed); each block (p / div / h1–h6 / li / section / main / button / a / br) on its own line."
+ }
+]

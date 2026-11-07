@@ -1,0 +1,291 @@
+[
+ {
+  "name": "keys: multi-word name whose two key forms coincide yields one key",
+  "fn": "inv_keys",
+  "args": {
+   "name": "Two Sigma"
+  },
+  "expect": [
+   "twosigma"
+  ],
+  "spec_quote": "\"Two Sigma\" → [\"twosigma\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "keys: legal-suffix form kept only in the company-key (incorporated is not a legal suffix in key (2))",
+  "fn": "inv_keys",
+  "args": {
+   "name": "Ingredion Incorporated"
+  },
+  "expect": [
+   "ingredion",
+   "ingredionincorporated"
+  ],
+  "spec_quote": "\"Ingredion Incorporated\" → [\"ingredion\", \"ingredionincorporated\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "keys: name that is only a dropped generic key yields no keys",
+  "fn": "inv_keys",
+  "args": {
+   "name": "Apply"
+  },
+  "expect": [],
+  "spec_quote": "A key shorter than 3 characters, or equal to one of apply, careers, career, jobs, job, join, work, home, recruiting, talent, hiring, is dropped. ... \"Apply\" → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "keys: generic-only name falls back to company-key words other than the/and/of, plus full squashed company key",
+  "fn": "inv_keys",
+  "args": {
+   "name": "Bank of America"
+  },
+  "expect": [
+   "bankamerica",
+   "bankofamerica"
+  ],
+  "spec_quote": "when no distinctive word is left after dropping generic words (e.g. \"Bank of America\"), the distinctive words are the company key's words other than the, and, of (one-letter words still dropped) → \"bank\", \"america\"; and (2) the company key ... with every non-alphanumeric character removed",
+  "ambiguous": false
+ },
+ {
+  "name": "keys: 'technologies' removed as legal suffix in both keys, duplicates dropped",
+  "fn": "inv_keys",
+  "args": {
+   "name": "Acme Technologies"
+  },
+  "expect": [
+   "acme"
+  ],
+  "spec_quote": "the distinctive words of the name ... joined with no spaces; (2) the company key (lower-case, legal suffixes inc / llc / corp / corporation / co / company / ltd / group / technologies / technology / holdings / lab / labs removed) with every non-alphanumeric character removed ... in this order, no duplicates",
+  "ambiguous": false
+ },
+ {
+  "name": "keys: resulting key shorter than 3 characters is dropped",
+  "fn": "inv_keys",
+  "args": {
+   "name": "AB Corp"
+  },
+  "expect": [],
+  "spec_quote": "A key shorter than 3 characters ... is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: greenhouse board URL is detected as the ATS",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "greenhouse",
+   "name": "Acme",
+   "url": "https://job-boards.greenhouse.io/acme"
+  },
+  "expect": [
+   "greenhouse",
+   "acme"
+  ],
+  "spec_quote": "(\"greenhouse\", \"Acme\", \"https://job-boards.greenhouse.io/acme\") → [\"greenhouse\", \"acme\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: successfactors file with unrecognised URL uses the URL host",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "successfactors",
+   "name": "Roche",
+   "url": "https://careers.roche.com"
+  },
+  "expect": [
+   "successfactors",
+   "careers.roche.com"
+  ],
+  "spec_quote": "(\"successfactors\", \"Roche\", \"https://careers.roche.com\") → [\"successfactors\", \"careers.roche.com\"]",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: successfactors row whose name is a generic dropped word yields null",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "successfactors",
+   "name": "Apply",
+   "url": "https://apply.iav.com"
+  },
+  "expect": null,
+  "spec_quote": "(\"successfactors\", \"Apply\", \"https://apply.iav.com\") → null",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: non-phenom/successfactors file with unrecognised URL yields null",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "gem",
+   "name": "X",
+   "url": "https://jobs.gem.com/x"
+  },
+  "expect": null,
+  "spec_quote": "(\"gem\", \"X\", \"https://jobs.gem.com/x\") → null ... Any other file with an unrecognised url → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: lever URL is detected even from a lever file",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "lever",
+   "name": "Foo",
+   "url": "https://jobs.lever.co/foo"
+  },
+  "expect": [
+   "lever",
+   "foo"
+  ],
+  "spec_quote": "If detect_ats(url) finds something, its first result.",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: phenom file row uses the URL host",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "phenom",
+   "name": "Acme Corp",
+   "url": "https://careers.acmecorp.com/jobs"
+  },
+  "expect": [
+   "phenom",
+   "careers.acmecorp.com"
+  ],
+  "spec_quote": "Otherwise, only when fname is \"phenom\" or \"successfactors\": [fname, the url's host lower-case]",
+  "ambiguous": false
+ },
+ {
+  "name": "hint_of: successfactors row whose name is 'Careers' is skipped (case-insensitive)",
+  "fn": "inv_hint_of",
+  "args": {
+   "fname": "successfactors",
+   "name": "Careers",
+   "url": "https://careers.acme.com"
+  },
+  "expect": null,
+  "spec_quote": "unless the name (trimmed, lower-case) is one of the words above (apply, careers, …)",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: two files, only the matching row's file contributes a hint",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Globex",
+   "files": {
+    "greenhouse.csv": "name,slug,url\nGlobex,globex,https://job-boards.greenhouse.io/globex\n",
+    "lever.csv": "name,slug,url\nInitech,initech,https://jobs.lever.co/initech\n"
+   }
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "globex"
+   ]
+  ],
+  "spec_quote": "lookup(company, directory) reads every *.csv in directory. ... lookup returns the hints filed under the company's keys (keys in order, hints in file-then-row order), no duplicates",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: phenom-style row (first field is the url)",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Roche",
+   "files": {
+    "phenom.csv": "url,name\nhttps://careers.roche.com,Roche\n"
+   }
+  },
+  "expect": [
+   [
+    "phenom",
+    "careers.roche.com"
+   ]
+  ],
+  "spec_quote": "rows are name,slug,url — except a row whose first field starts with \"http\", which is url,name,… (the phenom file)",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: duplicate hints for the same company are returned once",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Acme",
+   "files": {
+    "greenhouse.csv": "name,slug,url\nAcme,acme,https://job-boards.greenhouse.io/acme\nAcme Inc,acme,https://job-boards.greenhouse.io/acme\n"
+   }
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ]
+  ],
+  "spec_quote": "a hint is filed under every key of the row's name. lookup returns the hints filed under the company's keys ..., no duplicates",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: company matching a row name that differs only by legal suffix; longer different name not returned",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Qorvo",
+   "files": {
+    "lever.csv": "name,slug,url\nQorvo Inc,qorvo,https://jobs.lever.co/qorvo\nQorvo Power,qorvopower,https://jobs.lever.co/qorvopower\n"
+   }
+  },
+  "expect": [
+   [
+    "lever",
+    "qorvo"
+   ]
+  ],
+  "spec_quote": "a hint is filed under every key of the row's name. lookup returns the hints filed under the company's keys ...; [] when none.",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: no matching company gives empty list",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Umbrella",
+   "files": {
+    "greenhouse.csv": "name,slug,url\nGlobex,globex,https://job-boards.greenhouse.io/globex\n",
+    "lever.csv": "name,slug,url\nInitech,initech,https://jobs.lever.co/initech\n"
+   }
+  },
+  "expect": [],
+  "spec_quote": "lookup returns the hints filed under the company's keys (keys in order, hints in file-then-row order), no duplicates; [] when none.",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: hint filed under every key of the row name matches the shorter company key",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Ingredion",
+   "files": {
+    "successfactors.csv": "name,slug,url\nIngredion Incorporated,ingredion,https://careers.ingredion.com\n"
+   }
+  },
+  "expect": [
+   [
+    "successfactors",
+    "careers.ingredion.com"
+   ]
+  ],
+  "spec_quote": "a hint is filed under every key of the row's name. lookup returns the hints filed under the company's keys (keys in order, hints in file-then-row order), no duplicates",
+  "ambiguous": false
+ },
+ {
+  "name": "lookup: row producing a null hint is skipped and other rows still yield hints",
+  "fn": "inv_lookup",
+  "args": {
+   "company": "Roche",
+   "files": {
+    "successfactors.csv": "name,slug,url\nCareers,iav,https://apply.iav.com\nRoche,roche,https://careers.roche.com\n"
+   }
+  },
+  "expect": [
+   [
+    "successfactors",
+    "careers.roche.com"
+   ]
+  ],
+  "spec_quote": "Each row → hint_of(file name without .csv, name, url); a hint is filed under every key of the row's name. ... unless the name (trimmed, lower-case) is one of the words above (apply, careers, …)",
+  "ambiguous": false
+ }
+]

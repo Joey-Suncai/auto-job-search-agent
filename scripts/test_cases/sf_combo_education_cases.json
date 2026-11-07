@@ -1,0 +1,685 @@
+[
+ {
+  "name": "group_rows_simple_row_ends_at_unrelated_question",
+  "fn": "group_rows",
+  "args": {
+   "fields": [
+    {
+     "key": "g1_school",
+     "label": "School",
+     "type": "combo",
+     "value": "University of Chicago"
+    },
+    {
+     "key": "g1_degree",
+     "label": "Degree",
+     "type": "combo",
+     "value": "Master of Science"
+    },
+    {
+     "key": "g1_major",
+     "label": "Major",
+     "type": "combo",
+     "value": "Applied Data Science"
+    },
+    {
+     "key": "g1_comments",
+     "label": "Comments",
+     "type": "textarea",
+     "value": ""
+    },
+    {
+     "key": "g1_question",
+     "label": "How did you learn about this job opportunity?",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "key": "g1_major2",
+     "label": "Major",
+     "type": "combo",
+     "value": "Economics"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "g1_school",
+    "g1_degree",
+    "g1_major",
+    "g1_comments"
+   ]
+  ],
+  "spec_quote": "A row ends at the next School-type box (which starts a new row) or at the first box whose label is not an education-row label (e.g. \"How did you learn about this job opportunity?\", \"First Name\", \"Email\").",
+  "ambiguous": false
+ },
+ {
+  "name": "group_rows_lone_school_box_not_a_row",
+  "fn": "group_rows",
+  "args": {
+   "fields": [
+    {
+     "key": "s1",
+     "label": "School",
+     "type": "combo",
+     "value": "University of Chicago"
+    },
+    {
+     "key": "d1",
+     "label": "Degree",
+     "type": "combo",
+     "value": "Master of Science"
+    },
+    {
+     "key": "s2",
+     "label": "School",
+     "type": "combo",
+     "value": ""
+    },
+    {
+     "key": "s3",
+     "label": "School",
+     "type": "combo",
+     "value": "University of Illinois Urbana-Champaign"
+    },
+    {
+     "key": "m3",
+     "label": "Major",
+     "type": "combo",
+     "value": "Economics"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "s1",
+    "d1"
+   ],
+   [
+    "s3",
+    "m3"
+   ]
+  ],
+  "spec_quote": "A row only counts when it contains a Degree or a Major box (labels \"Degree\", \"Degree Type\", \"Major\", \"Field of Study\" …); a lone School box is not a row.",
+  "ambiguous": false
+ },
+ {
+  "name": "group_rows_label_star_and_colon_normalized",
+  "fn": "group_rows",
+  "args": {
+   "fields": [
+    {
+     "key": "n1",
+     "label": "* School Name:",
+     "type": "combo",
+     "value": ""
+    },
+    {
+     "key": "n2",
+     "label": "Degree Type:",
+     "type": "combo",
+     "value": ""
+    },
+    {
+     "key": "n3",
+     "label": "Field of Study:",
+     "type": "combo",
+     "value": ""
+    },
+    {
+     "key": "n4",
+     "label": "Start Date",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "key": "n5",
+     "label": "GPA",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "key": "n6",
+     "label": "First Name",
+     "type": "text",
+     "value": ""
+    }
+   ]
+  },
+  "expect": [
+   [
+    "n1",
+    "n2",
+    "n3",
+    "n4",
+    "n5"
+   ]
+  ],
+  "spec_quote": "A row starts at a box labelled \"School\", \"College\", \"University\", \"Institution\", \"School Name\" or \"Name of School\" (a leading \"*\" and a trailing \":\" in labels are ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "group_rows_non_education_label_ends_row",
+  "fn": "group_rows",
+  "args": {
+   "fields": [
+    {
+     "key": "x1",
+     "label": "College",
+     "type": "combo",
+     "value": "University of Chicago"
+    },
+    {
+     "key": "x2",
+     "label": "Degree",
+     "type": "combo",
+     "value": "Master of Science"
+    },
+    {
+     "key": "x3",
+     "label": "Please describe any relevant certifications or coursework you have completed",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "key": "x4",
+     "label": "Major",
+     "type": "combo",
+     "value": "Economics"
+    },
+    {
+     "key": "x5",
+     "label": "School",
+     "type": "combo",
+     "value": "University of Illinois Urbana-Champaign"
+    },
+    {
+     "key": "x6",
+     "label": "Degree",
+     "type": "combo",
+     "value": "Bachelor of Arts"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "x1",
+    "x2"
+   ],
+   [
+    "x5",
+    "x6"
+   ]
+  ],
+  "spec_quote": "A row ends at the next School-type box (which starts a new row) or at the first box whose label is not an education-row label.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_plan_three_rows_one_extra_empty_no_selection",
+  "fn": "row_plan",
+  "args": {
+   "rows": [
+    {
+     "school": "University of Chicago",
+     "other": ""
+    },
+    {
+     "school": "University of Illinois Urbana-Champaign",
+     "other": ""
+    },
+    {
+     "school": "No Selection",
+     "other": ""
+    }
+   ]
+  },
+  "expect": {
+   "rows": {
+    "0": "University of Chicago",
+    "1": "University of Illinois Urbana-Champaign"
+   },
+   "delete": [
+    2
+   ],
+   "add": [],
+   "unmatched": []
+  },
+  "spec_quote": "Empty rows, in page order, take the entries (profile order A, B) that have no row yet; empty rows left over are deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_plan_later_duplicate_entry_row_deleted",
+  "fn": "row_plan",
+  "args": {
+   "rows": [
+    {
+     "school": "University of Chicago",
+     "other": ""
+    },
+    {
+     "school": "University of Chicago",
+     "other": ""
+    },
+    {
+     "school": "University of Illinois Urbana-Champaign",
+     "other": ""
+    }
+   ]
+  },
+  "expect": {
+   "rows": {
+    "0": "University of Chicago",
+    "2": "University of Illinois Urbana-Champaign"
+   },
+   "delete": [
+    1
+   ],
+   "add": [],
+   "unmatched": []
+  },
+  "spec_quote": "The first row of an entry holds it; a later row of the same entry is deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_plan_empty_rows_fill_missing_entries",
+  "fn": "row_plan",
+  "args": {
+   "rows": [
+    {
+     "school": "",
+     "other": ""
+    },
+    {
+     "school": "University of Illinois Urbana-Champaign",
+     "other": ""
+    },
+    {
+     "school": "Select",
+     "other": ""
+    }
+   ]
+  },
+  "expect": {
+   "rows": {
+    "0": "University of Chicago",
+    "1": "University of Illinois Urbana-Champaign"
+   },
+   "delete": [
+    2
+   ],
+   "add": [],
+   "unmatched": []
+  },
+  "spec_quote": "Empty rows, in page order, take the entries (profile order A, B) that have no row yet; empty rows left over are deleted.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_plan_unmatched_and_missing_entry_added",
+  "fn": "row_plan",
+  "args": {
+   "rows": [
+    {
+     "school": "Harvard University",
+     "other": ""
+    },
+    {
+     "school": "",
+     "other": ""
+    }
+   ]
+  },
+  "expect": {
+   "rows": {
+    "1": "University of Chicago"
+   },
+   "delete": [],
+   "add": [
+    "University of Illinois Urbana-Champaign"
+   ],
+   "unmatched": [
+    0
+   ]
+  },
+  "spec_quote": "A non-empty row that belongs to no entry is \"unmatched\" (a person decides). Entries that still have no row are to be added.",
+  "ambiguous": false
+ },
+ {
+  "name": "row_plan_other_companion_name_and_empty_other",
+  "fn": "row_plan",
+  "args": {
+   "rows": [
+    {
+     "school": "Other",
+     "other": "University of Chicago"
+    },
+    {
+     "school": "Other",
+     "other": ""
+    },
+    {
+     "school": "Other",
+     "other": "Northwestern University"
+    }
+   ]
+  },
+  "expect": {
+   "rows": {
+    "0": "University of Chicago",
+    "1": "University of Illinois Urbana-Champaign"
+   },
+   "delete": [],
+   "add": [],
+   "unmatched": [
+    2
+   ]
+  },
+  "spec_quote": "A row's school text is its School value; when the School value starts with \"Other\", the companion value is the school text instead. A row is EMPTY when that text is empty or a placeholder (also \"Other\" with an empty companion).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_normalized_match",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "No Selection",
+    "University of Chicago (IL)",
+    "Loyola University Chicago"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   "University of Chicago (IL)",
+   "match"
+  ],
+  "spec_quote": "So \"The University of Chicago\", \"University of Chicago (IL)\" and \"UNIVERSITY OF CHICAGO\" are Entry A.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_missing_prefers_exact_other",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Other - Not Listed",
+    "Other",
+    "Select One"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   "Other",
+   "other"
+  ],
+  "spec_quote": "else [option, \"other\"] for an \"Other\" option — exactly \"Other\" first, then an option starting with \"Other\" (e.g. \"Other - Not Listed\").",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_only_placeholder_no_match",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "There were no results"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Placeholders are never real options or values: \"No Selection\", \"Select\", \"Select One\", \"Please select\", \"-\", \"---\", \"There were no results\", \"No results\", \"No results found\", \"No matches\", \"Loading…\".",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_school_near_miss_not_match",
+  "fn": "pick_school",
+  "args": {
+   "options": [
+    "Loyola University Chicago",
+    "University of Illinois Chicago"
+   ],
+   "entry": "A"
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "A name that merely contains the school (\"Loyola University Chicago\", \"University of Illinois Chicago\", \"University of Chicago Laboratory Schools\") is NOT that school in the list pick (rule 3).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_degree_master_fallback_starting_master",
+  "fn": "pick_degree",
+  "args": {
+   "options": [
+    "No Selection",
+    "Masters",
+    "Master's Degree",
+    "Graduate Certificate"
+   ],
+   "entry": "A"
+  },
+  "expect": "Masters",
+  "spec_quote": "else for a master entry the first option starting with \"Master\" (e.g. \"Masters\", \"Master's Degree\"), then one containing \"Master\", then one starting with \"Graduate\".",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_degree_bachelor_exact_full_degree",
+  "fn": "pick_degree",
+  "args": {
+   "options": [
+    "No Selection",
+    "Bachelor of Science",
+    "Bachelor of Arts",
+    "Bachelors"
+   ],
+   "entry": "B"
+  },
+  "expect": "Bachelor of Arts",
+  "spec_quote": "pick_degree(options, entry) → the option equal (case-insensitive) to the entry's full degree name.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_major_exact",
+  "fn": "pick_major",
+  "args": {
+   "options": [
+    "No Selection",
+    "Applied Data Science",
+    "Data Science"
+   ],
+   "major": "Applied Data Science"
+  },
+  "expect": "Applied Data Science",
+  "spec_quote": "pick_major(options, major) → the option equal to the major (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_major_multi_word_subset_not_one_word",
+  "fn": "pick_major",
+  "args": {
+   "options": [
+    "Science",
+    "Data",
+    "Data Science",
+    "Computer Science"
+   ],
+   "major": "Applied Data Science"
+  },
+  "expect": "Data Science",
+  "spec_quote": "else the first option of two or more words whose words all appear in the major (\"Data Science\" for \"Applied Data Science\")... A one-word option such as \"Science\" or \"Data\" never counts as the major.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_major_fallback_information_systems",
+  "fn": "pick_major",
+  "args": {
+   "options": [
+    "No Selection",
+    "Economics",
+    "Business Administration",
+    "Information System"
+   ],
+   "major": "Applied Data Science"
+  },
+  "expect": "Information System",
+  "spec_quote": "else \"Computer Science\"; else \"Information Systems\" (also \"Information System\", \"Computer Information Systems\", \"Management Information Systems\").",
+  "ambiguous": false
+ },
+ {
+  "name": "companion_prefers_text_specify_over_combo_and_gpa",
+  "fn": "companion",
+  "args": {
+   "fields": [
+    {
+     "key": "c_school",
+     "label": "School",
+     "type": "combo"
+    },
+    {
+     "key": "c_other_combo",
+     "label": "Other",
+     "type": "combo"
+    },
+    {
+     "key": "c_other_text",
+     "label": "Other (Specify)",
+     "type": "text"
+    },
+    {
+     "key": "c_gpa",
+     "label": "GPA",
+     "type": "text"
+    },
+    {
+     "key": "c_comments",
+     "label": "Comments",
+     "type": "textarea"
+    }
+   ]
+  },
+  "expect": "c_other_text",
+  "spec_quote": "companion(row boxes) → the key of the text / textarea box in the row whose label says \"other\", \"not listed\", \"specify\", \"school name\" or \"institution name\" (never a combo, never the GPA box).",
+  "ambiguous": false
+ },
+ {
+  "name": "companion_fallback_notes_when_other_only_combo",
+  "fn": "companion",
+  "args": {
+   "fields": [
+    {
+     "key": "c2_school",
+     "label": "School",
+     "type": "combo"
+    },
+    {
+     "key": "c2_other_combo",
+     "label": "Other",
+     "type": "combo"
+    },
+    {
+     "key": "c2_gpa",
+     "label": "GPA",
+     "type": "text"
+    },
+    {
+     "key": "c2_notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "expect": "c2_notes",
+  "spec_quote": "if none, the row's box labelled \"Comments\" / \"Comment\" / \"Notes\" / \"Additional Information\"; else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_status_current_skips_not_currently_attending",
+  "fn": "pick_status",
+  "args": {
+   "options": [
+    "No Selection",
+    "Not Currently Attending",
+    "Currently Attending",
+    "In Progress"
+   ],
+   "entry": "A"
+  },
+  "expect": "Currently Attending",
+  "spec_quote": "for a current entry the first option starting with \"Attending\", \"Currently Attending\", \"Enrolled\", \"In Progress\", \"Pursuing\" or \"Current\" that does not contain \"no longer\" or \"not\".",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_status_ended_graduated",
+  "fn": "pick_status",
+  "args": {
+   "options": [
+    "No Selection",
+    "Not Graduated",
+    "Graduated",
+    "Completed"
+   ],
+   "entry": "B"
+  },
+  "expect": "Graduated",
+  "spec_quote": "for an entry that ended on or before today the first option starting with \"Graduated\", \"Completed\", \"Degree Awarded\" or \"Degree Received\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rebind_three_school_boxes_exactly_one_untaken",
+  "fn": "rebind",
+  "args": {
+   "row": {
+    "key": "old_school",
+    "label": "School"
+   },
+   "fields": [
+    {
+     "key": "s1",
+     "label": "School"
+    },
+    {
+     "key": "s2",
+     "label": "School"
+    },
+    {
+     "key": "s3",
+     "label": "School"
+    }
+   ],
+   "taken": [
+    "s1",
+    "s2"
+   ]
+  },
+  "expect": "s3",
+  "spec_quote": "a read-back row {key, label} moves to another field only when its own key is no longer among the fields AND exactly one field with the same label exists whose key is not in `taken` (keys held by other rows); then that field's key; otherwise null (keep the key). Three boxes labelled \"School\" must never be collapsed into the first one.",
+  "ambiguous": false
+ },
+ {
+  "name": "rebind_three_school_boxes_all_untaken_keep_key",
+  "fn": "rebind",
+  "args": {
+   "row": {
+    "key": "old_school",
+    "label": "School"
+   },
+   "fields": [
+    {
+     "key": "s1",
+     "label": "School"
+    },
+    {
+     "key": "s2",
+     "label": "School"
+    },
+    {
+     "key": "s3",
+     "label": "School"
+    }
+   ],
+   "taken": []
+  },
+  "expect": null,
+  "spec_quote": "otherwise null (keep the key). Three boxes labelled \"School\" must never be collapsed into the first one.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,100 @@
+[
+ {
+  "name": "ats=successfactors query param on non-SF host",
+  "url": "https://careers.acme.com/jobs/12345?ats=successfactors",
+  "expect": true,
+  "spec_quote": "it has \"ats=successfactors\" as a query parameter",
+  "ambiguous": false
+ },
+ {
+  "name": "host contains .successfactors.com",
+  "url": "https://career5.successfactors.com/careers?company=acme",
+  "expect": true,
+  "spec_quote": "the host contains \".successfactors.com\"/\".successfactors.eu\"",
+  "ambiguous": false
+ },
+ {
+  "name": "host contains .successfactors.eu",
+  "url": "https://career.successfactors.eu/career?career_ns=job_listing",
+  "expect": true,
+  "spec_quote": "the host contains \".successfactors.com\"/\".successfactors.eu\"",
+  "ambiguous": false
+ },
+ {
+  "name": "career<digits>.sapsf. host",
+  "url": "https://career4.sapsf.com/careers?company=acme",
+  "expect": true,
+  "spec_quote": "\"career<digits>.sapsf.\"",
+  "ambiguous": false
+ },
+ {
+  "name": "jobs.sap.com job page",
+  "url": "https://jobs.sap.com/job/berlin/software-engineer/12345",
+  "expect": true,
+  "spec_quote": "it is \"jobs.sap.com/job/…\"",
+  "ambiguous": false
+ },
+ {
+  "name": "path /job/<slug>/<7 digits> at end",
+  "url": "https://www.acme.com/job/senior-engineer/1234567",
+  "expect": true,
+  "spec_quote": "or the path is \"/job/<slug>/<7+ digits>\" (optionally \"/\" then end / \"?\" / \"#\")",
+  "ambiguous": false
+ },
+ {
+  "name": "path /job/<slug>/<7 digits> with trailing slash and query",
+  "url": "https://www.acme.com/job/senior-engineer/12345678/?src=web",
+  "expect": true,
+  "spec_quote": "the path is \"/job/<slug>/<7+ digits>\" (optionally \"/\" then end / \"?\" / \"#\")",
+  "ambiguous": false
+ },
+ {
+  "name": "builtin.com look-alike path excluded",
+  "url": "https://builtin.com/job/x/11528663",
+  "expect": false,
+  "spec_quote": "never for job boards whose links look alike: builtin.com, linkedin.com, indeed.com, glassdoor.* (case-insensitive) → False",
+  "ambiguous": false
+ },
+ {
+  "name": "linkedin.com look-alike path excluded",
+  "url": "https://www.linkedin.com/job/software-engineer/1234567",
+  "expect": false,
+  "spec_quote": "never for job boards whose links look alike: builtin.com, linkedin.com, indeed.com, glassdoor.* (case-insensitive) → False for those even when the path matches.",
+  "ambiguous": false
+ },
+ {
+  "name": "indeed.com look-alike path excluded",
+  "url": "https://www.indeed.com/job/software-engineer/1234567",
+  "expect": false,
+  "spec_quote": "never for job boards whose links look alike: builtin.com, linkedin.com, indeed.com, glassdoor.* (case-insensitive) → False for those even when the path matches.",
+  "ambiguous": false
+ },
+ {
+  "name": "glassdoor.* excluded case-insensitively",
+  "url": "https://www.GlassDoor.com/job/software-engineer/1234567",
+  "expect": false,
+  "spec_quote": "glassdoor.* (case-insensitive) → False for those even when the path matches.",
+  "ambiguous": false
+ },
+ {
+  "name": "workday job URL not a SuccessFactors page",
+  "url": "https://acme.wd1.myworkdayjobs.com/External/job/Berlin/Engineer_JR-12345",
+  "expect": false,
+  "spec_quote": "True when the URL is a SuccessFactors career-site job page: ... or the path is \"/job/<slug>/<7+ digits>\" (optionally \"/\" then end / \"?\" / \"#\")",
+  "ambiguous": false
+ },
+ {
+  "name": "short id (6 digits) does not match",
+  "url": "https://www.acme.com/job/software-engineer/123456",
+  "expect": false,
+  "spec_quote": "the path is \"/job/<slug>/<7+ digits>\" (optionally \"/\" then end / \"?\" / \"#\")",
+  "ambiguous": false
+ },
+ {
+  "name": "short id (6 digits) with trailing slash and query does not match",
+  "url": "https://www.acme.com/job/engineer/123456/?utm=1",
+  "expect": false,
+  "spec_quote": "the path is \"/job/<slug>/<7+ digits>\" (optionally \"/\" then end / \"?\" / \"#\")",
+  "ambiguous": false
+ }
+]

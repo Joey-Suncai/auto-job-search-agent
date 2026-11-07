@@ -1,0 +1,357 @@
+[
+ {
+  "name": "alt_key_start_year_brackets",
+  "fn": "alt_key",
+  "title": "Data Engineer Graduate (Data Platform E-commerce) - 2027 Start",
+  "expect": "data engineer graduate data platform e commerce",
+  "spec": "Lower case; bracket text is KEPT (the brackets themselves become spaces); the words \"start\", \"summer\" and any 4-digit year 20xx are removed; every run of non-alphanumeric characters becomes one space; trimmed."
+ },
+ {
+  "name": "alt_key_summer_year_brackets",
+  "fn": "alt_key",
+  "title": "Data Analytics Intern (Summer 2027)",
+  "expect": "data analytics intern",
+  "spec": "The words \"start\", \"summer\" and any 4-digit year 20xx are removed; bracket text is KEPT (the brackets themselves become spaces)."
+ },
+ {
+  "name": "alt_key_remote_us_bracket",
+  "fn": "alt_key",
+  "title": "Product Management Intern [Remote - US] 2027",
+  "expect": "product management intern remote us",
+  "spec": "Bracket text is KEPT (the brackets themselves become spaces); any 4-digit year 20xx are removed; every run of non-alphanumeric characters becomes one space."
+ },
+ {
+  "name": "alt_key_multiple_years_punctuation",
+  "fn": "alt_key",
+  "title": "2027 New Grad Data Analyst – Summer 2028",
+  "expect": "new grad data analyst",
+  "spec": "Any 4-digit year 20xx are removed; every run of non-alphanumeric characters becomes one space; trimmed."
+ },
+ {
+  "name": "alt_key_bracket_healthcare_start",
+  "fn": "alt_key",
+  "title": "Business Intelligence Analyst (Healthcare) - 2027 Start",
+  "expect": "business intelligence analyst healthcare",
+  "spec": "Bracket text is KEPT (the brackets themselves become spaces); the words \"start\", \"summer\" and any 4-digit year 20xx are removed."
+ },
+ {
+  "name": "alt_key_hyphen_slash_entry",
+  "fn": "alt_key",
+  "title": "Entry-Level AI/ML Intern - 2028",
+  "expect": "entry level ai ml intern",
+  "spec": "Every run of non-alphanumeric characters becomes one space; trimmed."
+ },
+ {
+  "name": "keep_junior_data_analyst_detroit",
+  "fn": "keep",
+  "title": "Junior Data Analyst",
+  "location": "Detroit, Michigan",
+  "expect": true,
+  "spec": "Examples: \"Junior Data Analyst\", \"Detroit, Michigan\" → true."
+ },
+ {
+  "name": "keep_entry_level_aml_analyst_orlando",
+  "fn": "keep",
+  "title": "Entry Level AML Analyst",
+  "location": "Orlando, Florida",
+  "expect": false,
+  "spec": "Examples: \"Entry Level AML Analyst\", \"Orlando, Florida\" → false."
+ },
+ {
+  "name": "keep_junior_qa_analyst",
+  "fn": "keep",
+  "title": "Junior QA Analyst",
+  "location": "Austin, Texas",
+  "expect": false,
+  "spec": "Examples: \"Junior QA Analyst\" → false."
+ },
+ {
+  "name": "keep_data_analyst_no_level",
+  "fn": "keep",
+  "title": "Data Analyst",
+  "location": "Austin, Texas",
+  "expect": false,
+  "spec": "Examples: \"Data Analyst\" (no level word) → false."
+ },
+ {
+  "name": "keep_senior_data_analyst_intern",
+  "fn": "keep",
+  "title": "Senior Data Analyst Intern",
+  "location": "Chicago, Illinois",
+  "expect": false,
+  "spec": "Examples: \"Senior Data Analyst Intern\" → false."
+ },
+ {
+  "name": "keep_data_analytics_intern_2027_austin",
+  "fn": "keep",
+  "title": "Data Analytics Intern - 2027",
+  "location": "Austin, Texas",
+  "expect": true,
+  "spec": "A title with intern / internship (not \"internal\") → \"Internship\" unless it names a year other than 2027."
+ },
+ {
+  "name": "keep_product_management_intern_remote",
+  "fn": "keep",
+  "title": "Product Management Intern 2027",
+  "location": "Remote",
+  "expect": true,
+  "spec": "Base keep requires a track word and a level not None; \"Remote\" is fine for location; a title with intern and year 2027 → \"Internship\"."
+ },
+ {
+  "name": "keep_data_analyst_intern_toronto",
+  "fn": "keep",
+  "title": "Data Analyst Intern 2027",
+  "location": "Toronto, ON",
+  "expect": false,
+  "spec": "The location is not clearly outside the U.S. (\"Toronto, ON\", \"London, UK\" → out; \"Remote\", \"\", U.S. cities / states → fine)."
+ },
+ {
+  "name": "keep_data_analyst_coop_boston",
+  "fn": "keep",
+  "title": "Data Analyst Co-op",
+  "location": "Boston, Massachusetts",
+  "expect": false,
+  "spec": "A title with fall / autumn / spring / winter / co-op / year-round / part-time → None."
+ },
+ {
+  "name": "keep_junior_marketing_data_analyst",
+  "fn": "keep",
+  "title": "Junior Marketing Data Analyst",
+  "location": "Austin, Texas",
+  "expect": false,
+  "spec": "The title has none of these whole words (case-insensitive): design, designer, sales, marketing, security, cyber, soc, audit ..."
+ },
+ {
+  "name": "parse_basic_example",
+  "fn": "parse_cards",
+  "html": "<div data-testid=\"job-card\" role=\"article\"><a aria-label=\"View Details for Junior Data Analyst (abc123)\" href=\"/job-detail/1f2e-33aa\"> </a><span>Acme Corp</span><span>Apply Now</span><a>Junior Data Analyst</a><span>Austin, Texas</span></div>",
+  "expect": [
+   {
+    "guid": "1f2e-33aa",
+    "company": "Acme Corp",
+    "title": "Junior Data Analyst",
+    "location": "Austin, Texas"
+   }
+  ],
+  "spec": "Example card: ... → {\"guid\": \"1f2e-33aa\", \"company\": \"Acme Corp\", \"title\": \"Junior Data Analyst\", \"location\": \"Austin, Texas\"}"
+ },
+ {
+  "name": "parse_missing_href_uses_aria_hex",
+  "fn": "parse_cards",
+  "html": "<div data-testid=\"job-card\" role=\"article\"><a aria-label=\"View Details for Data Analyst Intern (deadbeef)\"> </a><span>Beta LLC</span><a>Data Analyst Intern</a><span>Remote</span></div>",
+  "expect": [
+   {
+    "guid": "deadbeef",
+    "company": "Beta LLC",
+    "title": "Data Analyst Intern",
+    "location": "Remote"
+   }
+  ],
+  "spec": "guid = the value in the first href=\"/job-detail/<guid>\" ...; if missing, the hex id from the aria-label."
+ },
+ {
+  "name": "parse_entities_and_lowercase_guid",
+  "fn": "parse_cards",
+  "html": "<div data-testid=\"job-card\" role=\"article\"><a aria-label=\"View Details for Data &amp; Analytics Intern (a1b2c3)\" href=\"/job-detail/AB-CD-12\"> </a><span>Gamma &amp; Co</span><a>Data &amp; Analytics Intern</a><span>New York, NY</span></div>",
+  "expect": [
+   {
+    "guid": "ab-cd-12",
+    "company": "Gamma & Co",
+    "title": "Data & Analytics Intern",
+    "location": "New York, NY"
+   }
+  ],
+  "spec": "HTML entities in the title are decoded (&amp; → &); guid = the value in the first href=\"/job-detail/<guid>\" ... lower-cased."
+ },
+ {
+  "name": "parse_skips_card_without_aria_label",
+  "fn": "parse_cards",
+  "html": "<div data-testid=\"job-card\" role=\"article\"><span>No Title</span></div><div data-testid=\"job-card\" role=\"article\"><a aria-label=\"View Details for Product Intern (f00d)\" href=\"/job-detail/9a8b\"> </a><span>Gamma Inc</span><a>Product Intern</a><span>New York, NY</span></div>",
+  "expect": [
+   {
+    "guid": "9a8b",
+    "company": "Gamma Inc",
+    "title": "Product Intern",
+    "location": "New York, NY"
+   }
+  ],
+  "spec": "Title and short id come from the first aria-label=\"View Details for <TITLE> (<hex id>)\"; a card without it is skipped."
+ },
+ {
+  "name": "parse_company_empty_without_role_prefix",
+  "fn": "parse_cards",
+  "html": "<div data-testid=\"job-card\"><a aria-label=\"View Details for Junior Data Analyst (abc123)\" href=\"/job-detail/1f2e-33aa\"> </a><span>Acme Corp</span><a>Junior Data Analyst</a><span>Austin, Texas</span></div>",
+  "expect": [
+   {
+    "guid": "1f2e-33aa",
+    "company": "",
+    "title": "Junior Data Analyst",
+    "location": "Austin, Texas"
+   }
+  ],
+  "spec": "Company = the second text node, or \"\" when the first does not start with role=."
+ },
+ {
+  "name": "pick_new_company_limit_two",
+  "fn": "pick_new",
+  "store": [],
+  "cards": [
+   {
+    "guid": "g1",
+    "company": "Acme Corp",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   },
+   {
+    "guid": "g2",
+    "company": "Acme Corp",
+    "title": "Business Intelligence Intern",
+    "location": "Remote"
+   },
+   {
+    "guid": "g3",
+    "company": "Acme Corp",
+    "title": "Product Intern",
+    "location": "Seattle, WA"
+   }
+  ],
+  "expect": [
+   "g1",
+   "g2"
+  ],
+  "spec": "pick_new keeps a card only when ... fewer than 2 cards of the same norm(company) were already kept."
+ },
+ {
+  "name": "pick_new_store_guid_excluded",
+  "fn": "pick_new",
+  "store": [
+   {
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "url": "https://www.dice.com/job-detail/abc123"
+   }
+  ],
+  "cards": [
+   {
+    "guid": "abc123",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   },
+   {
+    "guid": "def456",
+    "company": "Beta",
+    "title": "Product Intern",
+    "location": "Remote"
+   }
+  ],
+  "expect": [
+   "def456"
+  ],
+  "spec": "pick_new keeps a card only when its guid is not in ids."
+ },
+ {
+  "name": "pick_new_store_title_key_pair_excludes",
+  "fn": "pick_new",
+  "store": [
+   {
+    "company": "Beta LLC",
+    "title": "Data Analyst (Healthcare) Intern",
+    "url": "https://example.com/no-dice"
+   }
+  ],
+  "cards": [
+   {
+    "guid": "g1",
+    "company": "Beta",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   },
+   {
+    "guid": "g2",
+    "company": "Gamma",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   }
+  ],
+  "expect": [
+   "g2"
+  ],
+  "spec": "pick_new keeps a card only when neither (norm(company), title_key(title)) nor (norm(company), alt_key(title)) is in pairs."
+ },
+ {
+  "name": "pick_new_store_alt_key_pair_excludes",
+  "fn": "pick_new",
+  "store": [
+   {
+    "company": "Acme, Inc.",
+    "title": "Data Engineer Graduate (Data Platform E-commerce) - 2027 Start",
+    "url": "https://example.com/no-dice"
+   }
+  ],
+  "cards": [
+   {
+    "guid": "g1",
+    "company": "Acme",
+    "title": "Data Engineer Graduate - Data Platform E-commerce - 2027 Start",
+    "location": "Austin, Texas"
+   },
+   {
+    "guid": "g2",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   }
+  ],
+  "expect": [
+   "g2"
+  ],
+  "spec": "pick_new keeps a card only when neither (norm(company), title_key(title)) nor (norm(company), alt_key(title)) is in pairs."
+ },
+ {
+  "name": "pick_new_keep_false_location",
+  "fn": "pick_new",
+  "store": [],
+  "cards": [
+   {
+    "guid": "g1",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "Toronto, ON"
+   },
+   {
+    "guid": "g2",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   }
+  ],
+  "expect": [
+   "g2"
+  ],
+  "spec": "pick_new keeps a card only when keep(title, location) is true."
+ },
+ {
+  "name": "pick_new_kept_card_adds_pairs",
+  "fn": "pick_new",
+  "store": [],
+  "cards": [
+   {
+    "guid": "g1",
+    "company": "Acme Corp",
+    "title": "Data Analyst Intern",
+    "location": "Austin, Texas"
+   },
+   {
+    "guid": "g2",
+    "company": "Acme Corp",
+    "title": "Data Analyst Intern - 2027",
+    "location": "Remote"
+   }
+  ],
+  "expect": [
+   "g1"
+  ],
+  "spec": "A kept card adds its guid and both pairs, so a repeat later in the list is dropped."
+ }
+]

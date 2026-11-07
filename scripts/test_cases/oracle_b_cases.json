@@ -1,0 +1,210 @@
+[
+ {
+  "name": "profile_snippet_match",
+  "fn": "consent_approved",
+  "args": [
+   "I agree to the terms and conditions",
+   "",
+   [
+    {
+     "contains": "agree to the"
+    }
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "cli_match",
+  "fn": "consent_approved",
+  "args": [
+   "I accept the privacy policy",
+   "privacy policy",
+   []
+  ],
+  "expect": true
+ },
+ {
+  "name": "neither_matches",
+  "fn": "consent_approved",
+  "args": [
+   "I accept",
+   "decline",
+   [
+    {
+     "contains": "refuse"
+    }
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "case_insensitive_cli",
+  "fn": "consent_approved",
+  "args": [
+   "I ACCEPT THE TERMS",
+   "accept the terms",
+   []
+  ],
+  "expect": true
+ },
+ {
+  "name": "whitespace_newlines_and_tabs",
+  "fn": "consent_approved",
+  "args": [
+   "I\n\n  accept\t\t the\nterms",
+   "accept the terms",
+   []
+  ],
+  "expect": true
+ },
+ {
+  "name": "double_spaces_in_snippet",
+  "fn": "consent_approved",
+  "args": [
+   "i accept  the   terms",
+   "",
+   [
+    {
+     "contains": "accept the"
+    }
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "empty_cli_and_empty_snippets",
+  "fn": "consent_approved",
+  "args": [
+   "anything here",
+   "",
+   [
+    {
+     "contains": ""
+    },
+    "",
+    {
+     "contains": "   "
+    }
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "null_item_ignored_other_matches",
+  "fn": "consent_approved",
+  "args": [
+   "hello world",
+   "",
+   [
+    null,
+    {
+     "contains": "world"
+    }
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "null_and_missing_contains_only",
+  "fn": "consent_approved",
+  "args": [
+   "hello world",
+   "",
+   [
+    null,
+    {
+     "other": "world"
+    }
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "plain_string_item",
+  "fn": "consent_approved",
+  "args": [
+   "I accept the policy",
+   "",
+   [
+    "policy"
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "snippet_longer_than_text",
+  "fn": "consent_approved",
+  "args": [
+   "short",
+   "",
+   [
+    {
+     "contains": "a much longer snippet"
+    }
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "partial_word_cli_substring",
+  "fn": "consent_approved",
+  "args": [
+   "concatenate",
+   "cat",
+   []
+  ],
+  "expect": true
+ },
+ {
+  "name": "partial_word_snippet_substring",
+  "fn": "consent_approved",
+  "args": [
+   "category theory",
+   "",
+   [
+    "cat"
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "extra_keys_in_object_ignored",
+  "fn": "consent_approved",
+  "args": [
+   "yes I do",
+   "",
+   [
+    {
+     "contains": "yes",
+     "id": 7,
+     "active": true
+    }
+   ]
+  ],
+  "expect": true
+ },
+ {
+  "name": "empty_text_no_match",
+  "fn": "consent_approved",
+  "args": [
+   "",
+   "",
+   [
+    "anything"
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "snippet_equals_text_with_case_and_whitespace",
+  "fn": "consent_approved",
+  "args": [
+   "  OK  ",
+   "",
+   [
+    "ok"
+   ]
+  ],
+  "expect": true
+ }
+]

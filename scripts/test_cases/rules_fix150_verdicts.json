@@ -1,0 +1,18 @@
+{
+ "major — 'School Major:' returns field of study": {
+  "verdict": "case",
+  "why": "our rule for the field of study is called discipline; the value (Data Science) is what the spec asks for"
+ },
+ "near miss — 'School GPA' is not the school-name question": {
+  "verdict": "case",
+  "why": "the spec only says it is not the school-name question; the gpa rule answering the profile GPA is right"
+ },
+ "near miss — 'Concentration:' must not be answered as the school name": {
+  "verdict": "case",
+  "why": "it is not answered as the school; a concentration is the field of study, so discipline 'Data Science' is right"
+ },
+ "near miss — 'High School Name' is high-school-related, not the school-name question": {
+  "verdict": "case",
+  "why": "it is not answered as the school (University of Chicago); since JSA-218 (2026-11-05) the high school's own name is on file and the hs_name rule answers it — the spec only rules out the school-name rule"
+ }
+}

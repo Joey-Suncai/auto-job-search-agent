@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "expect": "transport" | "other", "spec_quote": str, "ambiguous": false}. Write 14 cases: 7 transport, 7 other (driver's license, travel %, commute, relocate, onsite).

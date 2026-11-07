@@ -1,0 +1,14 @@
+{
+ "split letters match_re recognized": {
+  "verdict": "case",
+  "why": "the case misreads the spec: edu_fill's 'degree' is the list word \"Master's\" / \"Bachelor's\" / \"Doctorate\" (edu_fill contract, oracle cards spec, unchanged by JSA-226); this spec did not restate it, so the expected raw level / card word is not the contract — the code's mapping is right"
+ },
+ "fallback by degree level and end month": {
+  "verdict": "case",
+  "why": "the case misreads the spec: edu_fill's 'degree' is the list word \"Master's\" / \"Bachelor's\" / \"Doctorate\" (edu_fill contract, oracle cards spec, unchanged by JSA-226); this spec did not restate it, so the expected raw level / card word is not the contract — the code's mapping is right"
+ },
+ "fallback Ph.D. month conversion": {
+  "verdict": "case",
+  "why": "the case misreads the spec: edu_fill's 'degree' is the list word \"Master's\" / \"Bachelor's\" / \"Doctorate\" (edu_fill contract, oracle cards spec, unchanged by JSA-226); this spec did not restate it, so the expected raw level / card word is not the contract — the code's mapping is right"
+ }
+}

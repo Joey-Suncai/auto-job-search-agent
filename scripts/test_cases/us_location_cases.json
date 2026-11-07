@@ -1,0 +1,545 @@
+[
+ {
+  "name": "empty_location",
+  "location": "",
+  "expect": false
+ },
+ {
+  "name": "remote_only",
+  "location": "Remote",
+  "expect": false
+ },
+ {
+  "name": "remote_dash_canada",
+  "location": "Remote - Canada",
+  "expect": true
+ },
+ {
+  "name": "remote_comma_americas",
+  "location": "Remote, Americas",
+  "expect": false
+ },
+ {
+  "name": "remote_us",
+  "location": "Remote US",
+  "expect": false
+ },
+ {
+  "name": "us_then_foreign_semicolon",
+  "location": "New York, NY; London, UK",
+  "expect": false
+ },
+ {
+  "name": "london_with_hybrid",
+  "location": "London; Hybrid",
+  "expect": true
+ },
+ {
+  "name": "bangalore_with_india_code",
+  "location": "Bangalore, IN",
+  "expect": true
+ },
+ {
+  "name": "toronto_with_canada_code",
+  "location": "Toronto, CA",
+  "expect": true
+ },
+ {
+  "name": "berlin_with_germany_code",
+  "location": "Berlin, DE",
+  "expect": true
+ },
+ {
+  "name": "dublin_with_california_state",
+  "location": "Dublin, CA",
+  "expect": false
+ },
+ {
+  "name": "paris_with_texas_state",
+  "location": "Paris, TX",
+  "expect": false
+ },
+ {
+  "name": "vancouver_with_washington_state",
+  "location": "Vancouver, WA",
+  "expect": false
+ },
+ {
+  "name": "moscow_with_idaho_state",
+  "location": "Moscow, Idaho",
+  "expect": false
+ },
+ {
+  "name": "vancouver_british_columbia",
+  "location": "Vancouver, BC",
+  "expect": true
+ },
+ {
+  "name": "dublin_ireland",
+  "location": "Dublin, Ireland",
+  "expect": true
+ },
+ {
+  "name": "london_bare",
+  "location": "London",
+  "expect": true
+ },
+ {
+  "name": "new_mexico_state",
+  "location": "New Mexico",
+  "expect": false
+ },
+ {
+  "name": "new_england_region",
+  "location": "New England",
+  "expect": false
+ },
+ {
+  "name": "ontario_california",
+  "location": "Ontario, CA",
+  "expect": false
+ },
+ {
+  "name": "bay_area_us_city",
+  "location": "Bay Area",
+  "expect": false
+ },
+ {
+  "name": "lima_ohio",
+  "location": "Lima, OH",
+  "expect": false
+ },
+ {
+  "name": "lagos_nigeria",
+  "location": "Lagos, Nigeria",
+  "expect": true
+ },
+ {
+  "name": "nairobi_kenya",
+  "location": "Nairobi, Kenya",
+  "expect": true
+ },
+ {
+  "name": "buenos_aires_argentina",
+  "location": "Buenos Aires, Argentina",
+  "expect": true
+ },
+ {
+  "name": "reykjavik_iceland",
+  "location": "Reykjavik, Iceland",
+  "expect": true
+ },
+ {
+  "name": "osaka_japan",
+  "location": "Osaka, Japan",
+  "expect": true
+ },
+ {
+  "name": "seoul_south_korea",
+  "location": "Seoul, South Korea",
+  "expect": true
+ },
+ {
+  "name": "cairo_egypt",
+  "location": "Cairo, Egypt",
+  "expect": true
+ },
+ {
+  "name": "dubai_united_arab_emirates",
+  "location": "Dubai, United Arab Emirates",
+  "expect": true
+ },
+ {
+  "name": "sydney_australia",
+  "location": "Sydney, Australia",
+  "expect": true
+ },
+ {
+  "name": "lisbon_portugal",
+  "location": "Lisbon, Portugal",
+  "expect": true
+ },
+ {
+  "name": "taipei_taiwan",
+  "location": "Taipei, Taiwan",
+  "expect": true
+ },
+ {
+  "name": "accra_ghana",
+  "location": "Accra, Ghana",
+  "expect": true
+ },
+ {
+  "name": "kyiv_ukraine",
+  "location": "Kyiv, Ukraine",
+  "expect": true
+ },
+ {
+  "name": "austin_or_london_or_separator",
+  "location": "Austin, TX or London, UK",
+  "expect": false
+ },
+ {
+  "name": "chicago_double_space_toronto",
+  "location": "Chicago  Toronto, ON",
+  "expect": false
+ },
+ {
+  "name": "emea_region",
+  "location": "EMEA",
+  "expect": true
+ },
+ {
+  "name": "tokyo_pipe_singapore",
+  "location": "Tokyo, Japan | Singapore",
+  "expect": true
+ },
+ {
+  "name": "new_york_bullet_toronto",
+  "location": "New York, NY • Toronto, ON",
+  "expect": false
+ },
+ {
+  "name": "wroclaw_bare_foreign_city_b2",
+  "location": "Wroclaw",
+  "expect": true
+ },
+ {
+  "name": "gurugram_bare_foreign_city_b2",
+  "location": "Gurugram",
+  "expect": true
+ },
+ {
+  "name": "hsinchu_bare_foreign_city_b2",
+  "location": "Hsinchu",
+  "expect": true
+ },
+ {
+  "name": "krakow_bare_foreign_city_b2",
+  "location": "Kraków",
+  "expect": true
+ },
+ {
+  "name": "lagos_bare_foreign_city_b2",
+  "location": "Lagos",
+  "expect": true
+ },
+ {
+  "name": "nairobi_bare_foreign_city_b2",
+  "location": "Nairobi",
+  "expect": true
+ },
+ {
+  "name": "cairo_bare_foreign_city_b2",
+  "location": "Cairo",
+  "expect": true
+ },
+ {
+  "name": "istanbul_bare_foreign_city_b2",
+  "location": "Istanbul",
+  "expect": true
+ },
+ {
+  "name": "dubai_bare_foreign_city_b2",
+  "location": "Dubai",
+  "expect": true
+ },
+ {
+  "name": "seoul_bare_foreign_city_b2",
+  "location": "Seoul",
+  "expect": true
+ },
+ {
+  "name": "tokyo_bare_foreign_city_b2",
+  "location": "Tokyo",
+  "expect": true
+ },
+ {
+  "name": "sydney_bare_foreign_city_b2",
+  "location": "Sydney",
+  "expect": true
+ },
+ {
+  "name": "christchurch_bare_foreign_city_b2",
+  "location": "Christchurch",
+  "expect": true
+ },
+ {
+  "name": "bogota_bare_foreign_city_b2",
+  "location": "Bogotá",
+  "expect": true
+ },
+ {
+  "name": "waterloo_on_canadian_province_b2",
+  "location": "Waterloo, ON",
+  "expect": true
+ },
+ {
+  "name": "calgary_ab_canadian_province_b2",
+  "location": "Calgary, AB",
+  "expect": true
+ },
+ {
+  "name": "montreal_qc_canadian_province_b2",
+  "location": "Montreal, QC",
+  "expect": true
+ },
+ {
+  "name": "winnipeg_mb_canadian_province_b2",
+  "location": "Winnipeg, MB",
+  "expect": true
+ },
+ {
+  "name": "nordics_region_b2",
+  "location": "Nordics",
+  "expect": true
+ },
+ {
+  "name": "benelux_region_b2",
+  "location": "Benelux",
+  "expect": true
+ },
+ {
+  "name": "scandinavia_region_b2",
+  "location": "Scandinavia",
+  "expect": true
+ },
+ {
+  "name": "oceania_region_b2",
+  "location": "Oceania",
+  "expect": true
+ },
+ {
+  "name": "boston_bare_us_city_b2",
+  "location": "Boston",
+  "expect": false
+ },
+ {
+  "name": "denver_bare_us_city_b2",
+  "location": "Denver",
+  "expect": false
+ },
+ {
+  "name": "atlanta_bare_us_city_b2",
+  "location": "Atlanta",
+  "expect": false
+ },
+ {
+  "name": "miami_bare_us_city_b2",
+  "location": "Miami",
+  "expect": false
+ },
+ {
+  "name": "nashville_bare_us_city_b2",
+  "location": "Nashville",
+  "expect": false
+ },
+ {
+  "name": "pittsburgh_bare_us_city_b2",
+  "location": "Pittsburgh",
+  "expect": false
+ },
+ {
+  "name": "salt_lake_city_bare_us_city_b2",
+  "location": "Salt Lake City",
+  "expect": false
+ },
+ {
+  "name": "boise_id_us_city_state_b2",
+  "location": "Boise, ID",
+  "expect": false
+ },
+ {
+  "name": "tulsa_ok_us_city_state_b2",
+  "location": "Tulsa, OK",
+  "expect": false
+ },
+ {
+  "name": "omaha_ne_us_city_state_b2",
+  "location": "Omaha, NE",
+  "expect": false
+ },
+ {
+  "name": "wichita_ks_us_city_state_b2",
+  "location": "Wichita, KS",
+  "expect": false
+ },
+ {
+  "name": "reno_nv_us_city_state_b2",
+  "location": "Reno, NV",
+  "expect": false
+ },
+ {
+  "name": "asheville_nc_us_city_state_b2",
+  "location": "Asheville, NC",
+  "expect": false
+ },
+ {
+  "name": "abu_dhabi_bare_b3",
+  "location": "Abu Dhabi",
+  "expect": true
+ },
+ {
+  "name": "doha_bare_b3",
+  "location": "Doha",
+  "expect": true
+ },
+ {
+  "name": "al_khobar_bare_b3",
+  "location": "Al Khobar",
+  "expect": true
+ },
+ {
+  "name": "dubai_uae_b3",
+  "location": "Dubai, United Arab Emirates",
+  "expect": true
+ },
+ {
+  "name": "riyadh_saudi_arabia_b3",
+  "location": "Riyadh, Saudi Arabia",
+  "expect": true
+ },
+ {
+  "name": "remote_saudi_arabia_b3",
+  "location": "Remote - Saudi Arabia",
+  "expect": true
+ },
+ {
+  "name": "remote_qatar_b3",
+  "location": "Remote - Qatar",
+  "expect": true
+ },
+ {
+  "name": "remote_egypt_b3",
+  "location": "Remote - Egypt",
+  "expect": true
+ },
+ {
+  "name": "cairo_egypt_b3",
+  "location": "Cairo, Egypt",
+  "expect": true
+ },
+ {
+  "name": "casablanca_morocco_b3",
+  "location": "Casablanca, Morocco",
+  "expect": true
+ },
+ {
+  "name": "tashkent_uzbekistan_b3",
+  "location": "Tashkent, Uzbekistan",
+  "expect": true
+ },
+ {
+  "name": "yerevan_armenia_b3",
+  "location": "Yerevan, Armenia",
+  "expect": true
+ },
+ {
+  "name": "baku_azerbaijan_b3",
+  "location": "Baku, Azerbaijan",
+  "expect": true
+ },
+ {
+  "name": "bangkok_thailand_b3",
+  "location": "Bangkok, Thailand",
+  "expect": true
+ },
+ {
+  "name": "singapore_bare_b3",
+  "location": "Singapore",
+  "expect": true
+ },
+ {
+  "name": "ho_chi_minh_city_vietnam_b3",
+  "location": "Ho Chi Minh City, Vietnam",
+  "expect": true
+ },
+ {
+  "name": "kuala_lumpur_bare_b3",
+  "location": "Kuala Lumpur",
+  "expect": true
+ },
+ {
+  "name": "sydney_australia_b3",
+  "location": "Sydney, Australia",
+  "expect": true
+ },
+ {
+  "name": "auckland_new_zealand_b3",
+  "location": "Auckland, New Zealand",
+  "expect": true
+ },
+ {
+  "name": "melbourne_bare_b3",
+  "location": "Melbourne",
+  "expect": true
+ },
+ {
+  "name": "cairo_illinois_namesake_b3",
+  "location": "Cairo, IL",
+  "expect": false
+ },
+ {
+  "name": "lebanon_new_hampshire_namesake_b3",
+  "location": "Lebanon, NH",
+  "expect": false
+ },
+ {
+  "name": "athens_georgia_namesake_b3",
+  "location": "Athens, GA",
+  "expect": false
+ },
+ {
+  "name": "moscow_idaho_namesake_b3",
+  "location": "Moscow, ID",
+  "expect": false
+ },
+ {
+  "name": "warsaw_indiana_namesake_b3",
+  "location": "Warsaw, IN",
+  "expect": false
+ },
+ {
+  "name": "dubai_austin_mix_b3",
+  "location": "Dubai; Austin, TX",
+  "expect": false
+ },
+ {
+  "name": "doha_chicago_mix_b3",
+  "location": "Doha/Chicago",
+  "expect": false
+ },
+ {
+  "name": "riyadh_new_york_mix_b3",
+  "location": "Riyadh; New York, NY",
+  "expect": false
+ },
+ {
+  "name": "al_khobar_houston_mix_b3",
+  "location": "Al Khobar • Houston, TX",
+  "expect": false
+ },
+ {
+  "name": "bangkok_remote_b3",
+  "location": "Bangkok; Remote",
+  "expect": true
+ },
+ {
+  "name": "new_berlin_wi_regression",
+  "location": "New Berlin, WI",
+  "expect": false,
+  "source": "real store row 2026-11-03 (JSA-084 impact run); not DeepSeek-written"
+ },
+ {
+  "name": "north_america_europe_regression",
+  "location": "REMOTE: North America / Europe, UTC-8 to UTC+2",
+  "expect": false,
+  "source": "real store row 2026-11-03 (JSA-084 impact run); not DeepSeek-written"
+ },
+ {
+  "name": "abu_dhabi_brevan_regression",
+  "location": "Abu Dhabi",
+  "expect": true,
+  "source": "real store row 2026-11-03 (JSA-084 impact run); not DeepSeek-written"
+ }
+]

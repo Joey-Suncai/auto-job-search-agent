@@ -1,0 +1,524 @@
+[
+ {
+  "name": "exact key wins over pattern",
+  "field": {
+   "key": "question_123",
+   "label": "Age"
+  },
+  "answers": [
+   [
+    "question_123",
+    "exact"
+   ],
+   [
+    "Age",
+    "pattern"
+   ]
+  ],
+  "field_keys": [
+   "question_123"
+  ],
+  "expect": [
+   "exact"
+  ],
+  "spec_quote": "If the field's own key is a key in the answers, return that answer (even when the answer is null).",
+  "ambiguous": false
+ },
+ {
+  "name": "exact key returns null answer",
+  "field": {
+   "key": "q1",
+   "label": "Name"
+  },
+  "answers": [
+   [
+    "q1",
+    null
+   ],
+   [
+    "Name",
+    "pattern"
+   ]
+  ],
+  "field_keys": [
+   "q1"
+  ],
+  "expect": [
+   null
+  ],
+  "spec_quote": "If the field's own key is a key in the answers, return that answer (even when the answer is null).",
+  "ambiguous": false
+ },
+ {
+  "name": "exact key wins even when it appears later",
+  "field": {
+   "key": "q1",
+   "label": "Email"
+  },
+  "answers": [
+   [
+    "Email",
+    "pattern"
+   ],
+   [
+    "q1",
+    "exact"
+   ]
+  ],
+  "field_keys": [
+   "q1"
+  ],
+  "expect": [
+   "exact"
+  ],
+  "spec_quote": "If the field's own key is a key in the answers, return that answer (even when the answer is null).",
+  "ambiguous": false
+ },
+ {
+  "name": "exact key returns empty string",
+  "field": {
+   "key": "q_empty",
+   "label": "Empty"
+  },
+  "answers": [
+   [
+    "q_empty",
+    ""
+   ],
+   [
+    "Empty",
+    "pattern"
+   ]
+  ],
+  "field_keys": [
+   "q_empty"
+  ],
+  "expect": [
+   ""
+  ],
+  "spec_quote": "If the field's own key is a key in the answers, return that answer (even when the answer is null).",
+  "ambiguous": false
+ },
+ {
+  "name": "exact question_ key still wins",
+  "field": {
+   "key": "question_abc",
+   "label": "Name"
+  },
+  "answers": [
+   [
+    "question_abc",
+    "exact"
+   ],
+   [
+    "Name",
+    "pattern"
+   ]
+  ],
+  "field_keys": [
+   "question_abc"
+  ],
+  "expect": [
+   "exact"
+  ],
+  "spec_quote": "If the field's own key is a key in the answers, return that answer (even when the answer is null).",
+  "ambiguous": false
+ },
+ {
+  "name": "first matching pattern in order",
+  "field": {
+   "key": "f1",
+   "label": "What is your full name?"
+  },
+  "answers": [
+   [
+    "full name",
+    "first"
+   ],
+   [
+    "name",
+    "second"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "first"
+  ],
+  "spec_quote": "Otherwise go through the answers in order and return the first one whose key (a) is not the key of any field on this form, (b) does not start with \"question_\", and (c) matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "case-insensitive pattern match",
+  "field": {
+   "key": "f1",
+   "label": "Please enter EMAIL address"
+  },
+  "answers": [
+   [
+    "email",
+    "e@example.com"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "e@example.com"
+  ],
+  "spec_quote": "matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "regex search anywhere in label",
+  "field": {
+   "key": "f1",
+   "label": "The customer's phone number"
+  },
+  "answers": [
+   [
+    "phone",
+    "123"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "123"
+  ],
+  "spec_quote": "matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "anchored regex does not match longer label",
+  "field": {
+   "key": "f1",
+   "label": "Please enter email"
+  },
+  "answers": [
+   [
+    "^Email$",
+    "x"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": null,
+  "spec_quote": "matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "regex special characters in answer key",
+  "field": {
+   "key": "f1",
+   "label": "Email"
+  },
+  "answers": [
+   [
+    "e.?mail",
+    "x"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "x"
+  ],
+  "spec_quote": "matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "question_ prefixed key excluded",
+  "field": {
+   "key": "f1",
+   "label": "question_123"
+  },
+  "answers": [
+   [
+    "question_123",
+    "bad"
+   ],
+   [
+    "question",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "(b) does not start with \"question_\",",
+  "ambiguous": false
+ },
+ {
+  "name": "answer key that is a form field key excluded",
+  "field": {
+   "key": "f1",
+   "label": "Age"
+  },
+  "answers": [
+   [
+    "Age",
+    "bad"
+   ],
+   [
+    "ag",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1",
+   "Age"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "(a) is not the key of any field on this form,",
+  "ambiguous": false
+ },
+ {
+  "name": "answer key that is another field key excluded",
+  "field": {
+   "key": "f1",
+   "label": "City"
+  },
+  "answers": [
+   [
+    "City",
+    "bad"
+   ],
+   [
+    "cit",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1",
+   "City"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "(a) is not the key of any field on this form,",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid regex does not error and later match applies",
+  "field": {
+   "key": "f1",
+   "label": "Name"
+  },
+  "answers": [
+   [
+    "[",
+    "bad"
+   ],
+   [
+    "name",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "A key that is not a valid regular expression (e.g. \"cards[1a2b-c3d4][field3]\" has the character range \"b-c3\"… that may be invalid) simply does not match — it must not cause an error.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid regex alone yields null",
+  "field": {
+   "key": "f1",
+   "label": "Name"
+  },
+  "answers": [
+   [
+    "[",
+    "bad"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": null,
+  "spec_quote": "A key that is not a valid regular expression (e.g. \"cards[1a2b-c3d4][field3]\" has the character range \"b-c3\"… that may be invalid) simply does not match — it must not cause an error. Nothing applies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "no answers yields null",
+  "field": {
+   "key": "f1",
+   "label": "Name"
+  },
+  "answers": [],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": null,
+  "spec_quote": "Nothing applies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "no matching answer yields null",
+  "field": {
+   "key": "f1",
+   "label": "Phone"
+  },
+  "answers": [
+   [
+    "Email",
+    "x"
+   ],
+   [
+    "Address",
+    "y"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": null,
+  "spec_quote": "Nothing applies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "key containing question_ but not starting with it is allowed",
+  "field": {
+   "key": "f1",
+   "label": "myquestion_abc"
+  },
+  "answers": [
+   [
+    "myquestion_abc",
+    "ok"
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   "ok"
+  ],
+  "spec_quote": "(b) does not start with \"question_\",",
+  "ambiguous": false
+ },
+ {
+  "name": "matching pattern with null answer returns null",
+  "field": {
+   "key": "f1",
+   "label": "Nickname"
+  },
+  "answers": [
+   [
+    "nick",
+    null
+   ]
+  ],
+  "field_keys": [
+   "f1"
+  ],
+  "expect": [
+   null
+  ],
+  "spec_quote": "Otherwise go through the answers in order and return the first one whose key (a) is not the key of any field on this form, (b) does not start with \"question_\", and (c) matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid regex key that is a field key is skipped",
+  "field": {
+   "key": "f1",
+   "label": "["
+  },
+  "answers": [
+   [
+    "[",
+    "bad"
+   ],
+   [
+    "\\[",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1",
+   "["
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "A key that is not a valid regular expression (e.g. \"cards[1a2b-c3d4][field3]\" has the character range \"b-c3\"… that may be invalid) simply does not match — it must not cause an error.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip field-key and question_ answers before match",
+  "field": {
+   "key": "f1",
+   "label": "Name"
+  },
+  "answers": [
+   [
+    "Name",
+    "fieldkey"
+   ],
+   [
+    "question_name",
+    "question"
+   ],
+   [
+    "nam",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1",
+   "Name"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "Otherwise go through the answers in order and return the first one whose key (a) is not the key of any field on this form, (b) does not start with \"question_\", and (c) matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ },
+ {
+  "name": "skip invalid, question_, and field-key answers before match",
+  "field": {
+   "key": "f1",
+   "label": "Email address"
+  },
+  "answers": [
+   [
+    "[",
+    "invalid"
+   ],
+   [
+    "question_email",
+    "q"
+   ],
+   [
+    "Email address",
+    "fieldkey"
+   ],
+   [
+    "email",
+    "good"
+   ]
+  ],
+  "field_keys": [
+   "f1",
+   "Email address"
+  ],
+  "expect": [
+   "good"
+  ],
+  "spec_quote": "A key that is not a valid regular expression (e.g. \"cards[1a2b-c3d4][field3]\" has the character range \"b-c3\"… that may be invalid) simply does not match — it must not cause an error. Otherwise go through the answers in order and return the first one whose key (a) is not the key of any field on this form, (b) does not start with \"question_\", and (c) matches the field's label as a case-insensitive regular expression (search anywhere in the label).",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,267 @@
+[
+ {
+  "name": "kind: Wellfound job page url",
+  "fn": "kind",
+  "args": {
+   "url": "https://wellfound.com/jobs/4964451-sap-ixp-intern-ai-product-management"
+  },
+  "expect": "wellfound",
+  "spec_quote": "New: 'wellfound' when the url (lower-cased) contains \"wellfound.com/jobs/\" followed by digits (a job page such as https://wellfound.com/jobs/4964451-sap-ixp-intern-ai-product-management)",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: www.wellfound.com job page url",
+  "fn": "kind",
+  "args": {
+   "url": "https://www.wellfound.com/jobs/1234567-software-engineer-intern"
+  },
+  "expect": "wellfound",
+  "spec_quote": "with \"wellfound.com\" either at the start, after \"/\" or after \".\" (www.wellfound.com)",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: Wellfound company page is not a job page",
+  "fn": "kind",
+  "args": {
+   "url": "https://wellfound.com/company/acme"
+  },
+  "expect": null,
+  "spec_quote": "A Wellfound company page (wellfound.com/company/acme), a search page (wellfound.com/jobs?role=…) or another site → not 'wellfound'. Anything else → None (null).",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: Wellfound search page is not a job page",
+  "fn": "kind",
+  "args": {
+   "url": "https://wellfound.com/jobs?role=software-engineer"
+  },
+  "expect": null,
+  "spec_quote": "A Wellfound company page (wellfound.com/company/acme), a search page (wellfound.com/jobs?role=…) or another site → not 'wellfound'. Anything else → None (null).",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: LinkedIn view url unchanged",
+  "fn": "kind",
+  "args": {
+   "url": "https://www.linkedin.com/jobs/view/3987654321"
+  },
+  "expect": "linkedin",
+  "spec_quote": "Existing values: ... 'linkedin' (matches \"linkedin.com/jobs/view/\" or \"linkedin.com/comm/jobs/view/\").",
+  "ambiguous": false
+ },
+ {
+  "name": "kind: other site with job-like path",
+  "fn": "kind",
+  "args": {
+   "url": "https://example.com/jobs/9876543-data-analyst"
+  },
+  "expect": null,
+  "spec_quote": "A Wellfound company page (wellfound.com/company/acme), a search page (wellfound.com/jobs?role=…) or another site → not 'wellfound'. Anything else → None (null).",
+  "ambiguous": false
+ },
+ {
+  "name": "city_of: semicolon tail after city",
+  "fn": "city_of",
+  "args": {
+   "location": "New York; Recruiter recently active"
+  },
+  "expect": "new york",
+  "spec_quote": "New: a semicolon ends the city exactly like a comma: \"New York; Recruiter recently active\" → \"new york\"",
+  "ambiguous": false
+ },
+ {
+  "name": "city_of: semicolon between two place names keeps first",
+  "fn": "city_of",
+  "args": {
+   "location": "Syracuse; Fairborn"
+  },
+  "expect": "syracuse",
+  "spec_quote": "a semicolon ends the city exactly like a comma: ... \"Syracuse; Fairborn\" → \"syracuse\"",
+  "ambiguous": false
+ },
+ {
+  "name": "city_of: comma still ends the city",
+  "fn": "city_of",
+  "args": {
+   "location": "San Francisco, CA"
+  },
+  "expect": "san francisco",
+  "spec_quote": "the text before the first comma is the city",
+  "ambiguous": false
+ },
+ {
+  "name": "city_of: '+ N' tail removed then comma split",
+  "fn": "city_of",
+  "args": {
+   "location": "Boston, MA + 5"
+  },
+  "expect": "boston",
+  "spec_quote": "Existing: \"+ N\" and everything after it is removed; ... the text before the first comma is the city",
+  "ambiguous": false
+ },
+ {
+  "name": "city_of: remote and following 'or' removed",
+  "fn": "city_of",
+  "args": {
+   "location": "Remote or Chicago, IL"
+  },
+  "expect": "chicago",
+  "spec_quote": "the word \"remote\" (and a following \"or\") is removed; the text before the first comma is the city",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: 'at' tail is the company",
+  "fn": "title_companies",
+  "args": {
+   "title": "Data Scientist Intern - QuantumBlack, AI by McKinsey at McKinsey & Company",
+   "company": "Acme Corp"
+  },
+  "expect": [
+   "McKinsey & Company"
+  ],
+  "spec_quote": "(a) after the LAST word \"at\" in the title: the rest of the title, when it starts with a capital letter and has at most 5 words: \"Data Scientist Intern - QuantumBlack, AI by McKinsey at McKinsey & Company\" → \"McKinsey & Company\".",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: leading segment before ' - '",
+  "fn": "title_companies",
+  "args": {
+   "title": "Lumharquin - AGI - AI Power Systems Intern",
+   "company": "Acme"
+  },
+  "expect": [
+   "Lumharquin"
+  ],
+  "spec_quote": "(b) the part before the first separator — \" - \" ... when that part has at most 4 words, starts with a capital letter and contains no job word. \"Lumharquin - AGI - AI Power Systems Intern\" → \"Lumharquin\"",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: leading segment before ': '",
+  "fn": "title_companies",
+  "args": {
+   "title": "Northrop Grumman: Pathways Program",
+   "company": "Acme"
+  },
+  "expect": [
+   "Northrop Grumman"
+  ],
+  "spec_quote": "(b) the part before the first separator — ... \": \" (colon + space) ... — when that part has at most 4 words, starts with a capital letter and contains no job word.",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: leading segment contains job words",
+  "fn": "title_companies",
+  "args": {
+   "title": "Software Engineer Intern - Backend",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "(b) ... when that part has at most 4 words, starts with a capital letter and contains no job word. ... \"Intern - Data Analytics\" → nothing from (b).",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: CamelCase first word",
+  "fn": "title_companies",
+  "args": {
+   "title": "BraRoskel Summer Internship - Supply Chain",
+   "company": "Acme"
+  },
+  "expect": [
+   "BraRoskel"
+  ],
+  "spec_quote": "(c) the title's first word (a trailing , . : removed) when it is · CamelCase: a capital, lower-case letters, then another capital and at least one more letter (\"BraRoskel\", \"PepsiCo\", \"DoorDash\")",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: CamelCase stop word rejected",
+  "fn": "title_companies",
+  "args": {
+   "title": "GenAI Research Intern - NLP",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "· CamelCase ... — but not one of these words (any case): GenAI, DevOps, MLOps, DataOps, AIOps, FinTech, PowerBI, SaaS, IoT, eCommerce, JavaScript, TypeScript, GitHub, LinkedIn, YouTube, ChatGPT, OpenAI",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: hyphenated capitalised name",
+  "fn": "title_companies",
+  "args": {
+   "title": "Georgia-Pacific - Supply Chain Intern",
+   "company": "Acme"
+  },
+  "expect": [
+   "Georgia-Pacific"
+  ],
+  "spec_quote": "or · capitalised words joined by hyphens (\"Georgia-Pacific\", \"Rolls-Royce\") that contain no job word (\"Full-Time\" → nothing)",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: all-caps first word with non-job second word",
+  "fn": "title_companies",
+  "args": {
+   "title": "SAP iXp Intern - AI Product Management",
+   "company": "Acme"
+  },
+  "expect": [
+   "SAP"
+  ],
+  "spec_quote": "· all capitals, at least 3 letters, not one of AI ML IT PM BI US USA HR UX UI QA GTM SWE MBA MS BS PHD IP RF ERP CRM GIS FP NLP LLM GEN IOT EV HVAC PRODUCT DATA INTERN INTERNSHIP SUMMER MARKETING FINANCE SALES NEW SR JR, AND the title has a second word that is not a job word: \"SAP iXp Intern - AI Product Management\" → \"SAP\"",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: all-caps first word followed by job word",
+  "fn": "title_companies",
+  "args": {
+   "title": "SAP Business Analyst Intern",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "\"SAP Business Analyst Intern\" → nothing (\"Business\" is a job word)",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: all-caps stop word rejected",
+  "fn": "title_companies",
+  "args": {
+   "title": "MBA Intern - Product Marketing",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "· all capitals, at least 3 letters, not one of AI ML IT PM BI US USA HR UX UI QA GTM SWE MBA MS BS PHD IP RF ERP CRM GIS FP NLP LLM GEN IOT EV HVAC ...",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: candidate identical to label dropped",
+  "fn": "title_companies",
+  "args": {
+   "title": "Lumharquin - AGI - AI Power Systems Intern",
+   "company": "Lumharquin"
+  },
+  "expect": [],
+  "spec_quote": "Then drop a candidate that is the same company as the label (same name ignoring case, punctuation, spaces and suffixes such as Inc / LLC / Corp / Co: label \"Lumharquin\" drops \"Lumharquin\" ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: nothing found",
+  "fn": "title_companies",
+  "args": {
+   "title": "Summer Internship Program 2026",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "(c) the title's first word ... when it is · CamelCase ... or · capitalised words joined by hyphens ... or · all capitals ... Nothing found → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "title_companies: hyphenated form containing a job word",
+  "fn": "title_companies",
+  "args": {
+   "title": "Full-Time Intern - Marketing",
+   "company": "Acme"
+  },
+  "expect": [],
+  "spec_quote": "or · capitalised words joined by hyphens (\"Georgia-Pacific\", \"Rolls-Royce\") that contain no job word (\"Full-Time\" → nothing)",
+  "ambiguous": false
+ }
+]

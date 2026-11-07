@@ -1,0 +1,10 @@
+{
+ "mixed order: skip done, re-handle grown unmatched, None result, fallback keeps id unseen": {
+  "verdict": "case",
+  "why": "'a' is not in seen, so the spec's skip rule does not apply: apply is called on it (its fallback only keeps it out of seen). The case skipped a new id."
+ },
+ "duplicate ids in one run (unmatched): both handled": {
+  "verdict": "case",
+  "why": "The spec skips an id that is in seen; after the first copy is handled it is recorded, so the second copy is skipped (each message handled once). DeepSeek marked the case ambiguous; Gmail / chat.db ids are unique in one fetch anyway."
+ }
+}

@@ -1,0 +1,258 @@
+[
+ {
+  "name": "restrictions_offered_basic",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, without restrictions",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must never choose an option claiming unrestricted / permanent authorization; it must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "restrictions_offered_reordered",
+  "label": "Are you authorized to work in the U.S.?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes, unrestricted",
+   "Yes, but with restrictions"
+  ],
+  "expect": "Yes, but with restrictions",
+  "spec": "The engine must choose 'Yes, but with restrictions' when it is offered and must never choose 'Yes, unrestricted'."
+ },
+ {
+  "name": "only_unrestricted_and_no_basic",
+  "label": "Do you have authorization to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, without restrictions",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "With only 'Yes, without restrictions' and 'No' → 'No'."
+ },
+ {
+  "name": "only_unrestricted_and_no_reordered",
+  "label": "Are you eligible to work in the United States?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes, without restrictions"
+  ],
+  "expect": "No",
+  "spec": "With only 'Yes, without restrictions' and 'No' → 'No'."
+ },
+ {
+  "name": "only_unrestricted_variant_and_no",
+  "label": "Are you permitted to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, unrestricted",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "The engine must never choose an option claiming unrestricted authorization such as 'Yes, unrestricted'."
+ },
+ {
+  "name": "plain_yes_no_exact",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "With plain 'Yes' / 'No' for 'Are you legally authorized to work in the United States?' → 'Yes'."
+ },
+ {
+  "name": "plain_yes_no_exact_reordered",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec": "With plain 'Yes' / 'No' for 'Are you legally authorized to work in the United States?' → 'Yes'."
+ },
+ {
+  "name": "restrictions_offered_no_first",
+  "label": "Do you have work authorization in the United States?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes, with restrictions",
+   "Yes, without restrictions"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must choose 'Yes, with restrictions' when it is offered and must never choose 'Yes, without restrictions'."
+ },
+ {
+  "name": "restrictions_offered_but_with_restrictions",
+  "label": "Are you allowed to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, without restrictions",
+   "No",
+   "Yes, but with restrictions"
+  ],
+  "expect": "Yes, but with restrictions",
+  "spec": "The engine must choose 'Yes, but with restrictions' when it is offered and must never choose 'Yes, without restrictions'."
+ },
+ {
+  "name": "restrictions_offered_unrestricted_variant",
+  "label": "Are you legally permitted to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, unrestricted",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must never choose 'Yes, unrestricted' and must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "permanent_option_with_restrictions",
+  "label": "Are you authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "I am authorized to work permanently",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must never choose 'I am authorized to work permanently' and must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "permanent_option_only_no",
+  "label": "Are you authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "I am authorized to work permanently",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "The engine must never choose an option claiming permanent authorization such as 'I am authorized to work permanently'."
+ },
+ {
+  "name": "permanent_yes_option_with_restrictions",
+  "label": "Do you have authorization to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, I am authorized to work permanently",
+   "Yes, but with restrictions",
+   "No"
+  ],
+  "expect": "Yes, but with restrictions",
+  "spec": "The engine must never choose 'Yes, I am authorized to work permanently' and must choose 'Yes, but with restrictions' when it is offered."
+ },
+ {
+  "name": "citizen_pr_option_only_no",
+  "label": "Are you a U.S. citizen or permanent resident?",
+  "type": "select",
+  "options": [
+   "Yes, I am a U.S. citizen or permanent resident",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "The engine must never choose 'Yes, I am a U.S. citizen or permanent resident'."
+ },
+ {
+  "name": "citizen_pr_option_generic_no",
+  "label": "Are you authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, I am a U.S. citizen or permanent resident",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "The engine must never choose 'Yes, I am a U.S. citizen or permanent resident'."
+ },
+ {
+  "name": "citizen_pr_prohibited_with_restrictions",
+  "label": "Are you authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, I am a U.S. citizen or permanent resident",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must never choose 'Yes, I am a U.S. citizen or permanent resident' and must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "unrestricted_and_permanent_only_no",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, without restrictions",
+   "I am authorized to work permanently",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "The engine must never choose an option claiming unrestricted / permanent authorization; with no restrictions option offered, 'No' is the only permitted choice."
+ },
+ {
+  "name": "unrestricted_permanent_and_restrictions",
+  "label": "Do you have authorization to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, without restrictions",
+   "I am authorized to work permanently",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must never choose unrestricted / permanent options and must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "only_unrestricted_and_no_exact_label",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes, without restrictions"
+  ],
+  "expect": "No",
+  "spec": "With only 'Yes, without restrictions' and 'No' → 'No'."
+ },
+ {
+  "name": "plain_yes_no_exact_third",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "With plain 'Yes' / 'No' for 'Are you legally authorized to work in the United States?' → 'Yes'."
+ },
+ {
+  "name": "plain_yes_with_restrictions_offered",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "expect": "Yes, with restrictions",
+  "spec": "The engine must choose 'Yes, with restrictions' when it is offered."
+ },
+ {
+  "name": "citizen_permanent_and_restrictions",
+  "label": "Are you authorized to work in the United States?",
+  "type": "select",
+  "options": [
+   "Yes, I am a U.S. citizen or permanent resident",
+   "I am authorized to work permanently",
+   "Yes, but with restrictions",
+   "No"
+  ],
+  "expect": "Yes, but with restrictions",
+  "spec": "The engine must never choose options claiming unrestricted / permanent authorization and must choose 'Yes, but with restrictions' when it is offered."
+ }
+]

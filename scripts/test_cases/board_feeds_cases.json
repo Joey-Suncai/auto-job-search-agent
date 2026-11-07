@@ -1,0 +1,652 @@
+[
+ {
+  "name": "yc: entities in data-page, relative url, missing location/type/visa",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<div data-page=\"{&quot;props&quot;:{&quot;jobPostings&quot;:[{&quot;title&quot;:&quot;Data Analyst Intern&quot;,&quot;url&quot;:&quot;/companies/acme/jobs/12345&quot;,&quot;companyName&quot;:&quot;Acme&quot;}]}}\"></div>"
+  },
+  "expect": [
+   {
+    "board": "yc",
+    "id": "12345",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "",
+    "url": "https://www.ycombinator.com/companies/acme/jobs/12345",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "its value, after HTML entities are decoded (&quot; → \"), is JSON; the postings are its `props.jobPostings` list ... url = `url` when it starts with \"http\", else \"https://www.ycombinator.com\" + url; type = `type` (\"\" when missing); visa = `visa` (\"\" when missing).",
+  "ambiguous": false
+ },
+ {
+  "name": "yc: absolute url kept as-is, missing companyName",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<div data-page=\"{&quot;props&quot;:{&quot;jobPostings&quot;:[{&quot;title&quot;:&quot;Machine Learning Intern&quot;,&quot;url&quot;:&quot;https://www.ycombinator.com/companies/beta/jobs/abc-9&quot;,&quot;location&quot;:&quot;San Francisco, CA&quot;}]}}\"></div>"
+  },
+  "expect": [
+   {
+    "board": "yc",
+    "id": "abc-9",
+    "company": "",
+    "title": "Machine Learning Intern",
+    "location": "San Francisco, CA",
+    "url": "https://www.ycombinator.com/companies/beta/jobs/abc-9",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "For each posting with a non-empty `title` and `url`: ... company = `companyName` (trimmed, \"\" when missing) ... url = `url` when it starts with \"http\", else \"https://www.ycombinator.com\" + url",
+  "ambiguous": false
+ },
+ {
+  "name": "yc: postings without url or without title are skipped",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<div data-page=\"{&quot;props&quot;:{&quot;jobPostings&quot;:[{&quot;title&quot;:&quot;Data Analyst Intern&quot;,&quot;companyName&quot;:&quot;Acme&quot;},{&quot;url&quot;:&quot;/companies/acme/jobs/2&quot;,&quot;companyName&quot;:&quot;Acme&quot;},{&quot;title&quot;:&quot;BI Intern&quot;,&quot;url&quot;:&quot;/companies/gamma/jobs/333&quot;,&quot;companyName&quot;:&quot;Gamma&quot;}]}}\"></div>"
+  },
+  "expect": [
+   {
+    "board": "yc",
+    "id": "333",
+    "company": "Gamma",
+    "title": "BI Intern",
+    "location": "",
+    "url": "https://www.ycombinator.com/companies/gamma/jobs/333",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "For each posting with a non-empty `title` and `url`:",
+  "ambiguous": false
+ },
+ {
+  "name": "yc: no data-page attribute → empty list",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<html><body><div class=\"job-board\">No data here</div></body></html>"
+  },
+  "expect": [],
+  "spec_quote": "Missing attribute or JSON that does not parse → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "yc: data-page value is not valid JSON → empty list",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<div data-page=\"{not json}\"></div>"
+  },
+  "expect": [],
+  "spec_quote": "Missing attribute or JSON that does not parse → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "yc: trailing slash ignored for id, fields trimmed, type/visa present",
+  "fn": "parse_yc",
+  "args": {
+   "page": "<div data-page=\"{&quot;props&quot;:{&quot;jobPostings&quot;:[{&quot;title&quot;:&quot;  Data Analyst Intern  &quot;,&quot;url&quot;:&quot;/companies/acme/jobs/ABC-1/&quot;,&quot;companyName&quot;:&quot;  Acme  &quot;,&quot;location&quot;:&quot;  New York, NY  &quot;,&quot;type&quot;:&quot;Full-time&quot;,&quot;visa&quot;:&quot;Yes&quot;}]}}\"></div>"
+  },
+  "expect": [
+   {
+    "board": "yc",
+    "id": "ABC-1",
+    "company": "Acme",
+    "title": "Data Analyst Intern",
+    "location": "New York, NY",
+    "url": "https://www.ycombinator.com/companies/acme/jobs/ABC-1/",
+    "type": "Full-time",
+    "visa": "Yes"
+   }
+  ],
+  "spec_quote": "id = the last path segment of `url` (a trailing \"/\" ignored); company = `companyName` (trimmed, \"\" when missing); title (trimmed); location (trimmed, \"\" when missing)",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: CDATA title with company prefix",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss version=\"2.0\"><channel><item><title><![CDATA[Acme Corp: Data Analyst Intern]]></title><link>https://weworkremotely.com/remote-jobs/data-analyst-intern-100</link><region>Anywhere in the World</region><type>Full-Time</type></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "data-analyst-intern-100",
+    "company": "Acme Corp",
+    "title": "Data Analyst Intern",
+    "location": "Anywhere in the World",
+    "url": "https://weworkremotely.com/remote-jobs/data-analyst-intern-100",
+    "type": "Full-Time",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "title = the <title> text (a CDATA wrapper removed, HTML entities decoded), link = <link> ... The title is \"Company: Role\": split at the FIRST \": \" → company = left part, title = right part (both trimmed)",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: title with no colon → empty company, whole title",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss><channel><item><title>Data Analyst Intern</title><link>https://weworkremotely.com/remote-jobs/abc123</link><country>United States</country></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "abc123",
+    "company": "",
+    "title": "Data Analyst Intern",
+    "location": "United States",
+    "url": "https://weworkremotely.com/remote-jobs/abc123",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "no \": \" → company \"\", title = the whole title. ... type = <type> text (\"\" when missing); visa \"\"; board \"wwr\"; url = the link.",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: two colons → split at the first",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss><channel><item><title>Acme: Data Analyst: Intern</title><link>https://weworkremotely.com/remote-jobs/two-colons</link><region>Anywhere in the World</region></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "two-colons",
+    "company": "Acme",
+    "title": "Data Analyst: Intern",
+    "location": "Anywhere in the World",
+    "url": "https://weworkremotely.com/remote-jobs/two-colons",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "The title is \"Company: Role\": split at the FIRST \": \" → company = left part, title = right part (both trimmed); no \": \" → company \"\", title = the whole title.",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: empty country part skipped, region/state joined",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss><channel><item><title>Beta Inc: BI Intern</title><link>https://weworkremotely.com/remote-jobs/virginia-1</link><region>Anywhere in the World</region><state>Virginia</state><country></country></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "virginia-1",
+    "company": "Beta Inc",
+    "title": "BI Intern",
+    "location": "Anywhere in the World, Virginia",
+    "url": "https://weworkremotely.com/remote-jobs/virginia-1",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "location = the texts of <region>, <state>, <country> that are non-empty, in that order, joined \", \" (\"Anywhere in the World\", \"Virginia\", \"\" → \"Anywhere in the World, Virginia\")",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: item without link is skipped",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss><channel><item><title>No Link Co: Data Intern</title><region>Anywhere in the World</region></item><item><title>Gamma: ML Intern</title><link>https://weworkremotely.com/remote-jobs/keep-me</link></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "keep-me",
+    "company": "Gamma",
+    "title": "ML Intern",
+    "location": "",
+    "url": "https://weworkremotely.com/remote-jobs/keep-me",
+    "type": "",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "Items without a title or a link are skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "wwr: HTML entities in title decoded",
+  "fn": "parse_wwr",
+  "args": {
+   "xml": "<rss><channel><item><title>Acme &amp; Co: Data Analyst Intern</title><link>https://weworkremotely.com/remote-jobs/amp-1</link><region>Anywhere in the World</region><type>Contract</type></item></channel></rss>"
+  },
+  "expect": [
+   {
+    "board": "wwr",
+    "id": "amp-1",
+    "company": "Acme & Co",
+    "title": "Data Analyst Intern",
+    "location": "Anywhere in the World",
+    "url": "https://weworkremotely.com/remote-jobs/amp-1",
+    "type": "Contract",
+    "visa": ""
+   }
+  ],
+  "spec_quote": "title = the <title> text (a CDATA wrapper removed, HTML entities decoded)",
+  "ambiguous": false
+ },
+ {
+  "name": "known: yc id from url, wwr id from ats_url, pairs from both keys",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme Inc",
+     "title": "Data Analyst Intern",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/123",
+     "ats_url": "https://weworkremotely.com/remote-jobs/wwr-456"
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    [
+     "wwr",
+     "wwr-456"
+    ],
+    [
+     "yc",
+     "123"
+    ]
+   ],
+   "pairs_count": 2
+  },
+  "spec_quote": "ids = the set of (board, id lower-cased) found in url or ats_url: \"ycombinator.com/companies/<slug>/jobs/<id>\" → (\"yc\", id); \"weworkremotely.com/remote-jobs/<id>\" → (\"wwr\", id). pairs = {(norm(company), title_key(title))} ∪ {(norm(company), alt_key(title))} for every row.",
+  "ambiguous": false
+ },
+ {
+  "name": "known: ids lower-cased",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme",
+     "title": "Data Analyst Intern",
+     "url": "https://www.ycombinator.com/companies/Acme/jobs/ABC123",
+     "ats_url": "https://weworkremotely.com/remote-jobs/WWR-9"
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    [
+     "wwr",
+     "wwr-9"
+    ],
+    [
+     "yc",
+     "abc123"
+    ]
+   ],
+   "pairs_count": 2
+  },
+  "spec_quote": "ids = the set of (board, id lower-cased) found in url or ats_url",
+  "ambiguous": false
+ },
+ {
+  "name": "known: no matching urls → empty ids, pairs still from every row",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme LLC",
+     "title": "Data Analyst Intern",
+     "url": "",
+     "ats_url": ""
+    },
+    {
+     "company": "Acme, Inc.",
+     "title": "Data Analyst Intern",
+     "url": "",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": {
+   "ids": [],
+   "pairs_count": 2
+  },
+  "spec_quote": "pairs = {(norm(company), title_key(title))} ∪ {(norm(company), alt_key(title))} for every row.",
+  "ambiguous": false
+ },
+ {
+  "name": "known: same yc job in url and ats_url → single id entry",
+  "fn": "known",
+  "args": {
+   "rows": [
+    {
+     "company": "Acme",
+     "title": "Data Analyst Intern",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/42",
+     "ats_url": "https://www.ycombinator.com/companies/acme/jobs/42"
+    }
+   ]
+  },
+  "expect": {
+   "ids": [
+    [
+     "yc",
+     "42"
+    ]
+   ],
+   "pairs_count": 2
+  },
+  "spec_quote": "ids = the set of (board, id lower-cased) found in url or ats_url",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: card already in store by id is dropped",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "111",
+     "company": "Acme",
+     "title": "Data Analyst Intern",
+     "location": "New York, NY",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/111",
+     "type": "Full-time",
+     "visa": ""
+    }
+   ],
+   "rows": [
+    {
+     "company": "Other Co",
+     "title": "Backend Engineer",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/111",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "a card is kept when: (board, id lower-cased) is not in ids;",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: card dropped because norm(company)+title_key already in pairs",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "222",
+     "company": "Acme",
+     "title": "Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/222",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": [
+    {
+     "company": "Acme Inc.",
+     "title": "Data Analyst Intern - Summer 2027",
+     "url": "https://weworkremotely.com/remote-jobs/zzz-1",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "neither (norm(company), title_key(title)) nor (norm(company), alt_key(title)) is in pairs;",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: card dropped by alt_key even when title_key differs",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "wwr",
+     "id": "eng-1",
+     "company": "Beta",
+     "title": "Data Engineer Graduate Data Platform E-commerce 2027 Start",
+     "location": "Austin, TX",
+     "url": "https://weworkremotely.com/remote-jobs/eng-1",
+     "type": "Full-Time",
+     "visa": ""
+    }
+   ],
+   "rows": [
+    {
+     "company": "Beta",
+     "title": "Data Engineer Graduate (Data Platform E-commerce) - 2027 Start",
+     "url": "https://weworkremotely.com/remote-jobs/some-other-id",
+     "ats_url": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "neither (norm(company), title_key(title)) nor (norm(company), alt_key(title)) is in pairs; ... Examples: \"Data Engineer Graduate (Data Platform E-commerce) - 2027 Start\" → \"data engineer graduate data platform e commerce\"",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: senior title fails keep()",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "444",
+     "company": "Gamma",
+     "title": "Senior Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://www.ycombinator.com/companies/gamma/jobs/444",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [],
+  "spec_quote": "\"Senior Data Analyst Intern\" → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: location clearly outside the U.S. fails keep()",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "wwr",
+     "id": "tor-1",
+     "company": "Delta",
+     "title": "Data Analyst Intern",
+     "location": "Toronto, ON",
+     "url": "https://weworkremotely.com/remote-jobs/tor-1",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [],
+  "spec_quote": "the location is not clearly outside the U.S. (\"Toronto, ON\", \"London, UK\" → out; ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: title without a level word fails keep()",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "wwr",
+     "id": "nl-1",
+     "company": "Epsilon",
+     "title": "Data Analyst",
+     "location": "Detroit, Michigan",
+     "url": "https://weworkremotely.com/remote-jobs/nl-1",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [],
+  "spec_quote": "\"Data Analyst\" (no level word) → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: third card of the same company is dropped",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "a1",
+     "company": "Acme",
+     "title": "Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/a1",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "yc",
+     "id": "a2",
+     "company": "Acme",
+     "title": "Business Intelligence Intern",
+     "location": "Remote",
+     "url": "https://www.ycombinator.com/companies/acme/jobs/a2",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "wwr",
+     "id": "a3",
+     "company": "Acme Inc",
+     "title": "Product Analyst Intern",
+     "location": "Remote",
+     "url": "https://weworkremotely.com/remote-jobs/a3",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [
+   "a1",
+   "a2"
+  ],
+  "spec_quote": "and fewer than 2 cards of the same norm(company) were kept before.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: duplicate later in the same list is dropped",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "d1",
+     "company": "Zeta",
+     "title": "Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://www.ycombinator.com/companies/zeta/jobs/d1",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "wwr",
+     "id": "d2",
+     "company": "Zeta Corp",
+     "title": "Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://weworkremotely.com/remote-jobs/d2",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [
+   "d1"
+  ],
+  "spec_quote": "A kept card's key and pairs are added, so a later duplicate is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: YC Product Manager Intern in New York is kept",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "yc",
+     "id": "777",
+     "company": "Gamma",
+     "title": "Product Manager Intern",
+     "location": "New York, NY",
+     "url": "https://www.ycombinator.com/companies/gamma/jobs/777",
+     "type": "Full-time",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [
+   "777"
+  ],
+  "spec_quote": "base keep (title, location) is True only when ALL hold: the title has a track word (... product ...); the title has no senior word (senior, sr, sr., staff, principal, lead, director, head of, VP, vice president, manager II, ...); ... the level is not None. A title with intern / internship (not \"internal\") → \"Internship\"",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_new: mixed list — order preserved, QA and non-U.S. cards filtered",
+  "fn": "pick_new",
+  "args": {
+   "cards": [
+    {
+     "board": "wwr",
+     "id": "w1",
+     "company": "Delta",
+     "title": "Data Analyst Intern",
+     "location": "Remote",
+     "url": "https://weworkremotely.com/remote-jobs/w1",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "yc",
+     "id": "y1",
+     "company": "Epsilon",
+     "title": "Junior QA Analyst",
+     "location": "Austin, TX",
+     "url": "https://www.ycombinator.com/companies/epsilon/jobs/y1",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "yc",
+     "id": "y2",
+     "company": "Zeta",
+     "title": "Machine Learning Intern",
+     "location": "Seattle, WA",
+     "url": "https://www.ycombinator.com/companies/zeta/jobs/y2",
+     "type": "",
+     "visa": ""
+    },
+    {
+     "board": "wwr",
+     "id": "w2",
+     "company": "Omega",
+     "title": "BI Intern",
+     "location": "London, UK",
+     "url": "https://weworkremotely.com/remote-jobs/w2",
+     "type": "",
+     "visa": ""
+    }
+   ],
+   "rows": []
+  },
+  "expect": [
+   "w1",
+   "y2"
+  ],
+  "spec_quote": "In card order, a card is kept when: ... keep(title, location) is true ... \"Junior QA Analyst\" → false",
+  "ambiguous": false
+ }
+]

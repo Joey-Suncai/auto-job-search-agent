@@ -1,0 +1,481 @@
+{
+ "version": 1,
+ "nonce": "81e7ec5a86111d50",
+ "created": "2026-10-28T00:24:06",
+ "folder": "app_bad",
+ "url": "https://job-boards.greenhouse.io/embed/job_app?for=galtalnev&token=8281727",
+ "ats": "greenhouse",
+ "ready": true,
+ "needs_user": [],
+ "fields": [
+  {
+   "key": "first_name",
+   "label": "First Name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#this_field_is_not_on_the_page",
+   "answer": "Test",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "last_name",
+   "label": "Last Name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#last_name",
+   "answer": "Runner",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "preferred_name",
+   "label": "Preferred First Name",
+   "type": "text",
+   "required": false,
+   "options": [],
+   "sel": "#preferred_name",
+   "answer": "Tester",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "email",
+   "label": "Email",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#email",
+   "answer": "test.runner@example.com",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "phone",
+   "label": "Phone",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#phone",
+   "answer": "2025550143",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "country",
+   "label": "Country",
+   "type": "combo",
+   "required": true,
+   "options": [],
+   "sel": "#country",
+   "answer": "United States",
+   "status": "ok",
+   "source": "answers.json",
+   "accept": [
+    "United States",
+    "+1"
+   ]
+  },
+  {
+   "key": "resume",
+   "label": "Resume/CV",
+   "type": "file",
+   "required": false,
+   "options": [],
+   "sel": "#resume",
+   "status": "file",
+   "source": "runner"
+  },
+  {
+   "key": "cover_letter",
+   "label": "Cover Letter",
+   "type": "file",
+   "required": false,
+   "options": [],
+   "sel": "#cover_letter",
+   "status": "file",
+   "source": "runner"
+  },
+  {
+   "key": "question_69874406",
+   "label": "What level of schooling are you in?",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874406",
+   "answer": "Master's",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874407",
+   "label": "What is your major (s):",
+   "type": "textarea",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874407",
+   "answer": "Applied Data Science (M.S.), Economics (B.A.)",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874408",
+   "label": "When are you available to start an internship working 30+ hours a week?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Immediately available",
+    "Winter (Jan - March)",
+    "Spring (April - June)",
+    "Summer (June - August)",
+    "Fall (September - December)"
+   ],
+   "sel": "#question_69874408",
+   "answer": "Summer (June - August)",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874409",
+   "label": "Please select the collegiate institution you currently attend or previously attended.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Iowa State University",
+    "Colorado School of Mines",
+    "Georgia Institute of Technology",
+    "Other"
+   ],
+   "sel": "#question_69874409",
+   "answer": "University of Chicago",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874410",
+   "label": "Why would you be a good fit for this role? Please explain:",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874410",
+   "answer": "This is a test entry.",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874411",
+   "label": "1.1 Do you live OUTSIDE of the United States? Only U.S. based candidates (who live within one of the 48 contiguous states) will be considered for this role. GALTALNEV DOES NOT HAVE THE ABILITY TO HIRE (OR PAY) EMPLOYEES OUTSIDE OF THE U.S.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "I live OUTSIDE of the United States.",
+    "I live INSIDE the United States."
+   ],
+   "sel": "#question_69874411",
+   "answer": "I live INSIDE the United States.",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874412",
+   "label": "1.2 Please provide us with your preferred name (include both first & last name). This is the name you would use on a day-to-day basis (i.e. e-mail, phone conversations etc.).",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874412",
+   "answer": "2025550143",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874413",
+   "label": "1.3 Please provide us with your legal FIRST name as it would need to appear on government documents (such as I-9 forms etc.).",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874413",
+   "answer": "Test",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874414",
+   "label": "1.4 Please provide us with your middle initial. If you do not have a middle initial please disregard this question (we request candidate's middle initials in order to differentiate between duplicates of the same name).",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874414",
+   "answer": "N/A",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874415",
+   "label": "1.5 Please provide us with your legal LAST name as it would need to appear on government documents (such as I-9 and tax forms etc.).",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874415",
+   "answer": "Runner",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874416",
+   "label": "1.6 Please provide us with your current STREET ADDRESS (location where you permanently reside and will work in this role). Not, including City, State & ZIP code.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874416",
+   "answer": "100 Test Street",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874417",
+   "label": "1.7 Please provide us with the NAME of YOUR CURRENT HOME CITY.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874417",
+   "answer": "Chicago",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874418",
+   "label": "1.8 Please provide us with the NAME of YOUR CURRENT HOME STATE.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+   ],
+   "sel": "#question_69874418",
+   "answer": "Illinois",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874419",
+   "label": "1.9 Please provide us YOUR CURRENT HOME ZIP CODE.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874419",
+   "answer": "60601",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874420",
+   "label": "2.0 Are you currently authorized to work in the United States?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874420",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874421",
+   "label": "2.1 Do you now, or in the future, require visa sponsorship to continue working in the United States?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874421",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874422",
+   "label": "2.2 Have you previously been an employee of Galtalnev? Candidates who knowingly falsify this field will be removed from consideration.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874422",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874423",
+   "label": "2.3 Do you have any family members who are currently employed by, or have previously worked for, Galtalnev?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874423",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874424",
+   "label": "2.4 If you indicated \u201cyes\u201d to the question above, please share each family member\u2019s name AND your relationship with them. If you do not have family members who work, or have worked, at Galtalnev, please type in the word \"NONE\".",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874424",
+   "answer": "NONE",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874425",
+   "label": "2.5 Do you currently work for a client of Galtalnev?",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874425",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874426",
+   "label": "2.6 Please share the name of your current employer. If unemployed, please share the name of your last employer.",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874426",
+   "answer": "Test University",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874427",
+   "label": "2.8 Please share your LinkedIn profile with us so we may get to know you better:",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#question_69874427",
+   "answer": "linkedin.com/in/test-runner",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874428",
+   "label": "3.0 I certify that all my answers on this application are true and complete. I understand that the falsification, omission, or misrepresentation of fact on this application (or any other accompanying or required documents) may be cause for denial of employment or immediate termination of employment if hired, regardless of when or how discovered. I also authorize the investigation and verification of all statements and information contained in this application. I authorize the company and/or its agents to verify any of this information including, but not limited to criminal history, employment credit reports, employment, and motor vehicle driving records. I release from all liability anyone supplying such information and I also release Galtalnev from all liability that might result from conducting an investigation. If I am hired by Galtalnev I understand and agree that employment is at will and can be terminated for any reason with or without cause and with or without notice, at any time, at the option of Galtalnev or myself. This employment application becomes part of the terms and conditions of employment.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874428",
+   "answer": "Yes",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "question_69874429",
+   "label": "3.1 Galtalnev uses text messaging to help move you through the interview process quickly. We text to share process updates, schedule interviews, and be more available to support you during the process. Select YES, if we can text you. You can opt-out at any time by replying STOP.",
+   "type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "sel": "#question_69874429",
+   "answer": "No",
+   "status": "ok",
+   "source": "answers.json"
+  },
+  {
+   "key": "longitude",
+   "label": "Longitude (hidden)",
+   "type": "hidden",
+   "required": true,
+   "sel": "[name=\"longitude\"]",
+   "status": "check_only",
+   "source": "page"
+  },
+  {
+   "key": "latitude",
+   "label": "Latitude (hidden)",
+   "type": "hidden",
+   "required": true,
+   "sel": "[name=\"latitude\"]",
+   "status": "check_only",
+   "source": "page"
+  },
+  {
+   "key": "location",
+   "label": "Location",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "#candidate-location",
+   "answer": "Chicago, Illinois, United States",
+   "status": "ok",
+   "source": "answers.json"
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "confirmed_page" | "posting_key", "args": {"url": str, "text": str} (posting_key: only url), "expect": bool | str, "spec_quote": str, "ambiguous": false}. Write 20 cases: confirmed_page 14 (each success family, URL-only success, error pages, error + thank-you together, plain form text), posting_key 6.

@@ -1,0 +1,6 @@
+{
+ "detect_dot_prefixed_subdomain_full_host_once": {
+  "verdict": "case",
+  "why": "my spec sentence was unclear; ApplicantPro boards are one-label subdomains (<name>.applicantpro.com) and clean_ident accepts only those. A host preceded by a dot is not taken (lookbehind) \u2014 no real board has two labels."
+ }
+}

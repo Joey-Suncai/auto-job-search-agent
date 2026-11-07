@@ -1,0 +1,585 @@
+[
+ {
+  "name": "company_basic_dated",
+  "fn": "company",
+  "args": {
+   "folder": "2026-11-03_FHLB_Indy_Analyst"
+  },
+  "expect": "FHLB Indy Analyst",
+  "spec": "Returns the part after the date and the underscore that follows it, with underscores turned into spaces: `FHLB Indy Analyst`."
+ },
+ {
+  "name": "company_no_date_prefix",
+  "fn": "company",
+  "args": {
+   "folder": "Some_Folder_Name"
+  },
+  "expect": "Some Folder Name",
+  "spec": "A folder name without that date prefix is returned whole, underscores turned into spaces."
+ },
+ {
+  "name": "company_path_with_dated_folder",
+  "fn": "company",
+  "args": {
+   "folder": "/home/joey/apps/2026-01-05_Acme_Corp"
+  },
+  "expect": "Acme Corp",
+  "spec": "An application folder name is `<YYYY-MM-DD>_<Name_with_underscores>` (for example `2026-11-03_FHLB_Indy_Analyst`), or a path ending in such a folder."
+ },
+ {
+  "name": "company_truncate_to_60",
+  "fn": "company",
+  "args": {
+   "folder": "2026-11-03_abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij"
+  },
+  "expect": "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij",
+  "spec": "The result is cut to at most 60 characters."
+ },
+ {
+  "name": "company_exactly_60_unchanged",
+  "fn": "company",
+  "args": {
+   "folder": "2026-01-01_AAAAAAAAAA_BBBBBBBBBB_CCCCCCCCCC_DDDDDDDDDD_EEEEEEEEEEEEEEEE"
+  },
+  "expect": "AAAAAAAAAA BBBBBBBBBB CCCCCCCCCC DDDDDDDDDD EEEEEEEEEEEEEEEE",
+  "spec": "The result is cut to at most 60 characters."
+ },
+ {
+  "name": "company_no_date_long_truncate",
+  "fn": "company",
+  "args": {
+   "folder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+  },
+  "expect": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA BBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+  "spec": "A folder name without that date prefix is returned whole, underscores turned into spaces."
+ },
+ {
+  "name": "message_basic_options_parked",
+  "fn": "message",
+  "args": {
+   "folder": "2026-11-03_FHLB_Indy_Analyst",
+   "checks": [
+    {
+     "question": "Please select the checkbox",
+     "options": [
+      "I am not a robot",
+      "Submit"
+     ]
+    }
+   ],
+   "parked": true
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "FHLB Indy Analyst",
+    "· Please select the checkbox",
+    "  选项：I am not a robot / Submit",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "The title is exactly `求职 runner：人机验证（等你）`."
+ },
+ {
+  "name": "message_captcha_no_question_parked_false",
+  "fn": "message",
+  "args": {
+   "folder": "2026-01-01_Acme",
+   "checks": [
+    {
+     "question": "",
+     "options": []
+    }
+   ],
+   "parked": false
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "Acme",
+    "· 图片 / 勾选验证（CAPTCHA）",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "for a check without a question the line is `· 图片 / 勾选验证（CAPTCHA）`."
+ },
+ {
+  "name": "message_more_than_8_options_and_whitespace",
+  "fn": "message",
+  "args": {
+   "folder": "Test_Folder",
+   "checks": [
+    {
+     "question": "Pick   one\nplease",
+     "options": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+      "i",
+      "j"
+     ]
+    }
+   ],
+   "parked": true
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "Test Folder",
+    "· Pick one please",
+    "  选项：a / b / c / d / e / f / g / h …",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "when there are more than 8 options the line ends with ` …`."
+ },
+ {
+  "name": "message_only_first_three_checks",
+  "fn": "message",
+  "args": {
+   "folder": "2026-02-02_Three_Checks",
+   "checks": [
+    {
+     "question": "First  question",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "",
+     "options": []
+    },
+    {
+     "question": "Third",
+     "options": []
+    },
+    {
+     "question": "Fourth should not appear",
+     "options": [
+      "z"
+     ]
+    }
+   ],
+   "parked": true
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "Three Checks",
+    "· First question",
+    "  选项：Yes / No",
+    "· 图片 / 勾选验证（CAPTCHA）",
+    "· Third",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "Then, for each of the first 3 checks only (more are not shown): a line `· ` + the question with all runs of whitespace collapsed to one space, cut to 200 characters; for a check without a question the line is `· 图片 / 勾选验证（CAPTCHA）`."
+ },
+ {
+  "name": "message_blank_options_ignored_and_option_cut",
+  "fn": "message",
+  "args": {
+   "folder": "2026-03-03_Opt_Test",
+   "checks": [
+    {
+     "question": "Choose",
+     "options": [
+      "",
+      "012345678901234567890123456789012345678901234",
+      "Keep",
+      ""
+     ]
+    }
+   ],
+   "parked": true
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "Opt Test",
+    "· Choose",
+    "  选项：0123456789012345678901234567890123456789 / Keep",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "If the check has options (blank options are ignored), the next line is `  选项：` followed by up to 8 options joined with ` / `, each cut to 40 characters; when there are more than 8 options the line ends with ` …`."
+ },
+ {
+  "name": "message_question_cut_200_parked_false",
+  "fn": "message",
+  "args": {
+   "folder": "2026-04-04_Long_Q",
+   "checks": [
+    {
+     "question": "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
+     "options": []
+    }
+   ],
+   "parked": false
+  },
+  "expect": {
+   "title": "求职 runner：人机验证（等你）",
+   "body_lines": [
+    "Long Q",
+    "· 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
+    "<<LAST>>"
+   ]
+  },
+  "spec": "a line `· ` + the question with all runs of whitespace collapsed to one space, cut to 200 characters."
+ },
+ {
+  "name": "pending_empty_ledger",
+  "fn": "pending",
+  "args": {
+   "rows": []
+  },
+  "expect": [],
+  "spec": "An empty ledger gives an empty list."
+ },
+ {
+  "name": "pending_last_event_resolved_excludes_folder",
+  "fn": "pending",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "A",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "B",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T11:00:00Z",
+     "folder": "A",
+     "state": "resolved"
+    }
+   ]
+  },
+  "expect": [
+   "B"
+  ],
+  "spec": "For each folder only its LAST event counts: if it is \"open\" the folder is listed, if it is \"resolved\" it is not."
+ },
+ {
+  "name": "pending_sorted_by_at_oldest_first",
+  "fn": "pending",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "B",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "A",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T11:00:00Z",
+     "folder": "C",
+     "state": "open"
+    }
+   ]
+  },
+  "expect": [
+   "A",
+   "B",
+   "C"
+  ],
+  "spec": "The result is the list of those last \"open\" events sorted by \"at\", oldest first."
+ },
+ {
+  "name": "pending_last_open_after_resolved",
+  "fn": "pending",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T08:00:00Z",
+     "folder": "X",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "X",
+     "state": "resolved"
+    },
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "X",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T11:00:00Z",
+     "folder": "Y",
+     "state": "resolved"
+    }
+   ]
+  },
+  "expect": [
+   "X"
+  ],
+  "spec": "For each folder only its LAST event counts: if it is \"open\" the folder is listed, if it is \"resolved\" it is not."
+ },
+ {
+  "name": "pending_resolved_then_open_then_other_resolved",
+  "fn": "pending",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T08:00:00Z",
+     "folder": "Z",
+     "state": "resolved"
+    },
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "Z",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "W",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T11:00:00Z",
+     "folder": "W",
+     "state": "resolved"
+    }
+   ]
+  },
+  "expect": [
+   "Z"
+  ],
+  "spec": "For each folder only its LAST event counts: if it is \"open\" the folder is listed, if it is \"resolved\" it is not."
+ },
+ {
+  "name": "pending_complex_last_events_sorted",
+  "fn": "pending",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T12:00:00Z",
+     "folder": "D",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "C",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "C",
+     "state": "resolved"
+    },
+    {
+     "at": "2026-01-01T11:00:00Z",
+     "folder": "E",
+     "state": "open"
+    },
+    {
+     "at": "2026-01-01T08:00:00Z",
+     "folder": "D",
+     "state": "resolved"
+    }
+   ]
+  },
+  "expect": [
+   "E",
+   "D"
+  ],
+  "spec": "The result is the list of those last \"open\" events sorted by \"at\", oldest first."
+ },
+ {
+  "name": "summary_no_rows_none",
+  "fn": "summary",
+  "args": {
+   "rows": []
+  },
+  "expect": null,
+  "spec": "No rows → None."
+ },
+ {
+  "name": "summary_single_row_one_question",
+  "fn": "summary",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "2026-01-01_Acme_Corp",
+     "state": "open",
+     "checks": [
+      {
+       "question": "Solve the puzzle",
+       "options": [
+        "A",
+        "B"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "title": "求职 runner：1 个人机验证等你",
+   "body_contains": [
+    "· Acme Corp (2026-01-01T09:00:00Z): Solve the puzzle",
+    "job Chrome"
+   ],
+   "body_not_contains": [
+    "CAPTCHA"
+   ]
+  },
+  "spec": "One body line per row: `· <company(folder)> (<ats>): ` followed by the questions of its checks (whitespace collapsed, each cut to 80 characters) joined with ` | `; a check without a question, or a row with no checks, shows `CAPTCHA`."
+ },
+ {
+  "name": "summary_two_rows_captcha_and_join",
+  "fn": "summary",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "2026-01-01_Company_One",
+     "state": "open",
+     "checks": [
+      {
+       "question": "First  question",
+       "options": []
+      },
+      {
+       "question": "",
+       "options": []
+      }
+     ]
+    },
+    {
+     "at": "2026-01-01T10:00:00Z",
+     "folder": "2026-01-02_Company_Two",
+     "state": "open",
+     "checks": []
+    }
+   ]
+  },
+  "expect": {
+   "title": "求职 runner：2 个人机验证等你",
+   "body_contains": [
+    "· Company One (2026-01-01T09:00:00Z): First question | CAPTCHA",
+    "· Company Two (2026-01-01T10:00:00Z): CAPTCHA",
+    "job Chrome"
+   ],
+   "body_not_contains": [
+    "First  question"
+   ]
+  },
+  "spec": "a check without a question, or a row with no checks, shows `CAPTCHA`."
+ },
+ {
+  "name": "summary_question_cut_80",
+  "fn": "summary",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "2026-01-01_Trunc",
+     "state": "open",
+     "checks": [
+      {
+       "question": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+       "options": []
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "title": "求职 runner：1 个人机验证等你",
+   "body_contains": [
+    "· Trunc (2026-01-01T09:00:00Z): CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+    "job Chrome"
+   ],
+   "body_not_contains": [
+    "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+   ]
+  },
+  "spec": "each cut to 80 characters"
+ },
+ {
+  "name": "summary_whitespace_collapse_and_join",
+  "fn": "summary",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "2026-01-01_Whitespace",
+     "state": "open",
+     "checks": [
+      {
+       "question": "A   B\nC",
+       "options": []
+      },
+      {
+       "question": "D",
+       "options": []
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "title": "求职 runner：1 个人机验证等你",
+   "body_contains": [
+    "· Whitespace (2026-01-01T09:00:00Z): A B C | D",
+    "job Chrome"
+   ],
+   "body_not_contains": [
+    "A   B",
+    "A\nB"
+   ]
+  },
+  "spec": "the questions of its checks (whitespace collapsed, each cut to 80 characters) joined with ` | `"
+ },
+ {
+  "name": "summary_options_not_shown",
+  "fn": "summary",
+  "args": {
+   "rows": [
+    {
+     "at": "2026-01-01T09:00:00Z",
+     "folder": "2026-01-01_Pick",
+     "state": "open",
+     "checks": [
+      {
+       "question": "Pick one",
+       "options": [
+        "Secret",
+        "Other"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "expect": {
+   "title": "求职 runner：1 个人机验证等你",
+   "body_contains": [
+    "· Pick (2026-01-01T09:00:00Z): Pick one",
+    "job Chrome"
+   ],
+   "body_not_contains": [
+    "Secret",
+    "Other"
+   ]
+  },
+  "spec": "One body line per row: `· <company(folder)> (<ats>): ` followed by the questions of its checks"
+ }
+]

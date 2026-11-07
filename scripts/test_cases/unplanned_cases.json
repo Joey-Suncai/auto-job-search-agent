@@ -1,0 +1,149 @@
+[
+ {
+  "name": "required file upload with star in label div, not in plan, is reported",
+  "html": "<form><div class=\"field\"><label>Resume *</label><input type=\"file\" id=\"resume_upload\"></div><div class=\"application-question\">Portfolio is required for this role.<input type=\"file\" id=\"portfolio_upload\"></div></form>",
+  "plan": [],
+  "expect": [
+   "resume_upload",
+   "portfolio_upload"
+  ]
+ },
+ {
+  "name": "resume upload present in the plan is not reported",
+  "html": "<form><div class=\"field\"><label>Resume *</label><input type=\"file\" id=\"resume\" required></div></form>",
+  "plan": [
+   {
+    "key": "resume",
+    "sel": "#resume"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "optional file upload with no star and no required word is not reported",
+  "html": "<form><div class=\"field\"><label>Cover letter</label><input type=\"file\" id=\"cover_letter\"></div></form>",
+  "plan": [],
+  "expect": []
+ },
+ {
+  "name": "required text input not covered by the plan is reported",
+  "html": "<form><label>Email</label><input id=\"email\" type=\"email\" required></form>",
+  "plan": [],
+  "expect": [
+   "email"
+  ]
+ },
+ {
+  "name": "required text input covered by plan key equality is not reported",
+  "html": "<form><input id=\"email\" type=\"email\" required></form>",
+  "plan": [
+   {
+    "key": "email",
+    "sel": "#contact-email"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "required text input covered by plan selector without leading hash is not reported",
+  "html": "<form><input id=\"email\" type=\"email\" required></form>",
+  "plan": [
+   {
+    "key": "contact_email",
+    "sel": "#email"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "key prefix match covers question_1_text but not question_2_text",
+  "html": "<form><input id=\"question_1_text\" required><input id=\"question_2_text\" required></form>",
+  "plan": [
+   {
+    "key": "question_1",
+    "sel": "#question_1"
+   }
+  ],
+  "expect": [
+   "question_2_text"
+  ]
+ },
+ {
+  "name": "key prefix must be followed by underscore or brackets, so question_10_text is not covered by question_1",
+  "html": "<form><input id=\"question_1_text\" required><input id=\"question_10_text\" required></form>",
+  "plan": [
+   {
+    "key": "question_1",
+    "sel": "#question_1"
+   }
+  ],
+  "expect": [
+   "question_10_text"
+  ]
+ },
+ {
+  "name": "hidden and disabled required inputs are skipped",
+  "html": "<form><input id=\"hidden_req\" type=\"hidden\" required><input id=\"disabled_req\" required disabled></form>",
+  "plan": [],
+  "expect": []
+ },
+ {
+  "name": "controls outside the form are ignored; inside required control is reported",
+  "html": "<input id=\"outside_req\" required><form><input id=\"inside_req\" required></form>",
+  "plan": [],
+  "expect": [
+   "inside_req"
+  ]
+ },
+ {
+  "name": "ids starting with country are skipped, other required input is reported",
+  "html": "<form><input id=\"country\" required><input id=\"country_code\" required><input id=\"phone\" required></form>",
+  "plan": [],
+  "expect": [
+   "phone"
+  ]
+ },
+ {
+  "name": "id starting with react-select is skipped",
+  "html": "<form><input id=\"react-select-2-input\" required></form>",
+  "plan": [],
+  "expect": []
+ },
+ {
+  "name": "id starting with iti is skipped",
+  "html": "<form><input id=\"iti-0__phone\" required></form>",
+  "plan": [],
+  "expect": []
+ },
+ {
+  "name": "aria-required true is required; aria-required false is not",
+  "html": "<form><input id=\"phone\" aria-required=\"true\"><input id=\"nickname\" aria-required=\"false\"></form>",
+  "plan": [],
+  "expect": [
+   "phone"
+  ]
+ },
+ {
+  "name": "uncovered required inputs, select and textarea are returned in document order",
+  "html": "<form><input id=\"zeta\" required><select id=\"alpha\" required><option>x</option></select><textarea id=\"mike\" required></textarea></form>",
+  "plan": [],
+  "expect": [
+   "zeta",
+   "alpha",
+   "mike"
+  ]
+ },
+ {
+  "name": "id with [] is compared after removing brackets, so skills[] is covered by key skills; certifications is reported",
+  "html": "<form><input id=\"skills[]\" required><input id=\"certifications\" required></form>",
+  "plan": [
+   {
+    "key": "skills",
+    "sel": "#skills"
+   }
+  ],
+  "expect": [
+   "certifications"
+  ]
+ }
+]

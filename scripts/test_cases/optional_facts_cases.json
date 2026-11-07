@@ -1,0 +1,157 @@
+[
+ {
+  "name": "area_of_study",
+  "label": "What is your area of study?",
+  "expect": "discipline"
+ },
+ {
+  "name": "major_question",
+  "label": "What is your major?",
+  "expect": "discipline"
+ },
+ {
+  "name": "discipline_bare",
+  "label": "Discipline",
+  "expect": "discipline"
+ },
+ {
+  "name": "course_of_study_bare",
+  "label": "Course of study",
+  "expect": "discipline"
+ },
+ {
+  "name": "program_of_study_optional",
+  "label": "Program of study (optional)",
+  "expect": "discipline"
+ },
+ {
+  "name": "concentration_bare",
+  "label": "Concentration",
+  "expect": "discipline"
+ },
+ {
+  "name": "what_are_you_studying",
+  "label": "What are you studying?",
+  "expect": "discipline"
+ },
+ {
+  "name": "field_of_study_lowercase",
+  "label": "field of study",
+  "expect": "discipline"
+ },
+ {
+  "name": "school_attended_excluded",
+  "label": "Which college do you attend?",
+  "expect": null
+ },
+ {
+  "name": "university_attended_excluded",
+  "label": "What university are you currently attending?",
+  "expect": null
+ },
+ {
+  "name": "degree_and_area_combined",
+  "label": "Specify the degree and area of study you are pursuing",
+  "expect": null
+ },
+ {
+  "name": "graduate_from_course_of_study",
+  "label": "When do you expect to graduate from your course of study?",
+  "expect": "grad_date"
+ },
+ {
+  "name": "degree_type",
+  "label": "Degree type",
+  "expect": "degree"
+ },
+ {
+  "name": "degree_level",
+  "label": "Degree level",
+  "expect": "degree"
+ },
+ {
+  "name": "what_degree_pursuing",
+  "label": "What degree are you pursuing?",
+  "expect": "degree"
+ },
+ {
+  "name": "degree_currently_enrolled",
+  "label": "What degree are you currently enrolled in?",
+  "expect": "degree"
+ },
+ {
+  "name": "degree_bare",
+  "label": "Degree",
+  "expect": "degree"
+ },
+ {
+  "name": "degree_currently_working_towards",
+  "label": "What degree are you currently working towards?",
+  "expect": "degree"
+ },
+ {
+  "name": "expected_graduation_date",
+  "label": "Expected graduation date",
+  "expect": "grad_date"
+ },
+ {
+  "name": "graduation_year",
+  "label": "Graduation year",
+  "expect": "grad_date"
+ },
+ {
+  "name": "when_will_you_graduate",
+  "label": "When will you graduate?",
+  "expect": "grad_date"
+ },
+ {
+  "name": "month_and_year_expected_graduate",
+  "label": "What month and year are you expected to graduate?",
+  "expect": "grad_date"
+ },
+ {
+  "name": "when_expected_to_graduate",
+  "label": "When are you expected to graduate?",
+  "expect": "grad_date"
+ },
+ {
+  "name": "preferred_first_name",
+  "label": "Preferred first name",
+  "expect": "preferred_name"
+ },
+ {
+  "name": "nickname_bare",
+  "label": "Nickname",
+  "expect": "preferred_name"
+ },
+ {
+  "name": "nick_name_optional",
+  "label": "Nick Name (optional)",
+  "expect": "preferred_name"
+ },
+ {
+  "name": "age_range_excluded",
+  "label": "Age range",
+  "expect": null
+ },
+ {
+  "name": "referral_excluded",
+  "label": "Who referred you?",
+  "expect": null
+ },
+ {
+  "name": "anything_else_excluded",
+  "label": "Anything else you'd like us to know?",
+  "expect": null
+ },
+ {
+  "name": "gpa_excluded",
+  "label": "What is your current GPA?",
+  "expect": null
+ },
+ {
+  "name": "start_date_excluded",
+  "label": "What is your earliest available start date?",
+  "expect": null
+ }
+]

@@ -1,0 +1,430 @@
+[
+ {
+  "name": "icims tenant: http upgraded, host lower-cased, query dropped, path after id",
+  "fn": "login_url",
+  "args": [
+   "http://ACME.icims.com/jobs/12345/apply?src=linkedin"
+  ],
+  "expect": [
+   "icims",
+   "https://acme.icims.com/jobs/12345/login"
+  ],
+  "spec": "`https://<tenant>.icims.com/jobs/<digits>/<anything>` (any path after the id, any query) → `[\"icims\", \"https://<tenant>.icims.com/jobs/<digits>/login\"]`. The host is lower-cased; `http://` becomes `https://`; the query string is dropped."
+ },
+ {
+  "name": "jibe apply front end passes url through unchanged",
+  "fn": "login_url",
+  "args": [
+   "https://acme.jibeapply.com/jobs/12345/apply"
+  ],
+  "expect": [
+   "jibe",
+   "https://acme.jibeapply.com/jobs/12345/apply"
+  ],
+  "spec": "A Jibe front end `https://<x>.jibeapply.com/jobs/<digits>…` → `[\"jibe\", <the url unchanged>]`."
+ },
+ {
+  "name": "non-icims host with exactly icims=1 is a jibe front end",
+  "fn": "login_url",
+  "args": [
+   "https://careers.medpace.com/jobs/13026?icims=1"
+  ],
+  "expect": [
+   "jibe",
+   "https://careers.medpace.com/jobs/13026?icims=1"
+  ],
+  "spec": "Any other host whose path starts `/jobs/<digits>` AND whose query has `icims=1` as one of its parameters (e.g. `https://careers.medpace.com/jobs/13026?icims=1`) → `[\"jibe\", <url unchanged>]`."
+ },
+ {
+  "name": "near miss: icims=10 on non-icims host is not a jibe front end",
+  "fn": "login_url",
+  "args": [
+   "https://careers.medpace.com/jobs/13026?icims=10"
+  ],
+  "expect": [
+   null,
+   null
+  ],
+  "spec": "`icims=10` or `xicims=1` do not count. ... Anything else ... → `[null, null]`."
+ },
+ {
+  "name": "login.icims.com is not a tenant",
+  "fn": "login_url",
+  "args": [
+   "https://login.icims.com/jobs/12345/apply"
+  ],
+  "expect": [
+   null,
+   null
+  ],
+  "spec": "`login.icims.com` is not a tenant: → `[null, null]`."
+ },
+ {
+  "name": "profile field override wins over label, with numeric prefix",
+  "fn": "field_label",
+  "args": [
+   "-1_PersonProfileFields.PhoneType",
+   "Phone Type"
+  ],
+  "expect": "Phone Device Type",
+  "spec": "When `fid` contains `PersonProfileFields.<Name>` or `PortalProfileFields.<Name>` (an optional prefix like `-1_` may come first) and `<Name>` (case-insensitive) is one of: PhoneType → \"Phone Device Type\" ... — return that, whatever the label says."
+ },
+ {
+  "name": "profile field name matched case-insensitively, overriding a different label",
+  "fn": "field_label",
+  "args": [
+   "PersonProfileFields.lastname",
+   "Surname"
+  ],
+  "expect": "Last Name",
+  "spec": "`<Name>` (case-insensitive) is one of: ... LastName → \"Last Name\" — return that, whatever the label says."
+ },
+ {
+  "name": "fallback label cleanup: asterisk and trailing 'required.'",
+  "fn": "field_label",
+  "args": [
+   "custom_field_7",
+   "Are you 18 or older?*  required."
+  ],
+  "expect": "Are you 18 or older?",
+  "spec": "Otherwise return the label with whitespace collapsed, a trailing \"required.\" / \"required\" word removed, and a leading or trailing `*` removed, then trimmed. Example: \"Are you 18 or older?*  required.\" → \"Are you 18 or older?\"."
+ },
+ {
+  "name": "fallback label cleanup: whitespace collapse and trailing 'required' without period",
+  "fn": "field_label",
+  "args": [
+   "custom_field_9",
+   "Please  confirm your mailing address required"
+  ],
+  "expect": "Please confirm your mailing address",
+  "spec": "Otherwise return the label with whitespace collapsed, a trailing \"required.\" / \"required\" word removed, and a leading or trailing `*` removed, then trimmed."
+ },
+ {
+  "name": "standard step bar with Current on step 1 and two of four steps shown",
+  "fn": "parse_steps",
+  "args": [
+   "Step 1 of 4. Candidate Profile(Current Step) Step 2 of 4. Candidate Questions(Incomplete Step)"
+  ],
+  "expect": {
+   "current": 1,
+   "total": 4,
+   "name": "Candidate Profile",
+   "steps": [
+    "Candidate Profile",
+    "Candidate Questions",
+    "",
+    ""
+   ]
+  },
+  "spec": "`steps` = list of the step names in order 1..total (\"\" for a number that does not appear); `current` = the number whose state is Current; `name` = its name; `total` = the largest \"of N\"."
+ },
+ {
+  "name": "near miss: step bar with no Current step yields null",
+  "fn": "parse_steps",
+  "args": [
+   "Step 1 of 4. Candidate Profile(Complete Step) Step 2 of 4. Candidate Questions(Incomplete Step)"
+  ],
+  "expect": null,
+  "spec": "No step bar, or no step marked Current → null."
+ },
+ {
+  "name": "no step bar at all yields null",
+  "fn": "parse_steps",
+  "args": [
+   "Welcome! Please complete your application."
+  ],
+  "expect": null,
+  "spec": "No step bar, or no step marked Current → null."
+ },
+ {
+  "name": "Current on final step, other step numbers absent",
+  "fn": "parse_steps",
+  "args": [
+   "Step 4 of 4. Thank You(Current Step)"
+  ],
+  "expect": {
+   "current": 4,
+   "total": 4,
+   "name": "Thank You",
+   "steps": [
+    "",
+    "",
+    "",
+    "Thank You"
+   ]
+  },
+  "spec": "`steps` = list of the step names in order 1..total (\"\" for a number that does not appear); `current` = the number whose state is Current; `name` = its name; `total` = the largest \"of N\"."
+ },
+ {
+  "name": "lowercase state words, three steps, current is step 1",
+  "fn": "parse_steps",
+  "args": [
+   "Step 1 of 3. Profile(current step) Step 2 of 3. Questions(incomplete step) Step 3 of 3. Review(complete step)"
+  ],
+  "expect": {
+   "current": 1,
+   "total": 3,
+   "name": "Profile",
+   "steps": [
+    "Profile",
+    "Questions",
+    "Review"
+   ]
+  },
+  "spec": "the state in brackets is one of Current / Incomplete / Complete / Completed followed by \"Step\" (case-insensitive)"
+ },
+ {
+  "name": "current equals total, even with a non-submit button text",
+  "fn": "is_final",
+  "args": [
+   "Next",
+   {
+    "current": 3,
+    "total": 3,
+    "name": "Position",
+    "steps": [
+     "Profile",
+     "Questions",
+     "Position"
+    ]
+   }
+  ],
+  "expect": true,
+  "spec": "True (pressing the button may hand in the application) when ANY of: 1. steps.current ≥ steps.total;"
+ },
+ {
+  "name": "second-to-last step whose last step name contains 'Confirm'",
+  "fn": "is_final",
+  "args": [
+   "Next",
+   {
+    "current": 3,
+    "total": 4,
+    "name": "Review",
+    "steps": [
+     "Profile",
+     "Questions",
+     "Review",
+     "Confirm Details"
+    ]
+   }
+  ],
+  "expect": true,
+  "spec": "2. steps.current = steps.total − 1 and the last step's name contains (case-insensitive) assessment, review, confirm, submit, e-sign / esign, signature, complete or thank;"
+ },
+ {
+  "name": "near miss: second-to-last step but last step is 'Candidate Questions'",
+  "fn": "is_final",
+  "args": [
+   "Next",
+   {
+    "current": 3,
+    "total": 4,
+    "name": "Work History",
+    "steps": [
+     "Profile",
+     "Questions",
+     "Work History",
+     "Candidate Questions"
+    ]
+   }
+  ],
+  "expect": false,
+  "spec": "Otherwise false — e.g. \"Submit Profile\", \"Next\", \"Save & Continue\" on step 1 of 4 whose last step is \"Candidate Questions\"."
+ },
+ {
+  "name": "near miss: 'Submit Profile' on step 1 of 4 is not final",
+  "fn": "is_final",
+  "args": [
+   "Submit Profile",
+   {
+    "current": 1,
+    "total": 4,
+    "name": "Candidate Profile",
+    "steps": [
+     "Candidate Profile",
+     "Candidate Questions",
+     "",
+     ""
+    ]
+   }
+  ],
+  "expect": false,
+  "spec": "Otherwise false — e.g. \"Submit Profile\", \"Next\", \"Save & Continue\" on step 1 of 4 whose last step is \"Candidate Questions\"."
+ },
+ {
+  "name": "'Submit Application' matches button-text rule regardless of step position",
+  "fn": "is_final",
+  "args": [
+   "Submit Application",
+   {
+    "current": 2,
+    "total": 4,
+    "name": "Candidate Questions",
+    "steps": [
+     "Candidate Profile",
+     "Candidate Questions",
+     "",
+     ""
+    ]
+   }
+  ],
+  "expect": true,
+  "spec": "3. the button text matches (case-insensitive) \"submit application\", \"submit my application\", \"submit your application\", \"finish\", \"complete application\" (also with my / your), \"apply now\", \"send application\", or is exactly \"Submit\";"
+ },
+ {
+  "name": "social login button skipped, first qualifying button returned",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "1",
+     "text": "Log in with Apple"
+    },
+    {
+     "id": "2",
+     "text": "Submit Profile"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "2",
+   "text": "Submit Profile"
+  },
+  "spec": "Return the FIRST button whose text (non-empty) does NOT match any of: \"log in with\", ... apple ... — AND does match one of: the word \"next\", \"continue\", \"submit\", ..."
+ },
+ {
+  "name": "all buttons excluded yields null",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "1",
+     "text": "Replace Resume"
+    },
+    {
+     "id": "2",
+     "text": "Cancel"
+    }
+   ]
+  ],
+  "expect": null,
+  "spec": "… or exactly \"search\" (all case-insensitive) — AND does match one of: … None qualifies → null."
+ },
+ {
+  "name": "exact 'Search' skipped, 'Next' selected",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "1",
+     "text": "Search"
+    },
+    {
+     "id": "2",
+     "text": "Next"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "2",
+   "text": "Next"
+  },
+  "spec": "Return the FIRST button whose text (non-empty) does NOT match any of: ... or exactly \"search\" (all case-insensitive) — AND does match one of: the word \"next\", ..."
+ },
+ {
+  "name": "empty text and 'Continue with LinkedIn' skipped, 'Finish' selected",
+  "fn": "pick_button",
+  "args": [
+   [
+    {
+     "id": "1",
+     "text": ""
+    },
+    {
+     "id": "2",
+     "text": "Continue with LinkedIn"
+    },
+    {
+     "id": "3",
+     "text": "Finish"
+    }
+   ]
+  ],
+  "expect": {
+   "id": "3",
+   "text": "Finish"
+  },
+  "spec": "Return the FIRST button whose text (non-empty) does NOT match any of: \"log in with\", \"login with\", \"sign in with\", \"signin with\", \"continue with\", \"connect\", google, facebook, linkedin / linked in, ... — AND does match one of: ... \"proceed\", \"finish\", \"apply\"."
+ },
+ {
+  "name": "login.icims.com with wrong-password text",
+  "fn": "classify",
+  "args": [
+   "https://login.icims.com/",
+   "Wrong email or password."
+  ],
+  "expect": "bad_password",
+  "spec": "1. url contains `login.icims.com`: text says \"wrong email or password\", \"wrong username or password\", \"incorrect username/email/password\" or the Chinese ... → \"bad_password\";"
+ },
+ {
+  "name": "login.icims.com with /password url and no credential-error text",
+  "fn": "classify",
+  "args": [
+   "https://login.icims.com/password/reset",
+   ""
+  ],
+  "expect": "universal_password",
+  "spec": "else url contains `/password` → \"universal_password\";"
+ },
+ {
+  "name": "login.icims.com plain page, no error text, no /password",
+  "fn": "classify",
+  "args": [
+   "https://login.icims.com/icims2/servlet/icims2",
+   ""
+  ],
+  "expect": "universal_login",
+  "spec": "else \"universal_login\"."
+ },
+ {
+  "name": "social account login failure text",
+  "fn": "classify",
+  "args": [
+   "https://acme.icims.com/apply",
+   "Unable to log in with the social account."
+  ],
+  "expect": "social_error",
+  "spec": "2. text contains \"unable to log in with the social account\" → \"social_error\"."
+ },
+ {
+  "name": "near miss: thank-you text that also shows a step bar is a form, not done",
+  "fn": "classify",
+  "args": [
+   "https://acme.icims.com/apply",
+   "Thank you for applying! Step 3 of 4. Candidate Questions"
+  ],
+  "expect": "form",
+  "spec": "3. text says the application / submission has been (or was) (successfully) submitted / received / complete, or \"thank you for applying / your application / submitting\" — and the text has NO \"Step N of M\" → \"done\". 4. text has \"Step N of M\" ... → \"form\"."
+ },
+ {
+  "name": "successful submission with no step bar",
+  "fn": "classify",
+  "args": [
+   "https://acme.icims.com/thanks",
+   "Your application has been successfully submitted."
+  ],
+  "expect": "done",
+  "spec": "3. text says the application / submission has been (or was) (successfully) submitted / received / complete ... and the text has NO \"Step N of M\" → \"done\"."
+ },
+ {
+  "name": "/login url with no other signals",
+  "fn": "classify",
+  "args": [
+   "https://acme.icims.com/login",
+   ""
+  ],
+  "expect": "email",
+  "spec": "5. url contains `/login` or text says \"enter your email\" / \"enter your information\" → \"email\"."
+ }
+]

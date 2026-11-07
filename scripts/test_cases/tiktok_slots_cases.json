@@ -1,0 +1,1009 @@
+[
+ {
+  "name": "basic_allowed_no_apps",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "`remaining` = max(0, 2 − used).",
+  "ambiguous": false
+ },
+ {
+  "name": "one_intern_used_allowed",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J2",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-10",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "`used` = number of counted tracker rows in that period whose program equals the job's program.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_intern_refused",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J3a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J3b",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Interview",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "`allowed` = true when the job is not counted (not limited, or exempt); otherwise true only when remaining > 0.",
+  "ambiguous": false
+ },
+ {
+  "name": "three_intern_used3_refused",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J4a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J4b",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Assessment",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J4c",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Interview",
+    "applied_on": "2026-07-03",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 3,
+   "remaining": 0
+  },
+  "quote": "`remaining` = max(0, 2 − used).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_period_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J5",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-03-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Rows in other periods never count.",
+  "ambiguous": false
+ },
+ {
+  "name": "shortlisted_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J6",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Shortlisted",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Shortlisted rows never count.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_status_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J7",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "whose status is anything other than \"Shortlisted\" or empty",
+  "ambiguous": false
+ },
+ {
+  "name": "rejected_counts",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J8",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Rejected",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "Rejected, Offer… all count — a rejected application was still submitted.",
+  "ambiguous": false
+ },
+ {
+  "name": "offer_and_applied_unconfirmed_full",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J9a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Offer",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J9b",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied (unconfirmed)",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "Applied (unconfirmed), Assessment, Interview, Rejected, Offer… all count — a rejected application was still submitted.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_job_id_counts",
+  "job": {
+   "job_id": "J1",
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J1",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Interview",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "Rows with the same job_id as the job are still counted (re-applying is no free slot).",
+  "ambiguous": false
+ },
+ {
+  "name": "share_limit_tiktok_bytedance",
+  "job": {
+   "company": "ByteDance",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J11a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J11b",
+    "company": "ByteDance",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "TikTok and ByteDance share ONE limit.",
+  "ambiguous": false
+ },
+ {
+  "name": "url_domain_lifeattiktok_counts",
+  "job": {
+   "company": "Acme",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": "https://lifeattiktok.com/jobs/123"
+  },
+  "apps": [
+   {
+    "job_id": "J12",
+    "company": "Acme",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": "https://careers.tiktok.com/job/1"
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "OR whose url / ats_url is on lifeattiktok.com, careers.tiktok.com, jobs.bytedance.com or joinbytedance.com.",
+  "ambiguous": false
+ },
+ {
+  "name": "capcut_lemon8_limited",
+  "job": {
+   "company": "CapCut",
+   "title": "Designer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J13",
+    "company": "Lemon8",
+    "title": "Designer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "company name contains \"tiktok\", \"bytedance\", \"capcut\" or \"lemon8\" (any case, e.g. \"TikTok USDS Joint Venture\" counts)",
+  "ambiguous": false
+ },
+ {
+  "name": "non_limited_not_counted",
+  "job": {
+   "company": "Acme",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": false,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "`allowed` = true when the job is not counted (not limited, or exempt)",
+  "ambiguous": false
+ },
+ {
+  "name": "exempt_project_intern_job_allowed",
+  "job": {
+   "company": "TikTok",
+   "title": "Project Intern, Software Engineer",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J15a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J15b",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Interview",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": false,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "Exempt roles never use a slot and are never refused.",
+  "ambiguous": false
+ },
+ {
+  "name": "exempt_phd_job_allowed",
+  "job": {
+   "company": "TikTok",
+   "title": "Ph.D. Research Scientist",
+   "level": "Full-time",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J16a",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Full-time",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J16b",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Full-time",
+    "status": "Offer",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": false,
+   "period": "2026H2",
+   "program": "graduate",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "title contains \"Project Intern\" or \"PhD\" / \"Ph.D.\" (any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "exempt_phd_tracker_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J17",
+    "company": "TikTok",
+    "title": "PhD Candidate",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "a limited-company row, not exempt",
+  "ambiguous": false
+ },
+ {
+  "name": "exempt_project_intern_tracker_case_insensitive",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J18",
+    "company": "TikTok",
+    "title": "PROJECT INTERN",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "title contains \"Project Intern\" or \"PhD\" / \"Ph.D.\" (any case)",
+  "ambiguous": false
+ },
+ {
+  "name": "joinbytedance_url_limited",
+  "job": {
+   "company": "Acme",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": "https://joinbytedance.com/jobs/1"
+  },
+  "apps": [
+   {
+    "job_id": "J19",
+    "company": "Acme",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": "https://jobs.bytedance.com/2"
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "OR whose url / ats_url is on lifeattiktok.com, careers.tiktok.com, jobs.bytedance.com or joinbytedance.com.",
+  "ambiguous": false
+ },
+ {
+  "name": "graduate_program_separate_from_full_intern",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer",
+   "level": "New grad",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J20a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J20b",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "graduate",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Each program has its own 2 slots per period.",
+  "ambiguous": false
+ },
+ {
+  "name": "intern_program_separate_from_full_graduate",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J21a",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Full-time",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J21b",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Full-time",
+    "status": "Applied",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Each program has its own 2 slots per period.",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_program_uses_max_with_unknown_row",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer",
+   "level": "Mid-level",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J22a",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J22b",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "New grad",
+    "status": "Applied",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J22c",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Mid-level",
+    "status": "Applied",
+    "applied_on": "2026-07-03",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "unknown",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "When the job's program is \"unknown\", `used` = the larger of the intern count and the graduate count (plus rows of unknown program are added to every program's count).",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown_program_all_unknown_rows",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer",
+   "level": "Mid-level",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J23a",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Mid-level",
+    "status": "Applied",
+    "applied_on": "2026-07-01",
+    "updated": "",
+    "url": ""
+   },
+   {
+    "job_id": "J23b",
+    "company": "TikTok",
+    "title": "Software Engineer",
+    "level": "Mid-level",
+    "status": "Applied",
+    "applied_on": "2026-07-02",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": false,
+   "counted": true,
+   "period": "2026H2",
+   "program": "unknown",
+   "used": 2,
+   "remaining": 0
+  },
+  "quote": "When the job's program is \"unknown\", `used` = the larger of the intern count and the graduate count (plus rows of unknown program are added to every program's count).",
+  "ambiguous": false
+ },
+ {
+  "name": "period_field_overrides_applied_on",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J24",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-01-15",
+    "updated": "2026-01-15",
+    "url": "",
+    "period": "2026H2"
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "Its period = the row's `period` field when present, else the period of `applied_on`, else of `updated`.",
+  "ambiguous": false
+ },
+ {
+  "name": "period_field_other_period_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J25",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "2026-08-01",
+    "url": "",
+    "period": "2026H1"
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Its period = the row's `period` field when present, else the period of `applied_on`, else of `updated`.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing_applied_on_uses_updated",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J26",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "",
+    "updated": "2026-08-05",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "Its period = the row's `period` field when present, else the period of `applied_on`, else of `updated`.",
+  "ambiguous": false
+ },
+ {
+  "name": "updated_other_period_not_count",
+  "job": {
+   "company": "TikTok",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J27",
+    "company": "TikTok",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "",
+    "updated": "2026-02-01",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 0,
+   "remaining": 2
+  },
+  "quote": "Its period = the row's `period` field when present, else the period of `applied_on`, else of `updated`.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_name_case_insensitive_tiktok_usds",
+  "job": {
+   "company": "TIKTOK USDS Joint Venture",
+   "title": "Software Engineer Intern",
+   "level": "Internship",
+   "url": ""
+  },
+  "apps": [
+   {
+    "job_id": "J28",
+    "company": "tiktok usds joint venture",
+    "title": "Software Engineer Intern",
+    "level": "Internship",
+    "status": "Applied",
+    "applied_on": "2026-08-01",
+    "updated": "",
+    "url": ""
+   }
+  ],
+  "today": "2026-08-15",
+  "expect": {
+   "allowed": true,
+   "counted": true,
+   "period": "2026H2",
+   "program": "intern",
+   "used": 1,
+   "remaining": 1
+  },
+  "quote": "company name contains \"tiktok\", \"bytedance\", \"capcut\" or \"lemon8\" (any case, e.g. \"TikTok USDS Joint Venture\" counts)",
+  "ambiguous": false
+ }
+]

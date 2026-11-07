@@ -1,0 +1,389 @@
+[
+ {
+  "name": "education_entries_full_entry_uses_degree_full",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "Massachusetts Institute of Technology",
+     "degree": "BSc",
+     "degree_full": "Bachelor of Science",
+     "major": "Computer Science",
+     "start": "2020-09",
+     "end": "2024-05",
+     "current": true
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Massachusetts Institute of Technology",
+    "degree": "Bachelor of Science",
+    "major": "Computer Science",
+    "start_month": "September",
+    "start_year": "2020",
+    "end_month": "May",
+    "end_year": "2024",
+    "current": true
+   }
+  ],
+  "spec": "degree = `degree_full` (else `degree`); a \"YYYY-MM\" `start` / `end` → the English month name and the year as strings; current = True only when `current` is true."
+ },
+ {
+  "name": "education_entries_no_degree_full_no_major_missing_end_and_current",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "State University",
+     "degree": "BA",
+     "start": "2019-01"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "State University",
+    "degree": "BA",
+    "major": "",
+    "start_month": "January",
+    "start_year": "2019",
+    "end_month": "",
+    "end_year": "",
+    "current": false
+   }
+  ],
+  "spec": "degree = `degree_full` (else `degree`); major = `major` (else ''); '' when missing or not YYYY-MM; current = True only when `current` is true."
+ },
+ {
+  "name": "education_entries_current_string_true_is_not_true",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "Tech",
+     "degree": "MS",
+     "major": "Physics",
+     "start": "2021-03",
+     "end": "2023-12",
+     "current": "true"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Tech",
+    "degree": "MS",
+    "major": "Physics",
+    "start_month": "March",
+    "start_year": "2021",
+    "end_month": "December",
+    "end_year": "2023",
+    "current": false
+   }
+  ],
+  "spec": "current = True only when `current` is true."
+ },
+ {
+  "name": "education_entries_month_13_is_not_YYYY_MM",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "College",
+     "degree": "MA",
+     "major": "History",
+     "start": "2026-13",
+     "end": "2026-13",
+     "current": false
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "College",
+    "degree": "MA",
+    "major": "History",
+    "start_month": "",
+    "start_year": "",
+    "end_month": "",
+    "end_year": "",
+    "current": false
+   }
+  ],
+  "ambiguous": true,
+  "why": "The spec says '' when missing or not YYYY-MM; '2026-13' has no English month name, but a reading that keeps the year '2026' with an empty month is also defensible.",
+  "spec": "a \"YYYY-MM\" `start` / `end` → the English month name and the year as strings ('' when missing or not YYYY-MM)"
+ },
+ {
+  "name": "education_entries_year_only_start",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "College",
+     "degree": "MA",
+     "major": "History",
+     "start": "2026"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "College",
+    "degree": "MA",
+    "major": "History",
+    "start_month": "",
+    "start_year": "",
+    "end_month": "",
+    "end_year": "",
+    "current": false
+   }
+  ],
+  "ambiguous": true,
+  "why": "'2026' is not YYYY-MM so the rule says ''; it is not stated whether the year alone may still be kept as start_year.",
+  "spec": "('' when missing or not YYYY-MM)"
+ },
+ {
+  "name": "education_entries_entry_without_school_dropped",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "degree": "BSc",
+     "major": "Math",
+     "start": "2018-09"
+    },
+    {
+     "school": "Kept U",
+     "degree": "MSc",
+     "major": "Physics",
+     "start": "2022-09",
+     "current": true
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Kept U",
+    "degree": "MSc",
+    "major": "Physics",
+    "start_month": "September",
+    "start_year": "2022",
+    "end_month": "",
+    "end_year": "",
+    "current": true
+   }
+  ],
+  "spec": "Entries without a school are dropped."
+ },
+ {
+  "name": "education_entries_order_preserved_two_entries",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "Newest U",
+     "degree": "PhD",
+     "major": "Chemistry",
+     "start": "2023-09",
+     "end": "2026-06",
+     "current": true
+    },
+    {
+     "school": "Older College",
+     "degree": "BSc",
+     "major": "Biology",
+     "start": "2019-09",
+     "end": "2023-05",
+     "current": false
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Newest U",
+    "degree": "PhD",
+    "major": "Chemistry",
+    "start_month": "September",
+    "start_year": "2023",
+    "end_month": "June",
+    "end_year": "2026",
+    "current": true
+   },
+   {
+    "school": "Older College",
+    "degree": "BSc",
+    "major": "Biology",
+    "start_month": "September",
+    "start_year": "2019",
+    "end_month": "May",
+    "end_year": "2023",
+    "current": false
+   }
+  ],
+  "spec": "The profile's `education` list (newest first) → the entries ... in the same order."
+ },
+ {
+  "name": "education_entries_current_true_without_end_december",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "Winter School",
+     "degree": "MS",
+     "major": "Data Science",
+     "start": "2022-12",
+     "current": true
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Winter School",
+    "degree": "MS",
+    "major": "Data Science",
+    "start_month": "December",
+    "start_year": "2022",
+    "end_month": "",
+    "end_year": "",
+    "current": true
+   }
+  ],
+  "spec": "Month names are English with a capital first letter (January … December); '' when missing; current = True only when `current` is true."
+ },
+ {
+  "name": "education_entries_empty_list",
+  "fn": "education_entries",
+  "args": [
+   []
+  ],
+  "expect": [],
+  "spec": "The profile's `education` list (newest first) → the entries for a structured Education History field."
+ },
+ {
+  "name": "education_entries_only_school_and_degree_full",
+  "fn": "education_entries",
+  "args": [
+   [
+    {
+     "school": "Inst",
+     "degree_full": "PhD"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "school": "Inst",
+    "degree": "PhD",
+    "major": "",
+    "start_month": "",
+    "start_year": "",
+    "end_month": "",
+    "end_year": "",
+    "current": false
+   }
+  ],
+  "spec": "degree = `degree_full` (else `degree`); major = `major` (else ''); current = True only when `current` is true."
+ },
+ {
+  "name": "edu_same_exact_match",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Computer Science\"}]",
+   "{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Computer Science\"}"
+  ],
+  "expect": true,
+  "spec": "True when the page's school contains the wanted school ... and degree / major equal the wanted ones when the entry has them."
+ },
+ {
+  "name": "edu_same_longer_official_school_name",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"Northwestern\", \"degree\": \"MS\", \"major\": \"Journalism\"}]",
+   "{\"school\": \"Northwestern University\", \"degree\": \"MS\", \"major\": \"Journalism\"}"
+  ],
+  "expect": true,
+  "spec": "the page may show a longer official name."
+ },
+ {
+  "name": "edu_same_school_case_insensitive",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"stanford\", \"degree\": \"BS\", \"major\": \"CS\"}]",
+   "{\"school\": \"Stanford University\", \"degree\": \"BS\", \"major\": \"CS\"}"
+  ],
+  "expect": true,
+  "spec": "True when the page's school contains the wanted school (case-insensitive, whitespace collapsed; ...)"
+ },
+ {
+  "name": "edu_same_school_whitespace_collapsed",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"  Arizona   State \", \"degree\": \"BA\", \"major\": \"History\"}]",
+   "{\"school\": \"Arizona State University\", \"degree\": \"BA\", \"major\": \"History\"}"
+  ],
+  "expect": true,
+  "spec": "True when the page's school contains the wanted school (case-insensitive, whitespace collapsed; ...)"
+ },
+ {
+  "name": "edu_same_wrong_degree",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Physics\"}]",
+   "{\"school\": \"MIT\", \"degree\": \"BA\", \"major\": \"Physics\"}"
+  ],
+  "expect": false,
+  "spec": "... and degree / major equal the wanted ones when the entry has them."
+ },
+ {
+  "name": "edu_same_wrong_major",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Physics\"}]",
+   "{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Chemistry\"}"
+  ],
+  "expect": false,
+  "spec": "... and degree / major equal the wanted ones when the entry has them."
+ },
+ {
+  "name": "edu_same_empty_wanted_major_not_checked",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"\"}]",
+   "{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Mathematics\"}"
+  ],
+  "expect": true,
+  "spec": "empty wanted parts are not checked."
+ },
+ {
+  "name": "edu_same_wanted_entry_without_degree_not_checked",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"major\": \"Physics\"}]",
+   "{\"school\": \"MIT\", \"degree\": \"BA\", \"major\": \"Physics\"}"
+  ],
+  "expect": true,
+  "spec": "degree / major equal the wanted ones when the entry has them (empty wanted parts are not checked)."
+ },
+ {
+  "name": "edu_same_unreadable_got_json",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"MIT\", \"degree\": \"BSc\", \"major\": \"Physics\"}]",
+   "{\"school\": \"MIT\", \"degree\": "
+  ],
+  "expect": false,
+  "spec": "Unreadable JSON → False."
+ },
+ {
+  "name": "edu_same_got_school_does_not_contain_wanted_school",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\": \"University of Michigan\", \"degree\": \"BSc\", \"major\": \"Physics\"}]",
+   "{\"school\": \"Michigan State University\", \"degree\": \"BSc\", \"major\": \"Physics\"}"
+  ],
+  "expect": false,
+  "spec": "True when the page's school contains the wanted school (case-insensitive, whitespace collapsed; ...)"
+ }
+]

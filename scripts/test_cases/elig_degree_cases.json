@@ -1,0 +1,288 @@
+[
+ {
+  "name": "masters_juniors_only_ineligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Data Science Intern, Summer 2027",
+  "loc": "Chicago, IL",
+  "level": "Internship",
+  "text": "About the role: Our data science team is hiring a summer intern to clean datasets, build dashboards, and present findings to product partners. Responsibilities include writing SQL queries, documenting analyses, and supporting weekly reporting. Qualifications: basic Python, statistics coursework, and clear communication. Degree requirement: This internship is limited to juniors only and is not open to graduate students. The company sponsors visas for this role. This is a Summer 2027 internship based in Chicago, IL.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "phd_juniors_only_ineligible",
+  "candidate": {
+   "degree_level": "phd"
+  },
+  "title": "Finance Intern, Summer 2027",
+  "loc": "New York, NY",
+  "level": "Internship",
+  "text": "About the role: The finance team seeks a summer intern to support budgeting, forecasting, and variance analysis. Responsibilities include updating models, preparing weekly reports, and assisting with expense reviews. Qualifications: Excel, basic accounting, and attention to detail. Degree requirement: This internship is open to juniors only. The company sponsors visas for this role. This is a Summer 2027 internship based in New York, NY.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "bachelors_juniors_only_review",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Marketing Analytics Intern, Summer 2027",
+  "loc": "Austin, TX",
+  "level": "Internship",
+  "text": "About the role: The marketing analytics team is hiring a summer intern to track campaign performance and summarize customer insights. Responsibilities include cleaning survey data, building charts, and presenting findings to the team. Qualifications: Excel, basic statistics, and clear writing. Degree requirement: This internship is open to juniors only; applicants should be in their junior year. The company sponsors visas for this role. This is a Summer 2027 internship based in Austin, TX.",
+  "expect": "Review"
+ },
+ {
+  "name": "masters_open_to_juniors_plus_grad_ineligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Product Operations Intern, Summer 2027",
+  "loc": "Seattle, WA",
+  "level": "Internship",
+  "text": "About the role: The product operations team seeks a summer intern to document workflows, analyze user feedback, and support launch planning. Responsibilities include running reports, maintaining trackers, and summarizing findings. Qualifications: spreadsheet skills, organization, and communication. Degree requirement: This internship is open to juniors, and master's students are also welcome to apply. The company sponsors visas for this role. This is a Summer 2027 internship based in Seattle, WA.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "masters_juniors_or_seniors_plus_grad_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Business Intelligence Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the role: The business intelligence team is hiring a summer intern to build dashboards and answer questions with data. Responsibilities include writing SQL, validating metrics, and presenting results to stakeholders. Qualifications: SQL basics, Excel, and clear communication. Degree requirement: This internship is open to juniors or seniors, and we also welcome master's and PhD students. The company sponsors visas for this role. This is a Summer 2027 internship based in Boston, MA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "bachelors_juniors_or_seniors_plus_grad_review",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Business Intelligence Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the role: The business intelligence team is hiring a summer intern to build dashboards and answer questions with data. Responsibilities include writing SQL, validating metrics, and presenting results to stakeholders. Qualifications: SQL basics, Excel, and clear communication. Degree requirement: This internship is open to juniors or seniors, and we also welcome master's and PhD students. The company sponsors visas for this role. This is a Summer 2027 internship based in Boston, MA.",
+  "expect": "Review"
+ },
+ {
+  "name": "phd_juniors_or_seniors_plus_grad_eligible",
+  "candidate": {
+   "degree_level": "phd"
+  },
+  "title": "Business Intelligence Intern, Summer 2027",
+  "loc": "Boston, MA",
+  "level": "Internship",
+  "text": "About the role: The business intelligence team is hiring a summer intern to build dashboards and answer questions with data. Responsibilities include writing SQL, validating metrics, and presenting results to stakeholders. Qualifications: SQL basics, Excel, and clear communication. Degree requirement: This internship is open to juniors or seniors, and we also welcome master's and PhD students. The company sponsors visas for this role. This is a Summer 2027 internship based in Boston, MA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "masters_undergraduate_only_ineligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Research Intern, Summer 2027",
+  "loc": "Ann Arbor, MI",
+  "level": "Internship",
+  "text": "About the role: The research team is hiring a summer intern to assist with literature reviews, data collection, and summary memos. Responsibilities include coding survey responses, checking data quality, and preparing slides. Qualifications: research methods, Excel, and strong writing. Degree requirement: This internship is limited to undergraduate students only. The company sponsors visas for this role. This is a Summer 2027 internship based in Ann Arbor, MI.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "bachelors_freshman_review",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Operations Intern, Summer 2027",
+  "loc": "Columbus, OH",
+  "level": "Internship",
+  "text": "About the role: The operations team seeks a summer intern to support scheduling, inventory tracking, and process documentation. Responsibilities include updating spreadsheets, shadowing team members, and preparing weekly updates. Qualifications: organization, Excel, and communication. Degree requirement: This internship is for freshman candidates. The company sponsors visas for this role. This is a Summer 2027 internship based in Columbus, OH.",
+  "expect": "Review"
+ },
+ {
+  "name": "masters_bachelors_students_only_ineligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Software Engineering Intern, Summer 2027",
+  "loc": "San Jose, CA",
+  "level": "Internship",
+  "text": "About the role: The software engineering team is hiring a summer intern to write tests, fix small bugs, and document features. Responsibilities include pair programming, attending design reviews, and updating tickets. Qualifications: one programming course, Git basics, and problem solving. Degree requirement: This internship is limited to bachelor's students only. The company sponsors visas for this role. This is a Summer 2027 internship based in San Jose, CA.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "masters_pursuing_bachelors_review",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Economics Intern, Summer 2027",
+  "loc": "Washington, DC",
+  "level": "Internship",
+  "text": "About the role: The economics team seeks a summer intern to assist with market research and data analysis. Responsibilities include cleaning datasets, producing charts, and drafting summaries. Qualifications: Excel, basic regression, and clear writing. Degree requirement: Candidates must be currently pursuing a bachelor's degree in economics or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Washington, DC.",
+  "expect": "Review"
+ },
+ {
+  "name": "phd_pursuing_bachelors_review",
+  "candidate": {
+   "degree_level": "phd"
+  },
+  "title": "Economics Intern, Summer 2027",
+  "loc": "Washington, DC",
+  "level": "Internship",
+  "text": "About the role: The economics team seeks a summer intern to assist with market research and data analysis. Responsibilities include cleaning datasets, producing charts, and drafting summaries. Qualifications: Excel, basic regression, and clear writing. Degree requirement: Candidates must be currently pursuing a bachelor's degree in economics or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Washington, DC.",
+  "expect": "Review"
+ },
+ {
+  "name": "bachelors_pursuing_bachelors_eligible",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Economics Intern, Summer 2027",
+  "loc": "Washington, DC",
+  "level": "Internship",
+  "text": "About the role: The economics team seeks a summer intern to assist with market research and data analysis. Responsibilities include cleaning datasets, producing charts, and drafting summaries. Qualifications: Excel, basic regression, and clear writing. Degree requirement: Candidates must be currently pursuing a bachelor's degree in economics or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Washington, DC.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "bachelors_undergraduate_enrolled_eligible",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Social Impact Intern, Summer 2027",
+  "loc": "Denver, CO",
+  "level": "Internship",
+  "text": "About the role: The social impact team is hiring a summer intern to support program evaluation and reporting. Responsibilities include cleaning survey data, drafting case notes, and preparing presentations. Qualifications: Excel, research basics, and communication. Degree requirement: Candidates must be currently enrolled in an undergraduate degree program. The company sponsors visas for this role. This is a Summer 2027 internship based in Denver, CO.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "masters_pursuing_bachelors_plus_grad_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Analytics Intern, Summer 2027",
+  "loc": "San Francisco, CA",
+  "level": "Internship",
+  "text": "About the role: The analytics team seeks a summer intern to build reports and support experiment analysis. Responsibilities include writing SQL, checking data quality, and summarizing results. Qualifications: statistics, Excel, and clear communication. Degree requirement: Candidates currently pursuing a bachelor's degree or a graduate degree are eligible. The company sponsors visas for this role. This is a Summer 2027 internship based in San Francisco, CA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "bachelors_pursuing_phd_ineligible",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Machine Learning Intern, Summer 2027",
+  "loc": "Pittsburgh, PA",
+  "level": "Internship",
+  "text": "About the role: The machine learning team is hiring a summer intern to support model evaluation and data labeling. Responsibilities include running experiments, documenting results, and preparing review slides. Qualifications: Python, statistics, and attention to detail. Degree requirement: Currently pursuing a PhD in computer science or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Pittsburgh, PA.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "masters_pursuing_phd_ineligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Machine Learning Intern, Summer 2027",
+  "loc": "Pittsburgh, PA",
+  "level": "Internship",
+  "text": "About the role: The machine learning team is hiring a summer intern to support model evaluation and data labeling. Responsibilities include running experiments, documenting results, and preparing review slides. Qualifications: Python, statistics, and attention to detail. Degree requirement: Currently pursuing a PhD in computer science or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Pittsburgh, PA.",
+  "expect": "Ineligible"
+ },
+ {
+  "name": "phd_pursuing_phd_eligible",
+  "candidate": {
+   "degree_level": "phd"
+  },
+  "title": "Machine Learning Intern, Summer 2027",
+  "loc": "Pittsburgh, PA",
+  "level": "Internship",
+  "text": "About the role: The machine learning team is hiring a summer intern to support model evaluation and data labeling. Responsibilities include running experiments, documenting results, and preparing review slides. Qualifications: Python, statistics, and attention to detail. Degree requirement: Currently pursuing a PhD in computer science or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Pittsburgh, PA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "bachelors_masters_or_phd_required_review",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Policy Research Intern, Summer 2027",
+  "loc": "Sacramento, CA",
+  "level": "Internship",
+  "text": "About the role: The policy research team seeks a summer intern to support data collection and analysis. Responsibilities include cleaning datasets, drafting memos, and preparing charts. Qualifications: Excel, research methods, and clear writing. Degree requirement: Applicants must be currently enrolled in a master's or PhD program. The company sponsors visas for this role. This is a Summer 2027 internship based in Sacramento, CA.",
+  "expect": "Review"
+ },
+ {
+  "name": "masters_masters_program_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Biostatistics Intern, Summer 2027",
+  "loc": "Minneapolis, MN",
+  "level": "Internship",
+  "text": "About the role: The biostatistics team is hiring a summer intern to support study reporting and data checks. Responsibilities include cleaning datasets, running summary tables, and documenting code. Qualifications: R or Python, statistics, and communication. Degree requirement: Applicants must be currently enrolled in a master's program in statistics or a related field. The company sponsors visas for this role. This is a Summer 2027 internship based in Minneapolis, MN.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "phd_graduate_program_eligible",
+  "candidate": {
+   "degree_level": "phd"
+  },
+  "title": "Computational Biology Intern, Summer 2027",
+  "loc": "San Diego, CA",
+  "level": "Internship",
+  "text": "About the role: The computational biology team seeks a summer intern to assist with data processing and visualization. Responsibilities include cleaning assay data, writing scripts, and presenting results. Qualifications: Python, biology basics, and teamwork. Degree requirement: Applicants must be currently enrolled in a graduate program (master's or PhD). The company sponsors visas for this role. This is a Summer 2027 internship based in San Diego, CA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "fulltime_masters_juniors_only_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Data Analyst, New Grad 2027",
+  "loc": "Chicago, IL",
+  "level": "New grad",
+  "text": "About the role: This is a full-time new graduate data analyst position starting in Summer 2027, not an internship. You will build dashboards, write SQL, and partner with product teams on reporting. Qualifications: Excel, SQL, and clear communication. Degree requirement: The campus recruiting track for this full-time role is open to juniors only, and graduate students are also welcome to apply. The company sponsors visas for this role. Location: Chicago, IL.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "fulltime_bachelors_pursuing_phd_eligible",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Research Analyst, New Grad 2027",
+  "loc": "Washington, DC",
+  "level": "New grad",
+  "text": "About the role: This is a full-time new graduate research analyst position starting in Summer 2027, not an internship. You will collect data, run analyses, and prepare briefings for senior staff. Qualifications: Excel, research methods, and strong writing. Degree requirement: Currently pursuing a PhD in economics or a related field. The company sponsors visas for this role. Location: Washington, DC.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "masters_rising_class_years_plus_grad_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Growth Analytics Intern, Summer 2027",
+  "loc": "Atlanta, GA",
+  "level": "Internship",
+  "text": "About the role: The growth analytics team is hiring a summer intern to analyze funnel data and support reporting. Responsibilities include writing SQL, building dashboards, and presenting insights. Qualifications: statistics, Excel, and communication. Degree requirement: This internship is open to rising junior, senior, or sophomore students, and master's and PhD students are also welcome. The company sponsors visas for this role. This is a Summer 2027 internship based in Atlanta, GA.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "bachelors_graduate_or_undergraduate_eligible",
+  "candidate": {
+   "degree_level": "bachelors"
+  },
+  "title": "Customer Insights Intern, Summer 2027",
+  "loc": "Dallas, TX",
+  "level": "Internship",
+  "text": "About the role: The customer insights team seeks a summer intern to support survey design and analysis. Responsibilities include cleaning data, creating charts, and drafting summaries. Qualifications: Excel, basic statistics, and clear writing. Degree requirement: This internship is open to graduate or undergraduate students. The company sponsors visas for this role. This is a Summer 2027 internship based in Dallas, TX.",
+  "expect": "Eligible"
+ },
+ {
+  "name": "masters_all_education_levels_eligible",
+  "candidate": {
+   "degree_level": "masters"
+  },
+  "title": "Data Governance Intern, Summer 2027",
+  "loc": "Phoenix, AZ",
+  "level": "Internship",
+  "text": "About the role: The data governance team is hiring a summer intern to document data sources and support quality checks. Responsibilities include updating metadata, running reports, and preparing training notes. Qualifications: Excel, attention to detail, and communication. Degree requirement: This internship is open to all education levels. The company sponsors visas for this role. This is a Summer 2027 internship based in Phoenix, AZ.",
+  "expect": "Eligible"
+ }
+]

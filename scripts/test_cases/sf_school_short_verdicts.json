@@ -1,0 +1,6 @@
+{
+ "pick_B_two_fitting_options_ambiguous": {
+  "verdict": "case",
+  "why": "Spec §4 is ordered ('In this order'): rule 1 (the same name once case, 'the' / 'at' and non-letters are ignored) comes before rule 2. 'University of Illinois at Urbana-Champaign' equals entry B's school by rule 1, so it is the match; the two-fits rule only applies when no option passes rule 1. Code right (an exact name is never ambiguous)."
+ }
+}

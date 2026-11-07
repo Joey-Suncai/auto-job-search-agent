@@ -1,0 +1,319 @@
+[
+ {
+  "name": "detect_simple_host_in_url",
+  "fn": "detect",
+  "args": {
+   "text": "https://acme.applicantpro.com/jobs/123"
+  },
+  "expect": [
+   [
+    "applicantpro",
+    "acme.applicantpro.com"
+   ]
+  ],
+  "spec_quote": "a host `<name>.applicantpro.com` anywhere in a page / URL is the system \"applicantpro\" with ident = that host (lower case as found).",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_dot_prefixed_subdomain_full_host_once",
+  "fn": "detect",
+  "args": {
+   "text": "see x.casellejobs.applicantpro.com for the board"
+  },
+  "expect": [
+   [
+    "applicantpro",
+    "x.casellejobs.applicantpro.com"
+   ]
+  ],
+  "spec_quote": "Not preceded by a letter, digit, dot or hyphen (so \"x.casellejobs.applicantpro.com\" yields the full host only once...)",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_rejects_letter_and_hyphen_prefix",
+  "fn": "detect",
+  "args": {
+   "text": "visit notapplicantpro.com and my-applicantpro.com today"
+  },
+  "expect": [],
+  "spec_quote": "Not preceded by a letter, digit, dot or hyphen (so \"x.casellejobs.applicantpro.com\" yields the full host only once, and \"notapplicantpro.com\" is not a match).",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_no_applicantpro_host",
+  "fn": "detect",
+  "args": {
+   "text": "<html><body>Nothing relevant here.</body></html>"
+  },
+  "expect": [],
+  "spec_quote": "a host `<name>.applicantpro.com` anywhere in a page / URL is the system \"applicantpro\" with ident = that host (lower case as found).",
+  "ambiguous": false
+ },
+ {
+  "name": "detect_two_distinct_hosts",
+  "fn": "detect",
+  "args": {
+   "text": "https://acme.applicantpro.com and https://beta.applicantpro.com/jobs"
+  },
+  "expect": [
+   [
+    "applicantpro",
+    "acme.applicantpro.com"
+   ],
+   [
+    "applicantpro",
+    "beta.applicantpro.com"
+   ]
+  ],
+  "spec_quote": "a host `<name>.applicantpro.com` anywhere in a page / URL is the system \"applicantpro\" with ident = that host (lower case as found).",
+  "ambiguous": false
+ },
+ {
+  "name": "site_id_quoted_digits",
+  "fn": "site_id",
+  "args": {
+   "page": "<script>var cfg = {\"domain_id\":\"12345\"};</script>"
+  },
+  "expect": "12345",
+  "spec_quote": "the digits of the first `\"domain_id\":\"<digits>\"` (quotes around the number optional, spaces allowed around the colon)",
+  "ambiguous": false
+ },
+ {
+  "name": "site_id_unquoted_number",
+  "fn": "site_id",
+  "args": {
+   "page": "config: {\"domain_id\": 987, \"other\": 1}"
+  },
+  "expect": "987",
+  "spec_quote": "the digits of the first `\"domain_id\":\"<digits>\"` (quotes around the number optional, spaces allowed around the colon)",
+  "ambiguous": false
+ },
+ {
+  "name": "site_id_spaces_around_colon",
+  "fn": "site_id",
+  "args": {
+   "page": "{\"domain_id\"   :   \"42\"}"
+  },
+  "expect": "42",
+  "spec_quote": "the digits of the first `\"domain_id\":\"<digits>\"` (quotes around the number optional, spaces allowed around the colon)",
+  "ambiguous": false
+ },
+ {
+  "name": "site_id_missing_returns_empty",
+  "fn": "site_id",
+  "args": {
+   "page": "<html><body>no id here</body></html>"
+  },
+  "expect": "",
+  "spec_quote": "the digits of the first `\"domain_id\":\"<digits>\"` (quotes around the number optional, spaces allowed around the colon), else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "site_id_first_occurrence_wins",
+  "fn": "site_id",
+  "args": {
+   "page": "{\"domain_id\":\"111\"} ... {\"domain_id\":\"222\"}"
+  },
+  "expect": "111",
+  "spec_quote": "the digits of the first `\"domain_id\":\"<digits>\"` (quotes around the number optional, spaces allowed around the colon), else \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_full_job_city_state",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "id": "1",
+       "title": "Engineer",
+       "city": "Denver",
+       "state": "CO"
+      }
+     ]
+    }
+   },
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "location": "Denver, CO",
+    "url": "https://acme.applicantpro.com/jobs/1"
+   }
+  ],
+  "spec_quote": "every job with an `id` and a `title` becomes {\"title\", \"location\", \"url\"}: url = \"https://<host>/jobs/<id>\"; location = city and state abbreviation joined by \", \" (missing parts skipped)",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_city_only",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "id": "7",
+       "title": "Analyst",
+       "city": "Boise"
+      }
+     ]
+    }
+   },
+   "host": "beta.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Analyst",
+    "location": "Boise",
+    "url": "https://beta.applicantpro.com/jobs/7"
+   }
+  ],
+  "spec_quote": "location = city and state abbreviation joined by \", \" (missing parts skipped)",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_state_only",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "id": "8",
+       "title": "Clerk",
+       "state": "TX"
+      }
+     ]
+    }
+   },
+   "host": "beta.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Clerk",
+    "location": "TX",
+    "url": "https://beta.applicantpro.com/jobs/8"
+   }
+  ],
+  "spec_quote": "location = city and state abbreviation joined by \", \" (missing parts skipped)",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_remote_appended_with_location",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "id": "9",
+       "title": "Dev",
+       "city": "Austin",
+       "state": "TX",
+       "workplaceType": "Fully Remote"
+      }
+     ]
+    }
+   },
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Dev",
+    "location": "Austin, TX; Remote",
+    "url": "https://acme.applicantpro.com/jobs/9"
+   }
+  ],
+  "spec_quote": "when `workplaceType` contains \"remote\" (any case) \"; Remote\" is appended (or just \"Remote\" when there is no city / state).",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_remote_only_no_location",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "id": "10",
+       "title": "Support",
+       "workplaceType": "REMOTE"
+      }
+     ]
+    }
+   },
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Support",
+    "location": "Remote",
+    "url": "https://acme.applicantpro.com/jobs/10"
+   }
+  ],
+  "spec_quote": "when `workplaceType` contains \"remote\" (any case) \"; Remote\" is appended (or just \"Remote\" when there is no city / state).",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_skips_missing_id_title_and_non_dicts",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "data": {
+     "jobs": [
+      {
+       "title": "No Id"
+      },
+      {
+       "id": "2"
+      },
+      "not a dict",
+      null,
+      {
+       "id": "3",
+       "title": "Keeper",
+       "city": "Reno",
+       "state": "NV"
+      }
+     ]
+    }
+   },
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [
+   {
+    "title": "Keeper",
+    "location": "Reno, NV",
+    "url": "https://acme.applicantpro.com/jobs/3"
+   }
+  ],
+  "spec_quote": "Jobs without id or title, non-dict entries, and a missing / null data → skipped / [].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_null_data",
+  "fn": "parse",
+  "args": {
+   "data": null,
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [],
+  "spec_quote": "Jobs without id or title, non-dict entries, and a missing / null data → skipped / [].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_missing_data_key",
+  "fn": "parse",
+  "args": {
+   "data": {
+    "something": "else"
+   },
+   "host": "acme.applicantpro.com"
+  },
+  "expect": [],
+  "spec_quote": "Jobs without id or title, non-dict entries, and a missing / null data → skipped / [].",
+  "ambiguous": false
+ }
+]

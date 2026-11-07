@@ -1,0 +1,264 @@
+[
+ {
+  "name": "pass_base_case",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply"
+  ]
+ },
+ {
+  "name": "pass_eu_host",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.eu.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.eu.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply"
+  ]
+ },
+ {
+  "name": "pass_trailing_slash",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply/",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply/"
+  ]
+ },
+ {
+  "name": "pass_case_insensitive_url",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://JOBS.LEVER.CO/Acme/12345678-1234-1234-1234-123456789ABC/apply",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://JOBS.LEVER.CO/Acme/12345678-1234-1234-1234-123456789ABC/apply"
+  ],
+  "note": "Spec: 'matching is case-insensitive'; command echoes the url as given."
+ },
+ {
+  "name": "pass_other_browser",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Google Chrome",
+  "expect": [
+   "open",
+   "-a",
+   "Google Chrome",
+   "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply"
+  ]
+ },
+ {
+  "name": "pass_other_site_name",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/other-site/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.lever.co/other-site/12345678-1234-1234-1234-123456789abc/apply"
+  ]
+ },
+ {
+  "name": "pass_eu_host_with_trailing_slash",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.eu.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply/",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.eu.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply/"
+  ]
+ },
+ {
+  "name": "pass_hex_letter_id",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/abcdef01-2345-6789-abcd-ef0123456789/apply",
+  "browser": "Microsoft Edge",
+  "expect": [
+   "open",
+   "-a",
+   "Microsoft Edge",
+   "https://jobs.lever.co/acme/abcdef01-2345-6789-abcd-ef0123456789/apply"
+  ]
+ },
+ {
+  "name": "fail_status_submitted",
+  "ats": "lever",
+  "status": "submitted",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_status_blocked",
+  "ats": "lever",
+  "status": "blocked",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_status_dry_run",
+  "ats": "lever",
+  "status": "dry-run",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_ats_ashby",
+  "ats": "ashby",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_ats_greenhouse",
+  "ats": "greenhouse",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_ats_workday",
+  "ats": "workday",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_one_problem",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [
+   "captcha"
+  ],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_multiple_problems",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [
+   "timeout",
+   "missing field"
+  ],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_empty_browser",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "",
+  "expect": null
+ },
+ {
+  "name": "fail_http_scheme",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "http://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_posting_page_without_apply",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_apply_thanks_page",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply/thanks",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_other_host",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.com/acme/12345678-1234-1234-1234-123456789abc/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_query_string",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abc/apply?ref=1",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_id_35_chars",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789ab/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ },
+ {
+  "name": "fail_id_non_hex_char",
+  "ats": "lever",
+  "status": "unconfirmed",
+  "problems": [],
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789abz/apply",
+  "browser": "Microsoft Edge",
+  "expect": null
+ }
+]

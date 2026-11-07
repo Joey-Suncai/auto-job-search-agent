@@ -1,0 +1,750 @@
+[
+ {
+  "name": "company_link: LinkedIn safety/go wrapper, decode and drop utm_* keep gh_jid",
+  "fn": "company_link",
+  "args": {
+   "href": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fboards.greenhouse.io%2Facme%2Fjobs%2F4567890%3Futm_source%3Dlinkedin%26gh_jid%3D4567890&trk=public_jobs_apply"
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/4567890?gh_jid=4567890"
+ },
+ {
+  "name": "company_link: LinkedIn /redir/redirect wrapper, drop ref and utm_campaign, empty query dropped",
+  "fn": "company_link",
+  "args": {
+   "href": "https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Facme.wd5.myworkdayjobs.com%2FExternal%2Fjob%2FSan-Francisco-CA%2FData-Intern_JR12345%3Fref%3Dlinkedin%26utm_campaign%3Dli&trk=xyz"
+  },
+  "expect": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345"
+ },
+ {
+  "name": "company_link: direct non-LinkedIn URL, drop utm_source and gh_src, keep jobId",
+  "fn": "company_link",
+  "args": {
+   "href": "https://jobs.lever.co/acme/abc-123?utm_source=x&gh_src=y&jobId=7788"
+  },
+  "expect": "https://jobs.lever.co/acme/abc-123?jobId=7788"
+ },
+ {
+  "name": "company_link: empty href returns empty string",
+  "fn": "company_link",
+  "args": {
+   "href": ""
+  },
+  "expect": ""
+ },
+ {
+  "name": "company_link: non-http(s) href returns empty string",
+  "fn": "company_link",
+  "args": {
+   "href": "mailto:careers@acme.com"
+  },
+  "expect": ""
+ },
+ {
+  "name": "company_link: unwrapped URL is still a linkedin.com page -> empty string",
+  "fn": "company_link",
+  "args": {
+   "href": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fwww.linkedin.com%2Fjobs%2Fview%2F4476043330&trk=x"
+  },
+  "expect": ""
+ },
+ {
+  "name": "company_link: only tracking params present, entire query dropped",
+  "fn": "company_link",
+  "args": {
+   "href": "https://acme.com/apply?fbclid=abc&gclid=def&source=li&src=q&trk=z&jobId=12345"
+  },
+  "expect": "https://acme.com/apply?jobId=12345"
+ },
+ {
+  "name": "company_link: all params are tracking -> query dropped entirely",
+  "fn": "company_link",
+  "args": {
+   "href": "https://careers.acme.com/job/data-intern-4476043330?utm_source=linkedin&trk=abc"
+  },
+  "expect": "https://careers.acme.com/job/data-intern-4476043330"
+ },
+ {
+  "name": "resolve: closed=true wins over an Easy Apply control",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": true
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: Easy Apply by visible control text",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: Easy Apply via aria-label only (text says neither)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Submit application",
+      "aria": "Easy Apply to this job",
+      "href": "https://acme.com/jobs/1",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: external Apply -> Workday one-posting URL (path has /job/)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345"
+  }
+ },
+ {
+  "name": "resolve: external Apply -> Workday careers home page is not one posting (ats_url empty)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://acme.wd5.myworkdayjobs.com/External",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://acme.wd5.myworkdayjobs.com/External",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: external Apply -> Greenhouse one posting via gh_jid=<digits>",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme?gh_jid=4567890",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme?gh_jid=4567890",
+   "ats_url": "https://boards.greenhouse.io/acme?gh_jid=4567890"
+  }
+ },
+ {
+  "name": "resolve: external Apply -> plain company careers site, not a known ATS (ats_url empty)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://careers.acme.com/jobs/data-intern-4476043330",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://careers.acme.com/jobs/data-intern-4476043330",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: visible controls examined before all controls (hidden Easy Apply skipped, visible Apply external wins)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": false
+     },
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4567890",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4567890",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4567890"
+  }
+ },
+ {
+  "name": "resolve: 'Applied 5 days ago' is neither easy nor external -> unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Applied 5 days ago",
+      "aria": "",
+      "href": "https://acme.com/jobs/1",
+      "visible": true
+     }
+    ],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "resolve: no controls at all -> unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  }
+ },
+ {
+  "name": "apply_row: external with apply_url and ats_url on a row with neither",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00123",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "tier": "A",
+    "level": "Intern",
+    "elig": "可投"
+   },
+   "res": {
+    "li_apply": "external",
+    "reason": "external apply control",
+    "apply_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345",
+    "ats_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345"
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00123",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "tier": "A",
+   "level": "Intern",
+   "elig": "可投",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "external",
+   "li_apply_reason": "external apply control",
+   "li_apply_on": "2026-11-05",
+   "apply_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/External/job/San-Francisco-CA/Data-Intern_JR12345",
+   "ats_resolved": "linkedin apply link (JSA-178)",
+   "ats_resolved_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "apply_row: external replaces a linkedin.com apply_url but never replaces an existing ats_url",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00124",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "apply_url": "https://www.linkedin.com/jobs/view/4476043330",
+    "ats_url": "https://boards.greenhouse.io/acme/jobs/9999999",
+    "ats_resolved": "old source",
+    "ats_resolved_on": "2026-01-02"
+   },
+   "res": {
+    "li_apply": "external",
+    "reason": "external apply control",
+    "apply_url": "https://boards.greenhouse.io/acme/jobs/4567890",
+    "ats_url": "https://boards.greenhouse.io/acme/jobs/4567890"
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00124",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4567890",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/9999999",
+   "ats_resolved": "old source",
+   "ats_resolved_on": "2026-01-02",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "external",
+   "li_apply_reason": "external apply control",
+   "li_apply_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "apply_row: external keeps a non-LinkedIn existing apply_url and adds no ats_url when res.ats_url empty",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00125",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "apply_url": "https://acme.com/apply?jobId=7788"
+   },
+   "res": {
+    "li_apply": "external",
+    "reason": "external apply control",
+    "apply_url": "https://careers.acme.com/jobs/data-intern-4476043330",
+    "ats_url": ""
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00125",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "apply_url": "https://acme.com/apply?jobId=7788",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "external",
+   "li_apply_reason": "external apply control",
+   "li_apply_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "apply_row: closed sets elig 已关闭, elig_reason and elig_checked, no apply/ats urls",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00126",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "elig": "可投",
+    "elig_reason": ""
+   },
+   "res": {
+    "li_apply": "closed",
+    "reason": "no longer accepting applications",
+    "apply_url": "",
+    "ats_url": ""
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00126",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "elig": "已关闭",
+   "elig_reason": "no longer accepting applications",
+   "elig_checked": "2026-11-05",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "closed",
+   "li_apply_reason": "no longer accepting applications",
+   "li_apply_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "apply_row: easy changes nothing besides the linkedin/li_apply fields",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00127",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "elig": "可投",
+    "elig_reason": "old reason",
+    "apply_url": "https://acme.com/apply?jobId=7788"
+   },
+   "res": {
+    "li_apply": "easy",
+    "reason": "easy apply control",
+    "apply_url": "",
+    "ats_url": ""
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00127",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "elig": "可投",
+   "elig_reason": "old reason",
+   "apply_url": "https://acme.com/apply?jobId=7788",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "easy",
+   "li_apply_reason": "easy apply control",
+   "li_apply_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "apply_row: unknown leaves elig/elig_reason untouched, no apply/ats urls added",
+  "fn": "apply_row",
+  "args": {
+   "row": {
+    "id": "J00128",
+    "url": "https://www.linkedin.com/jobs/view/4476043330",
+    "elig": "不可投",
+    "elig_reason": "old reason"
+   },
+   "res": {
+    "li_apply": "unknown",
+    "reason": "no apply control found",
+    "apply_url": "",
+    "ats_url": ""
+   },
+   "li_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "today": "2026-11-05"
+  },
+  "expect": {
+   "id": "J00128",
+   "url": "https://www.linkedin.com/jobs/view/4476043330",
+   "elig": "不可投",
+   "elig_reason": "old reason",
+   "linkedin_url": "https://www.linkedin.com/jobs/view/4476043330",
+   "li_apply": "unknown",
+   "li_apply_reason": "no apply control found",
+   "li_apply_on": "2026-11-05"
+  }
+ },
+ {
+  "name": "targets: ordering by elig 可投, then tier, then level Intern (any case), then input order",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00001",
+     "url": "https://www.linkedin.com/jobs/view/4476043330",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Senior"
+    },
+    {
+     "id": "J00002",
+     "url": "https://www.linkedin.com/jobs/view/4476043331",
+     "elig": "可投",
+     "tier": "A",
+     "level": "intern"
+    },
+    {
+     "id": "J00003",
+     "url": "https://www.linkedin.com/jobs/view/4476043332",
+     "elig": "可投",
+     "tier": "B",
+     "level": "Intern"
+    },
+    {
+     "id": "J00004",
+     "url": "https://www.linkedin.com/jobs/view/4476043333",
+     "elig": "待定",
+     "tier": "A",
+     "level": "Intern"
+    }
+   ],
+   "wellfound_pages": [],
+   "redo": false
+  },
+  "expect": [
+   [
+    "J00002",
+    "4476043331"
+   ],
+   [
+    "J00001",
+    "4476043330"
+   ],
+   [
+    "J00003",
+    "4476043332"
+   ],
+   [
+    "J00004",
+    "4476043333"
+   ]
+  ]
+ },
+ {
+  "name": "targets: Wellfound page record names the row, first LinkedIn job URL gives the id",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00005",
+     "url": "https://wellfound.com/jobs/12345",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Intern"
+    }
+   ],
+   "wellfound_pages": [
+    {
+     "id": "J00005",
+     "opened": [
+      "https://wellfound.com/jobs/12345",
+      "https://www.linkedin.com/jobs/view/4476043334",
+      "https://www.linkedin.com/jobs/view/4476043335"
+     ]
+    }
+   ],
+   "redo": false
+  },
+  "expect": [
+   [
+    "J00005",
+    "4476043334"
+   ]
+  ]
+ },
+ {
+  "name": "targets: rows with ats_url, li_apply, or elig 不可投/已关闭/重复 are skipped",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00006",
+     "url": "https://www.linkedin.com/jobs/view/4476043336",
+     "elig": "可投",
+     "ats_url": "https://boards.greenhouse.io/acme/jobs/4567890"
+    },
+    {
+     "id": "J00007",
+     "url": "https://www.linkedin.com/jobs/view/4476043337",
+     "elig": "可投",
+     "li_apply": "external"
+    },
+    {
+     "id": "J00008",
+     "url": "https://www.linkedin.com/jobs/view/4476043338",
+     "elig": "不可投"
+    },
+    {
+     "id": "J00009",
+     "url": "https://www.linkedin.com/jobs/view/4476043339",
+     "elig": "已关闭"
+    },
+    {
+     "id": "J00010",
+     "url": "https://www.linkedin.com/jobs/view/4476043340",
+     "elig": "重复"
+    },
+    {
+     "id": "J00011",
+     "url": "https://www.linkedin.com/jobs/view/4476043341",
+     "elig": "可投"
+    }
+   ],
+   "wellfound_pages": [],
+   "redo": false
+  },
+  "expect": [
+   [
+    "J00011",
+    "4476043341"
+   ]
+  ]
+ },
+ {
+  "name": "targets: redo=True re-includes rows with a li_apply value, but ats_url and 已关闭 still skip",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00012",
+     "url": "https://www.linkedin.com/jobs/view/4476043342",
+     "elig": "可投",
+     "li_apply": "easy"
+    },
+    {
+     "id": "J00013",
+     "url": "https://www.linkedin.com/jobs/view/4476043343",
+     "elig": "可投",
+     "li_apply": "external"
+    },
+    {
+     "id": "J00014",
+     "url": "https://www.linkedin.com/jobs/view/4476043344",
+     "elig": "可投",
+     "li_apply": "external",
+     "ats_url": "https://acme.wd5.myworkdayjobs.com/External/job/SF/Data-Intern_JR12345"
+    },
+    {
+     "id": "J00015",
+     "url": "https://www.linkedin.com/jobs/view/4476043345",
+     "elig": "已关闭",
+     "li_apply": "closed"
+    }
+   ],
+   "wellfound_pages": [],
+   "redo": true
+  },
+  "expect": [
+   [
+    "J00012",
+    "4476043342"
+   ],
+   [
+    "J00013",
+    "4476043343"
+   ]
+  ]
+ },
+ {
+  "name": "targets: non-LinkedIn row url is not a target; ?currentJobId= form is a target",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00016",
+     "url": "https://acme.com/careers/data-intern",
+     "elig": "可投"
+    },
+    {
+     "id": "J00017",
+     "url": "https://www.linkedin.com/jobs/search/?currentJobId=4476043346",
+     "elig": "可投"
+    },
+    {
+     "id": "J00018",
+     "url": "https://wellfound.com/jobs/99999",
+     "elig": "可投"
+    }
+   ],
+   "wellfound_pages": [
+    {
+     "id": "J00018",
+     "opened": [
+      "https://wellfound.com/jobs/99999",
+      "https://acme.com/about"
+     ]
+    }
+   ],
+   "redo": false
+  },
+  "expect": [
+   [
+    "J00017",
+    "4476043346"
+   ]
+  ]
+ },
+ {
+  "name": "targets: tier D before missing tier, ties keep input order",
+  "fn": "targets",
+  "args": {
+   "rows": [
+    {
+     "id": "J00019",
+     "url": "https://www.linkedin.com/jobs/view/4476043347",
+     "elig": "可投",
+     "tier": "D",
+     "level": "Intern"
+    },
+    {
+     "id": "J00020",
+     "url": "https://www.linkedin.com/jobs/view/4476043348",
+     "elig": "可投"
+    },
+    {
+     "id": "J00021",
+     "url": "https://www.linkedin.com/jobs/view/4476043349",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Mid"
+    },
+    {
+     "id": "J00022",
+     "url": "https://www.linkedin.com/jobs/view/4476043350",
+     "elig": "可投",
+     "tier": "D",
+     "level": "Intern"
+    }
+   ],
+   "wellfound_pages": [],
+   "redo": false
+  },
+  "expect": [
+   [
+    "J00021",
+    "4476043349"
+   ],
+   [
+    "J00019",
+    "4476043347"
+   ],
+   [
+    "J00022",
+    "4476043350"
+   ],
+   [
+    "J00020",
+    "4476043348"
+   ]
+  ]
+ }
+]

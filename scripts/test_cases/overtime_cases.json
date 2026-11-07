@@ -1,0 +1,227 @@
+[
+ {
+  "name": "evenings_only_select",
+  "label": "Are you able to work overtime?",
+  "type": "select",
+  "options": [
+   "Just evenings",
+   "Weekends only",
+   "Evenings and weekends",
+   "No"
+  ],
+  "expect": "Just evenings",
+  "spec_quote": "Option lists with an \"evenings only\" style choice (\"Just evenings\", \"Evenings only\", \"Only evenings\", \"Weeknights only\") → that option."
+ },
+ {
+  "name": "evenings_only_radio",
+  "label": "Are you available for overtime?",
+  "type": "radio",
+  "options": [
+   "Evenings only",
+   "Weekends only",
+   "No"
+  ],
+  "expect": "Evenings only",
+  "spec_quote": "Option lists with an \"evenings only\" style choice (\"Just evenings\", \"Evenings only\", \"Only evenings\", \"Weeknights only\") → that option."
+ },
+ {
+  "name": "only_evenings_option",
+  "label": "Overtime availability",
+  "type": "select",
+  "options": [
+   "Only evenings",
+   "Weekends only"
+  ],
+  "expect": "Only evenings",
+  "spec_quote": "Option lists with an \"evenings only\" style choice … → that option."
+ },
+ {
+  "name": "weeknights_only_option",
+  "label": "When can you work overtime?",
+  "type": "select",
+  "options": [
+   "Weeknights only",
+   "Weekends only",
+   "Any time",
+   "No"
+  ],
+  "expect": "Weeknights only",
+  "spec_quote": "Option lists with an \"evenings only\" style choice (\"…\", \"Weeknights only\") → that option."
+ },
+ {
+  "name": "yes_no_select_overtime",
+  "label": "Are you willing to work overtime?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Yes / No only → \"Yes\"."
+ },
+ {
+  "name": "yes_no_radio_overtime",
+  "label": "Can you work overtime?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Yes / No only → \"Yes\"."
+ },
+ {
+  "name": "free_text_overtime",
+  "label": "What overtime are you available for?",
+  "type": "text",
+  "options": [],
+  "expect": "Evenings only",
+  "spec_quote": "Free text → \"Evenings only\"."
+ },
+ {
+  "name": "free_text_overtime_alt",
+  "label": "Please describe your availability for overtime.",
+  "type": "text",
+  "options": [],
+  "expect": "Evenings only",
+  "spec_quote": "Free text → \"Evenings only\"."
+ },
+ {
+  "name": "travel_question",
+  "label": "Are you willing to travel?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_OVERTIME",
+  "spec_quote": "Questions that do not ask about overtime (e.g. \"Are you willing to travel?\" …) → \"NOT_OVERTIME\"."
+ },
+ {
+  "name": "hours_per_week_text",
+  "label": "How many hours per week can you work?",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_OVERTIME",
+  "spec_quote": "Questions that do not ask about overtime (… \"How many hours per week can you work?\") → \"NOT_OVERTIME\"."
+ },
+ {
+  "name": "evening_only_beats_combined",
+  "label": "What overtime can you work?",
+  "type": "select",
+  "options": [
+   "Yes, evenings and/or weekends",
+   "Evenings only",
+   "No"
+  ],
+  "expect": "Evenings only",
+  "spec_quote": "Options that only combine evenings with weekends (\"Yes, evenings and/or weekends\"), weekends only, or \"No\" are never picked when an evenings-only option exists."
+ },
+ {
+  "name": "evening_only_beats_combined_order",
+  "label": "Overtime availability",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes, evenings and/or weekends",
+   "Weeknights only"
+  ],
+  "expect": "Weeknights only",
+  "spec_quote": "Options that only combine evenings with weekends … are never picked when an evenings-only option exists."
+ },
+ {
+  "name": "weekends_only_never_picked",
+  "label": "Select your overtime availability",
+  "type": "select",
+  "options": [
+   "Weekends only",
+   "Evenings only"
+  ],
+  "expect": "Evenings only",
+  "spec_quote": "Options that only combine evenings with weekends …, weekends only, or \"No\" are never picked when an evenings-only option exists."
+ },
+ {
+  "name": "combined_no_evenings_option",
+  "label": "What overtime are you available for?",
+  "type": "select",
+  "options": [
+   "Yes, evenings and/or weekends",
+   "Weekends only",
+   "No"
+  ],
+  "expect": "NOT_OVERTIME",
+  "ambiguous": true,
+  "why": "The spec only says these options are 'never picked when an evenings-only option exists'; it does not state what to answer when no evenings-only option is present, so the required outcome is undefined.",
+  "spec_quote": "Options that only combine evenings with weekends (\"Yes, evenings and/or weekends\"), weekends only, or \"No\" are never picked when an evenings-only option exists."
+ },
+ {
+  "name": "weekends_only_no_evenings_option",
+  "label": "Overtime availability",
+  "type": "radio",
+  "options": [
+   "Weekends only",
+   "No"
+  ],
+  "expect": "NOT_OVERTIME",
+  "ambiguous": true,
+  "why": "Applicant never works weekends and cannot answer 'No' to overtime either, but the spec only forbids picking these 'when an evenings-only option exists'; with no evenings-only option the required answer is unspecified.",
+  "spec_quote": "Options that only combine evenings with weekends …, weekends only, or \"No\" are never picked when an evenings-only option exists."
+ },
+ {
+  "name": "weekends_yes_no_question",
+  "label": "Are you available to work weekends?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "ambiguous": true,
+  "why": "The literal rule 'Yes / No only → \"Yes\"' conflicts with the confirmed answer 'never weekends'; the spec does not carve out weekend-specific Yes/No questions.",
+  "spec_quote": "Yes / No only → \"Yes\"."
+ },
+ {
+  "name": "work_authorization_yes_no",
+  "label": "Are you legally authorized to work in this country?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_OVERTIME",
+  "spec_quote": "Questions that do not ask about overtime … → \"NOT_OVERTIME\"."
+ },
+ {
+  "name": "evening_shifts_not_overtime",
+  "label": "Are you available to work evening shifts?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_OVERTIME",
+  "ambiguous": true,
+  "why": "This asks about shift availability, not overtime, so the literal reading gives NOT_OVERTIME, but the spec's only non-overtime examples are travel and hours-per-week, so an implementer might treat any evening-related question as an overtime question.",
+  "spec_quote": "Questions that do not ask about overtime (e.g. \"Are you willing to travel?\", \"How many hours per week can you work?\") → \"NOT_OVERTIME\"."
+ },
+ {
+  "name": "salary_text_not_overtime",
+  "label": "What is your desired hourly rate?",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_OVERTIME",
+  "spec_quote": "Questions that do not ask about overtime … → \"NOT_OVERTIME\"."
+ },
+ {
+  "name": "any_time_including_weekends_option",
+  "label": "What is your overtime availability?",
+  "type": "select",
+  "options": [
+   "Any time including weekends",
+   "Evenings only",
+   "No"
+  ],
+  "expect": "Evenings only",
+  "spec_quote": "Options that only combine evenings with weekends …, weekends only, or \"No\" are never picked when an evenings-only option exists."
+ }
+]

@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "custom_apply_widget", "args": {"info": object | null}, "expect": true | false, "spec_quote": str, "ambiguous": false}.
+Write 16 cases: the KB Signaling shape (two hidden SAP links + shadow), one visible among hidden, all visible with shadow, no SAP links with shadow, hidden links without shadow, hrefs without a numeric id, relative and absolute hrefs, empty / null info, missing keys.

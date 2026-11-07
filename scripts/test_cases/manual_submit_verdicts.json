@@ -1,0 +1,3 @@
+{
+ "missing plan key falls back and normal answer escapes": {"verdict": "case", "why": "the answer contains a line break; the spec says 'containing a line break' → its own Answer N block, so LONG is right (the case also treats it as a normal row)"}
+}

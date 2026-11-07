@@ -1,0 +1,356 @@
+[
+ {
+  "name": "soft_off_cycle_alone_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_undergrad_only_alone_no",
+  "rule": {
+   "v": "Ineligible",
+   "c": "UNDERGRAD_ONLY"
+  },
+  "ds": {
+   "eligible": "no"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_no_sponsorship_alone_unclear",
+  "rule": {
+   "v": "Ineligible",
+   "c": "NO_SPONSORSHIP"
+  },
+  "ds": {
+   "eligible": "unclear"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_grad_window_alone_no_answer",
+  "rule": {
+   "v": "Ineligible",
+   "c": "GRAD_WINDOW"
+  },
+  "ds": null,
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "soft_two_soft_codes_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE,UNDERGRAD_ONLY"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_two_soft_codes_no",
+  "rule": {
+   "v": "Ineligible",
+   "c": "NO_SPONSORSHIP,GRAD_WINDOW"
+  },
+  "ds": {
+   "eligible": "no"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_with_plus_code_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE,GRAD_OK"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_with_plus_code_unclear",
+  "rule": {
+   "v": "Ineligible",
+   "c": "NO_SPONSORSHIP,OFFERS_SPONSORSHIP"
+  },
+  "ds": {
+   "eligible": "unclear"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_with_review_code_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "GRAD_WINDOW,GRAD_MIXED"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": true,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_with_two_review_codes_no",
+  "rule": {
+   "v": "Ineligible",
+   "c": "UNDERGRAD_ONLY,EXPERIENCE_2,PART_TIME_IN_TERM"
+  },
+  "ds": {
+   "eligible": "no"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "soft_plus_hard_block_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "NO_SPONSORSHIP,CITIZEN_OR_CLEARANCE"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "soft_plus_hard_block_unclear",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE,TOO_LONG"
+  },
+  "ds": {
+   "eligible": "unclear"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "soft_plus_two_hard_blocks_no_answer",
+  "rule": {
+   "v": "Ineligible",
+   "c": "GRAD_WINDOW,PHD_ONLY,MBA_ONLY"
+  },
+  "ds": null,
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "hard_citizen_alone_yes",
+  "rule": {
+   "v": "Ineligible",
+   "c": "CITIZEN_OR_CLEARANCE"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "hard_experience_3plus_no",
+  "rule": {
+   "v": "Ineligible",
+   "c": "EXPERIENCE_3PLUS"
+  },
+  "ds": {
+   "eligible": "no"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "review_row_yes",
+  "rule": {
+   "v": "Review",
+   "c": "SPONSORSHIP_MIXED"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": false,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "review_row_no",
+  "rule": {
+   "v": "Review",
+   "c": "GRAD_MIXED"
+  },
+  "ds": {
+   "eligible": "no"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": false,
+   "ds_attached": true
+  }
+ },
+ {
+  "name": "review_row_no_answer",
+  "rule": {
+   "v": "Review",
+   "c": "BACHELORS_WORDING"
+  },
+  "ds": null,
+  "expect": {
+   "v": "Review",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "review_row_invalid_answer_maybe",
+  "rule": {
+   "v": "Review",
+   "c": "EXPERIENCE_2"
+  },
+  "ds": {
+   "eligible": "maybe"
+  },
+  "expect": {
+   "v": "Review",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "eligible_row_unchanged",
+  "rule": {
+   "v": "Eligible",
+   "c": "GRAD_OK"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Eligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "closed_row_unchanged",
+  "rule": {
+   "v": "Closed",
+   "c": "CLOSED"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Closed",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "unverified_with_fetch_error_unchanged",
+  "rule": {
+   "v": "Unverified",
+   "c": "FETCH_ERROR"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Unverified",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "soft_with_not_read_no_text_blocks_reread",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE,NO_TEXT"
+  },
+  "ds": {
+   "eligible": "yes"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ },
+ {
+  "name": "soft_invalid_answer_maybe_no_reread_result",
+  "rule": {
+   "v": "Ineligible",
+   "c": "OFF_CYCLE"
+  },
+  "ds": {
+   "eligible": "maybe"
+  },
+  "expect": {
+   "v": "Ineligible",
+   "ds_code": false,
+   "ds_attached": false
+  }
+ }
+]

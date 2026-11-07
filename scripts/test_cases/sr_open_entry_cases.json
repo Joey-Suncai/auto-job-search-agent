@@ -1,0 +1,146 @@
+[
+ {
+  "name": "in_view_opens_first_click",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 200,
+   "hidden": false,
+   "opens_after_clicks": 1
+  },
+  "expect": true,
+  "spec_quote": "It clicks the button and waits for the entry form's first box (the Institution input). It returns True when the box became visible, False otherwise.",
+  "ambiguous": false
+ },
+ {
+  "name": "in_view_opens_second_click",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 200,
+   "hidden": false,
+   "opens_after_clicks": 2
+  },
+  "expect": true,
+  "spec_quote": "It clicks at most twice (one more click when the first did not open the form)",
+  "ambiguous": false
+ },
+ {
+  "name": "in_view_third_click_too_many",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 200,
+   "hidden": false,
+   "opens_after_clicks": 3
+  },
+  "expect": false,
+  "spec_quote": "It clicks at most twice (one more click when the first did not open the form)",
+  "ambiguous": false
+ },
+ {
+  "name": "in_view_never_opens",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 200,
+   "hidden": false,
+   "opens_after_clicks": null
+  },
+  "expect": false,
+  "spec_quote": "when the form never opens it returns False",
+  "ambiguous": false
+ },
+ {
+  "name": "far_below_opens_first_click",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 2500,
+   "hidden": false,
+   "opens_after_clicks": 1
+  },
+  "expect": true,
+  "spec_quote": "may be anywhere on a long page, including far below the visible window",
+  "ambiguous": false
+ },
+ {
+  "name": "far_below_opens_second_click",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 1800,
+   "hidden": false,
+   "opens_after_clicks": 2
+  },
+  "expect": true,
+  "spec_quote": "It clicks at most twice (one more click when the first did not open the form)",
+  "ambiguous": false
+ },
+ {
+  "name": "far_below_third_click_too_many",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 4000,
+   "hidden": false,
+   "opens_after_clicks": 3
+  },
+  "expect": false,
+  "spec_quote": "It clicks at most twice (one more click when the first did not open the form)",
+  "ambiguous": false
+ },
+ {
+  "name": "far_below_never_opens",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 3000,
+   "hidden": false,
+   "opens_after_clicks": null
+  },
+  "expect": false,
+  "spec_quote": "when the form never opens it returns False",
+  "ambiguous": false
+ },
+ {
+  "name": "no_button_on_page",
+  "fn": "open_entry",
+  "args": {
+   "button_y": null,
+   "hidden": false,
+   "opens_after_clicks": 1
+  },
+  "expect": false,
+  "spec_quote": "when the button does not exist it returns False at once",
+  "ambiguous": false
+ },
+ {
+  "name": "hidden_button_in_view",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 300,
+   "hidden": true,
+   "opens_after_clicks": 1
+  },
+  "expect": false,
+  "spec_quote": "A button that is hidden (zero size) counts as not existing.",
+  "ambiguous": false
+ },
+ {
+  "name": "hidden_button_far_below",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 3000,
+   "hidden": true,
+   "opens_after_clicks": 2
+  },
+  "expect": false,
+  "spec_quote": "A button that is hidden (zero size) counts as not existing.",
+  "ambiguous": false
+ },
+ {
+  "name": "button_at_top_edge_opens_second_click",
+  "fn": "open_entry",
+  "args": {
+   "button_y": 0,
+   "hidden": false,
+   "opens_after_clicks": 2
+  },
+  "expect": true,
+  "spec_quote": "It clicks at most twice (one more click when the first did not open the form) and must never hang ... It returns True when the box became visible",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,1 @@
+Return {"cases": [...]}. Each case: {"name": str, "label": str, "type": "text", "options": [], "expect": str, "spec_quote": str, "ambiguous": false}. expect = "06/14/2027" or "none". Write 16 cases: 10 for bullet 1 with different wordings, 3 for bullet 2, 3 for bullet 3.

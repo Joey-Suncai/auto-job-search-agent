@@ -1,0 +1,212 @@
+[
+ {
+  "name": "ai_pm_basic",
+  "title": "AI Product Manager Intern",
+  "expect": "ai_pm",
+  "spec_quote": "ai_pm — the title has a PM word AND an AI word. ... The first rule that applies wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_pm_ml_variant",
+  "title": "Machine Learning Product Manager Intern",
+  "expect": "ai_pm",
+  "spec_quote": "ai_pm — the title has a PM word AND an AI word. (AI words include \"machine learning\"; PM words include \"product manager\")",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_word_but_analytics_wins_ordering",
+  "title": "AI Product Analytics Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — ... OR it has \"analytics\" / \"data analytics\" / \"business analytics\" / \"data visualization\" and no engineering word ...; The first rule that applies wins: ... 2. data_analysis ... 4. AI word present",
+  "ambiguous": false
+ },
+ {
+  "name": "strong_word_data_analyst",
+  "title": "Data Analyst Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — the title has a strong analysis word (data analyst, business analyst, business intelligence, ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "bi_developer_strong_word_with_engineering_word",
+  "title": "BI Developer Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — the title has a strong analysis word (... BI analyst / developer / engineer ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "business_intelligence_engineer_strong_word",
+  "title": "Business Intelligence Engineer Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — the title has a strong analysis word (... business intelligence ...). The engineering-word exclusion applies only to the \"analytics\" branch, not to strong analysis words.",
+  "ambiguous": false
+ },
+ {
+  "name": "marketing_analyst",
+  "title": "Marketing Analyst Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — the title has a strong analysis word (... reporting / insights / marketing / operations / strategy / product / growth analyst ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "analytics_intern_explicit",
+  "title": "Analytics Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — ... ( ... analytics intern ... )",
+  "ambiguous": false
+ },
+ {
+  "name": "data_visualization_with_engineering_word_falls_to_data",
+  "title": "Data Visualization Engineer Intern",
+  "expect": "data",
+  "spec_quote": "data_analysis applies only with \"analytics\" / \"data analytics\" / \"business analytics\" / \"data visualization\" and no engineering word (engineer, ...); then 5. data — ... \"data\" (but not \"data center\") ...",
+  "ambiguous": false
+ },
+ {
+  "name": "data_visualization_no_engineering_word",
+  "title": "Data Visualization Intern",
+  "expect": "data_analysis",
+  "spec_quote": "data_analysis — ... OR it has \"analytics\" / \"data analytics\" / \"business analytics\" / \"data visualization\" and no engineering word",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_basic",
+  "title": "Product Manager Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: product manager, product management, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_associate",
+  "title": "Associate Product Manager Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: ... associate product manager ...",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_technical_program_manager",
+  "title": "Technical Program Manager Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: ... (technical) program manager / management.",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_product_operations",
+  "title": "Product Operations Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: ... product operations, product ops ...",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_apm_whole_word",
+  "title": "APM Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: product manager, product management, APM, ... Matching is on the title only, case-insensitive, whole words.",
+  "ambiguous": false
+ },
+ {
+  "name": "pm_with_data_word_not_hijacked",
+  "title": "Product Manager, Data Platform Intern",
+  "expect": "pm",
+  "spec_quote": "pm — a PM word: product manager ... (no strong analysis word and no \"analytics\" present, so rule 2 does not apply)",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_engineering_ml_engineer",
+  "title": "Machine Learning Engineer Intern",
+  "expect": "ai_engineering",
+  "spec_quote": "ai_engineering if the title has an engineering word: engineer, engineering, developer, SDE, SWE, software, scientist, research, researcher, machine learning, ML, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_engineering_research_scientist",
+  "title": "AI Research Scientist Intern",
+  "expect": "ai_engineering",
+  "spec_quote": "ai_engineering if the title has an engineering word: ... scientist, research, researcher ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_engineering_nlp_alone",
+  "title": "NLP Intern",
+  "expect": "ai_engineering",
+  "spec_quote": "AI word present (... NLP ...): ai_engineering if the title has an engineering word: ... NLP ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_engineering_computer_vision",
+  "title": "Computer Vision Intern",
+  "expect": "ai_engineering",
+  "spec_quote": "ai_engineering if the title has an engineering word: ... computer vision ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_engineering_center_of_excellence",
+  "title": "AI Center of Excellence Intern",
+  "expect": "ai_engineering",
+  "spec_quote": "ai_engineering if the title has an engineering word: ... \"center of excellence\", architect, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_nonengineering_generic_intern",
+  "title": "AI Intern",
+  "expect": "ai_nonengineering",
+  "spec_quote": "otherwise ai_nonengineering (a generic \"AI Intern\", AI strategy, AI analyst, AI operations, AI marketing…)",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_nonengineering_strategy",
+  "title": "AI Strategy Intern",
+  "expect": "ai_nonengineering",
+  "spec_quote": "otherwise ai_nonengineering (a generic \"AI Intern\", AI strategy, ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_nonengineering_analyst",
+  "title": "AI Analyst Intern",
+  "expect": "ai_nonengineering",
+  "spec_quote": "otherwise ai_nonengineering (a generic \"AI Intern\", AI strategy, AI analyst, ...); bare \"analyst\" is not a strong analysis word",
+  "ambiguous": false
+ },
+ {
+  "name": "ai_nonengineering_marketing",
+  "title": "Generative AI Marketing Intern",
+  "expect": "ai_nonengineering",
+  "spec_quote": "otherwise ai_nonengineering (... AI marketing…); AI words include \"GenAI, generative\"",
+  "ambiguous": false
+ },
+ {
+  "name": "data_engineer",
+  "title": "Data Engineer Intern",
+  "expect": "data",
+  "spec_quote": "data — data science / scientist, data engineer(ing), analytics engineer, \"data\" (but not \"data center\"), ...",
+  "ambiguous": false
+ },
+ {
+  "name": "analytics_engineer",
+  "title": "Analytics Engineer Intern",
+  "expect": "data",
+  "spec_quote": "data — data science / scientist, data engineer(ing), analytics engineer, ...",
+  "ambiguous": false
+ },
+ {
+  "name": "quantitative_analyst",
+  "title": "Quantitative Analyst Intern",
+  "expect": "data",
+  "spec_quote": "data — ... quantitative, quant, statistics / statistical, decision science, ETL, database.",
+  "ambiguous": false
+ },
+ {
+  "name": "data_center_near_miss",
+  "title": "Data Center Operations Intern",
+  "expect": "other",
+  "spec_quote": "data — ... \"data\" (but not \"data center\") ...; other — none of the above.",
+  "ambiguous": false
+ },
+ {
+  "name": "software_engineer_no_match",
+  "title": "Software Engineer Intern",
+  "expect": "other",
+  "spec_quote": "other — none of the above. (No AI word, no PM word, no strong analysis word, no \"analytics\", no data word.)",
+  "ambiguous": false
+ }
+]

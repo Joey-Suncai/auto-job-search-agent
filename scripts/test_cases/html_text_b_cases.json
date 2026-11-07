@@ -1,0 +1,72 @@
+[
+ {
+  "name": "passcode_basic_goldman",
+  "html": "<html><body><p>Please confirm your identity using the one-time passcode: 710027</p></body></html>",
+  "expect": "710027"
+ },
+ {
+  "name": "pass_code_spaced",
+  "html": "<html><body><p>Your pass code: 552013</p></body></html>",
+  "expect": "552013"
+ },
+ {
+  "name": "one_time_password_hyphen",
+  "html": "<html><body><p>Your one-time password is 918273.</p></body></html>",
+  "expect": "918273"
+ },
+ {
+  "name": "one_time_password_spaced_mixed_case",
+  "html": "<html><body><p>One Time Password: 334455</p></body></html>",
+  "expect": "334455"
+ },
+ {
+  "name": "otp_uppercase",
+  "html": "<html><body><p>Your OTP is 770012. Do not share it.</p></body></html>",
+  "expect": "770012"
+ },
+ {
+  "name": "otp_lowercase",
+  "html": "<html><body><p>your otp: 550077</p></body></html>",
+  "expect": "550077"
+ },
+ {
+  "name": "passcode_mixed_case",
+  "html": "<html><body><p>PassCode: 630914</p></body></html>",
+  "expect": "630914"
+ },
+ {
+  "name": "passcodes_plural_no_trigger",
+  "html": "<html><body><p>Hi, your passcodes are listed below and must not be shared. Reference 123456.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "otps_plural_no_trigger",
+  "html": "<html><body><p>OTPs are disabled for this account. Ticket 987654.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "zipcode_code_in_longer_word_no_trigger",
+  "html": "<html><body><p>Your zipcode is 100100 and your tracking number is 664422.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "code_more_than_200_chars_after_trigger",
+  "html": "<html><body><p>Your passcode will be sent separately by our security team, and it will never be included in this message or in any follow-up correspondence that we might send to you regarding your account activity or your recent sign-in attempt from a new device or location.</p><p>Reference: 445566</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "style_block_passcode_before_real_sentence",
+  "html": "<html><head><style type=\"text/css\">.passcode { content: \"passcode: 111111\"; color: #333; }</style></head><body><p>Use this passcode: 246810 within 10 minutes.</p></body></html>",
+  "expect": "246810"
+ },
+ {
+  "name": "no_trigger_at_all",
+  "html": "<html><body><p>Hello team, the shipment left our warehouse today. Order 123456.</p></body></html>",
+  "expect": null
+ },
+ {
+  "name": "passcode_token_without_digit_skipped",
+  "html": "<html><body><p>Your one-time passcode: ABCDEFGH 445566</p></body></html>",
+  "expect": "445566"
+ }
+]

@@ -1,0 +1,170 @@
+[
+ {
+  "name": "major_plain",
+  "label": "Major",
+  "expect": "education_field",
+  "spec_quote": "\"education_field\": the label asks for the FIELD of study — \"Major\", \"Field of Study\", \"What is your major?\", \"Intended field of study\".",
+  "ambiguous": false
+ },
+ {
+  "name": "field_of_study_plain",
+  "label": "Field of Study",
+  "expect": "education_field",
+  "spec_quote": "\"education_field\": the label asks for the FIELD of study — \"Major\", \"Field of Study\", \"What is your major?\", \"Intended field of study\".",
+  "ambiguous": false
+ },
+ {
+  "name": "major_question",
+  "label": "What is your major?",
+  "expect": "education_field",
+  "spec_quote": "\"education_field\": the label asks for the FIELD of study — \"Major\", \"Field of Study\", \"What is your major?\", \"Intended field of study\".",
+  "ambiguous": false
+ },
+ {
+  "name": "intended_field_of_study",
+  "label": "Intended field of study",
+  "expect": "education_field",
+  "spec_quote": "\"education_field\": the label asks for the FIELD of study — \"Major\", \"Field of Study\", \"What is your major?\", \"Intended field of study\".",
+  "ambiguous": false
+ },
+ {
+  "name": "school_for_major_question_explicit_null",
+  "label": "What school are you currently attending for your major?",
+  "expect": null,
+  "spec_quote": "For \"What school are you currently attending for your major?\" the answer is null (it is a question).",
+  "ambiguous": false
+ },
+ {
+  "name": "school_attending_question_null",
+  "label": "What school are you currently attending?",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_plain",
+  "label": "Degree",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_level_plain",
+  "label": "Degree level",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "highest_level_education",
+  "label": "Highest level of education",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "education_1_degree_combined",
+  "label": "Education 1 || Degree",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "diploma_label",
+  "label": "Diploma",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "completed_degree_program_and_school_explicit_school",
+  "label": "Please include your completed degree program and school name for verification purposes",
+  "expect": "school",
+  "spec_quote": "For \"Please include your completed degree program and school name for verification purposes\" the answer is \"school\".",
+  "ambiguous": false
+ },
+ {
+  "name": "school_plain",
+  "label": "School",
+  "expect": "school",
+  "spec_quote": "\"school\": the label names a school / university / institution as the thing asked, as a plain field label (\"School\", \"University\", \"Institution name\").",
+  "ambiguous": false
+ },
+ {
+  "name": "university_plain",
+  "label": "University",
+  "expect": "school",
+  "spec_quote": "\"school\": the label names a school / university / institution as the thing asked, as a plain field label (\"School\", \"University\", \"Institution name\").",
+  "ambiguous": false
+ },
+ {
+  "name": "institution_name_plain",
+  "label": "Institution name",
+  "expect": "school",
+  "spec_quote": "\"school\": the label names a school / university / institution as the thing asked, as a plain field label (\"School\", \"University\", \"Institution name\").",
+  "ambiguous": false
+ },
+ {
+  "name": "school_name_plain",
+  "label": "School name",
+  "expect": "school",
+  "spec_quote": "\"school\": the label names a school / university / institution as the thing asked, as a plain field label (\"School\", \"University\", \"Institution name\").",
+  "ambiguous": false
+ },
+ {
+  "name": "graduation_date_null",
+  "label": "Graduation Date",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_null",
+  "label": "GPA",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "enrollment_status_null",
+  "label": "Enrollment Status",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "employment_history_null",
+  "label": "Employment History",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "field_of_study_question",
+  "label": "What is your field of study?",
+  "expect": "education_field",
+  "spec_quote": "\"education_field\": the label asks for the FIELD of study — \"Major\", \"Field of Study\", \"What is your major?\", \"Intended field of study\".",
+  "ambiguous": false
+ },
+ {
+  "name": "highest_level_question",
+  "label": "What is your highest level of education?",
+  "expect": "degree_level",
+  "spec_quote": "\"degree_level\": the label asks for the degree LEVEL — \"Degree\", \"Degree level\", \"Highest level of education\", \"Education 1 || Degree\", \"Diploma\".",
+  "ambiguous": false
+ },
+ {
+  "name": "date_of_graduation_null",
+  "label": "Date of graduation",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ },
+ {
+  "name": "expected_graduation_date_null",
+  "label": "Expected graduation date",
+  "expect": null,
+  "spec_quote": "A label that is a question (contains \"?\"), or is about dates, graduation, GPA, enrollment or employment, is not the school check.",
+  "ambiguous": false
+ }
+]

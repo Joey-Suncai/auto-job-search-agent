@@ -1,0 +1,170 @@
+[
+ {
+  "name": "plain currently on OPT",
+  "label": "Are you currently on OPT?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "Rule `on_opt` answers **No** to questions that ask whether the candidate is currently on OPT: the label has \"currently\" or \"now\" and, within the next 60 characters, \"OPT\" (as a word) or \"optional practical training\"; or the label says \"on OPT\" / \"on STEM OPT\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "now working under optional practical training (full phrase)",
+  "label": "Are you now working under optional practical training?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "the label has \"currently\" or \"now\" and, within the next 60 characters, \"OPT\" (as a word) or \"optional practical training\"",
+  "ambiguous": false
+ },
+ {
+  "name": "on STEM OPT",
+  "label": "Are you on STEM OPT?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "or the label says \"on OPT\" / \"on STEM OPT\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "upper case ON OPT",
+  "label": "Are you ON OPT right now?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "or the label says \"on OPT\" / \"on STEM OPT\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "currently + Optional Practical Training with trailing (OPT)",
+  "label": "Are you currently working under Optional Practical Training (OPT)?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "the label has \"currently\" or \"now\" and, within the next 60 characters, \"OPT\" (as a word) or \"optional practical training\"",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed case NOW + lowercase optional practical training",
+  "label": "Are you NOW on optional practical training?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "the label has \"currently\" or \"now\" and, within the next 60 characters, \"OPT\" (as a word) or \"optional practical training\"; or the label says \"on OPT\" / \"on STEM OPT\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase on opt",
+  "label": "Are you on opt?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "or the label says \"on OPT\" / \"on STEM OPT\" (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "Goldman full wording: legally authorized to work with e.g. OPT",
+  "label": "Are you legally authorized to work in the United States? In other words, do you currently hold or can you obtain valid US work authorization (e.g., currently hold H-1B status, or can commence employment based on F-1 Optional Practical Training (OPT))?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "Exception (added 2026-11-05): `on_opt` does NOT take a label that asks about work authorization in general and names OPT only as one example — any label containing \"legally authorized to work\" ... or \"can obtain\" / \"can you obtain\" / \"can commence\", or \"e.g.\" followed (within 80 characters, before any \")\") by \"OPT\". Such a label is then answered by no rule here (expected answer \"none\": the runner stops for the candidate).",
+  "ambiguous": false
+ },
+ {
+  "name": "legally able to work with e.g. OPT",
+  "label": "Are you legally able to work in the US without sponsorship? (e.g., OPT, CPT)",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "any label containing \"legally authorized to work\" / \"legally authorised to work\" / \"legally able to work\" ... Such a label is then answered by no rule here (expected answer \"none\": the runner stops for the candidate).",
+  "ambiguous": false
+ },
+ {
+  "name": "can you obtain + now + OPT (exception overrides positive trigger)",
+  "label": "Can you obtain work authorization now, such as OPT?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "\"can obtain\" / \"can you obtain\" / \"can commence\" ... `on_opt` does NOT take a label that asks about work authorization in general and names OPT only as one example ... Such a label is then answered by no rule here (expected answer \"none\").",
+  "ambiguous": false
+ },
+ {
+  "name": "hold valid U.S. work authorization such as OPT",
+  "label": "Do you hold valid U.S. work authorization (such as OPT)?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "\"hold valid work authorization\" / \"obtain valid work authorization\" (optionally \"US\" / \"U.S.\" before \"work\") ... Such a label is then answered by no rule here (expected answer \"none\": the runner stops for the candidate).",
+  "ambiguous": false
+ },
+ {
+  "name": "legally authorised (British spelling) to work + e.g. OPT",
+  "label": "Are you legally authorised to work in the United States? e.g. OPT",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "any label containing \"legally authorized to work\" / \"legally authorised to work\" / \"legally able to work\" ... Such a label is then answered by no rule here (expected answer \"none\": the runner stops for the candidate).",
+  "ambiguous": false
+ },
+ {
+  "name": "can commence + now + optional practical training (exception overrides positive trigger)",
+  "label": "Can you commence employment now under F-1 Optional Practical Training (OPT)?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "\"can obtain\" / \"can you obtain\" / \"can commence\" ... `on_opt` does NOT take a label that asks about work authorization in general and names OPT only as one example ... Such a label is then answered by no rule here (expected answer \"none\").",
+  "ambiguous": false
+ },
+ {
+  "name": "currently hold or can you obtain valid US work authorization, e.g. OPT",
+  "label": "Do you currently hold or can you obtain valid US work authorization, e.g. OPT?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "\"can obtain\" / \"can you obtain\" / \"can commence\", or \"e.g.\" followed (within 80 characters, before any \")\") by \"OPT\". Such a label is then answered by no rule here (expected answer \"none\": the runner stops for the candidate).",
+  "ambiguous": false
+ }
+]

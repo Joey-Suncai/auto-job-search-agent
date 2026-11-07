@@ -1,0 +1,372 @@
+[
+ {
+  "name": "option_text_label_wins_and_whitespace_collapsed",
+  "fn": "option_text",
+  "args": {
+   "c": {
+    "label": "  Any Acme\nrecruiter\tworldwide  ",
+    "labelledby": "Labelled by text",
+    "aria": "Aria text",
+    "after": "After text",
+    "wrap": "Wrap text",
+    "value": "opt_1"
+   }
+  },
+  "expect": "Any Acme recruiter worldwide",
+  "spec_quote": "Take the FIRST of label, labelledby, aria, after, wrap (in that order) that is non-empty after whitespace is collapsed (runs of spaces / tabs / line breaks become one space, ends trimmed) and a leading required star \"*\" (with the spaces after it) is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "option_text_star_only_label_falls_through_to_labelledby",
+  "fn": "option_text",
+  "args": {
+   "c": {
+    "label": "*   ",
+    "labelledby": " *  My profile is visible to any Acme recruiter ",
+    "aria": "Any recruiter",
+    "after": "after text",
+    "wrap": "wrap text",
+    "value": "opt_1"
+   }
+  },
+  "expect": "My profile is visible to any Acme recruiter",
+  "spec_quote": "Take the FIRST of label, labelledby, aria, after, wrap (in that order) that is non-empty after whitespace is collapsed ... and a leading required star \"*\" (with the spaces after it) is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "option_text_label_over_300_chars_is_skipped",
+  "fn": "option_text",
+  "args": {
+   "c": {
+    "label": "Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. Any Acme recruiter worldwide. ",
+    "labelledby": "",
+    "aria": "Any Acme recruiter worldwide (Selecting this option will enable us to contact you about your application opportunities)",
+    "after": "",
+    "wrap": "",
+    "value": "opt_any"
+   }
+  },
+  "expect": "Any Acme recruiter worldwide (Selecting this option will enable us to contact you about your application opportunities)",
+  "spec_quote": "A candidate longer than 300 characters is not an option text: skip it and try the next one.",
+  "ambiguous": false
+ },
+ {
+  "name": "option_text_wrap_used_when_earlier_candidates_empty",
+  "fn": "option_text",
+  "args": {
+   "c": {
+    "label": "",
+    "labelledby": "\n\t ",
+    "aria": "",
+    "after": "   ",
+    "wrap": "  Any Acme\nrecruiter in my country  ",
+    "value": "opt_any"
+   }
+  },
+  "expect": "Any Acme recruiter in my country",
+  "spec_quote": "Take the FIRST of label, labelledby, aria, after, wrap (in that order) that is non-empty after whitespace is collapsed (runs of spaces / tabs / line breaks become one space, ends trimmed).",
+  "ambiguous": false
+ },
+ {
+  "name": "option_text_no_candidate_falls_back_to_collapsed_value",
+  "fn": "option_text",
+  "args": {
+   "c": {
+    "label": "",
+    "labelledby": "",
+    "aria": "",
+    "after": "",
+    "wrap": "   ",
+    "value": "  opt_any_recruiter \t"
+   }
+  },
+  "expect": "opt_any_recruiter",
+  "spec_quote": "When none qualifies, return the value (whitespace collapsed); \"\" when there is no value either.",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_selector_id_wins_and_double_quote_escaped",
+  "fn": "radio_selector",
+  "args": {
+   "opt": {
+    "id": "opt_3\"x",
+    "name": "fbclc_visTo",
+    "value": "any_recruiter",
+    "idx": 1
+   }
+  },
+  "expect": [
+   "[id=\"opt_3\\\"x\"]",
+   0
+  ],
+  "spec_quote": "It has a non-empty id → [`[id=\"<id>\"]`, 0] (double quotes inside the id escaped with a backslash).",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_selector_no_id_no_name_is_null",
+  "fn": "radio_selector",
+  "args": {
+   "opt": {
+    "id": "",
+    "value": "1",
+    "idx": 2
+   }
+  },
+  "expect": null,
+  "spec_quote": "Else, with no name → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_selector_unique_value_uses_value_attribute",
+  "fn": "radio_selector",
+  "args": {
+   "opt": {
+    "id": "",
+    "name": "fbclc_visTo",
+    "value": "any_recruiter",
+    "idx": 1
+   }
+  },
+  "expect": [
+   "input[type=radio][name=\"fbclc_visTo\"][value=\"any_recruiter\"]",
+   0
+  ],
+  "spec_quote": "Else, when the value is a non-empty string and dup is not true → [`input[type=radio][name=\"<name>\"][value=\"<value>\"]`, 0].",
+  "ambiguous": false
+ },
+ {
+  "name": "radio_selector_duplicate_value_uses_idx",
+  "fn": "radio_selector",
+  "args": {
+   "opt": {
+    "id": "",
+    "name": "fbclc_visTo",
+    "value": "any_recruiter",
+    "idx": 3,
+    "dup": true
+   }
+  },
+  "expect": [
+   "input[type=radio][name=\"fbclc_visTo\"]",
+   3
+  ],
+  "spec_quote": "Else → [`input[type=radio][name=\"<name>\"]`, idx] (idx missing = 0).",
+  "ambiguous": false
+ },
+ {
+  "name": "page_kind_app_dominates_everything",
+  "fn": "page_kind",
+  "args": {
+   "sig": {
+    "app": true,
+    "account": true,
+    "apply_btn": true,
+    "attach": true,
+    "upload": true,
+    "signin": true
+   }
+  },
+  "expect": "application",
+  "spec_quote": "app → \"application\" (whatever else is true).",
+  "ambiguous": false
+ },
+ {
+  "name": "page_kind_register_apply_via_upload",
+  "fn": "page_kind",
+  "args": {
+   "sig": {
+    "account": true,
+    "apply_btn": false,
+    "attach": false,
+    "upload": true,
+    "signin": true
+   }
+  },
+  "expect": "register_apply",
+  "spec_quote": "else account AND (apply_btn OR attach OR upload) → \"register_apply\" (one page with the account fields and the application).",
+  "ambiguous": false
+ },
+ {
+  "name": "page_kind_account_beats_signin",
+  "fn": "page_kind",
+  "args": {
+   "sig": {
+    "account": true,
+    "apply_btn": false,
+    "attach": false,
+    "upload": false,
+    "signin": true
+   }
+  },
+  "expect": "register",
+  "spec_quote": "else account → \"register\" (the account form alone).",
+  "ambiguous": false
+ },
+ {
+  "name": "page_kind_sign_in_only",
+  "fn": "page_kind",
+  "args": {
+   "sig": {
+    "account": false,
+    "apply_btn": true,
+    "signin": true
+   }
+  },
+  "expect": "sign_in",
+  "spec_quote": "else signin → \"sign_in\".",
+  "ambiguous": false
+ },
+ {
+  "name": "accept_link_data_privacy_verb_phrase",
+  "fn": "accept_link",
+  "args": {
+   "text": "I have read and accept the data privacy statement"
+  },
+  "expect": true,
+  "spec_quote": "(a) a data-privacy link: a verb (read and accept / accept / open / view / review / read) followed within 30 characters by \"privacy statement\", \"privacy agreement\", \"privacy policy\" or \"privacy notice\" (optionally \"data \" before \"privacy\").",
+  "ambiguous": false
+ },
+ {
+  "name": "accept_link_terms_read_and_accept_case_insensitive",
+  "fn": "accept_link",
+  "args": {
+   "text": "Read and accept Terms of Use"
+  },
+  "expect": true,
+  "spec_quote": "(b) a terms link: \"read and accept\", \"read & accept\" or \"accept\" followed within 30 characters by \"terms of use\", \"terms and conditions\" or \"terms of service\" (\"Read and accept terms of use\"). Case and spacing do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "accept_link_terms_alone_is_false",
+  "fn": "accept_link",
+  "args": {
+   "text": "Terms of use"
+  },
+  "expect": false,
+  "spec_quote": "False otherwise — in particular \"Terms of use\" alone, \"By creating an account you agree to the Terms of use\" (agree is not accept), \"Danfoss Job Portal Terms\", \"Privacy policy\" alone, \"Cookie settings\".",
+  "ambiguous": false
+ },
+ {
+  "name": "accept_link_agree_is_not_accept",
+  "fn": "accept_link",
+  "args": {
+   "text": "By creating an account you agree to the Terms of use"
+  },
+  "expect": false,
+  "spec_quote": "False otherwise — in particular ... \"By creating an account you agree to the Terms of use\" (agree is not accept) ...",
+  "ambiguous": false
+ },
+ {
+  "name": "accept_link_exact_data_privacy_statement",
+  "fn": "accept_link",
+  "args": {
+   "text": "Data Privacy Statement"
+  },
+  "expect": true,
+  "spec_quote": "or a text that is exactly \"Data Privacy Statement\" / \"Data Privacy Agreement\"; ... Case and spacing do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_accepted_has_been_accepted",
+  "fn": "privacy_accepted",
+  "args": {
+   "text": "Data privacy statement has been accepted.",
+   "dpcs_value": ""
+  },
+  "expect": true,
+  "spec_quote": "e.g. \"Data privacy statement has been accepted.\" and \"Terms of use accepted\" count;",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_accepted_terms_of_use_accepted",
+  "fn": "privacy_accepted",
+  "args": {
+   "text": "Terms of use accepted",
+   "dpcs_value": ""
+  },
+  "expect": true,
+  "spec_quote": "e.g. \"Data privacy statement has been accepted.\" and \"Terms of use accepted\" count;",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_accepted_not_been_accepted_is_false",
+  "fn": "privacy_accepted",
+  "args": {
+   "text": "The data privacy statement has not been accepted.",
+   "dpcs_value": ""
+  },
+  "expect": false,
+  "spec_quote": "AND that stretch does not say it must or still has to be accepted: \"not accepted\", \"not been accepted\", \"must be accepted\", \"should be accepted\", \"needs to be accepted\", \"has to be accepted\", \"to be accepted\", \"be accepted\" all do NOT count;",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_accepted_open_and_accept_it_is_false",
+  "fn": "privacy_accepted",
+  "args": {
+   "text": "Please open the data privacy agreement and accept it",
+   "dpcs_value": ""
+  },
+  "expect": false,
+  "spec_quote": "Otherwise false (\"Accepted file types: PDF\" is not an acceptance; neither is \"Please open the data privacy agreement and accept it\").",
+  "ambiguous": false
+ },
+ {
+  "name": "privacy_accepted_hidden_dpcs_value_non_empty",
+  "fn": "privacy_accepted",
+  "args": {
+   "text": "Accepted file types: PDF",
+   "dpcs_value": "  on  "
+  },
+  "expect": true,
+  "spec_quote": "OR `dpcs_value` (the form's hidden privacy box) is a non-empty string after trimming.",
+  "ambiguous": false
+ },
+ {
+  "name": "account_ok_email_checkbox_must_stay_off",
+  "fn": "account_ok",
+  "args": {
+   "key": "fbclc_emailEnabled",
+   "want": "",
+   "got": "checked"
+  },
+  "expect": false,
+  "spec_quote": "`fbclc_emailEnabled`, `fbclc_campaignEmailEnabled` (checkboxes that must stay off): true exactly when got equals want (want \"\" = off, got \"\" = off, \"checked\" = on).",
+  "ambiguous": false
+ },
+ {
+  "name": "account_ok_phone_last_ten_digits",
+  "fn": "account_ok",
+  "args": {
+   "key": "fbclc_phoneNumber",
+   "want": "+1 (555) 123-4567",
+   "got": "5551234567"
+  },
+  "expect": true,
+  "spec_quote": "`fbclc_phoneNumber`: true when the last 10 digits of got equal the last 10 digits of want (other characters ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "account_ok_email_conf_ignores_case",
+  "fn": "account_ok",
+  "args": {
+   "key": "fbclc_emailConf",
+   "want": "Candidate@Acme.com",
+   "got": "candidate@acme.com"
+  },
+  "expect": true,
+  "spec_quote": "`fbclc_userName`, `fbclc_emailConf` (e-mail): equal ignoring case.",
+  "ambiguous": false
+ },
+ {
+  "name": "account_ok_other_key_with_empty_want_is_false",
+  "fn": "account_ok",
+  "args": {
+   "key": "fbclc_firstName",
+   "want": "",
+   "got": ""
+  },
+  "expect": false,
+  "spec_quote": "Any other key with an empty want → false.",
+  "ambiguous": false
+ }
+]

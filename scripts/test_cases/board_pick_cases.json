@@ -1,0 +1,1158 @@
+[
+ {
+  "name": "known-lever-basic",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.lever.co/Acme/123e4567-e89b-12d3-a456-426614174000",
+     "company": "Acme",
+     "tier": "C"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "123e4567-e89b-12d3-a456-426614174000"
+   ],
+   "boards": [
+    [
+     "lever",
+     "acme",
+     "Acme"
+    ]
+   ],
+   "ab": []
+  }
+ },
+ {
+  "name": "known-eu-lever-and-ashby",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.eu.lever.co/BetaCorp/223e4567-e89b-12d3-a456-426614174001",
+     "company": "Beta"
+    },
+    {
+     "url": "https://jobs.ashbyhq.com/GammaOrg/323e4567-e89b-12d3-a456-426614174002",
+     "company": "Gamma"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "223e4567-e89b-12d3-a456-426614174001",
+    "323e4567-e89b-12d3-a456-426614174002"
+   ],
+   "boards": [
+    [
+     "ashby",
+     "gammaorg",
+     "Gamma"
+    ],
+    [
+     "lever",
+     "betacorp",
+     "Beta"
+    ]
+   ],
+   "ab": []
+  }
+ },
+ {
+  "name": "known-ashby-api-embed-not-boards",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.ashbyhq.com/api/423e4567-e89b-12d3-a456-426614174003",
+     "company": "ApiCo",
+     "ats_url": "https://jobs.ashbyhq.com/embed/523e4567-e89b-12d3-a456-426614174004"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "423e4567-e89b-12d3-a456-426614174003",
+    "523e4567-e89b-12d3-a456-426614174004"
+   ],
+   "boards": [],
+   "ab": []
+  }
+ },
+ {
+  "name": "known-ats-url-uuid-and-tier-orig",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://example.com/careers",
+     "ats_url": "https://jobs.lever.co/Delta/623e4567-e89b-12d3-a456-426614174005",
+     "company": "Delta",
+     "tier": "C",
+     "tier_orig": "B"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "623e4567-e89b-12d3-a456-426614174005"
+   ],
+   "boards": [
+    [
+     "lever",
+     "delta",
+     "Delta"
+    ]
+   ],
+   "ab": [
+    "delta"
+   ]
+  }
+ },
+ {
+  "name": "known-first-company-wins",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.lever.co/epsilon/723e4567-e89b-12d3-a456-426614174006",
+     "company": "Epsilon One"
+    },
+    {
+     "url": "https://jobs.lever.co/Epsilon/823e4567-e89b-12d3-a456-426614174007",
+     "company": "Epsilon Two"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "723e4567-e89b-12d3-a456-426614174006",
+    "823e4567-e89b-12d3-a456-426614174007"
+   ],
+   "boards": [
+    [
+     "lever",
+     "epsilon",
+     "Epsilon One"
+    ]
+   ],
+   "ab": []
+  }
+ },
+ {
+  "name": "known-ab-tiers",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.lever.co/zeta/923e4567-e89b-12d3-a456-426614174008",
+     "company": "Zeta",
+     "tier": "A"
+    },
+    {
+     "url": "https://jobs.ashbyhq.com/eta/a23e4567-e89b-12d3-a456-426614174009",
+     "company": "Eta",
+     "tier": "C",
+     "tier_orig": "B"
+    },
+    {
+     "url": "https://jobs.ashbyhq.com/theta/b23e4567-e89b-12d3-a456-42661417400a",
+     "company": "Theta",
+     "tier": "C"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "923e4567-e89b-12d3-a456-426614174008",
+    "a23e4567-e89b-12d3-a456-426614174009",
+    "b23e4567-e89b-12d3-a456-42661417400a"
+   ],
+   "boards": [
+    [
+     "ashby",
+     "eta",
+     "Eta"
+    ],
+    [
+     "ashby",
+     "theta",
+     "Theta"
+    ],
+    [
+     "lever",
+     "zeta",
+     "Zeta"
+    ]
+   ],
+   "ab": [
+    "eta",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "known-no-uuid-in-url",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "company": "Iota"
+    },
+    {
+     "url": "https://jobs.lever.co/iota/apply",
+     "company": "Iota"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [],
+   "boards": [
+    [
+     "lever",
+     "iota",
+     "Iota"
+    ]
+   ],
+   "ab": []
+  }
+ },
+ {
+  "name": "known-same-company-two-boards",
+  "fn": "known",
+  "input": {
+   "rows": [
+    {
+     "url": "https://jobs.lever.co/Lambda/c23e4567-e89b-12d3-a456-42661417400b",
+     "company": "Lambda",
+     "tier": "A"
+    },
+    {
+     "url": "https://jobs.ashbyhq.com/Lambda/d23e4567-e89b-12d3-a456-42661417400c",
+     "company": "Lambda"
+    }
+   ]
+  },
+  "expect": {
+   "keys": [
+    "c23e4567-e89b-12d3-a456-42661417400b",
+    "d23e4567-e89b-12d3-a456-42661417400c"
+   ],
+   "boards": [
+    [
+     "ashby",
+     "lambda",
+     "Lambda"
+    ],
+    [
+     "lever",
+     "lambda",
+     "Lambda"
+    ]
+   ],
+   "ab": [
+    "lambda"
+   ]
+  }
+ },
+ {
+  "name": "pick-lever-basic-filter",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "acme"
+     ],
+     "Acme",
+     [
+      {
+       "id": "123e4567-e89b-12d3-a456-426614174000",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "San Francisco, CA"
+       },
+       "hostedUrl": "https://jobs.lever.co/acme/123e4567-e89b-12d3-a456-426614174000",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "223e4567-e89b-12d3-a456-426614174001",
+       "text": "Software Engineer",
+       "categories": {
+        "location": "New York, NY"
+       },
+       "hostedUrl": "https://jobs.lever.co/acme/223e4567-e89b-12d3-a456-426614174001",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "323e4567-e89b-12d3-a456-426614174002",
+       "text": "Marketing Intern",
+       "categories": {
+        "location": "London"
+       },
+       "hostedUrl": "https://jobs.lever.co/acme/323e4567-e89b-12d3-a456-426614174002",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "423e4567-e89b-12d3-a456-426614174003",
+       "text": "Analytics Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/acme/423e4567-e89b-12d3-a456-426614174003",
+       "createdAt": 1767225600000
+      }
+     ]
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "123e4567-e89b-12d3-a456-426614174000",
+    "423e4567-e89b-12d3-a456-426614174003"
+   ],
+   "tiers": [
+    "C",
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "pick-tiers-c-and-d",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "bravo"
+     ],
+     "Bravo",
+     [
+      {
+       "id": "523e4567-e89b-12d3-a456-426614174004",
+       "text": "Software Engineering Intern",
+       "categories": {
+        "location": "Austin, TX"
+       },
+       "hostedUrl": "https://jobs.lever.co/bravo/523e4567-e89b-12d3-a456-426614174004",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "623e4567-e89b-12d3-a456-426614174005",
+       "text": "AI Research Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/bravo/623e4567-e89b-12d3-a456-426614174005",
+       "createdAt": 1767225600000
+      }
+     ]
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "523e4567-e89b-12d3-a456-426614174004",
+    "623e4567-e89b-12d3-a456-426614174005"
+   ],
+   "tiers": [
+    "D",
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "pick-cap-two-across-boards",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "cascade"
+     ],
+     "Cascade",
+     [
+      {
+       "id": "123e4567-e89b-12d3-a456-426614174000",
+       "text": "Data Intern",
+       "categories": {
+        "location": "San Francisco, CA"
+       },
+       "hostedUrl": "https://jobs.lever.co/cascade/123e4567-e89b-12d3-a456-426614174000",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "223e4567-e89b-12d3-a456-426614174001",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/cascade/223e4567-e89b-12d3-a456-426614174001",
+       "createdAt": 1767225600000
+      }
+     ]
+    ],
+    [
+     [
+      "ashby",
+      "cascade"
+     ],
+     "Cascade",
+     {
+      "jobs": [
+       {
+        "id": "323e4567-e89b-12d3-a456-426614174002",
+        "title": "Analytics Intern",
+        "location": "New York, NY",
+        "jobUrl": "https://jobs.ashbyhq.com/cascade/323e4567-e89b-12d3-a456-426614174002",
+        "publishedAt": "2027-01-02",
+        "isListed": true
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "123e4567-e89b-12d3-a456-426614174000",
+    "223e4567-e89b-12d3-a456-426614174001"
+   ],
+   "tiers": [
+    "C",
+    "D"
+   ]
+  }
+ },
+ {
+  "name": "pick-known-id-and-empty-id",
+  "fn": "pick_new",
+  "input": {
+   "keys": [
+    "723e4567-e89b-12d3-a456-426614174006"
+   ],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "delta"
+     ],
+     "Delta",
+     [
+      {
+       "id": "723e4567-e89b-12d3-a456-426614174006",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "New York, NY"
+       },
+       "hostedUrl": "https://jobs.lever.co/delta/723e4567-e89b-12d3-a456-426614174006",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "",
+       "text": "Analytics Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/delta/none",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "823e4567-e89b-12d3-a456-426614174007",
+       "text": "Data Analyst Intern",
+       "categories": {
+        "location": "Chicago, IL"
+       },
+       "hostedUrl": "https://jobs.lever.co/delta/823e4567-e89b-12d3-a456-426614174007",
+       "createdAt": 1767225600000
+      }
+     ]
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "823e4567-e89b-12d3-a456-426614174007"
+   ],
+   "tiers": [
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "pick-ab-skips-whole-board",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [
+    "echo"
+   ],
+   "results": [
+    [
+     [
+      "lever",
+      "echo"
+     ],
+     "Echo",
+     [
+      {
+       "id": "123e4567-e89b-12d3-a456-426614174000",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/echo/123e4567-e89b-12d3-a456-426614174000",
+       "createdAt": 1767225600000
+      }
+     ]
+    ],
+    [
+     [
+      "lever",
+      "foxtrot"
+     ],
+     "Foxtrot",
+     [
+      {
+       "id": "223e4567-e89b-12d3-a456-426614174001",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/foxtrot/223e4567-e89b-12d3-a456-426614174001",
+       "createdAt": 1767225600000
+      }
+     ]
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "223e4567-e89b-12d3-a456-426614174001"
+   ],
+   "tiers": [
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "pick-unreadable-board-skipped",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "golf"
+     ],
+     "Golf",
+     null
+    ],
+    [
+     [
+      "ashby",
+      "hotel"
+     ],
+     "Hotel",
+     {
+      "jobs": [
+       {
+        "id": "323e4567-e89b-12d3-a456-426614174002",
+        "title": "Data Science Intern",
+        "location": "Seattle, WA",
+        "jobUrl": "https://jobs.ashbyhq.com/hotel/323e4567-e89b-12d3-a456-426614174002",
+        "publishedAt": "2027-01-03",
+        "isListed": true
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "323e4567-e89b-12d3-a456-426614174002"
+   ],
+   "tiers": [
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "pick-ashby-unlisted-dropped",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "ashby",
+      "india"
+     ],
+     "India",
+     {
+      "jobs": [
+       {
+        "id": "423e4567-e89b-12d3-a456-426614174003",
+        "title": "Data Science Intern",
+        "location": "New York, NY",
+        "jobUrl": "https://jobs.ashbyhq.com/india/423e4567-e89b-12d3-a456-426614174003",
+        "publishedAt": "2027-01-02",
+        "isListed": true
+       },
+       {
+        "id": "523e4567-e89b-12d3-a456-426614174004",
+        "title": "Analytics Intern",
+        "location": "Remote",
+        "jobUrl": "https://jobs.ashbyhq.com/india/523e4567-e89b-12d3-a456-426614174004",
+        "publishedAt": "2027-01-03",
+        "isListed": false
+       },
+       {
+        "id": "623e4567-e89b-12d3-a456-426614174005",
+        "title": "Research Intern",
+        "location": "Berkeley, CA",
+        "jobUrl": "https://jobs.ashbyhq.com/india/623e4567-e89b-12d3-a456-426614174005",
+        "publishedAt": "2027-01-04",
+        "isListed": true
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "423e4567-e89b-12d3-a456-426614174003",
+    "623e4567-e89b-12d3-a456-426614174005"
+   ],
+   "tiers": [
+    "C",
+    "D"
+   ]
+  }
+ },
+ {
+  "name": "pick-non-us-locations-fail",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "juliet"
+     ],
+     "Juliet",
+     [
+      {
+       "id": "723e4567-e89b-12d3-a456-426614174006",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Toronto"
+       },
+       "hostedUrl": "https://jobs.lever.co/juliet/723e4567-e89b-12d3-a456-426614174006",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "823e4567-e89b-12d3-a456-426614174007",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Dhaka, Bangladesh"
+       },
+       "hostedUrl": "https://jobs.lever.co/juliet/823e4567-e89b-12d3-a456-426614174007",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "923e4567-e89b-12d3-a456-426614174008",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Europe"
+       },
+       "hostedUrl": "https://jobs.lever.co/juliet/923e4567-e89b-12d3-a456-426614174008",
+       "createdAt": 1767225600000
+      },
+      {
+       "id": "a23e4567-e89b-12d3-a456-426614174009",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/juliet/a23e4567-e89b-12d3-a456-426614174009",
+       "createdAt": 1767225600000
+      }
+     ]
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "a23e4567-e89b-12d3-a456-426614174009"
+   ],
+   "tiers": [
+    "D"
+   ]
+  }
+ },
+ {
+  "name": "pick-duplicate-id-across-boards",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "kilo"
+     ],
+     "Kilo",
+     [
+      {
+       "id": "b23e4567-e89b-12d3-a456-42661417400a",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "San Francisco, CA"
+       },
+       "hostedUrl": "https://jobs.lever.co/kilo/b23e4567-e89b-12d3-a456-42661417400a",
+       "createdAt": 1767225600000
+      }
+     ]
+    ],
+    [
+     [
+      "ashby",
+      "kilo"
+     ],
+     "Kilo",
+     {
+      "jobs": [
+       {
+        "id": "b23e4567-e89b-12d3-a456-42661417400a",
+        "title": "Data Science Intern",
+        "location": "New York, NY",
+        "jobUrl": "https://jobs.ashbyhq.com/kilo/b23e4567-e89b-12d3-a456-42661417400a",
+        "publishedAt": "2027-01-05",
+        "isListed": true
+       },
+       {
+        "id": "c23e4567-e89b-12d3-a456-42661417400b",
+        "title": "Engineering Intern",
+        "location": "Boston, MA",
+        "jobUrl": "https://jobs.ashbyhq.com/kilo/c23e4567-e89b-12d3-a456-42661417400b",
+        "publishedAt": "2027-01-06",
+        "isListed": true
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "b23e4567-e89b-12d3-a456-42661417400a",
+    "c23e4567-e89b-12d3-a456-42661417400b"
+   ],
+   "tiers": [
+    "C",
+    "D"
+   ]
+  }
+ },
+ {
+  "name": "pick-output-order-across-boards",
+  "fn": "pick_new",
+  "input": {
+   "keys": [],
+   "ab": [],
+   "results": [
+    [
+     [
+      "lever",
+      "mike"
+     ],
+     "Mike",
+     [
+      {
+       "id": "d23e4567-e89b-12d3-a456-42661417400c",
+       "text": "Data Science Intern",
+       "categories": {
+        "location": "Remote"
+       },
+       "hostedUrl": "https://jobs.lever.co/mike/d23e4567-e89b-12d3-a456-42661417400c",
+       "createdAt": 1767225600000
+      }
+     ]
+    ],
+    [
+     [
+      "lever",
+      "november"
+     ],
+     "November",
+     [
+      {
+       "id": "e23e4567-e89b-12d3-a456-42661417400d",
+       "text": "Engineering Intern",
+       "categories": {
+        "location": "Austin, TX"
+       },
+       "hostedUrl": "https://jobs.lever.co/november/e23e4567-e89b-12d3-a456-42661417400d",
+       "createdAt": 1767225600000
+      }
+     ]
+    ],
+    [
+     [
+      "ashby",
+      "mike"
+     ],
+     "Mike",
+     {
+      "jobs": [
+       {
+        "id": "f23e4567-e89b-12d3-a456-42661417400e",
+        "title": "Product Intern",
+        "location": "Remote",
+        "jobUrl": "https://jobs.ashbyhq.com/mike/f23e4567-e89b-12d3-a456-42661417400e",
+        "publishedAt": "2027-01-07",
+        "isListed": true
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  "expect": {
+   "ids": [
+    "d23e4567-e89b-12d3-a456-42661417400c",
+    "e23e4567-e89b-12d3-a456-42661417400d",
+    "f23e4567-e89b-12d3-a456-42661417400e"
+   ],
+   "tiers": [
+    "C",
+    "D",
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "to-rows-first-id",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "123e4567-e89b-12d3-a456-426614174000",
+     "title": "Data Science Intern",
+     "location": "San Francisco, CA",
+     "url": "https://jobs.lever.co/acme/123e4567-e89b-12d3-a456-426614174000",
+     "posted": "2027-01-02",
+     "company": "Acme",
+     "kind": "lever",
+     "tier": "C"
+    }
+   ],
+   "rows": [],
+   "today": "2027-01-15"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00001",
+     "score": 45,
+     "tier": "C",
+     "source": "lever_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-01-15",
+     "ats_url": "https://jobs.lever.co/acme/123e4567-e89b-12d3-a456-426614174000"
+    }
+   ]
+  }
+ },
+ {
+  "name": "to-rows-continue-after-max",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "223e4567-e89b-12d3-a456-426614174001",
+     "title": "Analytics Intern",
+     "location": "Remote",
+     "url": "https://jobs.ashbyhq.com/ashco/223e4567-e89b-12d3-a456-426614174001",
+     "posted": "2027-01-03",
+     "company": "AshCo",
+     "kind": "ashby",
+     "tier": "C"
+    },
+    {
+     "id": "323e4567-e89b-12d3-a456-426614174002",
+     "title": "Engineering Intern",
+     "location": "Boston, MA",
+     "url": "https://jobs.ashbyhq.com/ashco/323e4567-e89b-12d3-a456-426614174002",
+     "posted": "2027-01-04",
+     "company": "AshCo",
+     "kind": "ashby",
+     "tier": "D"
+    }
+   ],
+   "rows": [
+    {
+     "id": "J00007"
+    },
+    {
+     "id": "J00012"
+    }
+   ],
+   "today": "2027-01-20"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00013",
+     "score": 45,
+     "tier": "C",
+     "source": "ashby_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-01-20",
+     "ats_url": "https://jobs.ashbyhq.com/ashco/223e4567-e89b-12d3-a456-426614174001"
+    },
+    {
+     "id": "J00014",
+     "score": 35,
+     "tier": "D",
+     "source": "ashby_search",
+     "track": "Other",
+     "added": "2027-01-20",
+     "ats_url": "https://jobs.ashbyhq.com/ashco/323e4567-e89b-12d3-a456-426614174002"
+    }
+   ]
+  }
+ },
+ {
+  "name": "to-rows-non-j-ids-ignored",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "423e4567-e89b-12d3-a456-426614174003",
+     "title": "Engineering Intern",
+     "location": "Denver, CO",
+     "url": "https://jobs.lever.co/leverco/423e4567-e89b-12d3-a456-426614174003",
+     "posted": "2027-01-05",
+     "company": "LeverCo",
+     "kind": "lever",
+     "tier": "D"
+    }
+   ],
+   "rows": [
+    {
+     "id": "OLD-1"
+    },
+    {
+     "id": "intern-5"
+    }
+   ],
+   "today": "2027-01-21"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00001",
+     "score": 35,
+     "tier": "D",
+     "source": "lever_search",
+     "track": "Other",
+     "added": "2027-01-21",
+     "ats_url": "https://jobs.lever.co/leverco/423e4567-e89b-12d3-a456-426614174003"
+    }
+   ]
+  }
+ },
+ {
+  "name": "to-rows-j00000-edge",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "523e4567-e89b-12d3-a456-426614174004",
+     "title": "Data Science Intern",
+     "location": "Remote",
+     "url": "https://jobs.ashbyhq.com/edgeco/523e4567-e89b-12d3-a456-426614174004",
+     "posted": "2027-01-06",
+     "company": "EdgeCo",
+     "kind": "ashby",
+     "tier": "C"
+    }
+   ],
+   "rows": [
+    {
+     "id": "J00000"
+    }
+   ],
+   "today": "2027-02-01"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00001",
+     "score": 45,
+     "tier": "C",
+     "source": "ashby_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-02-01",
+     "ats_url": "https://jobs.ashbyhq.com/edgeco/523e4567-e89b-12d3-a456-426614174004"
+    }
+   ]
+  }
+ },
+ {
+  "name": "to-rows-mixed-three",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "623e4567-e89b-12d3-a456-426614174005",
+     "title": "Data Intern",
+     "location": "Austin, TX",
+     "url": "https://jobs.lever.co/mixco/623e4567-e89b-12d3-a456-426614174005",
+     "posted": "2027-01-07",
+     "company": "MixCo",
+     "kind": "lever",
+     "tier": "C"
+    },
+    {
+     "id": "723e4567-e89b-12d3-a456-426614174006",
+     "title": "Engineering Intern",
+     "location": "Remote",
+     "url": "https://jobs.ashbyhq.com/mixco/723e4567-e89b-12d3-a456-426614174006",
+     "posted": "2027-01-08",
+     "company": "MixCo",
+     "kind": "ashby",
+     "tier": "D"
+    },
+    {
+     "id": "823e4567-e89b-12d3-a456-426614174007",
+     "title": "Product Intern",
+     "location": "Seattle, WA",
+     "url": "https://jobs.lever.co/mixco/823e4567-e89b-12d3-a456-426614174007",
+     "posted": "2027-01-09",
+     "company": "MixCo",
+     "kind": "lever",
+     "tier": "C"
+    }
+   ],
+   "rows": [
+    {
+     "id": "J00003"
+    },
+    {
+     "id": "X00099"
+    }
+   ],
+   "today": "2027-02-01"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00004",
+     "score": 45,
+     "tier": "C",
+     "source": "lever_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-02-01",
+     "ats_url": "https://jobs.lever.co/mixco/623e4567-e89b-12d3-a456-426614174005"
+    },
+    {
+     "id": "J00005",
+     "score": 35,
+     "tier": "D",
+     "source": "ashby_search",
+     "track": "Other",
+     "added": "2027-02-01",
+     "ats_url": "https://jobs.ashbyhq.com/mixco/723e4567-e89b-12d3-a456-426614174006"
+    },
+    {
+     "id": "J00006",
+     "score": 45,
+     "tier": "C",
+     "source": "lever_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-02-01",
+     "ats_url": "https://jobs.lever.co/mixco/823e4567-e89b-12d3-a456-426614174007"
+    }
+   ]
+  }
+ },
+ {
+  "name": "to-rows-order-and-tier-scores",
+  "fn": "to_rows",
+  "input": {
+   "new": [
+    {
+     "id": "923e4567-e89b-12d3-a456-426614174008",
+     "title": "Engineering Intern",
+     "location": "Chicago, IL",
+     "url": "https://jobs.lever.co/orderco/923e4567-e89b-12d3-a456-426614174008",
+     "posted": "2027-01-10",
+     "company": "OrderCo",
+     "kind": "lever",
+     "tier": "D"
+    },
+    {
+     "id": "a23e4567-e89b-12d3-a456-426614174009",
+     "title": "Analytics Intern",
+     "location": "Remote",
+     "url": "https://jobs.lever.co/orderco/a23e4567-e89b-12d3-a456-426614174009",
+     "posted": "2027-01-11",
+     "company": "OrderCo",
+     "kind": "lever",
+     "tier": "C"
+    }
+   ],
+   "rows": [
+    {
+     "id": "J00042"
+    }
+   ],
+   "today": "2027-03-10"
+  },
+  "expect": {
+   "rows": [
+    {
+     "id": "J00043",
+     "score": 35,
+     "tier": "D",
+     "source": "lever_search",
+     "track": "Other",
+     "added": "2027-03-10",
+     "ats_url": "https://jobs.lever.co/orderco/923e4567-e89b-12d3-a456-426614174008"
+    },
+    {
+     "id": "J00044",
+     "score": 45,
+     "tier": "C",
+     "source": "lever_search",
+     "track": "Data Sci / Analytics",
+     "added": "2027-03-10",
+     "ats_url": "https://jobs.lever.co/orderco/a23e4567-e89b-12d3-a456-426614174009"
+    }
+   ]
+  }
+ }
+]

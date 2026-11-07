@@ -1,0 +1,1 @@
+Each case: {"name": "...", "field": {"key": "...", "type": "text|tel|textarea|combo|select|radio|checkbox" or absent, "label": "...", "options": [..]}, "expect": true | false, "spec_quote": "...", "ambiguous": false}

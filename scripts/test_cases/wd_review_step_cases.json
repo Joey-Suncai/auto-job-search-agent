@@ -1,0 +1,310 @@
+[
+ {
+  "name": "english_review_no_fields",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Review",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", ...) AND no field other than type \"file\" is on screen."
+ },
+ {
+  "name": "english_review_only_file_fields",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Review",
+   "fields": [
+    {
+     "type": "file"
+    },
+    {
+     "type": "file"
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", ...) AND no field other than type \"file\" is on screen."
+ },
+ {
+  "name": "english_review_with_text_field",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Review",
+   "fields": [
+    {
+     "type": "text"
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "True only when the step is a Review step ... AND no field other than type \"file\" is on screen."
+ },
+ {
+  "name": "english_review_file_plus_text_field",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Review",
+   "fields": [
+    {
+     "type": "file"
+    },
+    {
+     "type": "text"
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "True only when the step is a Review step ... AND no field other than type \"file\" is on screen."
+ },
+ {
+  "name": "chinese_review_step_prefix",
+  "fn": "is_review_page",
+  "args": {
+   "step": "当前步骤 8/8审查",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "step = the progress bar's current-step text (may start with \"current step N of M\"; Chinese tenants show e.g. \"当前步骤 8/8审查\")"
+ },
+ {
+  "name": "chinese_review_step_with_text_field",
+  "fn": "is_review_page",
+  "args": {
+   "step": "当前步骤 8/8审查",
+   "fields": [
+    {
+     "type": "text"
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "True only when the step is a Review step ... AND no field other than type \"file\" is on screen."
+ },
+ {
+  "name": "chinese_traditional_review_shen_yue",
+  "fn": "is_review_page",
+  "args": {
+   "step": "当前步骤 8/8審閱",
+   "fields": [
+    {
+     "type": "file"
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", Chinese 审查/审阅/審查/審閱/检查/確認, ...)"
+ },
+ {
+  "name": "chinese_jian_cha_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "检查",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", Chinese 审查/审阅/審查/審閱/检查/確認, ...)"
+ },
+ {
+  "name": "chinese_que_ren_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "確認",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", Chinese 审查/审阅/審查/審閱/检查/確認, ...)"
+ },
+ {
+  "name": "revis_prefix_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Revision",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (English \"Review\", ... also words starting Revis / Überprüf / Examen / Riepilogo)"
+ },
+ {
+  "name": "uberpruf_prefix_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Überprüfung",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (... also words starting Revis / Überprüf / Examen / Riepilogo)"
+ },
+ {
+  "name": "examen_prefix_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Examen",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (... also words starting Revis / Überprüf / Examen / Riepilogo)"
+ },
+ {
+  "name": "riepilogo_prefix_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Riepilogo",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "True only when the step is a Review step (... also words starting Revis / Überprüf / Examen / Riepilogo)"
+ },
+ {
+  "name": "english_review_with_numeric_prefix",
+  "fn": "is_review_page",
+  "args": {
+   "step": "current step 5 of 9 Review",
+   "fields": []
+  },
+  "expect": true,
+  "spec": "step = the progress bar's current-step text (may start with \"current step N of M\" ...)"
+ },
+ {
+  "name": "pre_review_questions_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Pre-Review Questions",
+   "fields": []
+  },
+  "expect": false,
+  "spec": "A step that only contains the word review later (\"Pre-Review Questions\" is not a review step because the step must START with the review word after the \"current step N of M\" prefix)."
+ },
+ {
+  "name": "voluntary_disclosures_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Voluntary Disclosures",
+   "fields": []
+  },
+  "expect": false,
+  "spec": "\"Voluntary Disclosures\", \"My Information\", \"Application Questions\", \"Self Identify\", \"\" are never Review."
+ },
+ {
+  "name": "my_information_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "My Information",
+   "fields": []
+  },
+  "expect": false,
+  "spec": "\"Voluntary Disclosures\", \"My Information\", \"Application Questions\", \"Self Identify\", \"\" are never Review."
+ },
+ {
+  "name": "application_questions_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Application Questions",
+   "fields": [
+    {
+     "type": "file"
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "\"Voluntary Disclosures\", \"My Information\", \"Application Questions\", \"Self Identify\", \"\" are never Review."
+ },
+ {
+  "name": "self_identify_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "Self Identify",
+   "fields": []
+  },
+  "expect": false,
+  "spec": "\"Voluntary Disclosures\", \"My Information\", \"Application Questions\", \"Self Identify\", \"\" are never Review."
+ },
+ {
+  "name": "empty_step_not_review",
+  "fn": "is_review_page",
+  "args": {
+   "step": "",
+   "fields": []
+  },
+  "expect": false,
+  "spec": "\"Voluntary Disclosures\", \"My Information\", \"Application Questions\", \"Self Identify\", \"\" are never Review."
+ },
+ {
+  "name": "step_and_keys_both_changed",
+  "fn": "step_changed",
+  "args": {
+   "before_step": "My Information",
+   "before_keys": [
+    "w1",
+    "w2"
+   ],
+   "after_step": "Application Questions",
+   "after_keys": [
+    "w3",
+    "w4"
+   ]
+  },
+  "expect": true,
+  "spec": "True only when after_step is non-empty, differs from before_step, and the page does not still show exactly the same set of field ids as before (when before_keys is non-empty)."
+ },
+ {
+  "name": "empty_after_step_loading",
+  "fn": "step_changed",
+  "args": {
+   "before_step": "My Information",
+   "before_keys": [
+    "w1"
+   ],
+   "after_step": "",
+   "after_keys": []
+  },
+  "expect": false,
+  "spec": "Empty after_step (loading) = false."
+ },
+ {
+  "name": "same_step_is_false",
+  "fn": "step_changed",
+  "args": {
+   "before_step": "Review",
+   "before_keys": [
+    "w1"
+   ],
+   "after_step": "Review",
+   "after_keys": [
+    "w2"
+   ]
+  },
+  "expect": false,
+  "spec": "Same step = false."
+ },
+ {
+  "name": "different_step_same_keys_is_false",
+  "fn": "step_changed",
+  "args": {
+   "before_step": "My Information",
+   "before_keys": [
+    "w1",
+    "w2"
+   ],
+   "after_step": "Review",
+   "after_keys": [
+    "w1",
+    "w2"
+   ]
+  },
+  "expect": false,
+  "spec": "Different step but identical non-empty key set = false (the old page is still shown)."
+ },
+ {
+  "name": "empty_before_keys_step_differs_is_true",
+  "fn": "step_changed",
+  "args": {
+   "before_step": "My Information",
+   "before_keys": [],
+   "after_step": "Review",
+   "after_keys": []
+  },
+  "expect": true,
+  "spec": "before_keys empty = only the step decides."
+ }
+]

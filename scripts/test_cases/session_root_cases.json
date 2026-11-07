@@ -1,0 +1,218 @@
+[
+ {
+  "name": "SessionStart object with worktree cwd",
+  "hook_input": "{\"session_id\": \"abc123\", \"cwd\": \"/Users/x/agent/.claude/worktrees/w1\", \"hook_event_name\": \"SessionStart\", \"source\": \"startup\"}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent/.claude/worktrees/w1",
+  "spec_quote": "If hook_input is a string that parses as a JSON object, and that object has a key \"cwd\" whose value is a string that is not empty after trimming surrounding spaces → return that value, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "SessionStart object with main-checkout cwd beats process cwd",
+  "hook_input": "{\"session_id\": \"s2\", \"cwd\": \"/Users/x/agent\", \"hook_event_name\": \"SessionStart\", \"source\": \"startup\"}",
+  "cwd": "/Users/x/agent/.claude/worktrees/w1",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "If hook_input is a string that parses as a JSON object, and that object has a key \"cwd\" whose value is a string that is not empty after trimming surrounding spaces → return that value, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd with surrounding spaces is trimmed",
+  "hook_input": "{\"cwd\": \"  /Users/x/agent  \"}",
+  "cwd": "/Users/x/other",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "If hook_input is a string that parses as a JSON object, and that object has a key \"cwd\" whose value is a string that is not empty after trimming surrounding spaces → return that value, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd blank string falls to process cwd",
+  "hook_input": "{\"cwd\": \"   \"}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "a \"cwd\" that is null, a number, a list, an object, or a blank string",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd null falls to process cwd",
+  "hook_input": "{\"cwd\": null}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "a \"cwd\" that is null, a number, a list, an object, or a blank string",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd number falls to process cwd",
+  "hook_input": "{\"cwd\": 42}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "a \"cwd\" that is null, a number, a list, an object, or a blank string",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd list falls to process cwd",
+  "hook_input": "{\"cwd\": [\"/a\", \"/b\"]}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "a \"cwd\" that is null, a number, a list, an object, or a blank string",
+  "ambiguous": false
+ },
+ {
+  "name": "hook_input cwd object falls to process cwd",
+  "hook_input": "{\"cwd\": {\"path\": \"/a\"}}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "a \"cwd\" that is null, a number, a list, an object, or a blank string",
+  "ambiguous": false
+ },
+ {
+  "name": "JSON object without cwd falls to process cwd",
+  "hook_input": "{\"session_id\": \"s9\", \"hook_event_name\": \"SessionStart\", \"source\": \"startup\"}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "an object without \"cwd\"",
+  "ambiguous": false
+ },
+ {
+  "name": "extra keys do not matter when cwd is valid",
+  "hook_input": "{\"cwd\": \"/Users/x/wt\", \"source\": \"resume\", \"extra\": {\"a\": 1}, \"n\": [1, 2], \"b\": true, \"nil\": null}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/wt",
+  "spec_quote": "The other keys of the object do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid JSON text falls to process cwd",
+  "hook_input": "cwd=/Users/x/agent not json",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "text that is not JSON",
+  "ambiguous": false
+ },
+ {
+  "name": "JSON list falls to process cwd",
+  "hook_input": "[\"/Users/x/agent\", \"cwd\"]",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "valid JSON that is not an object (a list, a number, a quoted string)",
+  "ambiguous": false
+ },
+ {
+  "name": "JSON number falls to process cwd",
+  "hook_input": "42",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "valid JSON that is not an object (a list, a number, a quoted string)",
+  "ambiguous": false
+ },
+ {
+  "name": "JSON quoted string falls to process cwd",
+  "hook_input": "\"/Users/x/agent\"",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "valid JSON that is not an object (a list, a number, a quoted string)",
+  "ambiguous": false
+ },
+ {
+  "name": "null hook_input uses process cwd",
+  "hook_input": null,
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent",
+  "spec_quote": "Anything else in hook_input is ignored, never an error: null, an empty or blank string …",
+  "ambiguous": false
+ },
+ {
+  "name": "empty string hook_input uses process cwd",
+  "hook_input": "",
+  "cwd": "/Users/x/main",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/main",
+  "spec_quote": "Anything else in hook_input is ignored, never an error: null, an empty or blank string …",
+  "ambiguous": false
+ },
+ {
+  "name": "blank string hook_input uses process cwd",
+  "hook_input": "   ",
+  "cwd": "/Users/x/main",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/main",
+  "spec_quote": "Anything else in hook_input is ignored, never an error: null, an empty or blank string …",
+  "ambiguous": false
+ },
+ {
+  "name": "blank process cwd falls to script_root",
+  "hook_input": null,
+  "cwd": "   ",
+  "script_root": "/Users/x/script",
+  "expect": "/Users/x/script",
+  "spec_quote": "Otherwise → return script_root, trimmed when it is a non-blank string; returned as given otherwise.",
+  "ambiguous": false
+ },
+ {
+  "name": "null process cwd with object lacking usable cwd falls to script_root",
+  "hook_input": "{\"cwd\": null}",
+  "cwd": null,
+  "script_root": "/Users/x/script",
+  "expect": "/Users/x/script",
+  "spec_quote": "Otherwise → return script_root, trimmed when it is a non-blank string; returned as given otherwise.",
+  "ambiguous": false
+ },
+ {
+  "name": "trailing slash is preserved",
+  "hook_input": "{\"cwd\": \"/Users/x/agent/.claude/worktrees/w1/\"}",
+  "cwd": "/Users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/x/agent/.claude/worktrees/w1/",
+  "spec_quote": "Paths are returned as text; they are not checked to exist and not normalised (no case change, no removing of trailing \"/\").",
+  "ambiguous": false
+ },
+ {
+  "name": "letter case is preserved",
+  "hook_input": "{\"cwd\": \"/Users/X/Agent/WorkTrees/W1\"}",
+  "cwd": "/users/x/agent",
+  "script_root": "/Users/x/agent",
+  "expect": "/Users/X/Agent/WorkTrees/W1",
+  "spec_quote": "Paths are returned as text; they are not checked to exist and not normalised (no case change, no removing of trailing \"/\").",
+  "ambiguous": false
+ },
+ {
+  "name": "process cwd with surrounding spaces is trimmed",
+  "hook_input": null,
+  "cwd": "  /Users/x/agent  ",
+  "script_root": "/Users/x/script",
+  "expect": "/Users/x/agent",
+  "spec_quote": "Otherwise, if cwd is a string that is not empty after trimming → return cwd, trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "script_root with surrounding spaces is trimmed",
+  "hook_input": "",
+  "cwd": null,
+  "script_root": "  /Users/x/script  ",
+  "expect": "/Users/x/script",
+  "spec_quote": "Otherwise → return script_root, trimmed when it is a non-blank string; returned as given otherwise.",
+  "ambiguous": false
+ },
+ {
+  "name": "blank script_root returned as given",
+  "hook_input": "{\"cwd\": \"\"}",
+  "cwd": "",
+  "script_root": "   ",
+  "expect": "   ",
+  "spec_quote": "Otherwise → return script_root, trimmed when it is a non-blank string; returned as given otherwise.",
+  "ambiguous": false
+ }
+]

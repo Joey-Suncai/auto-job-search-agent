@@ -1,0 +1,338 @@
+[
+ {
+  "id": "c1",
+  "fn": "track",
+  "input": {
+   "track": "Data Analyst"
+  },
+  "expect": "Data_Analyst",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c2",
+  "fn": "track",
+  "input": {
+   "track": "Data Sci / Analytics"
+  },
+  "expect": "Data_Analyst",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c3",
+  "fn": "track",
+  "input": {
+   "track": "Data Engineer"
+  },
+  "expect": "Data_Engineer",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c4",
+  "fn": "track",
+  "input": {
+   "track": "Product Manager"
+  },
+  "expect": "Product_Manager",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c5",
+  "fn": "track",
+  "input": {
+   "track": "AI Product Manager"
+  },
+  "expect": "Product_Manager",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c6",
+  "fn": "track",
+  "input": {
+   "track": "AI Agentic Eng"
+  },
+  "expect": "AI_Agentic_Engineer",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c7",
+  "fn": "track",
+  "input": {
+   "track": "AI Agentic Engineer"
+  },
+  "expect": "AI_Agentic_Engineer",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c8",
+  "fn": "track",
+  "input": {
+   "track": "Data_Analyst"
+  },
+  "expect": "Data_Analyst",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c9",
+  "fn": "track",
+  "input": {
+   "track": "Data Science"
+  },
+  "expect": "Data_Analyst",
+  "spec": "Track names from the store map to material tracks: \"Data Analyst\", \"Data Sci / Analytics\" → Data_Analyst; \"Data Engineer\" → Data_Engineer; \"Product Manager\", \"AI Product Manager\" → Product_Manager; \"AI Agentic Eng\", \"AI Agentic Engineer\" → AI_Agentic_Engineer; already-normalized names pass through; anything else → Data_Analyst."
+ },
+ {
+  "id": "c10",
+  "fn": "runner",
+  "input": {
+   "ats": "ashby"
+  },
+  "expect": "run_form.py",
+  "spec": "Platforms in this pipeline: Ashby and Lever → `run_form.py`; Greenhouse → `run.py`. Any other platform → status `no runner in batch_apply` (not prepared, not run)."
+ },
+ {
+  "id": "c11",
+  "fn": "runner",
+  "input": {
+   "ats": "lever"
+  },
+  "expect": "run_form.py",
+  "spec": "Platforms in this pipeline: Ashby and Lever → `run_form.py`; Greenhouse → `run.py`. Any other platform → status `no runner in batch_apply` (not prepared, not run)."
+ },
+ {
+  "id": "c12",
+  "fn": "runner",
+  "input": {
+   "ats": "greenhouse"
+  },
+  "expect": "run.py",
+  "spec": "Platforms in this pipeline: Ashby and Lever → `run_form.py`; Greenhouse → `run.py`. Any other platform → status `no runner in batch_apply` (not prepared, not run)."
+ },
+ {
+  "id": "c13",
+  "fn": "runner",
+  "input": {
+   "ats": "workday"
+  },
+  "expect": null,
+  "spec": "Any other platform → status `no runner in batch_apply` (not prepared, not run)."
+ },
+ {
+  "id": "c14",
+  "fn": "runner",
+  "input": {
+   "ats": ""
+  },
+  "expect": null,
+  "spec": "Any other platform → status `no runner in batch_apply` (not prepared, not run)."
+ },
+ {
+  "id": "c15",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS dry-run\nTIME 12s\nNOT submitted: dry-run | batch not approved"
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 12,
+   "reasons": [
+    "dry-run",
+    "batch not approved"
+   ]
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \"). No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c16",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS dry-run\nTIME 0s"
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 0,
+   "reasons": []
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \"). No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c17",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS pending\nSTATUS dry-run\nTIME 9s\nNOT submitted: a | b | c"
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 9,
+   "reasons": [
+    "a",
+    "b",
+    "c"
+   ]
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \"). No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c18",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS dry-run\nTIME 7s\nNOT submitted: old\nNOT submitted: one | two"
+  },
+  "expect": {
+   "status": "dry-run",
+   "secs": 7,
+   "reasons": [
+    "one",
+    "two"
+   ]
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \"). No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c19",
+  "fn": "parse",
+  "input": {
+   "output": "starting\nERROR: no form\n\n"
+  },
+  "expect": {
+   "status": "crashed",
+   "secs": null,
+   "reasons": [
+    "ERROR: no form"
+   ]
+  },
+  "spec": "No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c20",
+  "fn": "parse",
+  "input": {
+   "output": "starting\nNOT submitted: alpha | beta\n"
+  },
+  "expect": {
+   "status": "crashed",
+   "secs": null,
+   "reasons": [
+    "NOT submitted: alpha | beta"
+   ]
+  },
+  "spec": "No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c21",
+  "fn": "parse",
+  "input": {
+   "output": "STATUS pending\nNOT submitted: x"
+  },
+  "expect": {
+   "status": "pending",
+   "secs": null,
+   "reasons": [
+    "x"
+   ]
+  },
+  "spec": "Runner output parsing: the last `STATUS <word>` line is the status; `TIME <n>s` the seconds; a `NOT submitted: a | b` line gives the reasons (split on \" | \"). No STATUS line → status `crashed`, with the last output line as the reason."
+ },
+ {
+  "id": "c22",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [],
+   "output": ""
+  },
+  "expect": true,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "c23",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "dry-run",
+    "batch not approved"
+   ],
+   "output": ""
+  },
+  "expect": true,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "c24",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "dry-run",
+    "materials missing"
+   ],
+   "output": ""
+  },
+  "expect": false,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "c25",
+  "fn": "ready",
+  "input": {
+   "status": "submitted",
+   "reasons": [],
+   "output": ""
+  },
+  "expect": false,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "c26",
+  "fn": "ready",
+  "input": {
+   "status": "dry-run",
+   "reasons": [
+    "dry-run"
+   ],
+   "output": ""
+  },
+  "expect": true,
+  "spec": "A dry-run is \"ready to submit\" when its status is `dry-run` and every reason is `dry-run` or `batch not approved` (or the runner printed \"all checks pass\")."
+ },
+ {
+  "id": "c27",
+  "fn": "size",
+  "input": {
+   "n": 10,
+   "max": null
+  },
+  "expect": null,
+  "spec": "Batch size: at most **10** jobs (Joey 2026-11-06: 8 recommended, cap 10); `--max` may lower it. More → refuse before any work, saying how many were given."
+ },
+ {
+  "id": "c28",
+  "fn": "size",
+  "input": {
+   "n": 11,
+   "max": null
+  },
+  "expect": "too many",
+  "spec": "Batch size: at most **10** jobs (Joey 2026-11-06: 8 recommended, cap 10); `--max` may lower it. More → refuse before any work, saying how many were given."
+ },
+ {
+  "id": "c29",
+  "fn": "size",
+  "input": {
+   "n": 6,
+   "max": 5
+  },
+  "expect": "too many",
+  "spec": "Batch size: at most **10** jobs (Joey 2026-11-06: 8 recommended, cap 10); `--max` may lower it. More → refuse before any work, saying how many were given."
+ },
+ {
+  "id": "c30",
+  "fn": "size",
+  "input": {
+   "n": 5,
+   "max": 5
+  },
+  "expect": null,
+  "spec": "Batch size: at most **10** jobs (Joey 2026-11-06: 8 recommended, cap 10); `--max` may lower it. More → refuse before any work, saying how many were given."
+ }
+]

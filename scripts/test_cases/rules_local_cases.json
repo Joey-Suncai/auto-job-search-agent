@@ -1,0 +1,270 @@
+[
+ {
+  "name": "NYC Tri-State local question with relocate option",
+  "label": "Are you local to NYC or the Tri-State area?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "No, but willing to relocate to NYC"
+  ],
+  "expect": "No, but willing to relocate to NYC",
+  "spec_quote": "Any other place → the option that says the candidate is not local but willing to relocate (e.g. \"No, but willing to relocate to NYC\")",
+  "ambiguous": false
+ },
+ {
+  "name": "Boston local question, Yes/No only",
+  "label": "Is you local to the Boston area?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Austin office local question, three-way list",
+  "label": "Are you currently local to our Austin office?",
+  "type": "select",
+  "options": [
+   "Yes, I am local",
+   "No, I am not local",
+   "No, but I am willing to relocate to Austin"
+  ],
+  "expect": "No, but I am willing to relocate to Austin",
+  "spec_quote": "Any other place → the option that says the candidate is not local but willing to relocate",
+  "ambiguous": false
+ },
+ {
+  "name": "Seattle region local question, Yes/No only",
+  "label": "Are you local to the Seattle region?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicago local question, Yes/No only",
+  "label": "Are you local to Chicago?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "If the named place is Chicago / Chicagoland → the \"Yes\" option (or the text \"Yes\" when there are no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicagoland local question, three-way list",
+  "label": "Are you local to Chicagoland?",
+  "type": "radio",
+  "options": [
+   "Yes, I'm local",
+   "No, I'm not local",
+   "No, but willing to relocate"
+  ],
+  "expect": "Yes, I'm local",
+  "spec_quote": "If the named place is Chicago / Chicagoland → the \"Yes\" option (or the text \"Yes\" when there are no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Denver local question as free-text box",
+  "label": "Are you local to the Denver area?",
+  "type": "text",
+  "options": [],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicago local question as free-text box",
+  "label": "Are you local to Chicago?",
+  "type": "text",
+  "options": [],
+  "expect": "Yes",
+  "spec_quote": "If the named place is Chicago / Chicagoland → the \"Yes\" option (or the text \"Yes\" when there are no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "NYC local + hybrid commute three days a week",
+  "label": "Are you local to NYC and able to commute to our Manhattan office 3 days a week (hybrid)?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "No, but willing to relocate to NYC"
+  ],
+  "expect": "No, but willing to relocate to NYC",
+  "spec_quote": "This holds even when the question also mentions commuting, hybrid or in-office schedules.",
+  "ambiguous": false
+ },
+ {
+  "name": "SF Bay Area local question with an unwilling option present",
+  "label": "Are you local to the San Francisco Bay Area?",
+  "type": "radio",
+  "options": [
+   "Yes, I am local to the Bay Area",
+   "No, I am not local and not able to relocate",
+   "No, but willing to relocate to the Bay Area"
+  ],
+  "expect": "No, but willing to relocate to the Bay Area",
+  "spec_quote": "never an option saying he is local, and never one saying he cannot / is not able to / is unwilling to relocate",
+  "ambiguous": false
+ },
+ {
+  "name": "DFW local question with only an unwilling No option",
+  "label": "Are you local to the Dallas-Fort Worth area?",
+  "type": "select",
+  "options": [
+   "Yes, I am local to DFW",
+   "No, I am not willing to relocate"
+  ],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": true
+ },
+ {
+  "name": "Miami local question, Yes/No radio",
+  "label": "Are you currently local to the Miami area?",
+  "type": "radio",
+  "options": [
+   "Yes, I'm local",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "NYC local with explicit relocate wording and unwilling distractor",
+  "label": "Are you local to the New York City area?",
+  "type": "select",
+  "options": [
+   "Yes, I am local to NYC",
+   "No, I am not local but I am willing to relocate to NYC",
+   "No, and I am unwilling to relocate"
+  ],
+  "expect": "No, I am not local but I am willing to relocate to NYC",
+  "spec_quote": "never an option saying he is local, and never one saying he cannot / is not able to / is unwilling to relocate",
+  "ambiguous": false
+ },
+ {
+  "name": "Chicago office local question, three-way list",
+  "label": "Are you currently local to our Chicago office?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "No, but willing to relocate to Chicago"
+  ],
+  "expect": "Yes",
+  "spec_quote": "If the named place is Chicago / Chicagoland → the \"Yes\" option (or the text \"Yes\" when there are no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Atlanta local question as free-text box",
+  "label": "Are you local to the Atlanta area?",
+  "type": "text",
+  "options": [],
+  "expect": "No",
+  "spec_quote": "If no such relocate option exists → the \"No\" option (or the text \"No\" with no options).",
+  "ambiguous": false
+ },
+ {
+  "name": "Portfolio password field",
+  "label": "Portfolio, Video, or Website Password",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A text box asking for a website / portfolio PASSWORD (\"Portfolio, Video, or Website Password\", \"Website password (if protected)\") is never filled with the candidate's website URL → expect \"none\" (left for a human / left blank).",
+  "ambiguous": false
+ },
+ {
+  "name": "Website password if protected field",
+  "label": "Website password (if protected)",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A text box asking for a website / portfolio PASSWORD (... \"Website password (if protected)\") is never filled with the candidate's website URL → expect \"none\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Portfolio website password field",
+  "label": "Portfolio Website Password",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A text box asking for a website / portfolio PASSWORD ... is never filled with the candidate's website URL → expect \"none\" (left for a human / left blank).",
+  "ambiguous": false
+ },
+ {
+  "name": "Portfolio or website link field",
+  "label": "Portfolio, Video, or Website Link",
+  "type": "text",
+  "options": [],
+  "expect": "https://github.com/example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "ambiguous": false
+ },
+ {
+  "name": "Personal website field",
+  "label": "Personal website",
+  "type": "text",
+  "options": [],
+  "expect": "https://github.com/example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "ambiguous": false
+ },
+ {
+  "name": "Portfolio URL field",
+  "label": "Portfolio URL",
+  "type": "text",
+  "options": [],
+  "expect": "https://github.com/example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "ambiguous": false
+ },
+ {
+  "name": "On-site NYC three days a week willingness question",
+  "label": "Are you able to work on-site in NYC 3 days a week?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Questions that ask about willingness only, with no \"local to\" wording (\"Are you able to work on-site in NYC 3 days a week?\", \"Are you willing to relocate?\") → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Willing to relocate question",
+  "label": "Are you willing to relocate?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Questions that ask about willingness only, with no \"local to\" wording (\"Are you able to work on-site in NYC 3 days a week?\", \"Are you willing to relocate?\") → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Hybrid schedule willingness question in Austin",
+  "label": "Are you willing to work a hybrid schedule in our Austin office?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Questions that ask about willingness only, with no \"local to\" wording ... → \"Yes\".",
+  "ambiguous": false
+ }
+]

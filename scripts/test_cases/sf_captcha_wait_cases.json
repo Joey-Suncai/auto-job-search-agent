@@ -1,0 +1,86 @@
+[
+ {
+  "name": "dry run with no --wait-captcha waits nothing",
+  "submit": false,
+  "given": null,
+  "expect": 0.0,
+  "spec_quote": "When `given` is None: 15 for a submit run, 0 for a dry run (an unattended dry run never waits)."
+ },
+ {
+  "name": "submit run with no --wait-captcha uses default 15",
+  "submit": true,
+  "given": null,
+  "expect": 15.0,
+  "spec_quote": "When `given` is None: 15 for a submit run, 0 for a dry run (an unattended dry run never waits)."
+ },
+ {
+  "name": "dry run honours explicit given number 10",
+  "submit": false,
+  "given": 10,
+  "expect": 10.0,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "submit run honours given number 3",
+  "submit": true,
+  "given": 3,
+  "expect": 3.0,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "zero given in submit run is used as zero, not the submit default",
+  "submit": true,
+  "given": 0,
+  "expect": 0.0,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "fractional 0.5 given in submit run is kept",
+  "submit": true,
+  "given": 0.5,
+  "expect": 0.5,
+  "spec_quote": "Integers and floats are both accepted; the result is a float (15 → 15.0)."
+ },
+ {
+  "name": "fractional 2.5 given in dry run is kept",
+  "submit": false,
+  "given": 2.5,
+  "expect": 2.5,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "negative given in submit run becomes zero",
+  "submit": true,
+  "given": -5,
+  "expect": 0.0,
+  "spec_quote": "A negative number becomes 0."
+ },
+ {
+  "name": "negative given in dry run becomes zero",
+  "submit": false,
+  "given": -3,
+  "expect": 0.0,
+  "spec_quote": "A negative number becomes 0."
+ },
+ {
+  "name": "large given number 60 is used unchanged",
+  "submit": true,
+  "given": 60,
+  "expect": 60.0,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "explicit zero given in dry run is used rather than the dry-run default",
+  "submit": false,
+  "given": 0,
+  "expect": 0.0,
+  "spec_quote": "when `given` is a number, that number is used (in a dry run too — the candidate may be at the screen)."
+ },
+ {
+  "name": "negative fractional given becomes zero",
+  "submit": true,
+  "given": -0.5,
+  "expect": 0.0,
+  "spec_quote": "A negative number becomes 0."
+ }
+]

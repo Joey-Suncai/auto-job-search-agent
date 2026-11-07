@@ -1,0 +1,523 @@
+[
+ {
+  "name": "dover uuid job link yields apply-path ident",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://app.dover.com/apply/Diffuse%20Bio/1dabee06-1234-4abc-9def-0123456789ab"
+  },
+  "expect": [
+   [
+    "dover",
+    "apply/diffuse%20bio/1dabee06-1234-4abc-9def-0123456789ab"
+   ]
+  ],
+  "spec_quote": "dover: `app.dover.com/apply/<name>/<job uuid>` or `app.dover.com/<name>/careers/<client uuid>` (also `app.dover.io`; uuid = 8-4-4-4-12 lower-case hex) → ident = the path from \"apply/\" or from \"<name>/\" up to and including the uuid, lower-cased (\"apply/diffuse%20bio/1dabee06-…\", \"dover/careers/545c34b3-…\").",
+  "ambiguous": false
+ },
+ {
+  "name": "dover client uuid careers link yields name/careers ident",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://app.dover.com/dover/careers/545c34b3-1234-4abc-9def-0123456789ab"
+  },
+  "expect": [
+   [
+    "dover",
+    "dover/careers/545c34b3-1234-4abc-9def-0123456789ab"
+   ]
+  ],
+  "spec_quote": "dover: ... ident = the path from \"apply/\" or from \"<name>/\" up to and including the uuid, lower-cased (\"apply/diffuse%20bio/1dabee06-…\", \"dover/careers/545c34b3-…\").",
+  "ambiguous": false
+ },
+ {
+  "name": "dover apply link with bare slug only",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://app.dover.com/apply/acme"
+  },
+  "expect": [
+   [
+    "dover",
+    "acme"
+   ]
+  ],
+  "spec_quote": "An `app.dover.com/apply/<slug>` link with no uuid after it → ident = the slug alone (recorded, not searched). A uuid link never also yields the bare-slug hit.",
+  "ambiguous": true,
+  "ambiguous_reason": "\"the slug alone\" could mean \"acme\" or the truncated path \"apply/acme\"; both readings are consistent with the wording, so the exact expected string is uncertain (\"acme\" assumed here)."
+ },
+ {
+  "name": "paycom clientkey after other query keys with &#038; entity",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://paycomonline.net/v4/ats/web.php/jobs?foo=bar&#038;clientkey=0123456789ABCDEF0123456789ABCDEF"
+  },
+  "expect": [
+   [
+    "paycom",
+    "paycomonline.net/v4/ats/web.php/jobs?foo=bar&#038;clientkey=0123456789abcdef0123456789abcdef"
+   ]
+  ],
+  "spec_quote": "paycom: `paycomonline.net/v4/ats/web.php/jobs?clientkey=<32 hex>` (other query keys may come before it, joined with \"&\", \"&amp;\" or \"&#038;\") → ident = that whole text from \"paycomonline.net\" to the end of the key, lower-cased.",
+  "ambiguous": false
+ },
+ {
+  "name": "taleo Business Edition URL with org and cws",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=ACME&cws=41"
+  },
+  "expect": [
+   [
+    "taleo",
+    "acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=acme&cws=41"
+   ]
+  ],
+  "spec_quote": "taleo Business Edition: `<x>.tbe.taleo.net/<dir>/ats/careers/…?…org=<ORG>` with an optional `&cws=<digits>` right after → ident = that text lower-cased.",
+  "ambiguous": false
+ },
+ {
+  "name": "taleo TBE link without cws never yields bare tbe.taleo.net",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=ACME"
+  },
+  "expect": [
+   [
+    "taleo",
+    "acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=acme"
+   ]
+  ],
+  "spec_quote": "taleo Business Edition: `<x>.tbe.taleo.net/<dir>/ats/careers/…?…org=<ORG>` with an optional `&cws=<digits>` right after → ident = that text lower-cased. A Business Edition URL never yields the bare host \"tbe.taleo.net\".",
+  "ambiguous": false
+ },
+ {
+  "name": "successfactors career host with mixed-case company id",
+  "fn": "detect_ats_e",
+  "args": {
+   "text": "https://career5.successfactors.com/career?company=AcmeCorp&career_ns=job_listing"
+  },
+  "expect": [
+   [
+    "successfactors",
+    "career5.successfactors.com/career?company=AcmeCorp"
+   ],
+   [
+    "successfactors",
+    "career5.successfactors.com"
+   ]
+  ],
+  "spec_quote": "successfactors: `career<digits?>[preview].successfactors.com|.eu|sapsf.com|sapsf.eu/career?…company=<id>` → ident = host lower-cased + \"/career?…company=<id>\" with the id's case KEPT (the id is case-sensitive). The plain host hit is also returned as before.",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec says the plain host hit is also returned, but does not state the ordering of the two returned entries; both entries are expected here with the career? URL first."
+ },
+ {
+  "name": "clean_ident dover apply link to job uuid",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dover",
+   "ident": "apply/diffuse%20bio/1dabee06-1234-4abc-9def-0123456789ab"
+  },
+  "expect": "job/1dabee06-1234-4abc-9def-0123456789ab",
+  "spec_quote": "dover: \"apply/<name>/<uuid>\" → \"job/<uuid>\"; \"<name>/careers/<uuid>\" → \"client/<uuid>\"; anything else (a bare slug) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident dover client link",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dover",
+   "ident": "dover/careers/545c34b3-1234-4abc-9def-0123456789ab"
+  },
+  "expect": "client/545c34b3-1234-4abc-9def-0123456789ab",
+  "spec_quote": "dover: \"apply/<name>/<uuid>\" → \"job/<uuid>\"; \"<name>/careers/<uuid>\" → \"client/<uuid>\"; anything else (a bare slug) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident dover bare slug rejected",
+  "fn": "clean_ident",
+  "args": {
+   "system": "dover",
+   "ident": "apply/acme"
+  },
+  "expect": null,
+  "spec_quote": "dover: \"apply/<name>/<uuid>\" → \"job/<uuid>\"; \"<name>/careers/<uuid>\" → \"client/<uuid>\"; anything else (a bare slug) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident paycom clientkey with &#038; entity decoded",
+  "fn": "clean_ident",
+  "args": {
+   "system": "paycom",
+   "ident": "paycomonline.net/v4/ats/web.php/jobs?foo=bar&#038;clientkey=0123456789ABCDEF0123456789ABCDEF"
+  },
+  "expect": "0123456789abcdef0123456789abcdef",
+  "spec_quote": "paycom: besides `/portal/<32 hex>` and `/jobs/<32 hex>` at the end, an ident with `/jobs?…clientkey=<32 hex>` (entities \"&amp;\" / \"&#038;\" decoded, key followed by a non-hex character or the end) → the 32-hex key lower-cased.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident taleo bare tbe host rejected",
+  "fn": "clean_ident",
+  "args": {
+   "system": "taleo",
+   "ident": "tbe.taleo.net"
+  },
+  "expect": null,
+  "spec_quote": "taleo: a Business Edition ident → tbe_ident(); a bare \"tbe.taleo.net\" or any `.tbe.taleo.net` ident tbe_ident() rejects → null. Enterprise hosts (`<x>.taleo.net`) unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident successfactors drops extra query keys, keeps id case",
+  "fn": "clean_ident",
+  "args": {
+   "system": "successfactors",
+   "ident": "career5.successfactors.com/career?company=AcmeCorp&career_ns=job_listing&career_job_req_id=123"
+  },
+  "expect": "career5.successfactors.com/career?company=AcmeCorp",
+  "spec_quote": "successfactors: an ident `<career host>/career?…company=<id>` → \"<host lower-cased>/career?company=<id>\" (id case kept, other query keys dropped); any other ident → its host only (the part before the first \"/\", lower-cased; \"@site\" dropped).",
+  "ambiguous": false
+ },
+ {
+  "name": "clean_ident successfactors plain host with @site",
+  "fn": "clean_ident",
+  "args": {
+   "system": "successfactors",
+   "ident": "career5.successfactors.com@acme.com"
+  },
+  "expect": "career5.successfactors.com",
+  "spec_quote": "successfactors: ... any other ident → its host only (the part before the first \"/\", lower-cased; \"@site\" dropped).",
+  "ambiguous": false
+ },
+ {
+  "name": "tbe_ident builds host/dir/ORG/cws",
+  "fn": "tbe_ident",
+  "args": {
+   "ident": "acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=acme&cws=41"
+  },
+  "expect": "acme.tbe.taleo.net/acme/ACME/41",
+  "spec_quote": "HTML entities decoded twice; host must be `<label>.tbe.taleo.net`; first path segment = dir (word characters / dashes); query key `org` (letters, digits, \"_\", \"-\") required; `cws` digits, default \"1\" (non-digit → \"1\"). → \"<host>/<dir lower>/<ORG upper>/<cws>\".",
+  "ambiguous": false
+ },
+ {
+  "name": "tbe_ident non-digit cws defaults to 1",
+  "fn": "tbe_ident",
+  "args": {
+   "ident": "acme.tbe.taleo.net/acme/ats/careers/requisition.jsp?org=ACME&cws=abc"
+  },
+  "expect": "acme.tbe.taleo.net/acme/ACME/1",
+  "spec_quote": "`cws` digits, default \"1\" (non-digit → \"1\").",
+  "ambiguous": false
+ },
+ {
+  "name": "site_hosts keeps a single-label jobs2web company host first",
+  "fn": "site_hosts",
+  "args": {
+   "ident": "acme.jobs2web.com/acme",
+   "site": "acme.com"
+  },
+  "expect": [
+   "acme.jobs2web.com",
+   "careers.acme.com",
+   "jobs.acme.com"
+  ],
+  "spec_quote": "The ident's own host (part before \"@\" and before the first \"/\", lower-cased) comes first when it is a company career host, then career_hosts(site); no duplicates. Own host is NOT used when: ... it is a `*.jobs2web.com` host with more than one label before \"jobs2web.com\" or whose label is vendor infrastructure (www, cdn, api, app, careers, jobs, rmkcdn …).",
+  "ambiguous": false
+ },
+ {
+  "name": "site_hosts excludes vendor successfactors host",
+  "fn": "site_hosts",
+  "args": {
+   "ident": "acme.sapsf.eu/career?company=acme",
+   "site": "acme.com"
+  },
+  "expect": [
+   "careers.acme.com",
+   "jobs.acme.com"
+  ],
+  "spec_quote": "Own host is NOT used when: ... it ends in a vendor domain (successfactors.com / .eu, sapsf.com / .eu, jobs.sap.com, phenompeople.com).",
+  "ambiguous": false
+ },
+ {
+  "name": "site_hosts dedupes own career host against career_hosts",
+  "fn": "site_hosts",
+  "args": {
+   "ident": "careers.acme.com@acme.com",
+   "site": "acme.com"
+  },
+  "expect": [
+   "careers.acme.com",
+   "jobs.acme.com"
+  ],
+  "spec_quote": "The ident's own host (part before \"@\" and before the first \"/\", lower-cased) comes first when it is a company career host, then career_hosts(site); no duplicates.",
+  "ambiguous": false
+ },
+ {
+  "name": "site_hosts drops bare company root domain",
+  "fn": "site_hosts",
+  "args": {
+   "ident": "acme.com",
+   "site": "acme.com"
+  },
+  "expect": [
+   "careers.acme.com",
+   "jobs.acme.com"
+  ],
+  "spec_quote": "Own host is NOT used when: ... it is the company's root domain or \"www.\" + root domain.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tbe reads title, link and location lines, dropping digit-only divs",
+  "fn": "parse_tbe",
+  "args": {
+   "page": "<h4 class=\"oracletaleocwsv2-head-title\"><a href=\"https://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&amp;cws=41&amp;rid=1234\">Data Analyst</a></h4>\n<div class=\"oracletaleocwsv2-head-info\">\n<div>Houston</div>\n<div>US-TX</div>\n<div>77095</div>\n</div> <!--/.accordion-head-info"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston, US-TX",
+    "url": "https://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&cws=41&rid=1234"
+   }
+  ],
+  "spec_quote": "title = link text (tags removed), url = href (entities decoded; kept only when it starts with https://; each url once), location = the non-empty div texts that are not all digits, joined \", \" (\"Houston\", \"US-TX\", \"77095\" → \"Houston, US-TX\").",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tbe same url once and http link skipped",
+  "fn": "parse_tbe",
+  "args": {
+   "page": "<h4 class=\"oracletaleocwsv2-head-title\"><a href=\"https://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&amp;cws=41&amp;rid=99\">Analyst</a></h4>\n<div class=\"oracletaleocwsv2-head-info\"><div>Dallas, TX</div></div> <!--/.accordion-head-info\n<h4 class=\"oracletaleocwsv2-head-title\"><a href=\"https://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&amp;cws=41&amp;rid=99\">Analyst</a></h4>\n<div class=\"oracletaleocwsv2-head-info\"><div>Dallas, TX</div></div> <!--/.accordion-head-info\n<h4 class=\"oracletaleocwsv2-head-title\"><a href=\"http://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&amp;cws=41&amp;rid=100\">Intern</a></h4>\n<div class=\"oracletaleocwsv2-head-info\"><div>Houston</div></div> <!--/.accordion-head-info"
+  },
+  "expect": [
+   {
+    "title": "Analyst",
+    "location": "Dallas, TX",
+    "url": "https://acme.tbe.taleo.net/acme/ats/careers/viewRequisition?org=ACME&cws=41&rid=99"
+   }
+  ],
+  "spec_quote": "url = href (entities decoded; kept only when it starts with https://; each url once).",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_dover url-quotes name, joins locations without duplicates",
+  "fn": "parse_dover",
+  "args": {
+   "d": {
+    "results": [
+     {
+      "id": "1dabee06-1234-4abc-9def-0123456789ab",
+      "title": "Data Analyst",
+      "is_published": true,
+      "is_sample": false,
+      "location": [
+       {
+        "name": "Houston, TX"
+       },
+       {
+        "name": "Houston, TX"
+       },
+       {
+        "location_option": {
+         "display_name": "Dallas, TX"
+        }
+       },
+       {
+        "name": ""
+       }
+      ]
+     }
+    ]
+   },
+   "name": "Diffuse Bio"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston, TX; Dallas, TX",
+    "url": "https://app.dover.com/apply/Diffuse%20Bio/1dabee06-1234-4abc-9def-0123456789ab"
+   }
+  ],
+  "spec_quote": "d.results[] objects with id and title; skipped when is_published is false or is_sample is true. url = `https://app.dover.com/apply/<name URL-quoted (spaces → %20)>/<id>` (\"company\" when name is empty); location = each location's `name` (else location_option.display_name), empty ones dropped, duplicates once, joined \"; \".",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_dover skips unpublished and sample jobs, empty name becomes company",
+  "fn": "parse_dover",
+  "args": {
+   "d": {
+    "results": [
+     {
+      "id": "aaaaaaaa-1111-2222-3333-444444444444",
+      "title": "Engineer",
+      "is_published": false
+     },
+     {
+      "id": "bbbbbbbb-1111-2222-3333-444444444444",
+      "title": "Scientist",
+      "is_sample": true
+     },
+     {
+      "id": "cccccccc-1111-2222-3333-444444444444",
+      "title": "Designer",
+      "location": [
+       {
+        "location_option": {
+         "display_name": "Remote"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "name": ""
+  },
+  "expect": [
+   {
+    "title": "Designer",
+    "location": "Remote",
+    "url": "https://app.dover.com/apply/company/cccccccc-1111-2222-3333-444444444444"
+   }
+  ],
+  "spec_quote": "skipped when is_published is false or is_sample is true. url = `https://app.dover.com/apply/<name URL-quoted (spaces → %20)>/<id>` (\"company\" when name is empty); location = each location's `name` (else location_option.display_name).",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_rmk site-coded job link with id-based location fallback",
+  "fn": "parse_rmk",
+  "args": {
+   "page": "<a href=\"/acme/job/Houston-TX/Data-Analyst/12345678/\" class=\"jobTitle-link\">Data Analyst</a>\n<span id=\"acme-section-location-value\">Houston, TX</span>",
+   "base": "https://careers.acme.com"
+  },
+  "expect": [
+   {
+    "title": "Data Analyst",
+    "location": "Houston, TX",
+    "url": "https://careers.acme.com/acme/job/Houston-TX/Data-Analyst/12345678/"
+   }
+  ],
+  "spec_quote": "Job links may be `/job/…/<digits>/` or `/<site code>/job/…/<digits>/` (one extra path segment). Location: the `class=\"jobLocation…\"` text as before, else the text of the element whose id ends in `-section-location-value`.",
+  "ambiguous": false
+ },
+ {
+  "name": "rmk_site detects RMK page by two markers",
+  "fn": "rmk_site",
+  "args": {
+   "url": "https://careers.acme.com/jobs",
+   "page": "<html><head><script>j2w.init({});</script></head><body><input type=\"hidden\" name=\"ssoCompanyId\" value=\"ACME\"><div>Careers</div></body></html>"
+  },
+  "expect": [
+   [
+    "successfactors",
+    "careers.acme.com"
+   ]
+  ],
+  "spec_quote": "A page that is itself an RMK career site → [[\"successfactors\", <url host lower-cased>]]. Markers (case-insensitive): \"ssoCompanyId\", \"j2w.init\", \"var j2w\", \"jobs2web.com\", \"rmkcdn.successfactors.com\". Needs at least two DIFFERENT markers, one of them \"ssoCompanyId\" or \"j2w.init\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rmk_site returns [] on a vendor jobs2web host",
+  "fn": "rmk_site",
+  "args": {
+   "url": "https://careers.jobs2web.com/acme/jobs",
+   "page": "<html><script>j2w.init({});</script><input name=\"ssoCompanyId\" value=\"ACME\"></html>"
+  },
+  "expect": [],
+  "spec_quote": "[] when the host is a vendor host (see site_hosts), the url has no host, or the markers are missing.",
+  "ambiguous": false
+ },
+ {
+  "name": "inventory_hints keeps live boards in list order and drops rejected idents",
+  "fn": "inventory_hints",
+  "args": {
+   "company": "Acme",
+   "hints": [
+    [
+     "icims",
+     "careers-acme.icims.com"
+    ],
+    [
+     "adp",
+     "workforcenow.adp.com"
+    ],
+    [
+     "taleo",
+     "acme.taleo.net"
+    ]
+   ],
+   "live": [
+    [
+     "icims",
+     "careers-acme.icims.com"
+    ],
+    [
+     "taleo",
+     "acme.taleo.net"
+    ]
+   ]
+  },
+  "expect": [
+   [
+    "icims",
+    "careers-acme.icims.com"
+   ],
+   [
+    "taleo",
+    "acme.taleo.net"
+   ]
+  ],
+  "spec_quote": "Every hint (first 8 from the company list) is kept only when a live check says its board lists something now: ... any other system ats_search reads (iCIMS, Oracle Cloud, Taleo incl. Business Edition, ...) → ats_search.live(system, ident) is true. A hint whose ident clean_ident rejects, or of a system ats_search does not read, is dropped without a request. Order of the kept hints = list order.",
+  "ambiguous": false
+ },
+ {
+  "name": "inventory_hints drops a hint whose live check is false",
+  "fn": "inventory_hints",
+  "args": {
+   "company": "Acme",
+   "hints": [
+    [
+     "greenhouse",
+     "acme"
+    ],
+    [
+     "icims",
+     "uscareers-medpace.icims.com"
+    ],
+    [
+     "greenhouse",
+     "acme-labs"
+    ]
+   ],
+   "live": [
+    [
+     "greenhouse",
+     "acme"
+    ],
+    [
+     "icims",
+     "uscareers-medpace.icims.com"
+    ]
+   ]
+  },
+  "expect": [
+   [
+    "greenhouse",
+    "acme"
+   ],
+   [
+    "icims",
+    "uscareers-medpace.icims.com"
+   ]
+  ],
+  "spec_quote": "Every hint (first 8 from the company list) is kept only when a live check says its board lists something now: ... A hint whose ident clean_ident rejects, or of a system ats_search does not read, is dropped without a request. Order of the kept hints = list order.",
+  "ambiguous": false
+ },
+ {
+  "name": "live returns false and never raises when requests fail",
+  "fn": "live_offline",
+  "args": {
+   "system": "icims",
+   "ident": "careers-acme.icims.com"
+  },
+  "expect": false,
+  "spec_quote": "ats_search.live(system, ident) → bool: False without any request when the system is not one ats_search reads, the ident is not a string, or clean_ident rejects it. (Here the ident is accepted, so the harness's failing request must surface as False, not an exception.)",
+  "ambiguous": false
+ }
+]

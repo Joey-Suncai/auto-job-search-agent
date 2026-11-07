@@ -1,0 +1,13 @@
+{
+ "external_link.html": {"url": "https://wellfound.com/jobs/4900001-data-analyst-intern", "via": "external",
+                        "ats_url": "https://boards.greenhouse.io/acmeanalytics/jobs/7654321"},
+ "external_data.html": {"url": "https://wellfound.com/jobs/4934725-product-management-intern", "via": "external",
+                        "ats_url": "https://skyline.wd5.myworkdayjobs.com/en-US/Careers/job/Greensboro-NC/Product-Management-Intern_R-12345"},
+ "redirect_wrapper.html": {"url": "https://wellfound.com/jobs/4900003-ai-engineer-intern", "via": "external",
+                           "ats_url": "https://jobs.ashbyhq.com/nimbus/0f1e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b"},
+ "button_only.html": {"url": "https://wellfound.com/jobs/4900005-business-analyst-intern", "via": "unknown"},
+ "closed.html": {"url": "https://wellfound.com/jobs/4900006-data-engineer-intern", "via": "closed"},
+ "button_only.html#peeked": {"file": "button_only.html", "url": "https://wellfound.com/jobs/4900004-business-analyst-intern",
+                             "via": "wellfound",
+                             "extra": {"peeked": true, "opened": [], "modal": "Apply to Tiny Startup\nWrite a note to Dana\nSend application"}}
+}

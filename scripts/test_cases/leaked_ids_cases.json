@@ -1,0 +1,261 @@
+[
+ {
+  "name": "leak_in_parentheses",
+  "text": "According to the report (S1), this happened.",
+  "known": [
+   "S1",
+   "S6"
+  ],
+  "expect": [
+   "S1"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ },
+ {
+  "name": "leak_at_sentence_end",
+  "text": "The rumor came from S6.",
+  "known": [
+   "S1",
+   "S6"
+  ],
+  "expect": [
+   "S6"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ },
+ {
+  "name": "several_ids_at_once",
+  "text": "Sources: S1, S6, and M2.",
+  "known": [
+   "S1",
+   "S6",
+   "M2"
+  ],
+  "expect": [
+   "M2",
+   "S1",
+   "S6"
+  ],
+  "spec_quote": "Return, sorted, every ID in known that appears in text as a whole token",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase_lookalikes",
+  "text": "the profile page and the m2 chip",
+  "known": [
+   "PROFILE",
+   "M2"
+  ],
+  "expect": [],
+  "spec_quote": "case-sensitive (so \"profile\" or \"m2\" do not count)",
+  "ambiguous": false
+ },
+ {
+  "name": "s10_does_not_contain_s1",
+  "text": "Section S10 covers it.",
+  "known": [
+   "S1",
+   "S10"
+  ],
+  "expect": [
+   "S10"
+  ],
+  "spec_quote": "not inside a longer word or number (\"S10\" does not contain \"S1\"; \"M2M\" does not contain \"M2\")",
+  "ambiguous": false
+ },
+ {
+  "name": "m2m_does_not_contain_m2",
+  "text": "The M2M protocol is old.",
+  "known": [
+   "M2"
+  ],
+  "expect": [],
+  "spec_quote": "not inside a longer word or number (\"S10\" does not contain \"S1\"; \"M2M\" does not contain \"M2\")",
+  "ambiguous": false
+ },
+ {
+  "name": "jsa050_longer_number",
+  "text": "ref JSA050 here",
+  "known": [
+   "JSA05"
+  ],
+  "expect": [],
+  "spec_quote": "not inside a longer word or number (\"S10\" does not contain \"S1\"; \"M2M\" does not contain \"M2\")",
+  "ambiguous": false
+ },
+ {
+  "name": "hyphen_suffix_s6_like",
+  "text": "a S6-like pattern",
+  "known": [
+   "S6"
+  ],
+  "expect": [],
+  "spec_quote": "and not joined by a hyphen (\"S6-like\" does not count, \"co-M2\" does not count)",
+  "ambiguous": false
+ },
+ {
+  "name": "hyphen_prefix_co_m2",
+  "text": "the co-M2 story",
+  "known": [
+   "M2"
+  ],
+  "expect": [],
+  "spec_quote": "and not joined by a hyphen (\"S6-like\" does not count, \"co-M2\" does not count)",
+  "ambiguous": false
+ },
+ {
+  "name": "ordinary_prose_none",
+  "text": "The quick brown fox jumps over the lazy dog.",
+  "known": [
+   "S1",
+   "M2",
+   "PROFILE"
+  ],
+  "expect": [],
+  "spec_quote": "Return, sorted, every ID in known that appears in text as a whole token",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_text",
+  "text": "",
+  "known": [
+   "S1",
+   "M2"
+  ],
+  "expect": [],
+  "spec_quote": "Empty or missing text → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "brackets_and_parens",
+  "text": "[JSA05] and (HP07).",
+  "known": [
+   "JSA05",
+   "HP07"
+  ],
+  "expect": [
+   "HP07",
+   "JSA05"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ },
+ {
+  "name": "s8ctx_with_comma",
+  "text": "story S8ctx, then more",
+  "known": [
+   "S8",
+   "S8ctx"
+  ],
+  "expect": [
+   "S8ctx"
+  ],
+  "spec_quote": "not inside a longer word or number (\"S10\" does not contain \"S1\"; \"M2M\" does not contain \"M2\")",
+  "ambiguous": false
+ },
+ {
+  "name": "case_sensitive_profile",
+  "text": "Profile and PROFILE both appear",
+  "known": [
+   "PROFILE"
+  ],
+  "expect": [
+   "PROFILE"
+  ],
+  "spec_quote": "case-sensitive (so \"profile\" or \"m2\" do not count)",
+  "ambiguous": false
+ },
+ {
+  "name": "id_before_colon",
+  "text": "S1: the beginning",
+  "known": [
+   "S1"
+  ],
+  "expect": [
+   "S1"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ },
+ {
+  "name": "quoted_id",
+  "text": "The token \"M2\" appears here",
+  "known": [
+   "M2"
+  ],
+  "expect": [
+   "M2"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ },
+ {
+  "name": "repeated_id_once",
+  "text": "S1 and S1 again",
+  "known": [
+   "S1"
+  ],
+  "expect": [
+   "S1"
+  ],
+  "spec_quote": "Return, sorted, every ID in known that appears in text as a whole token",
+  "ambiguous": false
+ },
+ {
+  "name": "all_ids_sorted",
+  "text": "PROFILE, SK20, FS04, HP07, JSA05, M2, S8ctx, S6, S1",
+  "known": [
+   "S1",
+   "S6",
+   "S8ctx",
+   "M2",
+   "JSA05",
+   "HP07",
+   "PROFILE",
+   "SK20",
+   "FS04"
+  ],
+  "expect": [
+   "FS04",
+   "HP07",
+   "JSA05",
+   "M2",
+   "PROFILE",
+   "S1",
+   "S6",
+   "S8ctx",
+   "SK20"
+  ],
+  "spec_quote": "Return, sorted, every ID in known that appears in text as a whole token",
+  "ambiguous": false
+ },
+ {
+  "name": "sk20_vs_k20_short_id",
+  "text": "SK20 is listed",
+  "known": [
+   "K20",
+   "SK20"
+  ],
+  "expect": [
+   "SK20"
+  ],
+  "spec_quote": "not inside a longer word or number (\"S10\" does not contain \"S1\"; \"M2M\" does not contain \"M2\")",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple_ids_punctuation_end",
+  "text": "See (FS04); also S8ctx.",
+  "known": [
+   "FS04",
+   "S8ctx"
+  ],
+  "expect": [
+   "FS04",
+   "S8ctx"
+  ],
+  "spec_quote": "Punctuation or parentheses around it are fine (\"(M2).\", \"S6,\", \"[JSA05]\").",
+  "ambiguous": false
+ }
+]

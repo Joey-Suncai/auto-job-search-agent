@@ -1,0 +1,446 @@
+[
+ {
+  "name": "classify: outside-Wellfound dialog with real line breaks, no external link -> external, empty urls",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme\nApply",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside of Wellfound.\nApply on website",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "4a. **external** (no URL): `modal` says \"managed outside of Wellfound\" / \"managed outside Wellfound\", or \"apply on website\" ... → apply_url = ats_url = \"\" (live 11-05: the dialog's \"Apply on website\" is a button without a link...)",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: \"Apply on the Company's Website\" wording variant -> external, empty urls",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "Apply on the Company's Website",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "4a. **external** (no URL): `modal` says ... \"apply on company website\" / \"apply on the company website\" / \"apply on the company's website\" (any case) → apply_url = ats_url = \"\"",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: outside dialog but modal_links holds a real ATS apply link (plus a Wellfound link that is dropped) -> step 4 beats 4a",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme\nApply",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside of Wellfound.\nApply on company site",
+    "modal_links": [
+     {
+      "href": "https://wellfound.com/jobs/4964451-data-intern/apply",
+      "text": "Apply on company site"
+     },
+     {
+      "href": "https://boards.greenhouse.io/acme/jobs/4567890?utm_source=wellfound&gh_jid=4567890",
+      "text": "Apply"
+     }
+    ],
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4567890?gh_jid=4567890",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4567890?gh_jid=4567890"
+  },
+  "spec_quote": "4. **external**: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\" ... Checked in this order; the first that holds wins",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: outside dialog, external apply URL in opened (Workday posting) -> external with urls",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [
+     "https://acme.wd1.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-12345"
+    ],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "https://acme.wd1.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-12345",
+   "apply_url": "https://acme.wd1.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-12345"
+  },
+  "spec_quote": "4. **external**: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\". Candidates, in this source order: (a) each URL in `opened`",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: outside dialog, modal_links apply link to an ATS board page (not posting_like) -> external, apply_url set, ats_url empty",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside Wellfound.",
+    "modal_links": [
+     {
+      "href": "https://boards.greenhouse.io/acme",
+      "text": "Apply on company site"
+     }
+    ],
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": "https://boards.greenhouse.io/acme"
+  },
+  "spec_quote": "4. **external**: pick_external(page) is not \"\" → apply_url = that URL; ats_url = the same URL when it is posting_like, else \"\" (a board / careers page).",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: profile-missing dialog (step 4b) wins over the \"apply to\"/\"your application\" wording of step 5",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "You cannot apply to this job because your profile is missing the following:\nSkills\nWork Experience\nPlease update your profile and then apply again.",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "4b. **wellfound**: `modal` says \"cannot apply to this job because your profile is missing\" (any case); the reason lists the lines after that sentence up to \"please apply again\"",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: plain in-site dialog (\"Send application\") -> wellfound, empty urls",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "Send application\nWrite a note\nAdd a cover letter",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "wellfound",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "5. **wellfound**: `modal` contains \"send application\", \"submit application\", \"write a note\", \"note to\", \"cover letter\" ... (any case).",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: closed job page (text says no longer available) with an outside-Wellfound dialog -> closed wins (step 3 before 4a)",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme\nThis position is no longer available.",
+    "links": [],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside of Wellfound.\nApply on website",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "closed",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "3. **closed**: ... or the title or text says the job is gone — \"no longer accepting applications\", \"(job|position|posting|listing) [is] no longer (available|active|open)\" ... Checked in this order; the first that holds wins",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: Wellfound /login page with an outside-Wellfound dialog -> signin wins (step 2 before 3/4a)",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/login?next=%2Fjobs%2F4964451-data-intern",
+    "title": "Sign in to Wellfound",
+    "text": "Sign in\nLog in to your account",
+    "links": [],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "signin",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "2. **signin**: `url` is on a Wellfound host and its path starts with `/login`, `/signin`, `/sign_in`, `/signup`, `/sign_up`, `/join` or `/onboarding` ... Checked in this order; the first that holds wins",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: challenge title (\"Just a moment...\") with an outside-Wellfound dialog -> blocked",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Just a moment...",
+    "text": "Checking your browser before accessing wellfound.com.",
+    "links": [],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside of Wellfound.\nApply on website",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "blocked",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "1. **blocked**: the title contains a challenge phrase — ... \"just a moment\" ... (any case) ... Checked in this order; the first that holds wins",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: outside-Wellfound dialog that also says \"write a note\"/\"cover letter\" -> 4a (external) wins over step 5",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "This job is managed outside Wellfound.\nYou can also write a note or attach a cover letter.",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "external",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "4a. **external** (no URL): `modal` says \"managed outside of Wellfound\" / \"managed outside Wellfound\" ... → apply_url = ats_url = \"\". Checked in this order; the first that holds wins (4a precedes 5).",
+  "ambiguous": false
+ },
+ {
+  "name": "classify: near-miss \"Apply on our website\" is not a 4a phrase, no other rule holds -> unknown",
+  "fn": "classify",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern\nAcme",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal": "Apply on our website",
+    "peeked": true
+   }
+  },
+  "expect": {
+   "via": "unknown",
+   "ats_url": "",
+   "apply_url": ""
+  },
+  "spec_quote": "4a. **external** (no URL): `modal` says ... \"apply on website\" / \"apply on the website\" / \"apply on company website\" / \"apply on the company website\" / \"apply on the company's website\" ... 9. **unknown**: a button whose label is exactly an apply label ... 10. **unknown**: otherwise (no Apply control).",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_external: modal_links apply link to a Greenhouse posting, tracking params dropped, gh_jid kept",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern",
+    "links": [],
+    "buttons": [
+     "Apply"
+    ],
+    "data_urls": [],
+    "opened": [],
+    "modal_links": [
+     {
+      "href": "https://boards.greenhouse.io/acme/jobs/4567890?utm_source=wf&gh_jid=4567890",
+      "text": "Apply on company site"
+     }
+    ],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/4567890?gh_jid=4567890",
+  "spec_quote": "Candidates, in this source order: ... (b) each link whose `text` contains the word \"apply\" (any case; \"Apply\", \"Apply now\", \"Apply on company site\") — first the links in `modal_links` (the peeked dialog's links, `[{\"href\", \"text\"}]`, read and never clicked), then the page's `links` ... Tracking parameters are dropped ... Every other parameter is kept in its order (e.g. `gh_jid`, `jobId`...)",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_external: modal_links apply link on a never-apply host is dropped, falls back to a page link on an ATS board",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern",
+    "links": [
+     {
+      "href": "https://jobs.lever.co/acme?lever-source=Wellfound",
+      "text": "Apply now"
+     }
+    ],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal_links": [
+     {
+      "href": "https://www.linkedin.com/jobs/view/9876543210",
+      "text": "Apply on company site"
+     }
+    ],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": "https://jobs.lever.co/acme",
+  "spec_quote": "A candidate is dropped when its cleaned URL is \"\", is on a Wellfound host or a never-apply host, or repeats an earlier one. Best = known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS), then the rest; ties → earlier source, then earlier position.",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_external: ATS posting link in page links beats an earlier (modal_links) plain company Apply link",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern",
+    "links": [
+     {
+      "href": "https://acme.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-777",
+      "text": "Apply now"
+     }
+    ],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal_links": [
+     {
+      "href": "https://acme.com/careers/apply",
+      "text": "Apply"
+     }
+    ],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": "https://acme.myworkdayjobs.com/en-US/careers/job/Data-Intern_R-777",
+  "spec_quote": "Best = known ATS and posting_like, then known ATS (not posting_like), then posting_like (not ATS), then the rest; ties → earlier source, then earlier position. ... Workday host: only when the path contains `/job/` or `/details/`",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_external: two modal_links Apply candidates of equal rank -> earlier position wins",
+  "fn": "pick_external",
+  "args": {
+   "page": {
+    "url": "https://wellfound.com/jobs/4964451-data-intern",
+    "title": "Data Intern at Acme - Wellfound",
+    "text": "Data Intern",
+    "links": [],
+    "buttons": [],
+    "data_urls": [],
+    "opened": [],
+    "modal_links": [
+     {
+      "href": "https://acme.com/apply",
+      "text": "Apply on company site"
+     },
+     {
+      "href": "https://beta.com/apply",
+      "text": "Apply"
+     }
+    ],
+    "modal": "This job is managed outside of Wellfound.",
+    "peeked": true
+   }
+  },
+  "expect": "https://acme.com/apply",
+  "spec_quote": "(b) each link whose `text` contains the word \"apply\" ... first the links in `modal_links` ... then the page's `links` ... ties → earlier source, then earlier position.",
+  "ambiguous": false
+ }
+]

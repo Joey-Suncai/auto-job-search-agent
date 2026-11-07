@@ -1,0 +1,548 @@
+[
+ {
+  "name": "skip_names basic comments blanks order",
+  "fn": "skip_names",
+  "args": {
+   "text": "# comment\nAcme Corp|score 7\n\n  Beta Ltd  |x\nGamma\n"
+  },
+  "expect": [
+   "acme corp",
+   "beta ltd",
+   "gamma"
+  ]
+ },
+ {
+  "name": "skip_names empty names dropped before first pipe",
+  "fn": "skip_names",
+  "args": {
+   "text": "|score\n   |  \nDelta|a|b\n"
+  },
+  "expect": [
+   "delta"
+  ]
+ },
+ {
+  "name": "skip_names lowercases and keeps duplicates in order",
+  "fn": "skip_names",
+  "args": {
+   "text": "Epsilon\n  epsilon  |dup\nEPSILON|dup2\n"
+  },
+  "expect": [
+   "epsilon",
+   "epsilon",
+   "epsilon"
+  ]
+ },
+ {
+  "name": "can_queue elig buketou refused",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J1001",
+    "company": "Acme",
+    "elig": "不可投"
+   },
+   "applied_ids": [],
+   "skip": [],
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": false
+ },
+ {
+  "name": "can_queue id already applied refused",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J2002",
+    "company": "Beta",
+    "elig": "可投"
+   },
+   "applied_ids": [
+    "J2002",
+    "J9999"
+   ],
+   "skip": [],
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": false
+ },
+ {
+  "name": "can_queue apply_req submitted refused",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J3003",
+    "company": "Gamma",
+    "elig": "可投",
+    "apply_req": "submitted"
+   },
+   "applied_ids": [],
+   "skip": [],
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": false
+ },
+ {
+  "name": "can_queue company in skip with case and space difference refused",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J4004",
+    "company": "  Acme Corp  ",
+    "elig": "可投"
+   },
+   "applied_ids": [],
+   "skip": [
+    "acme corp"
+   ],
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": false
+ },
+ {
+  "name": "can_queue tiktok platform refused even when ready",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J5005",
+    "company": "Delta",
+    "elig": "可投"
+   },
+   "applied_ids": [],
+   "skip": [],
+   "runner": {
+    "platform": "tiktok",
+    "runner": "ready"
+   }
+  },
+  "expect": false
+ },
+ {
+  "name": "can_queue elig daiheshi is fine",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J6006",
+    "company": "Epsilon",
+    "elig": "待核实"
+   },
+   "applied_ids": [],
+   "skip": [],
+   "runner": {
+    "platform": "upwork",
+    "runner": "testing"
+   }
+  },
+  "expect": true
+ },
+ {
+  "name": "can_queue runner status none is fine",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J7007",
+    "company": "Zeta",
+    "elig": "可投"
+   },
+   "applied_ids": [],
+   "skip": [
+    "acme corp"
+   ],
+   "runner": {
+    "platform": "upwork",
+    "runner": "none"
+   }
+  },
+  "expect": true
+ },
+ {
+  "name": "can_queue apply_req cancelled is fine",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J8008",
+    "company": "Eta",
+    "elig": "可投",
+    "apply_req": "cancelled"
+   },
+   "applied_ids": [],
+   "skip": [],
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": true
+ },
+ {
+  "name": "can_queue all checks pass",
+  "fn": "can_queue",
+  "args": {
+   "job": {
+    "id": "J9009",
+    "company": "Theta",
+    "elig": "可投"
+   },
+   "applied_ids": [
+    "J1111"
+   ],
+   "skip": [
+    "other co"
+   ],
+   "runner": {
+    "platform": "upwork",
+    "runner": "testing"
+   }
+  },
+  "expect": true
+ },
+ {
+  "name": "apply_mode daiheshi verify-first whatever runner",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1010",
+    "company": "Acme",
+    "elig": "待核实"
+   },
+   "runner": {
+    "platform": "upwork",
+    "runner": "ready"
+   }
+  },
+  "expect": "verify-first"
+ },
+ {
+  "name": "apply_mode missing elig verify-first on tiktok testing",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1011",
+    "company": "Beta"
+   },
+   "runner": {
+    "platform": "tiktok",
+    "runner": "testing"
+   }
+  },
+  "expect": "verify-first"
+ },
+ {
+  "name": "apply_mode ready runner on tiktok is runner",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1012",
+    "company": "Gamma",
+    "elig": "可投"
+   },
+   "runner": {
+    "platform": "tiktok",
+    "runner": "ready"
+   }
+  },
+  "expect": "runner"
+ },
+ {
+  "name": "apply_mode testing on non-tiktok platform is runner",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1013",
+    "company": "Delta",
+    "elig": "可投"
+   },
+   "runner": {
+    "platform": "upwork",
+    "runner": "testing"
+   }
+  },
+  "expect": "runner"
+ },
+ {
+  "name": "apply_mode testing on tiktok is by-hand",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1014",
+    "company": "Epsilon",
+    "elig": "可投"
+   },
+   "runner": {
+    "platform": "tiktok",
+    "runner": "testing"
+   }
+  },
+  "expect": "by-hand"
+ },
+ {
+  "name": "apply_mode runner none is by-hand",
+  "fn": "apply_mode",
+  "args": {
+   "job": {
+    "id": "J1015",
+    "company": "Zeta",
+    "elig": "可投"
+   },
+   "runner": {
+    "platform": "upwork",
+    "runner": "none"
+   }
+  },
+  "expect": "by-hand"
+ },
+ {
+  "name": "set_fields note replaced and existing by kept",
+  "fn": "set_fields",
+  "args": {
+   "job": {
+    "id": "J1",
+    "company": "Acme",
+    "apply_req": "cancelled",
+    "apply_req_note": "old",
+    "apply_req_by": "alice"
+   },
+   "status": "queued",
+   "now": "2026-11-05T12:00:00Z",
+   "note": "retry",
+   "by": ""
+  },
+  "expect": {
+   "id": "J1",
+   "company": "Acme",
+   "apply_req": "queued",
+   "apply_req_at": "2026-11-05T12:00:00Z",
+   "apply_req_note": "retry",
+   "apply_req_by": "alice"
+  }
+ },
+ {
+  "name": "set_fields empty note removes key and by kept",
+  "fn": "set_fields",
+  "args": {
+   "job": {
+    "id": "J2",
+    "title": "T",
+    "apply_req_note": "old",
+    "apply_req_by": "alice"
+   },
+   "status": "cancelled",
+   "now": "2026-11-05T13:00:00Z",
+   "note": "",
+   "by": ""
+  },
+  "expect": {
+   "id": "J2",
+   "title": "T",
+   "apply_req": "cancelled",
+   "apply_req_at": "2026-11-05T13:00:00Z",
+   "apply_req_by": "alice"
+  }
+ },
+ {
+  "name": "set_fields bad status errors",
+  "fn": "set_fields",
+  "args": {
+   "job": {
+    "id": "J3",
+    "apply_req": "queued"
+   },
+   "status": "done",
+   "now": "2026-11-05T14:00:00Z",
+   "note": "",
+   "by": ""
+  },
+  "expect": "error"
+ },
+ {
+  "name": "set_fields by set and no note key added",
+  "fn": "set_fields",
+  "args": {
+   "job": {
+    "id": "J4"
+   },
+   "status": "submitted",
+   "now": "2026-11-06T08:00:00Z",
+   "note": "",
+   "by": "bob"
+  },
+  "expect": {
+   "id": "J4",
+   "apply_req": "submitted",
+   "apply_req_at": "2026-11-06T08:00:00Z",
+   "apply_req_by": "bob"
+  }
+ },
+ {
+  "name": "queued filters, sorts by at then id, fills missing title",
+  "fn": "queued",
+  "args": {
+   "rows": [
+    {
+     "apply_req": "queued",
+     "apply_req_at": "2026-11-05T09:00:00",
+     "id": "J2",
+     "company": "B",
+     "title": "T2"
+    },
+    {
+     "apply_req": "applying",
+     "apply_req_at": "2026-11-05T08:00:00",
+     "id": "J1",
+     "company": "A",
+     "title": "T1"
+    },
+    {
+     "apply_req": "queued",
+     "apply_req_at": "2026-11-05T09:00:00",
+     "id": "J1",
+     "company": "A"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "2026-11-05T09:00:00",
+    "J1",
+    "A",
+    ""
+   ],
+   [
+    "2026-11-05T09:00:00",
+    "J2",
+    "B",
+    "T2"
+   ]
+  ]
+ },
+ {
+  "name": "queued missing apply_req_at sorts as empty text",
+  "fn": "queued",
+  "args": {
+   "rows": [
+    {
+     "apply_req": "queued",
+     "id": "J9",
+     "company": "Z"
+    },
+    {
+     "apply_req": "queued",
+     "apply_req_at": "2026-11-01",
+     "id": "J3",
+     "company": "C",
+     "title": "T3"
+    },
+    {
+     "apply_req": "needs-you",
+     "apply_req_at": "2026-10-01",
+     "id": "J4",
+     "company": "D",
+     "title": "T4"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "",
+    "J9",
+    "Z",
+    ""
+   ],
+   [
+    "2026-11-01",
+    "J3",
+    "C",
+    "T3"
+   ]
+  ]
+ },
+ {
+  "name": "validate valid request with query string and localhost origin any port",
+  "fn": "validate",
+  "args": {
+   "method": "POST",
+   "path": "/apply?x=1",
+   "headers": {
+    "host": "localhost:8766",
+    "origin": "http://127.0.0.1:3000",
+    "x-jsa-pref": "1",
+    "content-type": "application/json; charset=utf-8"
+   },
+   "body": "{\"job_id\":\"J1234\",\"confirm\":true}"
+  },
+  "expect": 200
+ },
+ {
+  "name": "validate bad host port",
+  "fn": "validate",
+  "args": {
+   "method": "POST",
+   "path": "/apply",
+   "headers": {
+    "host": "127.0.0.1:9999",
+    "x-jsa-pref": "1",
+    "content-type": "application/json"
+   },
+   "body": "{\"job_id\":\"J1234\",\"confirm\":true}"
+  },
+  "expect": 421
+ },
+ {
+  "name": "validate unknown path",
+  "fn": "validate",
+  "args": {
+   "method": "POST",
+   "path": "/apply/extra",
+   "headers": {
+    "host": "127.0.0.1:8766",
+    "x-jsa-pref": "1",
+    "content-type": "application/json"
+   },
+   "body": "{\"job_id\":\"J1234\",\"confirm\":true}"
+  },
+  "expect": 404
+ },
+ {
+  "name": "validate wrong content type",
+  "fn": "validate",
+  "args": {
+   "method": "POST",
+   "path": "/apply",
+   "headers": {
+    "host": "127.0.0.1:8766",
+    "origin": "null",
+    "x-jsa-pref": "1",
+    "content-type": "text/plain"
+   },
+   "body": "{\"job_id\":\"J1234\",\"confirm\":true}"
+  },
+  "expect": 415
+ },
+ {
+  "name": "validate body too large",
+  "fn": "validate",
+  "args": {
+   "method": "POST",
+   "path": "/apply",
+   "headers": {
+    "host": "127.0.0.1:8766",
+    "x-jsa-pref": "1",
+    "content-type": "application/json"
+   },
+   "body": "{\"job_id\":\"J1234\",\"confirm\":true,\"pad\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+  },
+  "expect": 413
+ }
+]

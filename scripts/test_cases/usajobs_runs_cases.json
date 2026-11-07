@@ -1,0 +1,108 @@
+[
+ {
+  "name": "dict_with_citizen_or_pr_true",
+  "args": [
+   {
+    "citizen_or_pr": true
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "dict_with_citizen_or_pr_false",
+  "args": [
+   {
+    "citizen_or_pr": false
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "dict_missing_citizen_or_pr_key",
+  "args": [
+   {
+    "needs_sponsorship": true
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "empty_dict",
+  "args": [
+   {}
+  ],
+  "expect": false
+ },
+ {
+  "name": "citizen_or_pr_null",
+  "args": [
+   {
+    "citizen_or_pr": null
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "citizen_or_pr_string_true",
+  "args": [
+   {
+    "citizen_or_pr": "true"
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "citizen_or_pr_integer_one",
+  "args": [
+   {
+    "citizen_or_pr": 1
+   }
+  ],
+  "expect": false
+ },
+ {
+  "name": "eligibility_is_null",
+  "args": [
+   null
+  ],
+  "expect": false
+ },
+ {
+  "name": "eligibility_is_list",
+  "args": [
+   [
+    {
+     "citizen_or_pr": true
+    }
+   ]
+  ],
+  "expect": false
+ },
+ {
+  "name": "eligibility_is_string",
+  "args": [
+   "citizen_or_pr"
+  ],
+  "expect": false
+ },
+ {
+  "name": "citizen_or_pr_true_with_other_keys",
+  "args": [
+   {
+    "citizen_or_pr": true,
+    "needs_sponsorship": false,
+    "notes": "x"
+   }
+  ],
+  "expect": true
+ },
+ {
+  "name": "citizen_or_pr_key_case_mismatch",
+  "args": [
+   {
+    "Citizen_or_PR": true
+   }
+  ],
+  "expect": false
+ }
+]

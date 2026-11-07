@@ -1,0 +1,112 @@
+[
+ {
+  "name": "explicit_dec2027_jun2028_bachelors_window",
+  "text": "Students expecting to graduate in December 2027 through June 2028 with a bachelor's degree are encouraged to apply.",
+  "expect": true
+ },
+ {
+  "name": "bs_in_2028_wording",
+  "text": "We are hiring new grads graduating with a BS in 2028. Join our engineering team.",
+  "expect": true
+ },
+ {
+  "name": "undergraduate_degree_by_may_2028",
+  "text": "Applicants must be expected to graduate with an undergraduate degree by May 2028.",
+  "expect": true
+ },
+ {
+  "name": "spring_2028_bachelors_graduation",
+  "text": "This position is intended for students graduating with a bachelor's degree in Spring 2028.",
+  "expect": true
+ },
+ {
+  "name": "completing_bachelors_between_window",
+  "text": "The role is for students completing their bachelor's degree between December 2027 and June 2028.",
+  "expect": true
+ },
+ {
+  "name": "on_track_ba_december_2027",
+  "text": "Candidates should be on track to graduate with a BA in December 2027.",
+  "expect": true
+ },
+ {
+  "name": "enrolled_undergrads_graduating_2028",
+  "text": "We welcome currently enrolled undergraduates graduating with a bachelor's degree in 2028.",
+  "expect": true
+ },
+ {
+  "name": "expected_graduation_bachelors_may_2028",
+  "text": "Expected graduation: bachelor's degree, May 2028. Applicants should be enrolled in a relevant program.",
+  "expect": true
+ },
+ {
+  "name": "graduating_bachelors_june_2028_eligible",
+  "text": "Students graduating with a bachelor's degree in June 2028 are eligible for this new-grad role.",
+  "expect": true
+ },
+ {
+  "name": "pursuing_bachelors_grad_date_may_2028",
+  "text": "Candidates pursuing a bachelor's degree with an expected graduation date of May 2028 will be considered.",
+  "expect": true
+ },
+ {
+  "name": "must_graduate_bachelors_by_june_2028",
+  "text": "You must graduate with a bachelor's degree no later than June 2028 to be considered for this cohort.",
+  "expect": true
+ },
+ {
+  "name": "bachelors_or_masters_graduating_window",
+  "text": "Students graduating with a bachelor's or master's degree between December 2027 and June 2028 are encouraged to apply.",
+  "expect": false
+ },
+ {
+  "name": "bachelors_or_masters_students_dec_jun",
+  "text": "Bachelor's or master's students graduating Dec 2027 – Jun 2028 are eligible for this program.",
+  "expect": false
+ },
+ {
+  "name": "bachelors_required_minimum",
+  "text": "Bachelor's degree required. This is a full-time position with competitive benefits.",
+  "expect": false
+ },
+ {
+  "name": "bachelors_in_cs_plus_experience",
+  "text": "Bachelor's degree in computer science required, plus 3+ years of professional experience.",
+  "expect": false
+ },
+ {
+  "name": "bachelors_or_masters_2028",
+  "text": "This role is open to students graduating in 2028 with a bachelor's or master's degree.",
+  "expect": false
+ },
+ {
+  "name": "masters_required_only",
+  "text": "Master's degree in computer science or a related field is required for this position.",
+  "expect": false
+ },
+ {
+  "name": "no_graduation_mention",
+  "text": "We are looking for a software engineer to join our backend team. Strong Python and distributed systems skills required.",
+  "expect": false
+ },
+ {
+  "name": "currently_enrolled_no_graduation",
+  "text": "Candidates must be currently enrolled in an accredited degree program. Part-time availability required.",
+  "expect": false
+ },
+ {
+  "name": "bachelors_or_equivalent_experience",
+  "text": "Bachelor's degree or equivalent practical experience required for this full-time role.",
+  "expect": false
+ },
+ {
+  "name": "ms_or_phd_graduating_2028",
+  "text": "We are hiring students graduating with an MS or PhD in 2028 to join our research group.",
+  "expect": false
+ },
+ {
+  "name": "completed_bachelors_before_start",
+  "text": "Applicants must have completed a bachelor's degree prior to their start date. No specific graduation window applies.",
+  "expect": false
+ }
+]

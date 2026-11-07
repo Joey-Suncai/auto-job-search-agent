@@ -1,0 +1,122 @@
+[
+ {
+  "name": "current_salary",
+  "label": "What is your current salary?",
+  "expect": "0"
+ },
+ {
+  "name": "current_annual_compensation",
+  "label": "Current annual compensation",
+  "expect": "0"
+ },
+ {
+  "name": "present_hourly_wage",
+  "label": "What is your present hourly wage?",
+  "expect": "0"
+ },
+ {
+  "name": "most_recent_salary",
+  "label": "Most recent salary",
+  "expect": "0"
+ },
+ {
+  "name": "previous_salary",
+  "label": "Previous salary",
+  "expect": "0"
+ },
+ {
+  "name": "last_salary_earned",
+  "label": "Last salary earned",
+  "expect": "0"
+ },
+ {
+  "name": "current_wage",
+  "label": "What is your current wage?",
+  "expect": "0"
+ },
+ {
+  "name": "most_recent_compensation",
+  "label": "Most recent compensation",
+  "expect": "0"
+ },
+ {
+  "name": "desired_hourly_rate",
+  "label": "Desired hourly rate",
+  "expect": "25"
+ },
+ {
+  "name": "expected_pay_per_hour",
+  "label": "What is your expected pay per hour?",
+  "expect": "25"
+ },
+ {
+  "name": "requested_hourly_rate",
+  "label": "Requested hourly rate",
+  "expect": "25"
+ },
+ {
+  "name": "requested_pay_per_hr",
+  "label": "Requested pay (/hr)",
+  "expect": "25"
+ },
+ {
+  "name": "expected_compensation_per_hr",
+  "label": "Expected compensation per hr",
+  "expect": "25"
+ },
+ {
+  "name": "desired_annual_salary",
+  "label": "Desired annual salary",
+  "expect": "52000"
+ },
+ {
+  "name": "expected_total_compensation",
+  "label": "Expected total compensation",
+  "expect": "52000"
+ },
+ {
+  "name": "salary_requirements",
+  "label": "What are your salary requirements?",
+  "expect": "52000"
+ },
+ {
+  "name": "salary_range_desired",
+  "label": "Salary range desired",
+  "expect": "52000"
+ },
+ {
+  "name": "wage_salary_range",
+  "label": "Wage/salary range",
+  "expect": "52000"
+ },
+ {
+  "name": "requested_salary",
+  "label": "Requested salary",
+  "expect": "52000"
+ },
+ {
+  "name": "desired_pay",
+  "label": "What is your desired pay?",
+  "expect": "52000"
+ },
+ {
+  "name": "nonpay_hours_per_week",
+  "label": "How many hours per week can you work?",
+  "expect": null
+ },
+ {
+  "name": "nonpay_years_experience",
+  "label": "Years of experience",
+  "expect": null
+ },
+ {
+  "name": "nonpay_zip_code",
+  "label": "Zip code",
+  "expect": null
+ },
+ {
+  "name": "nonpay_phone_number",
+  "label": "Phone number",
+  "expect": null
+ }
+]

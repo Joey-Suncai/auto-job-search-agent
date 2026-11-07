@@ -1,0 +1,123 @@
+[
+ {
+  "name": "needs_user_keeps",
+  "status": "needs-user",
+  "expect": false,
+  "spec": "\"needs-user\" (the run waits for the candidate's answer to a question, then continues in the same tab) → keep"
+ },
+ {
+  "name": "blocked_keeps",
+  "status": "blocked",
+  "expect": false,
+  "spec": "\"blocked\" or \"dry-run\" (the run reached the Review page and waits for a reviewer's check before submit) → keep"
+ },
+ {
+  "name": "dry_run_keeps",
+  "status": "dry-run",
+  "expect": false,
+  "spec": "\"blocked\" or \"dry-run\" (the run reached the Review page and waits for a reviewer's check before submit) → keep"
+ },
+ {
+  "name": "captcha_keeps",
+  "status": "captcha",
+  "expect": false,
+  "spec": "\"captcha\" (the candidate must solve a CAPTCHA in that tab) → keep"
+ },
+ {
+  "name": "filled_keeps",
+  "status": "filled",
+  "expect": false,
+  "spec": "\"filled\" / \"review\" (form filled, waiting at Review) → keep"
+ },
+ {
+  "name": "review_keeps",
+  "status": "review",
+  "expect": false,
+  "spec": "\"filled\" / \"review\" (form filled, waiting at Review) → keep"
+ },
+ {
+  "name": "submitted_closes",
+  "status": "submitted",
+  "expect": true,
+  "spec": "Every other end state closes the tab: \"submitted\", ..."
+ },
+ {
+  "name": "already_submitted_closes",
+  "status": "already-submitted",
+  "expect": true,
+  "spec": "Every other end state closes the tab: ..., \"already-submitted\", ..."
+ },
+ {
+  "name": "unconfirmed_closes",
+  "status": "unconfirmed",
+  "expect": true,
+  "spec": "\"unconfirmed\" (submit clicked, confirmation is checked by e-mail)"
+ },
+ {
+  "name": "handoff_closes",
+  "status": "handoff",
+  "expect": true,
+  "spec": "\"handoff\" (stopped on an error; it is retried fresh later)"
+ },
+ {
+  "name": "login_timeout_closes",
+  "status": "login-timeout",
+  "expect": true,
+  "spec": "\"login-timeout\" (sign-in not finished)"
+ },
+ {
+  "name": "unknown_pending_closes",
+  "status": "pending",
+  "expect": true,
+  "spec": "or any unknown status string"
+ },
+ {
+  "name": "unknown_error_closes",
+  "status": "error",
+  "expect": true,
+  "spec": "or any unknown status string"
+ },
+ {
+  "name": "unknown_in_progress_closes",
+  "status": "in-progress",
+  "expect": true,
+  "spec": "or any unknown status string"
+ },
+ {
+  "name": "empty_status_closes",
+  "status": "",
+  "expect": true,
+  "spec": "or any unknown status string"
+ },
+ {
+  "name": "needs_user_underscore_closes",
+  "status": "needs_user",
+  "expect": true,
+  "spec": "or any unknown status string (only the exact string \"needs-user\" is listed as keep)"
+ },
+ {
+  "name": "reviewing_near_miss_closes",
+  "status": "reviewing",
+  "expect": true,
+  "spec": "or any unknown status string (only the exact string \"review\" is listed as keep)"
+ },
+ {
+  "name": "timeout_near_miss_closes",
+  "status": "timeout",
+  "expect": true,
+  "spec": "or any unknown status string (only the exact string \"login-timeout\" is listed as keep)"
+ },
+ {
+  "name": "unknown_cancelled_closes",
+  "status": "cancelled",
+  "expect": true,
+  "spec": "or any unknown status string"
+ },
+ {
+  "name": "uppercase_submitted_closes",
+  "status": "SUBMITTED",
+  "expect": true,
+  "ambiguous": true,
+  "why": "The spec lists lowercase \"submitted\" and says any unknown status string closes; it never states whether matching is case-sensitive, so \"SUBMITTED\" is treated as an unknown string that closes."
+ }
+]

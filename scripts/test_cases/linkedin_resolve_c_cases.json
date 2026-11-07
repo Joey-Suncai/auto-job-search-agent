@@ -1,0 +1,118 @@
+[
+ {
+  "name": "No controls, head states not currently accepting applications → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "Not currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No controls and head contains (any case) … \"Not currently accepting applications\" → li_apply \"closed\"."
+ },
+ {
+  "name": "No controls, upper-case NOT CURRENTLY ACCEPTING APPLICATIONS → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "About the job\nNOT CURRENTLY ACCEPTING APPLICATIONS\nApply before the deadline next spring."
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No controls and head contains (any case) … \"Not currently accepting applications\" → li_apply \"closed\"."
+ },
+ {
+  "name": "Phrase inside LinkedIn promo text with newline → closed",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "Promoted by hirer · Responses managed off LinkedIn\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No controls and head contains (any case) … \"Not currently accepting applications\" → li_apply \"closed\"."
+ },
+ {
+  "name": "Easy Apply control present, head has the phrase → easy (rule 0 needs no controls)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Promoted by hirer · Responses managed off LinkedIn\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No controls and head contains … → closed (condition not met: a control exists); a control whose text … contains \"Easy Apply\" → li_apply \"easy\" (apply_url \"\", ats_url \"\")."
+ },
+ {
+  "name": "No controls, only \"accepting applications\" without \"not currently\" → unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "This employer is accepting applications through the end of the month."
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No such control → li_apply \"unknown\". The closed phrase is \"Not currently accepting applications\"; bare \"accepting applications\" is not listed."
+ },
+ {
+  "name": "Non-Easy-Apply control present, head has the phrase → unknown (closed rule requires no controls)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "Save job",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Not currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "No controls and head contains … → closed (condition not met: a control exists); no Easy Apply control and no control saying \"Apply\" as a word → li_apply \"unknown\"."
+ }
+]

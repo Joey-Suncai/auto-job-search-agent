@@ -1,0 +1,249 @@
+[
+ {
+  "name": "school-label-mentions-major-text",
+  "label": "What school are you currently attending for your major?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "which-university-text",
+  "label": "Which university do you attend?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "school-text",
+  "label": "School",
+  "type": "text",
+  "options": [],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "university-name-text",
+  "label": "University name",
+  "type": "text",
+  "options": [],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "what-college-text",
+  "label": "What college are you attending?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "school-select",
+  "label": "School",
+  "type": "select",
+  "options": [
+   "University of Chicago",
+   "Other"
+  ],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "university-name-combo",
+  "label": "University name",
+  "type": "combo",
+  "options": [
+   "University of Chicago"
+  ],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "school-mentions-major-select-with-discipline-option",
+  "label": "What school are you currently attending for your major?",
+  "type": "select",
+  "options": [
+   "University of Chicago",
+   "Data Science"
+  ],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ },
+ {
+  "name": "major-text",
+  "label": "Major",
+  "type": "text",
+  "options": [],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "field-of-study-text",
+  "label": "Field of study",
+  "type": "text",
+  "options": [],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "discipline-text",
+  "label": "Discipline",
+  "type": "text",
+  "options": [],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "what-is-your-major-text",
+  "label": "What is your major?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "intended-major-text",
+  "label": "Intended major",
+  "type": "text",
+  "options": [],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "major-select",
+  "label": "Major",
+  "type": "select",
+  "options": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "field-of-study-combo",
+  "label": "Field of study",
+  "type": "combo",
+  "options": [
+   "Data Science"
+  ],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "what-is-your-major-select-with-school-option",
+  "label": "What is your major?",
+  "type": "select",
+  "options": [
+   "Data Science",
+   "University of Chicago"
+  ],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "avail-date",
+  "label": "When are you available to start an internship?",
+  "type": "date",
+  "options": [],
+  "expect_rule": "avail_season",
+  "expect_value": "06/14/2027",
+  "spec_quote": "\"When are you available to start an internship?\" — in a DATE box the answer is the date \"06/14/2027\"",
+  "ambiguous": false
+ },
+ {
+  "name": "avail-text",
+  "label": "When are you available to start an internship?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "avail_season",
+  "expect_value": "Summer 2027",
+  "spec_quote": "in a text box or a select it is the season \"Summer 2027\"",
+  "ambiguous": false
+ },
+ {
+  "name": "avail-select-exact",
+  "label": "When are you available to start an internship?",
+  "type": "select",
+  "options": [
+   "Summer 2027",
+   "Fall 2027"
+  ],
+  "expect_rule": "avail_season",
+  "expect_value": "Summer 2027",
+  "spec_quote": "in a text box or a select it is the season \"Summer 2027\" (or the option that starts with \"Summer\")",
+  "ambiguous": false
+ },
+ {
+  "name": "avail-select-option-starts-with-summer",
+  "label": "When are you available to start an internship?",
+  "type": "select",
+  "options": [
+   "Summer 2027 (June)",
+   "Fall 2027"
+  ],
+  "expect_rule": "avail_season",
+  "expect_value": "Summer 2027 (June)",
+  "spec_quote": "in a text box or a select it is the season \"Summer 2027\" (or the option that starts with \"Summer\")",
+  "ambiguous": false
+ },
+ {
+  "name": "intended-major-select",
+  "label": "Intended major",
+  "type": "select",
+  "options": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect_rule": "discipline",
+  "expect_value": "Data Science",
+  "spec_quote": "A label that asks for the field of study is a discipline question",
+  "ambiguous": false
+ },
+ {
+  "name": "school-mentions-major-combo",
+  "label": "What school are you currently attending for your major?",
+  "type": "combo",
+  "options": [
+   "University of Chicago"
+  ],
+  "expect_rule": "school",
+  "expect_value": "University of Chicago",
+  "spec_quote": "A form label that asks WHICH SCHOOL the candidate attends is a school question, even when it also mentions the major",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,156 @@
+[
+ {
+  "name": "worked under different name",
+  "label": "Have you ever worked under a different name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "employed under any other name",
+  "label": "Have you ever been employed under any other name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "misspelled even instead of ever",
+  "label": "Have you even been employed under any other name?",
+  "expect": "other_name",
+  "spec_quote": "including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "attended school under another name",
+  "label": "Have you ever attended school under another name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "known under former name",
+  "label": "Have you ever been known under a former name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "known under maiden name",
+  "label": "Have you ever been known under a maiden name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "used any other name previously",
+  "label": "Did you use any other name previously?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "known by previous name",
+  "label": "Have you ever been known by a previous name?",
+  "expect": "other_name",
+  "spec_quote": "\"other_name\": asks whether he has worked / been employed / attended school / been known under another, other, different, former, previous or maiden name, or used any other name — including misspelled forms like \"Have you even been employed under any other name?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "insurance license",
+  "label": "Do you hold an insurance license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "producer license",
+  "label": "Do you hold a producer license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "real-estate license",
+  "label": "Do you hold a real-estate license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "FINRA license",
+  "label": "Do you hold a FINRA license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "Series 7 license",
+  "label": "Do you hold a Series 7 license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "securities license",
+  "label": "Do you hold a securities license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "Series 63 license",
+  "label": "Do you hold a Series 63 license?",
+  "expect": "license",
+  "spec_quote": "\"license\": asks whether he holds an insurance, producer, real-estate, securities, FINRA or Series-N license.",
+  "ambiguous": false
+ },
+ {
+  "name": "driver's license is neither",
+  "label": "Do you have a valid driver's license?",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "preferred name is neither",
+  "label": "Preferred name",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "legal name is neither",
+  "label": "Legal name",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "what name to call you is neither",
+  "label": "What name should we call you?",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "manager name is neither",
+  "label": "Name of your manager",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "certifications list is neither",
+  "label": "List any certifications",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ },
+ {
+  "name": "date of birth is neither",
+  "label": "What is your date of birth?",
+  "expect": "neither",
+  "spec_quote": "\"neither\": anything else — e.g. \"Preferred name\", \"Legal name\", \"Do you have a valid driver's license?\", \"What name should we call you?\", \"Name of your manager\", \"List any certifications\".",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,674 @@
+[
+ {
+  "name": "standard apply.workable.com URL",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/ABC123/"
+  ],
+  "expect": {
+   "account": "acme",
+   "shortcode": "ABC123"
+  }
+ },
+ {
+  "name": "URL with /apply/ suffix",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/ABC123/apply/"
+  ],
+  "expect": {
+   "account": "acme",
+   "shortcode": "ABC123"
+  }
+ },
+ {
+  "name": "URL with query string",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/ABC123/?utm_source=linkedin&ref=1"
+  ],
+  "expect": {
+   "account": "acme",
+   "shortcode": "ABC123"
+  }
+ },
+ {
+  "name": "lower-case shortcode normalized to upper",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/abc123/"
+  ],
+  "expect": {
+   "account": "acme",
+   "shortcode": "ABC123"
+  },
+  "ambiguous": true,
+  "why": "Spec only says '<SHORTCODE>' and does not state case normalization; the case-format hint says lower-case shortcodes become upper case, but this is not in the spec sentence."
+ },
+ {
+  "name": "other host returns None",
+  "fn": "parse_posting",
+  "args": [
+   "https://www.workable.com/acme/j/ABC123/"
+  ],
+  "expect": null
+ },
+ {
+  "name": "missing shortcode returns None",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/"
+  ],
+  "expect": null
+ },
+ {
+  "name": "missing account returns None",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/j/ABC123/"
+  ],
+  "expect": null
+ },
+ {
+  "name": "extra path after shortcode",
+  "fn": "parse_posting",
+  "args": [
+   "https://apply.workable.com/acme/j/ABC123/apply?x=1"
+  ],
+  "expect": {
+   "account": "acme",
+   "shortcode": "ABC123"
+  }
+ },
+ {
+  "name": "text email phone mapping and label collapse",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Personal",
+     "fields": [
+      {
+       "id": "first_name",
+       "type": "text",
+       "required": true,
+       "label": "  First   Name "
+      },
+      {
+       "id": "email",
+       "type": "email",
+       "required": true,
+       "label": "Email"
+      },
+      {
+       "id": "phone",
+       "type": "phone",
+       "label": "Phone"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "first_name",
+    "label": "First Name",
+    "type": "text",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "email",
+    "label": "Email",
+    "type": "text",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "phone",
+    "label": "Phone",
+    "type": "text",
+    "required": false,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "paragraph numeric date mapping",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Details",
+     "fields": [
+      {
+       "id": "bio",
+       "type": "paragraph",
+       "required": false,
+       "label": "Bio"
+      },
+      {
+       "id": "years",
+       "type": "numeric",
+       "label": "Years of experience"
+      },
+      {
+       "id": "start",
+       "type": "date",
+       "required": true,
+       "label": "Start date"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "bio",
+    "label": "Bio",
+    "type": "textarea",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "years",
+    "label": "Years of experience",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "start",
+    "label": "Start date",
+    "type": "date",
+    "required": true,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "boolean becomes radio with Yes No options",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Questions",
+     "fields": [
+      {
+       "id": "authorized",
+       "type": "boolean",
+       "required": true,
+       "label": "Authorized to work?"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "authorized",
+    "label": "Authorized to work?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "dropdown choices use body or name",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Questions",
+     "fields": [
+      {
+       "id": "location",
+       "type": "dropdown",
+       "required": true,
+       "label": "Location",
+       "choices": [
+        {
+         "body": "New York",
+         "name": "ny"
+        },
+        {
+         "name": "Remote"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "location",
+    "label": "Location",
+    "type": "select",
+    "required": true,
+    "options": [
+     "New York",
+     "Remote"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "multiple becomes radio with name-only choices",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Questions",
+     "fields": [
+      {
+       "id": "pronouns",
+       "type": "multiple",
+       "label": "Pronouns",
+       "choices": [
+        {
+         "name": "She/Her"
+        },
+        {
+         "name": "He/Him"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "pronouns",
+    "label": "Pronouns",
+    "type": "radio",
+    "required": false,
+    "options": [
+     "She/Her",
+     "He/Him"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "avatar and group fields skipped",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Profile",
+     "fields": [
+      {
+       "id": "avatar",
+       "type": "file",
+       "label": "Photo"
+      },
+      {
+       "id": "headline",
+       "type": "text",
+       "label": "Headline"
+      }
+     ]
+    },
+    {
+     "name": "Education",
+     "fields": [
+      {
+       "id": "education",
+       "type": "group",
+       "label": "Education",
+       "fields": []
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "headline",
+    "label": "Headline",
+    "type": "text",
+    "required": false,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "resume and other files keep file type",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Documents",
+     "fields": [
+      {
+       "id": "resume",
+       "type": "file",
+       "required": true,
+       "label": "Resume"
+      },
+      {
+       "id": "portfolio",
+       "type": "file",
+       "label": "Portfolio"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "resume",
+    "label": "Resume",
+    "type": "file",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "portfolio",
+    "label": "Portfolio",
+    "type": "file",
+    "required": false,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "unknown type falls back to text",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Misc",
+     "fields": [
+      {
+       "id": "custom",
+       "type": "richtext",
+       "required": true,
+       "label": "Custom"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "custom",
+    "label": "Custom",
+    "type": "text",
+    "required": true,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "missing required is false and label whitespace collapses",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Misc",
+     "fields": [
+      {
+       "id": "nickname",
+       "type": "text",
+       "label": "  Nick   name  "
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "nickname",
+    "label": "Nick name",
+    "type": "text",
+    "required": false,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "page order preserved across sections with group skipped",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "A",
+     "fields": [
+      {
+       "id": "a",
+       "type": "text",
+       "label": "A"
+      }
+     ]
+    },
+    {
+     "name": "B",
+     "fields": [
+      {
+       "id": "group1",
+       "type": "group",
+       "label": "Group"
+      },
+      {
+       "id": "b",
+       "type": "email",
+       "label": "B"
+      }
+     ]
+    },
+    {
+     "name": "C",
+     "fields": [
+      {
+       "id": "c",
+       "type": "paragraph",
+       "label": "C"
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "b",
+    "label": "B",
+    "type": "text",
+    "required": false,
+    "options": []
+   },
+   {
+    "key": "c",
+    "label": "C",
+    "type": "textarea",
+    "required": false,
+    "options": []
+   }
+  ]
+ },
+ {
+  "name": "choice body preferred over name",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Q",
+     "fields": [
+      {
+       "id": "q",
+       "type": "dropdown",
+       "label": "Q",
+       "choices": [
+        {
+         "body": "Body text",
+         "name": "Name text"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "q",
+    "label": "Q",
+    "type": "select",
+    "required": false,
+    "options": [
+     "Body text"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "realistic full form with three sections, groups, avatar, boolean and choices",
+  "fn": "plan_fields",
+  "args": [
+   [
+    {
+     "name": "Personal",
+     "fields": [
+      {
+       "id": "avatar",
+       "type": "file",
+       "label": "Photo"
+      },
+      {
+       "id": "name",
+       "type": "text",
+       "required": true,
+       "label": "Full name"
+      },
+      {
+       "id": "email",
+       "type": "email",
+       "required": true,
+       "label": "Email"
+      },
+      {
+       "id": "resume",
+       "type": "file",
+       "required": true,
+       "label": "Resume"
+      }
+     ]
+    },
+    {
+     "name": "Education",
+     "fields": [
+      {
+       "id": "education",
+       "type": "group",
+       "label": "Education",
+       "fields": [
+        {
+         "id": "school",
+         "type": "text",
+         "label": "School"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Experience",
+     "fields": [
+      {
+       "id": "experience",
+       "type": "group",
+       "label": "Experience",
+       "fields": [
+        {
+         "id": "company",
+         "type": "text",
+         "label": "Company"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Questions",
+     "fields": [
+      {
+       "id": "authorized",
+       "type": "boolean",
+       "required": true,
+       "label": "Authorized?"
+      },
+      {
+       "id": "source",
+       "type": "dropdown",
+       "label": "How did you hear?",
+       "choices": [
+        {
+         "body": "LinkedIn"
+        },
+        {
+         "name": "Friend"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "name",
+    "label": "Full name",
+    "type": "text",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "email",
+    "label": "Email",
+    "type": "text",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "resume",
+    "label": "Resume",
+    "type": "file",
+    "required": true,
+    "options": []
+   },
+   {
+    "key": "authorized",
+    "label": "Authorized?",
+    "type": "radio",
+    "required": true,
+    "options": [
+     "Yes",
+     "No"
+    ]
+   },
+   {
+    "key": "source",
+    "label": "How did you hear?",
+    "type": "select",
+    "required": false,
+    "options": [
+     "LinkedIn",
+     "Friend"
+    ]
+   }
+  ]
+ }
+]

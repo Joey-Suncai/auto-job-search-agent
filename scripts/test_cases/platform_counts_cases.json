@@ -1,0 +1,339 @@
+[
+ {
+  "name": "workable_subdomain_example",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://apply.workable.com/acme/j/ABC/"
+  },
+  "expect": "workable",
+  "spec_quote": "A host matches a suffix when it equals the suffix or ends with \".\" + suffix (so `notworkable.com` is NOT workable).",
+  "ambiguous": false
+ },
+ {
+  "name": "exact_host_equals_suffix",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://workable.com/jobs/123"
+  },
+  "expect": "workable",
+  "spec_quote": "A host matches a suffix when it equals the suffix or ends with \".\" + suffix",
+  "ambiguous": false
+ },
+ {
+  "name": "notworkable_is_not_workable",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://notworkable.com/acme/j/1"
+  },
+  "expect": null,
+  "spec_quote": "A host matches a suffix when it equals the suffix or ends with \".\" + suffix (so `notworkable.com` is NOT workable).",
+  "ambiguous": false
+ },
+ {
+  "name": "uppercase_host_with_port_and_query",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://WWW.Acme.Taleo.NET:443/careersection/2/jobdetail.ftl?job=1"
+  },
+  "expect": "taleo",
+  "spec_quote": "The platform is decided by the URL's host only (lower-cased; scheme, port, path, query and fragment ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "platform_only_in_query_is_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://www.google.com/?q=workable.com"
+  },
+  "expect": null,
+  "spec_quote": "`https://www.google.com/?q=workable.com` → null (the platform name appears only in the query).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_url_is_null",
+  "fn": "platform_of",
+  "args": {
+   "url": ""
+  },
+  "expect": null,
+  "spec_quote": "Empty, missing or unparseable URL → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "null_url_is_null",
+  "fn": "platform_of",
+  "args": {
+   "url": null
+  },
+  "expect": null,
+  "spec_quote": "Empty, missing or unparseable URL → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "jazzhr_applytojob",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://acme.applytojob.com/apply/xyz"
+  },
+  "expect": "jazzhr",
+  "spec_quote": "`https://acme.applytojob.com/apply/xyz` → jazzhr",
+  "ambiguous": false
+ },
+ {
+  "name": "successfactors_sapsf_suffix",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://career5.sapsf.com/careers?company=ACME"
+  },
+  "expect": "successfactors",
+  "spec_quote": "successfactors | `successfactors.com`, `successfactors.eu`, `sapsf.com`",
+  "ambiguous": false
+ },
+ {
+  "name": "suffix_in_middle_of_host_is_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://workable.com.evil.example/jobs"
+  },
+  "expect": null,
+  "spec_quote": "A host matches a suffix when it equals the suffix or ends with \".\" + suffix",
+  "ambiguous": false
+ },
+ {
+  "name": "platform_in_path_is_null",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://example.com/workable.com/jobs"
+  },
+  "expect": null,
+  "spec_quote": "The platform is decided by the URL's host only (scheme, port, path, query and fragment ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_myworkdayjobs_subdomain",
+  "fn": "platform_of",
+  "args": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External"
+  },
+  "expect": "workday",
+  "spec_quote": "workday | `myworkdayjobs.com`, `myworkdaysite.com`",
+  "ambiguous": false
+ },
+ {
+  "name": "row_ats_empty_falls_back_to_url",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "",
+    "url": "https://apply.workable.com/acme/j/1"
+   }
+  },
+  "expect": "workable",
+  "spec_quote": "So a row whose `ats_url` is empty and `url` is a Workable link → workable",
+  "ambiguous": false
+ },
+ {
+  "name": "row_ats_rippling_wins_over_linkedin_url",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "https://ats.rippling.com/acme/jobs/1",
+    "url": "https://www.linkedin.com/jobs/view/123"
+   }
+  },
+  "expect": "rippling",
+  "spec_quote": "a row whose `ats_url` is a Rippling link and `url` is a LinkedIn link → rippling",
+  "ambiguous": false
+ },
+ {
+  "name": "row_ats_unmatched_falls_back_to_lever_url",
+  "fn": "row_platform",
+  "args": {
+   "row": {
+    "ats_url": "https://www.linkedin.com/jobs/view/999",
+    "url": "https://jobs.lever.co/acme/abc"
+   }
+  },
+  "expect": "lever",
+  "spec_quote": "a row whose `ats_url` is a LinkedIn link (matches nothing) and `url` is a Lever link → lever",
+  "ambiguous": false
+ },
+ {
+  "name": "row_missing_keys_is_null",
+  "fn": "row_platform",
+  "args": {
+   "row": {}
+  },
+  "expect": null,
+  "spec_quote": "`platform_of(row[\"ats_url\"])` when that is not null; otherwise `platform_of(row[\"url\"])`. Missing keys count as empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "summarize_basic_counts",
+  "fn": "summarize",
+  "args": {
+   "rows": [
+    {
+     "ats_url": "https://apply.workable.com/a",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Internship"
+    },
+    {
+     "ats_url": "https://apply.workable.com/b",
+     "elig": "可投",
+     "tier": "C",
+     "level": "New grad"
+    },
+    {
+     "ats_url": "https://apply.workable.com/c",
+     "elig": "已关闭",
+     "tier": "B",
+     "level": ""
+    }
+   ]
+  },
+  "expect": {
+   "workable": {
+    "rows": 3,
+    "ok": 2,
+    "ok_ab": 1,
+    "ok_intern": 1,
+    "ok_newgrad": 1,
+    "ab_any": 2
+   }
+  },
+  "spec_quote": "`rows`: number of rows. `ok`: rows with `elig` == \"可投\". `ok_ab`: 可投 rows whose `tier` is \"A\" or \"B\". `ok_intern`: 可投 rows whose `level` is \"Internship\".",
+  "ambiguous": false
+ },
+ {
+  "name": "summarize_skips_null_platforms_and_absent_platforms",
+  "fn": "summarize",
+  "args": {
+   "rows": [
+    {
+     "ats_url": "https://www.linkedin.com/jobs/1",
+     "url": "https://www.linkedin.com/x",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Internship"
+    },
+    {
+     "ats_url": "",
+     "url": "https://jobs.lever.co/acme",
+     "elig": "可投",
+     "tier": "B",
+     "level": "Internship"
+    },
+    {
+     "ats_url": "https://acme.wd1.myworkdayjobs.com/x",
+     "elig": "可投",
+     "tier": "A",
+     "level": "Early career"
+    }
+   ]
+  },
+  "expect": {
+   "lever": {
+    "rows": 1,
+    "ok": 1,
+    "ok_ab": 1,
+    "ok_intern": 1,
+    "ok_newgrad": 0,
+    "ab_any": 1
+   },
+   "workday": {
+    "rows": 1,
+    "ok": 1,
+    "ok_ab": 1,
+    "ok_intern": 0,
+    "ok_newgrad": 1,
+    "ab_any": 1
+   }
+  },
+  "spec_quote": "Only rows whose row_platform is not null are counted. ... A platform with no rows does not appear.",
+  "ambiguous": false
+ },
+ {
+  "name": "summarize_ab_any_blocked_with_orig_a_or_b",
+  "fn": "summarize",
+  "args": {
+   "rows": [
+    {
+     "ats_url": "https://boards.greenhouse.io/acme/1",
+     "elig": "不可投",
+     "tier": "Blocked",
+     "tier_orig": "A"
+    },
+    {
+     "ats_url": "https://boards.greenhouse.io/acme/2",
+     "elig": "可投",
+     "tier": "Blocked",
+     "tier_orig": "A"
+    },
+    {
+     "ats_url": "https://boards.greenhouse.io/acme/3",
+     "elig": "不可投",
+     "tier": "Blocked",
+     "tier_orig": "C"
+    },
+    {
+     "ats_url": "https://boards.greenhouse.io/acme/4",
+     "elig": "可投",
+     "tier": "C"
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "rows": 4,
+    "ok": 2,
+    "ok_ab": 0,
+    "ok_intern": 0,
+    "ok_newgrad": 0,
+    "ab_any": 2
+   }
+  },
+  "spec_quote": "`ab_any`: rows (any elig) whose `tier` is \"A\" or \"B\", or whose `tier` is \"Blocked\" and `tier_orig` is \"A\" or \"B\".",
+  "ambiguous": false
+ },
+ {
+  "name": "summarize_missing_fields_and_newgrad_levels",
+  "fn": "summarize",
+  "args": {
+   "rows": [
+    {
+     "ats_url": "https://acme.breezy.hr/p/1"
+    },
+    {
+     "ats_url": "https://acme.breezy.hr/p/2",
+     "elig": "可投",
+     "level": "Early career"
+    },
+    {
+     "ats_url": "https://acme.breezy.hr/p/3",
+     "elig": "可投",
+     "level": ""
+    },
+    {
+     "ats_url": "https://acme.breezy.hr/p/4",
+     "elig": "可投",
+     "level": "Internship",
+     "tier": "B"
+    }
+   ]
+  },
+  "expect": {
+   "breezy": {
+    "rows": 4,
+    "ok": 3,
+    "ok_ab": 1,
+    "ok_intern": 1,
+    "ok_newgrad": 1,
+    "ab_any": 1
+   }
+  },
+  "spec_quote": "Missing fields count as empty strings. ... `ok_newgrad`: 可投 rows whose `level` is anything else that is non-empty (\"New grad\", \"Early career\", …).",
+  "ambiguous": false
+ }
+]

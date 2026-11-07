@@ -1,0 +1,12 @@
+{
+ "_doc": "EXAMPLE: your LinkedIn connections by company (lower-case company key) and second-degree paths; build_jobs.py shows them on matching jobs.",
+ "connections": {
+  "acme analytics": [
+   [
+    "Jane Doe",
+    "Data Manager @ Acme Analytics"
+   ]
+  ]
+ },
+ "alumni_link": {}
+}

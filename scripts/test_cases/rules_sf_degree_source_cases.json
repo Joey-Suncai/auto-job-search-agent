@@ -1,0 +1,298 @@
+[
+ {
+  "name": "degree_exact_wording_yes_first",
+  "label": "Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_pursuing_or_recently_completed_no_first",
+  "label": "Are you pursuing or have you recently completed a bachelor's or master's degree?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_working_toward_yes_first",
+  "label": "Are you currently working toward a Bachelor's or Master's degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_recently_enrolled_no_first",
+  "label": "Have you recently completed or are you currently enrolled in a Bachelor's or Master's program?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_obtained_or_pursuing_yes_first",
+  "label": "Are you currently pursuing or have you recently obtained a Bachelor's or Master's Degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_have_or_working_toward_no_first",
+  "label": "Do you have or are you currently working toward a bachelor's or master's degree?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_process_of_completing_yes_first",
+  "label": "Are you currently in the process of completing, or have you recently completed, a Bachelor's or Master's Degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_enrolled_or_recent_graduate_no_first",
+  "label": "Are you currently enrolled in or a recent graduate of a Bachelor's or Master's degree program?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_working_toward_or_finished_yes_first",
+  "label": "Are you working toward or have you recently finished a bachelor's or master's degree?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "degree_pursuing_masters_or_bachelors_no_first",
+  "label": "Are you currently pursuing a Master's or Bachelor's degree, or have you recently completed one?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "\"Are you currently in the process of or have recently completed a Bachelor's Degree or Masters Degree?\" and other wordings asking whether he is pursuing / working toward / has recently completed a bachelor's or master's degree (Yes/No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "source_online_job_board_exact_wording",
+  "label": "How did you hear about this position?",
+  "type": "select",
+  "options": [
+   "Online job board",
+   "Employee referral",
+   "Recruiter",
+   "Career fair",
+   "Company website"
+  ],
+  "expect": "Online job board",
+  "spec_quote": "\"How did you hear about this position?\", \"Please tell us how you heard about this position.\", \"Tell us where you heard about us\" (a list) → when the list has \"Online job board\" or \"Job board\" → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_job_board_only_option",
+  "label": "Please tell us how you heard about this position.",
+  "type": "select",
+  "options": [
+   "Job board",
+   "Employee referral",
+   "Campus recruiting",
+   "Company website"
+  ],
+  "expect": "Job board",
+  "spec_quote": "\"How did you hear about this position?\", \"Please tell us how you heard about this position.\", \"Tell us where you heard about us\" (a list) → when the list has \"Online job board\" or \"Job board\" → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_online_job_board_beats_other",
+  "label": "Tell us where you heard about us",
+  "type": "select",
+  "options": [
+   "LinkedIn",
+   "Online job board",
+   "Other (please specify)"
+  ],
+  "expect": "Online job board",
+  "spec_quote": "\"How did you hear about this position?\", \"Please tell us how you heard about this position.\", \"Tell us where you heard about us\" (a list) → when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_other_only_named_sites_other_first_position",
+  "label": "How did you learn about this job opening?",
+  "type": "select",
+  "options": [
+   "Other (please specify)",
+   "LinkedIn",
+   "Indeed.com",
+   "CareerBuilder",
+   "Company Website"
+  ],
+  "expect": "Other (please specify)",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_other_plain_text",
+  "label": "Where did you hear about this opportunity?",
+  "type": "select",
+  "options": [
+   "LinkedIn",
+   "Indeed.com",
+   "Other"
+  ],
+  "expect": "Other",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_other_em_dash_wording",
+  "label": "How did you find out about this position?",
+  "type": "select",
+  "options": [
+   "CareerBuilder",
+   "Company Website",
+   "Other – please tell us how"
+  ],
+  "expect": "Other – please tell us how",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_job_board_with_other_present",
+  "label": "Tell us how you found out about this opening.",
+  "type": "select",
+  "options": [
+   "Other website",
+   "Job board",
+   "Recruiter",
+   "Career fair"
+  ],
+  "expect": "Job board",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_other_with_named_sites_only",
+  "label": "Where did you first hear about this job?",
+  "type": "select",
+  "options": [
+   "Indeed.com",
+   "LinkedIn",
+   "CareerBuilder",
+   "Other (please specify)"
+  ],
+  "expect": "Other (please specify)",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_online_job_board_varied_list",
+  "label": "How were you made aware of this position?",
+  "type": "select",
+  "options": [
+   "Company website",
+   "Online job board",
+   "Employee referral",
+   "Other (please specify)"
+  ],
+  "expect": "Online job board",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "source_other_near_miss_company_website",
+  "label": "Please indicate how you heard about this role.",
+  "type": "select",
+  "options": [
+   "Company Website",
+   "LinkedIn",
+   "Indeed.com",
+   "CareerBuilder",
+   "Other"
+  ],
+  "expect": "Other",
+  "spec_quote": "when the list has \"Online job board\" or \"Job board\" → that option; else when it has an option starting with \"Other\" → that Other option.",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_root_cause_1",
+  "label": "Describe how you found the root cause of a problem.",
+  "type": "radio",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how he found the root cause of a problem, or how he found a solution, is an essay → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_root_cause_2",
+  "label": "Explain how you identified the root cause of an issue you faced.",
+  "type": "radio",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how he found the root cause of a problem, or how he found a solution, is an essay → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_solution_1",
+  "label": "How did you find the solution to a difficult problem? Please explain.",
+  "type": "radio",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how he found the root cause of a problem, or how he found a solution, is an essay → \"none\".",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_solution_2",
+  "label": "Describe your approach to finding a solution to a complex problem.",
+  "type": "radio",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "A question about how he found the root cause of a problem, or how he found a solution, is an essay → \"none\".",
+  "ambiguous": false
+ }
+]
