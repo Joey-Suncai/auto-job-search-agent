@@ -1,0 +1,3 @@
+{
+ "action: please after a greeting is not stripped": "Spec amended 2026-11-10 (Claude, JSA-265) after the cases were written: a leading greeting is now removed too, so the step reads 'Submit your I-9 verification form as soon as possible.' \u2014 the case follows the earlier wording that kept 'Hi Joey, please'."
+}

@@ -1,0 +1,223 @@
+[
+ {
+  "name": "layer_asks_with_live",
+  "ans": null,
+  "live": "Yes, I agree",
+  "expect": "layer_asks",
+  "spec": "layer asks: live non-empty → layer_asks"
+ },
+ {
+  "name": "both_ask_when_both_empty",
+  "ans": null,
+  "live": "",
+  "expect": "both_ask",
+  "spec": "layer asks: ... live empty → both_ask"
+ },
+ {
+  "name": "live_asks_yes_answer",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "",
+  "expect": "live_asks",
+  "spec": "layer answers but live is empty → live_asks"
+ },
+ {
+  "name": "live_asks_text_answer",
+  "ans": [
+   "text",
+   "chicago, il"
+  ],
+  "live": "",
+  "expect": "live_asks",
+  "spec": "layer answers but live is empty → live_asks"
+ },
+ {
+  "name": "live_asks_pick_answer",
+  "ans": [
+   "pick",
+   [
+    "/master/i"
+   ]
+  ],
+  "live": "",
+  "expect": "live_asks",
+  "spec": "layer answers but live is empty → live_asks"
+ },
+ {
+  "name": "yes_false_with_no_sponsorship",
+  "ans": [
+   "yes",
+   false
+  ],
+  "live": "No, I do not require sponsorship",
+  "expect": "agree",
+  "spec": "read the live text as no when it starts with ... no ... ; Same as b → agree"
+ },
+ {
+  "name": "yes_false_with_yes_live",
+  "ans": [
+   "yes",
+   false
+  ],
+  "live": "Yes",
+  "expect": "differ",
+  "spec": "Same as b → agree, opposite → differ"
+ },
+ {
+  "name": "yes_true_with_yes_i_do",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "Yes, I do",
+  "expect": "agree",
+  "spec": "read the live text as yes when it starts with yes"
+ },
+ {
+  "name": "yes_true_with_i_do_not",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "I do not agree",
+  "expect": "differ",
+  "spec": "as no when it starts with ... \"I do not\""
+ },
+ {
+  "name": "yes_true_with_i_do",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "I do agree",
+  "expect": "agree",
+  "spec": "as yes when it starts with ... \"I do\""
+ },
+ {
+  "name": "yes_true_with_i_dont",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "I don't consent",
+  "expect": "differ",
+  "spec": "as no when it starts with ... \"I don't\""
+ },
+ {
+  "name": "yes_false_with_not_checked",
+  "ans": [
+   "yes",
+   false
+  ],
+  "live": "Not checked",
+  "expect": "agree",
+  "spec": "as no when it starts with ... not"
+ },
+ {
+  "name": "yes_true_with_maybe",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "Maybe",
+  "expect": "cannot_compare",
+  "spec": "neither → cannot_compare"
+ },
+ {
+  "name": "yes_false_with_i_am_not",
+  "ans": [
+   "yes",
+   false
+  ],
+  "live": "I am not a citizen",
+  "expect": "agree",
+  "spec": "as no when it starts with ... \"I am not\""
+ },
+ {
+  "name": "yes_true_with_i_am",
+  "ans": [
+   "yes",
+   true
+  ],
+  "live": "I am a citizen",
+  "expect": "agree",
+  "spec": "as yes when it starts with ... \"I am\""
+ },
+ {
+  "name": "text_exact_case",
+  "ans": [
+   "text",
+   "chicago, il"
+  ],
+  "live": "Chicago, IL",
+  "expect": "agree",
+  "spec": "the live text in lower case ... equals t → agree"
+ },
+ {
+  "name": "text_trailing_period",
+  "ans": [
+   "text",
+   "chicago, il"
+  ],
+  "live": "Chicago, IL.",
+  "expect": "agree",
+  "spec": "without a final period, equals t (also without a final period) → agree"
+ },
+ {
+  "name": "text_differ_bachelor",
+  "ans": [
+   "text",
+   "bachelor's degree"
+  ],
+  "live": "Master's Degree",
+  "expect": "differ",
+  "spec": "else → differ"
+ },
+ {
+  "name": "text_case_and_trim",
+  "ans": [
+   "text",
+   "chicago, il"
+  ],
+  "live": "  CHICAGO, IL  ",
+  "expect": "agree",
+  "spec": "the live text in lower case, trimmed, ... equals t"
+ },
+ {
+  "name": "pick_matches_master",
+  "ans": [
+   "pick",
+   [
+    "/master/i"
+   ]
+  ],
+  "live": "Master's Degree",
+  "expect": "agree",
+  "spec": "any pattern ... matches the live text → agree"
+ },
+ {
+  "name": "pick_no_match",
+  "ans": [
+   "pick",
+   [
+    "/master/i",
+    "/phd/i"
+   ]
+  ],
+  "live": "Bachelor's Degree",
+  "expect": "differ",
+  "spec": "else → differ"
+ },
+ {
+  "name": "key_cannot_compare",
+  "ans": [
+   "key",
+   "city"
+  ],
+  "live": "Chicago, IL",
+  "expect": "cannot_compare",
+  "spec": "(\"key\", k) → cannot_compare"
+ }
+]

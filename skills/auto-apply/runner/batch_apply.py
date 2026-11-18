@@ -25,6 +25,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home, ADR-0008)
+sys.path.insert(0, HERE)
+import app_folder as AF  # noqa: E402  (JSA-319: one folder per job — found by job id first)
+import posting as PO  # noqa: E402  (JSA-331/332: which URL a job uses, which platform it is on)
 
 MAX_JOBS = 10
 MAX_LOGIN = 5                       # Workday / Oracle / SuccessFactors / iCIMS: 2–3 min each + sign-in (Joey 2026-11-06)
@@ -42,6 +45,7 @@ TRACKS = {'data analyst': 'Data_Analyst', 'data sci / analytics': 'Data_Analyst'
 NORMAL = {'Data_Analyst', 'Data_Engineer', 'Product_Manager', 'AI_Agentic_Engineer'}
 OK_REASONS = {'dry-run', 'batch not approved'}
 OK_PREFIX = ('batch not approved',)                 # runner_common: 'batch not approved (data/runner/approved_batches.json)'
+DS_SPOT = re.compile(r'^\d+ DeepSeek answers?(\(s\))? to spot-check\b')   # Workday: approvable; `submit --ds-ok` still needs Claude's spot-check (JSA-271)
 
 
 # ----------------------------------------------------------------------------- pure (tested: test/t_batch_apply.py)
@@ -64,19 +68,8 @@ def runner(ats):
 
 
 def platform(url):
-    """Pure. Platform of a posting URL (same hosts as scripts/platform_counts.py, plus apply.workable.com and iCIMS
-    career sites marked ?icims=1)."""
-    u = (url or '').lower()
-    for key, name in (('greenhouse.io', 'greenhouse'), ('gh_jid=', 'greenhouse'), ('ashbyhq.com', 'ashby'),
-                      ('lever.co', 'lever'), ('myworkdayjobs.com', 'workday'), ('myworkdaysite.com', 'workday'),
-                      ('oraclecloud.com', 'oracle'), ('smartrecruiters.com', 'smartrecruiters'),
-                      ('successfactors', 'successfactors'), ('sapsf.com', 'successfactors'), ('icims.com', 'icims'),
-                      ('jibeapply.com', 'icims'), ('icims=1', 'icims'), ('workable.com', 'workable')):
-        if key in u:
-            return name
-    if re.search(r'^https?://[^/]+/job/[^/]+/\d{8,12}/?(?:[?#]|$)', u) and 'builtin.com' not in u:
-        return 'successfactors'                          # RMK career site on the company's own domain (JSA-170)
-    return ''
+    """Pure. Platform of a posting URL — the shared rule in posting.py (JSA-332)."""
+    return PO.platform(url)
 
 
 def command(ats, folder, submit, ds_ok=False):
@@ -129,7 +122,56 @@ def ready(status, reasons, output=''):
         return False
     if 'all checks pass' in (output or ''):
         return True
-    return all(r in OK_REASONS or r.startswith(OK_PREFIX) for r in reasons)   # submit still re-applies every runner gate
+    return all(r in OK_REASONS or r.startswith(OK_PREFIX) or DS_SPOT.match(r) for r in reasons)   # submit still re-applies every runner gate
+    # a Workday dry run whose only open item is "N DeepSeek answer(s) to spot-check" is approvable: approve and the
+    # spot-check were each waiting for the other (11-10, recert_wdB); run_wd refuses the submit until --ds-ok (JSA-271)
+
+
+PREFETCH_MAX_AGE = 5          # days: a form prefetch record this fresh is trusted (JSA-239)
+
+
+def prefetch_gate(rec, today):
+    """Pure (tested, JSA-239). One job's form-prefetch record (data/forms/<id>.json, or None) → ('skip', status) for a FRESH
+    closed / restricted record, ('prepare', needs-or-None) otherwise (fresh ok record → how many questions are still open;
+    stale / error / missing / unreadable date → no change)."""
+    if not isinstance(rec, dict):
+        return 'prepare', None
+    try:
+        age = (datetime.strptime(str(today)[:10], '%Y-%m-%d') - datetime.strptime(str((rec or {}).get('read_at') or '')[:10], '%Y-%m-%d')).days
+    except ValueError:
+        return 'prepare', None
+    if rec is None or age < 0 or age > PREFETCH_MAX_AGE:
+        return 'prepare', None
+    st = rec.get('status')
+    if st in ('closed', 'restricted'):
+        return 'skip', f"skipped: {st} (prefetch {str(rec['read_at'])[:10]})"
+    if st == 'ok' and isinstance(rec.get('needs'), int):
+        return 'prepare', rec['needs']
+    return 'prepare', None
+
+
+def screen_closed(jobs, today, a=None):
+    """JSA-417. The batch's jobs minus those the public Greenhouse / Lever / Ashby API no longer lists (marked 已关闭 in the store).
+    An unreachable API (403, timeout) keeps the job; --keep-closed skips the check."""
+    if getattr(a, 'keep_closed', False):
+        return jobs
+    try:
+        sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
+        import job_closed
+        keep, dropped = job_closed.screen(jobs, today=today, source='prepare')
+    except Exception as e:                      # the check never stops a batch
+        print(f'  (closed check skipped: {type(e).__name__}: {str(e)[:80]})'); return jobs
+    if dropped:
+        print(f'closed check: {len(dropped)} of {len(jobs)} job(s) closed — dropped, store marked 已关闭')
+    return keep
+
+
+def prefetch_record(job_id):
+    p = jpaths.data('forms', f'{job_id}.json')
+    try:
+        return json.load(open(p, encoding='utf-8')) if os.path.exists(p) else None
+    except (OSError, ValueError):
+        return None
 
 
 def size(n, mx=None, login=False):
@@ -185,7 +227,7 @@ def split(jobs):
     """Pure. Jobs by prep route: 'gal' (prep_batch.py), 'wd' (prep_wd.py), 'own' (prep_own here), 'none' (no runner)."""
     out = {'gal': [], 'wd': [], 'own': [], 'none': []}
     for j in jobs:
-        p = platform(j.get('ats_url') or j.get('url'))
+        p = platform(PO.posting_url(j))
         out['gal' if p in GAL else 'wd' if p == 'workday' else 'own' if p in OWN else 'none'].append(j)
     return out
 
@@ -228,7 +270,7 @@ def load_status(batch):
 def prep_own(j, date):
     """Oracle / SmartRecruiters / SuccessFactors / iCIMS / Workable: folder + job.json + jd.md (their runners read the form
     live; JD text from eligibility_fetch — a closed posting stops here)."""
-    url = j.get('ats_url') or j['url']; ats = platform(url)
+    url = PO.posting_url(j); ats = platform(url)
     row = {'id': j['id'], 'company': j['company'], 'title': j['title'], 'ats': ats, 'track': j.get('track')}
     sys.path.insert(0, os.path.join(ROOT, 'skills', 'job-hunt-pipeline', 'scripts'))
     try:
@@ -237,15 +279,15 @@ def prep_own(j, date):
     except Exception as e:                                   # network / parser: the runner can still read the page
         d = {'status': 'unreadable', 'why': f'{type(e).__name__}: {str(e)[:100]}'}
     if d.get('status') == 'closed':
-        row.update(status='closed_or_unreadable', why=d.get('why')); return row
+        row.update(status='closed_or_unreadable', why=d.get('why')); return row     # cmd_prepare marks the store (JSA-417)
     try:
         from prefilter import RX as FLAGS
     except Exception:
         FLAGS = {}
     text = d.get('text') or ''
     flags = [k for k, rx in FLAGS.items() if text and rx.search(text)]
-    name = folder_name(date, j['company'], j['title']); folder = jpaths.apps(name)
-    os.makedirs(folder, exist_ok=True)
+    folder = AF.for_job(j['id'], date, j['company'], j['title'], jpaths.apps(), AF.submitted_fn())   # JSA-319: one folder per job
+    name = os.path.basename(folder)
     json.dump({'id': j['id'], 'company': j['company'], 'title': d.get('title') or j['title'], 'url': url, 'ats': ats,
                'track': j.get('track')}, open(os.path.join(folder, 'job.json'), 'w'), ensure_ascii=False, indent=1)
     if text or not os.path.exists(os.path.join(folder, 'jd.md')):
@@ -280,7 +322,7 @@ def prep_all(batch, b):
         rows[j['id']] = prep_own(j, b.get('date') or datetime.now().strftime('%Y-%m-%d'))
     for j in parts['none']:
         rows[j['id']] = {'id': j['id'], 'company': j['company'], 'title': j['title'], 'status': 'no runner in batch_apply',
-                         'ats': platform(j.get('ats_url') or j.get('url'))}
+                         'ats': platform(PO.posting_url(j))}
     return [rows[j['id']] for j in b['jobs'] if j['id'] in rows]
 
 
@@ -337,6 +379,14 @@ def run_one(folder, ats, submit, ds_ok=False):
     except subprocess.TimeoutExpired:
         return {'status': 'crashed', 'secs': 1200, 'reasons': ['runner timed out'], 'ready': False}
     d = merge(parse(out), last_result(folder, since))
+    if d.get('status') == 'closed':                           # JSA-417: the runner read the page; the public API must agree before the store is marked
+        try:
+            job = json.load(open(os.path.join(jpaths.apps(folder), 'job.json')))
+            sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
+            import job_closed
+            d['store_closed'] = job_closed.confirm_mark(job, '; '.join(d.get('reasons') or []) or 'runner: posting closed', 'runner')
+        except Exception:
+            pass
     d['secs'] = d['secs'] or secs
     if not d['reasons'] and d['status'] not in ('dry-run', 'submitted', 'already-submitted'):
         d['reasons'] = [last_note(out)] if last_note(out) else []      # e.g. Workday sign-in handed to Joey
@@ -412,6 +462,8 @@ def write_report(batch, rows, title, ext='.apply'):
          '| folder | platform | materials | run | secs | why not (yet) |', '|---|---|---|---|---|---|']
     for r in rows:
         why = '; '.join(x for x in r.get('reasons', []) if x not in OK_REASONS) or ('ready' if r.get('ready') else '')
+        if r.get('prefetch_left'):
+            why = (why + '; ' if why else '') + f"{r['prefetch_left']} still open at the prefetch"
         L.append(f"| {r['folder'] or r.get('company', '?')} | {r.get('ats', '')} | {r.get('materials', '')} | "
                  f"{r.get('status', '')} | {r.get('secs') or ''} | {why} |")
     qs = [(r['folder'], q) for r in rows for q in r.get('questions', [])]
@@ -428,19 +480,78 @@ def write_report(batch, rows, title, ext='.apply'):
     print(txt)
 
 
+def flag_cleared(job):
+    """Pure (JSA-418). True when Joey has cleared the JD pre-screen flag on this batch job: `flag_cleared` is a dict whose
+    by / at / note are all non-blank strings (note = his own words)."""
+    fc = (job or {}).get('flag_cleared')
+    return isinstance(fc, dict) and all(isinstance(fc.get(k), str) and fc[k].strip() for k in ('by', 'at', 'note'))
+
+
+def effective_prep(status, job):
+    """Pure (JSA-418). The prep status prepare works with: 'flagged' counts as 'ok' once Joey cleared the flag; all else as is."""
+    return 'ok' if status == 'flagged' and flag_cleared(job) else status
+
+
+def clear_flag(batch, ident, by, note, at):
+    """Pure (JSA-418). (new batch, job id) with flag_cleared {by, at, note} on the one job `ident` names (its id, else its
+    company, case-insensitive). ValueError: blank by / note, no match, or a company name that fits several jobs."""
+    if not (by or '').strip() or not (note or '').strip():
+        raise ValueError('clear-flag needs --by and --note (Joey\'s words from the chat)')
+    jobs = batch.get('jobs') or []
+    ident = str(ident).strip()
+    hit = [i for i, j in enumerate(jobs) if str(j.get('id')) == ident]
+    if not hit:
+        hit = [i for i, j in enumerate(jobs) if str(j.get('company') or '').strip().lower() == ident.lower()]
+    if not hit:
+        raise ValueError(f'no job in the batch matches {ident!r}')
+    if len(hit) > 1:
+        raise ValueError(f'{ident!r} matches {len(hit)} jobs — use the job id')
+    new = [dict(j) for j in jobs]
+    new[hit[0]]['flag_cleared'] = {'by': by.strip(), 'at': at, 'note': note.strip()}
+    return {**batch, 'jobs': new}, jobs[hit[0]].get('id')
+
+
+def cmd_clear_flag(a):
+    b = json.load(open(a.batch))
+    try:
+        b, jid = clear_flag(b, a.job, a.by, a.note, datetime.now().astimezone().isoformat(timespec='minutes'))
+    except ValueError as e:
+        sys.exit(f'batch_apply clear-flag: {e}')
+    json.dump(b, open(a.batch, 'w'), indent=1, ensure_ascii=False)
+    print(f'flag cleared: job {jid} — prepare will now build its materials and dry-run it')
+
+
 def cmd_prepare(a):
     b = json.load(open(a.batch))
-    jobs = b.get('jobs', [])
-    login = any(platform(j.get('ats_url') or j.get('url')) in LOGIN for j in jobs)
+    all_jobs = b.get('jobs', [])
+    today = datetime.now().strftime('%Y-%m-%d')
+    all_jobs = screen_closed(all_jobs, today, a)    # JSA-417: one public-API check; closed jobs are dropped and marked 已关闭
+    gate = {j['id']: ('prepare', None) if getattr(a, 'no_prefetch', False) else prefetch_gate(prefetch_record(j['id']), today) for j in all_jobs}   # JSA-239; --no-prefetch = prepare every job anyway
+    skipped = [j for j in all_jobs if gate[j['id']][0] == 'skip']
+    jobs = [j for j in all_jobs if gate[j['id']][0] != 'skip']
+    login = any(platform(PO.posting_url(j)) in LOGIN for j in jobs)
     if size(len(jobs), a.max, login):
         cap = min(MAX_LOGIN if login else MAX_JOBS, a.max or 99)
         sys.exit(f"batch_apply: {len(jobs)} jobs — at most {cap} per batch" + (' (a job needs a sign-in)' if login else ''))
     for j in jobs:
         j['track'] = track(j.get('track'))
     json.dump(b, open(a.batch, 'w'), indent=1, ensure_ascii=False)
+    b = dict(b, jobs=jobs)                          # the skipped jobs are not prepared (their rows come below)
     t0 = time.time()
     rows = []
+    by_id = {j['id']: j for j in jobs}
     for s in prep_all(a.batch, b):
+        s = dict(s); job = by_id.get(s.get('id'))
+        if s.get('status') == 'flagged' and effective_prep('flagged', job) == 'ok':   # JSA-418: Joey read the flag and said go
+            s['status'] = 'ok'; print(f"  {s.get('company')}: flag cleared by {job['flag_cleared']['by']} — prepared")
+        if s.get('status') in ('closed_or_not_greenhouse', 'closed_or_unreadable') and s.get('id') in by_id:   # JSA-417: prep saw no posting
+            try:
+                sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
+                import job_closed
+                if job_closed.confirm_mark(by_id[s['id']], s.get('why') or 'posting not found', 'prepare'):
+                    print(f"  {s.get('company')}: closed — store marked 已关闭")
+            except Exception as e:
+                print(f'  (closed mark skipped: {type(e).__name__}: {str(e)[:80]})')
         pp = os.path.join(jpaths.apps(s['folder']), 'plan.json') if s.get('folder') else ''
         plan = json.load(open(pp)) if pp and os.path.exists(pp) else {}
         rows.append({'folder': s.get('folder') or '', 'company': s.get('company'), 'ats': ats_of(s, plan),
@@ -448,6 +559,16 @@ def cmd_prepare(a):
                      'materials': '', 'status': s.get('status') if s.get('status') != 'ok' else '',
                      'reasons': [s['why']] if s.get('why') else [],
                      'ready': False})
+        if flag_cleared(job) and s.get('flags'):
+            rows[-1]['flag_cleared'] = job['flag_cleared']; rows[-1]['flags'] = s['flags']
+        left = gate[s['id']][1] if s.get('id') in gate else None
+        if left is not None:
+            rows[-1]['prefetch_left'] = left          # JSA-239: questions / files / tasks the prefetch still saw open
+    for j in skipped:
+        st = gate[j['id']][1]
+        rows.append({'folder': '', 'company': j.get('company'), 'ats': platform(PO.posting_url(j)), 'track': track(j.get('track')),
+                     'prep': 'skipped', 'joey_tasks': [], 'materials': '', 'status': st, 'reasons': [st], 'ready': False})
+        print(f"  {j.get('company')}: {st} (prepare it anyway: --no-prefetch)")
     t1 = time.time(); print(f'prep: {round(t1 - t0, 1)}s')
     go = [r for r in rows if r['prep'] == 'ok' and r['folder'] and runner(r['ats'])]
     for r in rows:
@@ -517,15 +638,20 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('prepare'); p.add_argument('batch'); p.add_argument('--fresh', action='store_true')
+    p.add_argument('--keep-closed', action='store_true', help='JSA-417: do not check the batch against the public ATS API first')
+    p.add_argument('--no-prefetch', action='store_true', help='JSA-239: prepare every job, even one the form prefetch saw closed / restricted')
     p.add_argument('--dry-run', action='store_true', help='Greenhouse / Ashby / Lever too: fill once in the job Chrome first (demo, a board with conditional questions)')
     p.add_argument('--max', type=int)
     p = sub.add_parser('approve'); p.add_argument('batch'); p.add_argument('--by', required=True)
     p.add_argument('--only', nargs='*')
+    p = sub.add_parser('clear-flag', help='JSA-418: Joey read the JD pre-screen flag of one job and said apply anyway')
+    p.add_argument('batch'); p.add_argument('job', help='job id (or a company name that fits one job)')
+    p.add_argument('--by', required=True); p.add_argument('--note', required=True, help="Joey's own words from the chat")
     p = sub.add_parser('submit'); p.add_argument('batch'); p.add_argument('--only', nargs='*')
     p.add_argument('--ds-ok', action='store_true', help='Workday: Claude spot-checked ds_used.json on Review (run_wd --ds-ok)')
     a = ap.parse_args()
     a.batch = os.path.abspath(a.batch)
-    {'prepare': cmd_prepare, 'approve': cmd_approve, 'submit': cmd_submit}[a.cmd](a)
+    {'prepare': cmd_prepare, 'clear-flag': cmd_clear_flag, 'approve': cmd_approve, 'submit': cmd_submit}[a.cmd](a)
 
 
 if __name__ == '__main__':

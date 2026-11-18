@@ -1,0 +1,236 @@
+[
+ {
+  "name": "background_release_with_star_prefix",
+  "fn": "declaration_rule",
+  "args": [
+   "* I hereby grant permission to any person, firm or corporation to release to the Company or its representatives any and all information regarding my past work or employment. I waive any and all claims."
+  ],
+  "expect": "background_release",
+  "spec": "\"background_release\": the person grants permission to any person, firm or corporation to release information regarding past work / employment to the Company (and waives claims)."
+ },
+ {
+  "name": "background_release_plain",
+  "fn": "declaration_rule",
+  "args": [
+   "I hereby grant permission to any person, firm or corporation to release to the Company or its representatives any and all information regarding my past work or employment. I waive any and all claims."
+  ],
+  "expect": "background_release",
+  "spec": "\"background_release\": the person grants permission to any person, firm or corporation to release information regarding past work / employment to the Company (and waives claims)."
+ },
+ {
+  "name": "at_will_with_star_prefix",
+  "fn": "declaration_rule",
+  "args": [
+   "* I understand that nothing contained in the application or in any interview is intended to create an employment contract, and that my employment would be on an at-will basis."
+  ],
+  "expect": "at_will",
+  "spec": "\"at_will\": the person understands that employment, if hired, is on an at-will basis and nothing in the application or an interview creates an employment contract."
+ },
+ {
+  "name": "at_will_plain",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that nothing contained in the application or in any interview is intended to create an employment contract, and that my employment would be on an at-will basis."
+  ],
+  "expect": "at_will",
+  "spec": "\"at_will\": the person understands that employment, if hired, is on an at-will basis and nothing in the application or an interview creates an employment contract."
+ },
+ {
+  "name": "i9_verify_with_star_prefix",
+  "fn": "declaration_rule",
+  "args": [
+   "* I understand that all persons hired will be required to verify identity and eligibility to work in the United States and to complete the required employment eligibility verification document upon hire."
+  ],
+  "expect": "i9_verify",
+  "spec": "\"i9_verify\": the person understands that all persons hired must verify identity and eligibility to work in the United States and complete the employment eligibility verification document upon hire."
+ },
+ {
+  "name": "i9_verify_plain",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that all persons hired will be required to verify identity and eligibility to work in the United States and to complete the required employment eligibility verification document upon hire."
+  ],
+  "expect": "i9_verify",
+  "spec": "\"i9_verify\": the person understands that all persons hired must verify identity and eligibility to work in the United States and complete the employment eligibility verification document upon hire."
+ },
+ {
+  "name": "negated_background_release",
+  "fn": "declaration_rule",
+  "args": [
+   "I do not grant permission to any person, firm or corporation to release to the Company any information regarding my past work or employment."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... a negated sentence (\"I do not grant permission …\", \"I do not understand …\")"
+ },
+ {
+  "name": "negated_at_will",
+  "fn": "declaration_rule",
+  "args": [
+   "I do not understand that nothing in the application creates an employment contract or that my employment would be on an at-will basis."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... a negated sentence (\"I do not grant permission …\", \"I do not understand …\")"
+ },
+ {
+  "name": "negated_i9_verify",
+  "fn": "declaration_rule",
+  "args": [
+   "I do not understand that all persons hired will be required to verify identity and eligibility to work in the United States and complete the employment eligibility verification document upon hire."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... a negated sentence (\"I do not grant permission …\", \"I do not understand …\")"
+ },
+ {
+  "name": "marketing_consent",
+  "fn": "declaration_rule",
+  "args": [
+   "I agree to receive marketing communications from the Company."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: marketing / newsletter / SMS consent"
+ },
+ {
+  "name": "newsletter_consent",
+  "fn": "declaration_rule",
+  "args": [
+   "Please send me the company newsletter."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: marketing / newsletter / SMS consent"
+ },
+ {
+  "name": "sms_consent",
+  "fn": "declaration_rule",
+  "args": [
+   "I consent to receive SMS text messages about my application."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: marketing / newsletter / SMS consent"
+ },
+ {
+  "name": "certify_no_withholding",
+  "fn": "declaration_rule",
+  "args": [
+   "I certify that I have not knowingly withheld any information from this application."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: \"I certify that I have not knowingly withheld any information\" (a separate rule)"
+ },
+ {
+  "name": "criminal_conviction_question",
+  "fn": "declaration_rule",
+  "args": [
+   "Have you ever been convicted of a criminal offense?"
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... any question about criminal convictions"
+ },
+ {
+  "name": "relocation_question",
+  "fn": "declaration_rule",
+  "args": [
+   "Are you willing to relocate?"
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... relocation"
+ },
+ {
+  "name": "background_check_results_question",
+  "fn": "declaration_rule",
+  "args": [
+   "Have you ever had a background check result that was not clear?"
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... background-check *results*"
+ },
+ {
+  "name": "work_authorization_status_question",
+  "fn": "declaration_rule",
+  "args": [
+   "Are you legally authorized to work in the United States?"
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... work authorization status"
+ },
+ {
+  "name": "short_at_will_question",
+  "fn": "declaration_rule",
+  "args": [
+   "Are you currently an at-will employee?"
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... short texts that merely mention \"at-will\" without the understanding of an employment contract (e.g. \"Are you currently an at-will employee?\")."
+ },
+ {
+  "name": "background_release_variation",
+  "fn": "declaration_rule",
+  "args": [
+   "I hereby grant permission to any person, firm or corporation to release to the Company or its representatives any and all information regarding my past work or employment, and I waive any and all claims."
+  ],
+  "expect": "background_release",
+  "spec": "\"background_release\": the person grants permission to any person, firm or corporation to release information regarding past work / employment to the Company (and waives claims)."
+ },
+ {
+  "name": "at_will_variation",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that nothing contained in the application or in any interview is intended to create an employment contract and that my employment would be on an at-will basis."
+  ],
+  "expect": "at_will",
+  "spec": "\"at_will\": the person understands that employment, if hired, is on an at-will basis and nothing in the application or an interview creates an employment contract."
+ },
+ {
+  "name": "i9_verify_variation",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that all persons hired must verify identity and eligibility to work in the United States and complete the required employment eligibility verification document upon hire."
+  ],
+  "expect": "i9_verify",
+  "spec": "\"i9_verify\": the person understands that all persons hired must verify identity and eligibility to work in the United States and complete the employment eligibility verification document upon hire."
+ },
+ {
+  "name": "background_check_authorization",
+  "fn": "declaration_rule",
+  "args": [
+   "I authorize the Company to conduct a background check."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None — in particular: ... background-check *results*"
+ },
+ {
+  "name": "contract_only_fragment",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that nothing contained in the application is intended to create an employment contract."
+  ],
+  "expect": null,
+  "spec": "\"at_will\": the person understands that employment, if hired, is on an at-will basis and nothing in the application or an interview creates an employment contract."
+ },
+ {
+  "name": "waiver_only_fragment",
+  "fn": "declaration_rule",
+  "args": [
+   "I waive any and all claims regarding my past work or employment."
+  ],
+  "expect": null,
+  "spec": "\"background_release\": the person grants permission to any person, firm or corporation to release information regarding past work / employment to the Company (and waives claims)."
+ },
+ {
+  "name": "identity_verification_only_fragment",
+  "fn": "declaration_rule",
+  "args": [
+   "I understand that I must verify my identity before starting work."
+  ],
+  "expect": null,
+  "spec": "\"i9_verify\": the person understands that all persons hired must verify identity and eligibility to work in the United States and complete the employment eligibility verification document upon hire."
+ },
+ {
+  "name": "generic_acknowledgement",
+  "fn": "declaration_rule",
+  "args": [
+   "I acknowledge that I have read and understand the above statements."
+  ],
+  "expect": null,
+  "spec": "Everything else returns None"
+ }
+]

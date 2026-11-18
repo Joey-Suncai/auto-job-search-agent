@@ -1,7 +1,7 @@
 # config/ — the candidate's personal data (JSA-077, ADR-0005)
 
 Every personal fact the agent uses lives here; the code under `skills/` and `scripts/` only reads it.
-Each file has a fictional **`.example`** twin (Alex Rivera, a U.S. citizen). A fresh clone runs on the examples; copy each
+Each file has a fictional **`.example`** twin (the candidate, a U.S. citizen). A fresh clone runs on the examples; copy each
 one without `.example` and fill in your own facts. The public export ships only the examples.
 
 | File | What it holds | Read by |

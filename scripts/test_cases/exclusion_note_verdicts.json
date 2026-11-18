@@ -1,0 +1,7 @@
+{
+  "on_site_five_days": "JSA-408 2026-11-17 — case wrong: 'comfortable' is excluded from rule onsite on purpose (existing r.not); not this row. Source: answer_rules.js onsite rule",
+  "hybrid_schedule_comfort": "JSA-408 2026-11-17 — case wrong: same — 'comfortable' questions go to Joey today; not this row. Source: answer_rules.js onsite rule",
+  "exclusion_note_relocation_and_remote_only": "JSA-408 2026-11-17 — case wrong: the harness gives only Yes/No options to a salary question; what matters (no relocate/onsite hit) holds — rule comp answered, not relocate",
+  "housing_accommodation_internship": "JSA-408 2026-11-17 — case wrong: Joey 2026-10-25 'internship housing Yes' (decisions-log); rule housing answers Yes",
+  "visa_sponsorship_uncovered": "JSA-408 2026-11-17 — case wrong: 'employment visa status … now or in the future' names a time → spons_future Yes (Joey fact: future Yes); not an exclusion-note case"
+}

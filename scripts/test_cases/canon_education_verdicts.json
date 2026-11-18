@@ -1,0 +1,4 @@
+{
+ "school_for_major_question_explicit_null": "Spec superseded by JSA-321 (Joey 2026-11-11 「选B」): the school question is a positive match, and a real question such as 'What school are you currently attending?' IS the school question now (the old '?' exclusion let these go unchecked). Covered by scripts/test_canon_school.py.",
+ "school_attending_question_null": "Spec superseded by JSA-321 (Joey 2026-11-11 「选B」): the school question is a positive match, and a real question such as 'What school are you currently attending?' IS the school question now (the old '?' exclusion let these go unchecked). Covered by scripts/test_canon_school.py."
+}

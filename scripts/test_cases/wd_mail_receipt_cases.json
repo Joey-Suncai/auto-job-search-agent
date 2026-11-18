@@ -1,0 +1,266 @@
+[
+ {
+  "name": "vanguard_normal",
+  "meta": {
+   "company": "Vanguard"
+  },
+  "wait": 180,
+  "waiter": "Thank you for applying to Vanguard",
+  "expect": "Thank you for applying to Vanguard",
+  "expect_called": true,
+  "expect_company": "Vanguard",
+  "expect_timeout": 180
+ },
+ {
+  "name": "applied_materials_received",
+  "meta": {
+   "company": "Pellwyndel"
+  },
+  "wait": 30,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Pellwyndel",
+  "expect_timeout": 30
+ },
+ {
+  "name": "entrust_trimmed_company",
+  "meta": {
+   "company": "  Entrust  "
+  },
+  "wait": 60,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Entrust",
+  "expect_timeout": 60
+ },
+ {
+  "name": "micron_internal_spaces",
+  "meta": {
+   "company": "Pellmorsev"
+  },
+  "wait": 120,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Pellmorsev",
+  "expect_timeout": 120
+ },
+ {
+  "name": "brabrahar_subject",
+  "meta": {
+   "company": "Brabrahar Semiconductor"
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Brabrahar Semiconductor",
+  "expect_timeout": 180
+ },
+ {
+  "name": "blank_company_empty",
+  "meta": {
+   "company": ""
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "blank_company_spaces",
+  "meta": {
+   "company": "   "
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "missing_company_key",
+  "meta": {
+   "title": "Engineer"
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "wait_zero_returns_none_not_called",
+  "meta": {
+   "company": "Vanguard"
+  },
+  "wait": 0,
+  "waiter": "Thank you for applying to Vanguard",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "wait_none_returns_none_not_called",
+  "meta": {
+   "company": "Vanguard"
+  },
+  "wait": null,
+  "waiter": "Thank you for applying to Vanguard",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "waiter_returns_none",
+  "meta": {
+   "company": "Entrust"
+  },
+  "wait": 180,
+  "waiter": null,
+  "expect": null,
+  "expect_called": true,
+  "expect_company": "Entrust",
+  "expect_timeout": 180
+ },
+ {
+  "name": "waiter_returns_empty",
+  "meta": {
+   "company": "Pellmorsev"
+  },
+  "wait": 180,
+  "waiter": "",
+  "expect": null,
+  "expect_called": true,
+  "expect_company": "Pellmorsev",
+  "expect_timeout": 180
+ },
+ {
+  "name": "waiter_raises",
+  "meta": {
+   "company": "Pellwyndel"
+  },
+  "wait": 180,
+  "waiter": "RAISE",
+  "expect": null,
+  "expect_called": true,
+  "expect_company": "Pellwyndel",
+  "expect_timeout": 180
+ },
+ {
+  "name": "waiter_returns_whitespace",
+  "meta": {
+   "company": "Vanguard"
+  },
+  "wait": 180,
+  "waiter": "   ",
+  "expect": "   ",
+  "expect_called": true,
+  "expect_company": "Vanguard",
+  "expect_timeout": 180
+ },
+ {
+  "name": "wait_one_subject",
+  "meta": {
+   "company": "Entrust"
+  },
+  "wait": 1,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Entrust",
+  "expect_timeout": 1
+ },
+ {
+  "name": "company_trim_tabs",
+  "meta": {
+   "company": "  Pellmorsev\t"
+  },
+  "wait": 75,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Pellmorsev",
+  "expect_timeout": 75
+ },
+ {
+  "name": "company_trim_trailing_spaces",
+  "meta": {
+   "company": "Vanguard   "
+  },
+  "wait": 90,
+  "waiter": "Thank you for applying to Vanguard",
+  "expect": "Thank you for applying to Vanguard",
+  "expect_called": true,
+  "expect_company": "Vanguard",
+  "expect_timeout": 90
+ },
+ {
+  "name": "entrust_wait_180",
+  "meta": {
+   "company": "Entrust"
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": "Application received",
+  "expect_called": true,
+  "expect_company": "Entrust",
+  "expect_timeout": 180
+ },
+ {
+  "name": "micron_wait_45_none",
+  "meta": {
+   "company": "Pellmorsev"
+  },
+  "wait": 45,
+  "waiter": null,
+  "expect": null,
+  "expect_called": true,
+  "expect_company": "Pellmorsev",
+  "expect_timeout": 45
+ },
+ {
+  "name": "brabrahar_wait_90_raise",
+  "meta": {
+   "company": "Brabrahar Semiconductor"
+  },
+  "wait": 90,
+  "waiter": "RAISE",
+  "expect": null,
+  "expect_called": true,
+  "expect_company": "Brabrahar Semiconductor",
+  "expect_timeout": 90
+ },
+ {
+  "name": "blank_company_tabs",
+  "meta": {
+   "company": "\t\n "
+  },
+  "wait": 180,
+  "waiter": "Application received",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ },
+ {
+  "name": "wait_zero_waiter_raise_not_called",
+  "meta": {
+   "company": "Vanguard"
+  },
+  "wait": 0,
+  "waiter": "RAISE",
+  "expect": null,
+  "expect_called": false,
+  "expect_company": null,
+  "expect_timeout": null
+ }
+]

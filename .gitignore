@@ -25,14 +25,27 @@ map/.fingerprint
 /dashboard/
 data/runner/daily/
 skills/auto-apply/runner/test/mock.html
-skills/resume-updater/scripts/un/
-skills/resume-updater/scripts/out/
-skills/resume-updater/scripts/build_*/
+data/work/
+data/roles/
 # his identity documents (passport, ID, visa, I-20, I-94, driver's license) — local only, never pushed (Joey 2026-11-02)
 资料/private/
 # dry-run screenshots / form read-backs hold personal data (JSA-048 / JSA-093)
 data/runner/dryrun/
 skills/auto-apply/runner/test/data/chrome.lock
+# t_run.sh outputs (JSA-289): the end-to-end test runs in a temp dir; these are never written into the tracked fixtures again
+skills/auto-apply/runner/test/app_*/run_log.md
+skills/auto-apply/runner/test/app_*/runtime.json
+skills/auto-apply/runner/test/app_*/verify.json
+skills/auto-apply/runner/test/app_*/*.png
+skills/auto-apply/runner/test/app_*/application_record.md
+skills/auto-apply/runner/test/data/
+skills/auto-apply/runner/test/mock_fake.html
+skills/auto-apply/runner/test/mock_captcha.html
+skills/auto-apply/runner/test/mock_refused.html
+skills/auto-apply/runner/test/mock_badanswer.html
+
+# per-checkout instructions (ADR-0011: the dev repo writes it; .worktreeinclude copies it into new worktrees)
+CLAUDE.local.md
 
 # personal data (public export, JSA-078)
 config/*.json

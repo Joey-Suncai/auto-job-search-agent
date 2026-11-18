@@ -1,0 +1,973 @@
+[
+ {
+  "name": "terms_title_doubling",
+  "why": "Spec: 'score = competency weight × min(hits, 3) × (2 if in_title else 1), rounded to 4 decimals.' 'python' matches 3× in the jd (Python, python, PYTHON) and matches the title 'Python Developer' → 1.0 × min(3,3) × 2 = 6.0.",
+  "fn": "terms",
+  "jd": "Python python PYTHON",
+  "title": "Python Developer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "python",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "python",
+    "python",
+    6.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_three_hit_cap",
+  "why": "Spec: 'min(hits, 3)'. 'sql' appears 5 times but hits are capped at 3; no title match → 1.5 × 3 × 1 = 4.5.",
+  "fn": "terms",
+  "jd": "sql sql sql sql sql",
+  "title": "Data Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.5,
+     "keywords": [
+      {
+       "term": "sql",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "sql",
+    "sql",
+    4.5
+   ]
+  ]
+ },
+ {
+  "name": "terms_tie_alphabetical",
+  "why": "Both clusters: hits 1, score 1.0 × min(1,3) × 1 = 1.0. Spec: 'Sort by score descending, then hits descending, then term alphabetically' → aws before docker.",
+  "fn": "terms",
+  "jd": "aws and docker",
+  "title": "",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "docker",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "aws",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "aws",
+    "aws",
+    1.0
+   ],
+   [
+    "docker",
+    "docker",
+    1.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_whole_token_llm_not_llmops",
+  "why": "Spec: 'letters/digits around it break the match: \"LLM\" does not match \"LLMOps\"'. So 'LLMOps' and 'LLMs' do not count; only the standalone 'LLM' (1 hit). The title 'LLMOps Engineer' likewise contains no standalone 'LLM' → in_title false → 1.0 × 1 × 1 = 1.0. The 'rag' cluster has 0 hits and is skipped.",
+  "fn": "terms",
+  "jd": "LLMOps pipelines. LLMs at scale. One LLM here.",
+  "title": "LLMOps Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "rag",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "LLM",
+    "LLM",
+    1.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_spelling_tie_longer_wins",
+  "why": "Spec: 'jd_spelling = the spelling with the most matches (ties → the longer spelling).' postgres 1 match, postgresql 1 match (whole-token: 'postgres' inside 'postgresql' does not count) → tie → 'postgresql' (10 chars) beats 'postgres' (8). hits = 2 → 1.0 × min(2,3) × 1 = 2.0.",
+  "fn": "terms",
+  "jd": "postgres and postgresql",
+  "title": "",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "postgres",
+       "synonyms": [
+        "postgresql"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "postgres",
+    "postgresql",
+    2.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_synonyms_sum_hits_most_matched_spelling",
+  "why": "Spec: 'count = for each spelling, how many times it matches in the jd; hits = their sum.' k8s = 2, kubernetes = 1, kube = 0 (not a whole token of 'kubernetes') → hits 3, jd_spelling 'k8s' (most matches). No title → 1.0 × min(3,3) × 1 = 3.0.",
+  "fn": "terms",
+  "jd": "k8s k8s kubernetes",
+  "title": "",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "kubernetes",
+       "synonyms": [
+        "k8s",
+        "kube"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "kubernetes",
+    "k8s",
+    3.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_n_limit_keeps_first_two",
+  "why": "All three clusters: hits 1, score 1.0 × 1 × 1 = 1.0, ordered alphabetically (ansible, bash, chef). Spec: 'keep the first n' with n=2 → only ansible and bash.",
+  "fn": "terms",
+  "jd": "ansible bash chef",
+  "title": "",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "ansible",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "bash",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "chef",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 2,
+  "expect": [
+   [
+    "ansible",
+    "ansible",
+    1.0
+   ],
+   [
+    "bash",
+    "bash",
+    1.0
+   ]
+  ]
+ },
+ {
+  "name": "terms_score_tie_broken_by_hits",
+  "why": "golang: 2 hits × 1.0 = 2.0; ansible: 1 hit × 2.0 = 2.0. Scores tie, so 'then hits descending' puts golang (2 hits) first even though 'ansible' is alphabetically first.",
+  "fn": "terms",
+  "jd": "Ansible playbooks. Golang services, golang workers.",
+  "title": "",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "golang",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 2.0,
+     "keywords": [
+      {
+       "term": "ansible",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "n": 12,
+  "expect": [
+   [
+    "golang",
+    "golang",
+    2.0
+   ],
+   [
+    "ansible",
+    "ansible",
+    2.0
+   ]
+  ]
+ },
+ {
+  "name": "parse_company_first_part_with_12_char_truncation",
+  "why": "Spec: 'key = the folder's last path part, lower-cased, with a leading \"YYYY-MM-DD_\" removed' → key = acme_corp_international. 'The company is the first part p for which key starts with the first 12 characters of slug(p)': slug('Backend Engineer') → first 12 = 'backend_engi' (no), slug('Acme Corp International') → first 12 = 'acme_corp_in' (yes). Title = remaining parts joined with ' — '.",
+  "fn": "parse",
+  "text": "# Backend Engineer — Acme Corp International — Remote\n\nWe build things.",
+  "folder": "/jobs/2024-05-01_acme_corp_international",
+  "expect": [
+   "Backend Engineer — Remote",
+   "Acme Corp International"
+  ]
+ },
+ {
+  "name": "parse_company_middle_part",
+  "why": "key = 'hooli' (date prefix removed, lower-cased). slug('Platform Engineer') first 12 = 'platform_engi' → no; slug('Hooli') = 'hooli' → key starts with it → company is the middle part. Title joins the remaining parts.",
+  "fn": "parse",
+  "text": "# Platform Engineer — Hooli — London",
+  "folder": "/jobs/2023-11-20_hooli",
+  "expect": [
+   "Platform Engineer — London",
+   "Hooli"
+  ]
+ },
+ {
+  "name": "parse_no_match_falls_back_to_last_part",
+  "why": "key = 'umbrella' (no date prefix to strip) matches no part's slug prefix, so 'if none ... the last part' applies → company = 'Austin'; title = the remaining parts joined with ' — '.",
+  "fn": "parse",
+  "text": "# QA Engineer — Initech — Austin",
+  "folder": "/jobs/umbrella",
+  "expect": [
+   "QA Engineer — Initech",
+   "Austin"
+  ]
+ },
+ {
+  "name": "parse_no_folder_last_part",
+  "why": "Spec: 'if none (or no folder), the last part.' With an empty folder there is no key, so company = 'Vandelay Industries' and title = 'DevOps Engineer'.",
+  "fn": "parse",
+  "text": "# DevOps Engineer — Vandelay Industries",
+  "folder": "",
+  "expect": [
+   "DevOps Engineer",
+   "Vandelay Industries"
+  ]
+ },
+ {
+  "name": "parse_single_part_empty_company",
+  "why": "Spec: 'With one part: (that part, \"\").' There is no ' — ' in the heading, so title is the whole part and company is empty, even though the folder would match.",
+  "fn": "parse",
+  "text": "# Staff Engineer, Platform\n\nAbout us",
+  "folder": "/jobs/2024-05-01_acme",
+  "expect": [
+   "Staff Engineer, Platform",
+   ""
+  ]
+ },
+ {
+  "name": "parse_en_dash_does_not_split",
+  "why": "Spec: 'Split the rest on \" — \" (an em dash with spaces; an en dash \"–\" ... does NOT split).' So the parts are ['Senior Engineer – Platform', 'Acme']; the en dash stays inside the title. slug('Acme') = 'acme' matches key 'acme'.",
+  "fn": "parse",
+  "text": "# Senior Engineer – Platform — Acme",
+  "folder": "/jobs/2024-03-03_acme",
+  "expect": [
+   "Senior Engineer – Platform",
+   "Acme"
+  ]
+ },
+ {
+  "name": "parse_hyphen_does_not_split",
+  "why": "Spec: a hyphen does NOT split. Parts are ['Full-Stack Developer', 'Acme']; the hyphen is preserved in the title and slug('Full-Stack Developer') = 'full_stack_developer' (first 12 'full_stack_d') does not match key 'acme', while slug('Acme') does.",
+  "fn": "parse",
+  "text": "# Full-Stack Developer — Acme",
+  "folder": "/jobs/2024-06-06_acme",
+  "expect": [
+   "Full-Stack Developer",
+   "Acme"
+  ]
+ },
+ {
+  "name": "parse_no_hash_space_line",
+  "why": "Spec: 'Take the first line starting with \"# \"' and 'No \"# \" line → (\"\", \"\")'. The line starts with '#B', not '# ', so there is no heading at all.",
+  "fn": "parse",
+  "text": "#Backend Engineer — Acme Corp\n\nNo proper heading here.",
+  "folder": "/jobs/2024-05-01_acme",
+  "expect": [
+   "",
+   ""
+  ]
+ },
+ {
+  "name": "tailor_acronym_swap_kubernetes_to_k8s",
+  "why": "Term 'kubernetes' is true (fact f1, resume_ok true, entry on_resume true, skill 'Kubernetes'). jd_spelling is 'k8s' (3 jd matches) and is not on the page, while the other spelling 'Kubernetes' is in a bullet; 'is_bullet_variant (same words up to case / hyphens, or acronym ↔ expansion, with the same grammatical number)' allows the acronym swap → 'Managed k8s clusters across regions'. Headline: 'title, then up to 3 jd_spellings of true terms that are true skills and are not inside the title' → 'SRE · k8s'.",
+  "fn": "tailor",
+  "jd": "k8s k8s at scale with strong k8s background",
+  "title": "SRE",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "kubernetes",
+       "synonyms": [
+        "k8s"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "SRE",
+   "summary": "Reliability engineer.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Docker",
+      "Linux"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Kubernetes clusters across regions",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "SRE",
+     "dates": "2020-2022",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Ran clusters",
+     "T": "Ran clusters",
+     "A": "Used Kubernetes",
+     "R": "Zero downtime",
+     "numbers": [],
+     "skills": [
+      "Kubernetes",
+      "k8s"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect_swaps": [
+   [
+    "Kubernetes",
+    "k8s"
+   ]
+  ],
+  "expect_added": [],
+  "expect_headline": "SRE · k8s",
+  "expect_first_bullets": {
+   "e1": "Managed k8s clusters across regions"
+  }
+ },
+ {
+  "name": "tailor_plural_pair_must_not_swap",
+  "why": "Term 'workflow' is true via fact skill 'Workflows'. jd_spelling 'workflow' is not on the page and the page holds 'workflows', but spec says '\"workflow\"/\"workflows\" is NOT allowed', so no bullet change is recorded. No skill is added because jd_spelling 'workflow' is not a true skill ('Workflows' ≠ 'workflow' ignoring case), and the headline gets no additions.",
+  "fn": "tailor",
+  "jd": "workflow workflow workflow",
+  "title": "Automation Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "workflow",
+       "synonyms": [
+        "workflows"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "Automation Engineer",
+   "summary": "Builds automation.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "GitHub Actions"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Automated CI workflows with GitHub Actions",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "Automation Engineer",
+     "dates": "2021-2024",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Automated CI",
+     "T": "Automated CI",
+     "A": "Built workflows",
+     "R": "Faster releases",
+     "numbers": [],
+     "skills": [
+      "Workflows"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect_swaps": [],
+  "expect_added": [],
+  "expect_headline": "Automation Engineer",
+  "expect_first_bullets": {
+   "e1": "Automated CI workflows with GitHub Actions"
+  }
+ },
+ {
+  "name": "tailor_not_true_term_never_added",
+  "why": "No fact with resume_ok not false has a 'Terraform' skill and it is not in skills.not_true, so its truth is 'not true'. Spec: 'Never: ... a term that is not true.' Its jd_spelling is absent from the page but nothing is added; the headline gets no additions (it is not a true skill).",
+  "fn": "tailor",
+  "jd": "Terraform Terraform Terraform",
+  "title": "Platform Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "Platform Engineer",
+   "summary": "Infrastructure work.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Linux"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Linux servers",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "Platform Engineer",
+     "dates": "2018-2024",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Ran servers",
+     "T": "Ran servers",
+     "A": "Used Linux",
+     "R": "99.9% uptime",
+     "numbers": [],
+     "skills": [
+      "Linux"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect_swaps": [],
+  "expect_added": [],
+  "expect_headline": "Platform Engineer",
+  "expect_first_bullets": {
+   "e1": "Managed Linux servers"
+  }
+ },
+ {
+  "name": "tailor_not_used_tool_never_swapped",
+  "why": "No fact skill matches a spelling; 'Kubernetes' is in skills.not_true → truth is 'not used', not 'true'. A swap requires 'a true term whose jd_spelling is not on the page but another spelling s of the cluster is', so the page's 'Kubernetes' is left alone and nothing is added.",
+  "fn": "tailor",
+  "jd": "k8s k8s k8s",
+  "title": "DevOps Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "kubernetes",
+       "synonyms": [
+        "k8s"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "DevOps Engineer",
+   "summary": "Operations work.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Docker"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Ran Kubernetes clusters",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "DevOps Engineer",
+     "dates": "2019-2024",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Ran clusters",
+     "T": "Ran clusters",
+     "A": "Used Docker",
+     "R": "Faster deploys",
+     "numbers": [],
+     "skills": [
+      "Docker"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "Kubernetes"
+    ]
+   }
+  },
+  "expect_swaps": [],
+  "expect_added": [],
+  "expect_headline": "DevOps Engineer",
+  "expect_first_bullets": {
+   "e1": "Ran Kubernetes clusters"
+  }
+ },
+ {
+  "name": "tailor_skill_added_graphql",
+  "why": "'GraphQL' is true via the resume_ok fact's skills and its jd_spelling 'GraphQL' is not on the page (headline + summary + skills items + bullet texts) and is itself a true skill, so spec: 'is appended to one skills group'. Headline: 'title, then up to 3 jd_spellings of true terms that are true skills and are not inside the title' → 'API Engineer · GraphQL'.",
+  "fn": "tailor",
+  "jd": "GraphQL GraphQL GraphQL",
+  "title": "API Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "GraphQL",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "API Engineer",
+   "summary": "Backend APIs.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built REST endpoints",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "API Engineer",
+     "dates": "2020-2024",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Built APIs",
+     "T": "Built APIs",
+     "A": "Used Python and GraphQL",
+     "R": "Shipped v2",
+     "numbers": [],
+     "skills": [
+      "Python",
+      "GraphQL"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect_swaps": [],
+  "expect_added": [
+   "GraphQL"
+  ],
+  "expect_headline": "API Engineer · GraphQL",
+  "expect_first_bullets": {
+   "e1": "Built REST endpoints"
+  }
+ },
+ {
+  "name": "tailor_headline_title_exclusion_and_cap",
+  "why": "jd_terms order is score/hits/alphabetical → Docker, Kafka, Kubernetes, Redis, Terraform (all 3 hits, weight 1.0). Kubernetes is a true skill but sits inside the title (case-insensitive), so it is excluded; only the first 3 remaining qualify → 'Senior Kubernetes Engineer · Docker · Kafka · Redis' (Terraform dropped by the 3 cap). Every jd_spelling is already on the page, so nothing is swapped or added.",
+  "fn": "tailor",
+  "jd": "Docker Docker Docker Kubernetes Kubernetes Kubernetes Kafka Kafka Kafka Redis Redis Redis Terraform Terraform Terraform",
+  "title": "Senior Kubernetes Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Kafka",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c4",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Redis",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c5",
+     "weight": 1.0,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "Senior Kubernetes Engineer",
+   "summary": "Infrastructure engineer.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Docker",
+      "Kafka",
+      "Redis",
+      "Terraform"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Kubernetes clusters",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "work",
+     "org": "Acme",
+     "role": "Infrastructure Engineer",
+     "dates": "2019-2024",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Managed clusters",
+     "T": "Managed clusters",
+     "A": "Used Docker, Kafka, Redis, Terraform, Kubernetes",
+     "R": "Scaled to 100 services",
+     "numbers": [],
+     "skills": [
+      "Docker",
+      "Kafka",
+      "Kubernetes",
+      "Redis",
+      "Terraform"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect_swaps": [],
+  "expect_added": [],
+  "expect_headline": "Senior Kubernetes Engineer · Docker · Kafka · Redis",
+  "expect_first_bullets": {
+   "e1": "Managed Kubernetes clusters"
+  }
+ }
+]

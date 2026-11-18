@@ -1,0 +1,720 @@
+[
+ {
+  "name": "matcher plain SQL before comma",
+  "why": "Spec: plain strings match case-insensitively and the character after the term must not be a letter, digit, underscore, \"&\", \"+\" or \"/\"; a comma is allowed.",
+  "fn": "matcher",
+  "term": "SQL",
+  "text": "SQL,",
+  "expect": true
+ },
+ {
+  "name": "matcher SQL inside NoSQL",
+  "why": "Spec: the character before the term must not be a letter, digit, underscore, \"&\", \"+\" or \"/\". In \"NoSQL\" the character before S is the letter o.",
+  "fn": "matcher",
+  "term": "SQL",
+  "text": "NoSQL",
+  "expect": false
+ },
+ {
+  "name": "matcher SQL prefix of SQLite",
+  "why": "Spec: the character after the term must not be a letter, digit, underscore, \"&\", \"+\" or \"/\". In \"SQLite\" the character after L is the letter i.",
+  "fn": "matcher",
+  "term": "SQL",
+  "text": "SQLite",
+  "expect": false
+ },
+ {
+  "name": "matcher case-sensitive R whole token",
+  "why": "Spec: {\"t\":\"R\",\"cs\":true} matches only with exact case; the example says it matches \"Python or R.\".",
+  "fn": "matcher",
+  "term": {
+   "t": "R",
+   "cs": true
+  },
+  "text": "Python or R.",
+  "expect": true
+ },
+ {
+  "name": "matcher case-sensitive R does not match lowercase r",
+  "why": "Spec: \"cs\": true terms match only with the exact case.",
+  "fn": "matcher",
+  "term": {
+   "t": "R",
+   "cs": true
+  },
+  "text": "r",
+  "expect": false
+ },
+ {
+  "name": "matcher case-sensitive R before ampersand",
+  "why": "Spec: the character after the term must not be \"&\"; the example says {\"t\":\"R\",\"cs\":true} does not match \"R&D\".",
+  "fn": "matcher",
+  "term": {
+   "t": "R",
+   "cs": true
+  },
+  "text": "R&D",
+  "expect": false
+ },
+ {
+  "name": "matcher ML inside HTML",
+  "why": "Spec: the character before the term must not be a letter; the example says \"ML\" does not match \"HTML\". In \"HTML\" the character before M is T.",
+  "fn": "matcher",
+  "term": "ML",
+  "text": "HTML",
+  "expect": false
+ },
+ {
+  "name": "matcher term with internal slash",
+  "why": "Spec: \"A/B testing\" matches \"A/B testing\" (the slash is inside the term); boundary before is a space and after is a space.",
+  "fn": "matcher",
+  "term": "A/B testing",
+  "text": "We do A/B testing now",
+  "expect": true
+ },
+ {
+  "name": "split_req no marker",
+  "why": "Spec: no marker means (whole text, \"\").",
+  "fn": "split_req",
+  "text": "Python and SQL",
+  "expect_required": "Python and SQL",
+  "expect_preferred": ""
+ },
+ {
+  "name": "split_req nice to have marker",
+  "why": "Spec: split at the first occurrence of \"nice to have\"; required part is everything before that word, preferred part is from that word to the end.",
+  "fn": "split_req",
+  "text": "Required: Python. Nice to have: SQL",
+  "expect_required": "Required: Python. ",
+  "expect_preferred": "Nice to have: SQL"
+ },
+ {
+  "name": "split_req case-insensitive bonus",
+  "why": "Spec: markers are matched case-insensitively; split at the first occurrence of \"bonus\".",
+  "fn": "split_req",
+  "text": "Python required. BONUS: SQL",
+  "expect_required": "Python required. ",
+  "expect_preferred": "BONUS: SQL"
+ },
+ {
+  "name": "split_req first marker wins",
+  "why": "Spec: the text is split at the FIRST occurrence of any marker; required part is before \"Bonus\", preferred part starts at \"Bonus\".",
+  "fn": "split_req",
+  "text": "Python and SQL. Bonus: Docker. Nice to have: AWS",
+  "expect_required": "Python and SQL. ",
+  "expect_preferred": "Bonus: Docker. Nice to have: AWS"
+ },
+ {
+  "name": "split_req hyphenated nice-to-have",
+  "why": "Spec: \"nice-to-have\" is one of the whole-word markers; split before it and keep it in the preferred part.",
+  "fn": "split_req",
+  "text": "Must know Go; nice-to-have Rust",
+  "expect_required": "Must know Go; ",
+  "expect_preferred": "nice-to-have Rust"
+ },
+ {
+  "name": "stats single hit required",
+  "why": "One JD with SQL in the required part: keyword df=1/1=1.000, req_share=1/1=1.0; competency df=1, req_share=1, score=1*(0.5+0.5*1)=1, weight=1/1=1.0000.",
+  "fn": "stats",
+  "texts": [
+   "We need SQL."
+  ],
+  "lexicon": {
+   "competencies": {
+    "db": {
+     "label": "DB",
+     "keywords": [
+      [
+       "SQL",
+       "Postgres"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "db": {
+    "df": 1.0,
+    "req_share": 1.0,
+    "weight": 1.0,
+    "keywords": {
+     "SQL": {
+      "df": 1.0,
+      "req_share": 1.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "db"
+  ]
+ },
+ {
+  "name": "stats keyword df rounded and required-only hits",
+  "why": "SQL hits 2 of 3 JDs, so keyword df=2/3=0.666… rounded to 0.667; both SQL hits are in required parts, so req_share=1.0; competency hits 2/3 JDs, all required, score≈0.6667, weight=1.0000 as only competency.",
+  "fn": "stats",
+  "texts": [
+   "Python and SQL. Bonus: Docker",
+   "Python only.",
+   "SQL only."
+  ],
+  "lexicon": {
+   "competencies": {
+    "lang": {
+     "label": "Lang",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "lang": {
+    "df": 0.667,
+    "req_share": 1.0,
+    "weight": 1.0,
+    "keywords": {
+     "SQL": {
+      "df": 0.667,
+      "req_share": 1.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "lang"
+  ]
+ },
+ {
+  "name": "stats hit only in preferred part",
+  "why": "The only SQL hit is after the \"Bonus\" marker, so keyword df=1/1=1.000 but req_share=0/1=0.0; competency df=1, req_share=0, score=1*(0.5+0)=0.5, weight=1.0000 as only competency.",
+  "fn": "stats",
+  "texts": [
+   "Python. Bonus: SQL"
+  ],
+  "lexicon": {
+   "competencies": {
+    "db": {
+     "label": "DB",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "db": {
+    "df": 1.0,
+    "req_share": 0.0,
+    "weight": 1.0,
+    "keywords": {
+     "SQL": {
+      "df": 1.0,
+      "req_share": 0.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "db"
+  ]
+ },
+ {
+  "name": "stats competency union over groups",
+  "why": "Python hits JDs 1 and 2 (df=2/3=0.667), SQL hits JDs 1 and 3 (df=2/3=0.667); their union hits all 3 JDs, so competency df=1.0; all hits are required, so req_share=1.0; score=1, weight=1.0000.",
+  "fn": "stats",
+  "texts": [
+   "Python and SQL.",
+   "Python only.",
+   "SQL only."
+  ],
+  "lexicon": {
+   "competencies": {
+    "data": {
+     "label": "Data",
+     "keywords": [
+      [
+       "Python"
+      ],
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "data": {
+    "df": 1.0,
+    "req_share": 1.0,
+    "weight": 1.0,
+    "keywords": {
+     "Python": {
+      "df": 0.667,
+      "req_share": 1.0
+     },
+     "SQL": {
+      "df": 0.667,
+      "req_share": 1.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "data"
+  ]
+ },
+ {
+  "name": "stats two competencies weights",
+  "why": "Python hits 4/4 JDs: df=1, req_share=1, score=1. SQL hits 2/4 JDs: df=0.5, req_share=1, score=0.5. Sum=1.5, so Python weight=1/1.5=0.6667 and SQL weight=0.5/1.5=0.3333; descending order is py then sql.",
+  "fn": "stats",
+  "texts": [
+   "Python and SQL.",
+   "Python and SQL.",
+   "Python.",
+   "Python."
+  ],
+  "lexicon": {
+   "competencies": {
+    "py": {
+     "label": "Python",
+     "keywords": [
+      [
+       "Python"
+      ]
+     ]
+    },
+    "sql": {
+     "label": "SQL",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "py": {
+    "df": 1.0,
+    "req_share": 1.0,
+    "weight": 0.6667,
+    "keywords": {
+     "Python": {
+      "df": 1.0,
+      "req_share": 1.0
+     }
+    }
+   },
+   "sql": {
+    "df": 0.5,
+    "req_share": 1.0,
+    "weight": 0.3333,
+    "keywords": {
+     "SQL": {
+      "df": 0.5,
+      "req_share": 1.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "py",
+   "sql"
+  ]
+ },
+ {
+  "name": "stats req_share affects score",
+  "why": "SQL hits both JDs anywhere (df=2/2=1.000), but only JD1 has SQL in the required part; req_share=1/2=0.5, score=1*(0.5+0.5*0.5)=0.75, weight=1.0000 as only competency.",
+  "fn": "stats",
+  "texts": [
+   "SQL.",
+   "Python. Bonus: SQL"
+  ],
+  "lexicon": {
+   "competencies": {
+    "db": {
+     "label": "DB",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "db": {
+    "df": 1.0,
+    "req_share": 0.5,
+    "weight": 1.0,
+    "keywords": {
+     "SQL": {
+      "df": 1.0,
+      "req_share": 0.5
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "db"
+  ]
+ },
+ {
+  "name": "stats no hits gives zero weights",
+  "why": "SQL never hits the only JD, so keyword df=0.000 and req_share=0.0; competency df=0, score=0, and when every score is 0 every weight is 0.",
+  "fn": "stats",
+  "texts": [
+   "Python."
+  ],
+  "lexicon": {
+   "competencies": {
+    "sql": {
+     "label": "SQL",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "sql": {
+    "df": 0.0,
+    "req_share": 0.0,
+    "weight": 0.0,
+    "keywords": {
+     "SQL": {
+      "df": 0.0,
+      "req_share": 0.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "sql"
+  ]
+ },
+ {
+  "name": "stats df below 0.05 gives score zero",
+  "why": "SQL hits 1 of 21 JDs: 1/21=0.047619, rounded keyword df=0.048, still below 0.05; competency df≈0.0476<0.05, so score=0 and weight=0.0000 when all scores are zero.",
+  "fn": "stats",
+  "texts": [
+   "SQL",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python",
+   "Python"
+  ],
+  "lexicon": {
+   "competencies": {
+    "db": {
+     "label": "DB",
+     "keywords": [
+      [
+       "SQL"
+      ]
+     ]
+    }
+   }
+  },
+  "expect": {
+   "db": {
+    "df": 0.048,
+    "req_share": 1.0,
+    "weight": 0.0,
+    "keywords": {
+     "SQL": {
+      "df": 0.048,
+      "req_share": 1.0
+     }
+    }
+   }
+  },
+  "expect_order": [
+   "db"
+  ]
+ },
+ {
+  "name": "select basic track and sorting",
+  "why": "Spec: chosen when its track is in selector.tracks and it has a text and no truthy dup_of; result ids are unique and sorted ascending.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "b",
+    "track": "eng",
+    "title": "Backend"
+   },
+   {
+    "id": "a",
+    "track": "eng",
+    "title": "API"
+   },
+   {
+    "id": "c",
+    "track": "sales",
+    "title": "Sales"
+   }
+  ],
+  "texts": {
+   "a": "text",
+   "b": "text",
+   "c": "text"
+  },
+  "selector": {
+   "tracks": [
+    "eng"
+   ]
+  },
+  "expect": [
+   "a",
+   "b"
+  ]
+ },
+ {
+  "name": "select excludes missing text and truthy dup_of",
+  "why": "Spec: a job is chosen only if its id has a text and it has no (truthy) dup_of. b has no text; c has truthy dup_of; d has falsy dup_of \"\" so it is allowed.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "a",
+    "track": "eng",
+    "title": "Dev"
+   },
+   {
+    "id": "b",
+    "track": "eng",
+    "title": "Dev"
+   },
+   {
+    "id": "c",
+    "track": "eng",
+    "title": "Dev",
+    "dup_of": "a"
+   },
+   {
+    "id": "d",
+    "track": "eng",
+    "title": "Dev",
+    "dup_of": ""
+   }
+  ],
+  "texts": {
+   "a": "x",
+   "c": "x",
+   "d": "x"
+  },
+  "selector": {
+   "tracks": [
+    "eng"
+   ]
+  },
+  "expect": [
+   "a",
+   "d"
+  ]
+ },
+ {
+  "name": "select title_regex case-insensitive",
+  "why": "Spec: if selector has title_regex, a chosen job must also match it in its title (case-insensitive). Only a and c have Python in the title.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "a",
+    "track": "eng",
+    "title": "Senior Python Engineer"
+   },
+   {
+    "id": "b",
+    "track": "eng",
+    "title": "Junior Java Engineer"
+   },
+   {
+    "id": "c",
+    "track": "eng",
+    "title": "Python Developer"
+   }
+  ],
+  "texts": {
+   "a": "x",
+   "b": "x",
+   "c": "x"
+  },
+  "selector": {
+   "tracks": [
+    "eng"
+   ],
+   "title_regex": "python"
+  },
+  "expect": [
+   "a",
+   "c"
+  ]
+ },
+ {
+  "name": "select or_tracks_with_text min_hits",
+  "why": "Spec: OR, when or_tracks_with_text is given, a job is chosen if its track is in those tracks AND the regex matches at least min_hits times. a has 3 SQL matches, c has 2, b has 1; d is included by selector.tracks.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "a",
+    "track": "data",
+    "title": "Data"
+   },
+   {
+    "id": "b",
+    "track": "data",
+    "title": "Data"
+   },
+   {
+    "id": "c",
+    "track": "data",
+    "title": "Data"
+   },
+   {
+    "id": "d",
+    "track": "eng",
+    "title": "Eng"
+   }
+  ],
+  "texts": {
+   "a": "SQL SQL SQL",
+   "b": "SQL",
+   "c": "Python SQL SQL",
+   "d": "SQL SQL"
+  },
+  "selector": {
+   "tracks": [
+    "eng"
+   ],
+   "or_tracks_with_text": {
+    "tracks": [
+     "data"
+    ],
+    "regex": "SQL",
+    "min_hits": 2
+   }
+  },
+  "expect": [
+   "a",
+   "c",
+   "d"
+  ]
+ },
+ {
+  "name": "select regex non-overlapping matches",
+  "why": "Spec: regex matches are non-overlapping. In \"ababa\" the regex \"aba\" gives 1 match; in \"abaaba\" it gives 2 matches, so only b reaches min_hits=2.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "a",
+    "track": "data",
+    "title": "Data"
+   },
+   {
+    "id": "b",
+    "track": "data",
+    "title": "Data"
+   },
+   {
+    "id": "c",
+    "track": "data",
+    "title": "Data"
+   }
+  ],
+  "texts": {
+   "a": "ababa",
+   "b": "abaaba",
+   "c": "aba"
+  },
+  "selector": {
+   "tracks": [],
+   "or_tracks_with_text": {
+    "tracks": [
+     "data"
+    ],
+    "regex": "aba",
+    "min_hits": 2
+   }
+  },
+  "expect": [
+   "b"
+  ]
+ },
+ {
+  "name": "select combines title_regex with or_tracks_with_text",
+  "why": "Spec: a chosen job must also satisfy title_regex. a qualifies via or_tracks_with_text (data track, two Python matches) and title matches Engineer; b fails title; c qualifies via tracks and title; d fails title; e has no text.",
+  "fn": "select",
+  "jobs": [
+   {
+    "id": "a",
+    "track": "data",
+    "title": "ML Engineer"
+   },
+   {
+    "id": "b",
+    "track": "data",
+    "title": "Data Scientist"
+   },
+   {
+    "id": "c",
+    "track": "eng",
+    "title": "Backend Engineer"
+   },
+   {
+    "id": "d",
+    "track": "eng",
+    "title": "Backend Dev"
+   },
+   {
+    "id": "e",
+    "track": "eng",
+    "title": "Engineer"
+   }
+  ],
+  "texts": {
+   "a": "Python Python",
+   "b": "Python Python",
+   "c": "Python",
+   "d": "Python Python"
+  },
+  "selector": {
+   "tracks": [
+    "eng"
+   ],
+   "or_tracks_with_text": {
+    "tracks": [
+     "data"
+    ],
+    "regex": "python",
+    "min_hits": 2
+   },
+   "title_regex": "Engineer"
+  },
+  "expect": [
+   "a",
+   "c"
+  ]
+ }
+]

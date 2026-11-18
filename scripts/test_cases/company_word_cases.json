@@ -1,0 +1,300 @@
+[
+ {
+  "name": "applied_materials_worked_regular_employee",
+  "company": "Pellwyndel",
+  "label": "Have you ever worked at Pellwyndel as a regular employee, contingent worker, intern, etc.?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "applied_materials_email_followup_optional",
+  "company": "Pellwyndel",
+  "label": "If yes, please enter your Pellwyndel email address:",
+  "type": "text",
+  "options": [],
+  "required": false,
+  "expect": "not_filled"
+ },
+ {
+  "name": "everpure_previously_worked",
+  "company": "Everpure",
+  "label": "Have you previously worked for Everpure (formerly Morostlum)?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "apploving_or_affiliates",
+  "company": "AppLovin",
+  "label": "Have you worked at AppLovin or any of its affiliates before?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "sevnevfen_previously_applied",
+  "company": "Sevnevfen",
+  "label": "Have you previously applied to work at Sevnevfen?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "applied"
+ },
+ {
+  "name": "applied_intuition_previously_applied",
+  "company": "Applied Intuition",
+  "label": "Have you previously applied to Applied Intuition?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "applied"
+ },
+ {
+  "name": "applied_intuition_ever_employed",
+  "company": "Applied Intuition",
+  "label": "Have you ever been employed by Applied Intuition?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "applied_intuition_employed_combo",
+  "company": "Applied Intuition",
+  "label": "Were you previously employed at Applied Intuition?",
+  "type": "combo",
+  "options": [
+   "Yes",
+   "No",
+   "Prefer not to answer"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "applied_intuition_email_textarea",
+  "company": "Applied Intuition",
+  "label": "If yes, please provide your Applied Intuition email address",
+  "type": "textarea",
+  "options": [],
+  "required": false,
+  "expect": "not_filled"
+ },
+ {
+  "name": "intuitive_surgical_interned",
+  "company": "Intuitive Surgical",
+  "label": "Did you intern at Intuitive Surgical?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "verify_inc_contractor",
+  "company": "Verify Inc",
+  "label": "Have you been a contractor for Verify Inc?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "verify_inc_work_email_optional",
+  "company": "Verify Inc",
+  "label": "Your Verify Inc work e-mail",
+  "type": "text",
+  "options": [],
+  "required": false,
+  "expect": "not_filled"
+ },
+ {
+  "name": "priority_health_currently_employed",
+  "company": "Priority Health",
+  "label": "Are you currently employed by Priority Health?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "priority_health_employee_email_required",
+  "company": "Priority Health",
+  "label": "Employee e-mail address",
+  "type": "text",
+  "options": [],
+  "required": true,
+  "expect": "not_filled"
+ },
+ {
+  "name": "current_health_previously_worked",
+  "company": "Current Health",
+  "label": "Have you previously worked at Current Health?",
+  "type": "combo",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "applyboard_applied_last_12_months",
+  "company": "ApplyBoard",
+  "label": "Have you applied to ApplyBoard in the last 12 months?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "applied"
+ },
+ {
+  "name": "applyboard_previously_worked",
+  "company": "ApplyBoard",
+  "label": "Have you previously worked for ApplyBoard?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "prior_labs_ever_worked",
+  "company": "Prior Labs",
+  "label": "Have you ever worked for Prior Labs?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ },
+ {
+  "name": "applied_materials_former_employee_email_required",
+  "company": "Pellwyndel",
+  "label": "Former employee email",
+  "type": "text",
+  "options": [],
+  "required": true,
+  "expect": "not_filled"
+ },
+ {
+  "name": "former_co_previously_employed_email",
+  "company": "Former Co",
+  "label": "If you were previously employed, provide your Former Co e-mail",
+  "type": "text",
+  "options": [],
+  "required": true,
+  "expect": "not_filled"
+ },
+ {
+  "name": "applied_materials_plain_email_address",
+  "company": "Pellwyndel",
+  "label": "Email address",
+  "type": "text",
+  "options": [],
+  "required": true,
+  "expect": "personal_email"
+ },
+ {
+  "name": "personal_email_field_only",
+  "company": "Everpure",
+  "label": "Personal email",
+  "type": "text",
+  "options": [],
+  "required": true,
+  "expect": "personal_email"
+ },
+ {
+  "name": "current_health_preferred_email_address",
+  "company": "Current Health",
+  "label": "Preferred email address",
+  "type": "text",
+  "options": [],
+  "required": false,
+  "expect": "personal_email"
+ },
+ {
+  "name": "opt_in_job_emails",
+  "company": "Pellwyndel",
+  "label": "Send me emails about new jobs",
+  "type": "radio",
+  "options": [
+   "Yes, send me emails",
+   "No"
+  ],
+  "required": false,
+  "expect": "not_filled"
+ },
+ {
+  "name": "stripe_resume_employer_a_worked",
+  "company": "Stripe",
+  "label": "Have you ever worked at RESUME_EMPLOYER_A?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_yes"
+ },
+ {
+  "name": "northwind_resume_employer_b_previously_employed",
+  "company": "Northwind",
+  "label": "Have you previously been employed by RESUME_EMPLOYER_B?",
+  "type": "combo",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "required": true,
+  "expect": "employment_yes"
+ },
+ {
+  "name": "applied_materials_long_sentence_options",
+  "company": "Pellwyndel",
+  "label": "Have you at any time worked at Pellwyndel?",
+  "type": "radio",
+  "options": [
+   "No, I have never worked for Pellwyndel",
+   "Yes, I have worked for Pellwyndel"
+  ],
+  "required": true,
+  "expect": "employment_no"
+ }
+]

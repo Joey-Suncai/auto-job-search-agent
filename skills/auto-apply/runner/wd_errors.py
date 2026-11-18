@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Show which Workday fields are flagged invalid in an open tab: block heading, label, current value.  wd_errors.py <url text>"""
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import sys, json
 from playwright.sync_api import sync_playwright
 JS = '''() => [...document.querySelectorAll('[aria-invalid="true"], [data-automation-id="errorMessage"]')].map(el => {
@@ -15,5 +16,5 @@ BLOCKS = '''() => [...document.querySelectorAll('[role="group"][aria-labelledby$
   return (h ? h.textContent.trim() : g.getAttribute('aria-labelledby')) + ' :: ' +
     [...g.querySelectorAll('input[type=text], textarea')].map(i => i.value).filter(Boolean).join(' / ').slice(0, 100); })'''
 with sync_playwright() as pw:
-    pg = [p for p in pw.chromium.connect_over_cdp('http://127.0.0.1:9222').contexts[0].pages if sys.argv[1] in p.url][-1]
+    pg = [p for p in cdp_connect.connect(pw, 'http://127.0.0.1:9222').contexts[0].pages if sys.argv[1] in p.url][-1]
     print(json.dumps({'invalid': pg.evaluate(JS)[:12], 'blocks': pg.evaluate(BLOCKS)}, ensure_ascii=False, indent=0))

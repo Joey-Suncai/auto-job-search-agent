@@ -4,6 +4,7 @@
 Going back to (or past) the experience step makes the forward pass save My Experience again, and most tenants then keep
 only one education entry (#16 #75, JSA-032). That Back is refused unless --allow-education-loss is given (Joey's call —
 e.g. he already chose one school). Steps after My Experience are safe to go back to."""
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import sys, time, re
 from playwright.sync_api import sync_playwright
 EXP = re.compile(r'experience|education|经历|經歷', re.I)
@@ -30,7 +31,7 @@ def main():
     key, want = args[0], args[1]; way = args[2] if len(args) > 2 else 'back'
     btn = {'back': 'pageFooterBackButton', 'next': 'pageFooterNextButton'}[way]
     with sync_playwright() as pw:
-        pg = [p for p in pw.chromium.connect_over_cdp('http://127.0.0.1:9222').contexts[0].pages if key in p.url][-1]
+        pg = [p for p in cdp_connect.connect(pw, 'http://127.0.0.1:9222').contexts[0].pages if key in p.url][-1]
         step = lambda: (pg.locator('[data-automation-id="progressBarActiveStep"]').first.inner_text() if pg.locator('[data-automation-id="progressBarActiveStep"]').count() else '')
         steps = [x.inner_text() for x in pg.locator('[data-automation-id="progressBar"] li, [data-automation-id^="progressBarStep"]').all()] or []
         names = [re.sub(r'\s+', ' ', x) for x in steps]

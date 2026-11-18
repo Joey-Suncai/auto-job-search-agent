@@ -1,0 +1,1 @@
+Return a JSON array: {"name": "unique_snake_case", "label": "question", "type": "text|select|radio", "options": ["..."] (empty for a text box), "expect": "555-010-2030" | "NOT_PHONE", "spec_quote": "...", "ambiguous": false}

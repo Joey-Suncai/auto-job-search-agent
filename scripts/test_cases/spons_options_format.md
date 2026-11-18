@@ -1,0 +1,1 @@
+JSON list of cases: {"name": short string, "label": the question text, "type": "radio" or "select", "options": [option strings], "expect": the exact option string that must be chosen, or "ask" when no answer may be given, or "No"/"Yes" for plain Yes/No}.

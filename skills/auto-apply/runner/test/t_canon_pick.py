@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """JSA-005: canon.pick chooses the canon-valid option from a field's own list; plan_build uses it. Prints ALL PASS or N FAILED."""
-import os, sys, tempfile
+import json, os, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.dirname(HERE))
 os.environ['CX_DATA'] = tempfile.mkdtemp(prefix='cxpick_')
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..', 'config')); import jsa_profile; jsa_profile.use_fixture_if_no_user()   # fresh clone: F-1 test fixture (JSA-086)
@@ -22,7 +22,7 @@ T('learned value for the tenant wins', canon.pick('gender', ['Woman', 'Man', 'De
   canon.pick('gender', ['Woman', 'Man', 'Decline'], 'acme.wd1.myworkdayjobs.com'))
 
 import plan_build as PB
-PB.run_rules = lambda fields, jd='', company='': {'q1': {'status': 'ok', 'value': 'No', 'rule': 'spons_now'}, 'q2': {'status': 'ok', 'value': 'I identify as a Veteran, just not a protected Veteran', 'rule': 'x'}}
+PB.run_rules = lambda fields, jd='', company='', cover='': {'q1': {'status': 'ok', 'value': 'No', 'rule': 'spons_now'}, 'q2': {'status': 'ok', 'value': 'I identify as a Veteran, just not a protected Veteran', 'rule': 'x'}}
 d = tempfile.mkdtemp()
 fields = [{'key': 'q1', 'label': 'Will you now or in the future require sponsorship?', 'type': 'select', 'required': True, 'options': ['No', 'Yes']},
           {'key': 'q2', 'label': 'Veteran Status', 'type': 'select', 'required': True, 'options': V},
@@ -35,4 +35,17 @@ T('plan_build: no rule for source → first option, not a needs item', got['q3']
 open(os.path.join(d, 'answers.json'), 'w').write('{"Veteran Status": "I do not wish to self-identify"}')
 plan = PB.build(d, fields, 'https://acme.wd1.myworkdayjobs.com/x', 'workday')
 T("plan_build: Joey's answers.json is never overruled", next(f for f in plan['fields'] if f['key'] == 'q2')['answer'] == 'I do not wish to self-identify')
+# JSA-361 stop-gap (Joey 2026-11-16): a no-time sponsorship question the rules hand to Joey (ask + no_auto) is never filled
+# by canon's option pick either
+PB.run_rules = lambda fields, jd='', company='', cover='': {'q9': {'status': 'unknown', 'ask': True, 'no_auto': True, 'rule': 'spons_future', 'why': 'sponsorship question with no time word'}}
+d2 = tempfile.mkdtemp()
+plan = PB.build(d2, [{'key': 'q9', 'label': 'Do you require visa sponsorship?', 'type': 'select', 'required': True, 'options': ['No', 'Yes']}],
+                'https://acme.wd1.myworkdayjobs.com/x', 'workday')
+q9 = next(f for f in plan['fields'] if f['key'] == 'q9')
+T('plan_build: no-time sponsorship ask is not filled by canon (JSA-361)', q9.get('answer') is None and any(n['key'] == 'q9' for n in plan['needs_user']), (q9.get('answer'), q9.get('source')))
+json.dump({'^Do you require visa sponsorship\\?$': 'Yes'}, open(os.path.join(d2, 'ds_answers.json'), 'w'))
+plan = PB.build(d2, [{'key': 'q9', 'label': 'Do you require visa sponsorship?', 'type': 'select', 'required': True, 'options': ['No', 'Yes']}],
+                'https://acme.wd1.myworkdayjobs.com/x', 'workday')
+q9 = next(f for f in plan['fields'] if f['key'] == 'q9')
+T('plan_build: an old ds_answers.json mapping does not fill a no_auto ask (JSA-361 review)', q9.get('answer') is None and q9.get('no_auto'), (q9.get('answer'), q9.get('source')))
 print('ALL CANON PICK TESTS PASS' if not fails else f'{fails} FAILED'); sys.exit(1 if fails else 0)

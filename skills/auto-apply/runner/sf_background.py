@@ -35,9 +35,12 @@ WORK_ALIASES = [(r'^(company|company name|employer|employer name|name of (compan
                 (r'^(present|current) employer\??$|^(currently employed|current job|is this your current (job|employer))( here)?\??$', 'Current'),
                 (r'^(start date|from date|from|date started)$', 'Start Date'), (r'^(end date|to date|to|date ended)$', 'End Date'),
                 (r'^(location|city|city/location)$', 'Location')]
-EDU_ALIASES = [(r'^(school|school name|name of school|college|college/university|university|university/college|institution|institution name)$', 'School Name'),
-               (r'^(type|degree|degree type|degree/certificate|degree / certificate|degree or certificate|certificate/degree)$', 'Type'),
-               (r'^(subject|major|field of study|area of study|major/field of study)$', 'Subject'),
+EDU_ALIASES = [(r'^(school|school name|name of school|college|college/university|university|university/college|institution|institution name|'
+                r'(school|college|university) ?/ ?(institution|university|college)( name)?)$', 'School Name'),   # "School/Institution Name" (an employer 11-10, JSA-295)
+               (r'^(type|degree|degree type|degree/certificate|degree / certificate|degree or certificate|certificate/degree|'
+                r'education type|type of education|education level|level of education|degree level)$', 'Type'),   # "Education Type" (an employer 11-10, JSA-295)
+               (r'^(degree achieved|degree earned|degree obtained|degree received|degree awarded)$', 'Achieved'),   # only a finished degree has one (JSA-295)
+               (r'^(subject|major|field of study|area of study|major/field of study|major \(legacy\))$', 'Subject'),
                (r'^(still attending|currently attending|attending|are you still attending)\??$', 'Attending'),
                (r'^(degree/certificate completion date|completion date|degree completion date|graduation date|date of graduation)$', 'Completion Date'),
                (r'^(from date|start date|from)$', 'From Date'), (r'^(end date|to date|to)$', 'End Date'), (r'^result$', 'Result')]
@@ -102,12 +105,13 @@ def _work_values(e, row):
 def _edu_values(e, today):
     current = bool(e.get('current'))
     ended = bool(e.get('end')) and str(e['end']) <= today and not current
-    v = {'Type': '/^' + ('master' if e.get('level') == 'master' else 'bachelor' if e.get('level') == 'bachelor' else re.escape(str(e.get('level') or ''))) + '/i',
+    v = {'Achieved': 'current' if current else 'open', 'Type': '/^' + ('master' if e.get('level') == 'master' else 'bachelor' if e.get('level') == 'bachelor' else re.escape(str(e.get('level') or ''))) + '/i',
          'Subject': e.get('major') or '', 'School Name': e.get('school') or '',
          'Result': '/in progress|pursuing|enrolled|current/i' if current else ('/^graduated|completed|degree (awarded|received)/i' if ended else '/in progress/i'),
          'From Date': month_first(e.get('start')), 'End Date': month_last(e.get('end')),
          'Attending': '/^yes\\b/i' if current else '/^no\\b/i'}
     if ended:
+        v['Achieved'] = 'done'                                    # "Degree Achieved": Yes / the finished degree (edu_pick)
         v['Completion Date'] = month_last(e.get('end'))          # a degree still in progress has no completion date: the box keeps what it has
     return v
 
@@ -237,16 +241,35 @@ def edu_pick(key, opts, ent):
     import sf_combo_edu as CE
     if key == 'Type':
         return CE.pick_degree(opts, ent)
+    if key == 'Achieved':                                         # an employer 11-10: a Yes / In Progress / No list; elsewhere a degree list
+        state = 'current' if ent.get('current') else 'done' if ent.get('end') and str(ent['end']) <= datetime.now().strftime('%Y-%m') else 'open'
+        if any(re.fullmatch(r'\s*(yes|no|in[- ]progress)\s*', o, re.I) for o in opts):
+            rx = {'current': r'^\s*in[- ]progress\s*$', 'done': r'^\s*yes\s*$'}.get(state)
+            return next((o for o in opts if rx and re.match(rx, o, re.I)), None)
+        return CE.pick_degree(opts, ent) if state == 'done' else None
     if key == 'Subject':
         return CE.pick_major(opts, ent.get('major'))
     return None
 
 
-def edu_school(page, f, ent, combo_options, N):
+def other_school_box(fields):
+    """Pure (tested). The key of a row's "If other, enter School / Institution Name" box (the companion that takes the
+    school's name when School = "Other", an employer 11-10, JSA-295); None when the row has none. A box for another "other"
+    (Area of Study, Major) is not it."""
+    for f in fields or []:
+        lab = _lab(f.get('label'))
+        if f.get('type') in ('text', 'textarea') and re.search(r'\bother\b|not listed|specify', lab, re.I) and re.search(r'\b(school|institution|college|university)\b', lab, re.I) \
+                and not re.search(r'\b(area of study|major|field of study|subject|discipline|degree)\b', lab, re.I):
+            return f['key']
+    return None
+
+
+def edu_school(page, f, ent, combo_options, N, other_ok=False):
     """(option, query, how) for a School combo in a background row: the school's own entry in the list
     (sf_combo_edu.pick_school on the loaded options, else a search by name / short name / distinctive word — "Chicago, U
-    of", an employer 11-05), never "Other" here (no companion box); (None, None, 'ambiguous' | None) when no single option fits
-    — the box is left empty for Joey."""
+    of", an employer 11-05); "Other" only when the row has a companion box for the name (`other_ok`, an employer 11-10 — how =
+    'other', the caller types the name there); (None, None, 'ambiguous' | None) when no single option fits — the box is
+    left empty for Joey."""
     import sf_combo_edu as CE
     try:
         pick, how = CE.pick_school(combo_options(page, f), ent)
@@ -255,7 +278,7 @@ def edu_school(page, f, ent, combo_options, N):
     if how == 'match':
         return pick, pick, how
     pick, query, how2 = CE.school_choice(page, f, ent, N, _css, combo_options)
-    if how2 == 'match':
+    if how2 == 'match' or (how2 == 'other' and other_ok and how != 'ambiguous'):
         return pick, query, how2
     CE._clear(page.locator(_css(f['key'])).first, N)              # never leave a typed search ("University o") in the box
     return None, None, ('ambiguous' if 'ambiguous' in (how, how2) else None)
@@ -299,19 +322,31 @@ def fill_background(page, log, combo_options, combo_set, N):
         for r in p['rows']:
             row = s['rows'][r['idx']]
             ent = next((e for e in edus if e.get('school') == r['who']), {}) if p['kind'] == 'edu' else {}
-            for f in row['fields']:
+            other_box = other_school_box(row['fields']) if p['kind'] == 'edu' else None
+            school_other = False                                  # School = "Other": the companion box takes the name (JSA-295)
+            import sf_combo_edu as CE
+            major_box = CE.other_major_box(row['fields']) if p['kind'] == 'edu' else None
+            major_other = False                                   # Area of Study = "Other": its "If other" box takes the major (Joey 2026-11-11)
+            for f in sorted(row['fields'], key=lambda x: 0 if canon_label(x['label'], p['kind']) in ('School Name', 'Subject') and x.get('type') == 'combo' else 1):
                 keys.add(f['key'])
                 lab = _lab(f['label']); ck = canon_label(lab, p['kind']); want = r['set'].get(ck)   # "Company Name" → Company … (an employer 11-05)
+                if ck == 'Achieved' and f['type'] != 'combo':
+                    want = None                                   # the Achieved state word only picks from a list (JSA-295)
                 if want is not None and f['type'] != 'combo' and re.fullmatch(r'/.*/i?', str(want)):
                     want = None                                   # a pick pattern ("Present Employer" Yes / No) only fits a list
                 rec = {'key': f['key'], 'label': f"{s['head']} ({r['who']}): {lab}", 'type': f['type'], 'required': bool(f.get('required')),
                        'list': f.get('list') or '', 'options': [], 'rule': 'background', 'bg': (s['id'], r['idx'], lab, 'field')}
+                if f['key'] == other_box and school_other:
+                    want = ent.get('school') or None
+                if f['key'] == major_box and major_other:
+                    want = ent.get('major') or None
                 try:
                     if want is None:
                         rec['want'] = f['value'] or None                  # no fact for this box: keep what is there (blocks when required and empty)
                     elif f['type'] == 'combo' and ck == 'School Name' and ent:   # a long, searched school list (Acuity "College/University")
-                        pick, query, how = edu_school(page, f, ent, combo_options, N)
+                        pick, query, how = edu_school(page, f, ent, combo_options, N, other_ok=bool(other_box))
                         rec['want'] = pick or want; rec['query'] = query
+                        school_other = how == 'other' and bool(pick)
                         if not pick:
                             rec['error'] = (f'{want}: several school list options could be it — Joey' if how == 'ambiguous'
                                             else f'{want} is not in the school list — Joey')
@@ -319,9 +354,23 @@ def fill_background(page, log, combo_options, combo_set, N):
                         elif N(f['value']).lower() != N(pick).lower():
                             import sf_combo_edu as CE
                             CE.combo_pick(page, f, pick, N, _css, query=query)
+                    elif f['type'] == 'combo' and ck == 'Subject' and ent:   # Joey 2026-11-11: not in the list + an "If other" box → Other + the major typed
+                        opts = combo_options(page, f)
+                        rec['options'] = opts[:400]
+                        pick, query, how = CE.major_pick(page, f, ent.get('major'), opts, bool(major_box), N, _css)
+                        rec['want'] = pick or want; rec['how'] = how
+                        if not pick:
+                            rec['error'] = f'no option for {want} in {opts[:8]}'
+                        elif N(f['value']).lower() != N(pick).lower():
+                            if query:
+                                CE.combo_pick(page, f, pick, N, _css, query=query)   # found by a search (paginated list)
+                            else:
+                                combo_set(page, f, pick)
+                        major_other = how == 'other' and bool(pick)
                     elif f['type'] == 'combo':
                         opts = combo_options(page, f)
-                        pick = edu_pick(ck, opts, ent) or pick_option(opts, want)
+                        rec['options'] = opts[:400]               # kept in form_check.json: a missing option is asked with the real list
+                        pick = edu_pick(ck, opts, ent) or (None if ck == 'Achieved' else pick_option(opts, want))
                         rec['want'] = pick or want
                         if not pick:
                             rec['error'] = f'no option for {want} in {opts[:8]}'

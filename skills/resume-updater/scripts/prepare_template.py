@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Unpack the A-Classic TEMPLATE into scripts/un/ and merge its runs, so build_a.py can rebuild the four bases from
+"""Unpack the A-Classic TEMPLATE into <data home>/data/work/resume/un/ and merge its runs, so build_a.py can rebuild the four bases from
 scratch (JSA-012). Self-contained — replaces the docx skill's merge_runs.py, which is not on this Mac.
 
-    python3 prepare_template.py            # → scripts/un/ (overwrites)
+    python3 prepare_template.py            # → <data home>/data/work/resume/un/ (overwrites)
     python3 prepare_template.py --check    # only report the run counts of the paragraph templates build_a.py uses
 
 Merge rule: inside one paragraph, adjacent <w:r> runs with the same run properties (rsid attributes ignored) become one
@@ -14,7 +14,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import jsa_profile  # noqa: E402  (JSA-077)
-TEMPLATE = os.path.join(ROOT, jsa_profile.get('resume_template') or 'resume/TEMPLATE.docx')
+import paths  # noqa: E402  (the data home, ADR-0008)
+TEMPLATE = jsa_profile.repo_path('resume_template') or paths.resume('TEMPLATE.docx')   # data home, not the code (JSA-375)
 # paragraph index → number of <w:t> build_a.fill() fills (resume-updater SKILL §"Paragraph templates")
 EXPECT = {0: 1, 1: 1, 2: 1, 3: 2, 7: 3, 8: 2, 13: 2, 16: 1, 17: 2, 18: 1, 25: 3}
 
@@ -62,7 +63,7 @@ def counts(xml):
 
 
 def main(a):
-    dst = os.path.join(HERE, 'un')
+    dst = os.path.join(paths.work('resume'), 'un')   # data home, not the code (JSA-377)
     if '--check' in a:
         print(counts(open(os.path.join(dst, 'word', 'document.xml'), encoding='utf-8').read())); return 0
     shutil.rmtree(dst, ignore_errors=True)

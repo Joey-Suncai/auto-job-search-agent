@@ -1,0 +1,3896 @@
+[
+ {
+  "name": "variant_hyphen_case",
+  "why": "Spec: 'the two word lists are equal after that (e.g. \"AI tools\" / \"ai-tools\")' — hyphen becomes a space and case is lowered, so both word lists are ['ai','tools'] and both sides are plural ('tools').",
+  "fn": "variant",
+  "a": "AI tools",
+  "b": "ai-tools",
+  "expect_variant": true,
+  "expect_bullet_variant": true
+ },
+ {
+  "name": "variant_plural_noun_not_bullet",
+  "why": "Spec: 'a word longer than 3 letters ending in \"s\" but not \"ss\" loses that \"s\"' so 'workflow' / 'workflows' is a variant, but is_bullet_variant requires 'both sides have the same grammatical number' and 'workflow' / 'workflows' → false.",
+  "fn": "variant",
+  "a": "workflow",
+  "b": "Workflows",
+  "expect_variant": true,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "variant_data_pipeline_plural",
+  "why": "Spec lists '\"data pipeline\" / \"data pipelines\"' as a variant; but one side is plural ('pipelines' ends in s, not ss) and the other singular, so is_bullet_variant is false.",
+  "fn": "variant",
+  "a": "data pipeline",
+  "b": "data pipelines",
+  "expect_variant": true,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "variant_acronym_singular",
+  "why": "Spec: '\"LLM\" / \"large language model\" → true' — 'LLM' is a 2–6 capital acronym and l-l-m are the first letters of 'large language model'; both sides are singular.",
+  "fn": "variant",
+  "a": "LLM",
+  "b": "large language model",
+  "expect_variant": true,
+  "expect_bullet_variant": true
+ },
+ {
+  "name": "variant_acronym_plural",
+  "why": "Spec: '\"LLMs\" / \"large language models\" → true' — acronym with one lower-case 's' maps to the expansion, and both sides are plural (acronym followed by 's'; 'models' ends in s).",
+  "fn": "variant",
+  "a": "LLMs",
+  "b": "large language models",
+  "expect_variant": true,
+  "expect_bullet_variant": true
+ },
+ {
+  "name": "variant_acronym_number_mismatch",
+  "why": "Spec: '\"LLM\" / \"large language models\" → false' for is_bullet_variant, even though is_variant is true, because a side is plural when 'its last word ends in \"s\"'.",
+  "fn": "variant",
+  "a": "LLM",
+  "b": "large language models",
+  "expect_variant": true,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "variant_genai_near_miss",
+  "why": "Spec: '\"GenAI\" / \"generative AI\" is false: \"GenAI\" is not all capitals' — word lists differ and no side is a pure 2–6 capital acronym.",
+  "fn": "variant",
+  "a": "GenAI",
+  "b": "generative AI",
+  "expect_variant": false,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "variant_prompts_near_miss",
+  "why": "Spec: '\"prompts\" / \"prompt engineering\" is false' — the word lists ['prompt'] and ['prompt','engineering'] differ and neither side is an acronym.",
+  "fn": "variant",
+  "a": "prompts",
+  "b": "prompt engineering",
+  "expect_variant": false,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "variant_rag_expansion",
+  "why": "Spec: acronym expansion requires 'at least 2 words whose first letters (skipping the words and, of, the, for) spell the acronym's capitals' — r-a-g spells RAG, both sides singular.",
+  "fn": "variant",
+  "a": "RAG",
+  "b": "retrieval augmented generation",
+  "expect_variant": true,
+  "expect_bullet_variant": true
+ },
+ {
+  "name": "variant_acronym_with_s_plural_mismatch",
+  "why": "Spec: acronym may be 'optionally followed by one lower-case \"s\"' so 'RAGs' is a variant of its expansion, but 'A side is plural when ... it is an all-capital acronym followed by \"s\" (\"LLMs\")' while 'generation' is singular, so is_bullet_variant is false.",
+  "fn": "variant",
+  "a": "RAGs",
+  "b": "retrieval augmented generation",
+  "expect_variant": true,
+  "expect_bullet_variant": false
+ },
+ {
+  "name": "text_never_led_the_code_review",
+  "why": "Spec: never = 'a sentence contains (case-insensitive, whole phrase: no letter right before or after) any \"never\" phrase of ANY entry or ANY fact'; f1 and entry e1 both carry 'led the code review'.",
+  "fn": "text",
+  "text": "I led the code review for the team.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": [
+   "never"
+  ]
+ },
+ {
+  "name": "text_never_near_miss_led_most_of",
+  "why": "Spec: never phrases are matched as a 'whole phrase'; 'led most of the code review' does not contain the phrase 'led the code review', and no other rule fires (no numbers, no pairs on the matched fact).",
+  "fn": "text",
+  "text": "I led most of the code review for the team.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_number_from_entry_dates_is_allowed",
+  "why": "Spec: allowed numbers include 'the numbers in any entry's org, role or dates text' and every resume_ok fact's numbers; '2021–2023' yields the two numbers 2021 and 2023 and 3 is in f1's numbers.",
+  "fn": "text",
+  "text": "From 2021 to 2023 I reviewed 3 pull requests per week as a data analyst.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_number_from_jd_is_allowed",
+  "why": "Spec: allowed numbers include 'the numbers in the jd text'; the jd's '5+ years' normalizes to 5 (the '+' is removed as a symbol).",
+  "fn": "text",
+  "text": "I bring 5 years of experience with SQL.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_number_from_profile_is_allowed",
+  "why": "Spec: allowed numbers include 'the numbers in the profile text'; the profile says '8 years', so 8 is not a number problem.",
+  "fn": "text",
+  "text": "I have 8 years in analytics.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_phone_email_url_removed",
+  "why": "Spec: 'e-mail addresses, URLs, words ending in .com/.edu/.org/.io and phone numbers like 555-010-2030' are removed before sentence splitting, so no leftover digits create a number problem.",
+  "fn": "text",
+  "text": "Reach me at 555-010-2030 or jane@northwind.com; my portfolio is https://jane.dev/results.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_banned_leveraged",
+  "why": "Spec: banned = 'a sentence contains (whole word, case-insensitive) one of: leverage, leveraged, ...' unless the jd contains the same whole word; the jd has no 'leveraged'. The 12 is allowed because it is in f2's numbers.",
+  "fn": "text",
+  "text": "I leveraged 12 dashboards to speed up reporting.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": [
+   "banned"
+  ]
+ },
+ {
+  "name": "text_banned_word_is_company_name_in_jd",
+  "why": "Spec: banned words are allowed 'unless the jd text contains the same whole word (a company name such as \"Hardelnev\")'; the jd contains 'Dynamic'.",
+  "fn": "text",
+  "text": "Hardelnev was a partner on the project.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "text_pair_missing_second_element",
+  "why": "Spec: 'A sentence about the fact that contains a (substring) but not b is a pair problem'; f3 has pair ['70%','customers'], the sentence contains '70%' (which holds a digit, making it about the fact) but not 'customers'.",
+  "fn": "text",
+  "text": "I cut defects 70% in my first quarter.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": [
+   "pair"
+  ]
+ },
+ {
+  "name": "text_three_kinds_in_one_sentence",
+  "why": "Spec: 'Each problem is reported per sentence; one sentence can produce several kinds' — 'leveraged' is banned, 9 is not in any allowed number list, and 'led the code review' is a never phrase.",
+  "fn": "text",
+  "text": "I leveraged 9 dashboards and led the code review for my team.",
+  "jd": "Data analyst role: 5+ years experience with SQL. Hardelnev is our partner.",
+  "profile": "8 years in analytics; based in Boston.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Northwind Analytics",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": [
+      "led the code review"
+     ]
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Pull request review",
+     "T": "quality",
+     "A": "reviewed 3 pull requests per week",
+     "R": "cut review time 20%",
+     "numbers": [
+      3
+     ],
+     "skills": [
+      "Python",
+      "code review"
+     ],
+     "anchors": [
+      "code review"
+     ],
+     "never": [
+      "led the code review"
+     ],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "saved 5 hours weekly",
+     "numbers": [
+      12,
+      5
+     ],
+     "skills": [
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Defect analysis",
+     "T": "quality",
+     "A": "cut defects 70%",
+     "R": "fewer bugs reached customers",
+     "numbers": [
+      70
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "defect rate"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "70%",
+       "customers"
+      ]
+     ],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "S": "Intake",
+     "T": "support",
+     "A": "processed 40 intake forms",
+     "R": "kept the queue moving",
+     "numbers": [
+      40
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "anchors": [
+      "intake"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau"
+     ]
+    },
+    "not_true": [
+     "Java"
+    ]
+   }
+  },
+  "expect_kinds": [
+   "banned",
+   "never",
+   "number"
+  ]
+ },
+ {
+  "name": "tailored_clean_reorder_and_summer_headline",
+  "why": "Spec: only mechanical changes are problems; reordering bullets is not a kind, and a headline part 'matches \"Summer|Fall|Spring|Winter 20NN\"' so 'Summer 2027' is fine.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Explained LLM tradeoffs to stakeholders.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Summer 2027",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Explained LLM tradeoffs to stakeholders.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored_clean_swap_llm_singular",
+  "why": "Spec: swap_not_variant fires only when from/to 'fail is_bullet_variant'; is_bullet_variant('LLM','large language model') is true, and undoing the swap restores the approved bullet text so it is not a new_sentence.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Explained LLM tradeoffs to stakeholders.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "swaps": [
+    {
+     "from": "LLM",
+     "to": "large language model"
+    }
+   ],
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Explained large language model tradeoffs to stakeholders.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored_clean_swap_plural_acronym",
+  "why": "Spec: '\"LLMs\" / \"large language models\" → true' for is_bullet_variant, so this listed swap is not swap_not_variant, and undoing it restores the approved text.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "compared LLMs for summarization",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Compared LLMs for the summarization task.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "swaps": [
+    {
+     "from": "LLMs",
+     "to": "large language models"
+    }
+   ],
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Compared large language models for the summarization task.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored_swap_not_variant_plural",
+  "why": "Spec: 'swap_not_variant: a listed swap whose from/to fail is_bullet_variant'; 'workflow'/'workflows' differ in grammatical number, so 'workflow' / 'workflows' → false. Undoing the swap still yields the approved text, so no new_sentence.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "Process docs",
+     "T": "handoffs",
+     "A": "documented the analytics workflow",
+     "R": "reduced handoff errors",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "workflow"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Documented the workflow for the analytics team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "swaps": [
+    {
+     "from": "workflow",
+     "to": "workflows"
+    }
+   ],
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Documented the workflows for the analytics team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "swap_not_variant"
+  ]
+ },
+ {
+  "name": "tailored_invented_sentence",
+  "why": "Spec: 'new_sentence: a tailored bullet whose text is not the text of an approved bullet or approved reserve bullet, and is still not one after undoing every swap' — there are no swaps here, so the invented bullet is a new_sentence.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Managed a team of six engineers.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "new_sentence"
+  ]
+ },
+ {
+  "name": "tailored_bullet_moved_to_other_entry",
+  "why": "Spec: 'entry_moved: a tailored bullet that matches an approved (or reserve) bullet listed under a different entry_id'; the SQL bullet belongs to entry e2 in the approved master but is placed under e1 here.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      },
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": []
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "entry_moved"
+  ]
+ },
+ {
+  "name": "tailored_fact_ids_changed",
+  "why": "Spec: 'fact_ids_changed: a tailored bullet that matches an approved (or reserve) bullet but whose fact_ids (as a sorted list) differ from it'; same text, same entry, but ['f2'] instead of ['f1'].",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "fact_ids_changed"
+  ]
+ },
+ {
+  "name": "tailored_summary_edited",
+  "why": "Spec: 'summary_changed: the tailored summary differs from the approved summary, also after undoing the swaps'; there are no swaps and the summary text differs.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience in healthcare analytics.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "summary_changed"
+  ]
+ },
+ {
+  "name": "tailored_headline_untrue_term",
+  "why": "Spec: 'Every other part is fine when it equals (case-insensitive) a part of the approved headline, the title, a skill in skills.true ... or matches \"Summer|Fall|Spring|Winter 20NN\". Else headline_term.' — 'Kubernetes' is in none of those.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Kubernetes",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "headline_term"
+  ]
+ },
+ {
+  "name": "tailored_skill_added_untrue",
+  "why": "Spec: 'skill_added_untrue: a tailored skills item that is not (case-insensitive) in skills.true or in the skills of a resume_ok fact'; 'Kafka' is listed in skills.not_true and appears in no resume_ok fact.",
+  "fn": "tailored",
+  "title": null,
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme Corp",
+     "role": "Data Analyst",
+     "dates": "2021–2023",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta Health",
+     "role": "Analytics Intern",
+     "dates": "2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Dashboards",
+     "T": "reporting",
+     "A": "built 12 dashboards in Tableau",
+     "R": "cut reporting time",
+     "numbers": [
+      12
+     ],
+     "skills": [
+      "Python",
+      "Tableau"
+     ],
+     "anchors": [
+      "dashboards"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "SQL",
+     "T": "automation",
+     "A": "wrote SQL queries to automate weekly reporting",
+     "R": "saved 4 hours",
+     "numbers": [
+      4
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "anchors": [
+      "SQL queries"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "S": "LLM evaluation",
+     "T": "model quality",
+     "A": "explained LLM tradeoffs",
+     "R": "aligned stakeholders",
+     "numbers": [],
+     "skills": [
+      "Python"
+     ],
+     "anchors": [
+      "LLM"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Languages": [
+      "Python",
+      "SQL"
+     ],
+     "Tools": [
+      "Tableau",
+      "dbt"
+     ],
+     "Methods": [
+      "LLM evaluation",
+      "large language models"
+     ]
+    },
+    "not_true": [
+     "Kafka",
+     "Java"
+    ]
+   }
+  },
+  "approved": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "Data Analyst · Python",
+   "summary": "Analyst with 3 years of experience.",
+   "skills": [
+    {
+     "label": "Languages",
+     "items": [
+      "Python",
+      "SQL",
+      "Kafka"
+     ]
+    },
+    {
+     "label": "Tools",
+     "items": [
+      "Tableau"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 12 dashboards in Tableau for the sales team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Wrote SQL queries to automate weekly reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Trained 4 analysts on Python tooling.",
+     "fact_ids": [
+      "f1"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "expect_kinds": [
+   "skill_added_untrue"
+  ]
+ }
+]

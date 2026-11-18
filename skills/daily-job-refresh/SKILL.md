@@ -1,6 +1,6 @@
 ---
 name: daily-job-refresh
-description: Daily append-only refresh of Alex Rivera's jobs list (`data/store/jobs.jsonl`) from the curated GitHub job lists (local LaunchAgent `com.jobagent.refresh`, 08:15 CT; the claude.ai scheduled task "Daily job refresh" runs in shadow until 2026-11-12). Use to check, fix, re-run or change that routine, or to run the same append by hand.
+description: Daily append-only refresh of the candidate's jobs list (`data/store/jobs.jsonl`) from the curated GitHub job lists (local LaunchAgent `com.jobagent.refresh`, 08:15 CT; the claude.ai scheduled task "Daily job refresh" runs in shadow until 2026-11-12). Use to check, fix, re-run or change that routine, or to run the same append by hand.
 ---
 
 # Daily job refresh (append only) — verified 2026-10-25

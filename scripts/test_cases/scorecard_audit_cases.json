@@ -1,0 +1,1156 @@
+[
+ {
+  "name": "ten critical-right folders satisfy default need with null accuracy",
+  "fn": "audit_gate",
+  "spec_quote": "ok: forms >= need AND pending == 0 AND critical_wrong == 0 AND (noncrit_accuracy is null OR noncrit_accuracy >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f4",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f5",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f6",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f7",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f8",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f9",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f10",
+     "judged": "right",
+     "check": "right",
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10"
+   ]
+  },
+  "expect": {
+   "forms": 10,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": null,
+   "ok": true
+  }
+ },
+ {
+  "name": "items outside window are ignored",
+  "fn": "audit_gate",
+  "spec_quote": "Only items whose folder is in window count; all others are ignored.",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2"
+   ],
+   "need": 2
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": 1.0,
+   "ok": true
+  }
+ },
+ {
+  "name": "null judged with check wrong is pending, null judged with check right is right",
+  "fn": "audit_gate",
+  "spec_quote": "An item's state: \"wrong\" when judged is \"wrong\"; \"right\" when judged is \"right\", or when judged is null/missing and check is \"right\"; otherwise \"pending\" (e.g. judged null with check \"wrong\" or \"unsure\").",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": null,
+     "check": "wrong",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": null,
+     "check": "right",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2"
+   ],
+   "need": 1
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 1,
+   "critical_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": 1.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "critical wrong blocks ok",
+  "fn": "audit_gate",
+  "spec_quote": "critical_wrong: critical items in state wrong;",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f4",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f5",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f6",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f7",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f8",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f9",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f10",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f11",
+     "judged": "wrong",
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10",
+    "f11"
+   ]
+  },
+  "expect": {
+   "forms": 11,
+   "pending": 0,
+   "critical_wrong": 1,
+   "noncrit_right": 0,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": null,
+   "ok": false
+  }
+ },
+ {
+  "name": "non-critical accuracy below threshold fails",
+  "fn": "audit_gate",
+  "spec_quote": "noncrit_accuracy: noncrit_right / (noncrit_right + noncrit_wrong) rounded to 4 decimals; null when that sum is 0;",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "wrong",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2"
+   ],
+   "need": 1
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_wrong": 1,
+   "noncrit_accuracy": 0.5,
+   "ok": false
+  }
+ },
+ {
+  "name": "accuracy exactly at threshold passes",
+  "fn": "audit_gate",
+  "spec_quote": "ok: forms >= need AND pending == 0 AND critical_wrong == 0 AND (noncrit_accuracy is null OR noncrit_accuracy >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f4",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f5",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f6",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f7",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f8",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f9",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f10",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f11",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f12",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f13",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f14",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f15",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f16",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f17",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f18",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f19",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f20",
+     "judged": "wrong",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10",
+    "f11",
+    "f12",
+    "f13",
+    "f14",
+    "f15",
+    "f16",
+    "f17",
+    "f18",
+    "f19",
+    "f20"
+   ],
+   "need": 1,
+   "noncrit": 0.95
+  },
+  "expect": {
+   "forms": 20,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 19,
+   "noncrit_wrong": 1,
+   "noncrit_accuracy": 0.95,
+   "ok": true
+  }
+ },
+ {
+  "name": "non-critical accuracy rounded to 4 decimals",
+  "fn": "audit_gate",
+  "spec_quote": "noncrit_accuracy: noncrit_right / (noncrit_right + noncrit_wrong) rounded to 4 decimals; null when that sum is 0;",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "wrong",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "need": 1,
+   "noncrit": 0.6
+  },
+  "expect": {
+   "forms": 3,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 2,
+   "noncrit_wrong": 1,
+   "noncrit_accuracy": 0.6667,
+   "ok": true
+  }
+ },
+ {
+  "name": "forms counts distinct folders",
+  "fn": "audit_gate",
+  "spec_quote": "forms: number of DISTINCT folders among the counted items;",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "f1"
+   ],
+   "need": 1
+  },
+  "expect": {
+   "forms": 1,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": null,
+   "ok": true
+  }
+ },
+ {
+  "name": "pending blocks ok even when forms and criticals are fine",
+  "fn": "audit_gate",
+  "spec_quote": "pending: counted items in state pending;",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": null,
+     "check": "unsure",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2"
+   ],
+   "need": 1
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 1,
+   "critical_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": null,
+   "ok": false
+  }
+ },
+ {
+  "name": "default need requires ten forms",
+  "fn": "audit_gate",
+  "spec_quote": "ok: forms >= need AND pending == 0 AND critical_wrong == 0 AND (noncrit_accuracy is null OR noncrit_accuracy >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f4",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f5",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f6",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f7",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f8",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f9",
+     "judged": "right",
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9"
+   ]
+  },
+  "expect": {
+   "forms": 9,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_wrong": 0,
+   "noncrit_accuracy": null,
+   "ok": false
+  }
+ },
+ {
+  "name": "critical right items do not count toward non-critical numbers",
+  "fn": "audit_gate",
+  "spec_quote": "Critical right items count toward forms but not toward any other number.",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "right",
+     "cls": "critical"
+    },
+    {
+     "folder": "f2",
+     "judged": "wrong",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2"
+   ],
+   "need": 1
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_wrong": 1,
+   "noncrit_accuracy": 0.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "judged wrong overrides check right; missing judged and check is pending",
+  "fn": "audit_gate",
+  "spec_quote": "An item's state: \"wrong\" when judged is \"wrong\"; \"right\" when judged is \"right\", or when judged is null/missing and check is \"right\"; otherwise \"pending\" (e.g. judged null with check \"wrong\" or \"unsure\").",
+  "args": {
+   "items": [
+    {
+     "folder": "f1",
+     "judged": "wrong",
+     "check": "right",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f2",
+     "cls": "non-critical"
+    },
+    {
+     "folder": "f3",
+     "judged": "right",
+     "check": "wrong",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "need": 1,
+   "noncrit": 0.5
+  },
+  "expect": {
+   "forms": 3,
+   "pending": 1,
+   "critical_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_wrong": 1,
+   "noncrit_accuracy": 0.5,
+   "ok": false
+  }
+ },
+ {
+  "name": "basic platform mapping for all platforms and other fallback",
+  "fn": "window_folders",
+  "spec_quote": "A folder's platform comes from its EARLIEST line: url containing \"greenhouse\" → greenhouse, \"myworkday\" → workday, \"lever.co\" → lever, \"ashbyhq\" → ashby; else that line's \"ats\"; else \"other\".",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-01-01_a",
+     "at": "2024-01-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://boards.greenhouse.io/company"
+    },
+    {
+     "folder": "2024-01-02_b",
+     "at": "2024-01-02T10:00:00Z",
+     "status": "submitted",
+     "url": "https://company.myworkday.com/job"
+    },
+    {
+     "folder": "2024-01-03_c",
+     "at": "2024-01-03T10:00:00Z",
+     "status": "submitted",
+     "url": "https://jobs.lever.co/company"
+    },
+    {
+     "folder": "2024-01-04_d",
+     "at": "2024-01-04T10:00:00Z",
+     "status": "submitted",
+     "url": "https://jobs.ashbyhq.com/company"
+    },
+    {
+     "folder": "2024-01-05_e",
+     "at": "2024-01-05T10:00:00Z",
+     "status": "submitted",
+     "ats": "customats"
+    },
+    {
+     "folder": "2024-01-06_f",
+     "at": "2024-01-06T10:00:00Z",
+     "status": "submitted"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": [
+    "2024-01-01_a"
+   ],
+   "workday": [
+    "2024-01-02_b"
+   ],
+   "lever": [
+    "2024-01-03_c"
+   ],
+   "ashby": [
+    "2024-01-04_d"
+   ],
+   "customats": [
+    "2024-01-05_e"
+   ],
+   "other": [
+    "2024-01-06_f"
+   ]
+  }
+ },
+ {
+  "name": "platform comes from earliest line, not submitted line",
+  "fn": "window_folders",
+  "spec_quote": "A folder's platform comes from its EARLIEST line: url containing \"greenhouse\" → greenhouse, \"myworkday\" → workday, \"lever.co\" → lever, \"ashbyhq\" → ashby; else that line's \"ats\"; else \"other\".",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-02-01_x",
+     "at": "2024-02-01T09:00:00Z",
+     "status": "in_progress",
+     "ats": "lever"
+    },
+    {
+     "folder": "2024-02-01_x",
+     "at": "2024-02-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://company.myworkday.com/job"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "lever": [
+    "2024-02-01_x"
+   ]
+  }
+ },
+ {
+  "name": "recert since filters only listed platform by submit time",
+  "fn": "window_folders",
+  "spec_quote": "For a platform in recert, a folder counts only when its submit time (first 19 characters) >= since (first 19 characters); for other platforms every submitted folder counts.",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-02-15_g1",
+     "at": "2024-02-15T12:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/a"
+    },
+    {
+     "folder": "2024-03-01_g2",
+     "at": "2024-03-01T00:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/b"
+    },
+    {
+     "folder": "2024-03-02_g3",
+     "at": "2024-03-02T12:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/c"
+    },
+    {
+     "folder": "2024-02-15_w1",
+     "at": "2024-02-15T12:00:00Z",
+     "status": "submitted",
+     "url": "https://myworkday.com/a"
+    }
+   ],
+   "recert": {
+    "greenhouse": {
+     "since": "2024-03-01T00:00:00"
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": [
+    "2024-03-01_g2",
+    "2024-03-02_g3"
+   ],
+   "workday": [
+    "2024-02-15_w1"
+   ]
+  }
+ },
+ {
+  "name": "folders with no submitted line are absent",
+  "fn": "window_folders",
+  "spec_quote": "A folder is in the result only if it has a line with status \"submitted\"; its submit time is the earliest such line's \"at\".",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-04-01_a",
+     "at": "2024-04-01T10:00:00Z",
+     "status": "in_progress",
+     "url": "https://greenhouse.io/x"
+    },
+    {
+     "folder": "2024-04-02_b",
+     "at": "2024-04-02T10:00:00Z",
+     "status": "submitted",
+     "url": "https://lever.co/y"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "lever": [
+    "2024-04-02_b"
+   ]
+  }
+ },
+ {
+  "name": "non-date-prefixed folders are ignored",
+  "fn": "window_folders",
+  "spec_quote": "Only lines whose folder starts with a date \"YYYY-MM-DD_\" count.",
+  "args": {
+   "results": [
+    {
+     "folder": "misc_a",
+     "at": "2024-05-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/x"
+    },
+    {
+     "folder": "2024-5-1_b",
+     "at": "2024-05-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/y"
+    },
+    {
+     "folder": "2024-05-01_c",
+     "at": "2024-05-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/z"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": [
+    "2024-05-01_c"
+   ]
+  }
+ },
+ {
+  "name": "earliest submitted line defines submit time for recert",
+  "fn": "window_folders",
+  "spec_quote": "Lines are taken in order of \"at\". ... its submit time is the earliest such line's \"at\".",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-06-01_x",
+     "at": "2024-06-01T08:00:00Z",
+     "status": "applied",
+     "url": "https://greenhouse.io/a"
+    },
+    {
+     "folder": "2024-06-01_x",
+     "at": "2024-06-01T10:00:00Z",
+     "status": "submitted"
+    },
+    {
+     "folder": "2024-06-01_x",
+     "at": "2024-06-01T09:00:00Z",
+     "status": "submitted"
+    },
+    {
+     "folder": "2024-06-02_y",
+     "at": "2024-06-02T12:00:00Z",
+     "status": "submitted",
+     "url": "https://greenhouse.io/b"
+    }
+   ],
+   "recert": {
+    "greenhouse": {
+     "since": "2024-06-01T09:30:00"
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": [
+    "2024-06-02_y"
+   ]
+  }
+ },
+ {
+  "name": "url match priority then ats then other",
+  "fn": "window_folders",
+  "spec_quote": "A folder's platform comes from its EARLIEST line: url containing \"greenhouse\" → greenhouse, \"myworkday\" → workday, \"lever.co\" → lever, \"ashbyhq\" → ashby; else that line's \"ats\"; else \"other\".",
+  "args": {
+   "results": [
+    {
+     "folder": "2024-07-01_a",
+     "at": "2024-07-01T10:00:00Z",
+     "status": "submitted",
+     "url": "https://example.com/job",
+     "ats": "lever"
+    },
+    {
+     "folder": "2024-07-02_b",
+     "at": "2024-07-02T10:00:00Z",
+     "status": "submitted",
+     "url": "https://example.com/job"
+    },
+    {
+     "folder": "2024-07-03_c",
+     "at": "2024-07-03T10:00:00Z",
+     "status": "submitted",
+     "ats": "workday"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "lever": [
+    "2024-07-01_a"
+   ],
+   "other": [
+    "2024-07-02_b"
+   ],
+   "workday": [
+    "2024-07-03_c"
+   ]
+  }
+ },
+ {
+  "name": "sample n zero returns empty",
+  "fn": "sample",
+  "spec_quote": "n <= 0 or an empty pool → [].",
+  "args": {
+   "folders": [
+    "a",
+    "b"
+   ],
+   "audited": [],
+   "n": 0,
+   "seed": "s",
+   "first": null
+  },
+  "expect_len": 0,
+  "expect_from_first": null
+ },
+ {
+  "name": "sample empty pool returns empty",
+  "fn": "sample",
+  "spec_quote": "The pool is the sorted set of folders minus audited. n <= 0 or an empty pool → [].",
+  "args": {
+   "folders": [
+    "a"
+   ],
+   "audited": [
+    "a"
+   ],
+   "n": 5,
+   "seed": "s",
+   "first": null
+  },
+  "expect_len": 0,
+  "expect_from_first": null
+ },
+ {
+  "name": "sample without first returns up to n random pool folders",
+  "fn": "sample",
+  "spec_quote": "With first=None: up to n folders from the pool chosen at random (seeded).",
+  "args": {
+   "folders": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8",
+    "f9",
+    "f10"
+   ],
+   "audited": [
+    "f1"
+   ],
+   "n": 3,
+   "seed": "seed",
+   "first": null
+  },
+  "expect_len": 3,
+  "expect_from_first": null
+ },
+ {
+  "name": "sample with enough first folders takes all from first",
+  "fn": "sample",
+  "spec_quote": "With first given: the result holds min(n, W) folders from the pool that are in first (W = how many such pool folders there are), and only if that is less than n, further folders from the rest of the pool up to n in total (or as many as exist).",
+  "args": {
+   "folders": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e"
+   ],
+   "audited": [],
+   "n": 3,
+   "seed": "s",
+   "first": [
+    "a",
+    "b",
+    "c",
+    "d"
+   ]
+  },
+  "expect_len": 3,
+  "expect_from_first": 3
+ },
+ {
+  "name": "sample with too few first folders fills from rest",
+  "fn": "sample",
+  "spec_quote": "With first given: the result holds min(n, W) folders from the pool that are in first (W = how many such pool folders there are), and only if that is less than n, further folders from the rest of the pool up to n in total (or as many as exist).",
+  "args": {
+   "folders": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e"
+   ],
+   "audited": [],
+   "n": 3,
+   "seed": "s",
+   "first": [
+    "a",
+    "b"
+   ]
+  },
+  "expect_len": 3,
+  "expect_from_first": 2
+ },
+ {
+  "name": "sample first excludes audited and caps at existing pool size",
+  "fn": "sample",
+  "spec_quote": "Result sorted ascending, no duplicates, never an audited folder.",
+  "args": {
+   "folders": [
+    "a",
+    "b",
+    "c"
+   ],
+   "audited": [
+    "b"
+   ],
+   "n": 5,
+   "seed": "s",
+   "first": [
+    "a",
+    "b"
+   ]
+  },
+  "expect_len": 2,
+  "expect_from_first": 1
+ },
+ {
+  "name": "audit_cell null",
+  "fn": "audit_cell",
+  "spec_quote": "g null/empty → \"—\".",
+  "args": {
+   "g": null
+  },
+  "expect": "—"
+ },
+ {
+  "name": "audit_cell empty object",
+  "fn": "audit_cell",
+  "spec_quote": "g null/empty → \"—\".",
+  "args": {
+   "g": {}
+  },
+  "expect": "—"
+ },
+ {
+  "name": "audit_cell example with accuracy",
+  "fn": "audit_cell",
+  "spec_quote": "Example: {\"forms\": 10, \"pending\": 0, \"critical_wrong\": 0, \"noncrit_accuracy\": 0.9667, \"ok\": true} → \"10 forms · 0 waiting · critical 0 · non-critical 96.7 % ✅\".",
+  "args": {
+   "g": {
+    "forms": 10,
+    "pending": 0,
+    "critical_wrong": 0,
+    "noncrit_accuracy": 0.9667,
+    "ok": true
+   }
+  },
+  "expect": "10 forms · 0 waiting · critical 0 · non-critical 96.7 % ✅"
+ },
+ {
+  "name": "audit_cell null accuracy omits non-critical part",
+  "fn": "audit_cell",
+  "spec_quote": "Otherwise \"<forms> forms · <pending> waiting · critical <critical_wrong>\" + (when noncrit_accuracy is not null: \" · non-critical <accuracy × 100 with one decimal> %\") + \" ✅\" when ok else \" ❌\".",
+  "args": {
+   "g": {
+    "forms": 4,
+    "pending": 1,
+    "critical_wrong": 2,
+    "noncrit_accuracy": null,
+    "ok": false
+   }
+  },
+  "expect": "4 forms · 1 waiting · critical 2 ❌"
+ },
+ {
+  "name": "audit_cell rounds accuracy to one decimal",
+  "fn": "audit_cell",
+  "spec_quote": "when noncrit_accuracy is not null: \" · non-critical <accuracy × 100 with one decimal> %\"",
+  "args": {
+   "g": {
+    "forms": 12,
+    "pending": 0,
+    "critical_wrong": 0,
+    "noncrit_accuracy": 0.6667,
+    "ok": true
+   }
+  },
+  "expect": "12 forms · 0 waiting · critical 0 · non-critical 66.7 % ✅"
+ }
+]

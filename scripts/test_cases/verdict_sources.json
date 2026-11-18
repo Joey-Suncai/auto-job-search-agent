@@ -1,0 +1,800 @@
+{
+ "scripts/test_cases/action_route_verdicts.json::validate oversized body 413#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "152cf53c",
+  "date": "2026-11-03",
+  "ref": "JSA-125"
+ },
+ "scripts/test_cases/answer_format_verdicts.json::multi_comma_part_not_option_refused#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "48eb2f09",
+  "date": "2026-11-03",
+  "ref": "JSA-073"
+ },
+ "scripts/test_cases/ats_search_g_verdicts.json::detect_dot_prefixed_subdomain_full_host_once#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9cb63ce1",
+  "date": "2026-11-04",
+  "ref": "JSA-149"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::Row's title names the city -> no rejection -> url#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "805ce007",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::Titles differing only by trailing \"- City, ST\" tail with different cities#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "805ce007",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::brassring_session_token_and_entity_decoded_cookie#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9ae3875d",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::career_hosts derives careers/jobs hosts from company domain root#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "1f75936f",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::detect_ats_brassring_query_with_partnerid#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9ae3875d",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::parse_brassring_location_question_and_link#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9ae3875d",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::parse_brassring_skips_jobs_without_link_and_defaults_location#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9ae3875d",
+  "date": "2026-11-03",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/ats_search_verdicts.json::rmk_site returns [] on a vendor jobs2web host#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "47fe6804",
+  "date": "2026-11-03",
+  "ref": "JSA-117"
+ },
+ "scripts/test_cases/batch_apply_verdicts.json::n10#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "5645c99a",
+  "date": "2026-11-06",
+  "ref": "JSA-230"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: 'no longer available' sentence in translations is not enough when jobDetails exists#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: en_US posting with HTML in description and locations#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: en_US wins over en_UK even when en_UK is listed first#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: falls back to any localization (fr_FR) when neither en_US nor en_UK#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: multiple locations joined with '; '#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/bigtech_verdicts.json::apple_parse: only en_UK localization is used when en_US absent#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "426386b6",
+  "date": "2026-11-03",
+  "ref": "JSA-133"
+ },
+ "scripts/test_cases/board_pick_verdicts.json::pick-tiers-c-and-d#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "47fcb381",
+  "date": "2026-11-02",
+  "ref": "JSA-076"
+ },
+ "scripts/test_cases/choose_code_verdicts.json::Excluded code skipped for later code#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "bdcf9100",
+  "date": "2026-10-31",
+  "ref": "JSA-050"
+ },
+ "scripts/test_cases/convert_fields_verdicts.json::question_truncated_to_300#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "134baff1",
+  "date": "2026-11-05",
+  "ref": "JSA-187"
+ },
+ "scripts/test_cases/elig_degree_verdicts.json::fulltime_bachelors_pursuing_phd_eligible#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2840a24e",
+  "date": "2026-11-03",
+  "ref": "JSA-087"
+ },
+ "scripts/test_cases/elig_degree_verdicts.json::fulltime_masters_juniors_only_eligible#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2840a24e",
+  "date": "2026-11-03",
+  "ref": "JSA-087"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::greedy_sheet_picks_marginal_value_over_raw_frequency#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::high_risk_gpa_question_goes_to_joey_even_with_confident_rule#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::rank_greedy_marginal_value_with_tier_and_frequency_tiebreak#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "bc3800c7",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::rank_greedy_prefers_question_that_makes_most_jobs_ready#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::rank_tie_break_prefers_question_asked_by_tier_a_over_tier_c#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::rank_tie_broken_by_number_of_jobs_asking#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::rank_tier_a_job_weighs_before_tier_c_on_equal_counts#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/form_prefetch_verdicts.json::route_confident_rule_but_visa_sponsorship_question_still_goes_to_joey#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "86a7ff89",
+  "date": "2026-11-06",
+  "ref": "JSA-237"
+ },
+ "scripts/test_cases/high_risk_verdicts.json::degree_currently_pursuing_text#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "3d37b339",
+  "date": "2026-11-05",
+  "ref": "JSA-203"
+ },
+ "scripts/test_cases/hs_label_verdicts.json::college_name_attended#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "75999dde",
+  "date": "2026-11-02",
+  "ref": "JSA-050"
+ },
+ "scripts/test_cases/hs_label_verdicts.json::college_which_attend#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "75999dde",
+  "date": "2026-11-02",
+  "ref": "JSA-050"
+ },
+ "scripts/test_cases/hs_label_verdicts.json::degree_bachelors_or_masters#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "75999dde",
+  "date": "2026-11-02",
+  "ref": "JSA-050"
+ },
+ "scripts/test_cases/hs_label_verdicts.json::degree_currently_pursuing#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "75999dde",
+  "date": "2026-11-02",
+  "ref": "JSA-050"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::message_question_cut_200_parked_false#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::pending_complex_last_events_sorted#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::summary_options_not_shown#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::summary_question_cut_80#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::summary_single_row_one_question#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::summary_two_rows_captcha_and_join#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/human_handoff_verdicts.json::summary_whitespace_collapse_and_join#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "82ae3703",
+  "date": "2026-11-03",
+  "ref": "JSA-106"
+ },
+ "scripts/test_cases/jsa246_verdicts.json::L1-03 Springfield claim is true and may be picked#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ee39e493",
+  "date": "2026-11-08",
+  "ref": "JSA-246"
+ },
+ "scripts/test_cases/jsa246_verdicts.json::S1-07 sponsorship question with no timing wording — ambiguous#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ee39e493",
+  "date": "2026-11-08",
+  "ref": "JSA-246"
+ },
+ "scripts/test_cases/mail_reader_root_verdicts.json::health new outage after good read may alert again#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ce1e99b5",
+  "date": "2026-11-10",
+  "ref": "JSA-280"
+ },
+ "scripts/test_cases/mail_seen_verdicts.json::duplicate ids in one run (unmatched): both handled#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "a48bbe01",
+  "date": "2026-11-04",
+  "ref": "JSA-140"
+ },
+ "scripts/test_cases/mail_seen_verdicts.json::mixed order: skip done, re-handle grown unmatched, None result, fallback keeps id unseen#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "a48bbe01",
+  "date": "2026-11-04",
+  "ref": "JSA-140"
+ },
+ "scripts/test_cases/manual_submit_verdicts.json::missing plan key falls back and normal answer escapes#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "576fa860",
+  "date": "2026-10-31",
+  "ref": "JSA-042"
+ },
+ "scripts/test_cases/master_check_verdicts.json::no_fact_ids_empty_list#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "07028e7d",
+  "date": "2026-11-08",
+  "ref": "JSA-250"
+ },
+ "scripts/test_cases/master_check_verdicts.json::too_many_hp_bullets#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "538de50e",
+  "date": "2026-11-09",
+  "ref": "JSA-250"
+ },
+ "scripts/test_cases/master_check_verdicts.json::too_many_stock_three_bullets#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "07028e7d",
+  "date": "2026-11-08",
+  "ref": "JSA-250"
+ },
+ "scripts/test_cases/master_check_verdicts.json::wrong_entry_cite#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "6e922fcc",
+  "date": "2026-11-09",
+  "ref": "JSA-250"
+ },
+ "scripts/test_cases/oracle_cards_verdicts.json::My Profile URL without any 'Applied on <date>' → not done (exact non-done label unspecified)#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "60724852",
+  "date": "2026-11-04",
+  "ref": "JSA-147"
+ },
+ "scripts/test_cases/overtime_jsa050_verdicts.json::weekends_yes_no_question#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "1683a8c4",
+  "date": "2026-11-11",
+  "ref": "JSA-315"
+ },
+ "scripts/test_cases/paths_verdicts.json::hits_path_only_in_trailing_comment_ignored#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "52a6b748",
+  "date": "2026-11-05",
+  "ref": "JSA-166"
+ },
+ "scripts/test_cases/profile_layer_verdicts.json::answer_authorized_options_compared_trimmed_picks_plain_yes#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "d53a5d21",
+  "date": "2026-11-02",
+  "ref": "JSA-077"
+ },
+ "scripts/test_cases/qa_table_verdicts.json::regex entry with yes-no answer on radio list#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "5d5f9807",
+  "date": "2026-11-04",
+  "ref": "JSA-164"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r05429bdabf13#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r106bde4903a2#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r124bb4d5b5fb#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r1bfa2d97e78c#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r1bfa2d97e78c#1": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r1f825371d6a6#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r24b0a47baa15#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r2a1a9f663c34#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r3718e34a1734#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r3c0100586f00#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r3d4ab18649e3#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r52a590d745f4#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r54f5dd41333b#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r607234e0fed8#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r607234e0fed8#1": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r64ccf6175b84#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r64ccf6175b84#1": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r652b9e4a100a#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r795126820695#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "cd14933a",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r7e4e7936b066#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r807941524629#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "5b6872c5",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r8204d493c8f0#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r833ff6e77ba8#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r87f10289df19#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r945127541337#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "5b6872c5",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r9761a8d7be6b#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::r9f4b74b58bcd#1": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::rb201ed45dc78#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::rb7e215b93d74#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::rdac038923862#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::re0a55c11b087#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2da26ff3",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::re46c407747b0#1": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::re6b32c414644#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::re8ed3223ec35#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "5b6872c5",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::reb611ac3c8a1#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "cd14933a",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/qtype_gold_verdicts.json::recdd5375a1fa#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "0884dc8f",
+  "date": "2026-11-16",
+  "ref": "JSA-361"
+ },
+ "scripts/test_cases/refit_chance_verdicts.json::spearman_average_ranks_for_ties#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "8166baab",
+  "date": "2026-11-03",
+  "ref": "JSA-102"
+ },
+ "scripts/test_cases/replay_fixes_1105_verdicts.json::plain_major_text#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "90c8d4ab",
+  "date": "2026-11-05",
+  "ref": "JSA-188"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::board_guesses does not drop and-sons part#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "30eb9a0d",
+  "date": "2026-11-03",
+  "ref": "JSA-055"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::career_links: duplicates removed and result capped at 6#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "47a34b32",
+  "date": "2026-11-03",
+  "ref": "JSA-069"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::detect_ats: ordering — new systems come after all earlier ones#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29e81b8a",
+  "date": "2026-11-03",
+  "ref": "JSA-069"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::names_boozallen_label_inside_key#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "30eb9a0d",
+  "date": "2026-11-03",
+  "ref": "JSA-055"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::norm_city_tail_comma#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "30eb9a0d",
+  "date": "2026-11-03",
+  "ref": "JSA-055"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::norm_title expands Quant and Assoc with trailing dot#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "30eb9a0d",
+  "date": "2026-11-03",
+  "ref": "JSA-055"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::norm_title expands Sr dot and Eng after removing trailing - Remote#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "30eb9a0d",
+  "date": "2026-11-03",
+  "ref": "JSA-055"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::wd_queries: abbreviation expanded before counting words#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29e81b8a",
+  "date": "2026-11-03",
+  "ref": "JSA-069"
+ },
+ "scripts/test_cases/resolve_careers_verdicts.json::wd_queries: five words → full title then first three words#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29e81b8a",
+  "date": "2026-11-03",
+  "ref": "JSA-069"
+ },
+ "scripts/test_cases/rules_1105i_verdicts.json::Yes/No near miss: 'Are you open to relocating?'#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9489a4ff",
+  "date": "2026-11-05",
+  "ref": "JSA-218"
+ },
+ "scripts/test_cases/rules_1105i_verdicts.json::Yes/No near miss: relocation willingness phrased with U.S. locations#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "9489a4ff",
+  "date": "2026-11-05",
+  "ref": "JSA-218"
+ },
+ "scripts/test_cases/rules_batch1104_verdicts.json::Previously employed by Frost & Sullivan?#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29236cc4",
+  "date": "2026-11-04",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/rules_batch1104_verdicts.json::Previously employed by Hyde Park Investment Services?#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29236cc4",
+  "date": "2026-11-04",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/rules_batch1104_verdicts.json::Prior employee ID — Frost & Sullivan#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29236cc4",
+  "date": "2026-11-04",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/rules_batch1104_verdicts.json::Prior employee ID — alt wording#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "29236cc4",
+  "date": "2026-11-04",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/rules_edu_text_jsa296_verdicts.json::near_miss_high_school_text#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "2e53999c",
+  "date": "2026-11-11",
+  "ref": "JSA-295"
+ },
+ "scripts/test_cases/rules_fix150_verdicts.json::major — 'School Major:' returns field of study#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ce03fa2c",
+  "date": "2026-11-04",
+  "ref": "JSA-150"
+ },
+ "scripts/test_cases/rules_fix150_verdicts.json::near miss — 'Concentration:' must not be answered as the school name#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ce03fa2c",
+  "date": "2026-11-04",
+  "ref": "JSA-150"
+ },
+ "scripts/test_cases/rules_fix150_verdicts.json::near miss — 'School GPA' is not the school-name question#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "ce03fa2c",
+  "date": "2026-11-04",
+  "ref": "JSA-150"
+ },
+ "scripts/test_cases/rules_local_verdicts.json::DFW local question with only an unwilling No option#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "bb2efcbd",
+  "date": "2026-11-04",
+  "ref": "JSA-164"
+ },
+ "scripts/test_cases/rules_spx_verdicts.json::unrelated-signature-date#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "55e45034",
+  "date": "2026-11-04",
+  "ref": "JSA-092"
+ },
+ "scripts/test_cases/rules_start_verdicts.json::start_q_available_to_start#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4650e7d4",
+  "date": "2026-11-04",
+  "ref": "JSA-164"
+ },
+ "scripts/test_cases/rules_start_verdicts.json::start_q_earliest_available_start_date#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4650e7d4",
+  "date": "2026-11-04",
+  "ref": "JSA-164"
+ },
+ "scripts/test_cases/runner_common_verdicts.json::captcha-on-platform-page-no-press|successfactors#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "134baff1",
+  "date": "2026-11-05",
+  "ref": "JSA-187"
+ },
+ "scripts/test_cases/sf_1105d_verdicts.json::cover_chat_widget_mentioning_consent_returns_stop#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "b5afdb5b",
+  "date": "2026-11-05",
+  "ref": "JSA-092"
+ },
+ "scripts/test_cases/sf_done_verdicts.json::near miss: application sent successfully (no has been / was)#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "aaca7b4e",
+  "date": "2026-11-04",
+  "ref": "JSA-092"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c1-c5, c7, c8#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c14-c16#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c17#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c18#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c19#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c20#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c6#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_countries_verdicts.json::c9-c13#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "4573a0a9",
+  "date": "2026-11-10",
+  "ref": "JSA-279"
+ },
+ "scripts/test_cases/spons_without_verdicts.json::need_employer_sponsorship_for_this_internship#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "aac15e7d",
+  "date": "2026-11-05",
+  "ref": "JSA-112"
+ },
+ "scripts/test_cases/tailor_verdicts.json::tailor_acronym_swap_kubernetes_to_k8s#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "880f7f02",
+  "date": "2026-11-09",
+  "ref": "JSA-251"
+ },
+ "scripts/test_cases/whole_read_verdicts.json::essay_301_chars_not_read#0": {
+  "by": "judged when recorded (git commit; reviewer = Claude under rule 13)",
+  "commit": "798e0ef7",
+  "date": "2026-11-10",
+  "ref": "JSA-288"
+ }
+}

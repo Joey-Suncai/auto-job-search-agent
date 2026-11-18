@@ -4,7 +4,7 @@
 <!-- Offline mock of an Ashby application form (fictional): a react-datepicker-like date box that rewrites what is typed to
      MM/DD/YYYY when it closes, an Education History School type-ahead that keeps only a PICKED option once it loses focus,
      and the red "Your form needs corrections" box after Submit. Query: ?noschool = the list never has the school;
-     ?deadclick = clicking an option does nothing (the pick never registers). -->
+     ?nodegree = no Degree box and only the end-date selects; ?deadclick = clicking an option does nothing (the pick never registers). -->
 <div id="errors"></div>
 <form id="f" onsubmit="return false">
   <div class="_fieldEntry_mock"><label for="_systemfield_name">Name</label><input id="_systemfield_name" name="_systemfield_name"></div>
@@ -22,6 +22,10 @@
 </form>
 <script>
 const q = new URLSearchParams(location.search);
+if (q.has('nodegree')) {   // JSA-330 (ibotta): the form config excludes degree and start date → no Degree box, one date pair
+  document.getElementById('_systemfield_education_history-degree').remove();
+  const sel = document.querySelectorAll('select'); sel[0].remove(); sel[1].remove();
+}
 const SCHOOLS = q.has('noschool') ? ['Loyola University Chicago', 'Chicago State University']
   : ['University of Chicago Booth School of Business', 'The University of Chicago', 'Loyola University Chicago'];
 const pad = n => String(n).padStart(2, '0');

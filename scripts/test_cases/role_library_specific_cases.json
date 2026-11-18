@@ -1,0 +1,142 @@
+[
+ {
+  "name": "two_words_product_management",
+  "why": "Spec: 'Two or more words → True' (\"Product Management\").",
+  "fn": "specific",
+  "phrase": "Product Management",
+  "expect": true
+ },
+ {
+  "name": "two_words_short_tokens_ai_tools",
+  "why": "Spec: 'Two or more words → True' (\"AI tools\"), even though \"AI\" alone would be too short.",
+  "fn": "specific",
+  "phrase": "AI tools",
+  "expect": true
+ },
+ {
+  "name": "two_words_tab_separated",
+  "why": "Spec: 'Split the phrase on whitespace' and 'Two or more words → True'; a tab separates two words.",
+  "fn": "specific",
+  "phrase": "data\tscience",
+  "expect": true
+ },
+ {
+  "name": "two_words_newline_separated",
+  "why": "Spec: 'Split the phrase on whitespace' and 'Two or more words → True'; newline separates two words.",
+  "fn": "specific",
+  "phrase": "AI\nML",
+  "expect": true
+ },
+ {
+  "name": "uppercase_three_letters_crm",
+  "why": "Spec: 'One word that is entirely upper-case ... True only if it has 3 or more characters' (\"CRM\" → True).",
+  "fn": "specific",
+  "phrase": "CRM",
+  "expect": true
+ },
+ {
+  "name": "uppercase_three_letters_sql",
+  "why": "Spec: 'One word that is entirely upper-case ... True only if it has 3 or more characters' (\"SQL\" → True).",
+  "fn": "specific",
+  "phrase": "SQL",
+  "expect": true
+ },
+ {
+  "name": "uppercase_with_digit_sql2",
+  "why": "Spec: entirely upper-case allows digits and requires 3+ characters; \"SQL2\" is upper-case with digit and length 4.",
+  "fn": "specific",
+  "phrase": "SQL2",
+  "expect": true
+ },
+ {
+  "name": "uppercase_two_letters_ai",
+  "why": "Spec: 'One word that is entirely upper-case ... True only if it has 3 or more characters' (\"AI\", \"ML\" → False).",
+  "fn": "specific",
+  "phrase": "AI",
+  "expect": false
+ },
+ {
+  "name": "uppercase_two_chars_digit_s3",
+  "why": "Spec: entirely upper-case allows digits; \"S3\" has fewer than 3 characters, so False.",
+  "fn": "specific",
+  "phrase": "S3",
+  "expect": false
+ },
+ {
+  "name": "uppercase_one_letter_a",
+  "why": "Spec: 'One word that is entirely upper-case ... True only if it has 3 or more characters'; \"A\" has length 1.",
+  "fn": "specific",
+  "phrase": "A",
+  "expect": false
+ },
+ {
+  "name": "uppercase_two_chars_digit_a1",
+  "why": "Spec: \"A1\" is entirely upper-case with digits allowed and has fewer than 3 characters, so the upper-case rule makes it False despite containing a digit.",
+  "fn": "specific",
+  "phrase": "A1",
+  "expect": false
+ },
+ {
+  "name": "mixed_case_saas",
+  "why": "Spec: 'Any other single word → True when a character after the first is upper-case' (\"SaaS\" → True).",
+  "fn": "specific",
+  "phrase": "SaaS",
+  "expect": true
+ },
+ {
+  "name": "mixed_case_pytorch",
+  "why": "Spec: 'Any other single word → True when a character after the first is upper-case' (\"PyTorch\" → True).",
+  "fn": "specific",
+  "phrase": "PyTorch",
+  "expect": true
+ },
+ {
+  "name": "mixed_case_ios",
+  "why": "Spec: 'Any other single word → True when a character after the first is upper-case' (\"iOS\" → True).",
+  "fn": "specific",
+  "phrase": "iOS",
+  "expect": true
+ },
+ {
+  "name": "digit_k8s",
+  "why": "Spec: 'Any other single word → True when ... the word contains a digit' (\"k8s\" → True).",
+  "fn": "specific",
+  "phrase": "k8s",
+  "expect": true
+ },
+ {
+  "name": "lower_first_upper_second_python",
+  "why": "Spec: 'Any other single word → True when a character after the first is upper-case'; \"pYthon\" has upper-case Y after first.",
+  "fn": "specific",
+  "phrase": "pYthon",
+  "expect": true
+ },
+ {
+  "name": "two_char_mixed_case_ab",
+  "why": "Spec: 'Any other single word → True when a character after the first is upper-case'; \"aB\" is not entirely upper-case and has upper-case B after first.",
+  "fn": "specific",
+  "phrase": "aB",
+  "expect": true
+ },
+ {
+  "name": "lowercase_product",
+  "why": "Spec: otherwise False (\"product\" → False).",
+  "fn": "specific",
+  "phrase": "product",
+  "expect": false
+ },
+ {
+  "name": "first_upper_only_engineering",
+  "why": "Spec: otherwise False; \"Engineering\" has no upper-case character after the first and no digit.",
+  "fn": "specific",
+  "phrase": "Engineering",
+  "expect": false
+ },
+ {
+  "name": "first_upper_only_python",
+  "why": "Spec: otherwise False; \"Python\" has no upper-case character after the first and no digit.",
+  "fn": "specific",
+  "phrase": "Python",
+  "expect": false
+ }
+]

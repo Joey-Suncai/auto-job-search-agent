@@ -1,0 +1,6 @@
+{
+ "b_before_c_even_if_c_option_earlier": {
+  "verdict": "spec superseded by JSA-283 (2026-11-17)",
+  "why": "The old spec tried the substring step before the all-words step. Joey 2026-11-08 (decisions-log): Computer Science and Computer and Information Science are equal answers; Vanguard 2026-11-10 showed the substring-first rule picking 'Computer Sciences, Technology, or Business' over 'Computer and Information Science'. Now the closest option (fewest words apart) wins; here both are 1 word apart, so list order decides."
+ }
+}

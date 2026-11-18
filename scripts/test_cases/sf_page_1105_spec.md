@@ -23,7 +23,7 @@ your gender") is returned unchanged; with no non-empty options the label is retu
 ## 3. Split words from the resume parser — `split_fix(field)` → true / false
 `field` = {"type", "label", "value"}. The resume parser splits words after a capital letter ("HYDE P ARK INVESTMENT S
 ERVICES", "FROST & S ULLIVAN", "U NIVERSITY OF C HICAGO"). A repair joins a lone capital letter to the ALL-CAPS word (two or
-more capitals) that follows it after one space ("HYDE PARK INVESTMENT SERVICES"); "100 Main St" stays (Indiana is
+more capitals) that follows it after one space ("HYDE PARK INVESTMENT SERVICES"); "1200 S Sample Ave" stays (Indiana is
 not all caps). True when ALL hold: type is "text" or "textarea"; the value is not empty; the repair changes the value; the
 label names an employer, company, school, college, university, institution, organisation / organization, job title or
 title (case-insensitive, anywhere in the label). Otherwise false (e.g. an address box, a combo list, an already-correct value).

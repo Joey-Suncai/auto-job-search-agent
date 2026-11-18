@@ -1,0 +1,1731 @@
+[
+ {
+  "name": "findings_empty_inputs",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "fields": [],
+  "wrong": [],
+  "replay": [],
+  "expect": []
+ },
+ {
+  "name": "fact_question_seen_in_two_folders",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "wrong": [],
+  "replay": [],
+  "fields": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": false
+   },
+   {
+    "at": "2026-11-14T15:30:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "question": "please select your preferred communication method for updates regarding your application?",
+    "planned": "",
+    "ok": false
+   }
+  ],
+  "expect": [
+   {
+    "type": "fact",
+    "key": "please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-14T15:30:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "fact_question_in_one_folder_only_is_not_a_finding",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "wrong": [],
+  "replay": [],
+  "fields": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": false
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": false
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "fact_rows_with_ok_true_or_filled_planned_are_not_findings",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "wrong": [],
+  "replay": [],
+  "fields": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": true
+   },
+   {
+    "at": "2026-11-12T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": true
+   },
+   {
+    "at": "2026-11-12T11:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "What is your visa status",
+    "planned": "F-1",
+    "ok": false
+   },
+   {
+    "at": "2026-11-12T12:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "question": "What is your visa status",
+    "planned": "F-1",
+    "ok": false
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "fact_row_without_readable_at_is_ignored",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "wrong": [],
+  "replay": [],
+  "fields": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "What is your visa status",
+    "planned": null,
+    "ok": false
+   },
+   {
+    "at": null,
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "question": "What is your visa status",
+    "planned": null,
+    "ok": false
+   },
+   {
+    "at": "yesterday",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "successfactors",
+    "question": "What is your visa status",
+    "planned": null,
+    "ok": false
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "wrong_rows_merge_on_normalised_field",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "fields": [],
+  "replay": [],
+  "wrong": [
+   {
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "field": "Work authorization status",
+    "note": "answered 'CPT' instead of 'F-1'",
+    "found": "2026-11-14"
+   },
+   {
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "field": "work authorization status",
+    "note": "answered 'CPT' instead of 'F-1'",
+    "found": "2026-11-14"
+   }
+  ],
+  "expect": [
+   {
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "at": "2026-11-14T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "wrong_rows_two_fields_sorted_by_key",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "fields": [],
+  "replay": [],
+  "wrong": [
+   {
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "field": "Work authorization status",
+    "note": "answered 'CPT' instead of 'F-1'",
+    "found": "2026-11-13"
+   },
+   {
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "field": "Visa status",
+    "note": "answered 'CPT' instead of 'F-1'",
+    "found": "2026-11-14"
+   }
+  ],
+  "expect": [
+   {
+    "type": "rule",
+    "key": "wrong:visa status",
+    "at": "2026-11-14T00:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   },
+   {
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "at": "2026-11-13T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "replay_needs_submitted_true_and_empty_reason",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "fields": [],
+  "wrong": [],
+  "replay": [
+   {
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "old": "Email",
+    "new": "SMS",
+    "submitted": true,
+    "reason": null
+   },
+   {
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "question": "What is your visa status",
+    "old": "F-1",
+    "new": "CPT",
+    "submitted": true,
+    "reason": "duplicate submission"
+   },
+   {
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "question": "What is your visa status",
+    "old": "F-1",
+    "new": "CPT",
+    "submitted": false,
+    "reason": null
+   }
+  ],
+  "expect": [
+   {
+    "type": "rule",
+    "key": "replay:please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "replay_rows_merge_across_folders",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [],
+  "fields": [],
+  "wrong": [],
+  "replay": [
+   {
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "old": "Email",
+    "new": "SMS",
+    "submitted": true,
+    "reason": ""
+   },
+   {
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "question": "please select your preferred communication method for updates regarding your application",
+    "old": "Email",
+    "new": "Phone",
+    "submitted": true,
+    "reason": null
+   }
+  ],
+  "expect": [
+   {
+    "type": "rule",
+    "key": "replay:please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "runner_signature_seen_in_two_folders",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "fields": [],
+  "wrong": [],
+  "replay": [],
+  "results": [
+   {
+    "at": "2026-11-13T08:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [
+     "Could not find button \"Submit\" after 3 retries"
+    ],
+    "stopped_at": "2026-11-13T08:05:00+00:00",
+    "mode": null
+   },
+   {
+    "at": "2026-11-15T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [
+     "Could not find button 'Submit' after 12 retries"
+    ],
+    "stopped_at": "2026-11-13T08:05:00+00:00",
+    "mode": null
+   }
+  ],
+  "expect": [
+   {
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "at": "2026-11-15T10:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "runner_rows_not_matching_rules_are_ignored",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "fields": [],
+  "wrong": [],
+  "replay": [],
+  "results": [
+   {
+    "at": "2026-11-13T08:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [
+     "Could not find button after 3 retries"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [
+     "Could not find button after 3 retries"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T10:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T11:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T12:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "login-timeout",
+    "problems": [
+     "session expired"
+    ],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "runner_signature_problem_text_cut_to_60_chars",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "fields": [],
+  "wrong": [],
+  "replay": [],
+  "results": [
+   {
+    "at": "2026-11-15T07:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "Timeout while waiting for the application form submit button never appearing"
+    ],
+    "stopped_at": "2026-11-16T07:00:00+00:00",
+    "mode": null
+   },
+   {
+    "at": "2026-11-16T07:30:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "Timeout while waiting for the application form submit button remained disabled"
+    ],
+    "stopped_at": "2026-11-16T07:00:00+00:00",
+    "mode": "dry-run"
+   }
+  ],
+  "expect": [
+   {
+    "type": "runner",
+    "key": "workday|2026-11-16T07:00:00+00:00|timeout while waiting for the application form submit button",
+    "at": "2026-11-16T07:30:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "all_three_types_sorted_by_key",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "results": [
+   {
+    "at": "2026-11-13T08:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [
+     "Could not find button \"Submit\" after 3 retries"
+    ],
+    "stopped_at": "2026-11-13T08:05:00+00:00",
+    "mode": null
+   },
+   {
+    "at": "2026-11-15T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "unconfirmed",
+    "problems": [
+     "Could not find button 'Submit' after 12 retries"
+    ],
+    "stopped_at": "2026-11-13T08:05:00+00:00",
+    "mode": null
+   }
+  ],
+  "fields": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": false
+   },
+   {
+    "at": "2026-11-14T15:30:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "planned": null,
+    "ok": false
+   }
+  ],
+  "wrong": [
+   {
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "field": "Work authorization status",
+    "note": "answered 'CPT' instead of 'F-1'",
+    "found": "2026-11-14"
+   }
+  ],
+  "replay": [
+   {
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "question": "Please select your preferred communication method for updates regarding your application",
+    "old": "Email",
+    "new": "SMS",
+    "submitted": true,
+    "reason": null
+   }
+  ],
+  "expect": [
+   {
+    "type": "fact",
+    "key": "please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-14T15:30:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   },
+   {
+    "type": "rule",
+    "key": "replay:please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   },
+   {
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "at": "2026-11-15T10:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   },
+   {
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "at": "2026-11-14T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "window_boundary_exactly_days_old_kept_older_dropped",
+  "fn": "findings",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 14,
+  "fields": [],
+  "wrong": [],
+  "replay": [],
+  "results": [
+   {
+    "at": "2026-11-03T11:59:59+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "Form did not load"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-03T12:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "Form did not load"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-10T09:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "Form did not load"
+    ],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": [
+   {
+    "type": "runner",
+    "key": "workday||form did not load",
+    "at": "2026-11-10T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-12_SuccessFactors_Data_Analyst_Intern"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_new_finding_creates_entry",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [],
+  "found": [
+   {
+    "type": "fact",
+    "key": "what is your visa status",
+    "at": "2026-11-16T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-17T12:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_open_entry_updated_and_evidence_unioned",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "open",
+    "first_seen": "2026-11-10T08:00:00+00:00",
+    "last_seen": "2026-11-12T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "at": "2026-11-16T00:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern",
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "open",
+    "first_seen": "2026-11-10T08:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_fixing_entry_status_unchanged",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "fixing",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-11T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "fact",
+    "key": "what is your visa status",
+    "at": "2026-11-15T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "fixing",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_fixed_entry_reopened_by_newer_evidence",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "fixed",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-09T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-09",
+    "fixed_at": "2026-11-09T10:00:00+00:00",
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "rule",
+    "key": "wrong:visa status",
+    "at": "2026-11-15T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-09",
+    "fixed_at": "2026-11-09T10:00:00+00:00",
+    "reopened": 1
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_fixed_entry_evidence_at_equal_fixed_at_no_change",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(runner:workday|2026-11-13T08:05:00+00:00|could not find button after retries)",
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "status": "fixed",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-14T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-15",
+    "fixed_at": "2026-11-15T00:00:00+00:00",
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "at": "2026-11-15T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(runner:workday|2026-11-13T08:05:00+00:00|could not find button after retries)",
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "status": "fixed",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-14T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-15",
+    "fixed_at": "2026-11-15T00:00:00+00:00",
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_fixed_entry_evidence_older_than_fixed_at_no_change",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-12T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-16",
+    "fixed_at": "2026-11-16T00:00:00+00:00",
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "at": "2026-11-15T00:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-12T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-16",
+    "fixed_at": "2026-11-16T00:00:00+00:00",
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_wontfix_entry_no_change",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "wontfix",
+    "first_seen": "2026-11-01T08:00:00+00:00",
+    "last_seen": "2026-11-08T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "fact",
+    "key": "what is your visa status",
+    "at": "2026-11-16T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "wontfix",
+    "first_seen": "2026-11-01T08:00:00+00:00",
+    "last_seen": "2026-11-08T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_entries_without_finding_kept_in_order",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-10T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "open",
+    "first_seen": "2026-11-06T08:00:00+00:00",
+    "last_seen": "2026-11-09T08:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-02T08:00:00+00:00",
+    "last_seen": "2026-11-07T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-07",
+    "fixed_at": "2026-11-07T09:00:00+00:00",
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "fact",
+    "key": "what is your visa status",
+    "at": "2026-11-16T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "open",
+    "first_seen": "2026-11-06T08:00:00+00:00",
+    "last_seen": "2026-11-09T08:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-02T08:00:00+00:00",
+    "last_seen": "2026-11-07T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-07",
+    "fixed_at": "2026-11-07T09:00:00+00:00",
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_new_entries_appended_in_key_order",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-09T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ],
+  "found": [
+   {
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "at": "2026-11-15T10:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   },
+   {
+    "type": "fact",
+    "key": "what is your visa status",
+    "at": "2026-11-16T09:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(rule:wrong:visa status)",
+    "type": "rule",
+    "key": "wrong:visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-09T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-17T12:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(runner:workday|2026-11-13T08:05:00+00:00|could not find button after retries)",
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "status": "open",
+    "first_seen": "2026-11-17T12:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_reopen_increments_existing_reopened_count",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(fact:please select your preferred communication method for updates regarding your application)",
+    "type": "fact",
+    "key": "please select your preferred communication method for updates regarding your application",
+    "status": "fixed",
+    "first_seen": "2026-10-20T08:00:00+00:00",
+    "last_seen": "2026-11-08T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-10",
+    "fixed_at": "2026-11-10T12:00:00+00:00",
+    "reopened": 1
+   }
+  ],
+  "found": [
+   {
+    "type": "fact",
+    "key": "please select your preferred communication method for updates regarding your application",
+    "at": "2026-11-16T09:00:00+00:00",
+    "evidence": [
+     "2026-11-12_SuccessFactors_Data_Analyst_Intern"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(fact:please select your preferred communication method for updates regarding your application)",
+    "type": "fact",
+    "key": "please select your preferred communication method for updates regarding your application",
+    "status": "open",
+    "first_seen": "2026-10-20T08:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern",
+     "2026-11-12_SuccessFactors_Data_Analyst_Intern"
+    ],
+    "fixed_by": "manual-fix-2026-11-10",
+    "fixed_at": "2026-11-10T12:00:00+00:00",
+    "reopened": 2
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_no_findings_ledger_unchanged",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-10T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-02T08:00:00+00:00",
+    "last_seen": "2026-11-07T08:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ],
+    "fixed_by": "manual-fix-2026-11-07",
+    "fixed_at": "2026-11-07T09:00:00+00:00",
+    "reopened": 0
+   }
+  ],
+  "found": [],
+  "expect": [
+   {
+    "id": "ID(fact:what is your visa status)",
+    "type": "fact",
+    "key": "what is your visa status",
+    "status": "open",
+    "first_seen": "2026-11-05T08:00:00+00:00",
+    "last_seen": "2026-11-10T08:00:00+00:00",
+    "evidence": [
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   },
+   {
+    "id": "ID(rule:wrong:work authorization status)",
+    "type": "rule",
+    "key": "wrong:work authorization status",
+    "status": "fixed",
+    "first_seen": "2026-11-02T08:00:00+00:00",
+    "last_seen": "2026-11-07T08:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate"
+    ],
+    "fixed_by": "manual-fix-2026-11-07",
+    "fixed_at": "2026-11-07T09:00:00+00:00",
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "update_ledger_new_runner_entry_with_pipe_key",
+  "fn": "update_ledger",
+  "now": "2026-11-17T12:00:00+00:00",
+  "ledger": [],
+  "found": [
+   {
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "at": "2026-11-15T10:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "id": "ID(runner:workday|2026-11-13T08:05:00+00:00|could not find button after retries)",
+    "type": "runner",
+    "key": "workday|2026-11-13T08:05:00+00:00|could not find button after retries",
+    "status": "open",
+    "first_seen": "2026-11-17T12:00:00+00:00",
+    "last_seen": "2026-11-17T12:00:00+00:00",
+    "evidence": [
+     "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+     "2026-11-11_Entrust_AI_Developer_Intern"
+    ],
+    "fixed_by": null,
+    "fixed_at": null,
+    "reopened": 0
+   }
+  ]
+ },
+ {
+  "name": "metrics_empty_results",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [],
+  "expect": {}
+ },
+ {
+  "name": "metrics_basic_single_ats",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "needs-user",
+    "problems": [
+     "captcha required"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 3,
+    "submitted": 2,
+    "clean_first_rate": 1.0,
+    "runs_per_submit": 1.5,
+    "joey_per_submit": 0.5
+   }
+  }
+ },
+ {
+  "name": "metrics_window_boundary_exactly_days_old",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-10T12:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-10T11:59:59+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 1,
+    "submitted": 1,
+    "clean_first_rate": 1.0,
+    "runs_per_submit": 1.0,
+    "joey_per_submit": 0.0
+   }
+  }
+ },
+ {
+  "name": "metrics_clean_first_rate_only_first_row_counts",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [
+     "captcha loop"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T10:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T11:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "dry-run",
+    "problems": [],
+    "stopped_at": null,
+    "mode": "dry-run"
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 4,
+    "submitted": 1,
+    "clean_first_rate": 0.33,
+    "runs_per_submit": 4.0,
+    "joey_per_submit": 0.0
+   }
+  }
+ },
+ {
+  "name": "metrics_no_submitted_rows_gives_null_ratios",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 1,
+    "submitted": 0,
+    "clean_first_rate": 0.0,
+    "runs_per_submit": null,
+    "joey_per_submit": null
+   }
+  }
+ },
+ {
+  "name": "metrics_joey_counts_distinct_folders_once",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-11T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "needs-user",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "captcha",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "handoff",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T11:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "login-timeout",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T12:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "unconfirmed",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T11:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 8,
+    "submitted": 3,
+    "clean_first_rate": 1.0,
+    "runs_per_submit": 2.67,
+    "joey_per_submit": 0.67
+   }
+  }
+ },
+ {
+  "name": "metrics_two_ats_are_separate",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T11:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "successfactors",
+    "status": "submitted",
+    "problems": [
+     "sso failure"
+    ],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 2,
+    "submitted": 1,
+    "clean_first_rate": 0.5,
+    "runs_per_submit": 2.0,
+    "joey_per_submit": 0.0
+   },
+   "successfactors": {
+    "runs": 1,
+    "submitted": 1,
+    "clean_first_rate": 0.0,
+    "runs_per_submit": 1.0,
+    "joey_per_submit": 0.0
+   }
+  }
+ },
+ {
+  "name": "metrics_dry_run_rows_count_as_runs",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-12T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "dry-run",
+    "problems": [],
+    "stopped_at": null,
+    "mode": "dry-run"
+   },
+   {
+    "at": "2026-11-13T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 2,
+    "submitted": 1,
+    "clean_first_rate": 1.0,
+    "runs_per_submit": 2.0,
+    "joey_per_submit": 0.0
+   }
+  }
+ },
+ {
+  "name": "metrics_rounding_to_two_decimals",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-11T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T10:00:00+00:00",
+    "folder": "2026-11-10_Vanguard_Data_Science_Intern_College_to_Corporate",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [
+     "captcha challenge"
+    ],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T11:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "blocked",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T12:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "needs-user",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-12T11:00:00+00:00",
+    "folder": "2026-11-12_SuccessFactors_Data_Analyst_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 5,
+    "submitted": 3,
+    "clean_first_rate": 0.33,
+    "runs_per_submit": 1.67,
+    "joey_per_submit": 0.33
+   }
+  }
+ },
+ {
+  "name": "metrics_first_row_is_earliest_at_not_input_order",
+  "fn": "platform_metrics",
+  "now": "2026-11-17T12:00:00+00:00",
+  "days": 7,
+  "results": [
+   {
+    "at": "2026-11-15T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "submitted",
+    "problems": [],
+    "stopped_at": null,
+    "mode": null
+   },
+   {
+    "at": "2026-11-11T09:00:00+00:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "ats": "workday",
+    "status": "failed",
+    "problems": [
+     "form did not load"
+    ],
+    "stopped_at": null,
+    "mode": null
+   }
+  ],
+  "expect": {
+   "workday": {
+    "runs": 2,
+    "submitted": 1,
+    "clean_first_rate": 0.0,
+    "runs_per_submit": 2.0,
+    "joey_per_submit": 0.0
+   }
+  }
+ }
+]

@@ -20,7 +20,7 @@ Slice 2 (2026-10-30):
 
 Modes: `off` (skip) · `warn` (log only) · `block` (default: caller stops when ok is False).
 """
-import json, os, sys, time
+import json, os, re, sys, time
 from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -240,6 +240,32 @@ PAGE_FILES_JS = """() => [...document.querySelectorAll('input[type=file]')].map(
 })"""
 
 
+WD_BOILERPLATE = re.compile(r'\bupload an? files?\b|\bdrop files? here\b|\bdrag (and|&) drop( files?)?( here)?|\bselect files?\b|\bchoose files?\b|'
+                            r'\bbrowse\b|\(\s*\d+\s*mb max\s*\)|\bor\b|\bhere\b|\brequired\b|[*:\-]', re.I)
+WD_FILENAME = re.compile(r'\S+\.(?:pdf|docx?|rtf|txt|odt|pages)\b', re.I)
+
+
+def wd_slot_kind(label):
+    """Pure (tested, JSA-368). The kind of one Workday file box from its text. The box also shows the file it already holds
+    (`<First>_<Last>_Resume_X.pdf` — underscores defeat \\bresume\\b) and the widget's own words ("Upload a file (5MB max)",
+    "Drop files here", "Select files"). Names are read with `_` / `-` as spaces, file names included (a held
+    `Transcript.pdf` is a transcript box); a box whose file is the résumé and which names nothing else is the résumé box
+    the runner fills. Bare widget words with no file stay other_file (the caller exempts the page's first box)."""
+    import materials_probe
+    raw = label or ''
+    names = WD_FILENAME.findall(raw)
+    text = WD_FILENAME.sub(' ', raw)
+    rest = re.sub(r'\s+', ' ', WD_BOILERPLATE.sub(' ', text)).strip()
+    flat = lambda t: re.sub(r'[_\-]+', ' ', t)
+    kind = materials_probe.classify(flat(text), 'input_file')
+    if kind != 'other_file' or rest:
+        return kind
+    if not names:
+        return 'other_file'
+    fk = materials_probe.classify(flat(raw), 'input_file')
+    return 'resume' if fk == 'resume' else fk
+
+
 def page_check(folder, page, step, log=None, ask=None, mode=DEFAULT_MODE):
     """Workday: file inputs on this page that ask for something other than the resume (cover letter, transcript,
     portfolio, or a second file slot) are new requirements → appended to requirements.json → the gate runs on them.
@@ -252,13 +278,12 @@ def page_check(folder, page, step, log=None, ask=None, mode=DEFAULT_MODE):
         slots = page.evaluate(PAGE_FILES_JS) or []
     except Exception:
         return None
-    import materials_probe
     rp = os.path.join(folder, 'requirements.json')
     data = json.load(open(rp, encoding='utf-8')) if os.path.exists(rp) else {'ats': 'workday', 'requirements': []}
     known = {(r.get('kind'), r.get('page', '')) for r in data['requirements']} | {(r.get('kind'), '') for r in data['requirements']}
     new = []
     for n, s in enumerate(slots):
-        kind = materials_probe.classify(s.get('label'), 'input_file')
+        kind = wd_slot_kind(s.get('label'))
         if kind in ('resume', 'unknown') or (kind == 'other_file' and n == 0):
             continue                             # the slot the runner fills with the resume
         if (kind, step) in known or (kind, '') in known:

@@ -24,7 +24,7 @@ The option to click for answer `want`: an exact match (case / space-insensitive)
 Address read-back: equal ignoring case / spaces; a U.S. state name equals its two-letter code ('Illinois' = 'IL'); a city option shown as 'Chicago, Cook, IL' equals 'Chicago' (its first comma part).
 
 ## geo_pick(want, options, state=None)
-Option to click in an Oracle geography list (City / County / Postal Code, options like 'Chicago, Cook, IL' or '62701'): an exact option first; else the options whose first comma part equals `want` — one left → it; several → the one that also names `state` (name or two-letter code) as a later comma part; None when still not exactly one.
+Option to click in an Oracle geography list (City / County / Postal Code, options like 'Chicago, Cook, IL' or '60601'): an exact option first; else the options whose first comma part equals `want` — one left → it; several → the one that also names `state` (name or two-letter code) as a later comma part; None when still not exactly one.
 
 ## email_consent(text, terms_text=None)
 The legal-disclaimer box some tenants put on the e-mail step → 'tick' or 'ask'. 'ask' (Joey approves the wording once, `--consent-ok`) when the box text binds the candidate to arbitration / a waiver ("be bound by"), consents to automated calls / texts, marketing or recruiting messages; when it names "terms and conditions" / "terms of use" and the linked terms text (`terms_text`, read from the tenant's dialog) is missing or itself contains such wording or no privacy wording; and for an empty or unrelated text (never ticked blind). 'tick' when what remains is only the privacy / data-processing notice for this application.

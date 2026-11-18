@@ -9,7 +9,8 @@ control and writes, through store.py:
   - external: apply_url = the company link (cleaned: LinkedIn redirect unwrapped, tracking parameters dropped); and
     ats_url when that link is one posting on a known ATS (same rule as wellfound_apply.pick_external) and the row has
     no ats_url yet → the existing runners take it;
-  - closed ("No longer accepting applications"): elig = 已关闭 with the reason (the gate's own value for a closed posting).
+  - closed ("No longer accepting applications", or "Not currently accepting applications" in the top card without a
+    visible apply control — JSA-313): elig = 已关闭 with the reason (the gate's own value for a closed posting).
 Never clicks, types, saves, follows or applies. 8–15 s between page loads; a sign-in page, a security check / CAPTCHA
 or "unusual activity" stops the run at once — nothing is solved or signed in. One tab of its own, closed at the end.
 
@@ -49,41 +50,64 @@ def company_link(href):
     return u
 
 
+NOT_ACCEPTING = re.compile(r'(?:not currently|no longer) accepting applications', re.I)   # JSA-313: top-card closed note
+
+
+def _pick(ctls, visible_only):
+    """The first control (visible ones only when visible_only) whose text, else aria-label, reads Easy Apply / Apply →
+    ('easy' | 'external', control), or (None, None)."""
+    for c in ctls:
+        if visible_only and not c.get('visible'):
+            continue
+        k = LS.classify_button(c.get('text') or '')
+        if k == 'unknown':
+            k = LS.classify_button(c.get('aria') or '')
+        if k in ('easy', 'external'):
+            return k, c
+    return None, None
+
+
 def resolve(info):
-    """Pure (tested). What the job page showed {controls: [{text, aria, href, visible}], closed: bool} →
-    {'li_apply', 'reason', 'apply_url', 'ats_url'}. Order: no controls and the page text (head) says the posting was
-    removed ("Job id provided may not be valid", "job posting has been removed", "This job is no longer available") →
-    'closed'; closed → 'closed'; the first visible control (then any
-    control) whose text, else aria-label, reads Easy Apply → 'easy', or Apply → 'external' with its company link
-    (apply_url) and, when that link is one posting on a known ATS, ats_url; nothing readable → 'unknown'."""
+    """Pure (tested). What the job page showed {controls: [{text, aria, href, visible}], closed: bool, head: str} →
+    {'li_apply', 'reason', 'apply_url', 'ats_url'}. Order:
+      0. no controls and the head says the posting was removed ("Job id provided may not be valid", "job posting has
+         been removed", "This job is no longer available", "Not currently accepting applications") → 'closed';
+      1. closed (APPLY_JS: "No longer accepting applications" anywhere in the page) → 'closed';
+      2. the first VISIBLE control whose text, else aria-label, reads Easy Apply → 'easy', or Apply → 'external' with
+         its company link (apply_url) and, when that link is one posting on a known ATS, ats_url;
+      3. the head says "Not currently accepting applications" / "No longer accepting applications" → 'closed', even
+         when the page has other, non-apply controls ("Tailor my resume", "Show match details"; JSA-313, J02867).
+         A visible apply control (step 2) wins over this note: wrongly closing an open job drops it from every batch,
+         while a wrongly open one is caught later by the gate / the runner reading the live form;
+      4. the same as step 2 for hidden controls;
+      5. nothing readable → 'unknown'."""
     out = {'li_apply': 'unknown', 'reason': 'no apply control on the page', 'apply_url': '', 'ats_url': ''}
-    if REMOVED.search(str(info.get('head') or '')) and not info.get('controls'):
+    head = str(info.get('head') or '')
+    if REMOVED.search(head) and not info.get('controls'):
         out.update(li_apply='closed', reason='LinkedIn: the job posting has been removed')
         return out
     if info.get('closed'):
         out.update(li_apply='closed', reason='LinkedIn: No longer accepting applications')
         return out
     ctls = info.get('controls') or []
-    for want_visible in (True, False):
-        for c in ctls:
-            if want_visible and not c.get('visible'):
-                continue
-            k = LS.classify_button(c.get('text') or '')
-            if k == 'unknown':
-                k = LS.classify_button(c.get('aria') or '')
-            if k == 'easy':
-                out.update(li_apply='easy', reason='LinkedIn Easy Apply (applied inside LinkedIn)')
-                return out
-            if k == 'external':
-                u = company_link(c.get('href'))
-                if not u:
-                    out.update(li_apply='external', reason='Apply goes to the company site; its link was not in the page')
-                    return out
-                plat = platform_of(u)
-                ats = u if plat and posting_like(u) else ''
-                out.update(li_apply='external', apply_url=u, ats_url=ats,
-                           reason=f'apply link → {plat}' if ats else (f'apply link → {plat} (not one posting)' if plat else 'apply link → company site'))
-                return out
+    k, c = _pick(ctls, True)
+    if not k:
+        m = NOT_ACCEPTING.search(head)
+        if m:
+            out.update(li_apply='closed', reason=f'LinkedIn: {m.group(0)[0].upper()}{m.group(0)[1:].lower()}')
+            return out
+        k, c = _pick(ctls, False)
+    if k == 'easy':
+        out.update(li_apply='easy', reason='LinkedIn Easy Apply (applied inside LinkedIn)')
+    elif k == 'external':
+        u = company_link(c.get('href'))
+        if not u:
+            out.update(li_apply='external', reason='Apply goes to the company site; its link was not in the page')
+            return out
+        plat = platform_of(u)
+        ats = u if plat and posting_like(u) else ''
+        out.update(li_apply='external', apply_url=u, ats_url=ats,
+                   reason=f'apply link → {plat}' if ats else (f'apply link → {plat} (not one posting)' if plat else 'apply link → company site'))
     return out
 
 

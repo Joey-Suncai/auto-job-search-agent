@@ -25,6 +25,8 @@ sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
 sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, '..', 'scripts'))
 import plan_build as PB
+import posting as PO  # noqa: E402  (JSA-331: look jobs up by ats_url first)
+import app_folder as AF  # noqa: E402  (JSA-319: one folder per job — found by job id first)
 
 try:
     from prefilter import RX as FLAGS            # CLEAR / NOSPON / DEG / START … (same rules as the batch pre-filter)
@@ -202,8 +204,7 @@ def prep_other(j, url, date, test=False):
     except BaseException as e:                     # SystemExit from the parsers = posting gone
         row['status'] = 'closed_or_unreadable'; row['why'] = str(e)[:160]; print(f"✗ {j['company']}: {row['why']}"); return row
     flags = [k for k, rx in FLAGS.items() if rx.search(jd)]
-    folder = jpaths.apps(f"{date}_{slug(j['company'], 20)}_{slug(j['title'])}")
-    os.makedirs(folder, exist_ok=True)
+    folder = AF.for_job(j['id'], date, j['company'], j['title'], jpaths.apps(), AF.submitted_fn())   # JSA-319
     json.dump(src, open(os.path.join(folder, f'{ats}_job.json'), 'w'), ensure_ascii=False, indent=1)
     open(os.path.join(folder, 'jd.md'), 'w', encoding='utf-8').write(f"# {title} — {j['company']}\nURL: {apply_url}\nLocation: {loc or ''}\n\n{jd.strip()}\n")
     json.dump({'id': j['id'], 'company': j['company'], 'title': title, 'url': apply_url, 'ats': ats, 'track': j.get('track')},
@@ -230,11 +231,11 @@ def main():
     status = []
     for j in batch['jobs']:
         row = {'id': j['id'], 'company': j['company'], 'title': j['title']}
-        url = j.get('ats_url') or j['url']
-        if re.search(r'lever\.co|ashbyhq\.com', url):        # Lever / Ashby (JSA-004 runner, 2026-10-30)
+        url = PO.posting_url(j)   # JSA-331: ats_url first — url may be an aggregator / LinkedIn link
+        if PO.platform(url) in ('lever', 'ashby'):        # Lever / Ashby (JSA-004 runner, 2026-10-30)
             status.append(prep_other(j, url, date, test)); continue
         data = board = job = None
-        for b, jid in gh_ids(j['url'], j['company']):
+        for b, jid in gh_ids(url, j['company']):
             d = fetch(b, jid)
             if d:
                 data, board, job = d, b, jid; break
@@ -242,13 +243,12 @@ def main():
             row['status'] = 'closed_or_not_greenhouse'; status.append(row); print(f"✗ {j['company']}: posting not found (closed?)"); continue
         jd = text_of(data.get('content'))
         flags = [k for k, rx in FLAGS.items() if rx.search(jd)]
-        folder = jpaths.apps(f"{date}_{slug(j['company'], 20)}_{slug(j['title'])}")
-        os.makedirs(folder, exist_ok=True)
+        folder = AF.for_job(j['id'], date, j['company'], j['title'], jpaths.apps(), AF.submitted_fn())   # JSA-319
         try: subprocess.run(['xattr', '-w', 'com.apple.fileprovider.pinned#PX', '1', folder], capture_output=True)
         except FileNotFoundError: pass   # not macOS (tests)
         json.dump(data, open(os.path.join(folder, 'gh_api.json'), 'w'), ensure_ascii=False)
         open(os.path.join(folder, 'jd.md'), 'w', encoding='utf-8').write(
-            f"# {data.get('title')} — {j['company']}\nURL: {data.get('absolute_url') or j['url']}\nLocation: {(data.get('location') or {}).get('name')}\n\n{jd}\n")
+            f"# {data.get('title')} — {j['company']}\nURL: {data.get('absolute_url') or url}\nLocation: {(data.get('location') or {}).get('name')}\n\n{jd}\n")
         embed = f'https://job-boards.greenhouse.io/embed/job_app?for={board}&token={job}'
         fields = PB.gh_fields(data)
         plan = PB.build(folder, fields, embed, 'greenhouse')

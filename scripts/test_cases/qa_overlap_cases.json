@@ -1,0 +1,759 @@
+[
+ {
+  "name": "other entry's match regex catches new q",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Salutation",
+     "match": "/^(salutation|prefix)\\b/i",
+     "text": "Mr."
+    }
+   ],
+   "new": {
+    "q": "Salutation or title",
+    "text": "Mr."
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": []
+  },
+  "spec_quote": "Before a new entry is saved, it is placed at the end of the table (it is the newest) and checked against every other entry: - the other entry catches the new entry's `q` (\"catches it\"), or - the new entry catches the other entry's `q` (\"it catches\")."
+ },
+ {
+  "name": "new entry's match regex catches other q (it catches)",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Middle name",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Name details",
+    "match": "/name/i",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "the new entry catches the other entry's `q` (\"it catches\")."
+ },
+ {
+  "name": "long new q (51 chars) prefix of other q",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Please describe your current research interests and goals",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Please describe your current research interests and",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "its normalised `q` is at least 40 characters long and the normalised label starts with it."
+ },
+ {
+  "name": "new q exactly 40 chars prefix of other q (boundary)",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Describe your current research areas now please",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Describe your current research areas now",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "its normalised `q` is at least 40 characters long and the normalised label starts with it."
+ },
+ {
+  "name": "new q 39 chars prefix of other q is a near miss",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "What is your current research interests and goals",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "What is your current research interests",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "its normalised `q` is at least 40 characters long and the normalised label starts with it."
+ },
+ {
+  "name": "normalisation removes (required) and * before prefix test",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Please describe your current research interests and goals*",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Please describe your current research interests (required)",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "Normalising: lower case; curly apostrophes → '; the word \"required\" (optionally in parentheses) and \"*\" removed; every run of characters other than a-z, 0-9 and ' becomes one space; trimmed."
+ },
+ {
+  "name": "entry in both catches_it and it_catches",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Name of school",
+     "match": "/full/i",
+     "text": "Y"
+    }
+   ],
+   "new": {
+    "q": "Full name",
+    "match": "/name/i",
+    "text": "X"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "- the other entry catches the new entry's `q` (\"catches it\"), or - the new entry catches the other entry's `q` (\"it catches\")."
+ },
+ {
+  "name": "mixed: entry 1 catches it, new catches entry 3",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Email",
+     "match": "/e-mail|email/i",
+     "text": "a"
+    },
+    {
+     "q": "Phone number",
+     "text": "b"
+    },
+    {
+     "q": "Fax number",
+     "text": "c"
+    }
+   ],
+   "new": {
+    "q": "Email address",
+    "match": "/fax/i",
+    "text": "d"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": [
+    3
+   ]
+  },
+  "spec_quote": "Any such other entry → the save stops, nothing is written, and those entries are named by number."
+ },
+ {
+  "name": "no overlap at all",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Salutation",
+     "text": "Mr."
+    }
+   ],
+   "new": {
+    "q": "Favorite color",
+    "text": "Blue"
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "Any such other entry → the save stops, nothing is written, and those entries are named by number."
+ },
+ {
+  "name": "match regex is a search, not a full match",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "X",
+     "match": "/school/i",
+     "text": "a"
+    }
+   ],
+   "new": {
+    "q": "What school did you attend",
+    "text": "b"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": []
+  },
+  "spec_quote": "its `match` regex finds the label (regex search, not full match)"
+ },
+ {
+  "name": "match regex case-insensitive flag honoured",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "x",
+     "match": "/SALUTATION/i",
+     "text": "Mr"
+    }
+   ],
+   "new": {
+    "q": "salutation",
+    "text": "Mr"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": []
+  },
+  "spec_quote": "An entry catches a label when EITHER its `match` regex finds the label (regex search, not full match)"
+ },
+ {
+  "name": "word-boundary regex near miss (Prefixes)",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Prefix",
+     "match": "/^prefix\\b/i",
+     "text": "Dr."
+    }
+   ],
+   "new": {
+    "q": "Prefixes and titles",
+    "text": "Dr."
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "its `match` regex finds the label (regex search, not full match)"
+ },
+ {
+  "name": "near miss on normalised equality (Email address. vs Email address (work))",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Email address.",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Email address (work)",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "its normalised `q` equals the normalised label"
+ },
+ {
+  "name": "long q only counts when label STARTS with it",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Kindly please describe your current research interests and goals",
+     "text": "X"
+    }
+   ],
+   "new": {
+    "q": "Please describe your current research interests",
+    "text": "Y"
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "its normalised `q` is at least 40 characters long and the normalised label starts with it."
+ },
+ {
+  "name": "sorted multi-entry mixed overlap",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Email address",
+     "match": "/email/i",
+     "text": "a"
+    },
+    {
+     "q": "Contact preference",
+     "text": "b"
+    },
+    {
+     "q": "Primary school",
+     "match": "/primary/i",
+     "text": "c"
+    },
+    {
+     "q": "Emergency contact number",
+     "text": "d"
+    }
+   ],
+   "new": {
+    "q": "Primary contact email",
+    "match": "/contact/i",
+    "text": "e"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1,
+    3
+   ],
+   "it_catches": [
+    2,
+    4
+   ]
+  },
+  "spec_quote": "catches_it / it_catches = sorted entry numbers"
+ },
+ {
+  "name": "newest catching entry gives ok (select)",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "School",
+     "match": "/school/i",
+     "pick": [
+      "/illinois/i"
+     ],
+     "text": "University of Illinois"
+    },
+    {
+     "q": "School name",
+     "match": "/school/i",
+     "pick": [
+      "/chicago/i"
+     ],
+     "text": "University of Chicago"
+    }
+   ],
+   "label": "School name:",
+   "type": "select",
+   "options": [
+    "University of Illinois",
+    "University of Chicago"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "University of Chicago",
+   "rule": "qa:2"
+  },
+  "spec_quote": "Every entry that catches the field's label is tried, newest first."
+ },
+ {
+  "name": "newest catches but misses, older gives ok",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "State",
+     "match": "/residence/i",
+     "text": "Illinois"
+    },
+    {
+     "q": "State of residence",
+     "match": "/state/i",
+     "pick": [
+      "/california/i"
+     ],
+     "text": "Nevada"
+    }
+   ],
+   "label": "State of residence:",
+   "type": "select",
+   "options": [
+    "Illinois",
+    "Texas"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Illinois",
+   "rule": "qa:1"
+  },
+  "spec_quote": "The first entry giving \"ok\" is the answer."
+ },
+ {
+  "name": "all catching entries miss -> miss of newest",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "County",
+     "match": "/county/i",
+     "pick": [
+      "/cook/i"
+     ],
+     "text": "X"
+    },
+    {
+     "q": "County name",
+     "match": "/county/i",
+     "pick": [
+      "/lake/i"
+     ],
+     "text": "Y"
+    }
+   ],
+   "label": "County name:",
+   "type": "select",
+   "options": [
+    "Adams",
+    "Brown"
+   ]
+  },
+  "expect": {
+   "status": "unknown",
+   "rule": "qa:2"
+  },
+  "spec_quote": "If no entry gives \"ok\", the answer is the miss of the NEWEST catching entry."
+ },
+ {
+  "name": "39-char prefix does not catch -> null",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "What is your current research interests",
+     "text": "X"
+    }
+   ],
+   "label": "What is your current research interests and goals:",
+   "type": "text"
+  },
+  "expect": null,
+  "spec_quote": "No entry catches the label → no answer (null)."
+ },
+ {
+  "name": "pick regex order beats option order",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Attending",
+     "pick": [
+      "/^yes$/i",
+      "/^no$/i"
+     ],
+     "text": "Yes"
+    }
+   ],
+   "label": "Attending:",
+   "type": "select",
+   "options": [
+    "No",
+    "Yes"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Yes",
+   "rule": "qa:1"
+  },
+  "spec_quote": "the first `pick` regex that matches an option (trimmed) chooses it"
+ },
+ {
+  "name": "text fallback via normalised option text",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "State",
+     "pick": [
+      "/california/i"
+     ],
+     "text": "Illinois"
+    }
+   ],
+   "label": "State:",
+   "type": "select",
+   "options": [
+    "Illinois",
+    "Iowa"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Illinois",
+   "rule": "qa:1"
+  },
+  "spec_quote": "else an option whose normalised text equals the normalised `text`"
+ },
+ {
+  "name": "yes entry chooses the Yes option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Authorized to work",
+     "yes": true
+    }
+   ],
+   "label": "Authorized to work:",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Yes",
+   "rule": "qa:1"
+  },
+  "spec_quote": "else for a `yes` entry the option meaning Yes / No"
+ },
+ {
+  "name": "yes=false chooses the No option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Require visa sponsorship",
+     "yes": false
+    }
+   ],
+   "label": "Require visa sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No",
+   "rule": "qa:1"
+  },
+  "spec_quote": "else for a `yes` entry the option meaning Yes / No"
+ },
+ {
+  "name": "yes=true checkbox with exactly one option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Terms agreement",
+     "yes": true
+    }
+   ],
+   "label": "Terms agreement:",
+   "type": "checkbox",
+   "options": [
+    "I agree to the terms"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "I agree to the terms",
+   "rule": "qa:1"
+  },
+  "spec_quote": "else (yes = true, a checkbox with exactly one option) that option"
+ },
+ {
+  "name": "text field answered by text entry",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Nickname",
+     "text": "Johnny"
+    }
+   ],
+   "label": "Nickname:",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Johnny",
+   "rule": "qa:1"
+  },
+  "spec_quote": "For a field without options: `text` → ok with the text"
+ },
+ {
+  "name": "text field answered by yes entry",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Subscribed",
+     "yes": true
+    }
+   ],
+   "label": "Subscribed?",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Yes",
+   "rule": "qa:1"
+  },
+  "spec_quote": "`yes` → ok with \"Yes\" / \"No\"."
+ },
+ {
+  "name": "normalised equality after removing (required) and *",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "First name",
+     "text": "Ada"
+    }
+   ],
+   "label": "First name (required)*:",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Ada",
+   "rule": "qa:1"
+  },
+  "spec_quote": "its normalised `q` equals the normalised label"
+ },
+ {
+  "name": "match regex catches label by search",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Attend event",
+     "match": "/attend/i",
+     "text": "Yes"
+    }
+   ],
+   "label": "Will you attend the event?",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Yes",
+   "rule": "qa:1"
+  },
+  "spec_quote": "its `match` regex finds the label (regex search, not full match)"
+ },
+ {
+  "name": "long q (51 chars) prefix of longer label catches",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Please describe your current research interests and",
+     "text": "Machine learning"
+    }
+   ],
+   "label": "Please describe your current research interests and goals:",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Machine learning",
+   "rule": "qa:1"
+  },
+  "spec_quote": "its normalised `q` is at least 40 characters long and the normalised label starts with it."
+ },
+ {
+  "name": "curly apostrophe normalised to straight apostrophe",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "What's your major",
+     "text": "CS"
+    }
+   ],
+   "label": "What’s your major?",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "CS",
+   "rule": "qa:1"
+  },
+  "spec_quote": "Normalising: lower case; curly apostrophes → ';"
+ }
+]

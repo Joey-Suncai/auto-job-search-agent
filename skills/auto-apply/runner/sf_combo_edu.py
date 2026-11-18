@@ -16,9 +16,9 @@ Page part: fill_combo_education(page, log, combo_options, N, skip) used by run_s
 import re, time
 from datetime import datetime
 
-SCHOOL_RX = re.compile(r'^(name of )?(school|college|university|institution)( name)?$|^(school|college|university)\s*/\s*(school|college|university|institution)$', re.I)
-DEGREE_RX = re.compile(r'^(degree|degree (type|level|earned|obtained)|type of degree|level of (degree|education))$', re.I)
-MAJOR_RX = re.compile(r'^(major|field of study|area of study|discipline|course of study|subject|major/field of study|major \(field of study\))$', re.I)
+SCHOOL_RX = re.compile(r'^(name of )?(school|college|university|institution)( name)?$|^(school|college|university)\s*/\s*(school|college|university|institution)( name)?$', re.I)   # "School/Institution Name" (an employer 11-10)
+DEGREE_RX = re.compile(r'^(degree|degree (type|level|earned|obtained|achieved)|type of degree|level of (degree|education)|education (type|level)|type of education)$', re.I)
+MAJOR_RX = re.compile(r'^(major|field of study|area of study|discipline|course of study|subject|major/field of study|major \(field of study\)|major \(legacy\))$', re.I)
 STATUS_RX = re.compile(r'^(status|degree status|education status|completion status|enrollment status)$', re.I)
 GPA_RX = re.compile(r'\bgpa\b|grade point', re.I)
 OTHER_RX = re.compile(r'\bother\b|not listed|specify|school name|institution name|name of (school|institution)', re.I)
@@ -59,7 +59,7 @@ def kind(label):
         return 'gpa'
     if COMMENTS_RX.match(lab):
         return 'comments'
-    if OTHER_RX.search(lab):
+    if OTHER_RX.search(lab) and not re.search(r'\b(area of study|major|field of study|subject|discipline|minor|concentration)\b', lab, re.I):   # "If other, enter Area of Study" is not the school's box (an employer 11-10)
         return 'other_school'
     return None
 
@@ -231,8 +231,13 @@ def pick_degree(options, edu):
         return hit
     lvl = str(edu.get('level') or '').lower()
     rxs = {'master': [r'^master', r'\bmaster', r'^graduate\b'], 'bachelor': [r'^bachelor', r'\bbachelor']}.get(lvl, [])
+    prog = re.compile(r'\b(in[- ]progress|pursuing|currently (enrolled|attending)|not (yet )?(completed|finished)|incomplete)\b', re.I)
+    # "Bachelors Degree - In progress" vs "Bachelors degree" (an employer 11-10, JSA-295): a finished degree never takes the
+    # in-progress option; a current one prefers it when the list has one
+    ordered = (sorted(opts, key=lambda o: 0 if prog.search(o) else 1) if edu.get('current')
+               else [o for o in opts if not prog.search(o)])
     for rx in rxs:
-        hit = next((o for o in opts if re.search(rx, o.strip(), re.I)), None)
+        hit = next((o for o in ordered if re.search(rx, o.strip(), re.I)), None)
         if hit:
             return hit
     return None
@@ -241,7 +246,7 @@ def pick_degree(options, edu):
 FALLBACK_MAJORS = [r'^computer science$', r'^(computer |management )?information systems?$', r'^other$']   # Joey 2026-10-28: no matching major → CS, then IS
 
 
-def pick_major(options, major):
+def pick_major(options, major, fallback=True):
     """Pure (tested). The option for the entry's major: equal to it (case-insensitive); else an option of 2+ words whose
     words all appear in the major ("Data Science" for "Applied Data Science"), or one that contains the whole major;
     else Computer Science, then Information Systems (also Computer / Management Information Systems), then Other
@@ -258,11 +263,64 @@ def pick_major(options, major):
         ow = re.findall(r'[a-z]+', o.lower())
         if (len(ow) >= 2 and set(ow) <= mw) or re.search(r'\b' + re.escape(m) + r'\b', o.lower()):
             return o
+    if not fallback:
+        return None
     for rx in FALLBACK_MAJORS:
         hit = next((o for o in opts if re.search(rx, o.strip(), re.I)), None)
         if hit:
             return hit
     return None
+
+
+OTHER_MAJOR_RX = re.compile(r'\b(area of study|major|field of study|subject|discipline|course of study)\b', re.I)
+
+
+def other_major_box(row_fields):
+    """Pure (tested). The key of a row's "If other, enter Area of Study" box (a text box whose label says other / not listed /
+    specify and names the area of study / major / field of study); None when the row has none (an employer 11-10, JSA-295)."""
+    for f in row_fields or []:
+        lab = _lab(f.get('label'))
+        if f.get('type') in ('text', 'textarea') and re.search(r'\bother\b|not listed|specify', lab, re.I) and OTHER_MAJOR_RX.search(lab):
+            return f['key']
+    return None
+
+
+def major_choice(options, major, has_box):
+    """Pure (tested). (option, how) for a major / Area of Study list (Joey 2026-11-11, JSA-295): the major itself (or an
+    option made of its words, pick_major) → 'match'; not in the list and the row has an "If other, enter Area of Study"
+    box → its "Other" option, how 'other' (the caller types the major in the box); no such box → the old fallback
+    (Computer Science, then Information Systems, Joey 2026-10-28) → 'fallback'; else (None, None)."""
+    hit = pick_major(options, major, fallback=False)
+    if hit:
+        return hit, 'match'
+    if has_box:
+        oth = next((o for o in _real(options) if re.fullmatch(r'\s*other\s*', o, re.I)), None)
+        return (oth, 'other') if oth else (None, None)
+    hit = pick_major(options, major)
+    return (hit, 'fallback') if hit else (None, None)
+
+
+def major_pick(page, f, major, loaded, has_box, N, css):
+    """(option, query, how) for a major list on the page: the loaded options first (major_choice); a paginated list
+    (an employer loads ~100 of 300) is searched for the major and its last two words, then for "Other" when the row has an
+    "If other" box. Only then the fallback over the loaded options."""
+    hit = pick_major(loaded, major, fallback=False)
+    if hit:
+        return hit, None, 'match'
+    words = str(major or '').split()
+    for q in dict.fromkeys(x for x in [major, ' '.join(words[-2:]) if len(words) > 2 else ''] if x):
+        _, _, texts = combo_search(page, f, q, N, css); page.keyboard.press('Escape'); time.sleep(0.4)
+        hit = pick_major(texts, major, fallback=False)
+        if hit:
+            return hit, q, 'match'
+    if has_box:
+        _, _, texts = combo_search(page, f, 'Other', N, css); page.keyboard.press('Escape'); time.sleep(0.4)
+        pick, how = major_choice(texts, major, True)
+        if pick:
+            return pick, 'Other', how
+    _clear(page.locator(css(f['key'])).first, N)
+    pick, how = major_choice(loaded, major, False)
+    return pick, None, how
 
 
 def pick_status(options, edu, today=None):
@@ -553,7 +611,9 @@ def fill_combo_education(page, log, plan, READ, combo_options, opener, css, N, s
             continue
         who = e.get('short') or e['school']
         comp = companion(r['fields'])
+        mbox = other_major_box(r['fields'])
         other = False
+        major_other = False
         for f in r['fields']:
             k = kind(f['label'])
             row = {'key': f['key'], 'label': f"Education ({who}): {_lab(f['label'])}", 'type': f['type'], 'required': bool(f.get('required')), 'list': f.get('list') or '',
@@ -573,6 +633,15 @@ def fill_combo_education(page, log, plan, READ, combo_options, opener, css, N, s
                 elif k == 'school':
                     row['want'] = e['school']
                     if N(f.get('value')) != e['school']: page.locator(css(f['key'])).first.fill(e['school'])
+                elif k == 'major' and f['type'] == 'combo':
+                    opts = combo_options(page, f)
+                    pick, query, how = major_pick(page, f, e.get('major'), opts, bool(mbox), N, css)
+                    row['want'] = pick; row['rule'] = 'education_combo:major_' + str(how)
+                    if pick is None:
+                        row['error'] = f'no option for major ({e.get("major")}) in {opts[:8]}'
+                    elif N(f.get('value')).lower() != N(pick).lower():
+                        combo_pick(page, f, pick, N, css, query=query, opener=opener)
+                    major_other = how == 'other'
                 elif k in ('degree', 'major', 'status') and f['type'] == 'combo':
                     opts = combo_options(page, f)
                     pick = pick_degree(opts, e) if k == 'degree' else pick_major(opts, e.get('major')) if k == 'major' else pick_status(opts, e, today)
@@ -600,6 +669,11 @@ def fill_combo_education(page, log, plan, READ, combo_options, opener, css, N, s
                     x['want'] = e['school']; x['required'] = True; x['rule'] = 'education_combo:other_name'
         elif other:
             log(f"education ({who}): Other picked, no box for the school's name")
+        if major_other and mbox:                                  # Area of Study = Other: the major in its "If other" box (Joey 2026-11-11, JSA-295)
+            page.locator(css(mbox)).first.fill(e.get('major') or '')
+            for x in out:
+                if x['key'] == mbox:
+                    x['want'] = e.get('major'); x['required'] = True; x['rule'] = 'education_combo:other_major'
         for d in (dates[i] if i < len(dates) else []):
             keys.add(d['key'])
             want = edu_date_want(d['name'], e, d.get('required'), d.get('fmt'))

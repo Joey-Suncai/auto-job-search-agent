@@ -209,8 +209,8 @@
   "label": "Portfolio, Video, or Website Link",
   "type": "text",
   "options": [],
-  "expect": "https://github.com/example",
-  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "expect": "https://github.com/alex-doe-example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/alex-doe-example",
   "ambiguous": false
  },
  {
@@ -218,8 +218,8 @@
   "label": "Personal website",
   "type": "text",
   "options": [],
-  "expect": "https://github.com/example",
-  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "expect": "https://github.com/alex-doe-example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/alex-doe-example",
   "ambiguous": false
  },
  {
@@ -227,8 +227,8 @@
   "label": "Portfolio URL",
   "type": "text",
   "options": [],
-  "expect": "https://github.com/example",
-  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/example",
+  "expect": "https://github.com/alex-doe-example",
+  "spec_quote": "A plain website / portfolio LINK box (\"Portfolio, Video, or Website Link\", \"Personal website\", \"Portfolio URL\") still gets the candidate's website: https://github.com/alex-doe-example",
   "ambiguous": false
  },
  {

@@ -7,6 +7,8 @@ posting through that board's public endpoint. Writes one JSON line per row to jd
 `key` identifies the posting itself (same posting listed twice -> same key), used for dedupe.
 
 Supported: Greenhouse (US + EU, incl. gh_jid company pages), Lever (US + EU), Ashby, Workday (cxs JSON),
+iCIMS (?in_iframe=1 page), BambooHR (careers/<id>/detail JSON), ADP Workforce Now (public job-requisitions JSON),
+ClearCompany (careers-api JSON),
 SmartRecruiters, Built In / Jobright / any page with schema.org JobPosting JSON-LD, zapply.jobs redirects.
 Not readable without a login: LinkedIn, Handshake -> "unreadable" (待核实, checked before applying).
 
@@ -18,7 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36",
       "Accept-Language": "en-US,en;q=0.9"}
-READER_VERSION = 6  # bump when a new site reader is added: rows unreadable under an older version get re-checked
+READER_VERSION = 8  # bump when a new site reader is added: rows unreadable under an older version get re-checked
 _lock = threading.Lock()
 try:  # python.org builds on macOS ship without CA certs; use certifi when it is installed
     import ssl, certifi
@@ -134,11 +136,22 @@ def ashby(org, jid):
                 loc=loc + (" (remote)" if j.get("isRemote") else ""))
 
 
-def workday(host, tenant, site, slug):
+def wd_page_gone(html):
+    """Pure (tested). A Workday job page (the public HTML shell) → True when it names no posting: the og:title meta is
+    there but empty. A live posting's shell carries its title there (JSA-284, checked live 2026-11-10: 38 of 38)."""
+    m = re.search(r'<meta[^>]*property="og:title"[^>]*>', html or "", flags=re.I)
+    return bool(m) and not re.search(r'content="[^"]+"', m.group(0))
+
+
+def workday(host, tenant, site, slug, page=None):
     key = f"wd:{tenant.lower()}:{slug.lower()}"
     s, t, _ = get(f"https://{host}/wday/cxs/{tenant}/{site}/job/x/{slug}")
-    if s == 404:
-        return dict(status="closed", key=key, why="Workday 404 (posting removed)")
+    if s in (404, 410):
+        return dict(status="closed", key=key, why=f"Workday {s} (posting removed)")
+    if s == 403 and page:   # JSA-284: Workday refuses the JSON of a posting it took down; its page then has no title
+        ps, pt, _ = get(page, accept="text/html", tries=2)
+        if ps in (404, 410) or (ps == 200 and wd_page_gone(pt)):
+            return dict(status="closed", key=key, why=f"Workday {s} and the job page names no posting (taken down)")
     if s != 200:
         return dict(status="unreadable", key=key, why=f"Workday {s}")
     j = json.loads(t).get("jobPostingInfo") or {}
@@ -500,6 +513,20 @@ def rippling(url):
 SF_URL = re.compile(r"[?&]ats=successfactors|\.successfactors\.(com|eu)/|career\d*\.sapsf\.|jobs\.sap\.com/job/|/job/[^/?#]+/\d{7,}/?(?:[?#]|$)", re.I)
 
 
+ICIMS = re.compile(r"https?://([\w-]+\.icims\.com)/jobs/(\d+)(/[^/?#]+)?", re.I)
+
+
+def icims_read_url(u):
+    """Pure (tested). An iCIMS link (any page mode: mode=apply, in_iframe, mobile, /login …) → the posting page that
+    carries the JobPosting data: https://<host>/jobs/<id>[/<slug>]/job?in_iframe=1. The outer iCIMS page holds the
+    job only inside an iframe, mode=apply opens the form (JSA-284). None when the link is not one iCIMS posting."""
+    m = ICIMS.search(u or "")
+    if not m:
+        return None
+    slug = m.group(3) if m.group(3) and m.group(3).lower() not in ("/job", "/login", "/candidate") else ""
+    return f"https://{m.group(1).lower()}/jobs/{m.group(2)}{slug}/job?in_iframe=1"
+
+
 def sf_route(u):
     """Pure (tested). True when a URL goes to the SuccessFactors reader: SF_URL matches and the host is not a job board
     whose links look alike (Built In, LinkedIn, Indeed, Glassdoor)."""
@@ -535,6 +562,135 @@ def successfactors_page(url, key):
     return dict(status="ok", key=key, **x) if x else dict(status="unreadable", key=key, why="no itemprop=description on the SuccessFactors page")
 
 
+# ---------------------------------------------------------------- JSA-300: BambooHR, ADP Workforce Now, gh_jid boards named on the page
+BAMBOO = re.compile(r"https?://([\w-]+)\.bamboohr\.com/(?:careers/|jobs/view\.php\?id=)(\d+)", re.I)
+ADP_WFN = re.compile(r"https?://(workforcenow(?:\.cloud)?\.adp\.com)/mascsr/default/mdf/recruitment/recruitment\.html\?", re.I)
+GH_BOARD = re.compile(r"(?:boards\.greenhouse\.io/embed/job_board(?:/js)?\?for=|job-boards(?:\.eu)?\.greenhouse\.io/(?:embed/job_board\?for=)?|"
+                      r"boards(?:\.eu)?\.greenhouse\.io/|boards-api(?:\.eu)?\.greenhouse\.io/v1/boards/)([\w-]+)", re.I)
+
+
+def bamboohr(co, jid):
+    """BambooHR career pages load the job by script; the same site's JSON (careers/<id>/detail) has it. 404 = removed."""
+    co = co.lower()
+    key = f"bh:{co}:{jid}"
+    s, t, _ = get(f"https://{co}.bamboohr.com/careers/{jid}/detail")
+    if s in (404, 410):
+        return dict(status="closed", key=key, why=f"BambooHR {s} (posting removed)")
+    if s != 200:
+        return dict(status="unreadable", key=key, why=f"BambooHR {s}")
+    jo = ((json.loads(t).get("result") or {}).get("jobOpening")) or {}
+    if not jo:
+        return dict(status="closed", key=key, why="BambooHR: no job opening")
+    st = str(jo.get("jobOpeningStatus") or "Open")
+    if st.lower() != "open":
+        return dict(status="closed", key=key, why=f"BambooHR: {st}")
+    l = jo.get("location") or {}
+    loc = ", ".join(str(x) for x in (l.get("city"), l.get("state"), l.get("addressCountry")) if x)
+    if str(jo.get("locationType") or "") == "1":
+        loc = (loc + " (remote)").strip()
+    return dict(status="ok", key=key, title=jo.get("jobOpeningName"), text=strip(jo.get("description")), loc=loc)
+
+
+def adp_wfn_api(u):
+    """Pure (tested). An ADP Workforce Now career-center link (…/mascsr/default/mdf/recruitment/recruitment.html?cid=…&jobId=…)
+    → (posting key, URL of its public job-requisitions JSON), or None when the link names no cid or no jobId (a job list)."""
+    m = ADP_WFN.search(u or "")
+    if not m:
+        return None
+    q = {k.lower(): v[0] for k, v in urllib.parse.parse_qs(urllib.parse.urlsplit(u).query).items() if v and v[0]}
+    cid, jid = q.get("cid"), q.get("jobid")
+    qv = lambda v: urllib.parse.quote(v, safe="")
+    if not cid or not jid:
+        return None
+    api = (f"https://{m.group(1).lower()}/mascsr/default/careercenter/public/events/staffing/v1/job-requisitions/"
+           f"{qv(jid)}?cid={qv(cid)}&lang=en_US" + (f"&ccId={qv(q['ccid'])}" if q.get("ccid") else ""))
+    return f"adp:{cid.lower()}:{jid.lower()}", api
+
+
+def adp_wfn(u):
+    key, api = adp_wfn_api(u)
+    s, t, _ = get(api)
+    if s in (404, 410):
+        return dict(status="closed", key=key, why=f"ADP {s} (requisition removed)")
+    if s != 200:
+        return dict(status="unreadable", key=key, why=f"ADP {s}")
+    j = json.loads(t)
+    if not j.get("itemID") and not j.get("requisitionTitle"):   # an empty requisition = the posting was taken down (live 11-11)
+        return dict(status="closed", key=key, why="ADP: requisition not found")
+    locs = []
+    for r in j.get("requisitionLocations") or []:
+        a = r.get("address") or {}
+        locs.append(", ".join(x for x in (a.get("cityName"), (a.get("countrySubdivisionLevel1") or {}).get("codeValue"),
+                                           (a.get("country") or {}).get("codeValue") if isinstance(a.get("country"), dict) else a.get("countryCode")) if x))
+    return dict(status="ok", key=key, title=j.get("requisitionTitle"), text=strip(j.get("requisitionDescription")),
+                loc="; ".join(x for x in locs if x))
+
+
+def gh_boards_in_page(page):
+    """Pure (tested). The Greenhouse board names a company careers page embeds (embed/job_board?for=<b>, job-boards.greenhouse.io/<b>,
+    boards-api …/boards/<b>), in page order, each once; generic path words (embed, v1, jobs) are not boards."""
+    out = []
+    for m in GH_BOARD.finditer(page or ""):
+        b = m.group(1).lower()
+        if b not in ("embed", "v1", "jobs", "job_app", "job_board") and b not in out:
+            out.append(b)
+    return out
+
+
+def gh_jid_page(u, jid):
+    """A company page with ?gh_jid=: boards guessed from the host first; when none answers, the board the page itself embeds
+    (SambaNova: sambanova.ai → board sambanovasystems). A board named on the page answering 404 = posting removed."""
+    x = greenhouse(guess_boards(urllib.parse.urlparse(u).netloc), jid, strict=False)
+    if x["status"] != "unreadable":
+        return x
+    s, t, _ = get(u, accept="text/html", tries=2)
+    boards = gh_boards_in_page(t if s == 200 else "")
+    return greenhouse(boards, jid, strict=True) if boards else x
+
+
+
+GUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+
+
+def clearcompany_route(u):
+    """Pure (tested). A ClearCompany posting link → (company short name lower-cased, job id lower-cased) or None:
+    https://<co>.clearcompany.com/careers/jobs/<guid>[/apply …] and https://apply.clearcompany.com/<co>?jobId=<guid>
+    (jobid / JOBID too). Other ClearCompany pages (the job list, app.clearcompany.com) → None."""
+    m = re.search(rf"https?://([\w-]+)\.clearcompany\.com/careers/jobs/({GUID})", u or "", re.I)
+    if m and m.group(1).lower() not in ("apply", "app", "www", "careers-api", "careers-content"):
+        return m.group(1).lower(), m.group(2).lower()
+    m = re.search(rf"https?://apply\.clearcompany\.com/([\w-]+)/?\?(?:[^#]*&)?jobid=({GUID})", u or "", re.I)
+    if m:
+        return m.group(1).lower(), m.group(2).lower()
+    return None
+
+
+def clearcompany_site_id(page):
+    """Pure (tested). The careers-site id an apply.clearcompany.com page names (data-site-id="<guid>"), lower-cased; None."""
+    m = re.search(rf'data-site-id\s*=\s*["\']({GUID})["\']', page or "", re.I)
+    return m.group(1).lower() if m else None
+
+
+def clearcompany(co, jid):
+    """ClearCompany pages load the job by script. The hosted page apply.clearcompany.com/<co>?jobId=<id> names the site id;
+    careers-api.clearcompany.com/v1/<site>/<JOB ID> is the posting's JSON (404 = removed; live 11-11, JSA-300)."""
+    key = f"cc:{co}:{jid}"
+    s, t, _ = get(f"https://apply.clearcompany.com/{co}?jobId={jid}", accept="text/html", tries=2)
+    site = clearcompany_site_id(t if s == 200 else "")
+    if not site:
+        return dict(status="unreadable", key=key, why=f"ClearCompany: no site id on the hosted page ({s})")
+    s, t, _ = get(f"https://careers-api.clearcompany.com/v1/{site}/{jid.upper()}?source=CJB-0")
+    if s in (404, 410):
+        return dict(status="closed", key=key, why=f"ClearCompany {s} (posting removed)")
+    if s != 200:
+        return dict(status="unreadable", key=key, why=f"ClearCompany {s}")
+    j = json.loads(t)
+    if not j.get("positionTitle") and not j.get("description"):
+        return dict(status="closed", key=key, why="ClearCompany: empty posting")
+    locs = [", ".join(x for x in (l.get("city"), l.get("subdivision"), l.get("country")) if x) for l in j.get("locations") or [] if isinstance(l, dict)]
+    return dict(status="ok", key=key, title=j.get("positionTitle"), text=strip(j.get("description")),
+                loc="; ".join(x for x in locs if x) or (j.get("location") or ""))
+
 # ---------------------------------------------------------------- dispatch by URL
 def load(url, depth=0):
     u = url or ""
@@ -549,10 +705,24 @@ def load(url, depth=0):
         return ashby(urllib.parse.unquote(m.group(1)), m.group(2))
     m = re.search(r"[?&]gh_jid=(\d+)", u)
     if m:
-        return greenhouse(guess_boards(urllib.parse.urlparse(u).netloc), m.group(1), strict=False)
+        return gh_jid_page(u, m.group(1))
     m = re.search(r"https?://(([\w-]+)\.wd\d+\.myworkdayjobs\.com)/(?:[a-z]{2}-[A-Z]{2}/)?([\w-]+)/job/(?:.*/)?([^/?#]+)", u)
     if m:
-        return workday(m.group(1), m.group(2), m.group(3), m.group(4))
+        return workday(m.group(1), m.group(2), m.group(3), m.group(4), page=u)
+    m = re.search(r"https?://(wd\d+\.myworkdaysite\.com)/(?:[a-z]{2}-[A-Z]{2}/)?recruiting/([\w-]+)/([\w-]+)/job/(?:.*/)?([^/?#]+)", u)
+    if m:   # JSA-284: the same Workday reader on the myworkdaysite.com host (tenant in the path)
+        return workday(m.group(1), m.group(2), m.group(3), m.group(4), page=u)
+    m = ICIMS.search(u)
+    if m:   # JSA-284
+        return jsonld_page(icims_read_url(u), f"ic:{m.group(1).lower()}:{m.group(2)}")
+    m = BAMBOO.search(u)
+    if m:   # JSA-300
+        return bamboohr(m.group(1), m.group(2))
+    if adp_wfn_api(u):   # JSA-300
+        return adp_wfn(u)
+    cc = clearcompany_route(u)
+    if cc:   # JSA-300
+        return clearcompany(*cc)
     m = re.search(r"jobs\.smartrecruiters\.com/([\w-]+)/(\d+)", u)
     if m:
         return smartrecruiters(m.group(1), m.group(2))

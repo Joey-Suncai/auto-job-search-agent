@@ -1,0 +1,23 @@
+{
+ "version": 1,
+ "candidate": "Alex Example (fictional)",
+ "updated": "2026-11-08",
+ "confirmed_by": null,
+ "note": "Fictional twin of the data home's config/facts.json (ADR-0010, JSA-248). One entry per job / project / school / club; one fact per accomplishment, STAR-shaped. numbers must appear in S/T/A/R; anchors = words that identify the fact in a bullet; never = phrases a resume must not use for it.",
+ "entries": [
+  {"id": "acme", "kind": "experience", "org": "Acme Analytics", "role": "Data Analyst Intern", "dates": "Jun 2025 – Aug 2025", "location": "Chicago, IL", "on_resume": true},
+  {"id": "capstone", "kind": "project", "org": "Bike-Share Demand Forecast", "role": "Course project (team of 4)", "dates": "May 2026", "location": "", "on_resume": true,
+   "ownership": "team of 4; built the features and the evaluation", "never": ["independently", "solo"]}
+ ],
+ "facts": [
+  {"id": "acme.churn", "entry": "acme", "S": "Support could not tell which customers were about to leave.", "T": "Find early churn signals.",
+   "A": "Joined 3 product-usage tables in SQL and built a weekly churn dashboard in Tableau.", "R": "Flagged 120 at-risk accounts in the first month.",
+   "numbers": ["3", "120"], "skills": ["SQL", "Tableau", "churn analysis", "dashboard"], "anchors": ["churn", "at-risk"],
+   "ownership": "", "must_keep": [], "never": [], "resume_ok": true, "source": "intake interview 2026-11-01"},
+  {"id": "capstone.model", "entry": "capstone", "S": "", "T": "Forecast hourly bike demand.",
+   "A": "Engineered 12 weather and calendar features and compared 4 models on a time-based holdout.", "R": "Gradient boosting cut MAE by 18% vs. the baseline.",
+   "numbers": ["12", "4", "18%"], "skills": ["Python", "forecasting", "feature engineering", "model evaluation"], "anchors": ["bike", "MAE", "holdout"],
+   "ownership": "team of 4; built the features and the evaluation", "must_keep": [], "never": ["independently"], "resume_ok": true, "source": "course report"}
+ ],
+ "skills": {"true": {"Programming": ["Python", "SQL"], "Data visualization": ["Tableau"]}, "not_true": ["a Greenhouse employer", "Jira"], "source": "intake interview"}
+}

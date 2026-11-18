@@ -1,0 +1,874 @@
+[
+ {
+  "name": "no folders creates new date folder",
+  "existing": [],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "reuse newest unsubmitted even different date",
+  "existing": [
+   {
+    "name": "2023-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false,
+    "files": {
+     "answers.json": {
+      "old": "1/2/2024"
+     }
+    }
+   },
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "wd_job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "submitted"
+    }
+   },
+   {
+    "name": "2024-02-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false,
+    "files": {
+     "answers.json": {
+      "reuse": "yes"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2025-01-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-02-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": {
+    "reuse": "yes"
+   }
+  }
+ },
+ {
+  "name": "skip newest submitted pick older unsubmitted",
+  "existing": [
+   {
+    "name": "2024-03-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true
+   },
+   {
+    "name": "2024-02-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false
+   },
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-02-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "no-id folder matches company and title",
+  "existing": [
+   {
+    "name": "2024-04-01_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false,
+    "files": {
+     "open_answers.md": "no id"
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-04-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "different id same company title ignored",
+  "existing": [
+   {
+    "name": "2024-05-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "other",
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "different id newer ignored no-id older reused",
+  "existing": [
+   {
+    "name": "2024-05-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "other",
+    "submitted": false
+   },
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-01-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "non-date folder ignored",
+  "existing": [
+   {
+    "name": "notadate_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "all submitted new base carries filtered answers",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "A",
+     "answers.json": {
+      "keep": "yes",
+      "drop": "1/2/2024"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [
+    "answers.json",
+    "open_answers.md"
+   ],
+   "answers_json": {
+    "keep": "yes"
+   }
+  }
+ },
+ {
+  "name": "base exists submitted uses r2 carry newest base",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "OLD",
+     "answers.json": {
+      "c": "C"
+     }
+    }
+   },
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "NEW",
+     "answers.json": {
+      "a": "1/2/2024",
+      "b": "B"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [
+    "answers.json",
+    "open_answers.md"
+   ],
+   "answers_json": {
+    "b": "B"
+   }
+  }
+ },
+ {
+  "name": "base and r2 submitted uses r3 carry r2",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "BASE"
+    }
+   },
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer_r2",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "R2",
+     "answers.json": {
+      "x": "2024-01-01",
+      "y": 5
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r3",
+   "carried": [
+    "answers.json",
+    "open_answers.md"
+   ],
+   "answers_json": {
+    "y": 5
+   }
+  }
+ },
+ {
+  "name": "carry only from newest folder",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "OLD",
+     "answers.json": {
+      "old": "1/2/2024",
+      "keep": "old"
+     }
+    }
+   },
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {
+      "a": "hello",
+      "b": " 2024-01-02 "
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [
+    "answers.json"
+   ],
+   "answers_json": {
+    "a": "hello"
+   }
+  }
+ },
+ {
+  "name": "all answers dates drops answers file",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "A",
+     "answers.json": {
+      "q1": "1/2/2024",
+      "q2": " 2024-01-02 ",
+      "q3": "12/31/24"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [
+    "open_answers.md"
+   ],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "non-string answers kept dates dropped",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {
+      "num": 5,
+      "bool": true,
+      "null": null,
+      "arr": [
+       1,
+       2
+      ],
+      "obj": {
+       "a": 1
+      },
+      "date": "1/2/2024",
+      "text": "hello",
+      "spdate": " 2024-01-02 "
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [
+    "answers.json"
+   ],
+   "answers_json": {
+    "num": 5,
+    "bool": true,
+    "null": null,
+    "arr": [
+     1,
+     2
+    ],
+    "obj": {
+     "a": 1
+    },
+    "text": "hello"
+   }
+  }
+ },
+ {
+  "name": "submitted source has no files",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "empty answers object not written",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {}
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "slug punctuation collapsed",
+  "existing": [],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-07-01",
+   "company": "A&B  C!!D",
+   "title": "  Hello---World!!  "
+  },
+  "expect": {
+   "folder": "2024-07-01_A_B_C_D_Hello_World",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "slug cut company 20 title 40",
+  "existing": [],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-08-01",
+   "company": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+   "title": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  },
+  "expect": {
+   "folder": "2024-08-01_ABCDEFGHIJKLMNOPQRST_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "slug trims before cutting",
+  "existing": [],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-09-01",
+   "company": "  12345678901234567890XYZ",
+   "title": "!!!abc"
+  },
+  "expect": {
+   "folder": "2024-09-01_12345678901234567890_abc",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "no-id match after slug punctuation",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false,
+    "files": {
+     "answers.json": {
+      "k": "v"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp.",
+   "title": "Engineer!"
+  },
+  "expect": {
+   "folder": "2024-01-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": {
+    "k": "v"
+   }
+  }
+ },
+ {
+  "name": "newer non-job folder ignored for sorting",
+  "existing": [
+   {
+    "name": "2024-09-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "other",
+    "submitted": false
+   },
+   {
+    "name": "2024-08-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true
+   },
+   {
+    "name": "2024-07-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-10-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-07-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "date string edge recognition in answers",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {
+      "a": "1/2/24",
+      "b": "1/2/202",
+      "c": "1/2/20245",
+      "d": "2024-1-2",
+      "e": "2024-01-02",
+      "f": " 1/2/2024 "
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [
+    "answers.json"
+   ],
+   "answers_json": {
+    "c": "1/2/20245",
+    "d": "2024-1-2"
+   }
+  }
+ },
+ {
+  "name": "reused unsubmitted answers not filtered",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false,
+    "files": {
+     "answers.json": {
+      "date": "1/2/2024",
+      "keep": "x"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": {
+    "date": "1/2/2024",
+    "keep": "x"
+   }
+  }
+ },
+ {
+  "name": "source only open answers carried",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "only"
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [
+    "open_answers.md"
+   ],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "source only date answers nothing carried",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {
+      "d": "2024-01-01"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r2",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "newest by date over older with more files",
+  "existing": [
+   {
+    "name": "2024-01-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "OLD",
+     "answers.json": {
+      "old": "1/2/2024",
+      "keep": "old"
+     }
+    }
+   },
+   {
+    "name": "2024-03-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "answers.json": {
+      "new": "NEW",
+      "date": "2024-01-01"
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [
+    "answers.json"
+   ],
+   "answers_json": {
+    "new": "NEW"
+   }
+  }
+ },
+ {
+  "name": "multiple submitted suffixes uses r4 carry r3",
+  "existing": [
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "B"
+    }
+   },
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer_r2",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "R2"
+    }
+   },
+   {
+    "name": "2024-06-01_Acme_Corp_Engineer_r3",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": true,
+    "files": {
+     "open_answers.md": "R3",
+     "answers.json": {
+      "z": "2024-01-01",
+      "k": 1
+     }
+    }
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer_r4",
+   "carried": [
+    "answers.json",
+    "open_answers.md"
+   ],
+   "answers_json": {
+    "k": 1
+   }
+  }
+ },
+ {
+  "name": "invalid date prefix ignored",
+  "existing": [
+   {
+    "name": "2024-6-01_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-06-01_Acme_Corp_Engineer",
+   "carried": [],
+   "answers_json": null
+  }
+ },
+ {
+  "name": "id match overrides nonmatching name",
+  "existing": [
+   {
+    "name": "2024-05-01_Other_Thing",
+    "id_file": "job.json",
+    "id": "j1",
+    "submitted": false
+   },
+   {
+    "name": "2024-04-01_Acme_Corp_Engineer",
+    "id_file": null,
+    "id": null,
+    "submitted": false
+   }
+  ],
+  "call": {
+   "job_id": "j1",
+   "date": "2024-06-01",
+   "company": "Acme Corp",
+   "title": "Engineer"
+  },
+  "expect": {
+   "folder": "2024-05-01_Other_Thing",
+   "carried": [],
+   "answers_json": null
+  }
+ }
+]

@@ -1,0 +1,422 @@
+[
+ {
+  "name": "street address only",
+  "label": "Street address",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "address line 1",
+  "label": "Address Line 1",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "generic address",
+  "label": "Address",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "mailing address alone",
+  "label": "Mailing address",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "long combined street city state zip",
+  "label": "What is your street address? Please also include your city, state, and zip code.",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "full address",
+  "label": "Full address",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "complete mailing address",
+  "label": "Complete mailing address",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "home address with components",
+  "label": "Home address (street, city, state, zip)",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "street city state zip list",
+  "label": "Street Address, City, State, ZIP",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city state zip",
+  "label": "City, State, Zip",
+  "expect": "Chicago, IL 60601",
+  "spec_quote": "A box that asks for city, state and ZIP without the street (e.g. \"City, State, Zip\", \"City, State and Zip Code\") gets \"Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city state and zip code",
+  "label": "City, State and Zip Code",
+  "expect": "Chicago, IL 60601",
+  "spec_quote": "A box that asks for city, state and ZIP without the street (e.g. \"City, State, Zip\", \"City, State and Zip Code\") gets \"Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "city only split",
+  "label": "City",
+  "expect": "Chicago",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "zip code split",
+  "label": "Zip code",
+  "expect": "60601",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "postal code split",
+  "label": "Postal code",
+  "expect": "60601",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "address line 1 labeled street",
+  "label": "Address Line 1 (Street Address)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "street box excludes city state zip",
+  "label": "Street address (do not include city, state, or zip)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "street box excludes city state zip reworded",
+  "label": "Street address — do not include city, state, or ZIP code",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "permanent address",
+  "label": "Permanent address",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "home country address",
+  "label": "Home-country address",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "permanent address with extra fields",
+  "label": "Permanent address (street, city, state, postal code, country)",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "home country address full",
+  "label": "Home Country Address (full)",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "email address is not home address",
+  "label": "Email address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "school address is not home address",
+  "label": "School address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "employer address is not home address",
+  "label": "Employer address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "reference address is not home address",
+  "label": "Reference's address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "address line 2 is not home address",
+  "label": "Address Line 2",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "references addresses",
+  "label": "References' addresses",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "current employer address",
+  "label": "Current employer address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "university address is school address",
+  "label": "University address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "email address for correspondence",
+  "label": "Email address (for correspondence)",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_full_question_with_instruction",
+  "label": "What is your current mailing address? Please include street, city, state, and ZIP code.",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. \"What is your street address? Please also include your city, state, and zip code.\", \"Full address\", \"Complete mailing address\", \"Home address (street, city, state, zip)\", \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_residential_address_required",
+  "label": "Residential address: street, city, state and zip code *",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_full_address_including_city",
+  "label": "Full address where you currently reside, including city, state, and postal code",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Full address\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_complete_home_address_parenthetical",
+  "label": "Please enter your complete home address (street, city, state, zip).",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Home address (street, city, state, zip)\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_where_do_you_live_now_question",
+  "label": "Where do you live now? Provide your full address with city, state, and ZIP code.",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Full address\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_contact_address_all_parts",
+  "label": "Contact address (street number and name, city, state, and zip code)",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_street_city_state_zip_code_required",
+  "label": "Street Address, City, State, and ZIP Code *",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Street Address, City, State, ZIP\" — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_mailing_address_be_sure_to_include",
+  "label": "Mailing address — be sure to include your city, state, and zip",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Complete mailing address\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_full_mailing_address_short",
+  "label": "Full mailing address *",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Full address\", \"Complete mailing address\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_format_instruction_all_parts",
+  "label": "Enter your address in this format: street, city, state, zip code",
+  "expect": "1200 S Sample Ave, Chicago, IL 60601",
+  "spec_quote": "A single box that asks for the street AND the city / state / ZIP together — e.g. ... \"Full address\" ... — gets the whole address in the form \"1200 S Sample Ave, Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_street_with_explicit_exclusion",
+  "label": "Residential street address (please do not include city, state, or zip code)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_street_name_and_number_only",
+  "label": "Street name and number only *",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_address_1_street_only_separate_fields",
+  "label": "Address 1 — street only (city, state, and ZIP are collected separately below)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_do_not_enter_city_state_zip",
+  "label": "What is your street address? Do not enter your city, state, or zip here.",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_primary_street_address_omit",
+  "label": "Primary street address (omit city, state and zip)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A street box that says NOT to include the city / state / ZIP (e.g. \"Street address (do not include city, state, or zip)\") gets the street only.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_mailing_address_street_only_note",
+  "label": "Mailing address (street only — no city/state/zip)",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "A box that asks for the street only — e.g. \"Street address\", \"Address Line 1\", \"Address\", \"Mailing address\" — gets the street: \"1200 S Sample Ave\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_city_state_zip_no_street",
+  "label": "City, State, ZIP code (street not needed)",
+  "expect": "Chicago, IL 60601",
+  "spec_quote": "A box that asks for city, state and ZIP without the street (e.g. \"City, State, Zip\", \"City, State and Zip Code\") gets \"Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_city_state_postal_slash",
+  "label": "City / State / Postal Code *",
+  "expect": "Chicago, IL 60601",
+  "spec_quote": "A box that asks for city, state and ZIP without the street (e.g. \"City, State, Zip\", \"City, State and Zip Code\") gets \"Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_please_provide_city_state_zip",
+  "label": "Please provide your city, state and zip code",
+  "expect": "Chicago, IL 60601",
+  "spec_quote": "A box that asks for city, state and ZIP without the street (e.g. \"City, State, Zip\", \"City, State and Zip Code\") gets \"Chicago, IL 60601\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_split_city_town",
+  "label": "City/Town *",
+  "expect": "Chicago",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_split_zip_code_required",
+  "label": "Zip Code *",
+  "expect": "60601",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_split_postal_code_five_digits",
+  "label": "Postal Code (5 digits)",
+  "expect": "60601",
+  "spec_quote": "Split address forms keep one fact per box: \"City\" → \"Chicago\"; \"Zip code\" / \"Postal code\" → \"60601\"; \"Address Line 1\" → the street.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule6_permanent_home_country_address",
+  "label": "Permanent address in your home country (street, city/province, postal code, country)",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule6_home_country_address_required",
+  "label": "Home-country permanent address *",
+  "expect": "Apt 12, Building 3, Willow Apartments, Lakeside Subdistrict, Eastfield District, Springtown, Zhejiang 310000, China",
+  "spec_quote": "A box that asks for the permanent address / home-country address gets the permanent address, whatever else it asks.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_email_address",
+  "label": "Email Address *",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_school_address",
+  "label": "School address (name of institution and address)",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_employer_address",
+  "label": "Current employer's address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_reference_mailing_address",
+  "label": "Reference #1 — mailing address",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_address_line_2_unit",
+  "label": "Address Line 2 (apartment, suite, unit, building)",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_professional_reference_full_address",
+  "label": "Professional reference address (street, city, state, zip)",
+  "expect": "not_home_address",
+  "spec_quote": "Boxes that are not about his home address (email address, school address, employer address, references' addresses, \"Address Line 2\") are never answered with the street or the whole address.",
+  "ambiguous": false
+ }
+]

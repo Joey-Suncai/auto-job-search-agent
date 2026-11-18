@@ -7,7 +7,7 @@ Usage: python3 eligibility_merge.py jobs.json gate_results.json jobs_gated.json 
                      (elig_base = verdict before duplicate marking, so a row stops being 重复 when its twin disappears)
 Adds to every row: elig, elig_reason (Chinese), elig_codes, elig_evidence (English snippet from the JD),
 elig_checked, dup_of, tier_orig.
-Rules (approved by Alex 2026-10-25):
+Rules (approved by Joey 2026-10-25):
   Eligible -> 可投; Review / unreadable -> 待核实 (ask him before applying) — but a row whose JD was read before keeps
   that verdict when the JD cannot be read now (elig_read_on = date of that read, elig_read_fail = today; JSA-054); Ineligible -> 不可投 + reason;
   Closed -> 已关闭; same posting listed twice -> 重复 (dup_of = the kept row).
@@ -27,6 +27,9 @@ REASON = {
     'TOO_LONG': ('block', '实习期超过 12 周 / 多学期'),
     'UNDERGRAD_ONLY': ('block', '只招本科（大三/大四）'),
     'PHD_ONLY': ('block', '只招博士'),
+    # JSA-416: the stated term is before Summer 2027; a postdoc / doctorate already held is required
+    'PAST_CYCLE': ('block', '届次已过（JD 写的实习期早于 Summer 2027）'),
+    'POSTDOC_OR_PHD_DONE': ('block', '博士后职位，或要求入职前已获博士学位'),
     'EXPERIENCE_3PLUS': ('block', '要求 3 年以上工作经验'),
     'MBA_ONLY': ('block', '只招 MBA'),
     'GRAD_WINDOW': ('block', '毕业时间要求不含 2027 年 12 月'),
@@ -46,6 +49,9 @@ REASON = {
     'FETCH_ERROR': ('review', '读取 JD 出错'),
     'POSSIBLY_EXPIRED': ('review', '网站标注的截止日期已过，可能已关闭，申请前确认'),
     'OFFERS_SPONSORSHIP': ('plus', '明确提供担保'),
+    # JSA-385 (Joey 2026-11-17): an internship whose posting only refuses sponsorship is 可投 (CPT needs none)
+    'NO_SPONSORSHIP_INTERN': ('plus', '无担保（实习用 CPT）'),
+    'NO_FUTURE_SPONSORSHIP_INTERN': ('plus', '无担保，且要求将来也不需担保（实习用 CPT；降一档 C）'),
     'GRAD_OK': ('plus', '毕业时间符合'),
 }
 VERDICT = {'Eligible': '可投', 'Review': '待核实', 'Ineligible': '不可投', 'Closed': '已关闭', 'Unverified': '待核实'}
@@ -59,7 +65,7 @@ MANUAL_KEYS = ('elig', 'elig_reason', 'elig_codes', 'elig_evidence', 'dup_of')
 
 
 def apply_manual(jobs, today):
-    """A human verdict on a row must survive the automatic gate (Alex 2026-10-29).
+    """A human verdict on a row must survive the automatic gate (Joey 2026-10-29).
 
     A row may carry elig_manual = {elig, reason, evidence, codes, dup_of, by, at, until}.
     Until `until` (YYYY-MM-DD, optional) that verdict wins: the automatic verdict of the run is kept in
@@ -120,6 +126,8 @@ def apply_result(j, r, checked):
     why = [REASON[c][1] for c in codes if c in REASON and REASON[c][0] == lv]
     j.update(elig=VERDICT[r['v']], elig_reason='；'.join(why) or ('读到完整 JD，未发现限制' if r['v'] == 'Eligible' else ''),
              elig_codes=','.join(codes), elig_evidence=r.get('e', ''), elig_checked=checked, elig_key=r.get('key', ''))
+    if j['elig'] != '已关闭':
+        j.pop('elig_closed', None)   # JSA-417: a fresh read found the posting open again — the closed mark no longer holds
     if r.get('ds'):   # JSA-231 phase 2: DeepSeek's second read, kept on the row for the human check
         j['elig_ds'] = r['ds']
     else:
@@ -144,9 +152,13 @@ def main(jobs_p, res_p, out_p, checked='2026-10-26'):
             j.setdefault('elig_reason', '还没检查')
             continue
         apply_result(j, r, checked)
-        # the old scorer already saw "no sponsorship" / "citizenship required" in the posting text
-        if j.get('sponsorship', '').startswith('Blocked') and j['elig'] in ('可投', '待核实'):
-            j.update(elig='不可投', elig_reason='不提供签证担保' if 'no sponsorship' in j['sponsorship'] else '要求美国公民/绿卡')
+        # the old scorer already saw "citizenship required" in the posting text. "Blocked: no sponsorship" no longer blocks
+        # (JSA-385): the gate read the JD and decided — a plain refusal is 可投, ranked a little lower by the scorer
+        # (a non-internship row keeps the old override: the gate blocks it when it can read the JD, this when it cannot)
+        lab = j.get('sponsorship', '')
+        intern = j.get('level') == 'Internship' or 'intern' in (j.get('title') or '').lower()
+        if lab.startswith('Blocked') and j['elig'] in ('可投', '待核实') and ('no sponsorship' not in lab or not intern):
+            j.update(elig='不可投', elig_reason='不提供签证担保' if 'no sponsorship' in lab else '要求美国公民/绿卡')
         if j.get('elig_form'):   # JSA-231: the application form (not the JD) restricts identity — prep found it
             apply_form(j)
         j['elig_base'] = j['elig']

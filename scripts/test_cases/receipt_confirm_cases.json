@@ -1,0 +1,487 @@
+[
+ {
+  "name": "empty_rows_returns_empty",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [],
+  "expect": []
+ },
+ {
+  "name": "exactly_seven_days_default_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-10T12:00:00-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": [
+   "2026-11-11_Entrust_AI_Developer_Intern"
+  ]
+ },
+ {
+  "name": "just_over_seven_days_not_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-10T11:59:59-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "six_days_23h59_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-10T12:01:00-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": [
+   "2026-11-11_Entrust_AI_Developer_Intern"
+  ]
+ },
+ {
+  "name": "later_submitted_closes_folder",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   },
+   {
+    "at": "2026-11-16T10:00:00-06:00",
+    "folder": "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "submitted",
+    "mode": "run",
+    "ats": "successfactors"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "later_already_submitted_closes_folder",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-12_Siemens_Software_Engineer",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "workday"
+   },
+   {
+    "at": "2026-11-16T10:00:00-06:00",
+    "folder": "2026-11-12_Siemens_Software_Engineer",
+    "status": "already-submitted",
+    "mode": "run",
+    "ats": "workday"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "later_dry_run_after_unconfirmed_ignored",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-13_Workday_Data_Analyst",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "workday"
+   },
+   {
+    "at": "2026-11-17T09:00:00-06:00",
+    "folder": "2026-11-13_Workday_Data_Analyst",
+    "status": "submitted",
+    "mode": "dry-run",
+    "ats": "workday"
+   }
+  ],
+  "expect": [
+   "2026-11-13_Workday_Data_Analyst"
+  ]
+ },
+ {
+  "name": "only_dry_run_unconfirmed_ignored",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-14_Workday_Data_Analyst",
+    "status": "unconfirmed",
+    "mode": "dry-run",
+    "ats": "workday"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "unreadable_at_row_ignored",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "not-a-date",
+    "folder": "2026-11-14_Unreadable_ATS",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "missing_at_row_ignored",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "folder": "2026-11-14_Missing_Time",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "last_unconfirmed_row_old_not_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-10_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   },
+   {
+    "at": "2026-11-01T09:00:00-06:00",
+    "folder": "2026-11-10_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "last_unconfirmed_row_recent_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-01T09:00:00-06:00",
+    "folder": "2026-11-11_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   },
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-11_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   }
+  ],
+  "expect": [
+   "2026-11-11_Bosch_Group_Motorsport_Software_and_Data_Analytics_G"
+  ]
+ },
+ {
+  "name": "multiple_open_folders_oldest_first",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-11T09:00:00-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   },
+   {
+    "at": "2026-11-10T12:00:00-06:00",
+    "folder": "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   },
+   {
+    "at": "2026-11-12T09:00:00-06:00",
+    "folder": "2026-11-12_Siemens_Software_Engineer",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "workday"
+   }
+  ],
+  "expect": [
+   "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+   "2026-11-11_Entrust_AI_Developer_Intern",
+   "2026-11-12_Siemens_Software_Engineer"
+  ]
+ },
+ {
+  "name": "mixed_closed_and_open_folders",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   },
+   {
+    "at": "2026-11-17T09:00:00-06:00",
+    "folder": "2026-11-11_Entrust_AI_Developer_Intern",
+    "status": "submitted",
+    "mode": "run",
+    "ats": "lever"
+   },
+   {
+    "at": "2026-11-15T09:00:00-06:00",
+    "folder": "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   }
+  ],
+  "expect": [
+   "2026-11-10_Bosch_Group_Motorsport_Software_and_Data_Analytics_G"
+  ]
+ },
+ {
+  "name": "later_blocked_does_not_close_open",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-12_Workday_Data_Analyst",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "workday"
+   },
+   {
+    "at": "2026-11-17T09:00:00-06:00",
+    "folder": "2026-11-12_Workday_Data_Analyst",
+    "status": "blocked",
+    "mode": "run",
+    "ats": "workday"
+   }
+  ],
+  "expect": [
+   "2026-11-12_Workday_Data_Analyst"
+  ],
+  "ambiguous": true,
+  "why": "The spec says a later blocked row does NOT close an open unconfirmed folder, but also says an open folder's LAST row must have status unconfirmed; this case follows the explicit does-not-close sentence."
+ },
+ {
+  "name": "later_needs_user_does_not_reopen_closed",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-13_SuccessFactors_Software_Engineer",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   },
+   {
+    "at": "2026-11-16T10:00:00-06:00",
+    "folder": "2026-11-13_SuccessFactors_Software_Engineer",
+    "status": "submitted",
+    "mode": "run",
+    "ats": "successfactors"
+   },
+   {
+    "at": "2026-11-17T09:00:00-06:00",
+    "folder": "2026-11-13_SuccessFactors_Software_Engineer",
+    "status": "needs-user",
+    "mode": "run",
+    "ats": "successfactors"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "later_dry_run_does_not_reopen_closed",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "rows": [
+   {
+    "at": "2026-11-16T09:00:00-06:00",
+    "folder": "2026-11-14_Workday_Data_Analyst",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "workday"
+   },
+   {
+    "at": "2026-11-16T10:00:00-06:00",
+    "folder": "2026-11-14_Workday_Data_Analyst",
+    "status": "submitted",
+    "mode": "run",
+    "ats": "workday"
+   },
+   {
+    "at": "2026-11-17T09:00:00-06:00",
+    "folder": "2026-11-14_Workday_Data_Analyst",
+    "status": "unconfirmed",
+    "mode": "dry-run",
+    "ats": "workday"
+   }
+  ],
+  "expect": []
+ },
+ {
+  "name": "custom_days_three_boundary",
+  "fn": "open_unconfirmed",
+  "now": "2026-11-17T12:00:00-06:00",
+  "days": 3,
+  "rows": [
+   {
+    "at": "2026-11-14T12:00:00-06:00",
+    "folder": "2026-11-14_Entrust_AI_Developer_Intern",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "lever"
+   },
+   {
+    "at": "2026-11-14T11:59:59-06:00",
+    "folder": "2026-11-14_Bosch_Group_Motorsport_Software_and_Data_Analytics_G",
+    "status": "unconfirmed",
+    "mode": "run",
+    "ats": "successfactors"
+   }
+  ],
+  "expect": [
+   "2026-11-14_Entrust_AI_Developer_Intern"
+  ]
+ },
+ {
+  "name": "subject_present_confirms_regardless_age",
+  "fn": "receipt_decision",
+  "at": "2026-10-01T09:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": "Application received - Entrust",
+  "expect": "confirm"
+ },
+ {
+  "name": "subject_present_confirms_at_exact_48h",
+  "fn": "receipt_decision",
+  "at": "2026-11-15T12:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": "Your application has been received",
+  "expect": "confirm"
+ },
+ {
+  "name": "no_subject_exact_48h_joey",
+  "fn": "receipt_decision",
+  "at": "2026-11-15T12:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": null,
+  "expect": "joey"
+ },
+ {
+  "name": "no_subject_47h59_wait",
+  "fn": "receipt_decision",
+  "at": "2026-11-15T12:00:00-06:00",
+  "now": "2026-11-17T11:59:00-06:00",
+  "subject": null,
+  "expect": "wait"
+ },
+ {
+  "name": "no_subject_48h01_joey",
+  "fn": "receipt_decision",
+  "at": "2026-11-15T12:00:00-06:00",
+  "now": "2026-11-17T12:01:00-06:00",
+  "subject": null,
+  "expect": "joey"
+ },
+ {
+  "name": "empty_subject_old_joey",
+  "fn": "receipt_decision",
+  "at": "2026-11-14T09:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": "",
+  "expect": "joey"
+ },
+ {
+  "name": "empty_subject_recent_wait",
+  "fn": "receipt_decision",
+  "at": "2026-11-17T09:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": "",
+  "expect": "wait"
+ },
+ {
+  "name": "null_subject_recent_wait_default",
+  "fn": "receipt_decision",
+  "at": "2026-11-17T09:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": null,
+  "expect": "wait"
+ },
+ {
+  "name": "null_subject_exact_48h_default_joey",
+  "fn": "receipt_decision",
+  "at": "2026-11-15T12:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": null,
+  "expect": "joey"
+ },
+ {
+  "name": "custom_hours_24_exact_joey",
+  "fn": "receipt_decision",
+  "at": "2026-11-16T12:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": null,
+  "hours": 24,
+  "expect": "joey"
+ },
+ {
+  "name": "custom_hours_24_23h59_wait",
+  "fn": "receipt_decision",
+  "at": "2026-11-16T12:01:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": null,
+  "hours": 24,
+  "expect": "wait"
+ },
+ {
+  "name": "subject_present_future_at_confirms",
+  "fn": "receipt_decision",
+  "at": "2026-11-18T09:00:00-06:00",
+  "now": "2026-11-17T12:00:00-06:00",
+  "subject": "Application received",
+  "expect": "confirm"
+ }
+]

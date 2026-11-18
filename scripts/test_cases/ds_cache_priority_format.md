@@ -1,0 +1,2 @@
+A JSON array of 24 cases: {"name": "<unique snake_case>", "rule": {<object with optional keys status, value, rule, leave, ask, no_auto, why>}, "ds_value": <string or null>, "expect": <true|false>}.
+Cover: every bullet of the spec, the real AMAT question "Which best describes your status?" (rule ok with value "I am in my second to last year of study" vs cached "earlier year"), empty rule, leave true, empty-string and null cache, combinations (ok + no_auto, ask + status none).

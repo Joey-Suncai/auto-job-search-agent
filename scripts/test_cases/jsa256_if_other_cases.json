@@ -1,0 +1,630 @@
+[
+ {
+  "name": "other_followup_preceding_answered_other_keeps_with_context",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Indeed",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "How did you hear about us? — you chose Other: If other, please specify",
+  "spec_quote": "Follow-up and the preceding field was answered with an \"Other\" option: KEEP the question but with its context — the label becomes \"<preceding label> — you chose <that option>: <follow-up label>\"."
+ },
+ {
+  "name": "other_followup_preceding_answered_non_other_dropped",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Indeed",
+     "Other"
+    ],
+    "answer": "LinkedIn"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "drop",
+  "spec_quote": "Follow-up and the preceding field was already answered with a value that is NOT an \"Other\" option (the form's own answer or a rule's answer): the follow-up is never shown on the form → DROP it from the sheet."
+ },
+ {
+  "name": "other_followup_preceding_unanswered_dropped_for_now",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Indeed",
+     "Other"
+    ],
+    "answer": null
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "drop",
+  "spec_quote": "Follow-up and the preceding field is still unanswered (it is itself on the sheet): DROP the follow-up now; it is asked in a later round once the answer to the preceding field is known and is Other."
+ },
+ {
+  "name": "preceding_option_other_please_specify_answer_is_that_option",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Referral source",
+    "type": "select",
+    "options": [
+     "Agency",
+     "Other (please specify)"
+    ],
+    "answer": "Other (please specify)"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Referral source — you chose Other (please specify): If other, please specify",
+  "spec_quote": "the preceding field is a choice field that has an option starting with \"Other\" (case-insensitive: \"Other\", \"Other (please specify)\", \"Others\") ... Follow-up and the preceding field was answered with an \"Other\" option: KEEP the question but with its context — the label becomes \"<preceding label> — you chose <that option>: <follow-up label>\"."
+ },
+ {
+  "name": "lowercase_other_option_counts_case_insensitive",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Visa status",
+    "type": "select",
+    "options": [
+     "Citizen",
+     "other"
+    ],
+    "answer": "other"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Visa status — you chose other: If other, please specify",
+  "spec_quote": "the preceding field is a choice field that has an option starting with \"Other\" (case-insensitive: \"Other\", \"Other (please specify)\", \"Others\")."
+ },
+ {
+  "name": "plural_others_option_with_bare_other_label",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Referral source",
+    "type": "select",
+    "options": [
+     "Friend",
+     "Others"
+    ],
+    "answer": "Others"
+   },
+   {
+    "label": "Other",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Referral source — you chose Others: Other",
+  "spec_quote": "or is exactly \"Other\" / \"Other:\" / \"Please specify\" AND the preceding field is a choice field that has an option starting with \"Other\" (case-insensitive: \"Other\", \"Other (please specify)\", \"Others\")."
+ },
+ {
+  "name": "exact_please_specify_label_is_followup_when_other_option_answered",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Gender",
+    "type": "select",
+    "options": [
+     "Male",
+     "Female",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "Please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Gender — you chose Other: Please specify",
+  "spec_quote": "or is exactly \"Other\" / \"Other:\" / \"Please specify\" AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "exact_other_colon_label_followup",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Source",
+    "type": "select",
+    "options": [
+     "Site",
+     "Others"
+    ],
+    "answer": "Others"
+   },
+   {
+    "label": "Other:",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Source — you chose Others: Other:",
+  "spec_quote": "or is exactly \"Other\" / \"Other:\" / \"Please specify\" AND the preceding field is a choice field that has an option starting with \"Other\" (case-insensitive: \"Other\", \"Other (please specify)\", \"Others\")."
+ },
+ {
+  "name": "if_you_selected_other_label_followup",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Do you hold a certification?",
+    "type": "select",
+    "options": [
+     "Yes",
+     "No",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "If you selected Other, please explain",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Do you hold a certification? — you chose Other: If you selected Other, please explain",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains \"if other\", \"if you selected other\", \"if you chose other\" ... Follow-up and the preceding field was answered with an \"Other\" option: KEEP the question but with its context."
+ },
+ {
+  "name": "if_you_chose_other_label_followup",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Preferred location",
+    "type": "select",
+    "options": [
+     "Remote",
+     "Office",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "If you chose other, please explain",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Preferred location — you chose Other: If you chose other, please explain",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains \"if other\", \"if you selected other\", \"if you chose other\" ... Follow-up and the preceding field was answered with an \"Other\" option: KEEP the question but with its context."
+ },
+ {
+  "name": "lowercase_other_comma_please_specify_pattern",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you find the role?",
+    "type": "select",
+    "options": [
+     "Job board",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "How did you find the role? — you chose Other: other, please specify",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains ... \"other, please specify\" ... AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "other_dash_please_specify_pattern",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you find the role?",
+    "type": "select",
+    "options": [
+     "Job board",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "other - please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "How did you find the role? — you chose Other: other - please specify",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains ... \"other - please specify\" ... AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "other_parenthetical_please_specify_label",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "University type",
+    "type": "select",
+    "options": [
+     "Public",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "Other (please specify)",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "University type — you chose Other: Other (please specify)",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains ... \"other (please specify)\" ... AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "no_other_option_means_ordinary_question",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Are you authorized to work?",
+    "type": "select",
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": "Yes"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "If other, please specify",
+  "spec_quote": "A field with those words whose preceding field has no \"Other\" option is an ordinary question (not a follow-up)."
+ },
+ {
+  "name": "preceding_is_text_field_not_choice",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Other details",
+    "type": "text",
+    "options": [],
+    "answer": "Other"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "If other, please specify",
+  "spec_quote": "\"Preceding field\" = the field immediately before it in the list, whatever its type; if the immediately preceding field is not a choice field with an Other option, the field is not an Other follow-up."
+ },
+ {
+  "name": "option_not_starting_with_other_does_not_qualify",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Source",
+    "type": "select",
+    "options": [
+     "Some other",
+     "None"
+    ],
+    "answer": "Some other"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "If other, please specify",
+  "spec_quote": "the preceding field is a choice field that has an option starting with \"Other\" ... A field with those words whose preceding field has no \"Other\" option is an ordinary question (not a follow-up)."
+ },
+ {
+  "name": "otherwise_please_explain_is_not_a_followup",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "Otherwise, please explain",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "Otherwise, please explain",
+  "spec_quote": "A field that is not an Other follow-up is never touched (kept as is)."
+ },
+ {
+  "name": "yes_no_followup_is_not_an_other_followup",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Do you have prior experience?",
+    "type": "select",
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "answer": "Yes"
+   },
+   {
+    "label": "If yes, select your most recent employer",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "If yes, select your most recent employer",
+  "spec_quote": "A field that is not an Other follow-up is never touched (kept as is)."
+ },
+ {
+  "name": "first_field_has_no_preceding_field",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   },
+   {
+    "label": "Anything else?",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 0,
+  "expect": "keep",
+  "label": "If other, please specify",
+  "spec_quote": "\"Preceding field\" = the field immediately before it in the list, whatever its type; if the immediately preceding field is not a choice field with an Other option, the field is not an Other follow-up."
+ },
+ {
+  "name": "exact_please_specify_dropped_when_preceding_non_other_answer",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Gender",
+    "type": "select",
+    "options": [
+     "Male",
+     "Female",
+     "Other"
+    ],
+    "answer": "Female"
+   },
+   {
+    "label": "Please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "drop",
+  "spec_quote": "Follow-up and the preceding field was already answered with a value that is NOT an \"Other\" option (the form's own answer or a rule's answer): the follow-up is never shown on the form → DROP it from the sheet."
+ },
+ {
+  "name": "other_colon_please_specify_pattern",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Pronouns",
+    "type": "select",
+    "options": [
+     "She/Her",
+     "He/Him",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "other: please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Pronouns — you chose Other: other: please specify",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains ... \"other: please specify\" ... AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "followup_after_followup_text_field_untouched",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": "A friend told me"
+   },
+   {
+    "label": "Other (please specify)",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 2,
+  "expect": "keep",
+  "label": "Other (please specify)",
+  "spec_quote": "\"Preceding field\" = the field immediately before it in the list, whatever its type; if the immediately preceding field is not a choice field with an Other option, the field is not an Other follow-up."
+ },
+ {
+  "name": "plain_question_after_other_answer_untouched",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "How did you hear about us?",
+    "type": "select",
+    "options": [
+     "LinkedIn",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "Describe your experience",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep",
+  "label": "Describe your experience",
+  "spec_quote": "A field that is not an Other follow-up is never touched (kept as is)."
+ },
+ {
+  "name": "answer_is_second_other_option_variant",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Source",
+    "type": "select",
+    "options": [
+     "Other",
+     "Other (please specify)"
+    ],
+    "answer": "Other (please specify)"
+   },
+   {
+    "label": "If other, please specify",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Source — you chose Other (please specify): If other, please specify",
+  "spec_quote": "Follow-up and the preceding field was answered with an \"Other\" option: KEEP the question but with its context — the label becomes \"<preceding label> — you chose <that option>: <follow-up label>\"."
+ },
+ {
+  "name": "contains_if_other_mid_label",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "Citizenship status",
+    "type": "select",
+    "options": [
+     "Citizen",
+     "Permanent Resident",
+     "Other"
+    ],
+    "answer": "Other"
+   },
+   {
+    "label": "Details (if other, describe)",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "keep_with_context",
+  "label": "Citizenship status — you chose Other: Details (if other, describe)",
+  "spec_quote": "The field is an OTHER follow-up when its label starts with or contains \"if other\" ... AND the preceding field is a choice field that has an option starting with \"Other\"."
+ },
+ {
+  "name": "other_parenthetical_followup_dropped_on_non_other_answer",
+  "kind": "followup",
+  "fields": [
+   {
+    "label": "University type",
+    "type": "select",
+    "options": [
+     "Public",
+     "Private",
+     "Other"
+    ],
+    "answer": "Public"
+   },
+   {
+    "label": "Other (please specify)",
+    "type": "text",
+    "answer": null
+   }
+  ],
+  "target": 1,
+  "expect": "drop",
+  "spec_quote": "Follow-up and the preceding field was already answered with a value that is NOT an \"Other\" option (the form's own answer or a rule's answer): the follow-up is never shown on the form → DROP it from the sheet."
+ }
+]

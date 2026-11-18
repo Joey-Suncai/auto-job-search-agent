@@ -1,0 +1,65 @@
+[
+ {
+  "name": "review_marketing_promotions",
+  "label": "I agree to the terms and to receive SMS job alerts and promotions",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_offers",
+  "label": "I accept the terms and conditions and consent to text messages with special offers",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_in_terms_of",
+  "label": "In terms of communication, do you prefer SMS?",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_medical_conditions",
+  "label": "Do you have any medical conditions that prevent text messages?",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_negated",
+  "label": "I do not agree to the terms and to receiving SMS updates",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_opt_out_box",
+  "label": "Opt out of SMS: I do not wish to receive text messages (see privacy policy)",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ },
+ {
+  "name": "review_verification_code",
+  "label": "Send me a verification code by SMS (see Terms of Use)",
+  "expect": "unknown",
+  "expect_rule": null,
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "reviewer probe (JSA-382 review 2026-11-17): must not be the combined rule",
+  "ambiguous": false
+ }
+]

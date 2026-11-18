@@ -16,7 +16,7 @@ EDU = [{'school': 'University of Chicago', 'level': 'master', 'degree': 'M.S. Ap
        {'school': 'University of Illinois Urbana-Champaign', 'level': 'bachelor', 'degree': 'B.A. Economics', 'degree_full': 'Bachelor of Arts',
         'major': 'Economics', 'start': '2024-08', 'end': '2026-05'}]
 DISC = ['/^data science$/i', '/^applied data science$/i', '/^data analytics$/i', '/^computer science$/i', '/^information systems?$/i', '/^statistics$/i', '/^other$/i']
-OWN = ['alex.rivera@example.com', '555-010-2030', 'Alex']
+OWN = ['alex.doe@example.com', '555-010-2030', 'Alex']
 
 
 def profile():

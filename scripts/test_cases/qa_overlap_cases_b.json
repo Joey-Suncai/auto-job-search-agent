@@ -1,0 +1,338 @@
+[
+ {
+  "name": "Overlap: existing match regex catches new q",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Salutation",
+     "match": "/^(salutation|prefix)\\b/i",
+     "text": "Mr."
+    }
+   ],
+   "new": {
+    "q": "Salutation or title",
+    "text": "Mr."
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1
+   ],
+   "it_catches": []
+  },
+  "spec_quote": "the other entry catches the new entry's `q` (\"catches it\")"
+ },
+ {
+  "name": "Overlap: new match regex catches existing q",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Preferred name on card",
+     "text": "Preferred"
+    }
+   ],
+   "new": {
+    "q": "Name for card",
+    "match": "/card/i",
+    "text": "Name"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [],
+   "it_catches": [
+    1
+   ]
+  },
+  "spec_quote": "the new entry catches the other entry's `q` (\"it catches\")"
+ },
+ {
+  "name": "Overlap: multiple existing catches plus new catches another",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Please provide the name of the high school you currently attend",
+     "text": "School"
+    },
+    {
+     "q": "Graduation year",
+     "match": "/graduation/i",
+     "text": "2024"
+    },
+    {
+     "q": "Email address",
+     "text": "a@b.com"
+    }
+   ],
+   "new": {
+    "q": "Please provide the name of the high school you currently attend and graduation year",
+    "match": "/email/i",
+    "text": "School and year"
+   }
+  },
+  "expect": {
+   "blocked": true,
+   "catches_it": [
+    1,
+    2
+   ],
+   "it_catches": [
+    3
+   ]
+  },
+  "spec_quote": "Before a new entry is saved, it is placed at the end of the table (it is the newest) and checked against every other entry: - the other entry catches the new entry's `q` (\"catches it\"), or - the new entry catches the other entry's `q` (\"it catches\"). Any such other entry → the save stops, nothing is written, and those entries are named by number."
+ },
+ {
+  "name": "Overlap: clean table blocks nothing",
+  "kind": "overlap",
+  "input": {
+   "table": [
+    {
+     "q": "Favorite color",
+     "text": "Blue"
+    },
+    {
+     "q": "Date of birth",
+     "text": "01/01/2000"
+    }
+   ],
+   "new": {
+    "q": "Emergency contact name",
+    "text": "Jane"
+   }
+  },
+  "expect": {
+   "blocked": false,
+   "catches_it": [],
+   "it_catches": []
+  },
+  "spec_quote": "Any such other entry → the save stops, nothing is written, and those entries are named by number."
+ },
+ {
+  "name": "Answer: newest pick regex chooses option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Country",
+     "text": "United States"
+    },
+    {
+     "q": "Country of residence",
+     "match": "/country/i",
+     "pick": [
+      "/^Canada$/i"
+     ],
+     "text": "Canada"
+    }
+   ],
+   "label": "Country:",
+   "type": "select",
+   "options": [
+    "United States",
+    "Canada"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Canada",
+   "rule": "qa:2"
+  },
+  "spec_quote": "Every entry that catches the field's label is tried, newest first. For a field with options: the first `pick` regex that matches an option (trimmed) chooses it"
+ },
+ {
+  "name": "Answer: newest catching entry misses, older ok answers",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Country",
+     "text": "United States"
+    },
+    {
+     "q": "Country of residence",
+     "match": "/country/i",
+     "pick": [
+      "/^Mexico$/i"
+     ],
+     "text": "^mexico$"
+    }
+   ],
+   "label": "Country:",
+   "type": "select",
+   "options": [
+    "United States",
+    "Canada"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "United States",
+   "rule": "qa:1"
+  },
+  "spec_quote": "The first entry giving \"ok\" is the answer. If no entry gives \"ok\", the answer is the miss of the NEWEST catching entry."
+ },
+ {
+  "name": "Answer: all catching entries miss, newest miss rule returned",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Country",
+     "pick": [
+      "/^Mexico$/i"
+     ],
+     "text": "^mexico$"
+    },
+    {
+     "q": "Country of residence",
+     "match": "/country/i",
+     "pick": [
+      "/^Spain$/i"
+     ],
+     "text": "^spain$"
+    }
+   ],
+   "label": "Country:",
+   "type": "select",
+   "options": [
+    "United States",
+    "Canada"
+   ]
+  },
+  "expect": {
+   "status": "unknown",
+   "rule": "qa:2"
+  },
+  "spec_quote": "If no entry gives \"ok\", the answer is the miss of the NEWEST catching entry."
+ },
+ {
+  "name": "Answer: no entry catches label",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Email address",
+     "match": "/email/i",
+     "text": "a@b.com"
+    }
+   ],
+   "label": "Phone number:",
+   "type": "text"
+  },
+  "expect": null,
+  "spec_quote": "No entry catches the label → no answer (null)."
+ },
+ {
+  "name": "Answer: pattern-only text misses on text field, older plain words answer wins",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "University",
+     "text": "Older University"
+    },
+    {
+     "q": "University or college",
+     "match": "/university/i",
+     "pick": [
+      "/^University of Chicago$/i"
+     ],
+     "text": "University of Chicago"
+    },
+    {
+     "q": "School",
+     "match": "/university/i",
+     "pick": [
+      "/^yes$/i"
+     ],
+     "text": "^yes$"
+    }
+   ],
+   "label": "University:",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "University of Chicago",
+   "rule": "qa:2"
+  },
+  "spec_quote": "On a field WITHOUT options such an entry gives a miss (status \"unknown\"), never the pattern as the answer — so an older catching entry with a plain text or yes answer may still answer. An entry whose `text` is plain words (pick \"/^University of Chicago$/i\" with text \"University of Chicago\") still answers a text field with its text."
+ },
+ {
+  "name": "Answer: yes false chooses No option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Authorized",
+     "yes": true
+    },
+    {
+     "q": "Are you authorized",
+     "match": "/authorized/i",
+     "yes": false
+    }
+   ],
+   "label": "Authorized:",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "No",
+   "rule": "qa:2"
+  },
+  "spec_quote": "else for a `yes` entry the option meaning Yes / No"
+ },
+ {
+  "name": "Answer: yes true on single-option checkbox chooses that option",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Subscribe",
+     "yes": true
+    }
+   ],
+   "label": "Subscribe:",
+   "type": "checkbox",
+   "options": [
+    "Subscribe to newsletter"
+   ]
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Subscribe to newsletter",
+   "rule": "qa:1"
+  },
+  "spec_quote": "else (yes = true, a checkbox with exactly one option) that option"
+ },
+ {
+  "name": "Answer: normalisation removes required and star, maps curly apostrophe",
+  "kind": "answer",
+  "input": {
+   "table": [
+    {
+     "q": "Mother’s maiden name *",
+     "text": "Smith"
+    }
+   ],
+   "label": "Mother's maiden name (required)",
+   "type": "text"
+  },
+  "expect": {
+   "status": "ok",
+   "value": "Smith",
+   "rule": "qa:1"
+  },
+  "spec_quote": "its normalised `q` equals the normalised label. Normalising: lower case; curly apostrophes → '; the word \"required\" (optionally in parentheses) and \"*\" removed; every run of characters other than a-z, 0-9 and ' becomes one space; trimmed."
+ }
+]

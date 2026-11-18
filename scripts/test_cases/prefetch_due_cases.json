@@ -1,0 +1,1182 @@
+[
+ {
+  "name": "answer_of_truthy_answer_wins_without_derived",
+  "fn": "answer_of",
+  "spec_quote": "q's own \"answer\" when it is truthy (a non-empty dict such as {\"yes\": true} or {\"pick\": \"...\"}).",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": false,
+   "questions": []
+  },
+  "q": {
+   "id": "q1",
+   "answer": {
+    "yes": true
+   }
+  },
+  "expect": {
+   "yes": true
+  }
+ },
+ {
+  "name": "answer_of_derived_suggested_used_when_accept_derived",
+  "fn": "answer_of",
+  "spec_quote": "only when sheet[\"accept_derived\"] is true AND q[\"block\"] == \"derived\" AND q[\"risk\"] is falsy AND q[\"kind\"] != \"high_risk\": q[\"suggested\"] if it is truthy",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": true,
+   "questions": []
+  },
+  "q": {
+   "id": "q2",
+   "answer": {},
+   "block": "derived",
+   "risk": false,
+   "kind": "normal",
+   "suggested": "pick-a"
+  },
+  "expect": "pick-a"
+ },
+ {
+  "name": "answer_of_derived_but_risk_truthy_is_none",
+  "fn": "answer_of",
+  "spec_quote": "q[\"risk\"] is falsy",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": true,
+   "questions": []
+  },
+  "q": {
+   "id": "q3",
+   "answer": {},
+   "block": "derived",
+   "risk": true,
+   "kind": "normal",
+   "suggested": "pick-a"
+  },
+  "expect": null
+ },
+ {
+  "name": "answer_of_derived_high_risk_kind_is_none",
+  "fn": "answer_of",
+  "spec_quote": "q[\"kind\"] != \"high_risk\"",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": true,
+   "questions": []
+  },
+  "q": {
+   "id": "q4",
+   "answer": null,
+   "block": "derived",
+   "risk": false,
+   "kind": "high_risk",
+   "suggested": "pick-a"
+  },
+  "expect": null
+ },
+ {
+  "name": "answer_of_accept_derived_false_ignores_suggested",
+  "fn": "answer_of",
+  "spec_quote": "otherwise, only when sheet[\"accept_derived\"] is true AND ...: q[\"suggested\"] ... otherwise None.",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": false,
+   "questions": []
+  },
+  "q": {
+   "id": "q5",
+   "answer": "",
+   "block": "derived",
+   "risk": false,
+   "kind": "normal",
+   "suggested": "pick-a"
+  },
+  "expect": null
+ },
+ {
+  "name": "pending_sheet_none_returns_empty",
+  "fn": "pending",
+  "spec_quote": "Returns [] when: sheet is not a dict (None, a list, a string), ...",
+  "sheet": null,
+  "handled": [
+   "daily"
+  ],
+  "expect": []
+ },
+ {
+  "name": "pending_empty_name_returns_empty",
+  "fn": "pending",
+  "spec_quote": "Returns [] when: ... sheet has no \"name\" or an empty name",
+  "sheet": {
+   "name": "",
+   "questions": [
+    {
+     "id": "q1"
+    }
+   ]
+  },
+  "handled": null,
+  "expect": []
+ },
+ {
+  "name": "pending_handled_name_returns_empty",
+  "fn": "pending",
+  "spec_quote": "or sheet[\"name\"] is in `handled` (a list or set of sheet names that were already handled; None means none handled).",
+  "sheet": {
+   "name": "daily",
+   "questions": [
+    {
+     "id": "q1"
+    },
+    {
+     "id": "q2",
+     "answer": {
+      "yes": true
+     }
+    }
+   ]
+  },
+  "handled": [
+   "weekly",
+   "daily"
+  ],
+  "expect": []
+ },
+ {
+  "name": "pending_ignores_non_dict_entries_and_answered",
+  "fn": "pending",
+  "spec_quote": "Entries of \"questions\" that are not dicts are ignored.",
+  "sheet": {
+   "name": "daily",
+   "questions": [
+    "junk",
+    {
+     "id": "a"
+    },
+    {
+     "id": "b",
+     "answer": {
+      "x": 1
+     }
+    },
+    {
+     "id": "c"
+    },
+    42,
+    null
+   ]
+  },
+  "handled": null,
+  "expect": [
+   "a",
+   "c"
+  ]
+ },
+ {
+  "name": "pending_derived_with_suggestion_not_pending",
+  "fn": "pending",
+  "spec_quote": "Ids (q[\"id\"]) of the sheet's questions whose answer_of is None, in the order they appear in sheet[\"questions\"].",
+  "sheet": {
+   "name": "daily",
+   "accept_derived": true,
+   "questions": [
+    {
+     "id": "q1",
+     "block": "derived",
+     "risk": false,
+     "kind": "normal",
+     "suggested": "s"
+    },
+    {
+     "id": "q2"
+    }
+   ]
+  },
+  "handled": null,
+  "expect": [
+   "q2"
+  ]
+ },
+ {
+  "name": "pending_missing_questions_key_returns_empty",
+  "fn": "pending",
+  "spec_quote": "A missing \"questions\" key means no questions.",
+  "sheet": {
+   "name": "daily"
+  },
+  "handled": null,
+  "expect": []
+ },
+ {
+  "name": "line_none_waiting_with_name",
+  "fn": "line",
+  "spec_quote": "ids empty → exactly \"prefetch questions: none waiting (<name>)\" where <name> is sheet[\"name\"]",
+  "sheet": {
+   "name": "daily"
+  },
+  "ids": [],
+  "expect_exact": "prefetch questions: none waiting (daily)"
+ },
+ {
+  "name": "line_none_waiting_no_sheet",
+  "fn": "line",
+  "spec_quote": "or \"no sheet\" when the sheet is not a dict or has no name.",
+  "sheet": null,
+  "ids": [],
+  "expect_exact": "prefetch questions: none waiting (no sheet)"
+ },
+ {
+  "name": "line_waiting_with_summary",
+  "fn": "line",
+  "spec_quote": "it starts with \"prefetch questions: <len(ids)> waiting on <name> — answering them makes <G> more of <J> prefetched jobs ready (<N> ready now).\" where N = summary.ready_now, J = summary.jobs, G = max(summary.ready_after - summary.ready_now, 0)",
+  "sheet": {
+   "name": "daily",
+   "summary": {
+    "ready_now": 3,
+    "ready_after": 7,
+    "jobs": 10
+   }
+  },
+  "ids": [
+   "q1",
+   "q2"
+  ],
+  "expect_prefix": "prefetch questions: 2 waiting on daily — answering them makes 4 more of 10 prefetched jobs ready (3 ready now)."
+ },
+ {
+  "name": "line_waiting_missing_summary_values_and_gap_clamped",
+  "fn": "line",
+  "spec_quote": "missing summary values count as 0.",
+  "sheet": {
+   "name": "daily",
+   "summary": {
+    "ready_now": 5
+   }
+  },
+  "ids": [
+   "q1",
+   "q2",
+   "q3"
+  ],
+  "expect_prefix": "prefetch questions: 3 waiting on daily — answering them makes 0 more of 0 prefetched jobs ready (5 ready now)."
+ },
+ {
+  "name": "recheck_single_candidate_becomes_used",
+  "fn": "recheck",
+  "spec_quote": "A candidate whose result has status \"ok\" and no truthy \"ask\" and no truthy \"uncertain\" becomes route \"used\", gets \"rechecked\" = today and \"rule_now\" = result[\"rule\"].",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q1",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "Q1": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [
+   "j1"
+  ],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q1",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none",
+      "rechecked": "2026-11-07",
+      "rule_now": "per_job"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 0,
+    "ready": true
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 1
+ },
+ {
+  "name": "recheck_dedupes_identical_questions_and_partial_unknown",
+  "fn": "recheck",
+  "spec_quote": "`answer` is called ONCE with a list of unique {key, label, type, options} (unique by label + type + options ...)",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Where",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Where",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "per_job"
+     },
+     {
+      "label": "Pay",
+      "type": "select",
+      "options": [
+       "a",
+       "b"
+      ],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 2,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "Where": {
+    "status": "ok",
+    "rule": "per_job"
+   },
+   "Pay": {
+    "status": "unknown"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [
+   "j1",
+   "j2"
+  ],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Where",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none",
+      "rechecked": "2026-11-07",
+      "rule_now": "per_job"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 0,
+    "ready": true
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Where",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "per_job",
+      "rechecked": "2026-11-07",
+      "rule_now": "per_job"
+     },
+     {
+      "label": "Pay",
+      "type": "select",
+      "options": [
+       "a",
+       "b"
+      ],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 2
+ },
+ {
+  "name": "recheck_missing_type_and_options_defaults_dedupe",
+  "fn": "recheck",
+  "spec_quote": "type missing → \"text\"; options missing → []",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q",
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "per_job"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "Q": {
+    "status": "ok",
+    "rule": "none"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [
+   "j1",
+   "j2"
+  ],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q",
+      "required": true,
+      "route": "used",
+      "rule": "none",
+      "rechecked": "2026-11-07",
+      "rule_now": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 0,
+    "ready": true
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Q",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "per_job",
+      "rechecked": "2026-11-07",
+      "rule_now": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 0,
+    "ready": true
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 1
+ },
+ {
+  "name": "recheck_rule_uncertain_or_other_never_candidate",
+  "fn": "recheck",
+  "spec_quote": "question.rule is \"none\" or \"per_job\" (rule \"uncertain\" or anything else is never a candidate).",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "uncertain"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "weird"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "A": {
+    "status": "ok",
+    "rule": "per_job"
+   },
+   "B": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "uncertain"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "weird"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "expect_calls": 0,
+  "expect_items": 0
+ },
+ {
+  "name": "recheck_ask_and_uncertain_flags_leave_question_unchanged",
+  "fn": "recheck",
+  "spec_quote": "A candidate whose result has status \"ok\" and no truthy \"ask\" and no truthy \"uncertain\" becomes route \"used\" ... Every other question is left unchanged.",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "A": {
+    "status": "ok",
+    "ask": "which one?",
+    "rule": "per_job"
+   },
+   "B": {
+    "status": "ok",
+    "uncertain": true,
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 2
+ },
+ {
+  "name": "recheck_not_required_and_route_used_not_candidates_no_call",
+  "fn": "recheck",
+  "spec_quote": "A question is a CANDIDATE when the record's status is \"ok\", question.required is true, question.route != \"used\", ... It is not called at all when there are no candidates.",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "A": {
+    "status": "ok",
+    "rule": "per_job"
+   },
+   "B": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "expect_calls": 0,
+  "expect_items": 0
+ },
+ {
+  "name": "recheck_status_not_ok_not_candidate_no_call",
+  "fn": "recheck",
+  "spec_quote": "A question is a CANDIDATE when the record's status is \"ok\", ...",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "error",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "A": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "error",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 1,
+    "ready": false
+   }
+  ],
+  "expect_calls": 0,
+  "expect_items": 0
+ },
+ {
+  "name": "recheck_needs_counts_files_and_joey_tasks",
+  "fn": "recheck",
+  "spec_quote": "needs = (number of required questions whose route != \"used\") + len(files) + len(joey_tasks); ready = (status == \"ok\" and needs == 0).",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Used",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none"
+     },
+     {
+      "label": "New",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "per_job"
+     }
+    ],
+    "files": [
+     "a.pdf"
+    ],
+    "joey_tasks": [
+     "t1",
+     "t2"
+    ],
+    "needs": 5,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "New": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [
+   "j1"
+  ],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "Used",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none"
+     },
+     {
+      "label": "New",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "per_job",
+      "rechecked": "2026-11-07",
+      "rule_now": "per_job"
+     }
+    ],
+    "files": [
+     "a.pdf"
+    ],
+    "joey_tasks": [
+     "t1",
+     "t2"
+    ],
+    "needs": 3,
+    "ready": false
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 1
+ },
+ {
+  "name": "recheck_unchanged_records_keep_needs_and_ready",
+  "fn": "recheck",
+  "spec_quote": "Records that did not change keep their needs / ready. Returns the list of ids of changed records, each id once, in the order of recs.",
+  "recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "uncertain"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 7,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "none"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 4,
+    "ready": false
+   },
+   {
+    "id": "j3",
+    "status": "ok",
+    "questions": [],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 2,
+    "ready": false
+   }
+  ],
+  "answers_by_label": {
+   "B": {
+    "status": "ok",
+    "rule": "per_job"
+   }
+  },
+  "today": "2026-11-07",
+  "expect_changed": [
+   "j2"
+  ],
+  "expect_recs": [
+   {
+    "id": "j1",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "A",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "new",
+      "rule": "uncertain"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 7,
+    "ready": false
+   },
+   {
+    "id": "j2",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "B",
+      "type": "text",
+      "options": [],
+      "required": true,
+      "route": "used",
+      "rule": "none",
+      "rechecked": "2026-11-07",
+      "rule_now": "per_job"
+     }
+    ],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 0,
+    "ready": true
+   },
+   {
+    "id": "j3",
+    "status": "ok",
+    "questions": [],
+    "files": [],
+    "joey_tasks": [],
+    "needs": 2,
+    "ready": false
+   }
+  ],
+  "expect_calls": 1,
+  "expect_items": 1
+ },
+ {
+  "name": "push_line_none_summary",
+  "fn": "push_line",
+  "spec_quote": "None when summary.questions is 0 / missing / summary is None.",
+  "summary": null,
+  "expect": null
+ },
+ {
+  "name": "push_line_zero_questions_none",
+  "fn": "push_line",
+  "spec_quote": "None when summary.questions is 0 / missing / summary is None.",
+  "summary": {
+   "questions": 0,
+   "ready_now": 2,
+   "ready_after": 5
+  },
+  "expect": null
+ },
+ {
+  "name": "push_line_positive_pair",
+  "fn": "push_line",
+  "spec_quote": "Otherwise a (title, body) pair: title \"求职助手：<questions> 道表单题待答\"; body contains \"答完可多投 <G> 个职位\" with G = max(ready_after - ready_now, 0) and \"现在 <ready_now> 个可直接投\".",
+  "summary": {
+   "questions": 2,
+   "ready_now": 3,
+   "ready_after": 7
+  },
+  "expect": {
+   "title": "求职助手：2 道表单题待答",
+   "body_contains": [
+    "答完可多投 4 个职位",
+    "现在 3 个可直接投"
+   ]
+  }
+ },
+ {
+  "name": "push_line_gap_clamped_and_missing_ready_after",
+  "fn": "push_line",
+  "spec_quote": "G = max(ready_after - ready_now, 0) ... and \"现在 <ready_now> 个可直接投\".",
+  "summary": {
+   "questions": 1,
+   "ready_now": 6
+  },
+  "expect": {
+   "title": "求职助手：1 道表单题待答",
+   "body_contains": [
+    "答完可多投 0 个职位",
+    "现在 6 个可直接投"
+   ]
+  }
+ },
+ {
+  "name": "due_note_release_mode_empty",
+  "fn": "due_note",
+  "spec_quote": "Returns \"\" when status_line is empty, when mode is not \"using\"/\"developing\", or when the line says \"none waiting\".",
+  "mode": "release",
+  "status_line": "prefetch questions: 2 waiting on daily — answering them makes 1 more of 5 prefetched jobs ready (3 ready now).",
+  "expect_empty": true,
+  "expect_prefix": null,
+  "contains": [],
+  "not_contains": []
+ },
+ {
+  "name": "due_note_using_mode_none_waiting_empty",
+  "fn": "due_note",
+  "spec_quote": "Returns \"\" ... when the line says \"none waiting\".",
+  "mode": "using",
+  "status_line": "prefetch questions: none waiting (daily)",
+  "expect_empty": true,
+  "expect_prefix": null,
+  "contains": [],
+  "not_contains": []
+ },
+ {
+  "name": "due_note_using_mode_full_line",
+  "fn": "due_note",
+  "spec_quote": "mode \"using\" → a string that starts with \"FORM QUESTIONS WAITING (JSA-243) — \" followed by status_line, and contains \"AskUserQuestion\".",
+  "mode": "using",
+  "status_line": "prefetch questions: 2 waiting on daily — answering them makes 1 more of 5 prefetched jobs ready (3 ready now).",
+  "expect_empty": false,
+  "expect_prefix": "FORM QUESTIONS WAITING (JSA-243) — prefetch questions: 2 waiting on daily — answering them makes 1 more of 5 prefetched jobs ready (3 ready now).",
+  "contains": [
+   "AskUserQuestion"
+  ],
+  "not_contains": []
+ },
+ {
+  "name": "due_note_developing_mode_no_tool_call",
+  "fn": "due_note",
+  "spec_quote": "mode \"developing\" → a string that starts with \"Note for Joey (JSA-243): \", contains the count part of status_line, says the questions are answered in a using session (contains \"using session\"), and does NOT contain \"AskUserQuestion\".",
+  "mode": "developing",
+  "status_line": "prefetch questions: 2 waiting on daily — answering them makes 1 more of 5 prefetched jobs ready (3 ready now).",
+  "expect_empty": false,
+  "expect_prefix": "Note for Joey (JSA-243): ",
+  "contains": [
+   "2 waiting",
+   "using session"
+  ],
+  "not_contains": [
+   "AskUserQuestion"
+  ]
+ }
+]

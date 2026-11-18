@@ -1,0 +1,651 @@
+[
+ {
+  "name": "ask_none_key_gold_contains_none",
+  "set": "wrong",
+  "reading": {
+   "shape": "fill",
+   "subject": "self",
+   "fact_key": "none",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "none"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "right"
+ },
+ {
+  "name": "ask_none_key_gold_lacks_none",
+  "set": "wrong",
+  "reading": {
+   "shape": "fill",
+   "subject": "self",
+   "fact_key": "none",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_unknown_key",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "unknown",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "citizen_pr"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_low_confidence",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "low"
+  },
+  "gold": {
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_shape_trap",
+  "set": "wrong",
+  "reading": {
+   "shape": "trap",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_shape_unclear",
+  "set": "wrong",
+  "reading": {
+   "shape": "unclear",
+   "subject": "self",
+   "fact_key": "citizen_pr",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "citizen_pr"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_subject_unclear",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "unclear",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "ask_other_person_with_non_people_key",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "other_person",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "other_person"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "other_person_referral_key_does_not_ask",
+  "set": "wrong",
+  "reading": {
+   "shape": "fill",
+   "subject": "other_person",
+   "fact_key": "referral",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "referral"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "other_person"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "right"
+ },
+ {
+  "name": "match_with_negated_true_and_degree_in_list",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_future",
+   "negated": true,
+   "degree": "master",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": true,
+   "degree": [
+    "bachelor",
+    "master"
+   ]
+  },
+  "expect": "right"
+ },
+ {
+  "name": "wrong_shape_not_in_gold",
+  "set": "wrong",
+  "reading": {
+   "shape": "fill",
+   "subject": "self",
+   "fact_key": "spons_future",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "wrong_negated_flag",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_future",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": true,
+   "degree": null
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "wrong_degree_not_in_gold_list",
+  "set": "wrong",
+  "reading": {
+   "shape": "choice",
+   "subject": "self",
+   "fact_key": "degree",
+   "negated": false,
+   "degree": "bachelor",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "degree"
+   ],
+   "shape": [
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": [
+    "master",
+    "highest_completed"
+   ]
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "wrong_fact_key_not_in_gold_keys",
+  "set": "wrong",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "right_set_ask_by_low_confidence",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "low"
+  },
+  "gold": {
+   "key": "spons_now",
+   "answer": "yes"
+  },
+  "facts": {
+   "spons_now": {
+    "yes": true
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "right_set_paragraph_shape_on_yes_only_fact",
+  "set": "right",
+  "reading": {
+   "shape": "paragraph",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "spons_now",
+   "answer": "yes"
+  },
+  "facts": {
+   "spons_now": {
+    "yes": true
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "name": "right_set_yes_no_shape_on_value_fact_in_box",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "other_person",
+   "fact_key": "referral",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "referral",
+   "answer": "Jane Doe",
+   "box": true
+  },
+  "facts": {
+   "referral": {
+    "text": "Jane Doe"
+   }
+  },
+  "expect": "new_wrong"
+ },
+ {
+  "name": "right_set_yes_no_shape_on_value_fact_without_box",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "other_person",
+   "fact_key": "referral",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "referral",
+   "answer": "Jane Doe"
+  },
+  "facts": {
+   "referral": {
+    "text": "Jane Doe"
+   }
+  },
+  "expect": "same"
+ },
+ {
+  "name": "right_set_yes_answer_matches_fact_yes",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "spons_now",
+   "answer": "Yes"
+  },
+  "facts": {
+   "spons_now": {
+    "yes": true
+   }
+  },
+  "expect": "same"
+ },
+ {
+  "name": "right_set_negated_yes_no_answer_matches",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_future",
+   "negated": true,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "spons_future",
+   "answer": "no"
+  },
+  "facts": {
+   "spons_future": {
+    "yes": true
+   }
+  },
+  "expect": "same"
+ },
+ {
+  "name": "right_set_negated_yes_no_answer_mismatch",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_future",
+   "negated": true,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "spons_future",
+   "answer": "yes"
+  },
+  "facts": {
+   "spons_future": {
+    "yes": true
+   }
+  },
+  "expect": "new_wrong"
+ },
+ {
+  "name": "right_set_yes_no_answer_but_reading_fact_has_no_yes",
+  "set": "right",
+  "reading": {
+   "shape": "yes_no",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "citizen_pr",
+   "answer": "yes"
+  },
+  "facts": {
+   "citizen_pr": {
+    "text": "United States"
+   },
+   "spons_now": {
+    "text": "maybe"
+   }
+  },
+  "expect": "new_wrong"
+ },
+ {
+  "name": "right_set_value_answer_same_gold_key",
+  "set": "right",
+  "reading": {
+   "shape": "fill",
+   "subject": "self",
+   "fact_key": "first_name",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "first_name",
+   "answer": "Alex"
+  },
+  "facts": {
+   "first_name": {
+    "text": "Alex"
+   },
+   "last_name": {
+    "text": "Smith"
+   }
+  },
+  "expect": "same"
+ },
+ {
+  "name": "right_set_value_answer_same_text_different_key",
+  "set": "right",
+  "reading": {
+   "shape": "fill",
+   "subject": "other_person",
+   "fact_key": "referrer_name",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "referral",
+   "answer": "Jane Doe"
+  },
+  "facts": {
+   "referral": {
+    "text": "Jane Doe",
+    "yes": true
+   },
+   "referrer_name": {
+    "text": "  jane doe  ",
+    "yes": true
+   }
+  },
+  "expect": "same"
+ },
+ {
+  "name": "right_set_value_answer_different_text_and_key",
+  "set": "right",
+  "reading": {
+   "shape": "fill",
+   "subject": "other_person",
+   "fact_key": "referral_email",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "referral",
+   "answer": "Jane Doe"
+  },
+  "facts": {
+   "referral": {
+    "text": "Jane Doe"
+   },
+   "referral_email": {
+    "text": "jane@example.com"
+   }
+  },
+  "expect": "new_wrong"
+ },
+ {
+  "name": "right_set_reading_key_missing_from_facts",
+  "set": "right",
+  "reading": {
+   "shape": "fill",
+   "subject": "self",
+   "fact_key": "spons_now",
+   "negated": false,
+   "degree": "none",
+   "confidence": "high"
+  },
+  "gold": {
+   "key": "first_name",
+   "answer": "Alex"
+  },
+  "facts": {
+   "first_name": {
+    "text": "Alex"
+   }
+  },
+  "expect": "new_wrong"
+ }
+]

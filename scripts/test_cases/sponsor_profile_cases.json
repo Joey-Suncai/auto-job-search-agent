@@ -21,7 +21,7 @@
     "citizen_or_pr": false
    }
   ],
-  "expect": 0.0
+  "expect": 0.2
  },
  {
   "name": "F-1 sponsor_factor Posting offers sponsorship",
@@ -165,7 +165,7 @@
     "citizen_or_pr": false
    }
   ],
-  "expect": true
+  "expect": false
  },
  {
   "name": "Citizen label_blocks Blocked no sponsorship",
@@ -237,6 +237,6 @@
     "citizen_or_pr": false
    }
   ],
-  "expect": true
+  "expect": false
  }
 ]

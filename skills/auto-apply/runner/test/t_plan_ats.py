@@ -21,7 +21,7 @@ T('lever: selectors use the field name', spons and spons['sel'].startswith('[nam
 plan = PB.build(tempfile.mkdtemp(), lv, 'https://jobs.lever.co/protective/40354575-2b06-42cd-93fb-f9ea82bdec7c/apply', 'lever')
 ans = {f['label']: f.get('answer') for f in plan['fields']}
 T('lever plan: sponsorship now or future = Yes', ans.get(spons['label']) == 'Yes', ans.get(spons['label']))
-T('lever plan: name / email', ans.get('Full name') == 'Alex Rivera' and ans.get('Email') == 'alex.rivera@example.com')
+T('lever plan: name / email', ans.get('Full name') == 'Alex Doe' and ans.get('Email') == 'alex.doe@example.com')
 
 ab = PB.ashby_fields(json.load(open(os.path.join(HERE, 'ashby_ostbraros.json'), encoding='utf-8')))
 ak = {f['label']: f for f in ab}
@@ -31,7 +31,7 @@ T('ashby: EEO survey is demographic', ak.get('Veteran Status', {}).get('demograp
 plan = PB.build(tempfile.mkdtemp(), ab, 'https://jobs.ashbyhq.com/ostbraros/ae4a6f7d-a240-4fa2-8c8e-04cc906e4ef9', 'ashby')
 aa = {f['label']: f.get('answer') for f in plan['fields']}
 T('ashby plan: ready, veteran + government answered', plan['ready'] and aa.get('Veteran Status') == 'I am not a protected veteran' and aa.get('Prior Government Employment?') == 'No', aa)
-T('url parsers', PB.lever_parse_url('https://jobs.lever.co/zoox/7206fd97-14e4-43a0-b903-ba65dfeee53e/apply') == ('zoox', '7206fd97-14e4-43a0-b903-ba65dfeee53e')
+T('url parsers', PB.lever_parse_url('https://jobs.lever.co/kelostkel/7206fd97-14e4-43a0-b903-ba65dfeee53e/apply') == ('kelostkel', '7206fd97-14e4-43a0-b903-ba65dfeee53e')
   and PB.ashby_parse_url('https://jobs.ashbyhq.com/ostbraros/ae4a6f7d-a240-4fa2-8c8e-04cc906e4ef9/application?embed=true')[0] == 'ostbraros')
 # JSA-105: "meet the years of experience required" reads <folder>/jd.md — none → Yes; years asked → Joey, never DeepSeek triage
 yq = [{'key': 'yoe', 'label': 'Do you meet the years of experience required for this position?', 'type': 'radio', 'options': ['Yes', 'No'], 'required': True}]

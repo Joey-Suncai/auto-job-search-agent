@@ -1,0 +1,10 @@
+A JSON array of about 40 cases, each {"name", "fn", "spec_quote", "args": {...}, "expect": <value>}:
+- submitted_by_platform: args {"results": [lines with folder, at, status, ats]}, platform_of = the line's "ats" (missing → "other"); expect {platform: [folders]}   (4)
+- sample: args {"folders", "audited", "n", "seed"}; expect is only checked for: length, all from folders - audited, sorted, no repeats — give "expect_len" instead of "expect"   (3)
+- answers_of: args {"lines": [...], "folder"}; expect [answers] (each with question, answer, options, type, at)   (5)
+- norm_answer: args {"a"}; expect str   (4)
+- contact_check: args {"question", "answer"} (profile above); expect "right"|"wrong"|"unsure"|null   (10)
+- eeo_key: args {"q", "a"}; expect key or null   (4)
+- eeo_check: args {"question", "answer"} (profile above); expect "right"|"unsure"   (5)
+- date_check: args {"question", "answer", "at"}; expect "right"|"wrong"|null   (4)
+- summary: args {"items": [{platform, check, judged}]}; expect {platform: {answers, wrong, pending, accuracy, low95}} incl. "all" — for low95 give a value rounded to 4 places   (4)

@@ -1,0 +1,6 @@
+{
+ "tailored_bullet_moved_to_other_entry": {
+  "verdict": "case",
+  "why": "Written before core_dropped (JSA-262, 2026-11-09): the moved bullet is e2's first, so it is core and is missing from e2 — core_dropped as well as entry_moved is right by the current spec."
+ }
+}

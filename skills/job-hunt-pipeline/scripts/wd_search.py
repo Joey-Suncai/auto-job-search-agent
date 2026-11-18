@@ -34,9 +34,22 @@ def parse_tenant(url):
         if parts and parts[0] not in ('wday', 'job'):
             return host, tenant, parts[0]
         return None
+    if host.endswith('myworkdaysite.com'):
+        parts = [p for p in parts if not re.fullmatch(r'[a-z]{2}-[A-Z]{2}', p)]   # JSA-300: an optional locale first
     if host.endswith('myworkdaysite.com') and len(parts) >= 3 and parts[0] == 'recruiting':
         return host, parts[1].lower(), parts[2]
     return None
+
+
+def job_url(host, tenant, site, path):
+    """Pure (tested). The public page of one posting from the CXS search (externalPath "/job/<loc>/<slug>_<id>"):
+    https://<tenant>.wdN.myworkdayjobs.com/en-US/<site><path>; on the shared host wdN.myworkdaysite.com the tenant is part of
+    the path — https://wdN.myworkdaysite.com/recruiting/<tenant>/<site><path> (no locale, the form the store's links use;
+    without the tenant the page answers 500; JSA-300)."""
+    path = '/' + str(path or '').lstrip('/')
+    if str(host or '').lower().endswith('myworkdaysite.com'):
+        return f'https://{host}/recruiting/{tenant}/{site}{path}'
+    return f'https://{host}/en-US/{site}{path}'
 
 
 def keep_posting(title, location):
@@ -114,7 +127,7 @@ def main(a):
             # Joey's tracks first: C before D within a company
             seen.add(k); percomp[company] = percomp.get(company, 0) + 1
             new.append({'company': company, 'title': title, 'location': loc,
-                        'url': f'https://{host}/en-US/{site}{path}', 'posted': p.get('postedOn', ''),
+                        'url': job_url(host, tenant, site, path), 'posted': p.get('postedOn', ''),
                         'tier': 'C' if TRK.search(title) else 'D'})
     print(f'{sum(len(p) for _, p in res)} postings read · {len(new)} new internships kept '
           f'(C {sum(1 for n in new if n["tier"] == "C")}, D {sum(1 for n in new if n["tier"] == "D")})')

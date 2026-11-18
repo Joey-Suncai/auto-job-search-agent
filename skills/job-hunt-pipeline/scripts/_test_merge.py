@@ -74,6 +74,24 @@ check('row count stable', len(out) == 2, str(len(out)))
 check('automatic row unchanged', next(j for j in out if j['id'] == 'J6')['elig'] == '可投')
 check('no manual -> no conflict', conflicts == [], str(conflicts))
 
+# 5. JSA-385: the old label "Blocked: no sponsorship" no longer overrides the gate; "citizenship required" still does
+jobs = [row('J8', 'Intern C', 60, elig='可投', sponsorship='Blocked: no sponsorship'),
+        row('J9', 'Intern D', 55, elig='可投', sponsorship='Blocked: citizenship required'),
+        row('J10', 'Intern E', 50, elig='可投')]
+res = {'J8': {'v': 'Eligible', 'c': 'NO_SPONSORSHIP_INTERN', 'e': 'We are unable to sponsor'},
+       'J9': {'v': 'Eligible', 'c': '', 'e': ''},
+       'J10': {'v': 'Eligible', 'c': 'NO_FUTURE_SPONSORSHIP_INTERN', 'e': 'not require sponsorship now or in the future'}}
+out, conflicts = run(jobs, res, '2026-11-17')
+o = {j['id']: j for j in out}
+check('385 label no-sponsorship stays 可投', o['J8']['elig'] == '可投' and o['J8']['tier'] == 'A', f"{o['J8']['elig']} {o['J8']['tier']}")
+check('385 tag in reason', '无担保（实习用 CPT）' in o['J8']['elig_reason'], o['J8']['elig_reason'])
+check('385 citizenship label still blocks', o['J9']['elig'] == '不可投' and o['J9']['tier'] == 'Blocked', o['J9']['elig'])
+check('385 future wording is 可投 with its own tag', o['J10']['elig'] == '可投' and '降一档' in o['J10']['elig_reason'], o['J10']['elig_reason'])
+
+jobs = [row('J11', 'Data Analyst', 60, level='New grad', elig='可投', sponsorship='Blocked: no sponsorship')]
+out, _ = run(jobs, {'J11': {'v': 'Eligible', 'c': '', 'e': ''}}, '2026-11-17')
+check('385 full-time row with the label stays blocked', out[0]['elig'] == '不可投' and out[0]['tier'] == 'Blocked', f"{out[0]['elig']} {out[0]['tier']}")
+
 print('fails', len(fails))
 for f in fails:
     print(' FAIL', f)

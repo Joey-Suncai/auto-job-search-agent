@@ -1,0 +1,7 @@
+{
+ "with options equal answers but neither names an option": "Claude 2026-11-17 (JSA-393), rule 13: the case is wrong — spec 'Equal after normalising → same' comes first; identical answers 'Maybe' / 'Maybe' are the same whatever the options (unchanged behaviour).",
+ "no longer with dash separator": "Claude 2026-11-17 (JSA-393), rule 13, reviewer findings 1 + 3 (same day): a qualifier after yes / no ('No - I would need sponsorship') can turn the answer around, so it is no longer the same answer: stop and ask Joey.",
+ "no exact exception allows no separator": "Claude 2026-11-17 (JSA-393), rule 13, reviewer findings 1 + 3 (same day): same: 'No I would need sponsorship' carries a qualifier (need / sponsor) — a stop, not a match.",
+ "n/a exact exception allows no separator": "Claude 2026-11-17 (JSA-393), rule 13, reviewer findings 1 + 3 (same day): 'N/A not applicable' contains 'not' — qualifier rule; a stop is the safe side for a bare n/a.",
+ "F-1 longer with only added words is different": "Claude 2026-11-17 (JSA-393), rule 13, reviewer findings 1 + 3 (same day): 'F-1' = 'F-1 student visa': 'student visa' / 'visa' is on the generic trailing-word list (very common wording)."
+}

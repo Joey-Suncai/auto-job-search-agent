@@ -1,0 +1,921 @@
+{
+ "_doc": "JSA-361: the right reading of each type-misread wrong answer (wrong_answers.jsonl, keyed by sha1(folder|field)[:12]). Labelled by Claude from the fact / audit the note cites; several keys may be right. Selection rule: docs/specs/runner-qtype-reading.md (jsa-dev).",
+ "labels": {
+  "8d072ce9a7c6": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "now or in the future / ever = spons_future",
+   "field": "Will you now or in the future require sponsorship"
+  },
+  "4a12cea48943": {
+   "dim": "topic",
+   "keys": [
+    "visa_expiry"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "visa type + expiration = visa_expiry, not the kind of work authorization",
+   "field": "If yes, please provide your visa type and expiration date."
+  },
+  "83f6d46457c2": {
+   "dim": "topic",
+   "keys": [
+    "visa_expiry"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "visa type + expiration = visa_expiry, not the kind of work authorization",
+   "field": "If yes, please provide your visa type and expiration date."
+  },
+  "051bca2f7d47": {
+   "dim": "topic",
+   "keys": [
+    "visa_expiry"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "visa type + expiration = visa_expiry, not the kind of work authorization",
+   "field": "If yes, please provide your visa type and expiration date."
+  },
+  "ac4b8889cbfb": {
+   "dim": "topic",
+   "keys": [
+    "visa_expiry"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "visa type + expiration = visa_expiry, not the kind of work authorization",
+   "field": "Please provide visa status and expiration if applicable."
+  },
+  "ab946c85104a": {
+   "dim": "subject",
+   "keys": [
+    "references",
+    "none"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "other_person"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "other people's contact details → ask",
+   "field": "Enter three professional references with name, company, position, phone number, and email "
+  },
+  "941290236260": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "now or in the future / ever = spons_future",
+   "field": "Will you now or ever require sponsorship to work in the United States?"
+  },
+  "b44e45206256": {
+   "dim": "shape",
+   "keys": [
+    "visa_details",
+    "sponsorship_type"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "describe box: sentences, not Yes",
+   "field": "If yes, briefly describe the employment authorization or immigration support you may requi"
+  },
+  "c6eda5c69b09": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Would you need an Ashby employer to sponsor a visa for this internship?"
+  },
+  "ea7e89356ee9": {
+   "dim": "shape",
+   "keys": [
+    "none"
+   ],
+   "shape": [
+    "paragraph"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "essay: no fact key → ask / materials",
+   "field": "Tell us about a time you taught yourself something difficult. What did you learn, why was"
+  },
+  "cb2b6411b974": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Will you require immigration sponsorship to begin working for a Greenhouse employer? Examples of sponsorship"
+  },
+  "79e17c291cff": {
+   "dim": "topic",
+   "keys": [
+    "marketing"
+   ],
+   "shape": [
+    "subscription",
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "marketing opt-in, not the data consent",
+   "field": "Consent: marketing"
+  },
+  "8483928fa28f": {
+   "dim": "topic",
+   "keys": [
+    "marketing"
+   ],
+   "shape": [
+    "subscription",
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "marketing opt-in, not the data consent",
+   "field": "Consent: marketing"
+  },
+  "d146d5ceca6e": {
+   "dim": "topic",
+   "keys": [
+    "leave_reason"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "reason for leaving, not the school",
+   "field": "Please explain your reason(s) for leaving any job(s) held within the last 5 years or your "
+  },
+  "552b4c2b6ad2": {
+   "dim": "topic",
+   "keys": [
+    "last_name"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "legal last name, not the preferred first name",
+   "field": "Legal Last Name (if different from preferred name)"
+  },
+  "e29fc477ee76": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Will you immediately require EQT to sponsor you for an employment visa, such as an H-1B?"
+  },
+  "51cb38e1f140": {
+   "dim": "topic",
+   "keys": [
+    "marketing"
+   ],
+   "shape": [
+    "subscription",
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "marketing opt-in, not the data consent",
+   "field": "Consent: marketing"
+  },
+  "33201e64d500": {
+   "dim": "topic",
+   "keys": [
+    "conflict_interest",
+    "other_jobs",
+    "outside_business",
+    "industry_side_role"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "plans outside work with a housing-industry entity: a conflicts question, not housing",
+   "field": "a Workday employer requires disclosure of certain activities that could pose a conflict with Fred"
+  },
+  "548c79387980": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": true,
+   "degree": null,
+   "why": "authorized WITHOUT (now or in the future) sponsorship = not spons_future",
+   "field": "Are you legally authorized to work in the United States without (now or in the future) req"
+  },
+  "661bbae0267d": {
+   "dim": "topic",
+   "keys": [
+    "grad_pursuit",
+    "enrolled",
+    "degree_progress"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "currently pursuing a degree in a named field",
+   "field": "Are you currently pursuing a Bachelor’s, Master’s, or PhD in Data Science, Computer Scienc"
+  },
+  "14beb6c6d71d": {
+   "dim": "topic",
+   "keys": [
+    "name_pronunciation"
+   ],
+   "shape": [
+    "fill",
+    "paragraph"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "pronunciation, not the name",
+   "field": "Name pronounciation"
+  },
+  "03e6427626c0": {
+   "dim": "topic",
+   "keys": [
+    "none"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "secondary major: no list key → ask, not the current major",
+   "field": "Secondary Major"
+  },
+  "f77a6fbcaaec": {
+   "dim": "topic",
+   "keys": [
+    "discipline"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": [
+    "bachelor"
+   ],
+   "why": "undergraduate discipline = the bachelor's major, not the current program's",
+   "field": "Undergrad Discipline(s)"
+  },
+  "32bbe0571de5": {
+   "dim": "topic",
+   "keys": [
+    "none"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "secondary major: no list key → ask, not the current major",
+   "field": "Secondary Major"
+  },
+  "53e4cd749383": {
+   "dim": "time",
+   "keys": [
+    "school_level",
+    "degree"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": [
+    "after_graduation",
+    "master"
+   ],
+   "why": "level once graduated, not the highest completed",
+   "field": "Level of education completed once you’ve graduated?"
+  },
+  "0f29fb0147c5": {
+   "dim": "topic",
+   "keys": [
+    "conviction"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "18 USC 1033 conviction question; the preamble mentions a background check",
+   "field": "As an insurance company, a Workday employer or any of its subsidiaries and affiliates is required to"
+  },
+  "71e26ad602bc": {
+   "dim": "topic",
+   "keys": [
+    "citizenship_country"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "citizen of any listed country",
+   "field": "For any of the countries listed below: • Are you a citizen or have a passport, or • Have d"
+  },
+  "5d597ee9cc23": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "options name now and future: read as the now-or-future fact",
+   "field": "Will you now or in the future require company sponsorship to retain or extend your work au"
+  },
+  "551f4fd718d4": {
+   "dim": "topic",
+   "keys": [
+    "citizen_pr"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "authorized AS a citizen / national or permanent resident = citizen_pr",
+   "field": "1. Are you currently lawfully authorized to work in the U.S., as a (i) U.S. citizen or nat"
+  },
+  "85d159907bf6": {
+   "dim": "topic",
+   "keys": [
+    "citizen_pr"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "authorized AS a citizen / national or permanent resident = citizen_pr",
+   "field": "Are you currently lawfully authorized to work in the U.S., as a (i) U.S. citizen or nation"
+  },
+  "5ec9c6e37704": {
+   "dim": "shape",
+   "keys": [
+    "sponsorship_type",
+    "visa_details",
+    "visa_expiry",
+    "immigration_status"
+   ],
+   "shape": [
+    "paragraph",
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "asks what type of sponsorship and which visa: a value, not No",
+   "field": "If Yes: - What type of visa sponsorship will you require? - Do you currently hold a valid "
+  },
+  "27ca199435f0": {
+   "dim": "shape",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "a yes/no sponsorship question, not an authorization sentence",
+   "field": "Will you require sponsorship for employment now or in the future?"
+  },
+  "e481c94d424a": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Would you need an Ashby employer to sponsor a visa for this internship?"
+  },
+  "b3b3d6c6dfa6": {
+   "dim": "shape",
+   "keys": [
+    "none"
+   ],
+   "shape": [
+    "paragraph"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "asks 1-2 sentences + link: an essay → ask",
+   "field": "Beyond general operations, what's one adjacent strength you'd bring (e.g., writing, data/a"
+  },
+  "f55f05043f71": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "now or in the future / ever = spons_future",
+   "field": "Will you now, or in the future, require sponsorship for a work permit for the location you"
+  },
+  "8681ef534001": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Will you require immigration sponsorship to begin working for a Greenhouse employer? Examples of sponsorship"
+  },
+  "46eb24e91934": {
+   "dim": "subject",
+   "keys": [
+    "referral"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "other_person"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "the referrer (another person)",
+   "field": "What is the full name of your referrer? (If you selected no, please type: N/A)"
+  },
+  "78fab4f3cdfa": {
+   "dim": "topic",
+   "keys": [
+    "discipline"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": [
+    "bachelor"
+   ],
+   "why": "undergraduate discipline = the bachelor's major, not the current program's",
+   "field": "Undergrad Discipline(s)"
+  },
+  "fbd7992d4fdc": {
+   "dim": "topic",
+   "keys": [
+    "discipline"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": [
+    "bachelor"
+   ],
+   "why": "undergraduate discipline = the bachelor's major, not the current program's",
+   "field": "Undergrad Discipline(s)"
+  },
+  "8a717598e70c": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Will you immediately require EQT to sponsor you for an employment visa, such as an H-1B?"
+  },
+  "fcfac743fe9a": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Do you currently require immigration sponsorship for work authorization?"
+  },
+  "58d2d19f6c18": {
+   "dim": "topic",
+   "keys": [
+    "name_pronunciation"
+   ],
+   "shape": [
+    "fill",
+    "paragraph"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "pronunciation, not the name",
+   "field": "Name Pronunciation | How do you pronounce your name?"
+  },
+  "33bd957389a9": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Will you require sponsorship by The an employer Company (or one of its affiliates) to begin"
+  },
+  "0049958342ff": {
+   "dim": "time",
+   "keys": [
+    "spons_now"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "to begin / for this internship / immediately / currently = now",
+   "field": "Do you currently require sponsorship for employment visa status to work legally for NJM in"
+  },
+  "f908ec69c21d": {
+   "dim": "topic",
+   "keys": [
+    "future_contact",
+    "data_consent"
+   ],
+   "shape": [
+    "data_consent",
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "retain the application + contact about future openings = data consent",
+   "field": "If you would like us to retain your application and personal information including name, c"
+  },
+  "9ee2299eddf7": {
+   "dim": "shape",
+   "keys": [
+    "relative_names",
+    "relatives"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "other_person",
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "names or N/A as told, not No",
+   "field": "If yes, provide relative's name(s); if no, enter \"N/A\":"
+  },
+  "22388570d58f": {
+   "dim": "topic",
+   "keys": [
+    "last_name"
+   ],
+   "shape": [
+    "fill"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "legal last name, not the preferred first name",
+   "field": "Legal Last Name (if different from preferred name)"
+  },
+  "b11441daa509": {
+   "dim": "topic",
+   "keys": [
+    "recent_employer",
+    "employer"
+   ],
+   "shape": [
+    "fill",
+    "choice",
+    "multi_choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "most recent employer, not the school",
+   "field": "Current/Most Recent Employer"
+  },
+  "261938db8234": {
+   "dim": "topic",
+   "keys": [
+    "local_area",
+    "none"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "does he HAVE housing in Austin (local), not needs housing assistance",
+   "field": "Do you have housing accommodations in the Austin area?"
+  },
+  "ef4c64b94a73": {
+   "dim": "shape",
+   "keys": [
+    "visa_details",
+    "none"
+   ],
+   "shape": [
+    "paragraph"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "textarea for context, not Yes",
+   "field": "Is there any other context you’d like to share about your U.S. Immigration sponsorship nee"
+  },
+  "1e92adc2cf3b": {
+   "dim": "time",
+   "keys": [
+    "spons_future"
+   ],
+   "shape": [
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": false,
+   "degree": null,
+   "why": "now or in the future / ever = spons_future",
+   "field": "Will you now or in the future require sponsorship for employment authorization (i.e. H-1B,"
+  },
+  "8eceb9631fd2": {
+   "dim": "topic",
+   "keys": [
+    "marketing",
+    "optin_other"
+   ],
+   "shape": [
+    "subscription",
+    "yes_no",
+    "choice"
+   ],
+   "subject": [
+    "self"
+   ],
+   "negated": null,
+   "degree": null,
+   "why": "recruiting campaign communications = marketing opt-in",
+   "field": "I agree to receive recruiting campaign communications."
+  }
+ }
+}

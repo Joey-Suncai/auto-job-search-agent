@@ -17,6 +17,7 @@ Writes <out>/run_log.md, form_check.json (every field per section: label, kind, 
 one line in data/runner/results.jsonl (status dry-run | needs-user | code | captcha | closed | blocked — never submitted).
 Default out: data/runner/dryrun/oracle/<tenant>_<job id>. A stop keeps the tab open; a finished dry-run closes it.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -27,18 +28,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 sys.path.insert(0, HERE)
 import job_board  # noqa: E402  (the job-board list after "How did you hear = Job Board", 2026-11-03)
 import runner_common as RC  # noqa: E402  (JSA-187: opening checks · submit gate · closing books)
+import run_workable as W  # noqa: E402  (JSA-298: essay_like, read_open_answers, write_questions — the SR / Workable helpers)
+import field_limits as FL  # noqa: E402  (JSA-312: the page's own length / format limits)
+import essay_step as ES  # noqa: E402  (JSA-318: the shared essay-box step)
 
 TRACKS = {'Data Engineer': 'Data_Engineer', 'Data Sci / Analytics': 'Data_Analyst', 'Data Analyst': 'Data_Analyst',
           'Product Manager': 'Product_Manager', 'AI Product Manager': 'Product_Manager', 'AI Agentic Eng': 'AI_Agentic_Engineer'}
-EMAIL = 'alex.rivera@example.com'
+EMAIL = jsa_profile.email()
 NO_ADVANCE = False
 SUBMIT = False                                                 # set by main() only after the approval / not-yet-submitted gates
 RUN = None                                                     # runner_common.Run of this run (JSA-187)
+FOLDER = None                                                  # --folder: open_answers.md drafts in, questions.json out (JSA-298)
 
 
 # ---------- pure helpers (tested: scripts/test_oracle.py, DeepSeek cases) ----------
@@ -174,7 +180,7 @@ def geo_same(want, got):
 
 def geo_pick(want, options, state=None):
     """Option to click in an Oracle geography list (City / County / Postal Code, options like 'Chicago, Cook, IL' or
-    '62701'): an exact option first; else the options whose first comma part equals `want` — one left → it; several →
+    '<ZIP>'): an exact option first; else the options whose first comma part equals `want` — one left → it; several →
     the one that also names `state` (name or two-letter code) as a later comma part; None when still not exactly one."""
     w = N(want).lower()
     opts = [o for o in (options or []) if N(o)]
@@ -450,6 +456,158 @@ def fix_education_cards(page, log):
     problems.append('education cards still need fixing after 6 tries'); return problems
 
 
+# ---------- JSA-328: a required, EMPTY profile list (Education *) gets the profile's entries (Dell 11-11) ----------
+# Dell's tenant has an "Education *" block with no card and an ADD EDUCATION button; the runner only fixed imported cards,
+# so the dry run read back "ready" and Submit was refused ("You need to add at least 1 Education item"). Joey 2026-11-11
+# 「自动添加 + dry-run 检查」: the runner adds every config education entry, and a required list still empty blocks the run.
+STOP = {'of', 'the', 'at', 'and', 'in', '-', '&'}
+
+
+def _toks(x):
+    return {t for t in re.split(r'[^a-z0-9]+', N(x).lower().replace('\u2019', "'")) if t and t not in STOP}
+
+
+def school_pick(want, options, alts=()):
+    """Pure (tested). The School list option for a profile school: an option equal to the name or one of its alternates
+    (case / spaces ignored); else the ONE option whose words contain all the school's words ("University of Illinois
+    Urbana-Champaign" → "University of Illinois at Urbana-Champaign"); else "Other - School Not Listed" (Dell's
+    instruction) when offered; else None. Never a cousin ("University of Illinois at Chicago" for UIUC)."""
+    opts = [o for o in options or [] if N(o)]
+    names = [want] + list(alts or [])
+    for n in names:
+        hit = [o for o in opts if N(o).lower() == N(n).lower()]
+        if hit:
+            return hit[0]
+    for n in names:
+        w = _toks(n)
+        hit = [o for o in opts if w and w <= _toks(o)]
+        if len(hit) == 1:
+            return hit[0]
+    oth = [o for o in opts if re.match(r'^\s*other\b.*\bschool\b.*not listed', N(o), re.I)]
+    return oth[0] if oth else None
+
+
+def major_pick(major, prefs, options):
+    """Pure (tested). The Major list option: the profile major itself, else the first of the field preferences
+    (wd_profile Field_prefs: Data Science → Applied Data Science → Data Analytics → Computer Science …) the list offers,
+    exact (case ignored); else "Other - Field of Study Not Listed"; else None."""
+    opts = [o for o in options or [] if N(o)]
+    for w in [major] + list(prefs or []):
+        hit = [o for o in opts if N(o).lower() == N(w).lower()]
+        if hit:
+            return hit[0]
+    oth = [o for o in opts if re.match(r'^\s*other\b.*\bnot listed', N(o), re.I)]
+    return oth[0] if oth else None
+
+
+def degree_pill(level, pills):
+    """Pure (tested). The Degree button for a profile level (master / bachelor / phd): "Masters", "Master's Degree",
+    "Bachelors", "Bachelor of …", "Doctorate"; never "Postdoctorate" or "Graduate Diploma". None when no button fits."""
+    rx = {'master': r"^master", 'bachelor': r"^bachelor", 'phd': r"^(doctor|ph\.?\s?d)", 'doctorate': r"^(doctor|ph\.?\s?d)"}.get(str(level or '').lower())
+    if not rx:
+        return None
+    hit = [b for b in pills or [] if re.search(rx, N(b).replace('\u2019', "'"), re.I)]
+    return hit[0] if hit else None
+
+
+def empty_required_lists(blocks):
+    """Pure (tested). blocks = [{'title', 'required', 'items', 'add'}] read from the page's profile-item lists →
+    the titles of required lists with no item (the ones Submit refuses)."""
+    return [b.get('title') or b.get('add') or 'a list' for b in blocks or [] if b.get('required') and not b.get('items')]
+
+
+READ_LISTS = """(visibleOnly) => [...document.querySelectorAll('.apply-flow-block--tile-profile-items')]
+  .filter(b => !visibleOnly || b.offsetParent).map(b => { const h = b.querySelector('.apply-flow-block__title');
+    return { title: h ? h.innerText.replace(/\\s+/g, ' ').trim() : '', required: !!(h && /--required/.test(h.className)),
+      items: b.querySelectorAll('.apply-flow-profile-item-tile:not(.apply-flow-profile-item-tile__new-tile)').length,
+      add: [...b.querySelectorAll('button.apply-flow-profile-item-tile__new-tile')].map(x => x.innerText.trim()).join(' / ') }; })"""
+
+
+def _wd_prefs():
+    try:
+        wd = json.load(open(jpaths.config('wd_profile.json'), encoding='utf-8'))
+        return {str(e.get('School') or ''): e for e in wd.get('education') or []}
+    except (OSError, ValueError):
+        return {}
+
+
+def add_education(page, log, today=None):
+    """Every required, empty Education list on screen: ADD EDUCATION once per config education entry, fill Degree (button),
+    Major, School, Start Date, Graduated (+ Date Acquired when graduated), save, check the card is there. → problems."""
+    problems = []
+    blocks = page.evaluate(READ_LISTS, True)
+    if not any(b['required'] and not b['items'] and re.search(r'education', b['title'] + b['add'], re.I) for b in blocks):
+        return problems
+    today = today or datetime.now().date()
+    ox2 = Oracle(page, log); wdp = _wd_prefs()
+    for e in EDUCATION:
+        n0 = sum(b['items'] for b in page.evaluate(READ_LISTS, True) if re.search(r'education', b['title'] + b['add'], re.I))
+        page.locator('button.apply-flow-profile-item-tile__new-tile').filter(has_text=re.compile(r'add education', re.I)).filter(visible=True).first.click()
+        time.sleep(2)
+        dlg = page.locator(EDIT_FORM).filter(has=page.locator('.save-btn')).last
+        def row(label):
+            return dlg.locator('.input-row').filter(has=page.locator('label, legend').filter(has_text=re.compile('^\\s*' + label, re.I)))
+        def combo(label):
+            c = row(label).locator('input[role=combobox]')
+            return c.first.get_attribute('id') if c.count() else None
+        w = wdp.get(e.get('school'), {})
+        pills = [N(b.inner_text()) for b in row('(?:Degree|Education Level)\\b').locator('button:not([id$="-toggle-button"])').all()]
+        dp = degree_pill(e.get('level'), pills)
+        if dp:
+            row('(?:Degree|Education Level)\\b').locator('button').filter(has_text=re.compile('^\\s*' + re.escape(dp) + '\\s*$')).first.click(); time.sleep(0.5)
+            log(f'  add education: Degree → {dp}')
+        elif pills:
+            problems.append(f'add education: no Degree button for {e.get("level")!r} ({" / ".join(pills[:8])})'); break
+        cid = combo('Major')
+        if cid:
+            o = None
+            for typed in [e.get('major')] + list(w.get('Field_prefs') or []) + ['Other']:
+                o = major_pick(e.get('major'), w.get('Field_prefs') or [], ox2.combo_options(cid, typed=typed))
+                if o: break
+            if o:
+                ox2.pick_combo(cid, o, search=o[:30], typed_first=True); log(f'  add education: Major → {o}')
+            else:
+                page.keyboard.press('Escape'); problems.append(f'add education: no Major option for {e.get("major")!r}'); break
+        cid = combo('School')
+        if cid:
+            alts = list(w.get('School_alts') or [])
+            o = None
+            for typed in [e.get('school')] + alts + [' '.join(N(e.get('school')).split()[:3]), 'Other - School']:
+                o = school_pick(e.get('school'), ox2.combo_options(cid, typed=typed), alts)
+                if o: break
+            if o:
+                ox2.pick_combo(cid, o, search=o[:30], typed_first=True); log(f'  add education: School → {o}')
+            else:
+                page.keyboard.press('Escape'); problems.append(f'add education: no School option for {e.get("school")!r}'); break
+        MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        def put_date(label, ym):
+            if not ym: return
+            y, m = str(ym)[:4], int(str(ym)[5:7])
+            for part, val in (('month', MON[m - 1]), ('year', y)):
+                c = row(label).locator(f'input[role=combobox][id^="{part}-"]')
+                if c.count():
+                    ox2.pick_combo(c.first.get_attribute('id'), val)
+            log(f'  add education: {label} → {MON[m - 1]} {y}')
+        put_date('Start Date', e.get('start'))
+        end = str(e.get('end') or '')
+        grad = not (e.get('current') or (end and end[:7] > str(today)[:7]))
+        gb = row('Graduated').locator('input[type=checkbox]')
+        if gb.count() and gb.first.is_checked() != grad:
+            row('Graduated').locator('label').first.click(); time.sleep(0.6)
+        log(f'  add education: Graduated → {"Yes" if grad else "No"}')
+        if grad:
+            put_date('Date Acquired', end)
+        dlg.locator('.save-btn').first.click(); time.sleep(2.5)
+        still = page.locator(EDIT_FORM).filter(has=page.locator('.save-btn'))
+        if still.count() and still.last.is_visible():
+            problems.append(f'add education: the {e.get("school")} item did not save: {N(still.last.inner_text())[:160]}'); break
+        n1 = sum(b['items'] for b in page.evaluate(READ_LISTS, True) if re.search(r'education', b['title'] + b['add'], re.I))
+        if n1 <= n0:
+            problems.append(f'add education: no card for {e.get("school")} after saving'); break
+        log(f'  add education: {e.get("school")} saved')
+    return problems
+
+
 JOB = {}                                                       # the store row (--job): its source / url pick the job board
 
 
@@ -500,7 +658,7 @@ def box_fit(label, kind, value, box):
     ml = box.get('maxlength')
     if isinstance(ml, int) and ml > 0 and len(v) > ml:
         return 'too_long'
-    return None
+    return FL.check(v, box.get('limits'), label)   # JSA-312: min / max from the page's data or hint, url format
 
 
 def box_plan(label, kind, required, rule_answer, related, facts, options, box=None):
@@ -551,6 +709,29 @@ def _secondary_email():
 
 SECONDARY_EMAIL = _secondary_email()
 CHOICE_KINDS = ('select', 'pills', 'pills_multi', 'radio', 'checks')
+
+
+def open_id(label):
+    """Pure (tested). A stable id for an Oracle prose question (labels are the only stable thing on the page; data-ox
+    numbers shift): 'oq_' + 8 hex of the cleaned, lower-cased label. ds_materials writes it as '## <id> — <label>'."""
+    import hashlib
+    return 'oq_' + hashlib.sha1(N(clean_label(label)).lower().encode('utf-8')).hexdigest()[:8]
+
+
+def read_drafts(folder):
+    """<folder>/open_answers.md → {id: answer} + 'label:' keys — the shared essay step (JSA-318, essay_step.read_drafts)."""
+    return ES.read_drafts(folder)
+
+
+GUESS_LIMIT = ES.GUESS_LIMIT                                   # no limit known from the page: ds_materials' default
+
+
+def open_drafts(fields, ans, drafts):
+    """Pure (tested, JSA-298 / JSA-312 / JSA-318). The prose boxes of one section that no rule answers get their
+    open_answers.md draft — the shared essay step (essay_step.fill) with Oracle's 'oq_' ids and label cleaner, so the
+    drafts already on disk still match. Returns (answers, missing) for questions.json; a draft that breaks the page's
+    limit goes back to missing with the real limit."""
+    return ES.fill(fields, ans, drafts, id_of=open_id, clean=lambda s: N(clean_label(s)))
 
 
 def same(want, got):
@@ -634,9 +815,15 @@ EXTRACT = r"""() => {
       else if (text) {
         if (/honey/i.test(text.name || '') || /honey/i.test(text.id || '')) continue;      // bot trap: never filled
         f.kind = text.tagName === 'TEXTAREA' ? 'textarea' : 'text'; f.value = text.value || ''; f.type = text.type; f.maxlength = text.maxLength > 0 ? text.maxLength : null; f.inputmode = text.getAttribute('inputmode') || '';
+        f.minlength = text.minLength > 0 ? text.minLength : null; f.pattern = text.getAttribute('pattern') || '';   // JSA-312
+        const hint = [...row.querySelectorAll('.input-row__hint, .input-row__counter, .input-row__error, .input-row__messages, [id$="-hint"], [id$="-error"], [role=alert], .oj-message, .cx-validation-message')]
+          .filter(vis).map(txt).join(' ');
+        f.hint = hint.slice(0, 300);
       }
       else continue;
       f.label = label;
+      f.invalid = row.classList.contains('input-row--invalid') || !!row.querySelector('[aria-invalid=true]');   // JSA-312: the page's own check
+      if (f.invalid) f.page_error = txt(row).slice(0, 300);
       row.setAttribute('data-ox', String(n)); n++;
       out.push(f);
     }
@@ -658,18 +845,59 @@ EXTRACT = r"""() => {
 }"""
 
 
+def box_limits(f, qlimits=None):
+    """Pure (tested, JSA-312). The limits of one extracted text box: its maxlength / minlength / pattern attributes, its
+    hint or error text ("4 out of 50 characters", "Enter … in the format: http://example.com"), the platform's question
+    data (`qlimits`, from the page's own REST answer) and a url label / type=url — the tightest of them."""
+    if f.get('kind') not in ('text', 'textarea'):
+        return None
+    attr = {'max': f.get('maxlength'), 'min': f.get('minlength'), 'pattern': f.get('pattern') or None,
+            'format': 'url' if FL.url_box(clean_label(f.get('label') or ''), f.get('type')) else None, 'source': 'the box'}
+    txt = ' '.join(x for x in (f.get('hint'), f.get('page_error')) if x)
+    return FL.merge(attr, FL.limits_from_text(txt), FL.lookup(clean_label(f.get('label') or ''), qlimits or {}))
+
+
 class Oracle:
     def __init__(self, page, log):
         self.page, self.log = page, log
         self.nmap = {}
+        self.qlimits, self._resp = {}, []                      # JSA-312: the question data the page loads (MinimumLength / MaximumLength)
+        try:
+            page.on('response', lambda r: self._resp.append(r) if '/hcmRestApi/' in r.url and r.request.method == 'GET' else None)
+        except Exception:
+            pass
+
+    def read_limits(self):
+        """Parse the page's REST answers seen since the last call (outside the event handler) into self.qlimits."""
+        rs, self._resp = self._resp, []
+        for r in rs:
+            try:
+                if 'json' not in (r.headers.get('content-type') or ''):
+                    continue
+                body = r.text()
+                if 'Length' not in body:
+                    continue
+                if os.environ.get('JSA_DUMP_REST'):
+                    open(os.path.join(os.environ['JSA_DUMP_REST'], f'rest_{len(os.listdir(os.environ["JSA_DUMP_REST"]))}.json'), 'w').write(body)
+                new = FL.limits_from_json(json.loads(body))
+            except Exception:
+                continue
+            if new:
+                self.qlimits.update(new)
+                self.log(f'page question data: limits for {len(new)} question(s) ({r.url.split("?")[0].rsplit("/", 1)[-1]})')
+        return self.qlimits
 
     def state(self):
         st = self.page.evaluate(EXTRACT)
+        ql = self.read_limits()
         seen = {}
         for f in st['fields']:                                 # a key that survives re-rendering (data-ox numbers shift)
             k = f"{f['block']}|{clean_label(f['label'])}|{f['kind']}"
             seen[k] = seen.get(k, 0) + 1
             f['key'] = f"{k}|{seen[k]}"
+            lim = box_limits(f, ql)
+            if lim and (lim['max'] or lim['min'] or lim['format'] or lim['pattern']):
+                f['limits'] = lim
         self.nmap = {f['key']: f['n'] for f in st['fields']}
         return st
 
@@ -843,7 +1071,13 @@ BOX_WHY = {'secondary_email': {'leave': 'optional second e-mail; the profile has
            'not_number': {'leave': 'an amount box (optional) and the rules gave words — left empty, never cut',
                           'ask': 'an amount box: the rules gave words, the candidate gives the number'},
            'too_long': {'leave': 'the answer is longer than the box allows (optional) — left empty, never cut',
-                        'ask': 'the answer is longer than the box allows — the candidate gives a shorter one'}}
+                        'ask': 'the answer is longer than the box allows — the candidate gives a shorter one'},
+           'too_short': {'leave': 'the answer is shorter than the box\'s minimum (optional) — left empty',
+                         'ask': 'the answer is shorter than the box\'s minimum — the candidate gives a longer one'},
+           'not_url': {'leave': 'the box wants a full http(s):// address and the answer is not one (optional) — left empty',
+                       'ask': 'the box wants a full http(s):// address — the saved answer is not one'},
+           'pattern': {'leave': 'the answer does not match the box\'s format (optional) — left empty',
+                       'ask': 'the answer does not match the box\'s format'}}
 
 
 def related_question(order, f, rows):
@@ -886,6 +1120,25 @@ def needs_retry(row, f):
     if f['kind'] == 'phone':
         return re.sub(r'\D', '', str(got or ''))[-10:] != re.sub(r'\D', '', str(want))[-10:]
     return not same(want, got)
+
+
+def cut(v, n=80):
+    """A value for a problem line: long text cut to n characters, anything else as it is."""
+    return v[:n] + '…' if isinstance(v, str) and len(v) > n else v
+
+
+def page_verdict(row, g):
+    """Pure (tested, JSA-312). After the fill and the blur: the page marked the row invalid (its own error text), or the
+    value now in a text box breaks the box's limits → the reason; else None. A row we left empty is judged only when the
+    page marks it."""
+    if g.get('invalid'):
+        return 'the page marks it invalid: ' + (FL.page_error_text(g.get('page_error') or '', g.get('label') or '', g.get('value') or '')
+                                                 or N(g.get('page_error'))[:160] or 'no message')
+    if g.get('kind') in ('text', 'textarea') and g.get('limits') and N(g.get('value')):
+        bad = FL.check(g.get('value'), g['limits'], clean_label(g.get('label') or ''))
+        if bad:
+            return 'breaks the box\'s limit: ' + FL.why(bad, g.get('value'), g['limits'])
+    return None
 
 
 def fill_section(ox, overrides, resume, log):
@@ -931,6 +1184,15 @@ def fill_section(ox, overrides, resume, log):
             f['rlabel'] = clean_label(f['label']) or clean_label(f.get('option') or '')
             qs.append({'key': str(f['n']), 'label': f['rlabel'], 'type': qtype(f), 'options': f['options']})
         ans = answer(qs) if qs else {}
+        ans, missing = open_drafts([{'key': str(f['n']), 'label': f['rlabel'], 'kind': f['kind'], 'maxlength': f.get('maxlength'), 'limits': f.get('limits')}
+                                    for f in fields if not overrides.get(f['rlabel'])], ans, read_drafts(FOLDER))
+        if missing:                                            # JSA-298: drafted by ds_materials, never by the runner
+            names = ' | '.join(q['label'][:70] + (f" (draft breaks the page's limit: {q['redraft']})" if q.get('redraft') else '') for q in missing)
+            if FOLDER:
+                W.write_questions(FOLDER, missing)
+                problems.append(f'not drafted yet: {names} — questions.json written (limits from the page); run scripts/ds_materials.py on the folder, then rerun')
+            else:
+                problems.append(f'prose boxes need an application folder (open_answers.md): {names}')
         plan = []
         for f in fields:
             lab = f['rlabel']
@@ -941,9 +1203,17 @@ def fill_section(ox, overrides, resume, log):
             if is_other_followup(lab) and not how_text:       # the profile's source text, asked of the rules once
                 h = answer([{'key': 'k', 'label': 'How did you hear about this job?', 'type': 'text', 'options': []}]).get('k') or {}
                 how_text.append(h.get('value') if h.get('status') == 'ok' else '')
+            if f['kind'] in ('text', 'textarea') and a.get('status') == 'ok' and isinstance(a.get('value'), str):
+                fx = FL.fix_url(a['value'], f.get('limits'), lab, f.get('type'))   # JSA-312: a bare address in a url box → https://
+                if fx != a['value']:
+                    log(f'  {lab[:50]}: the box wants a full address — typed {fx}')
+                    a = dict(a, value=fx)
             bp = box_plan(lab, f['kind'], f['required'], a, related_question(order, f, rows),
                           {'primary_email': EMAIL, 'secondary_email': SECONDARY_EMAIL, 'how_heard_text': (how_text or [''])[0]}, f['options'],
-                          {'maxlength': f.get('maxlength'), 'type': f.get('type'), 'inputmode': f.get('inputmode'), 'block': f.get('block')})
+                          {'maxlength': f.get('maxlength'), 'type': f.get('type'), 'inputmode': f.get('inputmode'), 'block': f.get('block'),
+                           'limits': f.get('limits')})
+            if f.get('limits'):
+                row['limits'] = {k: v for k, v in f['limits'].items() if v}
             if bp:                                             # JSA-174: secondary e-mail / "Other, please specify" / a number asked
                 a = ({'status': 'ok', 'value': bp['value'], 'rule': bp['rule']} if bp['action'] == 'fill' else
                      {'status': 'ok', 'leave': True, 'rule': bp['rule'], 'why': BOX_WHY[bp['rule']]['leave']} if bp['action'] == 'leave' else
@@ -956,6 +1226,8 @@ def fill_section(ox, overrides, resume, log):
                     box_fit(lab, f['kind'], f['value'], {'maxlength': None, 'type': f.get('type'), 'inputmode': f.get('inputmode'), 'block': f.get('block')}) == 'not_number':
                 a = {'status': 'ok', 'value': '', 'rule': 'clear_' + bp['rule']}   # an old run's words left in the amount box
                                                                                   # ("Open / per interns", an employer 11-06): emptied
+            if bp and bp['rule'] in ('too_short', 'too_long', 'not_url', 'pattern') and a.get('why'):
+                a['why'] += ': ' + FL.why(bp['rule'], (overrides.get(lab) or ans.get(str(f['n'])) or {}).get('value'), f.get('limits'))
             if a.get('status') != 'ok' or a.get('leave') or (a.get('rule') == 'middle_initial' and not f['required']):
                 row.update(want=None, rule=a.get('rule'), page=f['value'], why=a.get('why'))
                 if (f['required'] or (bp and bp['action'] == 'ask')) and not f['value']:
@@ -1071,8 +1343,11 @@ def fill_section(ox, overrides, resume, log):
             row['ok'] = same(row['want'], got)
         if row['kind'] == 'phone' and row['ok'] and not g.get('code_locked') and not re.search(r'\+1\b|united states', g.get('code') or '', re.I):
             row['ok'] = False; row['error'] = f"country code {g.get('code')!r}"
+        page_bad = page_verdict(row, g)                        # JSA-312: the page's own limits and error marks, not just our read-back
+        if page_bad:
+            row['ok'] = False; row['error'] = page_bad
         if not row['ok']:
-            problems.append(f"{row['label'][:70]}: want {row.get('want')!r}, page {got!r}" + (f" ({row['error']})" if row.get('error') else ''))
+            problems.append(f"{row['label'][:70]}: want {cut(row.get('want'))!r}, page {cut(got)!r}" + (f" ({row['error']})" if row.get('error') else ''))
     have = {r.get('key') for r in rows}
     for g in st2['fields']:                                    # a row an answer of the last pass revealed: never left unchecked
         if g['key'] in have:
@@ -1409,11 +1684,35 @@ def page_job_id(url, res):
     return res.get('job_id') or ''
 
 
+def oracle_snap(page, final):
+    """{'url', 'text', 'form'}: form = the final pagination button is still visible."""
+    try: form = final.is_visible()
+    except Exception: form = None
+    try: text = page.inner_text('body')[:30000]
+    except Exception: text = ''
+    return {'url': page.url, 'text': text, 'form': form}
+
+
+def oracle_moved(before, after):
+    """Pure (tested). A 'done' / 'applied' page counts after the final click only when the page changed (URL or the final
+    button gone) or its success sentence is new since the click (JSA-299)."""
+    import confirm_page as CP
+    if CP.changed(before, after):
+        return True
+    rx = re.compile(r'thank you for (applying|your application|submitting)|application (has been |was )?(successfully )?submitted|'
+                    r"we (have )?received your application|you('ve| have) already applied|already (submitted|applied)", re.I)
+    seen = {m.group(0).lower() for m in rx.finditer(N(before.get('text')))}
+    return any(m.group(0).lower() not in seen for m in rx.finditer(N(after.get('text'))))
+
+
 def submit_final(ox, page, res, btn, n, log, out):
     """Press the final button (JSA-147) and confirm: a thank-you / applied page, else the receipt e-mail (read-only)."""
     import gmail_code
+    import confirm_page as CP
     since = datetime.now(timezone.utc) - timedelta(minutes=1)
-    page.locator('.apply-flow-pagination button').filter(has_text=re.compile('^\\s*' + re.escape(btn) + '\\s*$', re.I)).first.click()
+    final = page.locator('.apply-flow-pagination button').filter(has_text=re.compile('^\\s*' + re.escape(btn) + '\\s*$', re.I)).first
+    before = oracle_snap(page, final)                         # JSA-299: the page must change after the click
+    final.click()
     log(f'section {n}: "{btn}" clicked (submit)')
     for _ in range(15):
         time.sleep(2)
@@ -1422,9 +1721,11 @@ def submit_final(ox, page, res, btn, n, log, out):
         k = classify(page.url, page.inner_text('body'))
         if k == 'done' and '/my-profile' in page.url and not profile_lists(page.inner_text('body'), page_job_id(page.url, res), (JOB or {}).get('title')):
             k = 'unknown'                                     # My Profile lists other applications, not this one (yet)
+        if k in ('done', 'applied') and not oracle_moved(before, oracle_snap(page, final)):
+            k = 'unknown'                                     # the same page still up (its own text thanks him): wait
         if k in ('done', 'applied'):
             res['status'], res['confirmed_by'] = 'submitted', 'page'
-            try: page.screenshot(path=os.path.join(out, 'submitted_confirmation.png'), full_page=True)
+            try: CP.confirmation_shot(page, os.path.join(out, 'submitted_confirmation.png'), log)   # JSA-299 / JSA-223
             except Exception: pass
             return res
         refused = submit_refused(page.inner_text('body')[:30000])
@@ -1467,6 +1768,14 @@ def sections_loop(ox, page, res, resume, log, out, overrides):
             rows.append({'key': 'education-cards', 'label': 'Imported education cards', 'kind': 'cards', 'required': True,
                          'want': 'fixed', 'page': 'fixed' if not fx else '; '.join(fx)[:120], 'ok': not fx})
             problems += fx
+        lists = empty_required_lists(page.evaluate(READ_LISTS, True))   # JSA-328: a required list with no item (Dell Education *)
+        if lists:
+            ax = add_education(page, log)
+            left = empty_required_lists(page.evaluate(READ_LISTS, True))
+            rows.append({'key': 'required-lists', 'label': 'Required lists (' + ', '.join(lists)[:60] + ')', 'kind': 'cards', 'required': True,
+                         'want': 'added', 'page': 'added' if not (ax or left) else '; '.join(ax + [f'still empty: {t}' for t in left])[:160],
+                         'ok': not (ax or left)})
+            problems += ax + [f'required list still empty: {t}' for t in left if not ax]
         try:
             page.screenshot(path=os.path.join(out, f'section_{n}.png'), full_page=True)
         except Exception:
@@ -1493,6 +1802,10 @@ def sections_loop(ox, page, res, resume, log, out, overrides):
             pre = submit_refused(page.inner_text('body')[:30000])   # an imported card already says "Fields to fix" (an employer 11-04)
             if not pre and fix_tiles(page, visible_only=False).count():   # one on an earlier section, hidden now (an employer 11-05)
                 pre = f'{fix_tiles(page, visible_only=False).count()} imported card(s) on an earlier section still say "Fields to fix"'
+            if not pre:                                       # JSA-328: a required list on an earlier section, still empty
+                left = empty_required_lists(page.evaluate(READ_LISTS, False))
+                if left:
+                    pre = 'required list(s) with no item: ' + ', '.join(left)
             if pre and re.search(r'fields to fix', pre, re.I):
                 fx = fix_education_cards(page, log)
                 pre = '; '.join(fx) if fx else submit_refused(page.inner_text('body')[:30000])
@@ -1556,11 +1869,11 @@ def main():
     if not p:
         sys.exit(f'not an Oracle posting: {posting}')
     track = a.track or TRACKS.get(job.get('track'), 'Data_Analyst')
-    resume = a.resume or jpaths.resume('2026-10', f'Alex_Rivera_Resume_{track}_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file(f'{track}_A-Classic.pdf'))
     out = os.path.abspath(a.out or os.path.join(DATA, 'dryrun', 'oracle', p['host'].split('.')[0] + '_' + p['job']))
     os.makedirs(out, exist_ok=True)
     over = json.load(open(a.answers)) if a.answers else {}
-    global NO_ADVANCE, WAIT_CODE, WAIT_CAPTCHA, CONSENT_OK, COVER, JOB, SUBMIT, RUN
+    global NO_ADVANCE, WAIT_CODE, WAIT_CAPTCHA, CONSENT_OK, COVER, JOB, SUBMIT, RUN, FOLDER
     JOB = job
     if folder and os.path.exists(os.path.join(folder, 'job.json')) and fj.get('company') and not JOB.get('company'):
         JOB = dict(JOB, company=fj['company'])                 # referral questions (JSA-195) + the receipt e-mail
@@ -1569,6 +1882,7 @@ def main():
         print('NOT submitting: batch not approved (data/runner/approved_batches.json) — dry-run only')
     NO_ADVANCE, WAIT_CODE, WAIT_CAPTCHA, CONSENT_OK = a.no_advance, a.wait_code, a.wait_captcha, a.consent_ok
     COVER = a.cover or find_cover(a.folder)
+    FOLDER = folder
     t0 = time.time()
     logf = open(os.path.join(out, 'run_log.md'), 'a', encoding='utf-8')
     def log(msg): logf.write(f'- {now()} {msg}\n'); logf.flush(); print(msg)
@@ -1578,7 +1892,7 @@ def main():
         return
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = next((pg for pg in ctx.pages if a.attach and a.attach in pg.url), None) or ctx.new_page()
         R.mark('page')
         try:

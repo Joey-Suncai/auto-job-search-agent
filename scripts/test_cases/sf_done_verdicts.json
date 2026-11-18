@@ -1,3 +1,14 @@
 {
- "near miss: application sent successfully (no has been / was)": {"verdict": "case", "why": "the spec listed the main variants only; the runner's DONE pattern has always taken 'application sent' (has been / was optional) and 'Application sent successfully.' is a real success message — the point of done_text is the before/after rule, which this case does not test"}
+ "near miss: application sent successfully (no has been / was)": {
+  "verdict": "case",
+  "why": "the spec listed the main variants only; the runner's DONE pattern has always taken 'application sent' (has been / was optional) and 'Application sent successfully.' is a real success message — the point of done_text is the before/after rule, which this case does not test"
+ },
+ "thank you for your interest appears only in AFTER": {
+  "verdict": "case",
+  "why": "superseded by JSA-299 (Joey's acceptance 2026-11-11): \"thank you for your interest\" alone is never a success sentence — forms greet the candidate with it (Bosch SR 11-11, an employer SF 11-04); such a page now goes to the receipt e-mail check"
+ },
+ "empty BEFORE with only the thank-you-for-interest form intro in AFTER": {
+  "verdict": "case",
+  "why": "superseded by JSA-299 (Joey's acceptance 2026-11-11): \"thank you for your interest\" alone is never a success sentence — forms greet the candidate with it (Bosch SR 11-11, an employer SF 11-04); such a page now goes to the receipt e-mail check"
+ }
 }

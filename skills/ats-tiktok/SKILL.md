@@ -75,7 +75,7 @@ Consequences:
 Login rule (candidate 2026-10-30): use Google when it is offered; it is not offered here, so use the e-mail in
 `config/profile.json` with the Keychain password `jobagent-workday`. A script reads the password (`wd_signin.keychain_password`);
 it is never printed or sent to a model. The candidate allowed the runner to create the TikTok account (2026-11-03,
-「alex.rivera@example.com，允许runner」).
+「<candidate e-mail>，允许runner」).
 
 ## 4. Flow (dry-run)
 1. Pick: the candidate chooses the slot role(s) (§2); Project Intern roles need no slot. Check the counter first

@@ -1,0 +1,206 @@
+[
+ {
+  "id": "c1",
+  "label": "Please indicate all locations or countries for which you now, or in the future, require sponsorship. Separate each with a comma. If this does not apply, indicate N/A.",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c2",
+  "label": "Please list the countries where you would need visa sponsorship.",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c3",
+  "label": "In which countries will you require sponsorship?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c4",
+  "label": "At Acme Corp, list all countries in which you require work authorization sponsorship now or in the future.",
+  "type": "textarea",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c5",
+  "label": "Specify the countries or locations where you require sponsorship. If none, enter N/A.",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c6",
+  "label": "Name the countries for which you need sponsorship (current or future).",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c7",
+  "label": "For which countries do you require visa sponsorship? (If not applicable, write N/A.)",
+  "type": "text",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c8",
+  "label": "Indicate all countries/locations where you now or later need sponsorship (comma-separated; N/A if none).",
+  "type": "textarea",
+  "options": [],
+  "expect_rule": "spons_countries",
+  "expect_value": "United States",
+  "why": "Rule 1: Answer: \"United States\" when the candidate needs sponsorship now or in the future; \"N/A\" only if they need it neither now nor later. For this candidate → \"United States\"."
+ },
+ {
+  "id": "c9",
+  "label": "Will you now or in the future require sponsorship to work in the country where this job is located?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "why": "Rule 2: A question that starts with \"Do/Will/Are/Would you …\" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: \"Yes\"."
+ },
+ {
+  "id": "c10",
+  "label": "Do you require sponsorship to work in any country?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "why": "Rule 2: A question that starts with \"Do/Will/Are/Would you …\" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: \"Yes\"."
+ },
+ {
+  "id": "c11",
+  "label": "Will you require sponsorship in any country?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "why": "Rule 2: A question that starts with \"Do/Will/Are/Would you …\" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: \"Yes\"."
+ },
+ {
+  "id": "c12",
+  "label": "Do you now or will you in the future require visa sponsorship for any location?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "why": "Rule 2: A question that starts with \"Do/Will/Are/Would you …\" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: \"Yes\"."
+ },
+ {
+  "id": "c13",
+  "label": "Would you require sponsorship to work in the United States or any other country now or in the future?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "spons_future",
+  "expect_value": "Yes",
+  "why": "Rule 2: A question that starts with \"Do/Will/Are/Would you …\" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: \"Yes\"."
+ },
+ {
+  "id": "c14",
+  "label": "What type of sponsorship will you require?",
+  "type": "text",
+  "options": [],
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "why": "Rule 4: \"What type of sponsorship will you require?\" / \"If yes, what type of sponsorship?\" → the explanation text (rule id sponsorship_type), never \"Yes\", never \"United States\"."
+ },
+ {
+  "id": "c15",
+  "label": "If yes, what type of sponsorship?",
+  "type": "textarea",
+  "options": [],
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "why": "Rule 4: \"What type of sponsorship will you require?\" / \"If yes, what type of sponsorship?\" → the explanation text (rule id sponsorship_type), never \"Yes\", never \"United States\"."
+ },
+ {
+  "id": "c16",
+  "label": "Please specify the type of visa sponsorship you will require.",
+  "type": "text",
+  "options": [],
+  "expect_rule": "sponsorship_type",
+  "expect_value": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time",
+  "why": "Rule 4: \"What type of sponsorship will you require?\" / \"If yes, what type of sponsorship?\" → the explanation text (rule id sponsorship_type), never \"Yes\", never \"United States\"."
+ },
+ {
+  "id": "c17",
+  "label": "For any of the countries listed below, are you a citizen or have a passport: Iran, North Korea, Syria, Cuba?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "other",
+  "expect_value": null,
+  "why": "Rule 6: Questions about a list of countries of CITIZENSHIP / passport (export-control lists such as \"For any of the countries listed below: are you a citizen or have a passport …\") are NOT sponsorship questions and must not get rule spons_countries."
+ },
+ {
+  "id": "c18",
+  "label": "Please list all countries of citizenship you hold (for export control purposes).",
+  "type": "textarea",
+  "options": [],
+  "expect_rule": "other",
+  "expect_value": null,
+  "why": "Rule 6: Questions about a list of countries of CITIZENSHIP / passport (export-control lists such as \"For any of the countries listed below: are you a citizen or have a passport …\") are NOT sponsorship questions and must not get rule spons_countries."
+ },
+ {
+  "id": "c19",
+  "label": "Are you authorized to work in the U.S. without sponsorship now or in the future?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "other",
+  "expect_value": "No",
+  "why": "Rule 5: \"Without sponsorship\" questions (\"Are you authorized to work in the U.S. without sponsorship now or in the future?\") → \"No\" (inverted; not spons_countries)."
+ },
+ {
+  "id": "c20",
+  "label": "Will you require sponsorship for relocation or housing?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect_rule": "other",
+  "expect_value": null,
+  "why": "Rule 7: Questions about sponsoring relocation or housing are not visa sponsorship."
+ }
+]

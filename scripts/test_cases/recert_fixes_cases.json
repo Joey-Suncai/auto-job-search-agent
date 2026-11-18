@@ -1,0 +1,373 @@
+[
+ {
+  "name": "numeric_answer annual salary label gets year digits",
+  "spec_quote": "when the label (case-insensitive) has a whole word \"annual\", \"yearly\", \"per year\", \"a year\", \"annum\" or \"salary\" → (\"52000\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Annual Salary",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "52000",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer hourly rate label gets hour digits",
+  "spec_quote": "otherwise → (\"25\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "hourly rate",
+   "src": "rules:comp",
+   "ans": "25"
+  },
+  "expect": [
+   "25",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer 'per year' phrase matches",
+  "spec_quote": "when the label (case-insensitive) has a whole word ... \"per year\", \"a year\" ... → (\"52000\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Pay per year",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "52000",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer 'a year' phrase matches",
+  "spec_quote": "when the label (case-insensitive) has a whole word ... \"a year\" ... → (\"52000\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Comp a year",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "52000",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer 'annum' matched case-insensitively",
+  "spec_quote": "when the label (case-insensitive) has a whole word ... \"annum\" ... → (\"52000\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "PER ANNUM",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "52000",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer 'salaried' is not whole word 'salary'",
+  "spec_quote": "when the label (case-insensitive) has a whole word ... \"salary\" → (\"52000\", \"rules:comp (digits)\"); otherwise → (\"25\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Salaried employee",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "25",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer 'annually' is not whole word 'annual'",
+  "spec_quote": "when the label (case-insensitive) has a whole word \"annual\" ... → (\"52000\" ...); otherwise → (\"25\", \"rules:comp (digits)\")",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Annually",
+   "src": "rules:comp",
+   "ans": "52000"
+  },
+  "expect": [
+   "25",
+   "rules:comp (digits)"
+  ]
+ },
+ {
+  "name": "numeric_answer non-comp source returns null with number box reason",
+  "spec_quote": "any other src → (None, a reason string that starts with \"number box:\").",
+  "fn": "numeric_answer",
+  "args": {
+   "label": "Base salary",
+   "src": "rules:default",
+   "ans": "52000"
+  },
+  "expect": [
+   null,
+   "number box:"
+  ]
+ },
+ {
+  "name": "state_on_review Illinois with matching code zip",
+  "spec_quote": "True when txt contains a comma, optional spaces, that code in CAPITALS, and then either spaces plus a 5-digit ZIP (optionally -4 digits) or the end of a line. Example: \"Chicago, IL 60601\" → True for \"Illinois\".",
+  "fn": "state_on_review",
+  "args": {
+   "value": "Illinois",
+   "txt": "Chicago, IL 60601"
+  },
+  "expect": true
+ },
+ {
+  "name": "state_on_review lowercase value with ZIP+4",
+  "spec_quote": "A State answer written as the full U.S. state name (any case, extra spaces allowed, e.g. \"Illinois\", \"new york\") is shown ... as its two-letter postal code ... True when txt contains a comma, optional spaces, that code in CAPITALS, and then either spaces plus a 5-digit ZIP (optionally -4 digits)...",
+  "fn": "state_on_review",
+  "args": {
+   "value": "new york",
+   "txt": "Albany, NY 12207-1234"
+  },
+  "expect": true
+ },
+ {
+  "name": "state_on_review code followed by end of line",
+  "spec_quote": "True when txt contains a comma, optional spaces, that code in CAPITALS, and then either spaces plus a 5-digit ZIP (optionally -4 digits) or the end of a line.",
+  "fn": "state_on_review",
+  "args": {
+   "value": "Illinois",
+   "txt": "Chicago, IL"
+  },
+  "expect": true
+ },
+ {
+  "name": "state_on_review zero spaces after comma",
+  "spec_quote": "True when txt contains a comma, optional spaces, that code in CAPITALS...",
+  "fn": "state_on_review",
+  "args": {
+   "value": "Illinois",
+   "txt": "Chicago,IL 60601"
+  },
+  "expect": true
+ },
+ {
+  "name": "state_on_review wrong code is false",
+  "spec_quote": "A different code (\", IN 46000\" for Illinois) → False.",
+  "fn": "state_on_review",
+  "args": {
+   "value": "Illinois",
+   "txt": "Chicago, IN 46000"
+  },
+  "expect": false
+ },
+ {
+  "name": "state_on_review non-US-state value is false",
+  "spec_quote": "A value that is not a U.S. state name (e.g. \"Ontario\", \"IL\", \"\") → False.",
+  "fn": "state_on_review",
+  "args": {
+   "value": "Ontario",
+   "txt": "Toronto, ON M5H 2N2"
+  },
+  "expect": false
+ },
+ {
+  "name": "state_on_review abbreviation value is false",
+  "spec_quote": "A value that is not a U.S. state name (e.g. \"Ontario\", \"IL\", \"\") → False.",
+  "fn": "state_on_review",
+  "args": {
+   "value": "IL",
+   "txt": "Chicago, IL 60601"
+  },
+  "expect": false
+ },
+ {
+  "name": "block_kind_of language takes precedence over education",
+  "spec_quote": "Checked in this order, case-insensitive: contains \"language\" → \"languages\"; contains \"educat\"...",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Language and Education"
+  },
+  "expect": "languages"
+ },
+ {
+  "name": "block_kind_of schools attended is education",
+  "spec_quote": "contains \"educat\", \"academic\" or the whole word \"school\"/\"schools\" → \"education\". Examples: \"Schools Attended 2\" → education",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Schools Attended 2"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "block_kind_of academic experience is education before work",
+  "spec_quote": "contains \"educat\", \"academic\" or the whole word \"school\"/\"schools\" → \"education\"... Examples: ... \"Academic Experience 1\" → education",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Academic Experience 1"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "block_kind_of worked section is work",
+  "spec_quote": "contains \"work\", \"experience\" or \"employment\" → \"work\". Examples: ... \"Where have you worked? 3\" → work.",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Where have you worked? 3"
+  },
+  "expect": "work"
+ },
+ {
+  "name": "block_kind_of unrelated section is null",
+  "spec_quote": "contains \"work\", \"experience\" or \"employment\" → \"work\"; else None.",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Certifications"
+  },
+  "expect": null
+ },
+ {
+  "name": "blocks_of counts distinct numbered language sections",
+  "spec_quote": "The number of DISTINCT sections that end in a number (optional trailing spaces) and whose block_kind_of is `kind`.",
+  "fn": "blocks_of",
+  "args": {
+   "fields": [
+    {
+     "section": "Languages 1"
+    },
+    {
+     "section": "Languages 2"
+    },
+    {
+     "section": "Education 1"
+    }
+   ],
+   "kind": "languages"
+  },
+  "expect": 2
+ },
+ {
+  "name": "blocks_of duplicate section counted once",
+  "spec_quote": "The number of DISTINCT sections that end in a number (optional trailing spaces) and whose block_kind_of is `kind`.",
+  "fn": "blocks_of",
+  "args": {
+   "fields": [
+    {
+     "section": "Languages 1"
+    },
+    {
+     "section": "Languages 1"
+    }
+   ],
+   "kind": "languages"
+  },
+  "expect": 1
+ },
+ {
+  "name": "blocks_of section without trailing number not a block",
+  "spec_quote": "Sections without a trailing number are not blocks.",
+  "fn": "blocks_of",
+  "args": {
+   "fields": [
+    {
+     "section": "Languages"
+    },
+    {
+     "section": "Education 1"
+    }
+   ],
+   "kind": "languages"
+  },
+  "expect": 0
+ },
+ {
+  "name": "blocks_of counts work-kind sections only",
+  "spec_quote": "The number of DISTINCT sections that end in a number (optional trailing spaces) and whose block_kind_of is `kind`.",
+  "fn": "blocks_of",
+  "args": {
+   "fields": [
+    {
+     "section": "Work Experience 1"
+    },
+    {
+     "section": "Employment 2"
+    },
+    {
+     "section": "Education 1"
+    }
+   ],
+   "kind": "work"
+  },
+  "expect": 2
+ },
+ {
+  "name": "ready dry-run status with only dry-run reason",
+  "spec_quote": "False unless status == \"dry-run\". Then True when every reason is \"dry-run\"...",
+  "fn": "ready",
+  "args": {
+   "status": "dry-run",
+   "reasons": [
+    "dry-run"
+   ]
+  },
+  "expect": true
+ },
+ {
+  "name": "ready dry-run status with no reasons is true",
+  "spec_quote": "Then True when every reason is ...",
+  "fn": "ready",
+  "args": {
+   "status": "dry-run",
+   "reasons": []
+  },
+  "expect": true
+ },
+ {
+  "name": "ready reason starting with batch not approved is allowed",
+  "spec_quote": "Then True when every reason is \"dry-run\", \"batch not approved\", starts with \"batch not approved\"...",
+  "fn": "ready",
+  "args": {
+   "status": "dry-run",
+   "reasons": [
+    "batch not approved by manager"
+   ]
+  },
+  "expect": true
+ },
+ {
+  "name": "ready singular DeepSeek answer reason is allowed",
+  "spec_quote": "matches \"<digits> DeepSeek answer(s) to spot-check…\" (also \"answer\" / \"answers\" without \"(s)\")",
+  "fn": "ready",
+  "args": {
+   "status": "dry-run",
+   "reasons": [
+    "1 DeepSeek answer to spot-check"
+   ]
+  },
+  "expect": true
+ },
+ {
+  "name": "ready review page lacks reason is false",
+  "spec_quote": "Any other reason (e.g. \"review page lacks: …\", \"problems: …\") → False.",
+  "fn": "ready",
+  "args": {
+   "status": "dry-run",
+   "reasons": [
+    "review page lacks: billing address"
+   ]
+  },
+  "expect": false
+ },
+ {
+  "name": "ready non-dry-run status is false even with dry-run reason",
+  "spec_quote": "False unless status == \"dry-run\".",
+  "fn": "ready",
+  "args": {
+   "status": "live",
+   "reasons": [
+    "dry-run"
+   ]
+  },
+  "expect": false
+ }
+]

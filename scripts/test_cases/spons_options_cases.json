@@ -1,0 +1,166 @@
+[
+ {
+  "name": "future_only_classic",
+  "label": "Do you now or in the future require visa sponsorship to work in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes, I will require sponsorship now",
+   "Yes, I will require sponsorship in the future",
+   "No, I do not and will not require sponsorship"
+  ],
+  "expect": "Yes, I will require sponsorship in the future",
+  "quote": "When the question asks \"now or in the future\" and the options are split by time ... the answer is the option that says Yes for the FUTURE only. Never the \"now\" Yes option, never the No option."
+ },
+ {
+  "name": "future_only_reversed_order",
+  "label": "Will you now or in the future require sponsorship for employment visa status?",
+  "type": "radio",
+  "options": [
+   "No, I do not and will not require sponsorship",
+   "Yes, I require sponsorship now",
+   "Yes, I will require sponsorship in the future"
+  ],
+  "expect": "Yes, I will require sponsorship in the future",
+  "quote": "Option texts vary in wording and order; the option order must not matter."
+ },
+ {
+  "name": "future_only_select_widget",
+  "label": "Do you now, or will you in the future, require sponsorship to work in the US?",
+  "type": "select",
+  "options": [
+   "Yes, I require sponsorship now",
+   "Yes, I will require sponsorship in the future",
+   "No, I do not now or in the future require sponsorship"
+  ],
+  "expect": "Yes, I will require sponsorship in the future",
+  "quote": "When the question asks \"now or in the future\" and the options are split by time ... the answer is the option that says Yes for the FUTURE only."
+ },
+ {
+  "name": "single_yes_now_or_future",
+  "label": "Do you now or in the future require sponsorship for an employment visa?",
+  "type": "radio",
+  "options": [
+   "Yes, I will require sponsorship now or in the future",
+   "No, I do not and will not require sponsorship"
+  ],
+  "expect": "Yes, I will require sponsorship now or in the future",
+  "quote": "If the options are one Yes (\"Yes, I will require sponsorship now or in the future\") and one No, the answer is that Yes option."
+ },
+ {
+  "name": "single_yes_now_or_future_no_first",
+  "label": "Will you now or in the future need work-visa sponsorship?",
+  "type": "radio",
+  "options": [
+   "No, I do not and will not require sponsorship",
+   "Yes, I will require sponsorship now or in the future"
+  ],
+  "expect": "Yes, I will require sponsorship now or in the future",
+  "quote": "If the options are one Yes (\"Yes, I will require sponsorship now or in the future\") and one No, the answer is that Yes option."
+ },
+ {
+  "name": "plain_yes_no_now_only_radio",
+  "label": "Do you currently require sponsorship to work in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "quote": "If the question is a plain Yes/No asking only about NOW (\"Do you currently require sponsorship?\") the answer is \"No\"."
+ },
+ {
+  "name": "plain_yes_no_now_only_flipped",
+  "label": "Do you presently need visa sponsorship for your employment?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "quote": "If the question is a plain Yes/No asking only about NOW (\"Do you currently require sponsorship?\") the answer is \"No\". / Option texts vary in wording and order; the option order must not matter."
+ },
+ {
+  "name": "plain_yes_no_now_only_select",
+  "label": "Are you currently sponsored by an employer or do you require sponsorship at this time?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "quote": "If the question is a plain Yes/No asking only about NOW (\"Do you currently require sponsorship?\") the answer is \"No\"."
+ },
+ {
+  "name": "single_yes_question_phrased_now_or_future",
+  "label": "Do you now or will you in the future require sponsorship for work authorization?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "quote": "If the options are one Yes (\"Yes, I will require sponsorship now or in the future\") and one No, the answer is that Yes option."
+ },
+ {
+  "name": "ambiguous_multiple_yes_none_future_only",
+  "label": "Will you now or in the future require sponsorship for employment?",
+  "type": "radio",
+  "options": [
+   "Yes, I require sponsorship now",
+   "Yes, I am open to discussing sponsorship options",
+   "No, I do not require sponsorship"
+  ],
+  "expect": "ask",
+  "ambiguous": false,
+  "quote": "If several Yes options exist and none of them is clearly the future-only one, no answer is given (status asks the user)."
+ },
+ {
+  "name": "future_only_vs_now_and_future_trap",
+  "label": "Do you now or in the future require visa sponsorship?",
+  "type": "radio",
+  "options": [
+   "Yes, I require sponsorship now and in the future",
+   "Yes, I will require sponsorship in the future",
+   "No, I do not and will not require sponsorship"
+  ],
+  "expect": "Yes, I will require sponsorship in the future",
+  "quote": "the answer is the option that says Yes for the FUTURE only. Never the \"now\" Yes option, never the No option."
+ },
+ {
+  "name": "future_only_reworded_at_a_later_date",
+  "label": "Will you now or at any point in the future need sponsorship for a work visa?",
+  "type": "select",
+  "options": [
+   "Yes, I need sponsorship immediately",
+   "Yes, I will need sponsorship at a later date",
+   "No, I do not need sponsorship now or later"
+  ],
+  "expect": "Yes, I will need sponsorship at a later date",
+  "quote": "Option texts vary in wording and order; the option order must not matter. / the answer is the option that says Yes for the FUTURE only."
+ },
+ {
+  "name": "time_split_missing_future_option",
+  "label": "Will you now or in the future require sponsorship for employment?",
+  "type": "radio",
+  "options": [
+   "Yes, I require sponsorship now",
+   "No, I do not require sponsorship"
+  ],
+  "expect": "ask",
+  "ambiguous": true,
+  "why": "The spec defines the answer for time-split options as the future-only Yes, and for one-Yes/one-No as that Yes; it does not state what to do when a time-split question offers no future option and no plain Yes, so this case is ambiguous.",
+  "quote": "When the question asks \"now or in the future\" and the options are split by time ... the answer is the option that says Yes for the FUTURE only."
+ },
+ {
+  "name": "no_option_wording_now_or_future_radio",
+  "label": "Do you now or in the future require sponsorship for a work visa?",
+  "type": "radio",
+  "options": [
+   "No, I do not now nor will I in the future require sponsorship",
+   "Yes, I will require sponsorship in the future",
+   "Yes, I require sponsorship now"
+  ],
+  "expect": "Yes, I will require sponsorship in the future",
+  "quote": "the answer is the option that says Yes for the FUTURE only. Never the \"now\" Yes option, never the No option."
+ }
+]

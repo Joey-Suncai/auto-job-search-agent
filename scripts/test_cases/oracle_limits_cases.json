@@ -1,0 +1,414 @@
+[
+ {
+  "name": "vermorgal_minor_none_stop",
+  "label": "What is your current degree minor? if applicable.",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "None",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "stop_ask",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_minor_not_applicable_fill",
+  "label": "What is your current degree minor? if applicable.",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Not applicable",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_career_draft_over_max_redraft",
+  "label": "Would you please share some details about your future career aspirations? Anything you'd like the hiring review team to know when reviewing your candidacy?",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 200,
+   "min": null,
+   "format": null
+  },
+  "source": "draft",
+  "answer": {
+   "repeat": "I hope",
+   "times": 181
+  },
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "redraft",
+  "expect_limit": 200,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_career_draft_fits_fill",
+  "label": "Would you please share some details about your future career aspirations? Anything you'd like the hiring review team to know when reviewing your candidacy?",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 200,
+   "min": null,
+   "format": null
+  },
+  "source": "draft",
+  "answer": {
+   "repeat": "I want to build products that help people learn faster and work with less friction. Every day.",
+   "times": 2
+  },
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_link1_bare_address_fill",
+  "label": "Link 1",
+  "required": true,
+  "kind": "text",
+  "limits": null,
+  "source": "rule",
+  "answer": "linkedin.com/in/alexdoe",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_link1_full_https_fill",
+  "label": "Link 1",
+  "required": true,
+  "kind": "text",
+  "limits": null,
+  "source": "rule",
+  "answer": "https://www.linkedin.com/in/alexdoe",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_link1_na_stop",
+  "label": "Link 1",
+  "required": true,
+  "kind": "text",
+  "limits": null,
+  "source": "rule",
+  "answer": "N/A",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "stop_ask",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "vermorgal_minor_none_page_invalid_page_stop",
+  "label": "What is your current degree minor? if applicable.",
+  "required": true,
+  "kind": "textarea",
+  "limits": null,
+  "source": "rule",
+  "answer": "None",
+  "page_invalid": true,
+  "page_error": "What is your current degree minor? if applicable. * 4 out of 50 characters The value must have at least 5 characters.",
+  "expect": "page_stop",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "optional_min_violation_leave",
+  "label": "Middle name",
+  "required": false,
+  "kind": "text",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "None",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "leave",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "optional_max_violation_leave",
+  "label": "Referral details",
+  "required": false,
+  "kind": "text",
+  "limits": {
+   "max": 30,
+   "min": null,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Referred by a current employee on the team",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "leave",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "required_over_max_stop_ask",
+  "label": "Current job title",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": 20,
+   "min": null,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Senior software engineer",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "stop_ask",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "required_exactly_at_max_fill",
+  "label": "Current job title",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": 20,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Software engineer II",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "required_exactly_at_min_fill",
+  "label": "Nickname",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Hello",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "whitespace_padding_trimmed_stop_ask",
+  "label": "What is your current degree minor? if applicable.",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "  None  ",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "stop_ask",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "whitespace_padding_trimmed_fill",
+  "label": "What is your current degree minor? if applicable.",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 50,
+   "min": 5,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "  None!  ",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "draft_no_known_max_redraft_default_1500",
+  "label": "Describe a challenging project you led and what you learned from the experience.",
+  "required": true,
+  "kind": "textarea",
+  "limits": null,
+  "source": "draft",
+  "answer": {
+   "repeat": "I hope",
+   "times": 300
+  },
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "redraft",
+  "expect_limit": 1500,
+  "expect_min": null
+ },
+ {
+  "name": "draft_no_known_max_fits_fill",
+  "label": "Describe a challenging project you led and what you learned from the experience.",
+  "required": true,
+  "kind": "textarea",
+  "limits": null,
+  "source": "draft",
+  "answer": {
+   "repeat": "I hope",
+   "times": 100
+  },
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "draft_under_min_redraft_with_known_max",
+  "label": "Tell us about a time when you had to persuade a team to adopt your recommendation and how you handled resistance from senior stakeholders.",
+  "required": true,
+  "kind": "textarea",
+  "limits": {
+   "max": 2000,
+   "min": 100,
+   "format": null
+  },
+  "source": "draft",
+  "answer": "I once convinced my team to switch tools and it went well.",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "redraft",
+  "expect_limit": 2000,
+  "expect_min": 100
+ },
+ {
+  "name": "url_by_format_bare_address_fill",
+  "label": "Personal website",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": null,
+   "min": null,
+   "format": "url"
+  },
+  "source": "rule",
+  "answer": "www.example.org",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "url_by_format_non_address_stop_ask",
+  "label": "Personal website",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": null,
+   "min": null,
+   "format": "url"
+  },
+  "source": "rule",
+  "answer": "see resume",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "stop_ask",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "url_by_format_optional_na_leave",
+  "label": "Personal website",
+  "required": false,
+  "kind": "text",
+  "limits": {
+   "max": null,
+   "min": null,
+   "format": "url"
+  },
+  "source": "rule",
+  "answer": "N/A",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "leave",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "url_by_link_label_optional_na_leave",
+  "label": "Portfolio",
+  "required": false,
+  "kind": "text",
+  "limits": null,
+  "source": "rule",
+  "answer": "N/A",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "leave",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "page_error_after_fitting_answer_page_stop",
+  "label": "Years of relevant experience",
+  "required": true,
+  "kind": "text",
+  "limits": {
+   "max": 200,
+   "min": 3,
+   "format": null
+  },
+  "source": "rule",
+  "answer": "Ten years of experience",
+  "page_invalid": true,
+  "page_error": "Years of relevant experience * This entry is not in the expected format.",
+  "expect": "page_stop",
+  "expect_limit": null,
+  "expect_min": null
+ },
+ {
+  "name": "github_label_optional_bare_address_fill",
+  "label": "GitHub",
+  "required": false,
+  "kind": "text",
+  "limits": null,
+  "source": "rule",
+  "answer": "github.com/user",
+  "page_invalid": false,
+  "page_error": "",
+  "expect": "fill",
+  "expect_limit": null,
+  "expect_min": null
+ }
+]

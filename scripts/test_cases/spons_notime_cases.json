@@ -1,0 +1,289 @@
+[
+ {
+  "name": "bare_visa_sponsorship_question",
+  "label": "Do you require Visa sponsorship?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require Visa sponsorship?\""
+ },
+ {
+  "name": "immigration_sponsorship_affirm_us",
+  "label": "Do you require immigration sponsorship to work for Affirm in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require immigration sponsorship to work for Affirm in the United States?\""
+ },
+ {
+  "name": "short_sponsorship_question",
+  "label": "Do you require sponsorship?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Unsure"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require sponsorship?\""
+ },
+ {
+  "name": "usa_employment_long_sentence_options",
+  "label": "Do you require visa sponsorship for employment in the USA?",
+  "type": "radio",
+  "options": [
+   "Yes — I require visa sponsorship now or in the future",
+   "No — I do not require visa sponsorship now or in the future",
+   "I am unsure at this time"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require visa sponsorship for employment in the USA?\" (options may be long sentences) — the time words appear only in the options, not the question"
+ },
+ {
+  "name": "visa_sponsorship_to_work_in_us",
+  "label": "Do you require visa sponsorship to work in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require visa sponsorship to work in the United States?\""
+ },
+ {
+  "name": "requesting_visa_sponsorship_fragment",
+  "label": "Requesting visa sponsorship?",
+  "type": "combo",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Requesting visa sponsorship?\""
+ },
+ {
+  "name": "employer_sponsored_work_authorization",
+  "label": "Do you require employer-sponsored work authorization?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Do you require employer-sponsored work authorization?\""
+ },
+ {
+  "name": "will_require_sponsorship_galostgal",
+  "label": "Will you require visa sponsorship to work for Galostgal?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Will you require visa sponsorship to work for Galostgal?\" (\"will\" alone is not a time word)"
+ },
+ {
+  "name": "conditional_previous_answer_sponsorship",
+  "label": "If you answered \"No\" to the previous question, will you require sponsorship for a work visa or other work authorization?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No",
+   "Not applicable"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"If you answered 'No' to the previous question, will you require sponsorship for a work visa or other work authorization?\""
+ },
+ {
+  "name": "authorized_without_sponsorship_us",
+  "label": "Are you legally authorized to work in the US without sponsorship?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Are you legally authorized to work in the US without sponsorship?\""
+ },
+ {
+  "name": "authorized_without_employer_sponsorship_country",
+  "label": "Are you legally authorized to work in the country for this position without requiring employer-sponsored work authorization?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Unsure"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Are you legally authorized to work in the country for this position without requiring employer-sponsored work authorization?\""
+ },
+ {
+  "name": "permitted_without_sponsorship_job_location",
+  "label": "Without sponsorship, are you legally permitted to work in the country where this job is located?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"Must ask (no time word):\" lists \"Without sponsorship, are you legally permitted to work in the country where this job is located?\""
+ },
+ {
+  "name": "need_stripe_to_sponsor_work_visa",
+  "label": "Do you need Stripe to sponsor you for a work visa?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "\"a question about needing visa / immigration sponsorship ... that names no time is not answered by the rules — it always goes to Joey\"; this label carries no word from the time-word list"
+ },
+ {
+  "name": "now_or_in_future_employment_visa_status",
+  "label": "Will you now or in the future require sponsorship for employment visa status?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will you now or in the future require sponsorship for employment visa status?\""
+ },
+ {
+  "name": "now_or_ever_sponsorship_us",
+  "label": "Will you now or ever require sponsorship to work in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will you now or ever require sponsorship to work in the United States?\""
+ },
+ {
+  "name": "currently_require_immigration_sponsorship",
+  "label": "Do you currently require immigration sponsorship for work authorization?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Do you currently require immigration sponsorship for work authorization?\""
+ },
+ {
+  "name": "immigration_sponsorship_to_begin_imc",
+  "label": "Will you require immigration sponsorship to begin working for GALLUMPELL?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will you require immigration sponsorship to begin working for GALLUMPELL?\""
+ },
+ {
+  "name": "versevfen_sponsor_visa_internship",
+  "label": "Would you need Versevfen to sponsor a visa for this internship?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Would you need Versevfen to sponsor a visa for this internship?\""
+ },
+ {
+  "name": "authorized_duration_of_internship",
+  "label": "Are you legally authorized to work in the United States for the duration of this internship without sponsorship from the firm?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Are you legally authorized to work in the United States for the duration of this internship without sponsorship from the firm?\""
+ },
+ {
+  "name": "sponsorship_within_next_3_to_7_years",
+  "label": "Will you require immigration sponsorship within the next 3-7 years for work authorization?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Unsure"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will you require immigration sponsorship within the next 3-7 years for work authorization?\""
+ },
+ {
+  "name": "sponsorship_required_next_12_months",
+  "label": "Will immigration sponsorship be required in the next 12 months?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will immigration sponsorship be required in the next 12 months?\""
+ },
+ {
+  "name": "immediately_require_eqt_h1b",
+  "label": "Will you immediately require EQT to sponsor you for an employment visa, such as an H-1B?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there ...):\" lists \"Will you immediately require EQT to sponsor you for an employment visa, such as an H-1B?\""
+ },
+ {
+  "name": "optional_details_about_sponsorship_needed",
+  "label": "Optional: If you answered Yes or Unsure, can you provide further details about the sponsorship you need?",
+  "type": "textarea",
+  "options": [],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there, or it is not a yes/no sponsorship question):\" lists \"a box asking for details: 'Optional: If you answered Yes or Unsure, can you provide further details about the sponsorship you need?'\""
+ },
+ {
+  "name": "what_type_of_sponsorship",
+  "label": "If yes, what type of sponsorship will you require?",
+  "type": "text",
+  "options": [],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there, or it is not a yes/no sponsorship question):\" lists \"If yes, what type of sponsorship will you require?\""
+ },
+ {
+  "name": "check_all_that_apply_benefits_mention_sponsorship",
+  "label": "Please check all that apply (we offer relocation support including visa sponsorship, housing, and travel stipends)",
+  "type": "combo",
+  "options": [
+   "Relocation support",
+   "Visa sponsorship",
+   "Housing",
+   "Travel stipend"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there, or it is not a yes/no sponsorship question):\" lists \"Please check all that apply (we offer relocation support including visa sponsorship, housing …)\""
+ },
+ {
+  "name": "work_authorization_no_sponsorship_mention",
+  "label": "Are you legally authorized to work in the United States?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "answer",
+  "why": "\"Still answered as before (a time word is there, or it is not a yes/no sponsorship question):\" lists \"questions that do not mention sponsorship at all ('Are you legally authorized to work in the United States?')\""
+ }
+]

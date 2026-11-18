@@ -1,4 +1,5 @@
 {
  "require_immigration_sponsorship_for_this_position": "Case misreads the profile: a require-sponsorship question with no explicit now word ('for this position') keeps the generic standard answer 'Require sponsorship now or in the future: Yes' (candidate-profile.md), and Joey 2026-10-31 (an Ashby employer) answered support needed DURING the internship = Yes (CPT needs the employer). Only explicit now / currently / at this time wording gives No (spons_now). Not part of the without-sponsorship flip.",
- "need_employer_sponsorship_for_this_internship": "Same as require_immigration_sponsorship_for_this_position: no explicit now word, so the generic Yes (and Joey's 10-31 an Ashby employer answer for the internship) applies, not spons_now."
+ "need_employer_sponsorship_for_this_internship": "Same as require_immigration_sponsorship_for_this_position: no explicit now word, so the generic Yes (and Joey's 10-31 an Ashby employer answer for the internship) applies, not spons_now.",
+ "now_this_position_without_employer_sponsorship": "superseded by Joey 2026-11-16 (jsa-dev dev-decisions f9f68ad, JSA-361): a sponsorship question with no time word is never answered automatically — the rules ask (unknown + ask)"
 }

@@ -1,0 +1,1232 @@
+[
+ {
+  "name": "simple_pass_exact",
+  "why": "Exact org match case-insensitive, anchor maps, and 20+ normalizes to 20.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020–2022"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Built service",
+     "T": "Improve uptime",
+     "A": "Built monitoring service",
+     "R": "Uptime rose 20+ points",
+     "numbers": [
+      "20"
+     ],
+     "skills": [
+      "monitoring"
+     ],
+     "anchors": [
+      "monitoring"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## acme corp\n- Built monitoring service and uptime rose 20+ points\n  *used in: f1 · tags: monitoring*\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_spelled_out_number",
+  "why": "Spelled-out 'four' is not a number, so a bullet with it and no numeric claim passes.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Beta Studio",
+     "role": "Designer",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Redesigned onboarding",
+     "T": "Improve activation",
+     "A": "Redesigned onboarding",
+     "R": "Activation improved",
+     "numbers": [],
+     "skills": [
+      "ux"
+     ],
+     "anchors": [
+      "redesign"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Beta Studio\n- Redesigned onboarding for four teams.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_currency_percent_comma",
+  "why": "Currency signs, percent signs, and thousands commas normalize before comparison.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Gamma Retail",
+     "role": "Analyst",
+     "dates": "2019–2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Processed orders",
+     "T": "Improve conversion",
+     "A": "Processed 1,886 orders, improved conversion by 70%, saved ¥10,000",
+     "R": "Conversion rose",
+     "numbers": [
+      "1886",
+      "70",
+      "10000"
+     ],
+     "skills": [
+      "ops"
+     ],
+     "anchors": [
+      "orders"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Gamma Retail\n- Processed 1,886 orders and improved conversion by 70%, saving ¥10,000.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_range_two_numbers",
+  "why": "A range such as 2017–2018 is two numbers and both are supported.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "education",
+     "org": "Delta Labs",
+     "role": "Researcher",
+     "dates": "2017–2018"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Ran cohort",
+     "T": "Study outcomes",
+     "A": "Ran cohort from 2017–2018",
+     "R": "Completed study",
+     "numbers": [
+      "2017",
+      "2018"
+     ],
+     "skills": [
+      "research"
+     ],
+     "anchors": [
+      "cohort"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Delta Labs\n- Ran cohort from 2017–2018.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_decimal",
+  "why": "Decimal 2.169 is preserved and matches exactly.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Epsilon Health",
+     "role": "Quality Lead",
+     "dates": "2022"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Reduced error",
+     "T": "Quality",
+     "A": "Reduced error rate to 2.169%",
+     "R": "Quality improved",
+     "numbers": [
+      "2.169"
+     ],
+     "skills": [
+      "quality"
+     ],
+     "anchors": [
+      "error"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Epsilon Health\n- Reduced error rate to 2.169%.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_anchor_case_insensitive",
+  "why": "Anchor matching is case-insensitive substring matching.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Zeta Data",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Wrote queries",
+     "T": "Reporting",
+     "A": "Wrote SQL queries",
+     "R": "Reports delivered",
+     "numbers": [],
+     "skills": [
+      "sql"
+     ],
+     "anchors": [
+      "SQL"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Zeta Data\n- wrote sql queries.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_partial_heading_two_words",
+  "why": "A heading that is not exact still matches if it shares at least two non-ignored words.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Northwind Analytics",
+     "role": "Developer",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Built dashboard",
+     "T": "Visibility",
+     "A": "Built dashboard",
+     "R": "Visibility improved",
+     "numbers": [],
+     "skills": [
+      "bi"
+     ],
+     "anchors": [
+      "dashboard"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Northwind Data Analytics\n- Built dashboard.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_never_phrase_inside_longer_word",
+  "why": "Never phrase 'led' must not match inside the longer word 'ledger'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Theta Finance",
+     "role": "Accountant",
+     "dates": "2018–2020",
+     "never": [
+      "led"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Maintained ledger",
+     "T": "Accuracy",
+     "A": "Maintained ledger",
+     "R": "Accuracy improved",
+     "numbers": [],
+     "skills": [
+      "accounting"
+     ],
+     "anchors": [
+      "ledger"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Theta Finance\n- Maintained ledger accuracy.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_never_phrase_other_word",
+  "why": "Never phrase 'cell' must not match inside 'Excellent'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Iota Media",
+     "role": "Writer",
+     "dates": "2019",
+     "never": [
+      "cell"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Excellent writing",
+     "T": "Content",
+     "A": "Excellent writing",
+     "R": "Content shipped",
+     "numbers": [],
+     "skills": [
+      "writing"
+     ],
+     "anchors": [
+      "excellent"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Iota Media\n- Excellent writing.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "pass_multiple_facts_union_numbers",
+  "why": "A bullet can map to multiple facts and numbers can be supported across the mapped set.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Kappa Works",
+     "role": "Lead",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Alpha task",
+     "T": "Deliver",
+     "A": "Alpha task 10",
+     "R": "Done",
+     "numbers": [
+      "10"
+     ],
+     "skills": [
+      "a"
+     ],
+     "anchors": [
+      "alpha"
+     ],
+     "never": [],
+     "source": "resume"
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Beta task",
+     "T": "Deliver",
+     "A": "Beta task 20",
+     "R": "Done",
+     "numbers": [
+      "20"
+     ],
+     "skills": [
+      "b"
+     ],
+     "anchors": [
+      "beta"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Kappa Works\n- Alpha and beta tasks totaled 10 and 20.\n",
+  "expect": "pass",
+  "expect_problems": []
+ },
+ {
+  "name": "number_drift_single",
+  "why": "A number listed in facts but absent from its S/T/A/R text is number drift.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Lambda Support",
+     "role": "Agent",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Handled tickets",
+     "T": "Support",
+     "A": "Handled 400 tickets",
+     "R": "Resolved",
+     "numbers": [
+      "500"
+     ],
+     "skills": [
+      "support"
+     ],
+     "anchors": [
+      "tickets"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Lambda Support\n- Handled 500 tickets.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "number_drift"
+  ]
+ },
+ {
+  "name": "number_drift_decimal",
+  "why": "A listed 2.17 is not present in text containing 2.169, so it is number drift.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Mu Metrics",
+     "role": "Analyst",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Reduced error",
+     "T": "Quality",
+     "A": "Reduced error to 2.169%",
+     "R": "Better",
+     "numbers": [
+      "2.17"
+     ],
+     "skills": [
+      "quality"
+     ],
+     "anchors": [
+      "error"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Mu Metrics\n- Reduced error to 2.169%.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "number_drift"
+  ]
+ },
+ {
+  "name": "number_drift_range",
+  "why": "Listed 2019 is not present in the text range 2017–2018.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "education",
+     "org": "Nu History",
+     "role": "Student",
+     "dates": "2017–2018"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Worked dates",
+     "T": "Project",
+     "A": "Worked 2017–2018",
+     "R": "Done",
+     "numbers": [
+      "2017",
+      "2019"
+     ],
+     "skills": [
+      "history"
+     ],
+     "anchors": [
+      "worked"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Nu History\n- Worked 2017–2018.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "number_drift"
+  ]
+ },
+ {
+  "name": "schema_missing_dates",
+  "why": "An entry must have a dates field present.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Omicron",
+     "role": "Analyst"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Analysis",
+     "T": "Improve",
+     "A": "Analyzed data",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "analysis"
+     ],
+     "anchors": [
+      "data"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Omicron\n- Analyzed data\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "schema_duplicate_entry_id",
+  "why": "Entry ids must be unique.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Pi One",
+     "role": "Analyst",
+     "dates": "2020"
+    },
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Pi Two",
+     "role": "Lead",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Pi One\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "schema_fact_bad_entry",
+  "why": "A fact's entry must reference an existing entry id.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Rho One",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e2",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Rho One\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "schema_empty_anchors",
+  "why": "A fact's anchors list must be non-empty.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Sigma One",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Sigma One\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "schema_empty_a",
+  "why": "A fact's A field must be non-empty.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Tau One",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Tau One\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "schema_duplicate_fact_id",
+  "why": "Fact ids must be unique.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Upsilon One",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    },
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did data",
+     "T": "Improve",
+     "A": "Did data",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "y"
+     ],
+     "anchors": [
+      "data"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Upsilon One\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ]
+ },
+ {
+  "name": "no_entry_one_word",
+  "why": "A heading sharing only one word with an org does not match.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corporation",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "no_entry"
+  ]
+ },
+ {
+  "name": "no_entry_ignore_words",
+  "why": "Ignored words like 'the' and 'inc' do not help a heading reach two shared words.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Labs",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## The Acme Inc\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "no_entry"
+  ]
+ },
+ {
+  "name": "no_entry_zero_shared",
+  "why": "A bank heading with no shared words maps to no entry.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Initech",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Did work",
+     "T": "Improve",
+     "A": "Did work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "work"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Globex\n- Did work\n",
+  "expect": "fail",
+  "expect_problems": [
+   "no_entry"
+  ]
+ },
+ {
+  "name": "unmapped_no_anchor",
+  "why": "A bullet containing none of the entry's fact anchors is unmapped.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Rho Systems",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Alpha work",
+     "T": "Improve",
+     "A": "Alpha work",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "x"
+     ],
+     "anchors": [
+      "alpha"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Rho Systems\n- Beta work.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unmapped"
+  ]
+ },
+ {
+  "name": "unmapped_ignored_line_anchor",
+  "why": "Anchors appearing only in ignored non-bullet lines do not map the bullet.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Sigma Ops",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Deploy service",
+     "T": "Improve",
+     "A": "Deploy service",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "devops"
+     ],
+     "anchors": [
+      "deploy"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Sigma Ops\n- Wrote docs.\n  *used in: deploy · tags: x*\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unmapped"
+  ]
+ },
+ {
+  "name": "unsupported_number_extra",
+  "why": "A number in the bullet that is absent from mapped facts is unsupported.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Tau Sales",
+     "role": "Sales Rep",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Closed deals",
+     "T": "Sales",
+     "A": "Closed 10 deals",
+     "R": "Revenue grew",
+     "numbers": [
+      "10"
+     ],
+     "skills": [
+      "sales"
+     ],
+     "anchors": [
+      "deals"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Tau Sales\n- Closed 10 deals and 20 leads.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ]
+ },
+ {
+  "name": "unsupported_number_decimal_rounding",
+  "why": "2.17 in the bullet does not match 2.169 in the fact.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Upsilon Quality",
+     "role": "Analyst",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Error rate",
+     "T": "Quality",
+     "A": "Error rate 2.169%",
+     "R": "Better",
+     "numbers": [
+      "2.169"
+     ],
+     "skills": [
+      "quality"
+     ],
+     "anchors": [
+      "error"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Upsilon Quality\n- Error rate 2.17%.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ]
+ },
+ {
+  "name": "unsupported_number_range_extra",
+  "why": "The range adds 2018, which is not supported by the fact.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Phi Timeline",
+     "role": "Analyst",
+     "dates": "2017"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Worked dates",
+     "T": "Timeline",
+     "A": "Worked 2017",
+     "R": "Done",
+     "numbers": [
+      "2017"
+     ],
+     "skills": [
+      "history"
+     ],
+     "anchors": [
+      "worked"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Phi Timeline\n- Worked 2017–2018.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ]
+ },
+ {
+  "name": "unsupported_number_currency_extra",
+  "why": "After currency normalization, 500 in the bullet is not supported.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Chi Finance",
+     "role": "Analyst",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Saved money",
+     "T": "Finance",
+     "A": "Saved $10,000",
+     "R": "Budget improved",
+     "numbers": [
+      "10000"
+     ],
+     "skills": [
+      "finance"
+     ],
+     "anchors": [
+      "saved"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Chi Finance\n- Saved $10,000 and €500.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ]
+ },
+ {
+  "name": "never_phrase_entry_whole_word",
+  "why": "An entry-level never phrase appears as a whole word in the bullet.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Psi Consulting",
+     "role": "Consultant",
+     "dates": "2020",
+     "never": [
+      "manual"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Testing process",
+     "T": "Quality",
+     "A": "Testing process",
+     "R": "Improved",
+     "numbers": [],
+     "skills": [
+      "testing"
+     ],
+     "anchors": [
+      "testing"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Psi Consulting\n- Manual testing process.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "never_phrase"
+  ]
+ },
+ {
+  "name": "never_phrase_fact_and_unsupported",
+  "why": "Bullet contains a mapped fact's multiword never phrase and also an unsupported number.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Omega Cloud",
+     "role": "Engineer",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Cloud project",
+     "T": "Modernize",
+     "A": "Cloud project",
+     "R": "Delivered",
+     "numbers": [],
+     "skills": [
+      "cloud"
+     ],
+     "anchors": [
+      "cloud"
+     ],
+     "never": [
+      "legacy migration"
+     ],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Omega Cloud\n- Led legacy migration for cloud platform saving 50.\n",
+  "expect": "fail",
+  "expect_problems": [
+   "never_phrase",
+   "unsupported_number"
+  ]
+ }
+]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tracker actions Joey marked done on the dashboard (JSA-126; the Done button is JSA-125).
 
-    python3 scripts/store/done_since.py                  # done since the newest session log's date (session start)
+    python3 scripts/store/done_since.py                  # done since the newest session log's date (data home logs/)
     python3 scripts/store/done_since.py --since 2026-11-03
     python3 scripts/store/done_since.py --watch          # block until a NEW done mark appears, print it, exit 0
 
@@ -15,7 +15,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
 APPS = os.path.join(os.environ.get('JOB_STORE_DIR', jpaths.data('store')), 'applications.jsonl')
-LOGS = os.path.join(ROOT, 'skills', 'job-search-agent', 'references', 'session-log-*.md')
+# the using sessions' logs live in the data home (ADR-0011: logs/session-log-<date>.md); the repo's old place is the fallback
+LOGS = [jpaths.at('logs', 'session-log-*.md'), os.path.join(ROOT, 'skills', 'job-search-agent', 'references', 'session-log-*.md')]
 
 
 def entries(rows):
@@ -50,7 +51,7 @@ def new_since(before, rows):
 
 
 def last_session_day():
-    days = [re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(p)).group(1) for p in glob.glob(LOGS)]
+    days = [re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(p)).group(1) for g in LOGS for p in glob.glob(g)]
     return max(days) if days else '0000-00-00'
 
 

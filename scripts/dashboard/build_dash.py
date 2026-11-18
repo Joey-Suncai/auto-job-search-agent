@@ -82,7 +82,7 @@ WATCHER = """
 def fingerprint():
     h = hashlib.sha256()
     ledgers = [jpaths.data("runner", n) for n in ("queue.md", "human_checks.jsonl", "apply_requests.jsonl", "results.jsonl")]   # JSA-189
-    for p in [PAGE, D3, __file__, os.path.join(ROOT, "scripts", "platform_counts.py"), os.path.join(ROOT, "scripts", "store", "joey_todo.py")] + [store.path(n) for n in store.DATASETS] + ledgers:
+    for p in [PAGE, D3, __file__, os.path.join(ROOT, "scripts", "platform_counts.py"), os.path.join(ROOT, "scripts", "store", "joey_todo.py"), os.path.join(ROOT, "scripts", "store", "echo_funnel.py")] + [store.path(n) for n in store.DATASETS] + ledgers:
         if os.path.exists(p):
             h.update(f"{p}:{os.path.getmtime(p)}:{os.path.getsize(p)}".encode())
     return h.hexdigest()[:16]
@@ -94,10 +94,16 @@ def build():
     data["jobs"] = [{**j, **PC.runner_fields(j)} for j in data.get("jobs") or []]
     try:                                                          # Joey's to-do: one row per application waiting for him (JSA-189)
         import joey_todo
-        data["joey_todo"] = joey_todo.build()
+        data["joey_todo"] = joey_todo.add_roles(joey_todo.add_tiers(joey_todo.dashboard_rows(joey_todo.build(with_rules=False)), data.get("jobs")), data.get("applications"))   # JSA-404 Tier, JSA-423 Role
     except Exception as e:
         print(f"joey_todo skipped: {type(e).__name__}: {e}")
         data["joey_todo"] = []
+    try:                                                          # echo funnel (JSA-360): one record per sent application; the page counts them
+        import echo_funnel
+        data["echo_funnel"] = echo_funnel.build_records()
+    except Exception as e:
+        print(f"echo_funnel skipped: {type(e).__name__}: {e}")
+        data["echo_funnel"] = []
     stamp = fingerprint()
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     built = time.strftime("%Y-%m-%d %H:%M")

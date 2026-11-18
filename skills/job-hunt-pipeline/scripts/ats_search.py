@@ -37,7 +37,7 @@ TikTok / TikTok USDS / ByteDance (one "ATSx" search API; USDS takes its page's a
 career page's anonymous token → keyword search), Gem (public GraphQL list), PageUp, Personio, Recruiterbox / Trakstar
 Hire, Softgarden, join.com, Keka, Gupy, HRMOS, HERP, Beisen — and Eightfold / Avature career sites on the company's own
 domain (apply.careers.microsoft.com, careers.ibm.com/en_US: custom_host). Moka (AES-wrapped list) and Darwinbox
-(Cloudflare; ats-scrapers impersonates a browser) are only recorded. Job boards in ats-scrapers (Built In, Wellfound, YC,
+(a Greenhouse employer; ats-scrapers impersonates a browser) are only recorded. Job boards in ats-scrapers (Built In, Wellfound, YC,
 Seek, USAJobs …) are not company systems and are not ported; Meta / Tesla / Uber stay refused (cloak browser / TLS).
 Spec + DeepSeek-written cases: scripts/test_cases/ats_search_*; harness scripts/test_ats_search.py.
 """
@@ -1095,7 +1095,7 @@ def _google(i, ident, q):
 # ---------- JSA-137 (2026-11-04): the rest of the ats-scrapers systems (Joey: 「把 GitHub 里面它的所有系统都搬进来。」) ----------
 # Each one public, no login: the JSON / HTML the system's own careers page reads. Rewritten here from the endpoint
 # notes in ats-scrapers (MIT, commit 6b44a1b); its code is not used. Moka (AES-wrapped list) and Darwinbox
-# (Cloudflare, ats-scrapers needs its TLS-impersonation client) are detected and recorded only.
+# (a Greenhouse employer, ats-scrapers needs its TLS-impersonation client) are detected and recorded only.
 THRONE = {   # ByteDance's careers SaaS ("ATSx"): tenant → (API host, website-path header, site origin, posting URL prefix)
     'tiktok': ('api.lifeattiktok.com', 'tiktok', 'https://lifeattiktok.com', 'https://lifeattiktok.com/search/'),
     'usds': ('careers.tiktokusds.com', 'usds', 'https://careers.tiktokusds.com', 'https://careers.tiktokusds.com/usds/position/'),

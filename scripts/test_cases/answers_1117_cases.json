@@ -1,0 +1,320 @@
+[
+ {
+  "name": "options101-exact",
+  "label": "Did you complete our online Options 101 Course?",
+  "type": "select",
+  "options": [
+   "Not yet!",
+   "I'm >50% through the online Options 101 course",
+   "I have concluded the online Options 101 course"
+  ],
+  "expect": "Not yet!"
+ },
+ {
+  "name": "options101-notyet-last",
+  "label": "Did you complete our online Options 101 Course?",
+  "type": "select",
+  "options": [
+   "I have concluded the online Options 101 course",
+   "I'm >50% through the online Options 101 course",
+   "Not yet!"
+  ],
+  "expect": "Not yet!"
+ },
+ {
+  "name": "options101-generic-course",
+  "label": "Did you complete our online Financial Modeling Course?",
+  "type": "select",
+  "options": [
+   "I have concluded the online Financial Modeling course",
+   "Not yet!"
+  ],
+  "expect": "Not yet!"
+ },
+ {
+  "name": "options101-generic-yes-no",
+  "label": "Did you complete our online Excel Course?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "options101-generic-no-first",
+  "label": "Did you complete our online Python Course?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "visitor-visa-short",
+  "label": "Visitor Visa",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "visitor-visa-b1b2",
+  "label": "Have you ever held a B-1/B-2 visitor visa?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No"
+ },
+ {
+  "name": "fall-semester-yn",
+  "label": "Will you be enrolled in the fall semester following the internship?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "fall-semester-ny",
+  "label": "Will you be enrolled in the fall semester following the internship?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "fall-2028-not-covered",
+  "label": "Will you be enrolled in the fall semester of 2028?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "relocate-mixed-full",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "Chicago",
+   "New York",
+   "San Francisco",
+   "Boston",
+   "London",
+   "Bristol",
+   "Shanghai",
+   "Amsterdam",
+   "Beijing",
+   "Paris",
+   "Singapore",
+   "Hong Kong",
+   "Mumbai",
+   "Sydney",
+   "Toronto",
+   "Tokyo"
+  ],
+  "expect": "Chicago | New York | San Francisco | Boston | Shanghai | Beijing | Hong Kong"
+ },
+ {
+  "name": "relocate-none-qualify",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "London",
+   "Bristol",
+   "Amsterdam",
+   "Paris",
+   "Singapore",
+   "Mumbai",
+   "Sydney",
+   "Toronto",
+   "Tokyo"
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "relocate-shanghai-only",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "London",
+   "Shanghai",
+   "Tokyo"
+  ],
+  "expect": "Shanghai"
+ },
+ {
+  "name": "relocate-hk-beijing-order",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "Hong Kong",
+   "Beijing",
+   "Shanghai",
+   "London",
+   "Boston"
+  ],
+  "expect": "Hong Kong | Beijing | Shanghai | Boston"
+ },
+ {
+  "name": "relocate-new-york-only",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "Tokyo",
+   "New York"
+  ],
+  "expect": "New York"
+ },
+ {
+  "name": "relocate-chicago-last",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "London",
+   "Tokyo",
+   "Chicago"
+  ],
+  "expect": "Chicago"
+ },
+ {
+  "name": "video-record-file",
+  "label": "Please record a video introduction",
+  "type": "file",
+  "options": [],
+  "expect": "ask"
+ },
+ {
+  "name": "video-loom",
+  "label": "Submit a Loom video about yourself",
+  "type": "file",
+  "options": [],
+  "expect": "ask"
+ },
+ {
+  "name": "video-screencast",
+  "label": "Upload a screencast walking through a project",
+  "type": "file",
+  "options": [],
+  "expect": "ask"
+ },
+ {
+  "name": "eeo-furnish-no-yes",
+  "label": "Do you wish to furnish this information?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "eeo-furnish-yes-no",
+  "label": "Do you wish to furnish this information?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "education-current-level",
+  "label": "What is your current education level?",
+  "type": "select",
+  "options": [
+   "High School",
+   "Undergraduate",
+   "Master's",
+   "PhD"
+  ],
+  "expect": "Master's"
+ },
+ {
+  "name": "education-current-level-reordered",
+  "label": "What is your current education level?",
+  "type": "select",
+  "options": [
+   "PhD",
+   "Master's",
+   "Undergraduate",
+   "High School"
+  ],
+  "expect": "Master's"
+ },
+ {
+  "name": "college-text",
+  "label": "Enter your college/university",
+  "type": "text",
+  "options": [],
+  "expect": "re:^University of "
+ },
+ {
+  "name": "high-school-text",
+  "label": "High School",
+  "type": "text",
+  "options": [],
+  "expect": "re:High School$"
+ },
+ {
+  "name": "us-state-reside",
+  "label": "Which US state do you reside in?",
+  "type": "select",
+  "options": [
+   "Illinois",
+   "Indiana",
+   "Iowa",
+   "Ohio",
+   "Wisconsin"
+  ],
+  "expect": "Illinois"
+ },
+ {
+  "name": "fulltime-start-year-ask",
+  "label": "Year you expect to begin full time employment",
+  "type": "text",
+  "options": [],
+  "expect": "ask"
+ },
+ {
+  "name": "recruiting-timelines-ask",
+  "label": "Recruiting Timelines",
+  "type": "select",
+  "options": [
+   "Fall 2026",
+   "Spring 2027",
+   "Fall 2027"
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "extra-box-ask",
+  "label": "Extra",
+  "type": "text",
+  "options": [],
+  "expect": "ask"
+ },
+ {
+  "name": "relocate-unlisted-us-city",
+  "label": "Which other cities would you relocate to?",
+  "type": "multi",
+  "options": [
+   "London",
+   "Los Angeles",
+   "Tokyo"
+  ],
+  "expect": "Los Angeles",
+  "ambiguous": true,
+  "why": "The spec enumerates Chicago, New York, San Francisco, Boston, Shanghai, Beijing, Hong Kong '...' as picked and states the general rule 'only United States and China cities', so Los Angeles (a US city) should be picked, but it is not in the enumerated list and an implementation could restrict itself to the listed cities and answer 'ask'."
+ }
+]

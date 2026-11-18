@@ -1,0 +1,6 @@
+{
+ "workday_citizen_or_national_status": "Claude 2026-11-11: pre-existing gap of the citizen_pr pattern ('citizen or national?' without 'permanent resident'), not the KBR bug — the rule returns unknown and asks Joey, never Yes. Safe",
+ "icims_lawful_permanent_resident": "Claude 2026-11-11: pre-existing citizen_pr gap ('(green card holder)' after the question) — unknown → asks Joey, never Yes. Safe",
+ "icims_numbered_status_list": "Claude 2026-11-11: pre-existing citizen_pr gap (two '(i) … (ii) …' questions in one label) — unknown → asks Joey, never Yes. Safe",
+ "greenhouse_require_sponsorship": "superseded by Joey 2026-11-16 (jsa-dev dev-decisions f9f68ad, JSA-361): a sponsorship question with no time word is never answered automatically — the rules ask (unknown + ask)"
+}

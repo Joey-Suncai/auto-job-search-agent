@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(HERE, '..', 'skills', 'job-hunt-pipeline', 'scri
 os.environ.setdefault('JSA_ALLOW_REPO_HOME', '1')
 import linkedin_resolve as R  # noqa: E402
 
-CASE_FILES = [os.path.join(HERE, 'test_cases', f) for f in ('linkedin_resolve_cases.json', 'linkedin_resolve_b_cases.json', 'linkedin_resolve_c_cases.json')]
+CASE_FILES = [os.path.join(HERE, 'test_cases', f) for f in ('linkedin_resolve_cases.json', 'linkedin_resolve_b_cases.json', 'linkedin_resolve_c_cases.json', 'linkedin_resolve_d_cases.json')]
 VERDICTS = os.path.join(HERE, 'test_cases', 'linkedin_resolve_verdicts.json')
 
 

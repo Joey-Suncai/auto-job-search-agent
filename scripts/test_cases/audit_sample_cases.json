@@ -1,0 +1,985 @@
+[
+ {
+  "name": "submitted_by_platform_groups_latest_submitted_by_platform",
+  "fn": "submitted_by_platform",
+  "spec_quote": "results.jsonl lines → {platform: sorted folder names whose LATEST line has status 'submitted'}.",
+  "args": {
+   "results": [
+    {
+     "folder": "zeta",
+     "at": "2024-01-01T10:00:00",
+     "status": "submitted",
+     "ats": "Workday"
+    },
+    {
+     "folder": "alpha",
+     "at": "2024-01-02T10:00:00",
+     "status": "submitted",
+     "ats": "Workday"
+    },
+    {
+     "folder": "beta",
+     "at": "2024-01-03T10:00:00",
+     "status": "submitted",
+     "ats": "Greenhouse"
+    },
+    {
+     "folder": "gamma",
+     "at": "2024-01-04T10:00:00",
+     "status": "submitted"
+    }
+   ]
+  },
+  "expect": {
+   "Workday": [
+    "alpha",
+    "zeta"
+   ],
+   "Greenhouse": [
+    "beta"
+   ],
+   "other": [
+    "gamma"
+   ]
+  }
+ },
+ {
+  "name": "submitted_by_platform_latest_line_overrides_earlier_submitted",
+  "fn": "submitted_by_platform",
+  "spec_quote": "results.jsonl lines → {platform: sorted folder names whose LATEST line has status 'submitted'}.",
+  "args": {
+   "results": [
+    {
+     "folder": "A",
+     "at": "2024-01-01T10:00:00",
+     "status": "submitted",
+     "ats": "X"
+    },
+    {
+     "folder": "A",
+     "at": "2024-02-01T10:00:00",
+     "status": "draft",
+     "ats": "Y"
+    },
+    {
+     "folder": "B",
+     "at": "2024-01-01T10:00:00",
+     "status": "draft",
+     "ats": "X"
+    },
+    {
+     "folder": "B",
+     "at": "2024-03-01T10:00:00",
+     "status": "submitted",
+     "ats": "Y"
+    },
+    {
+     "folder": "C",
+     "at": "2024-01-01T10:00:00",
+     "status": "submitted",
+     "ats": "X"
+    },
+    {
+     "folder": "C",
+     "at": "2024-02-15T10:00:00",
+     "status": "submitted",
+     "ats": "Z"
+    },
+    {
+     "folder": "D",
+     "at": "2024-01-01T10:00:00",
+     "status": "draft",
+     "ats": "X"
+    }
+   ]
+  },
+  "expect": {
+   "Y": [
+    "B"
+   ],
+   "Z": [
+    "C"
+   ]
+  }
+ },
+ {
+  "name": "submitted_by_platform_no_folder_ignored_missing_ats_other",
+  "fn": "submitted_by_platform",
+  "spec_quote": "Lines without a folder are ignored; platform_of(line) names the platform of a folder's latest line.",
+  "args": {
+   "results": [
+    {
+     "status": "submitted",
+     "at": "2024-01-01T10:00:00",
+     "ats": "Workday"
+    },
+    {
+     "folder": null,
+     "at": "2024-01-02T10:00:00",
+     "status": "submitted",
+     "ats": "Workday"
+    },
+    {
+     "folder": "delta",
+     "at": "2024-01-03T10:00:00",
+     "status": "submitted"
+    },
+    {
+     "folder": "epsilon",
+     "at": "2024-01-04T10:00:00",
+     "status": "draft",
+     "ats": "Workday"
+    }
+   ]
+  },
+  "expect": {
+   "other": [
+    "delta"
+   ]
+  }
+ },
+ {
+  "name": "submitted_by_platform_sorted_folder_names_within_platform",
+  "fn": "submitted_by_platform",
+  "spec_quote": "results.jsonl lines → {platform: sorted folder names whose LATEST line has status 'submitted'}.",
+  "args": {
+   "results": [
+    {
+     "folder": "b",
+     "at": "2024-01-01T10:00:00",
+     "status": "submitted",
+     "ats": "P"
+    },
+    {
+     "folder": "a",
+     "at": "2024-01-02T10:00:00",
+     "status": "submitted",
+     "ats": "P"
+    },
+    {
+     "folder": "c",
+     "at": "2024-01-03T10:00:00",
+     "status": "submitted",
+     "ats": "Q"
+    },
+    {
+     "folder": "d",
+     "at": "2024-01-04T10:00:00",
+     "status": "submitted",
+     "ats": "P"
+    }
+   ]
+  },
+  "expect": {
+   "P": [
+    "a",
+    "b",
+    "d"
+   ],
+   "Q": [
+    "c"
+   ]
+  }
+ },
+ {
+  "name": "sample_up_to_n_excluding_audited",
+  "fn": "sample",
+  "spec_quote": "Up to n folders not in `audited`, chosen by random.Random(seed) from the sorted list; result sorted.",
+  "args": {
+   "folders": [
+    "d",
+    "b",
+    "a",
+    "c"
+   ],
+   "audited": [
+    "b"
+   ],
+   "n": 3,
+   "seed": 1
+  },
+  "expect_len": 3
+ },
+ {
+  "name": "sample_n_larger_than_available",
+  "fn": "sample",
+  "spec_quote": "Up to n folders not in `audited`, chosen by random.Random(seed) from the sorted list; result sorted.",
+  "args": {
+   "folders": [
+    "a",
+    "b",
+    "c",
+    "d"
+   ],
+   "audited": [
+    "b",
+    "d"
+   ],
+   "n": 10,
+   "seed": 42
+  },
+  "expect_len": 2
+ },
+ {
+  "name": "sample_all_audited_returns_empty",
+  "fn": "sample",
+  "spec_quote": "Up to n folders not in `audited`, chosen by random.Random(seed) from the sorted list; result sorted.",
+  "args": {
+   "folders": [
+    "a",
+    "b"
+   ],
+   "audited": [
+    "a",
+    "b"
+   ],
+   "n": 2,
+   "seed": 7
+  },
+  "expect_len": 0
+ },
+ {
+  "name": "answers_of_latest_run_only",
+  "fn": "answers_of",
+  "spec_quote": "Fields-corpus lines → the answers on the folder's LATEST run (by \"at\", then run_id):",
+  "args": {
+   "folder": "F",
+   "lines": [
+    {
+     "folder": "F",
+     "at": "2024-01-01T09:00:00",
+     "run_id": "r1",
+     "question": "Email",
+     "answer": "old@example.com",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-02-01T09:00:00",
+     "run_id": "r2",
+     "question": "Email",
+     "answer": "alex@example.com",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-02-01T09:00:00",
+     "run_id": "r2",
+     "question": "City",
+     "answer": "Chicago",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "G",
+     "at": "2024-03-01T09:00:00",
+     "run_id": "r3",
+     "question": "Email",
+     "answer": "g@example.com",
+     "options": [],
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "Email",
+    "answer": "alex@example.com",
+    "options": [],
+    "type": "text",
+    "at": "2024-02-01T09:00:00"
+   },
+   {
+    "question": "City",
+    "answer": "Chicago",
+    "options": [],
+    "type": "text",
+    "at": "2024-02-01T09:00:00"
+   }
+  ]
+ },
+ {
+  "name": "answers_of_skips_prohibited_types_account_prefix_empty_and_long",
+  "fn": "answers_of",
+  "spec_quote": "Skipped: types file / account / hidden / password (any case), a question starting with \"Account:\", an empty answer, an answer longer than 300 characters (prose — ds_materials checks it), and a repeat of the same question on that run (first kept).",
+  "args": {
+   "folder": "F",
+   "lines": [
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Email",
+     "answer": "alex@example.com",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Account: username",
+     "answer": "alex",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Resume",
+     "answer": "resume.pdf",
+     "options": [],
+     "type": "file"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Photo",
+     "answer": "x",
+     "options": [],
+     "type": "Account"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Secret",
+     "answer": "x",
+     "options": [],
+     "type": "HIDDEN"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Password",
+     "answer": "x",
+     "options": [],
+     "type": "password"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Blank",
+     "answer": "",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Long",
+     "answer": "Long prose answer that is intentionally much longer than three hundred characters so that the answers_of function must skip it. Long prose answer that is intentionally much longer than three hundred characters so that the answers_of function must skip it. Long prose answer that is intentionally much longer than three hundred characters so that the answers_of function must skip it.",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-01-01T10:00:00",
+     "run_id": "r1",
+     "question": "Race",
+     "answer": "Asian",
+     "options": [
+      "Asian",
+      "White"
+     ],
+     "type": "select"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "Email",
+    "answer": "alex@example.com",
+    "options": [],
+    "type": "text",
+    "at": "2024-01-01T10:00:00"
+   },
+   {
+    "question": "Race",
+    "answer": "Asian",
+    "options": [
+     "Asian",
+     "White"
+    ],
+    "type": "select",
+    "at": "2024-01-01T10:00:00"
+   }
+  ]
+ },
+ {
+  "name": "answers_of_repeat_same_question_first_kept",
+  "fn": "answers_of",
+  "spec_quote": "and a repeat of the same question on that run (first kept).",
+  "args": {
+   "folder": "F",
+   "lines": [
+    {
+     "folder": "F",
+     "at": "2024-03-03T10:00:00",
+     "run_id": "r1",
+     "question": "Race",
+     "answer": "Asian",
+     "options": [
+      "Asian",
+      "White"
+     ],
+     "type": "select"
+    },
+    {
+     "folder": "F",
+     "at": "2024-03-03T10:00:00",
+     "run_id": "r1",
+     "question": "Race",
+     "answer": "White",
+     "options": [
+      "Asian",
+      "White"
+     ],
+     "type": "select"
+    },
+    {
+     "folder": "F",
+     "at": "2024-03-03T10:00:00",
+     "run_id": "r1",
+     "question": "Gender",
+     "answer": "Male",
+     "options": [
+      "Male",
+      "Female"
+     ],
+     "type": "radio"
+    },
+    {
+     "folder": "F",
+     "at": "2024-03-03T10:00:00",
+     "run_id": "r1",
+     "question": "Gender",
+     "answer": "Female",
+     "options": [
+      "Male",
+      "Female"
+     ],
+     "type": "radio"
+    },
+    {
+     "folder": "F",
+     "at": "2024-03-03T10:00:00",
+     "run_id": "r1",
+     "question": "Pronouns",
+     "answer": "He/Him",
+     "options": [],
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "Race",
+    "answer": "Asian",
+    "options": [
+     "Asian",
+     "White"
+    ],
+    "type": "select",
+    "at": "2024-03-03T10:00:00"
+   },
+   {
+    "question": "Gender",
+    "answer": "Male",
+    "options": [
+     "Male",
+     "Female"
+    ],
+    "type": "radio",
+    "at": "2024-03-03T10:00:00"
+   },
+   {
+    "question": "Pronouns",
+    "answer": "He/Him",
+    "options": [],
+    "type": "text",
+    "at": "2024-03-03T10:00:00"
+   }
+  ]
+ },
+ {
+  "name": "answers_of_latest_by_run_id_when_same_at",
+  "fn": "answers_of",
+  "spec_quote": "the answers on the folder's LATEST run (by \"at\", then run_id)",
+  "args": {
+   "folder": "F",
+   "lines": [
+    {
+     "folder": "F",
+     "at": "2024-04-04T08:00:00",
+     "run_id": "r1",
+     "question": "Email",
+     "answer": "a@example.com",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-04-04T08:00:00",
+     "run_id": "r2",
+     "question": "Email",
+     "answer": "b@example.com",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-04-04T08:00:00",
+     "run_id": "r2",
+     "question": "City",
+     "answer": "Chicago",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-04-04T08:00:00",
+     "run_id": "r1",
+     "question": "State",
+     "answer": "Illinois",
+     "options": [],
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "question": "Email",
+    "answer": "b@example.com",
+    "options": [],
+    "type": "text",
+    "at": "2024-04-04T08:00:00"
+   },
+   {
+    "question": "City",
+    "answer": "Chicago",
+    "options": [],
+    "type": "text",
+    "at": "2024-04-04T08:00:00"
+   }
+  ]
+ },
+ {
+  "name": "answers_of_empty_answer_skipped_not_planned",
+  "fn": "answers_of",
+  "spec_quote": "Skipped: ... an empty answer",
+  "args": {
+   "folder": "F",
+   "lines": [
+    {
+     "folder": "F",
+     "at": "2024-05-05T10:00:00",
+     "run_id": "r1",
+     "question": "Email",
+     "answer": "",
+     "options": [],
+     "type": "text"
+    },
+    {
+     "folder": "F",
+     "at": "2024-05-05T10:00:00",
+     "run_id": "r1",
+     "question": "Resume",
+     "answer": "resume.pdf",
+     "options": [],
+     "type": "file"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "norm_answer_true_to_yes",
+  "fn": "norm_answer",
+  "spec_quote": "The form's stored value as text: \"True\" / \"False\" (any case) → \"Yes\" / \"No\"",
+  "args": {
+   "a": "True"
+  },
+  "expect": "Yes"
+ },
+ {
+  "name": "norm_answer_false_to_no_case_insensitive",
+  "fn": "norm_answer",
+  "spec_quote": "The form's stored value as text: \"True\" / \"False\" (any case) → \"Yes\" / \"No\"",
+  "args": {
+   "a": "FALSE"
+  },
+  "expect": "No"
+ },
+ {
+  "name": "norm_answer_single_item_list",
+  "fn": "norm_answer",
+  "spec_quote": "a list written as \"['Asian']\" or '[\"A\", \"B\"]' → \"Asian\" / \"A | B\"",
+  "args": {
+   "a": "['Asian']"
+  },
+  "expect": "Asian"
+ },
+ {
+  "name": "norm_answer_multi_item_list_trim_spaces",
+  "fn": "norm_answer",
+  "spec_quote": "a list written as \"['Asian']\" or '[\"A\", \"B\"]' → \"Asian\" / \"A | B\"; surrounding spaces trimmed.",
+  "args": {
+   "a": "  [\"A\", \"B\"]  "
+  },
+  "expect": "A | B"
+ },
+ {
+  "name": "contact_email_secondary_case_insensitive",
+  "fn": "contact_check",
+  "spec_quote": "e-mail: equal (case-insensitive) to contact.email or contact.secondary_email, else 'wrong';",
+  "args": {
+   "question": "Email address",
+   "answer": "A.R@EXAMPLE.ORG"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_email_mismatch_wrong",
+  "fn": "contact_check",
+  "spec_quote": "e-mail: equal (case-insensitive) to contact.email or contact.secondary_email, else 'wrong';",
+  "args": {
+   "question": "Email",
+   "answer": "someone@example.com"
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "contact_phone_country_code_plus_one",
+  "fn": "contact_check",
+  "spec_quote": "phone ... code (country phone code): 'right' when the answer holds \"+1\" or \"United States\", else 'unsure';",
+  "args": {
+   "question": "Country phone code",
+   "answer": "+1"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_phone_same_last_ten_digits",
+  "fn": "contact_check",
+  "spec_quote": "phone: the same last 10 digits as contact.phone, else 'wrong';",
+  "args": {
+   "question": "Phone number",
+   "answer": "(312) 555-0142"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_linkedin_path_ignores_scheme_www_slash",
+  "fn": "contact_check",
+  "spec_quote": "LinkedIn: the same profile path as contact.linkedin (scheme, www, trailing slash ignored), else 'wrong';",
+  "args": {
+   "question": "LinkedIn profile",
+   "answer": "https://www.linkedin.com/in/alexrivera/"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_portfolio_different_url_unsure",
+  "fn": "contact_check",
+  "spec_quote": "website / portfolio / GitHub / URL / link: the same as contact.website or contact.linkedin, else 'unsure';",
+  "args": {
+   "question": "Portfolio URL",
+   "answer": "https://example.com/alex"
+  },
+  "expect": "unsure"
+ },
+ {
+  "name": "contact_preferred_name_yes",
+  "fn": "contact_check",
+  "spec_quote": "\"I have a preferred name\" (or \"do you have a preferred name\"): 'right' when the answer is checked / yes / true and answers.has_preferred is yes;",
+  "args": {
+   "question": "Do you have a preferred name?",
+   "answer": "Yes"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_middle_name_blank_like_no_middle",
+  "fn": "contact_check",
+  "spec_quote": "middle name / initial: 'right' when the profile has no middle name and the answer is blank-like (N/A, NA, None, -);",
+  "args": {
+   "question": "Middle name",
+   "answer": "N/A"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "contact_city_starts_with_text_comma",
+  "fn": "contact_check",
+  "spec_quote": "permanent address, zip / postal, county, country, state / province, city / town, street address: the answer equals answers[key].\"text\" (case-insensitive), matches one of its \"pick\" patterns, or starts with its \"text\" followed by a comma (\"Chicago, IL, US\"; \"1200 S Sample Ave, Chicago, IL 60601\") → 'right', else 'unsure'.",
+  "args": {
+   "question": "City / town",
+   "answer": "Chicago, IL, US"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "eeo_key_race_question",
+  "fn": "eeo_key",
+  "spec_quote": "'race' when it names race(s); else the first of EEO_KEYS that matches;",
+  "args": {
+   "q": "What is your race?",
+   "a": "Asian"
+  },
+  "expect": "race"
+ },
+ {
+  "name": "eeo_key_gender_question",
+  "fn": "eeo_key",
+  "spec_quote": "else the first of EEO_KEYS that matches",
+  "args": {
+   "q": "Gender",
+   "a": "Male"
+  },
+  "expect": "gender"
+ },
+ {
+  "name": "eeo_key_ethnicity_non_hispanic_answer_is_race",
+  "fn": "eeo_key",
+  "spec_quote": "an \"ethnicity\" question is 'hispanic' when the answer is a yes / no or names Hispanic / Latino, else 'race'.",
+  "args": {
+   "q": "Ethnicity",
+   "a": "Asian"
+  },
+  "expect": "race"
+ },
+ {
+  "name": "eeo_key_unrecognized_question_null",
+  "fn": "eeo_key",
+  "spec_quote": "None = not recognised.",
+  "args": {
+   "q": "What is your favorite color?",
+   "a": "Blue"
+  },
+  "expect": null
+ },
+ {
+  "name": "eeo_check_race_asian_right",
+  "fn": "eeo_check",
+  "spec_quote": "→ 'right' when the answer matches one of the key's \"pick\" patterns, or its \"text\" (case-insensitive)",
+  "args": {
+   "question": "Race",
+   "answer": "Asian"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "eeo_check_gender_man_matches_pick",
+  "fn": "eeo_check",
+  "spec_quote": "→ 'right' when the answer matches one of the key's \"pick\" patterns, or its \"text\" (case-insensitive)",
+  "args": {
+   "question": "Gender",
+   "answer": "Man"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "eeo_check_hispanic_no_for_yes_false_key",
+  "fn": "eeo_check",
+  "spec_quote": "or — for a \"yes\": false key — starts with \"No\";",
+  "args": {
+   "question": "Are you Hispanic or Latino?",
+   "answer": "No"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "eeo_check_veteran_decline_unsure",
+  "fn": "eeo_check",
+  "spec_quote": "'unsure' otherwise (no key, no profile answer, a decline, anything else).",
+  "args": {
+   "question": "Veteran status",
+   "answer": "I prefer not to answer"
+  },
+  "expect": "unsure"
+ },
+ {
+  "name": "date_check_same_date_mm_dd_yyyy",
+  "fn": "date_check",
+  "spec_quote": "'right' when the answer is that run's date (MM/DD/YYYY, YYYY-MM-DD or M/D/YYYY) or the day before / after;",
+  "args": {
+   "question": "Date signed",
+   "answer": "05/10/2024",
+   "at": "2024-05-10T14:30:00"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "date_check_day_after_iso",
+  "fn": "date_check",
+  "spec_quote": "'right' when the answer is that run's date (MM/DD/YYYY, YYYY-MM-DD or M/D/YYYY) or the day before / after;",
+  "args": {
+   "question": "Today's date",
+   "answer": "2024-05-11",
+   "at": "2024-05-10T09:00:00"
+  },
+  "expect": "right"
+ },
+ {
+  "name": "date_check_another_date_wrong",
+  "fn": "date_check",
+  "spec_quote": "'wrong' for another date;",
+  "args": {
+   "question": "Signature date",
+   "answer": "05/12/2024",
+   "at": "2024-05-10T09:00:00"
+  },
+  "expect": "wrong"
+ },
+ {
+  "name": "date_check_unknown_run_time_null",
+  "fn": "date_check",
+  "spec_quote": "None when the question is not such a question or the run time is unknown.",
+  "args": {
+   "question": "Date signed",
+   "answer": "05/10/2024",
+   "at": null
+  },
+  "expect": null
+ },
+ {
+  "name": "summary_judged_overrides_check_and_pending",
+  "fn": "summary",
+  "spec_quote": "An item counts as wrong when judged 'wrong', right when judged 'right' or when its check said 'right' with no judgment; anything else is pending (not in the accuracy).",
+  "args": {
+   "items": [
+    {
+     "platform": "p1",
+     "check": "right",
+     "judged": "wrong"
+    },
+    {
+     "platform": "p1",
+     "check": "wrong",
+     "judged": "right"
+    },
+    {
+     "platform": "p1",
+     "check": "right",
+     "judged": null
+    },
+    {
+     "platform": "p1",
+     "check": null,
+     "judged": null
+    }
+   ]
+  },
+  "expect": {
+   "p1": {
+    "answers": 4,
+    "wrong": 1,
+    "pending": 1,
+    "accuracy": 0.6667,
+    "low95": 0.2077
+   },
+   "all": {
+    "answers": 4,
+    "wrong": 1,
+    "pending": 1,
+    "accuracy": 0.6667,
+    "low95": 0.2077
+   }
+  }
+ },
+ {
+  "name": "summary_multiple_platforms_and_all",
+  "fn": "summary",
+  "spec_quote": "Items → {platform: {\"answers\", \"wrong\", \"pending\", \"accuracy\", \"low95\"}} plus \"all\".",
+  "args": {
+   "items": [
+    {
+     "platform": "pA",
+     "check": "right",
+     "judged": null
+    },
+    {
+     "platform": "pA",
+     "check": "right",
+     "judged": "right"
+    },
+    {
+     "platform": "pB",
+     "check": "wrong",
+     "judged": "wrong"
+    },
+    {
+     "platform": "pB",
+     "check": "unsure",
+     "judged": null
+    }
+   ]
+  },
+  "expect": {
+   "pA": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 0,
+    "accuracy": 1.0,
+    "low95": 0.3424
+   },
+   "pB": {
+    "answers": 2,
+    "wrong": 1,
+    "pending": 1,
+    "accuracy": 0.0,
+    "low95": 0.0
+   },
+   "all": {
+    "answers": 4,
+    "wrong": 1,
+    "pending": 1,
+    "accuracy": 0.6667,
+    "low95": 0.2077
+   }
+  }
+ },
+ {
+  "name": "summary_no_judged_accuracy_and_low95_none",
+  "fn": "summary",
+  "spec_quote": "accuracy = right / (right + wrong), None when 0 judged; low95 = the Wilson 95 % lower bound of that rate (z = 1.96), None when 0 judged.",
+  "args": {
+   "items": [
+    {
+     "platform": "p",
+     "check": "unsure",
+     "judged": null
+    },
+    {
+     "platform": "p",
+     "check": null,
+     "judged": null
+    }
+   ]
+  },
+  "expect": {
+   "p": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 2,
+    "accuracy": null,
+    "low95": null
+   },
+   "all": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 2,
+    "accuracy": null,
+    "low95": null
+   }
+  }
+ }
+]

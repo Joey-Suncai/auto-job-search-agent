@@ -1,0 +1,1677 @@
+[
+ {
+  "name": "basic three verified folders",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question A?",
+    "planned": "Answer A",
+    "page": "Answer A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question A?",
+    "planned": "Answer A",
+    "page": "answer a",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question A?",
+    "planned": "Answer A",
+    "page": "Answer A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question A?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question A?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question A?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Question A?",
+    "answer": "Answer A",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "A proposal is made for a (question, answer) pair when, counting each folder once: at least 3 DIFFERENT folders have a field line with source \"ds_answers.json\", the same normalised question and the same normalised planned answer, with ok not false and page equal to planned ... AND for at least 3 of those folders the audit item for that folder and question is VERIFIED RIGHT."
+ },
+ {
+  "name": "only two verified right - no proposal",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question B?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question B?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question B?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question B?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question B?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question B?",
+    "check": "unsure",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "for at least 3 of those folders the audit item for that folder and question is VERIFIED RIGHT."
+ },
+ {
+  "name": "four verified folders",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question C?",
+    "planned": "C",
+    "page": "C",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question C?",
+    "planned": "C",
+    "page": "C",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question C?",
+    "planned": "C",
+    "page": "C",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Question C?",
+    "planned": "C",
+    "page": "C",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question C?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question C?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question C?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Question C?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Question C?",
+    "answer": "C",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3",
+     "F4"
+    ],
+    "n": 4
+   }
+  ],
+  "spec_quote": "A proposal = {question (the original text of the first folder's line), answer (original planned text of the first folder), options (the first non-empty options list seen), folders (sorted, the verified-right ones only), n (their count)}."
+ },
+ {
+  "name": "page mismatch leaves only two folders",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question D?",
+    "planned": "Answer D",
+    "page": "Answer D",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question D?",
+    "planned": "Answer D",
+    "page": "Different",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question D?",
+    "planned": "Answer D",
+    "page": "Answer D",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question D?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question D?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question D?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "with ok not false and page equal to planned (case-insensitive, trimmed; an empty page counts as equal only when planned is empty)."
+ },
+ {
+  "name": "ok false does not qualify",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question E?",
+    "planned": "E",
+    "page": "E",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": false
+   },
+   {
+    "folder": "F2",
+    "question": "Question E?",
+    "planned": "E",
+    "page": "E",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question E?",
+    "planned": "E",
+    "page": "E",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question E?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question E?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question E?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "with ok not false and page equal to planned."
+ },
+ {
+  "name": "non-ds source does not qualify",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question F?",
+    "planned": "F",
+    "page": "F",
+    "source": "other.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question F?",
+    "planned": "F",
+    "page": "F",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question F?",
+    "planned": "F",
+    "page": "F",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question F?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question F?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question F?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "at least 3 DIFFERENT folders have a field line with source \"ds_answers.json\", the same normalised question and the same normalised planned answer."
+ },
+ {
+  "name": "question and answer normalisation",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "What is X?",
+    "planned": "Yes!",
+    "page": "yes!",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "what is x",
+    "planned": "yes",
+    "page": "YES",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "WHAT  IS   X",
+    "planned": " YES ",
+    "page": "yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "What is X?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "what is x",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "WHAT  IS   X",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "What is X?",
+    "answer": "Yes!",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "Normalising a question or an answer: lower case, every run of characters other than a-z and 0-9 becomes one space, trimmed."
+ },
+ {
+  "name": "empty page with nonempty planned does not match",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question G?",
+    "planned": "Yes",
+    "page": "",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question G?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question G?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question G?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question G?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question G?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "an empty page counts as equal only when planned is empty."
+ },
+ {
+  "name": "empty page with empty planned matches",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question H?",
+    "planned": "",
+    "page": "",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question H?",
+    "planned": "",
+    "page": "",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question H?",
+    "planned": "",
+    "page": "",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question H?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question H?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question H?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Question H?",
+    "answer": "",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "an empty page counts as equal only when planned is empty."
+ },
+ {
+  "name": "covered question suppresses proposal",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "What is covered?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "What is covered?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "What is covered?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "What is covered?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "What is covered?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "What is covered?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [
+   "what is covered"
+  ],
+  "expect": [],
+  "spec_quote": "the question is not already covered (the caller passes the set of normalised questions the qa table or a rule already answers; a proposal for a covered question is not made)."
+ },
+ {
+  "name": "wrong audit item blocks",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question I?",
+    "planned": "I",
+    "page": "I",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question I?",
+    "planned": "I",
+    "page": "I",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question I?",
+    "planned": "I",
+    "page": "I",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Question I?",
+    "planned": "I",
+    "page": "I",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question I?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question I?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question I?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Question I?",
+    "check": "wrong",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "no audit item for that question and that answer is WRONG in any folder."
+ },
+ {
+  "name": "extra pending audit does not block",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question J?",
+    "planned": "J",
+    "page": "J",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question J?",
+    "planned": "J",
+    "page": "J",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question J?",
+    "planned": "J",
+    "page": "J",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Question J?",
+    "planned": "J",
+    "page": "J",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question J?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question J?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question J?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Question J?",
+    "check": "unsure",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Question J?",
+    "answer": "J",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "folders (sorted, the verified-right ones only), n (their count)."
+ },
+ {
+  "name": "judged right overrides check wrong",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question K?",
+    "planned": "K",
+    "page": "K",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question K?",
+    "planned": "K",
+    "page": "K",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question K?",
+    "planned": "K",
+    "page": "K",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question K?",
+    "check": "wrong",
+    "judged": "right"
+   },
+   {
+    "folder": "F2",
+    "question": "Question K?",
+    "check": "wrong",
+    "judged": "right"
+   },
+   {
+    "folder": "F3",
+    "question": "Question K?",
+    "check": "wrong",
+    "judged": "right"
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Question K?",
+    "answer": "K",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "An item is VERIFIED RIGHT when judged is \"right\", or when judged is empty (null) and check is \"right\"."
+ },
+ {
+  "name": "unsure only is not verified",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question L?",
+    "planned": "L",
+    "page": "L",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question L?",
+    "planned": "L",
+    "page": "L",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question L?",
+    "planned": "L",
+    "page": "L",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question L?",
+    "check": "unsure",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question L?",
+    "check": "unsure",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Question L?",
+    "check": "unsure",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "for at least 3 of those folders the audit item for that folder and question is VERIFIED RIGHT."
+ },
+ {
+  "name": "missing audit item fails threshold",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Question M?",
+    "planned": "M",
+    "page": "M",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Question M?",
+    "planned": "M",
+    "page": "M",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Question M?",
+    "planned": "M",
+    "page": "M",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Question M?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Question M?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "for at least 3 of those folders the audit item for that folder and question is VERIFIED RIGHT."
+ },
+ {
+  "name": "proposals sorted by n descending",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F5",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F6",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F7",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F5",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F6",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F7",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Alpha?",
+    "answer": "A",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3",
+     "F4"
+    ],
+    "n": 4
+   },
+   {
+    "question": "Beta?",
+    "answer": "B",
+    "options": [],
+    "folders": [
+     "F5",
+     "F6",
+     "F7"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "Proposals are sorted by n descending, then question ascending."
+ },
+ {
+  "name": "first non-empty options list used",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Pick?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Pick?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [
+     "opt2"
+    ],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Pick?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [
+     "opt3"
+    ],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Pick?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Pick?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Pick?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Pick?",
+    "answer": "Yes",
+    "options": [
+     "opt2"
+    ],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "options (the first non-empty options list seen)."
+ },
+ {
+  "name": "duplicate lines in same folder count folder once",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Dup?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F1",
+    "question": "Dup?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Dup?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Dup?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Dup?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Dup?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Dup?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Dup?",
+    "answer": "Yes",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "A proposal is made for a (question, answer) pair when, counting each folder once."
+ },
+ {
+  "name": "page comparison is case-insensitive and trimmed",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Confirm?",
+    "planned": " Approved ",
+    "page": "approved",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Confirm?",
+    "planned": " Approved ",
+    "page": " APPROVED ",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Confirm?",
+    "planned": " Approved ",
+    "page": "Approved",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Confirm?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Confirm?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Confirm?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Confirm?",
+    "answer": " Approved ",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "page equal to planned (case-insensitive, trimmed)."
+ },
+ {
+  "name": "different planned answers do not combine",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Same?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Same?",
+    "planned": "Yes",
+    "page": "Yes",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Same?",
+    "planned": "No",
+    "page": "No",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Same?",
+    "planned": "No",
+    "page": "No",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Same?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Same?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Same?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Same?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [],
+  "spec_quote": "at least 3 DIFFERENT folders have a field line with source \"ds_answers.json\", the same normalised question and the same normalised planned answer."
+ },
+ {
+  "name": "equal n sorted by question ascending",
+  "kind": "proposals",
+  "lines": [
+   {
+    "folder": "F1",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F2",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F3",
+    "question": "Alpha?",
+    "planned": "A",
+    "page": "A",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F4",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F5",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   },
+   {
+    "folder": "F6",
+    "question": "Beta?",
+    "planned": "B",
+    "page": "B",
+    "source": "ds_answers.json",
+    "options": [],
+    "ok": true
+   }
+  ],
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F2",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F3",
+    "question": "Alpha?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F4",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F5",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   },
+   {
+    "folder": "F6",
+    "question": "Beta?",
+    "check": "right",
+    "judged": null
+   }
+  ],
+  "covered": [],
+  "expect": [
+   {
+    "question": "Alpha?",
+    "answer": "A",
+    "options": [],
+    "folders": [
+     "F1",
+     "F2",
+     "F3"
+    ],
+    "n": 3
+   },
+   {
+    "question": "Beta?",
+    "answer": "B",
+    "options": [],
+    "folders": [
+     "F4",
+     "F5",
+     "F6"
+    ],
+    "n": 3
+   }
+  ],
+  "spec_quote": "Proposals are sorted by n descending, then question ascending."
+ },
+ {
+  "name": "overdue exactly two days before",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q1?",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-15"
+   }
+  ],
+  "expect": [
+   {
+    "folder": "F1",
+    "question": "Q1?"
+   }
+  ],
+  "spec_quote": "A doubt is OVERDUE when its audited date (YYYY-MM-DD) is at least 2 days before today."
+ },
+ {
+  "name": "one day before today is not overdue",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q2?",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-16"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "A doubt is OVERDUE when its audited date (YYYY-MM-DD) is at least 2 days before today."
+ },
+ {
+  "name": "no audited date never overdue",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q3?",
+    "check": "unsure",
+    "judged": null
+   }
+  ],
+  "expect": [],
+  "spec_quote": "items with no audited date are never overdue."
+ },
+ {
+  "name": "verified right is not a doubt",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q4?",
+    "check": "right",
+    "judged": null,
+    "audited": "2026-11-10"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "An audit item is a DOUBT when it is not verified right and not wrong."
+ },
+ {
+  "name": "wrong is not a doubt",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q5?",
+    "check": "wrong",
+    "judged": null,
+    "audited": "2026-11-10"
+   }
+  ],
+  "expect": [],
+  "spec_quote": "check \"wrong\" with judged empty counts as WRONG above, so only check \"unsure\" / missing with no judgment."
+ },
+ {
+  "name": "missing check with no judgment is pending doubt",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F1",
+    "question": "Q6?",
+    "judged": null,
+    "audited": "2026-11-14"
+   }
+  ],
+  "expect": [
+   {
+    "folder": "F1",
+    "question": "Q6?"
+   }
+  ],
+  "spec_quote": "only check \"unsure\" / missing with no judgment."
+ },
+ {
+  "name": "overdue sorting and filtering",
+  "kind": "overdue",
+  "today": "2026-11-17",
+  "items": [
+   {
+    "folder": "F2",
+    "question": "qB",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-15"
+   },
+   {
+    "folder": "F1",
+    "question": "qA",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-14"
+   },
+   {
+    "folder": "F3",
+    "question": "qC",
+    "check": "right",
+    "judged": null,
+    "audited": "2026-11-10"
+   },
+   {
+    "folder": "F4",
+    "question": "qD",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-16"
+   },
+   {
+    "folder": "F5",
+    "question": "qE",
+    "check": "unsure",
+    "judged": null
+   },
+   {
+    "folder": "F6",
+    "question": "qF",
+    "check": "unsure",
+    "judged": null,
+    "audited": "2026-11-14"
+   }
+  ],
+  "expect": [
+   {
+    "folder": "F1",
+    "question": "qA"
+   },
+   {
+    "folder": "F6",
+    "question": "qF"
+   },
+   {
+    "folder": "F2",
+    "question": "qB"
+   }
+  ],
+  "spec_quote": "overdue(items, today) returns the folder + question of every overdue doubt, sorted by audited date then folder; items with no audited date are never overdue."
+ }
+]

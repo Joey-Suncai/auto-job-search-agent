@@ -5,8 +5,10 @@
 // | oldacct (create form first; the e-mail already has an account with another password, the tenant says nothing — gaig / aba 11-05)
 // | lateverify (create form first; an earlier run's account is unverified, sign-in says wrong password until its link is opened)
 // | locked (sign-in answers "account locked")   — JSA-207
+// | generic (no account; every failed sign-in shows Workday's "…or your account might be locked.") | longacct (same text; the account exists with the long password) — JSA-334
 const mode = (location.hash || '#account').slice(1);
-const RIGHT = 'pw-right';
+const RIGHT = mode === 'longacct' ? 'pw-long' : 'pw-right';
+const WRONGMSG = (mode === 'generic' || mode === 'longacct') ? 'You may have entered the wrong email address or password or your account might be locked.' : 'Wrong email or password.';
 const st = (k, v) => v === undefined ? localStorage.getItem('mock_' + k) : localStorage.setItem('mock_' + k, v);
 const app = document.getElementById('app');
 function signedIn() { app.innerHTML = '<div data-automation-id="progressBar"><span data-automation-id="progressBarActiveStep">current step 1 of 6 My Information</span></div><h2>My Information</h2>'; }
@@ -18,13 +20,13 @@ function signIn(err) {
     (mode === 'captcha' ? '<iframe title="captcha challenge" src="about:blank"></iframe>' : '');
   document.querySelector('[data-automation-id="signInSubmitButton"] [data-automation-id="click_filter"]').onclick = () => {
     const pw = document.querySelector('[data-automation-id="password"]').value;
-    const has = mode === 'account' || st('created') === '1';
+    const has = mode === 'account' || mode === 'longacct' || st('created') === '1';
     if (mode === 'verify' && st('created') === '1' && st('verified') !== '1') return signIn('Please verify your account before you sign in. Check your email.');
     if (mode === 'locked') return signIn('Your account has been locked. Too many failed attempts.');
     if (mode === 'oldacct') return signIn('Wrong email or password.');
     if (mode === 'lateverify') return st('verified') === '1' && pw === RIGHT ? signedIn() : signIn('Wrong email or password.');
     if (has && pw === RIGHT) return signedIn();
-    signIn('Wrong email or password.');
+    signIn(WRONGMSG);
   };
   document.querySelector('[data-automation-id="createAccountLink"]').onclick = createForm;
 }

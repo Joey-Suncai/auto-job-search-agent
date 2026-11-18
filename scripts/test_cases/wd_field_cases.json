@@ -1,0 +1,428 @@
+[
+ {
+  "name": "new log with before key null returns unchanged",
+  "f": {
+   "label": "First Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "Alice",
+   "value": "Alice",
+   "status": "ok",
+   "source": "profile",
+   "before": null
+  },
+  "failed": [],
+  "expect": {
+   "label": "First Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "Alice",
+   "value": "Alice",
+   "status": "ok",
+   "source": "profile",
+   "before": null
+  }
+ },
+ {
+  "name": "new log with page key zero returns unchanged",
+  "f": {
+   "label": "Middle Name",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "Bob",
+   "value": "Bob",
+   "status": "ok",
+   "source": "profile",
+   "page": 0
+  },
+  "failed": [],
+  "expect": {
+   "label": "Middle Name",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "Bob",
+   "value": "Bob",
+   "status": "ok",
+   "source": "profile",
+   "page": 0
+  }
+ },
+ {
+  "name": "new log with before and page wins over failed check",
+  "f": {
+   "label": "Last Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "Smith",
+   "value": "Smith",
+   "status": "ok",
+   "source": "profile",
+   "before": "Smyth",
+   "page": 3
+  },
+  "failed": [
+   [
+    "Personal",
+    "Last Name"
+   ]
+  ],
+  "expect": {
+   "label": "Last Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "Smith",
+   "value": "Smith",
+   "status": "ok",
+   "source": "profile",
+   "before": "Smyth",
+   "page": 3
+  }
+ },
+ {
+  "name": "old ok field not failed with string answer adds before and page",
+  "f": {
+   "label": "Email",
+   "section": "Contact",
+   "type": "email",
+   "required": true,
+   "answer": "a@b.com",
+   "value": "a@b.com",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Email",
+   "section": "Contact",
+   "type": "email",
+   "required": true,
+   "answer": "a@b.com",
+   "value": "a@b.com",
+   "status": "ok",
+   "source": "profile",
+   "before": "a@b.com",
+   "page": "a@b.com"
+  }
+ },
+ {
+  "name": "empty string answer counts as string",
+  "f": {
+   "label": "Nickname",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "",
+   "value": "",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Nickname",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "",
+   "value": "",
+   "status": "ok",
+   "source": "profile",
+   "before": "",
+   "page": ""
+  }
+ },
+ {
+  "name": "null answer does not add keys",
+  "f": {
+   "label": "Suffix",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": null,
+   "value": "Jr",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Suffix",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": null,
+   "value": "Jr",
+   "status": "ok",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "keep status does not add keys",
+  "f": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "keep",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "keep",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "skip status does not add keys",
+  "f": {
+   "label": "Fax",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "123",
+   "value": "123",
+   "status": "skip",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Fax",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "123",
+   "value": "123",
+   "status": "skip",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "needs_user status does not add keys",
+  "f": {
+   "label": "Address",
+   "section": "Contact",
+   "type": "text",
+   "required": true,
+   "answer": "1 Main",
+   "value": "1 Main",
+   "status": "needs_user",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Address",
+   "section": "Contact",
+   "type": "text",
+   "required": true,
+   "answer": "1 Main",
+   "value": "1 Main",
+   "status": "needs_user",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "old ok field in failed set does not add keys",
+  "f": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [
+   [
+    "Contact",
+    "Phone"
+   ]
+  ],
+  "expect": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "failed pair with same label different section does not block add",
+  "f": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [
+   [
+    "Personal",
+    "Phone"
+   ]
+  ],
+  "expect": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile",
+   "before": "555",
+   "page": "555"
+  }
+ },
+ {
+  "name": "failed pair with same section different label does not block add",
+  "f": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [
+   [
+    "Contact",
+    "Email"
+   ]
+  ],
+  "expect": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "phone",
+   "required": false,
+   "answer": "555",
+   "value": "555",
+   "status": "ok",
+   "source": "profile",
+   "before": "555",
+   "page": "555"
+  }
+ },
+ {
+  "name": "missing value key yields before null",
+  "f": {
+   "label": "Title",
+   "section": "Employment",
+   "type": "text",
+   "required": false,
+   "answer": "Engineer",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Title",
+   "section": "Employment",
+   "type": "text",
+   "required": false,
+   "answer": "Engineer",
+   "status": "ok",
+   "source": "profile",
+   "before": null,
+   "page": "Engineer"
+  }
+ },
+ {
+  "name": "extra keys are unchanged when adding before and page",
+  "f": {
+   "label": "Department",
+   "section": "Employment",
+   "type": "text",
+   "required": false,
+   "answer": "Sales",
+   "value": "Sales",
+   "status": "ok",
+   "source": "profile",
+   "note": "extra"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Department",
+   "section": "Employment",
+   "type": "text",
+   "required": false,
+   "answer": "Sales",
+   "value": "Sales",
+   "status": "ok",
+   "source": "profile",
+   "note": "extra",
+   "before": "Sales",
+   "page": "Sales"
+  }
+ },
+ {
+  "name": "non-string answer does not add keys",
+  "f": {
+   "label": "Age",
+   "section": "Personal",
+   "type": "number",
+   "required": false,
+   "answer": 30,
+   "value": "29",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Age",
+   "section": "Personal",
+   "type": "number",
+   "required": false,
+   "answer": 30,
+   "value": "29",
+   "status": "ok",
+   "source": "profile"
+  }
+ },
+ {
+  "name": "string zero answer adds keys",
+  "f": {
+   "label": "Count",
+   "section": "Misc",
+   "type": "text",
+   "required": false,
+   "answer": "0",
+   "value": "1",
+   "status": "ok",
+   "source": "profile"
+  },
+  "failed": [],
+  "expect": {
+   "label": "Count",
+   "section": "Misc",
+   "type": "text",
+   "required": false,
+   "answer": "0",
+   "value": "1",
+   "status": "ok",
+   "source": "profile",
+   "before": "1",
+   "page": "0"
+  }
+ }
+]

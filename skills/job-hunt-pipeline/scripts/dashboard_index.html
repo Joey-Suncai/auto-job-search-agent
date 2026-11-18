@@ -32,10 +32,8 @@
 #dash-root .jh-tablebox::-webkit-scrollbar-thumb,#dash-root .jh-topscroll::-webkit-scrollbar-thumb{background:var(--cds-chart-muted);border-radius:5px}
 #dash-root .jh-topscroll{overflow-x:auto;overflow-y:hidden;height:12px}
 #dash-root .jh-topscroll>div{height:1px}
-#dash-root .jh-ddl{white-space:nowrap}
 #dash-root .jh-done{white-space:nowrap}
 #dash-root .jh-done .jh-btn[aria-busy="true"]{cursor:progress;opacity:.6}
-#dash-root .jh-done .undo{all:unset;cursor:pointer;color:var(--color-fg-muted);text-decoration:underline;margin-left:4px}
 #dash-root table.jh-t{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
 #dash-root .jh-t th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:var(--cds-font-weight-medium);padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);white-space:nowrap;z-index:1}
 #dash-root .jh-t th button{all:unset;cursor:pointer}
@@ -285,20 +283,30 @@
     </div>
     <div class="jh-card" id="card-joey">
       <h2>Waiting for you</h2>
-      <p class="jh-note">Every application that stopped for you, one row each (runner queue, CAPTCHAs, dashboard Apply requests merged). A row disappears by itself once the application is submitted, moves on in the tracker, or its job closes.</p>
+      <p class="jh-note">What a company asked of you after your application: assessments / OA, interviews, forms they want filled, take-homes, offers. Soonest deadline first. Application-runner stops (CAPTCHA, sign-in, answers …) are handled in the application session, not here. This is your only to-do list: <b>Done</b> = you did it; <b>Give up</b> = you will not do it (recorded as Declined by Joey, nothing is sent to the company). Both ask nothing twice but can be undone from the toast that appears; a row also goes when the application is rejected / archived.</p>
       <div class="jh-tablebox" style="max-height:420px">
         <table class="jh-t" id="t-joey" data-source="joey_todo" data-row-key="folder">
-          <thead><tr><th data-field="kind">Type</th><th data-field="folder" class="wrap">Application</th><th data-field="age_days">Days</th><th data-field="n">Stops</th><th data-field="msg" class="wrap">What happened</th><th data-field="next" class="wrap">Next step</th></tr></thead><tbody></tbody>
+          <thead><tr><th data-field="kind">Type</th><th data-field="folder" class="wrap">Application</th><th data-field="role" class="wrap">Role</th><th data-field="tier">Tier</th><th data-field="deadline">Deadline</th><th data-field="msg" class="wrap">What happened</th><th data-field="last_email" class="wrap">Last email</th><th data-field="next" class="wrap">Next step</th><th>Done</th><th>Give up</th></tr></thead><tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="jh-card" id="card-echo">
+      <h2>Echo funnel — interviews and assessments per 100 applications</h2>
+      <p class="jh-note">Counted from your e-mails: an Interview or Assessment (OA, HireVue …) e-mail after the application is one echo; a receipt is not. Applications sent on or after the start date. A group with fewer than 20 applications shows counts only, no per-100 figure. Résumé "Unknown" = not recorded and not found in the folder's file names.</p>
+      <div class="jh-filters"><label>Start date <input type="date" id="echo-since" value="2026-10-28"></label><span id="echo-total" class="jh-note"></span></div>
+      <div class="jh-tablebox" style="max-height:60vh">
+        <table class="jh-t" id="t-echo" data-source="echo_funnel">
+          <thead><tr><th>Split by</th><th>Value</th><th>Applications</th><th>Interviews</th><th>Interviews / 100</th><th>Assessments</th><th>Assessments / 100</th></tr></thead><tbody></tbody>
         </table>
       </div>
     </div>
     <div class="jh-card" id="card-apps">
       <h2>Tracker</h2>
-      <p class="jh-note">The agent's shortlist plus every application found in your inbox (alex.rivera@example.com). Claude reads new job emails every morning and updates status, last email and action needed here.</p>
-      <div class="jh-filters"><select id="a-status" aria-label="Status"><option value="">All statuses</option></select><select id="a-cycle" aria-label="Cycle"><option value="">All cycles</option></select><label><input type="checkbox" id="a-action"> Action needed only</label></div>
+      <p class="jh-note">The agent's shortlist plus every application found in your inbox. Claude reads new job emails every morning and updates status, last email and action needed here.</p>
+      <div class="jh-filters"><select id="a-status" aria-label="Status"><option value="">All statuses</option></select><select id="a-cycle" aria-label="Cycle"><option value="">All cycles</option></select></div>
       <div class="jh-tablebox" style="max-height:78vh">
         <table class="jh-t" id="t-apps" data-source="applications" data-row-key="job_id">
-          <thead><tr><th data-field="status">Status</th><th data-field="company">Company</th><th data-field="title" class="wrap">Role</th><th data-source="app_tier" data-field="tier">Tier</th><th data-field="level">Level</th><th data-field="score">Score</th><th data-field="referral_status">Referral</th><th data-field="last_email" class="wrap">Last email</th><th data-field="action_needed" class="wrap">Action needed</th><th data-field="action_ddl">DDL</th><th data-field="action_done">Done</th><th data-field="next_step" class="wrap">Next step</th><th data-field="applied_on">Applied</th><th data-field="cycle">Cycle</th><th data-field="updated">Updated</th></tr></thead><tbody></tbody>
+          <thead><tr><th data-field="status">Status</th><th data-field="company">Company</th><th data-field="title" class="wrap">Role</th><th data-source="app_tier" data-field="tier">Tier</th><th data-field="level">Level</th><th data-field="score">Score</th><th data-field="referral_status">Referral</th><th data-field="last_email" class="wrap">Last email</th><th data-field="next_step" class="wrap">Next step</th><th data-field="applied_on">Applied</th><th data-field="cycle">Cycle</th><th data-field="updated">Updated</th></tr></thead><tbody></tbody>
         </table>
       </div>
     </div>
@@ -384,7 +392,7 @@
   dash.calc('app_funnel', {
     title: 'Applications by stage reached', description: 'Applications that reached each stage (later stages count toward earlier ones).', inputs: ['applications'],
     fn: (applications) => { const order = ['Shortlisted', 'Applied', 'Assessment', 'Interview', 'Offer'];
-      const rank = { Shortlisted: 0, Applied: 1, 'Applied (unconfirmed)': 1, 'No response': 1, Rejected: 1, Withdrawn: 1, Assessment: 2, Interview: 3, Offer: 4 };
+      const rank = { Shortlisted: 0, Applied: 1, 'Applied (unconfirmed)': 1, 'No response': 1, Rejected: 1, Withdrawn: 1, 'Declined by Joey': 1, Assessment: 2, Interview: 3, Offer: 4 };
       return order.map((s, i) => ({ stage: s, count: applications.filter((a) => (rank[a.status] ?? 0) >= i).length })); },
   });
   dash.calc('app_refs', {
@@ -510,8 +518,9 @@
 
   // ---------- 👍 / 👎 (JSA-101): POST to the local pref server, which runs scripts/scoring/pref.py's apply()
   const PREF_URL = 'http://127.0.0.1:8766/pref';
-  const toast = (msg, bad) => { const t = $('#pref-toast'); t.textContent = msg; t.className = 'jh-toast' + (bad ? ' bad' : ''); t.hidden = false;
-    clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, bad ? 12000 : 4000); };
+  const toast = (msg, bad, undo) => { const t = $('#pref-toast'); t.textContent = msg; t.className = 'jh-toast' + (bad ? ' bad' : ''); t.hidden = false;
+    if (undo) { const u = document.createElement('button'); u.type = 'button'; u.className = 'undo'; u.textContent = 'Undo'; u.style.cssText = 'all:unset;cursor:pointer;text-decoration:underline;margin-left:10px;font-weight:600'; u.addEventListener('click', () => { t.hidden = true; undo(u); }); t.appendChild(u); }
+    clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, bad ? 12000 : undo ? 15000 : 4000); };
   const LVN = { top: 'Top', standard: 'Standard', exclude: 'Excluded', off_target: 'Not a Summer 2027 internship' };
   const setPref = async (j, want, btns) => {
     const pref = j.joey_pref === want ? 'clear' : want;
@@ -531,36 +540,37 @@
       btns.forEach((b) => b.removeAttribute('aria-busy'));
     }
   };
-  // ---------- tracker Done button (JSA-125): POST /action to the same local server → scripts/store/action_done.py
-  const ACTION_URL = 'http://127.0.0.1:8766/action', WAITV = ['', '等结果'];
-  const actionCell = (cell, a) => {
-    cell.className = 'jh-done'; cell.replaceChildren();
-    const open = !WAITV.includes((a.action_needed || '').trim()), hist = a.action_done || [], last = hist[hist.length - 1];
-    const send = async (done, el) => {
-      el.setAttribute('aria-busy', 'true');
-      try {
-        const r = await fetch(ACTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-JSA-Pref': '1' }, body: JSON.stringify({ job_id: a.job_id, done }) });
-        const d = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
-        a.action_needed = d.action_needed; if (d.action_done) a.action_done = d.action_done; else delete a.action_done;
-        toast((done ? '✓ Done: ' : 'Undone: ') + a.company + ' — ' + en(done ? last2(a) : a.action_needed));
-        draw();
-      } catch (e) {
-        const down = e instanceof TypeError;
-        toast(down ? 'Not saved: the local server is not running (127.0.0.1:8766). Start it: launchctl kickstart gui/$(id -u)/com.jobagent.pref'
-                   : 'Not saved: ' + e.message, true);
-        el.removeAttribute('aria-busy');
-      }
-    };
-    const last2 = (x) => { const h = x.action_done || []; return h.length ? h[h.length - 1].action : ''; };
-    if (open) {
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'jh-btn'; b.textContent = '✓ Done'; b.title = 'Mark this action done';
-      b.addEventListener('click', (ev) => { ev.stopPropagation(); send(true, b); }); cell.appendChild(b);
-    } else if (last) {
-      const s = document.createElement('span'); s.textContent = '✓ ' + String(last.on).slice(5); s.title = 'Done ' + last.on + ': ' + en(last.action); s.style.color = 'var(--color-ok)';
-      const u = document.createElement('button'); u.type = 'button'; u.className = 'undo'; u.textContent = 'Undo';
-      u.addEventListener('click', (ev) => { ev.stopPropagation(); send(false, u); }); cell.append(s, u);
-    } else cell.textContent = '—';
+  // ---------- Done button (JSA-125, moved to the Waiting-for-you table by JSA-406): POST /action → scripts/store/action_done.py
+  const ACTION_URL = 'http://127.0.0.1:8766/action';
+  const DECLINE_URL = 'http://127.0.0.1:8766/decline';
+  const NOSERVER = 'Not saved: the local server is not running (127.0.0.1:8766). Start it: launchctl kickstart gui/$(id -u)/com.jobagent.pref';
+  // one write: Done / Give up (kind) and their undo; mirrors the answer into the page's data and drops / keeps the to-do row
+  const todoSend = async (kind, jobId, on, el) => {
+    el.setAttribute('aria-busy', 'true');
+    try {
+      const body = kind === 'done' ? { job_id: jobId, done: on } : { job_id: jobId, give_up: on };
+      const r = await fetch(kind === 'done' ? ACTION_URL : DECLINE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-JSA-Pref': '1' }, body: JSON.stringify(body) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+      const A2 = dash.data('applications'); const a = A2.status === 'ok' ? A2.data.find((x) => x.job_id === jobId) : null;
+      if (a) { ['status', 'action_needed', 'action_deadline', 'next_step'].forEach((k) => { if (k in d) a[k] = d[k]; });
+        ['action_done', 'declined'].forEach((k) => { if (d[k]) a[k] = d[k]; else if (k in d) delete a[k]; }); }
+      const JT2 = dash.data('joey_todo');
+      if (on && JT2.status === 'ok') { const i = JT2.data.findIndex((x) => x.job_id === jobId); if (i >= 0) JT2.data.splice(i, 1); }
+      const who = a ? a.company : jobId;
+      toast(on ? (kind === 'done' ? '✓ Done: ' : 'Gave up: ') + who + (kind === 'done' ? '' : ' — recorded as Declined by Joey') : 'Undone: ' + who + ' — back in Waiting for you at the next refresh (within 60 s)', false,
+        on ? (u) => todoSend(kind, jobId, false, u) : null);
+      draw();
+    } catch (e) {
+      toast(e instanceof TypeError ? NOSERVER : 'Not saved: ' + e.message, true);
+      el.removeAttribute('aria-busy');
+    }
+  };
+  // ---------- Give up (JSA-406): POST /decline → action_done.decline; asks first, the toast's Undo takes it back
+  const giveUp = (r, el) => {
+    const who = String(r.msg || '').split(':')[0] || r.job_id;
+    if (!window.confirm('Give up on ' + who + '?\n\n' + r.msg + '\n\nIt is recorded as "Declined by Joey". Nothing is sent to the company. You can undo it right after.')) return;
+    todoSend('decline', r.job_id, true, el);
   };
   const prefBox = (j) => {
     const w = document.createElement('span'); w.className = 'jh-pref';
@@ -692,7 +702,7 @@
   $('#jobs-more').addEventListener('click', () => { jh.lim.jobs += 300; draw(); });
   $('#comp-more').addEventListener('click', () => { jh.lim.comp += 300; draw(); });
   ['#c-q', '#c-sp', '#c-gc', '#c-ref'].forEach((s) => $(s).addEventListener('input', () => { jh.lim.comp = 300; draw(); }));
-  $('#a-status').addEventListener('input', () => draw()); $('#a-cycle').addEventListener('input', () => draw()); $('#a-action').addEventListener('input', () => draw());
+  $('#a-status').addEventListener('input', () => draw()); $('#a-cycle').addEventListener('input', () => draw()); 
   window.jhFilterCompany = (name) => { $('#f-q').value = name; jh.tiers = new Set(TIERS); tierBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', 'true')); show('jobs'); };
 
   const filteredJobs = (rows) => {
@@ -843,20 +853,12 @@ const SPS = ['Posting offers sponsorship', 'Strong H-1B sponsor', 'Some H-1B his
       const f = dash.data('app_funnel'), r = dash.data('app_refs');
       if (f.status === 'ok') drawSimpleBars($('#ch-funnel'), f.data, 'stage', 'count'); else $('#ch-funnel').replaceChildren();
       if (r.status === 'ok') drawSimpleBars($('#ch-refstat'), r.data, 'referral_status', 'count'); else $('#ch-refstat').replaceChildren();
-      const st = $('#a-status').value, cy = $('#a-cycle').value, act = $('#a-action').checked; const tb = $('#t-apps tbody'); tb.replaceChildren();
-      const EMD = dash.data('emails'), ddl = new Map(); (EMD.status === 'ok' ? EMD.data : []).forEach((e) => { if (e.deadline && e.job_id) ddl.set(e.job_id + '|' + e.date, e.deadline); });
+      const st = $('#a-status').value, cy = $('#a-cycle').value;  const tb = $('#t-apps tbody'); tb.replaceChildren();
       const AT = dash.data('app_tier'); const atier = new Map((AT.status === 'ok' ? AT.data : []).map((r) => [r.job_id, r.tier]));
-      const arank = (a) => (a.action_needed ? 0 : 1) * 10 + ({ Offer: 0, Interview: 1, Assessment: 2, Applied: 3, 'Applied (unconfirmed)': 4, 'No response': 6, Rejected: 7, Shortlisted: 5 }[a.status] ?? 8);
-      (A.status === 'ok' ? A.data : []).filter((a) => (!st || a.status === st) && (!cy || a.cycle === cy) && (!act || a.action_needed)).sort((x, y) => arank(x) - arank(y)).forEach((a) => { const tr = tb.insertRow(); tr.dataset.key = a.job_id;
+      const arank = (a) => ({ Offer: 0, Interview: 1, Assessment: 2, Applied: 3, 'Applied (unconfirmed)': 4, 'No response': 6, Rejected: 7, 'Declined by Joey': 7, Shortlisted: 5 }[a.status] ?? 8);
+      (A.status === 'ok' ? A.data : []).filter((a) => (!st || a.status === st) && (!cy || a.cycle === cy)).sort((x, y) => arank(x) - arank(y)).forEach((a) => { const tr = tb.insertRow(); tr.dataset.key = a.job_id;
         pill(tr.insertCell(), a.status, ['Offer', 'Interview', 'Assessment'].includes(a.status) ? 'good' : a.status === 'Rejected' ? 'bad' : ''); td(tr, a.company); td(tr, a.title, 'wrap'); { const tv = atier.get(a.job_id); if (tv) pill(tr.insertCell(), tv, tv); else td(tr, ''); } td(tr, a.level); td(tr, a.score, 'n'); td(tr, a.referral_status);
         const le = td(tr, a.last_email ? (a.last_email_date + ' · ' + en(a.last_email)) : '', 'wrap'); if (a.email_url) { le.replaceChildren(); const l = document.createElement('a'); l.href = a.email_url; l.target = '_blank'; l.rel = 'noopener'; l.textContent = a.last_email_date + ' · ' + en(a.last_email); le.appendChild(l); }
-        td(tr, en(a.action_needed), 'wrap'); { const c = tr.insertCell(); c.className = 'jh-ddl'; const wait = !a.action_needed || a.action_needed === '等结果', said = ((a.action_needed || '') + ' ' + (a.next_step || '')).match(/\b(?:by|due|before|deadline:?)\s+(\d{4}-\d{2}-\d{2}(?: \d{1,2}:\d{2}(?: ?[A-Z]{2,3})?)?)/i);
-          const d = ddl.get(a.job_id + '|' + a.last_email_date) || (said ? said[1] : '');
-          if ((!d && wait) || (wait && (a.action_done || []).length)) c.textContent = '—';   // done → no deadline left (JSA-125)
-          else if (!d) { c.textContent = 'Not stated'; c.style.color = 'var(--color-fg-muted)'; }
-          else { const m = d.match(/\d{4}-\d{2}-\d{2}/), left = m ? Math.round((new Date(m[0] + 'T23:59') - new Date()) / 864e5) : null;
-            pill(c, d + (left == null ? '' : left < 0 ? ' · overdue' : left === 0 ? ' · today' : ' · ' + left + (left === 1 ? ' day' : ' days') + ' left'), left == null ? '' : left < 0 ? 'bad' : left <= 2 ? 'warn' : ''); } }
-        actionCell(tr.insertCell(), a);
         td(tr, a.next_step, 'wrap'); td(tr, a.applied_on); td(tr, a.cycle); td(tr, a.updated);
         tr.addEventListener('click', () => { const j = jobs.find((x) => x.id === a.job_id); if (j) window.jhFilterCompany(j.company); }); });
       topScroll($('#t-apps').closest('.jh-tablebox'));
@@ -864,11 +866,42 @@ const SPS = ['Posting offers sponsorship', 'Strong H-1B sponsor', 'Some H-1B his
     if (p === 'applications') {
       const JT = dash.data('joey_todo'); const jb = $('#t-joey tbody'); jb.replaceChildren();
       const jrows = JT.status === 'ok' ? JT.data : [];
-      if (!jrows.length) { const tr = jb.insertRow(); const c = tr.insertCell(); c.colSpan = 6; c.textContent = 'Nothing is waiting for you.'; }
-      jrows.forEach((r) => { const tr = jb.insertRow(); tr.dataset.key = r.folder;
-        pill(tr.insertCell(), r.kind, ['captcha', 'answers', 'sign-in'].includes(r.kind) ? 'warn' : r.kind === 'unconfirmed' ? '' : 'bad');
-        td(tr, String(r.folder || '').replace(/^\d{4}-\d{2}-\d{2}_/, '').replace(/_/g, ' '), 'wrap'); td(tr, r.age_days == null ? '' : String(r.age_days), 'n'); td(tr, String(r.n), 'n');
-        td(tr, r.msg, 'wrap'); td(tr, r.next, 'wrap'); });
+      if (!jrows.length) { const tr = jb.insertRow(); const c = tr.insertCell(); c.colSpan = 10; c.textContent = 'Nothing is waiting for you.'; }
+      jrows.forEach((r) => {
+        const tr = jb.insertRow(); tr.dataset.key = r.folder;
+        const fromMail = (r.sources || []).includes('tracker');   // an action found in an e-mail (JSA-389)
+        pill(tr.insertCell(), r.kind, r.overdue ? 'bad' : ['captcha', 'answers', 'sign-in', 'assessment', 'interview', 'form', 'confirm', 'offer', 'skill-gap'].includes(r.kind) ? 'warn' : r.kind === 'unconfirmed' ? '' : 'bad');
+        td(tr, fromMail ? (r.msg.split(':')[0] || r.job_id) : String(r.folder || '').replace(/^\d{4}-\d{2}-\d{2}_/, '').replace(/_/g, ' '), 'wrap');
+        td(tr, r.role, 'wrap');   // JSA-423: the role title from the application (— when unknown)
+        if (r.tier && r.tier !== '—') pill(tr.insertCell(), r.tier, r.tier); else td(tr, '—');   // JSA-404
+        { const c = tr.insertCell();   // the deadline column (JSA-413: it used to be a 2-column cell under Days / Stops)
+          if (r.deadline) pill(c, 'due ' + r.deadline + (r.overdue ? ' · overdue' : r.days_left === 0 ? ' · today' : ' · ' + r.days_left + (r.days_left === 1 ? ' day' : ' days') + ' left'), r.overdue ? 'bad' : r.days_left <= 2 ? 'warn' : '');
+          else c.textContent = fromMail ? 'no deadline' : (r.age_days == null ? '' : r.age_days + ' d'); }
+        td(tr, r.msg, 'wrap');
+        { const le = td(tr, r.last_email ? ((r.last_email_date || '') + ' · ' + en(r.last_email)) : '—', 'wrap');   // same text and Gmail link as the Tracker's Last email
+          if (r.last_email && r.email_url) { le.replaceChildren(); const l = document.createElement('a'); l.href = r.email_url; l.target = '_blank'; l.rel = 'noopener'; l.textContent = (r.last_email_date || '') + ' · ' + en(r.last_email); le.appendChild(l); } }
+        td(tr, r.next, 'wrap');
+        const dc = tr.insertCell(), gc = tr.insertCell(); dc.className = gc.className = 'jh-done';
+        if (fromMail && r.job_id) {
+          const mk = (cell, label, title, fn) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'jh-btn'; b.textContent = label; b.title = title; b.addEventListener('click', (ev) => { ev.stopPropagation(); fn(b); }); cell.appendChild(b); };
+          mk(dc, '✓ Done', 'You did it: mark this action done', (b) => todoSend('done', r.job_id, true, b));
+          mk(gc, 'Give up', 'You will not do this: the application is recorded as Declined by Joey (nothing is sent to the company)', (b) => giveUp(r, b));
+        } else { dc.textContent = '—'; gc.textContent = '—'; } });
+    }
+    if (p === 'applications') {   // echo funnel (JSA-360): the start date is changed on the page; same counting as scripts/store/echo_funnel.py group()
+      const EF = dash.data('echo_funnel'); const eb2 = $('#t-echo tbody'); eb2.replaceChildren();
+      const recs = EF.status === 'ok' ? EF.data : []; const since = $('#echo-since').value || '2026-10-28';
+      const DIMS = [['track', 'track'], ['tier', 'tier'], ['platform', 'platform'], ['resume', 'resume'], ['referral', 'referral'], ['first echo (days)', 'bucket']];
+      const cells = new Map(); const tot = { apps: 0, iv: 0, as: 0, dec: 0 };
+      recs.filter((r) => r.on >= since).forEach((r) => { tot.apps++; tot.dec += r.declined || 0; tot.iv += r.interview; tot.as += r.assessment;
+        DIMS.forEach(([dim, key]) => { if (!r[key]) return; const k = dim + '\u0000' + r[key]; const c = cells.get(k) || { dim, value: r[key], apps: 0, iv: 0, as: 0 };
+          c.apps++; c.iv += r.interview; c.as += r.assessment; cells.set(k, c); }); });
+      const per = (n, c) => (c.apps >= 20 && !c.dim.startsWith('first echo')) ? (100 * n / c.apps).toFixed(1) : '—';
+      $('#echo-total').textContent = tot.apps + ' applications · ' + tot.iv + ' interview · ' + tot.as + ' assessment' + (tot.apps >= 20 ? ' (' + (100 * tot.iv / tot.apps).toFixed(1) + ' / ' + (100 * tot.as / tot.apps).toFixed(1) + ' per 100)' : ' (fewer than 20: no per-100)') + (tot.dec ? ' · ' + tot.dec + ' given up by you (JSA-406; counted as sent, not as company rejections)' : '');
+      const order = Object.fromEntries(DIMS.map(([d], i) => [d, i]));
+      [...cells.values()].sort((a, b) => order[a.dim] - order[b.dim] || b.apps - a.apps || String(a.value).localeCompare(String(b.value))).forEach((c) => {
+        const tr = eb2.insertRow(); td(tr, c.dim); td(tr, c.value); td(tr, String(c.apps), 'n'); td(tr, String(c.iv), 'n'); td(tr, per(c.iv, c), 'n'); td(tr, String(c.as), 'n'); td(tr, per(c.as, c), 'n'); });
+      if (!cells.size) { const tr = eb2.insertRow(); const c = tr.insertCell(); c.colSpan = 7; c.textContent = 'No application on or after this date.'; }
     }
     if (p === 'applications') {
       const EM = dash.data('emails'); const eb = $('#t-emails tbody'); eb.replaceChildren();
@@ -883,6 +916,7 @@ const SPS = ['Posting offers sponsorship', 'Strong H-1B sponsor', 'Some H-1B his
       rows.forEach((s) => { const tr = tb.insertRow(); tr.dataset.key = s.source; td(tr, s.source); td(tr, s.type); td(tr, s.method, 'wrap'); td(tr, s.visa_signal); td(tr, fmt(s.collected), 'n'); td(tr, fmt(s.relevant_us), 'n'); td(tr, fmt(s.in_dashboard), 'n'); td(tr, fmt(s.tier_ab), 'n'); td(tr, s.last_run); td(tr, s.cadence); });
     }
   }
+  document.getElementById('echo-since').addEventListener('change', () => draw());
   dash.onData(draw);
   // a chart drawn while its box had no width (page not laid out yet) stays empty: redraw once it gets one (JSA-095)
   if (window.ResizeObserver) { let lastW = {}; const ro = new ResizeObserver((es) => { if (es.some((e) => !lastW[e.target.id] && e.contentRect.width)) draw(); es.forEach((e) => { lastW[e.target.id] = e.contentRect.width; }); });

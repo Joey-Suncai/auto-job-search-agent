@@ -1,0 +1,482 @@
+[
+ {
+  "name": "incident_greeting_spinner_form_true",
+  "before": {
+   "url": "https://jobs.example.com/apply/internship",
+   "text": "Apply for the Summer Internship. Complete all fields and click Submit. Again, thank you for your interest in our internship opportunity.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/internship",
+   "text": "Apply for the Summer Internship. Complete all fields and click Submit. Again, thank you for your interest in our internship opportunity. Submitting…",
+   "form": true
+  },
+  "expect": false,
+  "spec_quote": "No change → not confirmed, whatever the text says.",
+  "ambiguous": false
+ },
+ {
+  "name": "incident_greeting_spinner_form_false",
+  "before": {
+   "url": "https://jobs.example.com/apply/internship",
+   "text": "Apply for the Summer Internship. Complete all fields and click Submit. Again, thank you for your interest in our internship opportunity.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/internship",
+   "text": "Apply for the Summer Internship. Complete all fields and click Submit. Again, thank you for your interest in our internship opportunity. Submitting…",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "A page whose only success-like text is that greeting is not confirmed, even if the page changed.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_url_old_success_form_gone",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying. Complete the form below.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying. Complete the form below. Submitting…",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "Note: a Submit button that only went away while the URL stayed the same (a spinner in its place) is confirmed only by rule 5b — a sentence the form already showed does not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_url_new_success_form_gone",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying! We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "b. a success sentence is on the AFTER page that was not on the BEFORE page (compared case-insensitively, sentence by sentence);",
+  "ambiguous": false
+ },
+ {
+  "name": "same_url_new_success_form_still_visible",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit. Thank you for applying!",
+   "form": true
+  },
+  "expect": false,
+  "spec_quote": "No change → not confirmed, whatever the text says.",
+  "ambiguous": false
+ },
+ {
+  "name": "same_url_new_success_form_null_before",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": null
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying! We have received your application.",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "It changed when the URL is different (ignoring the part after `#` and a trailing slash), or when the Submit button was visible before (form true) and is not visible now (form false).",
+  "ambiguous": false
+ },
+ {
+  "name": "same_url_greeting_new_form_gone",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for your interest in Acme. Submitting…",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "\"Thank you for your interest\" / \"Thanks for your interest\" is NOT a success sentence — job forms greet the candidate with it.",
+  "ambiguous": false
+ },
+ {
+  "name": "success_url_no_sentence_form_false",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/success",
+   "text": "The hiring team will review your responses.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5c_url_changed_old_success_form_false",
+  "before": {
+   "url": "https://jobs.example.com/apply/form",
+   "text": "Thank you for applying. Complete the form below.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/review",
+   "text": "Thank you for applying. Your details are under review.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "c. the URL changed, the Submit button is not visible (form false), and the AFTER page has a success sentence (even one the BEFORE page also had — it is a new page).",
+  "ambiguous": false
+ },
+ {
+  "name": "success_url_with_error_no_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/success",
+   "text": "There was an error. Please try again.",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "Error text on the AFTER page (\"please fix\", \"please correct\", \"please complete\", \"is required\", \"required field\", \"there was an error\", \"there were errors\", \"error verifying\", \"something went wrong\", \"could not be submitted\") → not confirmed, unless a success sentence is new since the click AND the Submit button is gone.",
+  "ambiguous": false
+ },
+ {
+  "name": "error_with_new_success_and_form_gone",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "There was an error verifying your payment. Thank you for applying. We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "Error text on the AFTER page (\"please fix\", \"please correct\", \"please complete\", \"is required\", \"required field\", \"there was an error\", \"there were errors\", \"error verifying\", \"something went wrong\", \"could not be submitted\") → not confirmed, unless a success sentence is new since the click AND the Submit button is gone.",
+  "ambiguous": false
+ },
+ {
+  "name": "error_with_old_success_and_form_gone",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying. Complete the form below.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "There was an error. Thank you for applying. Complete the form below.",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "Error text on the AFTER page (\"please fix\", \"please correct\", \"please complete\", \"is required\", \"required field\", \"there was an error\", \"there were errors\", \"error verifying\", \"something went wrong\", \"could not be submitted\") → not confirmed, unless a success sentence is new since the click AND the Submit button is gone.",
+  "ambiguous": false
+ },
+ {
+  "name": "error_with_new_success_but_form_visible",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "There was an error. Thank you for applying. Please fix the highlighted field.",
+   "form": true
+  },
+  "expect": false,
+  "spec_quote": "Error text on the AFTER page (\"please fix\", \"please correct\", \"please complete\", \"is required\", \"required field\", \"there was an error\", \"there were errors\", \"error verifying\", \"something went wrong\", \"could not be submitted\") → not confirmed, unless a success sentence is new since the click AND the Submit button is gone.",
+  "ambiguous": false
+ },
+ {
+  "name": "greeting_after_non_success_url_change",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123/step2",
+   "text": "Thank you for your interest in our internship opportunity. Please verify your details.",
+   "form": true
+  },
+  "expect": false,
+  "spec_quote": "\"Thank you for your interest\" / \"Thanks for your interest\" is NOT a success sentence — job forms greet the candidate with it.",
+  "ambiguous": false
+ },
+ {
+  "name": "fragment_only_form_gone_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply#form",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply#submitted",
+   "text": "Thank you for applying! We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "It changed when the URL is different (ignoring the part after `#` and a trailing slash), or when the Submit button was visible before (form true) and is not visible now (form false).",
+  "ambiguous": false
+ },
+ {
+  "name": "fragment_only_no_change_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply#form",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply#submitted",
+   "text": "Thank you for applying! We have received your application.",
+   "form": true
+  },
+  "expect": false,
+  "spec_quote": "No change → not confirmed, whatever the text says.",
+  "ambiguous": false
+ },
+ {
+  "name": "trailing_slash_form_gone_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/",
+   "text": "Thank you for applying! We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "It changed when the URL is different (ignoring the part after `#` and a trailing slash), or when the Submit button was visible before (form true) and is not visible now (form false).",
+  "ambiguous": false
+ },
+ {
+  "name": "trailing_slash_form_gone_no_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/",
+   "text": "Submitting… Thank you for your interest in Acme.",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "\"Thank you for your interest\" / \"Thanks for your interest\" is NOT a success sentence — job forms greet the candidate with it.",
+  "ambiguous": false
+ },
+ {
+  "name": "form_null_after_no_url_change_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying! We have received your application.",
+   "form": null
+  },
+  "expect": false,
+  "spec_quote": "A `form` of null never counts as \"gone\".",
+  "ambiguous": false
+ },
+ {
+  "name": "form_null_after_url_changed_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123/review",
+   "text": "Thank you for applying! We have received your application.",
+   "form": null
+  },
+  "expect": true,
+  "spec_quote": "b. a success sentence is on the AFTER page that was not on the BEFORE page (compared case-insensitively, sentence by sentence);",
+  "ambiguous": false
+ },
+ {
+  "name": "url_changed_non_success_no_new_success_form_false",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123/review",
+   "text": "Please review the next steps.",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "Otherwise not confirmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "case_insensitive_old_success_not_new",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Thank you for applying. You may update your details below.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "THANK YOU FOR APPLYING! Submitting…",
+   "form": false
+  },
+  "expect": false,
+  "spec_quote": "Note: a Submit button that only went away while the URL stayed the same (a spinner in its place) is confirmed only by rule 5b — a sentence the form already showed does not count.",
+  "ambiguous": false
+ },
+ {
+  "name": "case_insensitive_new_success",
+  "before": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "Complete the application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.example.com/apply/123",
+   "text": "APPLICATION SUBMITTED",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "b. a success sentence is on the AFTER page that was not on the BEFORE page (compared case-insensitively, sentence by sentence);",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse_same_url_new_success",
+  "before": {
+   "url": "https://boards.greenhouse.io/acme/jobs/12345/applications",
+   "text": "Apply for the Software Engineer role at Acme. Fields marked with an asterisk are required. Thank you for your interest in Acme.",
+   "form": true
+  },
+  "after": {
+   "url": "https://boards.greenhouse.io/acme/jobs/12345/applications",
+   "text": "Thank you for applying to Acme. We have received your application. Our team will be in touch.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "b. a success sentence is on the AFTER page that was not on the BEFORE page (compared case-insensitively, sentence by sentence);",
+  "ambiguous": false
+ },
+ {
+  "name": "lever_thanks_url",
+  "before": {
+   "url": "https://jobs.lever.co/acme/12345/apply",
+   "text": "Submit your application for the Product Designer role. Thank you for your interest in Lever.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.lever.co/acme/12345/thanks",
+   "text": "Thanks for applying! Your application is on its way.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "ashby_application_submitted_url",
+  "before": {
+   "url": "https://jobs.ashbyhq.com/acme/12345/application",
+   "text": "Complete your application for the Data Analyst role. Review your answers before submitting.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.ashbyhq.com/acme/12345/application-submitted",
+   "text": "Application submitted successfully. We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "workable_confirmation_url",
+  "before": {
+   "url": "https://apply.workable.com/acme/j/ABC123/apply/",
+   "text": "Complete the form to apply for the Customer Support Specialist position.",
+   "form": true
+  },
+  "after": {
+   "url": "https://apply.workable.com/acme/j/ABC123/confirmation",
+   "text": "Your application has been received. Thank you for applying to Acme.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "smartrecruiters_apply_success_url",
+  "before": {
+   "url": "https://jobs.smartrecruiters.com/Acme/12345-software-engineer",
+   "text": "Apply now for the Software Engineer role.",
+   "form": true
+  },
+  "after": {
+   "url": "https://jobs.smartrecruiters.com/Acme/12345-software-engineer/apply/success",
+   "text": "You have successfully applied. Your application is in.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_confirmation_url",
+  "before": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/job/Software-Engineer_R123/apply",
+   "text": "Complete your candidate profile and submit your application.",
+   "form": true
+  },
+  "after": {
+   "url": "https://acme.wd1.myworkdayjobs.com/en-US/External/job/Software-Engineer_R123/confirmation",
+   "text": "Thank you for your application. We have received your application.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ },
+ {
+  "name": "successfactors_success_url",
+  "before": {
+   "url": "https://career5.successfactors.eu/career?company=acme&career_job_req_id=12345",
+   "text": "Review your application and click Submit.",
+   "form": true
+  },
+  "after": {
+   "url": "https://career5.successfactors.eu/career/success?company=acme&career_job_req_id=12345",
+   "text": "Application submitted successfully. Thank you for applying.",
+   "form": false
+  },
+  "expect": true,
+  "spec_quote": "a. the URL changed and the new URL is a success URL: it contains `/confirmation`, `/thanks`, `/thank`, `/thank-you`, `/apply/success`, `/success` or `application-submitted`;",
+  "ambiguous": false
+ }
+]

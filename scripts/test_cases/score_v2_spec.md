@@ -23,14 +23,16 @@ Role category comes from `role_category(title)` (ai_pm, data_analysis, pm, ai_no
    - s_timing: title or `sources` contains "summer 2027" / "2027 summer" (any case) → 1.0; else contains "summer" or
      "2027" → 0.8; else 0.5.
    - s_sponsor: `sponsorship` "Posting offers sponsorship" → 1.0; "Strong H-1B sponsor" → 0.8; "Some H-1B history" → 0.6;
-     anything else → 0.4 (a "Blocked…" value → 0.0).
+     anything else → 0.4 (a "Blocked…" value → 0.0, except "Blocked: no sponsorship" → 0.2, JSA-385).
    - s_fresh: age = days from `posted` to `added` (both YYYY-MM-DD; a date is used up to its first 10 characters):
      ≤ 7 → 1.0; ≤ 14 → 0.8; ≤ 30 → 0.6; ≤ 90 → 0.3; older, negative age counts as 0 days, missing / unreadable date → 0.2.
      (It never uses today's date, so a row's score does not drift day by day.)
-   - s_chance = 0.40·s_referral + 0.25·s_timing + 0.20·s_sponsor + 0.15·s_fresh, rounded to 3 decimals.
+   - s_chance = 0.40·s_referral + 0.25·s_timing + 0.10·s_sponsor + 0.25·s_fresh (JSA-385: was 0.20 / 0.15), rounded to 3 decimals.
 4. **Score.** s_value = 70 for top, 40 for standard, 0 for exclude and off_target. score = s_value + 30·s_chance,
    rounded to 1 decimal.
 5. **Tier** follows the value level (2026-11-03: score cut-offs were arbitrary again): tier_orig = "A" for top;
    "B" for standard with s_chance ≥ 0.5; "C" for standard with s_chance < 0.5; "D" for exclude and off_target.
-   tier = "Blocked" if `elig` is 不可投, 已关闭 or 重复, or `sponsorship` starts with "Blocked"; otherwise tier = tier_orig.
+   tier = "Blocked" if `elig` is 不可投, 已关闭 or 重复, or `sponsorship` starts with "Blocked" other than "Blocked: no sponsorship" (JSA-385: that label no longer blocks); otherwise
+   tier = tier_orig. A row whose `elig_codes` contain NO_FUTURE_SPONSORSHIP_INTERN (the posting wants a candidate who never
+   needs sponsorship) gets tier_orig one lower — A→B, B→C, C/D unchanged (JSA-385).
 6. Input rows are not mutated; scoring a scored row again gives the same row (idempotent).

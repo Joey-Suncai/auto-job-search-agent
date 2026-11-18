@@ -1,6 +1,0 @@
-{
- "absent_platforms_and_ignored_records": {
-  "verdict": "case",
-  "why": "today (2026-10-10) is before submit day + 2 (2026-11-01), so rule 7 makes the folder pending (excluded) and confirm_rate null; the case expects pending 0."
- }
-}

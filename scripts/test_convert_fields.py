@@ -39,5 +39,15 @@ for c in cases:
                     probs.append(f'row {i} {k} {rows[i].get(k)!r} != {v!r}')
     if probs and c['name'] not in verdicts:
         bad += 1; print('DISAGREE', c['name'], probs[:4])
+# fixed check (2026-11-09): a submit-from-Review run left only the Review page in wd_log.json → wd_answered.json is read
+with tempfile.TemporaryDirectory() as d:
+    json.dump({'url': 'https://x.wd1.myworkdayjobs.com/j', 'pages': [{'step': 'Review', 'fields': []}]}, open(os.path.join(d, 'wd_log.json'), 'w'))
+    json.dump({'||City': 'Chicago', 'Education 1||Overall Result (GPA)': '', 'Education 2||Overall Result (GPA)': '3.60'},
+              open(os.path.join(d, 'wd_answered.json'), 'w'))
+    got = CF.rows_of(d)
+    ok = got and got[0] == 'workday' and [(r['question'], r['page'], r['source']) for r in got[2]] == \
+        [('City', 'Chicago', 'wd_answered'), ('Overall Result (GPA)', '3.60', 'wd_answered:Education 2')]
+    if not ok:
+        bad += 1; print('FAIL fixed: wd_answered fallback', got)
 print(f'{len(cases)} DeepSeek cases · disagreements without a verdict: {bad}')
 sys.exit(1 if bad else 0)

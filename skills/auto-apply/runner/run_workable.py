@@ -11,7 +11,7 @@ back and stops before "Submit application" (dry-run).
 --folder: an application folder (job.json with id / url, the tailored resume PDF; results and logs go there).
 --submit (JSA-146, Joey 2026-11-04 「tier C投递」 / 「开始补」): only when every field read back, nothing unknown, the folder is
 in data/runner/approved_batches.json and not already submitted (results.jsonl). Clicks "Submit application"; a CAPTCHA
-(Cloudflare Turnstile / hCaptcha) is Joey's (push, wait --wait-captcha minutes); confirmed by the thank-you page
+(a Greenhouse employer Turnstile / hCaptcha) is Joey's (push, wait --wait-captcha minutes); confirmed by the thank-you page
 (`confirmed_page`) or the company's receipt e-mail (gmail_code, read-only, 180 s) → status submitted, tracker row
 (sync_results), every tab of the posting closed. No confirmation → unconfirmed (queue, push). Dry-run tabs stay open.
 Prose boxes (JSA-151, Joey 2026-11-04 「workable 的这三个你都没有写」): the cover-letter box gets <folder>/cover.txt (optional
@@ -22,6 +22,7 @@ written and the run stops (needs-user): run scripts/ds_materials.py on the folde
 Writes <out>/run_log.md, form_check.json, page.png; one line in data/runner/results.jsonl.
 Default out (no --folder): data/runner/dryrun/workable/<account>_<shortcode>.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time, urllib.request
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -31,6 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 COMPANY = ''                                                   # the hiring company (job.json / store row): referral questions check it against the referrer pool (JSA-195)
@@ -101,6 +103,57 @@ def full_address(fields, ans, city_state_zip):
     if not street or city_state_zip.split(',')[0].strip().lower() in street.lower():
         return ans
     return dict(ans, address=dict(a, value=f'{street}, {city_state_zip}', note='whole address in one box'))
+
+
+MONTHS = {m: i + 1 for i, m in enumerate(['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])}
+
+
+def parse_date(s):
+    """Pure (tested). A date answer or a page value → (year, month, day) or None. Reads YYYY-MM-DD / YYYY/MM/DD /
+    YYYY.MM.DD, US MM/DD/YYYY (the rules' format; also - or .), and 'June 14, 2027' / '14 June 2027'. Impossible dates → None."""
+    t = N(s)
+    m = re.fullmatch(r'(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})', t)
+    if m:
+        y, mo, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    else:
+        m = re.fullmatch(r'(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})', t)
+        if m:
+            mo, d, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        else:
+            m = re.fullmatch(r'([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})', t) or None
+            m2 = None if m else re.fullmatch(r'(\d{1,2}) ([A-Za-z]{3,9})\.?,? (\d{4})', t)
+            if m:
+                mo, d, y = MONTHS.get(m.group(1)[:3].lower()), int(m.group(2)), int(m.group(3))
+            elif m2:
+                mo, d, y = MONTHS.get(m2.group(2)[:3].lower()), int(m2.group(1)), int(m2.group(3))
+            else:
+                return None
+    try:
+        datetime(y, mo, d)
+    except (TypeError, ValueError):
+        return None
+    return (y, mo, d)
+
+
+def to_mask(value, placeholder):
+    """Pure (tested). The date answer rewritten in the page box's own format, read from its placeholder (JSA-234: Syntiant's
+    react-datepicker is masked 'YYYY/MM/DD'; '06/14/2027' typed there became '0614/02/27' and was cleared on blur).
+    Tokens YYYY / MM / DD (any case, also M / D / YY) in the placeholder's order and separators; no usable placeholder
+    → 'YYYY/MM/DD', Workable's own. Returns None when the answer is not a date."""
+    ymd = parse_date(value)
+    if not ymd:
+        return None
+    y, mo, d = ymd
+    m = re.search(r'(?i)\b(y{2,4}|m{1,2}|d{1,2})([^a-z0-9]+)(y{2,4}|m{1,2}|d{1,2})\2(y{2,4}|m{1,2}|d{1,2})\b', N(placeholder))
+    ph = m.group(0) if m and len({g[0].lower() for g in (m.group(1), m.group(3), m.group(4))}) == 3 else 'YYYY/MM/DD'
+    tok = {'yyyy': f'{y:04d}', 'yy': f'{y % 100:02d}', 'mm': f'{mo:02d}', 'm': str(mo), 'dd': f'{d:02d}', 'd': str(d)}
+    return re.sub(r'(?i)y{3,4}|y{2}|m{1,2}|d{1,2}', lambda x: tok['yyyy' if len(x.group(0)) > 2 and x.group(0)[0] in 'yY' else x.group(0).lower()], ph)
+
+
+def same_date(want, got):
+    """Pure (tested). True when the answer and the page value are the same calendar day (both parsed by parse_date)."""
+    a, b = parse_date(want), parse_date(got)
+    return bool(a) and a == b
 
 
 def answer(fields, company=None):
@@ -177,25 +230,61 @@ def required_empty(rows):
 
 
 def write_questions(folder, missing):
-    """Adds the missing questions to <folder>/questions.json (kept by id) for ds_materials."""
+    """Adds the missing questions to <folder>/questions.json (kept by id) for ds_materials. A question already there gets
+    the page's limit when this run read one (JSA-312: an employer's 'limit': 1500 was a guess, the page allowed 200) — matched by
+    id or by label; a guess never replaces a known limit."""
     p = os.path.join(folder, 'questions.json')
     qs = json.load(open(p, encoding='utf-8')) if os.path.exists(p) else []
-    have = {q.get('id') for q in qs}
-    qs += [q for q in missing if q['id'] not in have and q['id'] != 'cover_letter']
+    lab = lambda q: re.sub(r'[^0-9a-z]+', ' ', str(q.get('label') or '').lower()).strip()
+    for m in missing:
+        if m['id'] == 'cover_letter':
+            continue
+        old = next((q for q in qs if q.get('id') == m['id']), None) or next((q for q in qs if lab(q) and lab(q) == lab(m)), None)
+        if old is None:
+            qs.append(m); continue
+        if m.get('limit_from') and m.get('limit_from') != 'guess':
+            for k in ('limit', 'min', 'limit_from'):
+                if m.get(k):
+                    old[k] = m[k]
+        if m.get('redraft'):
+            old['redraft'] = m['redraft']
     json.dump(qs, open(p, 'w'), ensure_ascii=False, indent=1)
 
 
-DONE_RE = re.compile(r"thank(s| you)( so much)? for (applying|your (application|interest))|application (was |has been )?(successfully )?"
+DONE_RE = re.compile(r"thank(s| you)( so much)? for (applying|your application)|application (was |has been )?(successfully )?"
                      r"(submitted|received|sent)|we('ve| have) received your application|your application is (in|on its way)", re.I)
+# JSA-299: "thank you for your interest" is no success sentence — forms greet the candidate with it (Bosch SR 11-11).
 
 
 def confirmed_page(url, text):
-    """Pure (tested). True when the page after Submit says the application went in: a thank-you / received sentence, or a
-    Workable success URL (…/apply/success, …/confirmation). Error banners ("please fix", "required") are not success."""
+    """Pure (tested). True when a page SAYS the application went in: a thank-you / received sentence, or a Workable
+    success URL (…/apply/success, …/confirmation). Error banners ("please fix", "required") are not success. Text only —
+    after a click, decide with page_done (confirm_page.judge: the page must also have changed, JSA-299)."""
     t = N(text)
     if re.search(r'please (fix|correct|complete)|is required|there (was|were) (an )?errors?', t, re.I) and not DONE_RE.search(t):
         return False
     return bool(DONE_RE.search(t) or re.search(r'/apply/(success|thank)|/confirmation\b', str(url or ''), re.I))
+
+
+def page_done(before, after):
+    """Pure (tested). After the Submit click: (confirmed, why) — the page changed (URL, or the submit button gone) and
+    says so (confirm_page.judge, JSA-299). `before` / `after` = {'url', 'text', 'form'}."""
+    import confirm_page as CP
+    return CP.judge(before, after, done_re=DONE_RE,
+                    extra=lambda s: bool(re.search(r'/apply/(success|thank)|/confirmation\b', CP.url_key(s.get('url')), re.I)))
+
+
+def snap(page, form_sel='[data-ui="apply-button"]'):
+    """{'url', 'text', 'form'}: the page now; form = the submit button is visible."""
+    try:
+        form = page.locator(form_sel).first.is_visible() if page.locator(form_sel).count() else False
+    except Exception:
+        form = None
+    try:
+        text = page.inner_text('body')[:20000]
+    except Exception:
+        text = ''
+    return {'url': page.url, 'text': text, 'form': form}
 
 
 def captcha_up(page):
@@ -214,19 +303,24 @@ def submit(page, res, company, wait_captcha, log, push):
     """Click "Submit application" and confirm. Returns (status, confirmed_by)."""
     from datetime import timedelta
     import gmail_code
+    import confirm_page as CP
     since = datetime.now(timezone.utc) - timedelta(minutes=1)
+    before = snap(page)
     page.locator('[data-ui="apply-button"]').first.click()
     log('submit clicked')
     t_end = time.time() + 25
+    why = ''
     while time.time() < t_end:
         time.sleep(2)
-        if confirmed_page(page.url, page.inner_text('body')[:20000]):
+        ok, why = page_done(before, snap(page))
+        if ok:
+            log(f'confirmation page: {why}'); CP.settle(page)
             return 'submitted', 'page'
         if captcha_up(page):
             log('CAPTCHA after submit → Joey (never answered by the runner)')
             push('求职 runner：人机验证', f'{company} Workable — job Chrome 里的页面等你过验证')
             t_end = time.time() + wait_captcha * 60
-    log('no thank-you page — waiting up to 180 s for the receipt e-mail (Gmail read-only)')
+    log(f'no thank-you page ({why}) — waiting up to 180 s for the receipt e-mail (Gmail read-only)')
     subj = gmail_code.wait_for_mail(since, company, timeout=180)
     if subj:
         log(f'company e-mail: {subj[:100]}'); return 'submitted', 'email'
@@ -336,6 +430,14 @@ def run(page, posting, resume, log, out, folder=None):
                     cb.fill(str(want)); time.sleep(0.8)
                 opt = page.locator(f'[id="input_{f["key"]}_listbox"] [role=option]').filter(has_text=re.compile('^' + re.escape(N(want)) + '$', re.I))
                 (opt.first if opt.count() else page.locator('[role=option]').filter(has_text=str(want)).first).click(); time.sleep(0.4)
+            elif f['type'] == 'date':                         # a masked react-datepicker text box (JSA-234): the answer in its placeholder's format
+                loc = page.locator(f'input[name="{f["key"]}"]:not([type=hidden]), [id="{f["key"]}"]').first
+                typed = to_mask(want, loc.get_attribute('placeholder'))
+                if typed is None:
+                    raise ValueError(f'not a date: {want!r}')
+                row['typed'] = typed
+                loc.click(); loc.fill(typed); time.sleep(0.3)
+                loc.press('Escape'); loc.evaluate('e => e.blur()'); time.sleep(0.4)   # close the calendar; the picker keeps a valid date on blur, clears a bad one
             else:
                 row['why'] = f'type {f["type"]} not handled yet'
         except Exception as e:
@@ -363,7 +465,7 @@ def run(page, posting, resume, log, out, folder=None):
             got = page.locator(sel).first.input_value() if page.locator(sel).count() else ''
             row['page'] = got
             w = N(row.get('want')); g = N(got)
-            row['ok'] = (w == '' and not row['required']) or (bool(g) and w.lower() == g.lower()) or (k == 'phone' and re.sub(r'\D', '', g)[-10:] == re.sub(r'\D', '', w)[-10:])
+            row['ok'] = (w == '' and not row['required']) or (bool(g) and w.lower() == g.lower()) or (row['type'] == 'date' and same_date(w, g)) or (k == 'phone' and re.sub(r'\D', '', g)[-10:] == re.sub(r'\D', '', w)[-10:])
         if not row['ok'] and row.get('want') is not None:
             res['problems'].append(f"{row['label']}: want {row.get('want')!r}, page {row.get('page')!r}" + (f" ({row['error']})" if row.get('error') else ''))
     res['fields'] = rows
@@ -411,7 +513,7 @@ def main():
     p = parse_posting(posting)
     if not p:
         sys.exit(f'not a Workable posting: {posting}')
-    resume = a.resume or jpaths.resume('2026-10', 'Alex_Rivera_Resume_Data_Analyst_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file('Data_Analyst_A-Classic.pdf'))
     out = os.path.abspath(a.out or os.path.join(DATA, 'dryrun', 'workable', f"{p['account']}_{p['shortcode']}"))
     os.makedirs(out, exist_ok=True)
     logf = open(os.path.join(out, 'run_log.md'), 'a')
@@ -424,7 +526,7 @@ def main():
     if not R.opening(resume):                                    # submit + materials problem: stopped before filling
         return
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = ctx.new_page(); page.set_viewport_size({'width': 1300, 'height': 900})
         R.mark('page')
         try:

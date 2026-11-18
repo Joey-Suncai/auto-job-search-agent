@@ -195,13 +195,13 @@
   "name": "geo_pick_exact",
   "fn": "geo_pick",
   "args": [
-   "62701",
+   "60601",
    [
-    "62701",
+    "60601",
     "60606"
    ]
   ],
-  "expect": "62701"
+  "expect": "60601"
  },
  {
   "name": "geo_pick_unique_first_comma",

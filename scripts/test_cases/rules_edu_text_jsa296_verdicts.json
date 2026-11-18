@@ -1,0 +1,4 @@
+{
+  "near_miss_high_school_text": {"verdict": "case", "why": "The spec only forbids answering University of Chicago here. The hs_name rule answers with his high school on file (config/profile.json high_school) — the right answer, not a leak of the university."},
+  "near_miss_business_degree_radio": {"verdict": "case", "why": "The spec says it must not be Yes; the rules answer No (business_degree, Joey 2026-11-04: Applied Data Science is not business / a related field) — the correct answer. 'none' was too strict."}
+}

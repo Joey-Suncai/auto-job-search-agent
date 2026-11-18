@@ -231,8 +231,8 @@
   "label": "Address Line1",
   "type": "text",
   "options": [],
-  "expect": "100 Main St",
-  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"1200 S Sample Ave\".",
   "ambiguous": false
  },
  {
@@ -240,8 +240,8 @@
   "label": "Address Line 1",
   "type": "text",
   "options": [],
-  "expect": "100 Main St",
-  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"1200 S Sample Ave\".",
   "ambiguous": false
  },
  {
@@ -249,8 +249,8 @@
   "label": "Street Address",
   "type": "text",
   "options": [],
-  "expect": "100 Main St",
-  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"100 Main St\".",
+  "expect": "1200 S Sample Ave",
+  "spec_quote": "\"Address Line1\" / \"Address Line 1\" / \"Street Address\" → \"1200 S Sample Ave\".",
   "ambiguous": false
  }
 ]

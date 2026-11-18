@@ -19,7 +19,9 @@ import json, os, re, sys, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
-PROFILE_MD = os.path.join(ROOT, 'skills', '_shared', 'candidate-profile.md')
+sys.path.insert(0, os.path.join(ROOT, 'config'))
+import paths as _jp  # noqa: E402
+PROFILE_MD = _jp.fact('candidate-profile.md')   # the data home's fact file, else the repo's old place (JSA-339)
 DS_URL = 'https://api.deepseek.com/chat/completions'
 DS_MODEL = os.environ.get('CX_DS_MODEL', 'deepseek-flash')
 KEY_PATHS = [os.environ.get('DEEPSEEK_KEY_FILE', ''), os.path.expanduser('~/deepseek/api_key'),
@@ -70,7 +72,30 @@ def same(rule_value, model_value, options=()):
         oa = [o for o in options if norm(o) == a or norm(o).startswith(a) or a.startswith(norm(o))]
         ob = [o for o in options if norm(o) == b or norm(o).startswith(b) or b.startswith(norm(o))]
         return bool(oa) and oa == ob
-    return a.startswith(b) or b.startswith(a)
+    return continues(rule_value, model_value) or continues(model_value, rule_value)
+
+
+def continues(short, long_):
+    """Pure (tested, JSA-393). Is `long_` the answer `short` plus an explanation — what follows the short answer's words starts with a
+    separator (comma, semicolon, colon, dash, bracket: "Yes" → "Yes, I am authorized") — or is `short` a bare yes / no / n/a?
+    A trailing generic word (degree / program / level) adds nothing ("Master's" = "Master's Degree"). A longer NAME ("Hyde Park" → "Hyde Park Investment Services", "Master of Science" → "… in Data Science") is a different answer."""
+    s0 = re.sub(r'\s*\(.*\)\s*$', '', str(short or '').strip())
+    ns, nl = norm(s0), norm(long_)
+    if not ns or len(nl) <= len(ns) or not nl.startswith(ns):
+        return False
+    raw, i, k = str(long_ or '').strip(), 0, 0              # walk the long text until the short answer's characters are used up
+    while i < len(raw) and k < len(ns):
+        if re.sub(r'[^a-z0-9]', '', raw[i].lower()):
+            k += 1
+        i += 1
+    rest = raw[i:]
+    if re.search(r"\b(not|no|never|but|however|unless|require[sd]?|need(s|ed)?|sponsor\w*|except|only)\b|n't", rest, re.I):
+        return False                                        # a qualifier can turn the answer around: stop and ask
+    if re.fullmatch(r'\s*(s|es|degree|degrees|program|programme|level|of america|student visa|visa)\s*', rest, re.I):
+        return True                                         # "Master's" = "Master's Degree", "Bachelor" = "Bachelors", "United States" = "United States of America"
+    if re.fullmatch(r'yes|no|na', ns):
+        return not rest.strip() or not re.match(r'[a-z0-9]', rest[:1], re.I)   # a whole word, never "Yesterday" / "Not sure"
+    return bool(re.match(r'\s*([,;:(\u2013\u2014]|-\s+[a-z])', rest))
 
 
 def prompt(item, fact_text):
@@ -85,8 +110,9 @@ def prompt(item, fact_text):
             'Reply as JSON: {"answer": "<option or short value or UNSURE>", "reason": "<one sentence>"}')
 
 
-def ask_model(item, fact_text, post=None):
-    """One DeepSeek call → (answer or None, reason). `post` is injectable for tests."""
+def ask_model(item, fact_text, post=None, prompt_text=None, model=None):
+    """One DeepSeek call → (answer or None, reason). `post` is injectable for tests; prompt_text = another prompt
+    (whole_read.py, JSA-288); model = another DeepSeek model (whole_read's confirming read)."""
     if post is None:
         key = next((open(p).read().strip() for p in KEY_PATHS if p and os.path.exists(p)), None)
         if not key:
@@ -95,14 +121,19 @@ def ask_model(item, fact_text, post=None):
         def post(body):
             req = urllib.request.Request(DS_URL, data=json.dumps(body).encode(), headers={
                 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key})
-            return json.load(urllib.request.urlopen(req, timeout=40))
-    body = {'model': DS_MODEL, 'temperature': 0, 'response_format': {'type': 'json_object'},
-            'messages': [{'role': 'user', 'content': prompt(item, fact_text)}]}
-    try:
-        r = post(body)
-        d = json.loads(r['choices'][0]['message']['content'])
-    except Exception as e:  # network, quota, bad JSON → no answer (the runner asks Joey)
-        return None, 'second opinion failed: ' + type(e).__name__
+            return json.load(urllib.request.urlopen(req, timeout=40 if (body.get('model') or DS_MODEL) == DS_MODEL else 120))   # the stronger model thinks longer (JSA-288)
+    body = {'model': model or DS_MODEL, 'temperature': 0, 'response_format': {'type': 'json_object'},
+            'messages': [{'role': 'user', 'content': prompt_text or prompt(item, fact_text)}]}
+    d = None
+    for attempt in range(2):                             # one retry on a timeout / network error (JSA-288 replay: 6 pro timeouts)
+        try:
+            r = post(body)
+            d = json.loads(r['choices'][0]['message']['content'])
+            break
+        except Exception as e:  # network, quota, bad JSON → no answer (the runner asks Joey)
+            err = 'second opinion failed: ' + type(e).__name__
+    if d is None:
+        return None, err
     ans = str(d.get('answer') or '').strip()
     return (None if not ans or ans.upper() == 'UNSURE' else ans), str(d.get('reason') or '')[:200]
 

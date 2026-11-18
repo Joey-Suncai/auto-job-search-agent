@@ -25,7 +25,7 @@ rows and slug guesses; this script goes in through the company's own website ins
      wd_search.py) → the posting whose title matches (match_posting: normalised title, Jaccard ≥ 0.75; when several
      postings tie on title the row's city decides; still tied = no guess).
 
-A page that answers with a security check (Cloudflare challenge, captcha, 403 with a bot wall) → that company is
+A page that answers with a security check (a Greenhouse employer challenge, captcha, 403 with a bot wall) → that company is
 skipped, never bypassed. Only public pages are read.
 
 Writes (only with --write, from the main checkout): ats_url + ats_resolved (how) + ats_resolved_on, or ats_unresolved
@@ -117,7 +117,7 @@ ATS_RX = [
     ('dover', re.compile(r'app\.dover\.(?:io|com)/apply/([\w-]+)(?![\w%.-]*/[0-9a-f]{8}-)', re.I)),   # name only: recorded, not searched
     ('njoyn', re.compile(r'([\w-]+\.njoyn\.com)', re.I)),                 # CGI's own (2026-11-03, JSA-069)
     ('moka', re.compile(r'((?:app|hire-r1)\.mokahr\.com/(?:social|campus)-recruitment/[\w-]+/\d+)', re.I)),   # AES-wrapped list: recorded
-    ('darwinbox', re.compile(r'(?<![\w.-])([\w-]+\.darwinbox\.(?:in|com))', re.I)),   # Cloudflare wall (ats-scrapers impersonates): recorded
+    ('darwinbox', re.compile(r'(?<![\w.-])([\w-]+\.darwinbox\.(?:in|com))', re.I)),   # a Greenhouse employer wall (ats-scrapers impersonates): recorded
 ]
 BAD_TOKENS = {'embed', 'jobs', 'v1', 'boards', 'job_board', 'job_app', 'api', 'www', 'static', 'assets', 'js', 'css', 'search'}
 GENERIC = {'and', 'the', 'of', 'group', 'inc', 'llc', 'co', 'company', 'corporation', 'corp', 'services', 'solutions',
@@ -241,7 +241,7 @@ def names_company(page, company, final_url=''):
             initials = {''.join(w[0] for w in re.sub(r'[^a-z0-9 ]+', ' ', x).split())        # 'sig' = Susquehanna Int'l Group
                         for x in (RB.company_key(company), re.sub(r'\(.*?\)', ' ', company or '').lower(),
                                   ' '.join(w for w in re.sub(r'[^a-z0-9 ]+', ' ', RB.company_key(company)).split()
-                                           if w not in ('of', 'the', 'and', 'for')))}   # 'bcbsm' = Blue Cross Blue Shield of Michigan (11-04)
+                                           if w not in ('of', 'the', 'and', 'for')))}   # 'bcbsm' = an employer (11-04)
             if not (any(w in label for w in ws if len(w) >= 3) or label in whole or label in initials):
                 return False
             strong = label in (''.join(ws), whole)

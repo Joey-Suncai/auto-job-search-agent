@@ -1,3 +1,0 @@
-{
-  "preflight_non_version_tags_ignored": "Case misreads the spec: after ignoring 'nightly' and 'release-candidate' the only version tag is v0.1, which is below v0.2, so 'not_newer' cannot apply; the spec's own rule gives []. Code is right (Claude, 2026-11-02)."
-}

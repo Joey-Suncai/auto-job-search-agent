@@ -1,0 +1,3 @@
+{
+ "languages: English professional level picks professional working": "The spec says the languages rule runs only when no other rule answers. 'English proficiency level' is answered first by the older language_level rule (answers.language_level pick /^fluent/ then /native/, Joey 2026-10-28), so the languages rule never runs here. The older rule's 'Native' fallback for English is raised with Joey separately (11-08 principle: English professional)."
+}

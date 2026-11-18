@@ -1,0 +1,1004 @@
+[
+ {
+  "name": "summary_right_item_plus_right_with_covered_is_not_covered",
+  "fn": "summary",
+  "spec_quote": "State: \"right\" when judged \"right\" ... covered = wrong items WITH a truthy covered — the key \"covered\" is present ONLY when it is > 0 ... accuracy = (n − wrong) / n rounded to 4 decimals, null when n = 0. low95 = the Wilson 95 % lower bound of that rate (z = 1.96), floored at 0, 4 decimals, null when n = 0.",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "right",
+     "check": null
+    },
+    {
+     "platform": "greenhouse",
+     "judged": "right",
+     "check": null,
+     "covered": {
+      "rule": "fixed"
+     }
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 0,
+    "accuracy": 1.0,
+    "low95": 0.3424
+   },
+   "all": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 0,
+    "accuracy": 1.0,
+    "low95": 0.3424
+   }
+  }
+ },
+ {
+  "name": "summary_single_wrong_uncovered",
+  "fn": "summary",
+  "spec_quote": "State: \"wrong\" when judged \"wrong\"; ... wrong = wrong items WITHOUT covered ... accuracy = (n − wrong) / n rounded to 4 decimals ... low95 = the Wilson 95 % lower bound of that rate (z = 1.96), floored at 0",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   },
+   "all": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   }
+  }
+ },
+ {
+  "name": "summary_wrong_with_covered_excluded_from_n",
+  "fn": "summary",
+  "spec_quote": "covered = wrong items WITH a truthy covered — the key \"covered\" is present ONLY when it is > 0 ... Let n = answers − pending − covered. accuracy = ... null when n = 0. low95 = ... null when n = 0.",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null,
+     "covered": {
+      "rule": "fixed"
+     }
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 1,
+    "wrong": 0,
+    "covered": 1,
+    "pending": 0,
+    "accuracy": null,
+    "low95": null
+   },
+   "all": {
+    "answers": 1,
+    "wrong": 0,
+    "covered": 1,
+    "pending": 0,
+    "accuracy": null,
+    "low95": null
+   }
+  }
+ },
+ {
+  "name": "summary_pending_only_gives_null_accuracy",
+  "fn": "summary",
+  "spec_quote": "else \"pending\" ... pending = pending items. Let n = answers − pending − covered. accuracy = ... null when n = 0. low95 = ... null when n = 0.",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": null,
+     "check": "unsure"
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 1,
+    "wrong": 0,
+    "pending": 1,
+    "accuracy": null,
+    "low95": null
+   },
+   "all": {
+    "answers": 1,
+    "wrong": 0,
+    "pending": 1,
+    "accuracy": null,
+    "low95": null
+   }
+  }
+ },
+ {
+  "name": "summary_null_judged_with_check_right_is_right_but_check_wrong_is_pending",
+  "fn": "summary",
+  "spec_quote": "State: \"wrong\" when judged \"wrong\"; \"right\" when judged \"right\", or judged null and check \"right\"; else \"pending\".",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": null,
+     "check": "right"
+    },
+    {
+     "platform": "greenhouse",
+     "judged": null,
+     "check": "wrong"
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 1,
+    "accuracy": 1.0,
+    "low95": 0.2065
+   },
+   "all": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 1,
+    "accuracy": 1.0,
+    "low95": 0.2065
+   }
+  }
+ },
+ {
+  "name": "summary_judged_wrong_wins_over_check_right",
+  "fn": "summary",
+  "spec_quote": "State: \"wrong\" when judged \"wrong\"; \"right\" when judged \"right\", or judged null and check \"right\"; else \"pending\".",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": "right"
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   },
+   "all": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   }
+  }
+ },
+ {
+  "name": "summary_falsy_covered_does_not_cover",
+  "fn": "summary",
+  "spec_quote": "covered = wrong items WITH a truthy covered — the key \"covered\" is present ONLY when it is > 0.",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null,
+     "covered": {}
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   },
+   "all": {
+    "answers": 1,
+    "wrong": 1,
+    "pending": 0,
+    "accuracy": 0.0,
+    "low95": 0.0
+   }
+  }
+ },
+ {
+  "name": "summary_two_platforms_and_all_aggregation",
+  "fn": "summary",
+  "spec_quote": "Per platform and for \"all\": answers = number of items; wrong = wrong items WITHOUT covered; covered = wrong items WITH a truthy covered ... Let n = answers − pending − covered. accuracy = (n − wrong) / n ... low95 = the Wilson 95 % lower bound ...",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "right",
+     "check": null
+    },
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null
+    },
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null,
+     "covered": {
+      "r": 1
+     }
+    },
+    {
+     "platform": "ashby",
+     "judged": "right",
+     "check": null
+    },
+    {
+     "platform": "ashby",
+     "judged": null,
+     "check": "unsure"
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 3,
+    "wrong": 1,
+    "covered": 1,
+    "pending": 0,
+    "accuracy": 0.5,
+    "low95": 0.0945
+   },
+   "ashby": {
+    "answers": 2,
+    "wrong": 0,
+    "pending": 1,
+    "accuracy": 1.0,
+    "low95": 0.2065
+   },
+   "all": {
+    "answers": 5,
+    "wrong": 1,
+    "covered": 1,
+    "pending": 1,
+    "accuracy": 0.6667,
+    "low95": 0.2077
+   }
+  }
+ },
+ {
+  "name": "summary_platform_all_covered_n_zero_but_all_has_n_one",
+  "fn": "summary",
+  "spec_quote": "covered = wrong items WITH a truthy covered — the key \"covered\" is present ONLY when it is > 0 ... Let n = answers − pending − covered. accuracy = ... null when n = 0. low95 = ... null when n = 0.",
+  "args": {
+   "items": [
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null,
+     "covered": {
+      "a": 1
+     }
+    },
+    {
+     "platform": "greenhouse",
+     "judged": "wrong",
+     "check": null,
+     "covered": {
+      "b": 1
+     }
+    },
+    {
+     "platform": "ashby",
+     "judged": "right",
+     "check": null
+    }
+   ]
+  },
+  "expect": {
+   "greenhouse": {
+    "answers": 2,
+    "wrong": 0,
+    "covered": 2,
+    "pending": 0,
+    "accuracy": null,
+    "low95": null
+   },
+   "ashby": {
+    "answers": 1,
+    "wrong": 0,
+    "pending": 0,
+    "accuracy": 1.0,
+    "low95": 0.2065
+   },
+   "all": {
+    "answers": 3,
+    "wrong": 0,
+    "covered": 2,
+    "pending": 0,
+    "accuracy": 1.0,
+    "low95": 0.2065
+   }
+  }
+ },
+ {
+  "name": "audit_gate_simple_pass",
+  "fn": "audit_gate",
+  "spec_quote": "ok = forms >= need and pending == 0 and critical_wrong == 0 and (noncrit_accuracy null or >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "2026-11-01_Alpha"
+   ],
+   "need": 1,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 1,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_accuracy": 1.0,
+   "ok": true
+  }
+ },
+ {
+  "name": "audit_gate_outside_window_ignored_and_null_accuracy_ok",
+  "fn": "audit_gate",
+  "spec_quote": "only items whose folder is in window count. forms = distinct counted folders. ... noncrit_accuracy = noncrit_right / (noncrit_right + noncrit_wrong), 4 decimals, null when 0. ok = forms >= need and pending == 0 and critical_wrong == 0 and (noncrit_accuracy null or >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "2026-11-01_Beta",
+     "judged": "wrong",
+     "check": null,
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "2026-11-01_Alpha"
+   ],
+   "need": 0,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 0,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_accuracy": null,
+   "ok": true
+  }
+ },
+ {
+  "name": "audit_gate_critical_wrong_blocks_ok",
+  "fn": "audit_gate",
+  "spec_quote": "wrong → critical_wrong (cls \"critical\") or noncrit_wrong ... ok = forms >= need and pending == 0 and critical_wrong == 0 and (noncrit_accuracy null or >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F2",
+     "judged": "wrong",
+     "check": null,
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "F1",
+    "F2"
+   ],
+   "need": 2,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 1,
+   "noncrit_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_accuracy": 1.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "audit_gate_noncrit_accuracy_below_threshold",
+  "fn": "audit_gate",
+  "spec_quote": "noncrit_accuracy = noncrit_right / (noncrit_right + noncrit_wrong), 4 decimals, null when 0. ok = forms >= need and pending == 0 and critical_wrong == 0 and (noncrit_accuracy null or >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F1",
+     "judged": "wrong",
+     "check": null,
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "F1"
+   ],
+   "need": 1,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 1,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 1,
+   "noncrit_right": 1,
+   "noncrit_accuracy": 0.5,
+   "ok": false
+  }
+ },
+ {
+  "name": "audit_gate_covered_wrong_critical_not_counted_by_default",
+  "fn": "audit_gate",
+  "spec_quote": "if its state is wrong AND covered is truthy AND keep_covered is false → adds 1 to \"covered\" (key present only when > 0) and to nothing else.",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "wrong",
+     "check": null,
+     "cls": "critical",
+     "covered": {
+      "r": 1
+     }
+    },
+    {
+     "folder": "F2",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "F1",
+    "F2"
+   ],
+   "need": 2,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 1,
+   "covered": 1,
+   "noncrit_accuracy": 1.0,
+   "ok": true
+  }
+ },
+ {
+  "name": "audit_gate_keep_covered_true_counts_covered_as_wrong",
+  "fn": "audit_gate",
+  "spec_quote": "With keep_covered true, covered wrong items count as wrong like any other.",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "wrong",
+     "check": null,
+     "cls": "critical",
+     "covered": {
+      "r": 1
+     }
+    },
+    {
+     "folder": "F2",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "F1",
+    "F2"
+   ],
+   "need": 2,
+   "noncrit": 0.95,
+   "keep_covered": true
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 0,
+   "critical_wrong": 1,
+   "noncrit_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_accuracy": 1.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "audit_gate_pending_blocks_ok",
+  "fn": "audit_gate",
+  "spec_quote": "pending → pending ... ok = forms >= need and pending == 0 and critical_wrong == 0 and (noncrit_accuracy null or >= noncrit).",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F2",
+     "judged": null,
+     "check": "unsure",
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "F1",
+    "F2"
+   ],
+   "need": 2,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 2,
+   "pending": 1,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 1,
+   "noncrit_accuracy": 1.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "audit_gate_default_need_is_10",
+  "fn": "audit_gate",
+  "spec_quote": "audit_gate(items, window, need=10, noncrit=0.95, keep_covered=False) ... ok = forms >= need ...",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F2",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F3",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F4",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F5",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F6",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F7",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F8",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    },
+    {
+     "folder": "F9",
+     "judged": "right",
+     "check": null,
+     "cls": "non-critical"
+    }
+   ],
+   "window": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+   ],
+   "need": null,
+   "noncrit": null,
+   "keep_covered": null
+  },
+  "expect": {
+   "forms": 9,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 9,
+   "noncrit_accuracy": 1.0,
+   "ok": false
+  }
+ },
+ {
+  "name": "audit_gate_critical_right_adds_nothing",
+  "fn": "audit_gate",
+  "spec_quote": "right and not critical → noncrit_right (critical right adds nothing).",
+  "args": {
+   "items": [
+    {
+     "folder": "F1",
+     "judged": "right",
+     "check": null,
+     "cls": "critical"
+    }
+   ],
+   "window": [
+    "F1"
+   ],
+   "need": 1,
+   "noncrit": 0.95,
+   "keep_covered": false
+  },
+  "expect": {
+   "forms": 1,
+   "pending": 0,
+   "critical_wrong": 0,
+   "noncrit_wrong": 0,
+   "noncrit_right": 0,
+   "noncrit_accuracy": null,
+   "ok": true
+  }
+ },
+ {
+  "name": "score_basic_critical_uncovered",
+  "fn": "score",
+  "spec_quote": "A platform's critical_wrong / noncrit_wrong count the wrong_answers lines {\"folder\", \"field\", \"class\", \"covered\"} of its submitted folders.",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "at": "2026-11-01T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "field": "dob",
+     "class": "critical"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 1,
+    "noncrit_wrong": 0
+   }
+  }
+ },
+ {
+  "name": "score_basic_noncritical_uncovered",
+  "fn": "score",
+  "spec_quote": "A platform's critical_wrong / noncrit_wrong count the wrong_answers lines ... of its submitted folders.",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "at": "2026-11-01T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "field": "phone",
+     "class": "non-critical"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 0,
+    "noncrit_wrong": 1
+   }
+  }
+ },
+ {
+  "name": "score_covered_not_counted_without_recert",
+  "fn": "score",
+  "spec_quote": "A line with a truthy \"covered\" is NOT counted — except when the platform has a re-certification window {\"since\"} ...",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "at": "2026-11-01T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "field": "dob",
+     "class": "critical",
+     "covered": {
+      "rule": "fixed"
+     }
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 0,
+    "noncrit_wrong": 0
+   }
+  }
+ },
+ {
+  "name": "score_covered_counted_in_recert_window_and_recert_wrong",
+  "fn": "score",
+  "spec_quote": "... except when the platform has a re-certification window {\"since\"} and the folder's first submit time (first 19 characters of \"at\") is >= since: then it counts (also as recert_wrong when critical).",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "at": "2026-11-05T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "field": "dob",
+     "class": "critical",
+     "covered": {
+      "rule": "fixed"
+     }
+    }
+   ],
+   "recert": {
+    "greenhouse": {
+     "since": "2026-11-01",
+     "need": 10
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 1,
+    "noncrit_wrong": 0,
+    "recert_wrong": 1
+   }
+  }
+ },
+ {
+  "name": "score_covered_before_recert_since_not_counted",
+  "fn": "score",
+  "spec_quote": "... except when the platform has a re-certification window {\"since\"} and the folder's first submit time (first 19 characters of \"at\") is >= since: then it counts ...",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "at": "2026-11-05T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "field": "dob",
+     "class": "critical",
+     "covered": {
+      "rule": "fixed"
+     }
+    }
+   ],
+   "recert": {
+    "greenhouse": {
+     "since": "2026-11-10",
+     "need": 10
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 0,
+    "noncrit_wrong": 0,
+    "recert_wrong": 0
+   }
+  }
+ },
+ {
+  "name": "score_uncovered_critical_in_recert_window_recert_wrong_ambiguous",
+  "fn": "score",
+  "spec_quote": "A line with a truthy \"covered\" is NOT counted — except when the platform has a re-certification window {\"since\"} and the folder's first submit time (first 19 characters of \"at\") is >= since: then it counts (also as recert_wrong when critical).",
+  "ambiguous": true,
+  "ambiguous_note": "The spec only says the covered line 'then it counts (also as recert_wrong when critical)'. It does not state whether an uncovered critical wrong in a recert-window folder should also increment recert_wrong. The expected value here assumes recert_wrong counts only covered critical lines that are counted because of the recert window.",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "at": "2026-11-05T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-05_Alpha",
+     "field": "dob",
+     "class": "critical"
+    }
+   ],
+   "recert": {
+    "greenhouse": {
+     "since": "2026-11-01",
+     "need": 10
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 1,
+    "noncrit_wrong": 0,
+    "recert_wrong": 0
+   }
+  }
+ },
+ {
+  "name": "score_wrong_for_folder_not_submitted_not_counted",
+  "fn": "score",
+  "spec_quote": "A platform's critical_wrong / noncrit_wrong count the wrong_answers lines ... of its submitted folders.",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-01_Alpha",
+     "at": "2026-11-01T10:00:00",
+     "platform": "greenhouse"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-01_Other",
+     "field": "dob",
+     "class": "critical"
+    }
+   ],
+   "recert": null
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 0,
+    "noncrit_wrong": 0
+   }
+  }
+ },
+ {
+  "name": "score_two_platforms_recert_only_ashby",
+  "fn": "score",
+  "spec_quote": "A platform's critical_wrong / noncrit_wrong count the wrong_answers lines ... of its submitted folders. A line with a truthy \"covered\" is NOT counted — except when the platform has a re-certification window {\"since\"} and the folder's first submit time (first 19 characters of \"at\") is >= since: then it counts (also as recert_wrong when critical).",
+  "args": {
+   "submits": [
+    {
+     "folder": "2026-11-02_G",
+     "at": "2026-11-02T10:00:00",
+     "platform": "greenhouse"
+    },
+    {
+     "folder": "2026-11-20_A1",
+     "at": "2026-11-20T10:00:00",
+     "platform": "ashby"
+    },
+    {
+     "folder": "2026-11-21_A2",
+     "at": "2026-11-21T10:00:00",
+     "platform": "ashby"
+    }
+   ],
+   "wrong": [
+    {
+     "folder": "2026-11-02_G",
+     "field": "f1",
+     "class": "critical"
+    },
+    {
+     "folder": "2026-11-20_A1",
+     "field": "f2",
+     "class": "non-critical",
+     "covered": {
+      "r": 1
+     }
+    },
+    {
+     "folder": "2026-11-21_A2",
+     "field": "f3",
+     "class": "critical",
+     "covered": {
+      "r": 1
+     }
+    }
+   ],
+   "recert": {
+    "ashby": {
+     "since": "2026-11-19",
+     "need": 5
+    }
+   }
+  },
+  "expect": {
+   "greenhouse": {
+    "critical_wrong": 1,
+    "noncrit_wrong": 0
+   },
+   "ashby": {
+    "critical_wrong": 1,
+    "noncrit_wrong": 1,
+    "recert_wrong": 1
+   }
+  }
+ }
+]

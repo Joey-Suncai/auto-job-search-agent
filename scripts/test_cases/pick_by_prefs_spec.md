@@ -16,6 +16,8 @@ Rules (comparison is case-insensitive and ignores repeated spaces and a trailing
    c. an option that contains every word of the preference (ignoring and/of/the/a/an/or/in/for): "Computer Science"
       matches "Computer and Information Science"; "Information Systems" matches "Management Information Systems".
    Within one step, the first option in list order wins.
+   **JSA-283 (2026-11-17) supersedes the order of b and c:** their candidates are pooled and the CLOSEST wins (fewest words in the
+   symmetric difference of the word sets, stop words removed; a tie → first in list order). See wd_prompt_pick_spec.md.
 3. Preferences shorter than 4 characters only use step a. The preference "Other" (and empty strings) are ignored.
 4. Nothing matches → None.
 

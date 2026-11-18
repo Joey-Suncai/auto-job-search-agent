@@ -1,0 +1,361 @@
+[
+ {
+  "name": "exact_org_explicit_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": false,
+  "spec": "Returns False when a fact entry whose `org` equals `lead_org` (case-insensitive, whitespace collapsed) has `on_resume` explicitly false — the user took that activity off every resume; the Leadership section is then left out of every resume."
+ },
+ {
+  "name": "exact_org_explicit_true",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": true
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "exact_org_missing_on_resume",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club"
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "different_org_false_does_not_match",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Debate Club",
+     "on_resume": false
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Entries of other orgs never matter."
+ },
+ {
+  "name": "empty_entries_list",
+  "fn": "lead_on_resume",
+  "args": [
+   [],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "entries_none",
+  "fn": "lead_on_resume",
+  "args": [
+   null,
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "empty_lead_org",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    }
+   ],
+   ""
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "null_lead_org",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    }
+   ],
+   null
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "case_insensitive_org_match_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    }
+   ],
+   "robotics club"
+  ],
+  "expect": false,
+  "spec": "Returns False when a fact entry whose `org` equals `lead_org` (case-insensitive, whitespace collapsed) has `on_resume` explicitly false — the user took that activity off every resume; the Leadership section is then left out of every resume."
+ },
+ {
+  "name": "whitespace_collapsed_org_match_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics   Club",
+     "on_resume": false
+    }
+   ],
+   "robotics club"
+  ],
+  "expect": false,
+  "spec": "Returns False when a fact entry whose `org` equals `lead_org` (case-insensitive, whitespace collapsed) has `on_resume` explicitly false — the user took that activity off every resume; the Leadership section is then left out of every resume."
+ },
+ {
+  "name": "multiple_same_org_any_explicit_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": true
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": false,
+  "spec": "When several entries share the org, False if ANY of them is explicitly false."
+ },
+ {
+  "name": "multiple_same_org_none_explicit_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": true
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Robotics Club"
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "When several entries share the org, False if ANY of them is explicitly false."
+ },
+ {
+  "name": "string_false_is_not_boolean_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": "false"
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Only the boolean False counts: the string \"false\", 0 and null do not."
+ },
+ {
+  "name": "zero_is_not_boolean_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": 0
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Only the boolean False counts: the string \"false\", 0 and null do not."
+ },
+ {
+  "name": "null_on_resume_is_not_boolean_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": null
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Only the boolean False counts: the string \"false\", 0 and null do not."
+ },
+ {
+  "name": "other_org_false_with_matching_org_absent",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Debate Club",
+     "on_resume": false
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": true
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Entries of other orgs never matter."
+ },
+ {
+  "name": "matching_org_false_with_other_org_true",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Debate Club",
+     "on_resume": true
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": false,
+  "spec": "Returns False when a fact entry whose `org` equals `lead_org` (case-insensitive, whitespace collapsed) has `on_resume` explicitly false — the user took that activity off every resume; the Leadership section is then left out of every resume."
+ },
+ {
+  "name": "org_near_miss_extra_word",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club East",
+     "on_resume": false
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Returns True otherwise: `on_resume` true, missing, or any value other than the boolean false; no entry with that org; an empty or missing `lead_org` (then there is no section to decide); `entries` empty / None."
+ },
+ {
+  "name": "matching_org_missing_on_resume_other_org_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club"
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Debate Club",
+     "on_resume": false
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": true,
+  "spec": "Entries of other orgs never matter."
+ },
+ {
+  "name": "same_org_boolean_false_beats_string_false",
+  "fn": "lead_on_resume",
+  "args": [
+   [
+    {
+     "id": "1",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": false
+    },
+    {
+     "id": "2",
+     "kind": "leadership",
+     "org": "Robotics Club",
+     "on_resume": "false"
+    }
+   ],
+   "Robotics Club"
+  ],
+  "expect": false,
+  "spec": "When several entries share the org, False if ANY of them is explicitly false."
+ }
+]

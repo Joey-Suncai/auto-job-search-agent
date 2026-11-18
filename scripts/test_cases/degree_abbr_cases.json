@@ -1,0 +1,170 @@
+[
+ {
+  "name": "prefixed_hyphen_ba_bachelor_arts",
+  "value": "B.A. - Bachelor of Arts",
+  "expect": true,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_en_dash_ms_master_science",
+  "value": "M.S. – Master of Science",
+  "expect": true,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_colon_bs_bachelor_science",
+  "value": "BS: Bachelor of Science",
+  "expect": true,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_slash_ba_bachelor_arts",
+  "value": "BA / Bachelor of Arts",
+  "expect": true,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_bar_ms_master_science",
+  "value": "MS | Master of Science",
+  "expect": true,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_odd_spacing_ba_bachelor_arts",
+  "value": "B.A.   -   Bachelor of Arts",
+  "expect": true,
+  "rule": "The abbreviation is 1–6 letters with optional dots; the separator is a hyphen, en dash, colon, slash or bar with optional spaces.",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_mba_master_science",
+  "value": "MBA - Master of Science",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_bs_master_technology",
+  "value": "B.S. - Master of Technology",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_ms_master_business_admin",
+  "value": "M.S. - Master of Business Administration",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_ba_doctor_philosophy",
+  "value": "B.A. - Doctor of Philosophy",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_ms_associate_degree",
+  "value": "MS - Associate degree",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "prefixed_phd_bachelor_arts",
+  "value": "Ph.D. - Bachelor of Arts",
+  "expect": false,
+  "rule": "The check then judges the full name after the prefix by the rules above, and the \"never acceptable\" rules apply to the whole option text (prefix included).",
+  "ambiguous": false
+ },
+ {
+  "name": "long_word_not_abbreviation",
+  "value": "Bachelors - Arts",
+  "expect": false,
+  "rule": "Text that is not of this form is judged as before.",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_masters",
+  "value": "Masters",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_bachelors_degree",
+  "value": "Bachelor's Degree",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_ba",
+  "value": "B.A.",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_master_of_science",
+  "value": "Master of Science",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_bachelor_of_arts",
+  "value": "Bachelor of Arts",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_masters_parenthetical",
+  "value": "Masters (Economics)",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_bachelors_parenthetical",
+  "value": "Bachelors (Data Science)",
+  "expect": true,
+  "rule": "Acceptable: a bare level (Masters, Master's, Master, MS, M.S., Bachelors, Bachelor's, Bachelor, BA, B.A., BS, B.S., Graduate, Undergraduate, Postgraduate, Master's Degree, Bachelor's Degree); a full degree name that is \"Master ... of Science\", \"Bachelor ... of Science\", \"Bachelor of Arts\" (his real B.A.), \"Master's / Bachelor's of Arts or Science\"; \"Masters (...)\" / \"Bachelors (...)\".",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_master_of_technology",
+  "value": "Master of Technology",
+  "expect": false,
+  "rule": "Never acceptable (even if another rule would accept): anything with \"Technology\" (M.Tech, Master of Technology), an MBA or \"Master of Business Administration\", a doctorate (Doctor, Ph.D.), an Associate degree.",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_mba",
+  "value": "MBA",
+  "expect": false,
+  "rule": "Never acceptable (even if another rule would accept): anything with \"Technology\" (M.Tech, Master of Technology), an MBA or \"Master of Business Administration\", a doctorate (Doctor, Ph.D.), an Associate degree.",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_doctor",
+  "value": "Doctor",
+  "expect": false,
+  "rule": "Never acceptable (even if another rule would accept): anything with \"Technology\" (M.Tech, Master of Technology), an MBA or \"Master of Business Administration\", a doctorate (Doctor, Ph.D.), an Associate degree.",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_mtech",
+  "value": "M.Tech",
+  "expect": false,
+  "rule": "Never acceptable (even if another rule would accept): anything with \"Technology\" (M.Tech, Master of Technology), an MBA or \"Master of Business Administration\", a doctorate (Doctor, Ph.D.), an Associate degree.",
+  "ambiguous": false
+ }
+]

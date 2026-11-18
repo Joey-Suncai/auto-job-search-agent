@@ -1,0 +1,6 @@
+{
+ "Non-Easy-Apply control present, head has the phrase → unknown (closed rule requires no controls)": {
+  "verdict": "case",
+  "why": "Superseded by the spec change of 2026-11-11 (JSA-313, Joey「Mark closed + fix code」): rule 2b makes \"Not currently accepting applications\" in the head closed when no visible apply control exists, even with other controls; this case was written for the old rule 0-only spec."
+ }
+}

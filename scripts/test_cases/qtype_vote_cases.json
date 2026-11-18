@@ -1,0 +1,612 @@
+[
+ {
+  "name": "majority_three_agree_all",
+  "kind": "majority",
+  "agree": 3,
+  "reads": [
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": false,
+  "expect_fact_key": "spons_now"
+ },
+ {
+  "name": "majority_two_agree_threshold_two",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "citizen_pr",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": false,
+  "expect_fact_key": "spons_now"
+ },
+ {
+  "name": "majority_two_agree_threshold_three_fails",
+  "kind": "majority",
+  "agree": 3,
+  "reads": [
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "citizen_pr",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "spons_now"
+ },
+ {
+  "name": "majority_all_different",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "first_name",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "citizen_pr",
+    "shape": "yes_no",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "first_name"
+ },
+ {
+  "name": "majority_negated_difference_no_group",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": true,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "marketing"
+ },
+ {
+  "name": "majority_subject_difference_no_group",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "referral",
+    "shape": "yes_no",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "referral",
+    "shape": "yes_no",
+    "negated": false,
+    "subject": "other_person",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "referral"
+ },
+ {
+  "name": "majority_missing_negated_equals_false",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "spons_future",
+    "shape": "fill",
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_future",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "citizen_pr",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": false,
+  "expect_fact_key": "spons_future"
+ },
+ {
+  "name": "majority_low_confidence_group_asks",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": false,
+    "subject": "user",
+    "confidence": "low"
+   },
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": false,
+    "subject": "user",
+    "confidence": "low"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "marketing"
+ },
+ {
+  "name": "majority_three_unknown_group_asks",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "unknown",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "unknown",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "unknown",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "unknown"
+ },
+ {
+  "name": "majority_other_person_allowed_no_ask",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "referral",
+    "shape": "yes_no",
+    "negated": false,
+    "subject": "other_person",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "referral",
+    "shape": "yes_no",
+    "negated": false,
+    "subject": "other_person",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": false,
+  "expect_fact_key": "referral"
+ },
+ {
+  "name": "majority_other_person_disallowed_asks",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": false,
+    "subject": "other_person",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "marketing",
+    "shape": "subscription",
+    "negated": false,
+    "subject": "other_person",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "marketing"
+ },
+ {
+  "name": "majority_trap_shape_group_asks",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "spons_now",
+    "shape": "trap",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "trap",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "citizen_pr",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "spons_now"
+ },
+ {
+  "name": "majority_unclear_subject_group_asks",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "first_name",
+    "shape": "fill",
+    "negated": false,
+    "subject": "unclear",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "first_name",
+    "shape": "fill",
+    "negated": false,
+    "subject": "unclear",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "gpa",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": true,
+  "expect_fact_key": "first_name"
+ },
+ {
+  "name": "majority_high_group_beats_asking_third",
+  "kind": "majority",
+  "agree": 2,
+  "reads": [
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "spons_now",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   },
+   {
+    "fact_key": "unknown",
+    "shape": "fill",
+    "negated": false,
+    "subject": "user",
+    "confidence": "high"
+   }
+  ],
+  "expect_asks": false,
+  "expect_fact_key": "spons_now"
+ },
+ {
+  "name": "haiku_same_except_subject_no_ask",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "spons_now",
+   "shape": "fill",
+   "negated": false,
+   "subject": "applicant",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "spons_now",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "haiku_same_exact_no_ask",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "citizen_pr",
+   "shape": "yes_no",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "citizen_pr",
+   "shape": "yes_no",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "haiku_diff_shape_asks",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "spons_future",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "spons_future",
+   "shape": "yes_no",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_diff_fact_key_asks",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "first_name",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "gpa",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_diff_negated_asks",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "marketing",
+   "shape": "subscription",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "marketing",
+   "shape": "subscription",
+   "negated": true,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_error_asks",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "spons_now",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "spons_now",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high",
+   "error": true
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_asks_low_confidence",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "gpa",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "gpa",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "low"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "ds_asks_low_confidence",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "gpa",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "low"
+  },
+  "hk": {
+   "fact_key": "gpa",
+   "shape": "fill",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_asks_shape_unclear",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "referral",
+   "shape": "yes_no",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "referral",
+   "shape": "unclear",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "haiku_subject_other_person_disallowed_asks",
+  "kind": "haiku",
+  "ds": {
+   "fact_key": "marketing",
+   "shape": "subscription",
+   "negated": false,
+   "subject": "user",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "marketing",
+   "shape": "subscription",
+   "negated": false,
+   "subject": "other_person",
+   "confidence": "high"
+  },
+  "expect_asks": true
+ }
+]

@@ -1,0 +1,380 @@
+[
+ {
+  "name": "all three email fields present are copied unchanged",
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "Acme",
+    "status": "Applied",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "Interview invite",
+    "last_email_date": "2026-11-10",
+    "email_url": "https://mail.example.com/msg/1"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J1": {
+    "last_email": "Interview invite",
+    "last_email_date": "2026-11-10",
+    "email_url": "https://mail.example.com/msg/1"
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Each resulting to-do row gets three more fields copied from the tracker row, as strings:"
+ },
+ {
+  "name": "missing email fields default to empty strings",
+  "apps": [
+   {
+    "job_id": "J2",
+    "company": "Beta",
+    "status": "Assessment",
+    "action_needed": "Complete the take-home"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J2": {
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "`last_email`: the row's `last_email`, or \"\" when it is missing / None."
+ },
+ {
+  "name": "null email fields default to empty strings",
+  "apps": [
+   {
+    "job_id": "J3",
+    "company": "Gamma",
+    "status": "Interview",
+    "action_needed": "Schedule the final round",
+    "last_email": null,
+    "last_email_date": null,
+    "email_url": null
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J3": {
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "`email_url`: the row's `email_url`, or \"\" when missing / None."
+ },
+ {
+  "name": "values copied verbatim without trimming or reformatting",
+  "apps": [
+   {
+    "job_id": "J4",
+    "company": "Delta",
+    "status": "Applied",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "  Re: Interview — Delta  ",
+    "last_email_date": "Nov 3, 2026",
+    "email_url": " https://mail.example.com/a?b=1 "
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J4": {
+    "last_email": "  Re: Interview — Delta  ",
+    "last_email_date": "Nov 3, 2026",
+    "email_url": " https://mail.example.com/a?b=1 "
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Values are copied unchanged (no trimming, no reformatting)."
+ },
+ {
+  "name": "email_url is not invented when the key is missing",
+  "apps": [
+   {
+    "job_id": "J5",
+    "company": "Epsilon",
+    "status": "Assessment",
+    "action_needed": "Finish the coding test",
+    "last_email": "Here is your test link",
+    "last_email_date": "2026-11-05"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J5": {
+    "last_email": "Here is your test link",
+    "last_email_date": "2026-11-05",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Never invented, never built from other fields."
+ },
+ {
+  "name": "missing last_email_date becomes empty while other fields copy",
+  "apps": [
+   {
+    "job_id": "J6",
+    "company": "Zeta",
+    "status": "Interview",
+    "action_needed": "Confirm interview slot",
+    "last_email": "Confirm your slot",
+    "email_url": "https://mail.example.com/msg/6"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J6": {
+    "last_email": "Confirm your slot",
+    "last_email_date": "",
+    "email_url": "https://mail.example.com/msg/6"
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "`last_email_date`: the row's `last_email_date`, or \"\" when missing / None."
+ },
+ {
+  "name": "empty-string email values stay empty strings",
+  "apps": [
+   {
+    "job_id": "J7",
+    "company": "Eta",
+    "status": "Applied",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J7": {
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "Values are copied unchanged (no trimming, no reformatting)."
+ },
+ {
+  "name": "null last_email with present email_url and date",
+  "apps": [
+   {
+    "job_id": "J8",
+    "company": "Theta",
+    "status": "Assessment",
+    "action_needed": "Submit the assessment",
+    "last_email": null,
+    "last_email_date": "2026-11-01",
+    "email_url": "https://mail.example.com/msg/8"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J8": {
+    "last_email": "",
+    "last_email_date": "2026-11-01",
+    "email_url": "https://mail.example.com/msg/8"
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "`last_email`: the row's `last_email`, or \"\" when it is missing / None."
+ },
+ {
+  "name": "multiple to-do rows each get their own email fields",
+  "apps": [
+   {
+    "job_id": "J9a",
+    "company": "Iota",
+    "status": "Applied",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "Assessment link",
+    "last_email_date": "2026-11-12",
+    "email_url": "https://mail.example.com/msg/9a"
+   },
+   {
+    "job_id": "J9b",
+    "company": "Kappa",
+    "status": "Interview",
+    "action_needed": "Reply to the recruiter"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J9a": {
+    "last_email": "Assessment link",
+    "last_email_date": "2026-11-12",
+    "email_url": "https://mail.example.com/msg/9a"
+   },
+   "J9b": {
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [],
+  "spec_quote": "The to-do row's `job_id` is the tracker row's job_id; the output order is unchanged (dated by deadline, undated after)."
+ },
+ {
+  "name": "Rejected and Archived rows with email fields are not to-do rows",
+  "apps": [
+   {
+    "job_id": "J10a",
+    "company": "Lambda",
+    "status": "Rejected",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "Rejection",
+    "last_email_date": "2026-11-02",
+    "email_url": "https://mail.example.com/msg/10a"
+   },
+   {
+    "job_id": "J10b",
+    "company": "Mu",
+    "status": "Archived",
+    "action_needed": "Reply to the recruiter",
+    "last_email": "Archived thread",
+    "last_email_date": "2026-11-03",
+    "email_url": "https://mail.example.com/msg/10b"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {},
+  "expect_absent": [
+   "J10a",
+   "J10b"
+  ],
+  "spec_quote": "Which rows become to-do rows is unchanged (a row with an open action_needed, not Rejected / Archived / Withdrawn / No response / Declined by Joey, not a one-time-code or \"waiting for the result\" note)."
+ },
+ {
+  "name": "row with no action_needed is not a to-do row",
+  "apps": [
+   {
+    "job_id": "J11",
+    "company": "Nu",
+    "status": "Applied",
+    "action_needed": null,
+    "last_email": "Some email",
+    "last_email_date": "2026-11-04",
+    "email_url": "https://mail.example.com/msg/11"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {},
+  "expect_absent": [
+   "J11"
+  ],
+  "spec_quote": "Which rows become to-do rows is unchanged (a row with an open action_needed, not Rejected / Archived / Withdrawn / No response / Declined by Joey, not a one-time-code or \"waiting for the result\" note)."
+ },
+ {
+  "name": "one-time-code note is not a to-do row",
+  "apps": [
+   {
+    "job_id": "J12",
+    "company": "Xi",
+    "status": "Applied",
+    "action_needed": "Enter the one-time code sent to your phone",
+    "last_email": "Your one-time code",
+    "last_email_date": "2026-11-06",
+    "email_url": "https://mail.example.com/msg/12"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {},
+  "expect_absent": [
+   "J12"
+  ],
+  "spec_quote": "Which rows become to-do rows is unchanged (a row with an open action_needed, not Rejected / Archived / Withdrawn / No response / Declined by Joey, not a one-time-code or \"waiting for the result\" note)."
+ },
+ {
+  "name": "waiting-for-the-result note is not a to-do row",
+  "apps": [
+   {
+    "job_id": "J13",
+    "company": "Omicron",
+    "status": "Interview",
+    "action_needed": "Waiting for the result of the interview",
+    "last_email": "Thanks for interviewing",
+    "last_email_date": "2026-11-07",
+    "email_url": "https://mail.example.com/msg/13"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {},
+  "expect_absent": [
+   "J13"
+  ],
+  "spec_quote": "Which rows become to-do rows is unchanged (a row with an open action_needed, not Rejected / Archived / Withdrawn / No response / Declined by Joey, not a one-time-code or \"waiting for the result\" note)."
+ },
+ {
+  "name": "mixed batch: excluded rows' email fields never appear, to-do rows do",
+  "apps": [
+   {
+    "job_id": "J14a",
+    "company": "Pi",
+    "status": "Applied",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "Assessment invitation",
+    "last_email_date": "2026-11-08",
+    "email_url": "https://mail.example.com/msg/14a"
+   },
+   {
+    "job_id": "J14b",
+    "company": "Rho",
+    "status": "Withdrawn",
+    "action_needed": "Reply to the recruiter",
+    "last_email": "Withdrawal note",
+    "last_email_date": "2026-11-09",
+    "email_url": "https://mail.example.com/msg/14b"
+   },
+   {
+    "job_id": "J14c",
+    "company": "Sigma",
+    "status": "Interview",
+    "action_needed": "Confirm interview slot"
+   },
+   {
+    "job_id": "J14d",
+    "company": "Tau",
+    "status": "No response",
+    "action_needed": "Follow up with the recruiter",
+    "last_email": "No reply yet",
+    "last_email_date": "2026-11-10",
+    "email_url": "https://mail.example.com/msg/14d"
+   },
+   {
+    "job_id": "J14e",
+    "company": "Upsilon",
+    "status": "Declined by Joey",
+    "action_needed": "Take the Coderbyte assessment",
+    "last_email": "Declined",
+    "last_email_date": "2026-11-11",
+    "email_url": "https://mail.example.com/msg/14e"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": {
+   "J14a": {
+    "last_email": "Assessment invitation",
+    "last_email_date": "2026-11-08",
+    "email_url": "https://mail.example.com/msg/14a"
+   },
+   "J14c": {
+    "last_email": "",
+    "last_email_date": "",
+    "email_url": ""
+   }
+  },
+  "expect_absent": [
+   "J14b",
+   "J14d",
+   "J14e"
+  ],
+  "spec_quote": "Which rows become to-do rows is unchanged (a row with an open action_needed, not Rejected / Archived / Withdrawn / No response / Declined by Joey, not a one-time-code or \"waiting for the result\" note)."
+ }
+]

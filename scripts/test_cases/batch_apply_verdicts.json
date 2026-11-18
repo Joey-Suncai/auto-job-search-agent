@@ -1,4 +1,5 @@
 {
  "c13": "spec changed by JSA-230 (Workday joined the pipeline); the case was right for the JSA-229 spec — superseded by batch_apply_230_cases.json",
- "n10": "case miscounts: input line is 222 chars, spec says 'at most 200 characters' → 200-char result; the case expects 170 chars"
+ "n10": "case miscounts: input line is 222 chars, spec says 'at most 200 characters' → 200-char result; the case expects 170 chars",
+ "cf-11": "JSA-418 (rule 13): case misreads the spec: the spec returns the job's own id (an int 42 stays 42); only the match compares as string"
 }

@@ -2,7 +2,7 @@
 
 Facts: the candidate is an F-1 international student — not a U.S. citizen, U.S. national, lawful permanent resident,
 refugee or asylee. He is currently pursuing a Master's degree (M.S. Applied Data Science, Sep 2026 – Dec 2027) and
-finished a Bachelor's (B.A. Economics, May 2026). His full legal name is "Alex Rivera". His GPA on file is written
+finished a Bachelor's (B.A. Economics, May 2026). His full legal name is "Alex Doe". His GPA on file is written
 here as GPA_ON_FILE. He has never worked for the hiring company in any form (employee, contractor, vendor, temp), never
 under another name, owns no business, will hold no other job, has no relatives at competitors / vendors, and is bound
 by no non-compete, non-solicitation or confidentiality agreement. He uses Word, Excel and PowerPoint. His target roles
@@ -22,7 +22,7 @@ left to a person):
   "None"). Questions of this kind: worked at the company as a third-party contractor, previously worked there as a
   permanent employee, will own/operate a business or have other employment if hired, relatives at a competitor / vendor
   / supplier. A text box asking the same yes/no question with no instruction about what to type for No → "No".
-- "Signature of Applicant", "Applicant Signature", "Electronic Signature" (text) → "Alex Rivera". "Signature Date" is
+- "Signature of Applicant", "Applicant Signature", "Electronic Signature" (text) → "Alex Doe". "Signature Date" is
   a date, not the signature — do not write cases for it.
 - "What is your current cumulative grade point average?", "Cumulative GPA" (text) → "GPA_ON_FILE".
 - Near misses that must NOT get these answers → "none": "What graduate degree are you pursuing?" (text), "Do you plan to

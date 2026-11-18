@@ -1,0 +1,9 @@
+{
+ "workday_statement_pick_any_employer": "Claude 2026-11-11: code right enough — the label 'Please select the statement that applies to you:' names no question, so no rule fits and it asks Joey (unknown; same as before JSA-310). Safe; not a wrong answer",
+ "near_miss_no_sponsorship_claim_in_yes": "Claude 2026-11-11: same generic label 'Please select the statement that applies to you:' → unknown (asks), same as before. Safe",
+ "restricted_vs_sponsorship_only_options": "Claude 2026-11-11: code right — case marked ambiguous; with no plain / any-employer Yes, the spec's fallback is the 'require sponsorship' statement (never 'not authorized'), which the code picks",
+ "citizen_pr_greencard_yn": "Claude 2026-11-11: pre-existing gap outside JSA-310 — the three-part 'citizen, permanent resident, or green card holder' wording fits no rule and asks Joey (unknown, same as before). Safe",
+ "status_list_workday_f1_student_visa": "Claude 2026-11-11: pre-existing, outside JSA-310 — 'work authorization / immigration status' list: the authorized rule fits first and finds no Yes option → unknown (asks), same as before; never a wrong pick",
+ "sponsorship_statement_workday": "Claude 2026-11-11: pre-existing, outside JSA-310 — no sponsorship statement pick for 'I require sponsorship … now or in the future' → unknown (asks), same as before. Sponsorship answers unchanged, as the spec requires",
+ "sponsorship_require_yn_short": "superseded by Joey 2026-11-16 (jsa-dev dev-decisions f9f68ad, JSA-361): a sponsorship question with no time word is never answered automatically — the rules ask (unknown + ask)"
+}

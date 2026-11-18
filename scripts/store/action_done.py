@@ -40,7 +40,33 @@ def mark(row, done, today):
     return r, None
 
 
-def apply(job_id, done, today=None):
+DECLINED = 'Declined by Joey'
+
+
+def decline(row, give_up, today):
+    """Pure (tested, JSA-406). Joey gives up a task a company asked of him: status → "Declined by Joey", the open action
+    is kept in `declined` so Undo restores it. Nothing is sent to the company. → (new row, error or None)."""
+    r = dict(row)
+    if give_up:
+        if r.get('status') == DECLINED:
+            return row, 'already declined'
+        act = (r.get('action_needed') or '').strip()
+        if act in WAIT:
+            return row, 'no open action on this row'
+        r['declined'] = {'on': today, 'status': r.get('status', ''), 'action': act, 'deadline': r.get('action_deadline') or '',
+                         'next_step': r.get('next_step') or ''}
+        r.update(status=DECLINED, action_needed='', action_deadline='', next_step=f'{DECLINED} {today}', updated=today)
+        return r, None
+    if r.get('status') != DECLINED:
+        return row, 'not declined'
+    d = r.pop('declined', None)
+    if not d:
+        return row, 'nothing to undo'
+    r.update(status=d['status'], action_needed=d['action'], action_deadline=d['deadline'], next_step=d['next_step'], updated=today)
+    return r, None
+
+
+def apply(job_id, done, today=None, fn=None):
     """Load applications, mark the row with this job_id, save. → the new row. KeyError = unknown id; ValueError = refused."""
     import store
     today = today or dt.date.today().isoformat()
@@ -48,12 +74,17 @@ def apply(job_id, done, today=None):
     i = next((k for k, r in enumerate(rows) if r.get('job_id') == job_id), None)
     if i is None:
         raise KeyError(job_id)
-    new, err = mark(rows[i], done, today)
+    new, err = (fn or mark)(rows[i], done, today)
     if err:
         raise ValueError(err)
     rows[i] = new
     store.save('applications', rows)
     return new
+
+
+def apply_decline(job_id, give_up, today=None):
+    """Same write path as apply() (store.load / store.save), for the Give up button."""
+    return apply(job_id, give_up, today, fn=decline)
 
 
 if __name__ == '__main__':

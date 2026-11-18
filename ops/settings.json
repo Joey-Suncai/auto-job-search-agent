@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/JobAgent/app/scripts/ops_session.py\" --hook"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Edit(//Users/you/Projects/**)",
+      "Edit(//Users/you/projects/**)",
+      "Edit(//Users/you/JobAgent/app/**)",
+      "Edit(./CLAUDE.md)",
+      "Edit(./.claude/**)",
+      "Bash(git commit *--no-verify*)",
+      "Bash(git * commit *--no-verify*)"
+    ]
+  }
+}

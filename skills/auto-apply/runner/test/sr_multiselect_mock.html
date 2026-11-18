@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>SmartRecruiters multi-select mock (JSA-387)</title></head><body>
+<!-- Fictional mock of Arista's "How did you hear" list: spl-multiselect-autocomplete, empty input, menu of spl-select-option
+     (in its own shadow root), picks shown as tags inside an spl-tags-list shadow root. -->
+<sr-question-field-select><spl-multiselect-autocomplete id="question_x1" required></spl-multiselect-autocomplete>
+<span>How did you hear about this position? Please select all that apply.</span></sr-question-field-select>
+<script>
+const OPTS = ['Online job board', 'LinkedIn', 'Employee referral', 'Career fair', 'Other'];
+const root = document.getElementById('question_x1').attachShadow({mode: 'open'});   // like the real component: everything inside its shadow root
+root.innerHTML = '<input id="question_x1" role="combobox" type="text"><spl-tags-list></spl-tags-list><div id="menu" role="listbox"></div>';
+const tags = root.querySelector('spl-tags-list').attachShadow({mode: 'open'});
+const inp = root.querySelector('input'), menu = root.getElementById('menu');
+const picked = [];
+const host = menu.attachShadow({mode: 'open'});
+function render() {
+  host.innerHTML = '';
+  const q = inp.value.toLowerCase();
+  for (const o of OPTS.filter(o => !picked.includes(o) && o.toLowerCase().includes(q))) {
+    const d = document.createElement('spl-select-option'); d.textContent = o; d.style.display = 'block'; d.style.padding = '6px';
+    d.addEventListener('click', () => { picked.push(o); inp.value = ''; tags.innerHTML = picked.map(x => '<span class="tag">' + x + '</span>').join(' '); host.innerHTML = ''; });
+    host.appendChild(d);
+  }
+}
+inp.addEventListener('click', render); inp.addEventListener('input', render);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') host.innerHTML = ''; });
+</script></body></html>

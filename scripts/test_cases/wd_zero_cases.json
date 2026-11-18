@@ -1,0 +1,416 @@
+[
+ {
+  "name": "basic_zero_match",
+  "spec_quote": "A field is returned when its label equals Q after collapsing whitespace and lower-casing both sides, AND its answer is a zero written in digits: \"0\", \"00\", \"0.0\", \"0.00\" (leading/trailing spaces allowed).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "Phone"
+  ]
+ },
+ {
+  "name": "nonzero_answer_52000",
+  "spec_quote": "Answers like \"\", \"52000\", \"10\", \"0.5\", \"N/A\", \"zero\" or None do not count.",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "52000"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "all_zero_forms",
+  "spec_quote": "a zero written in digits: \"0\", \"00\", \"0.0\", \"0.00\" (leading/trailing spaces allowed).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field A is required and must have a value.",
+    "Error: The field B is required and must have a value.",
+    "Error: The field C is required and must have a value.",
+    "Error: The field D is required and must have a value.",
+    "Error: The field E is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "A",
+     "answer": "0"
+    },
+    {
+     "label": "B",
+     "answer": "00"
+    },
+    {
+     "label": "C",
+     "answer": "0.0"
+    },
+    {
+     "label": "D",
+     "answer": "0.00"
+    },
+    {
+     "label": "E",
+     "answer": " 0.00 "
+    }
+   ]
+  },
+  "expect": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "name": "nonzero_variants_ignored",
+  "spec_quote": "Answers like \"\", \"52000\", \"10\", \"0.5\", \"N/A\", \"zero\" or None do not count.",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field A is required and must have a value.",
+    "Error: The field B is required and must have a value.",
+    "Error: The field C is required and must have a value.",
+    "Error: The field D is required and must have a value.",
+    "Error: The field E is required and must have a value.",
+    "Error: The field F is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "A",
+     "answer": ""
+    },
+    {
+     "label": "B",
+     "answer": "10"
+    },
+    {
+     "label": "C",
+     "answer": "0.5"
+    },
+    {
+     "label": "D",
+     "answer": "N/A"
+    },
+    {
+     "label": "E",
+     "answer": "zero"
+    },
+    {
+     "label": "F",
+     "answer": null
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "case_insensitive_error_and_label",
+  "spec_quote": "whitespace inside may be doubled, case of the words does not matter",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "ERROR: THE FIELD PHONE NUMBER IS REQUIRED AND MUST HAVE A VALUE."
+   ],
+   "fields": [
+    {
+     "label": "phone number",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "phone number"
+  ]
+ },
+ {
+  "name": "doubled_whitespace_in_error",
+  "spec_quote": "whitespace inside may be doubled",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error:  The  field  Phone  is  required  and  must  have  a  value."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "Phone"
+  ]
+ },
+ {
+  "name": "label_whitespace_collapse",
+  "spec_quote": "A field is returned when its label equals Q after collapsing whitespace and lower-casing both sides",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone Number is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "  Phone   Number  ",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "  Phone   Number  "
+  ]
+ },
+ {
+  "name": "first_matching_zero_field_only",
+  "spec_quote": "for each error at most one field (the first matching one in fields order).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "52000"
+    },
+    {
+     "label": "phone",
+     "answer": "0"
+    },
+    {
+     "label": "PHONE",
+     "answer": "0.0"
+    }
+   ]
+  },
+  "expect": [
+   "phone"
+  ]
+ },
+ {
+  "name": "duplicate_error_returns_field_each_time",
+  "spec_quote": "The result keeps the order of errs; for each error at most one field (the first matching one in fields order).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is required and must have a value.",
+    "Error: The field Phone is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "Phone",
+   "Phone"
+  ]
+ },
+ {
+  "name": "other_wording_ignored",
+  "spec_quote": "Errors of any other wording are ignored.",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is invalid.",
+    "Error: The field Phone is required."
+   ],
+   "fields": [
+    {
+     "label": "Phone",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "no_matching_field_adds_nothing",
+  "spec_quote": "A question matched by no such field adds nothing.",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Phone is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "Email",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "order_preserved_across_errors",
+  "spec_quote": "The result keeps the order of errs; for each error at most one field (the first matching one in fields order).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field B is required and must have a value.",
+    "Error: The field A is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "A",
+     "answer": "0"
+    },
+    {
+     "label": "B",
+     "answer": "0"
+    }
+   ]
+  },
+  "expect": [
+   "B",
+   "A"
+  ]
+ },
+ {
+  "name": "q_with_spaces_and_label_multispace",
+  "spec_quote": "A field is returned when its label equals Q after collapsing whitespace and lower-casing both sides",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field Current Salary is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "current   salary",
+     "answer": "0.00"
+    }
+   ]
+  },
+  "expect": [
+   "current   salary"
+  ]
+ },
+ {
+  "name": "zero_not_listed_ambiguous",
+  "spec_quote": "a zero written in digits: \"0\", \"00\", \"0.0\", \"0.00\" (leading/trailing spaces allowed).",
+  "fn": "zero_rejected",
+  "args": {
+   "errs": [
+    "Error: The field A is required and must have a value."
+   ],
+   "fields": [
+    {
+     "label": "A",
+     "answer": "000"
+    }
+   ]
+  },
+  "expect": [],
+  "ambiguous": true,
+  "note": "The spec enumerates zero forms as exactly 0, 00, 0.0, and 0.00; '000' is a zero written in digits but is not listed, so the required outcome is ambiguous. This case chooses []."
+ },
+ {
+  "name": "language_substring",
+  "spec_quote": "1. contains \"language\" → \"languages\"",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Fluent Languages 1"
+  },
+  "expect": "languages"
+ },
+ {
+  "name": "education_word_educat",
+  "spec_quote": "2. contains \"educat\" or \"academic\", or the whole word \"school\" / \"schools\" → \"education\"",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Education History"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "academic_wins_over_work",
+  "spec_quote": "Examples: \"Academic Experience 1\" → education (rule 2 wins over 3)",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Academic Experience 1"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "schools_attended",
+  "spec_quote": "Examples: \"Schools Attended 3\" → education",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Schools Attended 3"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "worked_question_work",
+  "spec_quote": "Examples: \"Where have you worked? 2\" → work",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Where have you worked? 2"
+  },
+  "expect": "work"
+ },
+ {
+  "name": "preschool_not_whole_school",
+  "spec_quote": "Examples: \"Preschool teacher\" → None (\"preschool\" is not the whole word school)",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Preschool teacher"
+  },
+  "expect": null
+ },
+ {
+  "name": "personal_information_none",
+  "spec_quote": "Examples: \"Personal Information\" → None.",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Personal Information"
+  },
+  "expect": null
+ },
+ {
+  "name": "language_beats_education",
+  "spec_quote": "Checked in this order, case-insensitive substring/word tests: 1. contains \"language\" → \"languages\" 2. contains \"educat\" or \"academic\", or the whole word \"school\" / \"schools\" → \"education\"",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Language Education"
+  },
+  "expect": "languages"
+ },
+ {
+  "name": "school_whole_word_with_punctuation",
+  "spec_quote": "the whole word \"school\" / \"schools\" → \"education\"",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "School: 1"
+  },
+  "expect": "education"
+ },
+ {
+  "name": "homeschool_not_whole_word",
+  "spec_quote": "the whole word \"school\" / \"schools\" → \"education\"; Examples: \"Preschool teacher\" → None (\"preschool\" is not the whole word school)",
+  "fn": "block_kind_of",
+  "args": {
+   "section": "Homeschool"
+  },
+  "expect": null
+ }
+]

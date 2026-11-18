@@ -1,0 +1,110 @@
+[
+ {
+  "name": "linkedin_path",
+  "value": "linkedin.com/in/alexdoe",
+  "wants_url": true,
+  "expect": "https://linkedin.com/in/alexdoe"
+ },
+ {
+  "name": "github_path",
+  "value": "github.com/alex-doe-example",
+  "wants_url": true,
+  "expect": "https://github.com/alex-doe-example"
+ },
+ {
+  "name": "www_bare",
+  "value": "www.example.com",
+  "wants_url": true,
+  "expect": "https://www.example.com"
+ },
+ {
+  "name": "www_path",
+  "value": "www.example.com/docs",
+  "wants_url": true,
+  "expect": "https://www.example.com/docs"
+ },
+ {
+  "name": "path_no_spaces",
+  "value": "example.com/about",
+  "wants_url": true,
+  "expect": "https://example.com/about"
+ },
+ {
+  "name": "uppercase_http",
+  "value": "HTTP://example.com",
+  "wants_url": true,
+  "expect": "HTTP://example.com"
+ },
+ {
+  "name": "https_already",
+  "value": "https://example.com",
+  "wants_url": true,
+  "expect": "https://example.com"
+ },
+ {
+  "name": "ftp_scheme",
+  "value": "ftp://example.com",
+  "wants_url": true,
+  "expect": "ftp://example.com"
+ },
+ {
+  "name": "email_address",
+  "value": "joey@example.com",
+  "wants_url": true,
+  "expect": "joey@example.com"
+ },
+ {
+  "name": "na_value",
+  "value": "N/A",
+  "wants_url": true,
+  "expect": "N/A"
+ },
+ {
+  "name": "padded_bare",
+  "value": "  example.com  ",
+  "wants_url": true,
+  "expect": "https://example.com"
+ },
+ {
+  "name": "padded_full",
+  "value": "  https://example.com  ",
+  "wants_url": true,
+  "expect": "  https://example.com  "
+ },
+ {
+  "name": "path_with_space",
+  "value": "example.com/about us",
+  "wants_url": true,
+  "expect": "example.com/about us"
+ },
+ {
+  "name": "my_linkedin",
+  "value": "my LinkedIn",
+  "wants_url": true,
+  "expect": "my LinkedIn"
+ },
+ {
+  "name": "wants_url_false_bare",
+  "value": "example.com",
+  "wants_url": false,
+  "expect": "example.com"
+ },
+ {
+  "name": "empty_string",
+  "value": "",
+  "wants_url": true,
+  "expect": ""
+ },
+ {
+  "name": "none_value",
+  "value": "None",
+  "wants_url": true,
+  "expect": "None"
+ },
+ {
+  "name": "see_resume",
+  "value": "see resume",
+  "wants_url": true,
+  "expect": "see resume"
+ }
+]

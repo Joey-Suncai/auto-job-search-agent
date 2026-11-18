@@ -3,7 +3,7 @@
 JSA-206 eeo_left_empty (a free-text box that lists protected categories is not an EEO question) ·
 JSA-207 wd_signin.message_kind / failure_code (why sign-in failed after the create-account form).
 Specs + cases in test_cases/wd_eeo_review_* and wd_signin_fail_*; verdicts (case misreads the spec) in <name>_verdicts.json.
-Plus sanitized fixtures from the 11-05 rerun (Central Hudson Review; gaig / aba / Invesco sign-in traces)."""
+Plus sanitized fixtures from the 11-05 rerun (Central Hudson Review; gaig / aba / Ostdelsev sign-in traces)."""
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'skills', 'auto-apply', 'runner'))
@@ -26,6 +26,7 @@ norm = lambda xs: [re.sub(r'\s+', ' ', str(x)).strip().rstrip('*').strip().lower
 bad = run('wd_eeo_review', lambda c: run_wd.eeo_left_empty(c['review_text'], c.get('free_text_labels') or []),
           same=lambda a, b: norm(a) == norm(b))
 bad += run('wd_signin_fail', lambda c: wd_signin.message_kind(c['text']) if c['fn'] == 'message_kind' else wd_signin.failure_code(c['t']))
+bad += run('wd_signin_hedge', lambda c: wd_signin.message_kind(c['text']) if c['fn'] == 'message_kind' else wd_signin.after_wrong(c['s']))   # JSA-334
 
 # ---- fixtures from the 11-05 rerun (personal data removed)
 fails = 0
@@ -56,8 +57,8 @@ T('gaig 11-05: own application mails from 2025, no verify mail → old_account',
 aba = dict(base, error='wrong_password', tried_long=True, mails=[{'date': '2025-10-31', 'kind': 'other'}])
 T('aba 11-05 → old_account', wd_signin.failure_code(aba) == 'old_account')
 ivz = dict(base, error='none', mails=[{'date': '2026-11-01', 'kind': 'verify'}])
-T('Invesco 11-05: agent account (verified 11-01), no recognisable answer → no_answer', wd_signin.failure_code(ivz) == 'no_answer', wd_signin.failure_code(ivz))
-T('Invesco with a wrong-password message → agent_account_password', wd_signin.failure_code(dict(ivz, error='wrong_password')) == 'agent_account_password')
+T('Ostdelsev 11-05: agent account (verified 11-01), no recognisable answer → no_answer', wd_signin.failure_code(ivz) == 'no_answer', wd_signin.failure_code(ivz))
+T('Ostdelsev with a wrong-password message → agent_account_password', wd_signin.failure_code(dict(ivz, error='wrong_password')) == 'agent_account_password')
 T('every failure code has a queue text', all(k in wd_signin.JOEY_TODO for k in ('locked', 'old_account', 'agent_account_password', 'no_verify_mail', 'no_answer', 'other')))
 T('queue texts never say the agent resets a password', not any(re.search(r'agent (will )?(reset|change)', v) for v in wd_signin.JOEY_TODO.values()))
 print(f'fixtures fails {fails}')

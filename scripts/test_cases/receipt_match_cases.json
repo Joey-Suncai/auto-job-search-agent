@@ -1,0 +1,698 @@
+[
+ {
+  "name": "receipt_company_only_no_siblings",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying to Vanguard",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying to Vanguard"
+ },
+ {
+  "name": "role_named_in_subject_returns",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Analytics Intern",
+  "siblings": [
+   "Data Science Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "jobs@pellwyndel.com",
+    "subject": "Application received - Data Analytics Intern",
+    "body": null
+   }
+  ],
+  "expect": "Application received - Data Analytics Intern"
+ },
+ {
+  "name": "mail_names_sibling_skipped",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Thank you for applying - Data Analytics Intern",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "newer_sibling_mail_then_own",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-13T10:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Thanks for applying - Data Analytics Intern",
+    "body": null
+   },
+   {
+    "when": "2026-11-11T10:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Thanks for applying - Data Science Intern",
+    "body": null
+   }
+  ],
+  "expect": "Thanks for applying - Data Science Intern"
+ },
+ {
+  "name": "role_and_sibling_both_named_role_wins",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying",
+    "body": "We received your application for the Data Science Intern position. Data Analytics Intern candidates will hear separately."
+   }
+  ],
+  "expect": "Thank you for applying"
+ },
+ {
+  "name": "interest_only_null_body_not_receipt",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Thank you for your interest in Entrust",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "interest_only_silent_body_not_receipt",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Thank you for your interest in Entrust",
+    "body": "We will keep your resume on file for future openings."
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "interest_subject_body_says_received",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Thank you for your interest in Entrust",
+    "body": "We have received your application and will review it."
+   }
+  ],
+  "expect": "Thank you for your interest in Entrust"
+ },
+ {
+  "name": "interest_subject_body_successfully_submitted",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Lumfencor",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@bosch.com",
+    "subject": "Thank you for your interest in Lumfencor",
+    "body": "You have successfully submitted your application."
+   }
+  ],
+  "expect": "Thank you for your interest in Lumfencor"
+ },
+ {
+  "name": "security_code_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "no-reply@vanguard.com",
+    "subject": "Your Vanguard security code",
+    "body": "123456"
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "verification_code_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "no-reply@entrust.com",
+    "subject": "Verification code: 448291",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "newsletter_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "news@vanguard.com",
+    "subject": "Vanguard newsletter - your application was received",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "job_alert_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "alerts@micron.com",
+    "subject": "Job alert: Data Science Intern at Pellmorsev",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "interview_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Interview invitation: Data Science Intern",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "unfortunately_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Unfortunately, the Data Science Intern role has been filled",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "not_moving_forward_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Lumfencor",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@bosch.com",
+    "subject": "Application received - not moving forward",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "regret_subject_excluded",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "We regret to inform you",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "mail_before_since_ignored",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-09T23:59:59+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying to Vanguard",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "newest_qualifying_first",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Analytics Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T00:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying - Data Analytics Intern",
+    "body": null
+   },
+   {
+    "when": "2026-11-14T00:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Application received - Data Analytics Intern",
+    "body": null
+   }
+  ],
+  "expect": "Application received - Data Analytics Intern"
+ },
+ {
+  "name": "generic_words_only_role_no_role_words",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Lumfencor",
+  "role": "Summer Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@bosch.com",
+    "subject": "Thank you for applying to Lumfencor",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying to Lumfencor"
+ },
+ {
+  "name": "generic_role_with_siblings_skipped",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Lumfencor",
+  "role": "Summer Intern",
+  "siblings": [
+   "Data Science Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@bosch.com",
+    "subject": "Thank you for applying to Lumfencor",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "partial_role_words_not_enough",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "College to Corporate IT Internship - Data Science",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying - Data Science Intern",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "whole_word_match_required",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Intern",
+  "siblings": [
+   "Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying",
+    "body": "Our database team will review your materials."
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "empty_sibling_title_makes_ambiguous",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [
+   ""
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying to Pellmorsev",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "role_unknown_no_siblings_confirms",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Application received",
+    "body": null
+   }
+  ],
+  "expect": "Application received"
+ },
+ {
+  "name": "role_unknown_with_siblings_ambiguous",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "",
+  "siblings": [
+   "Data Science Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Application received",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "full_title_in_body_names_role",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "College to Corporate IT Internship - Data Science",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying",
+    "body": "Your application for the College to Corporate IT Internship - Data Science position was received."
+   }
+  ],
+  "expect": "Thank you for applying"
+ },
+ {
+  "name": "case_insensitive_subject_and_body",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "data science intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "THANK YOU FOR APPLYING!",
+    "body": "The Data Science Intern role on our team."
+   }
+  ],
+  "expect": "THANK YOU FOR APPLYING!"
+ },
+ {
+  "name": "company_named_in_from_only",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying"
+ },
+ {
+  "name": "company_not_named_rejected",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "hr@example.com",
+    "subject": "Thank you for applying",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "weve_received_your_application_subject",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Analytics Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "jobs@pellwyndel.com",
+    "subject": "We've received your application",
+    "body": null
+   }
+  ],
+  "expect": "We've received your application"
+ },
+ {
+  "name": "short_company_key_unused",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "LG",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@lg.com",
+    "subject": "Thank you for applying to LG",
+    "body": null
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "rejection_words_only_in_body_ok",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying",
+    "body": "Unfortunately we cannot offer you the Data Science Intern role at this time."
+   }
+  ],
+  "expect": "Thank you for applying"
+ },
+ {
+  "name": "mail_at_exact_since_included",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Entrust",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-10T00:00:00+00:00",
+    "from": "careers@entrust.com",
+    "subject": "Thank you for applying to Entrust",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying to Entrust"
+ },
+ {
+  "name": "role_named_in_body_with_sibling_present",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Application received",
+    "body": "We have received your application for the Data Science Intern position."
+   }
+  ],
+  "expect": "Application received"
+ },
+ {
+  "name": "newest_names_neither_skipped_older_wins",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-15T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying",
+    "body": null
+   },
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying - Data Science Intern",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying - Data Science Intern"
+ },
+ {
+  "name": "interest_subject_with_body_naming_sibling_not_receipt",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellwyndel",
+  "role": "Data Science Intern",
+  "siblings": [
+   "Data Analytics Intern"
+  ],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@pellwyndel.com",
+    "subject": "Thank you for your interest in Pellwyndel",
+    "body": "This role sits on the Data Analytics Intern team."
+   }
+  ],
+  "expect": null
+ },
+ {
+  "name": "application_was_submitted_subject",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Lumfencor",
+  "role": "Data Analytics Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-12T09:00:00+00:00",
+    "from": "careers@bosch.com",
+    "subject": "Your application was submitted",
+    "body": null
+   }
+  ],
+  "expect": "Your application was submitted"
+ },
+ {
+  "name": "newest_excluded_interview_then_receipt",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Pellmorsev",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-14T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Interview invitation - Data Science Intern",
+    "body": null
+   },
+   {
+    "when": "2026-11-13T09:00:00+00:00",
+    "from": "careers@micron.com",
+    "subject": "Thank you for applying - Data Science Intern",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying - Data Science Intern"
+ },
+ {
+  "name": "newer_other_company_mail_ignored",
+  "since": "2026-11-10T00:00:00+00:00",
+  "company": "Vanguard",
+  "role": "Data Science Intern",
+  "siblings": [],
+  "mails": [
+   {
+    "when": "2026-11-14T09:00:00+00:00",
+    "from": "careers@otherco.com",
+    "subject": "Thank you for applying to OtherCo",
+    "body": null
+   },
+   {
+    "when": "2026-11-13T09:00:00+00:00",
+    "from": "careers@vanguard.com",
+    "subject": "Thank you for applying to Vanguard",
+    "body": null
+   }
+  ],
+  "expect": "Thank you for applying to Vanguard"
+ }
+]

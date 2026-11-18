@@ -1,0 +1,382 @@
+[
+ {
+  "kind": "concurrent",
+  "name": "four distinct questions saved by four simultaneous runs",
+  "questions": [
+   "Do you have a forklift certificate",
+   "What is your typing speed",
+   "Preferred shift",
+   "How many years of experience do you have"
+  ],
+  "expect": {
+   "saved": 4,
+   "all_present": true
+  },
+  "spec_quote": "Every run of `qa_add.py` that saves an answer takes an exclusive lock on the profile (a lock file next to it) from before it reads the profile until the answer is written, the browser bundle rebuilt and the data home commit made. ... Two runs started at the same moment both succeed and BOTH answers are in the profile afterwards (no answer is lost, the file stays valid JSON).",
+  "ambiguous": false
+ },
+ {
+  "kind": "concurrent",
+  "name": "case and hyphen variants of two questions from four simultaneous runs",
+  "questions": [
+   "Forklift certificate",
+   "FORKLIFT CERTIFICATE",
+   "Preferred shift",
+   "preferred-shift"
+  ],
+  "expect": {
+   "saved": 2,
+   "all_present": true
+  },
+  "spec_quote": "Two runs started at the same moment both succeed and BOTH answers are in the profile afterwards (no answer is lost, the file stays valid JSON).",
+  "ambiguous": false
+ },
+ {
+  "kind": "concurrent",
+  "name": "six distinct questions saved by six simultaneous runs",
+  "questions": [
+   "Do you have a forklift certificate",
+   "What is your typing speed",
+   "Preferred shift",
+   "How many years of experience do you have",
+   "Are you willing to work weekends",
+   "Do you have a driver licence"
+  ],
+  "expect": {
+   "saved": 6,
+   "all_present": true
+  },
+  "spec_quote": "Every run of `qa_add.py` that saves an answer takes an exclusive lock on the profile ... from before it reads the profile until the answer is written ... Two runs started at the same moment both succeed and BOTH answers are in the profile afterwards (no answer is lost, the file stays valid JSON).",
+  "ambiguous": false
+ },
+ {
+  "kind": "concurrent",
+  "name": "two simultaneous runs asking the same question with different punctuation",
+  "questions": [
+   "Years of experience - total",
+   "Years of experience: total"
+  ],
+  "expect": {
+   "saved": 1,
+   "all_present": true
+  },
+  "spec_quote": "Two runs started at the same moment both succeed and BOTH answers are in the profile afterwards (no answer is lost, the file stays valid JSON).",
+  "ambiguous": false
+ },
+ {
+  "kind": "concurrent",
+  "name": "five simultaneous runs where two questions normalise to the same question",
+  "questions": [
+   "Do you have a forklift certificate",
+   "Typing speed, words per minute",
+   "typing speed words per minute",
+   "Preferred shift",
+   "Willing to work weekends"
+  ],
+  "expect": {
+   "saved": 4,
+   "all_present": true
+  },
+  "spec_quote": "Two runs started at the same moment both succeed and BOTH answers are in the profile afterwards (no answer is lost, the file stays valid JSON).",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "append only: two entries added at the end",
+  "before": [
+   "a1",
+   "a2",
+   "a3"
+  ],
+  "after": [
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5"
+  ],
+  "expect_changed": [
+   4,
+   5
+  ],
+  "expect_text": "4,5",
+  "spec_quote": "`changed_numbers(before, after)` takes two lists (the qa list before and after) and returns the 1-based numbers of the entries in `after` that are new or differ from the entry at the same position in `before`, in order; an unchanged entry is not listed; removed entries are ignored.",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "replace only: middle entry changed in place",
+  "before": [
+   "preferred shift: days",
+   "typing speed: 40 wpm",
+   "forklift certificate: no"
+  ],
+  "after": [
+   "preferred shift: days",
+   "typing speed: 60 wpm",
+   "forklift certificate: no"
+  ],
+  "expect_changed": [
+   2
+  ],
+  "expect_text": "2",
+  "spec_quote": "`changed_numbers(before, after)` ... returns the 1-based numbers of the entries in `after` that are new or differ from the entry at the same position in `before`, in order; an unchanged entry is not listed; removed entries are ignored.",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "mixed: one replaced, one replaced and one appended",
+  "before": [
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5"
+  ],
+  "after": [
+   "a1",
+   "b2",
+   "a3",
+   "a4",
+   "b5",
+   "a6"
+  ],
+  "expect_changed": [
+   2,
+   5,
+   6
+  ],
+  "expect_text": "2,5,6",
+  "spec_quote": "`changed_numbers(before, after)` ... returns the 1-based numbers of the entries in `after` that are new or differ from the entry at the same position in `before`, in order; an unchanged entry is not listed; removed entries are ignored.",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "nothing changed: identical before and after",
+  "before": [
+   "a1",
+   "a2",
+   "a3"
+  ],
+  "after": [
+   "a1",
+   "a2",
+   "a3"
+  ],
+  "expect_changed": [],
+  "expect_text": "?",
+  "spec_quote": "an unchanged entry is not listed ... an empty list gives \"?\".",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "removed entries: one entry deleted in the middle shifts later entries",
+  "before": [
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5"
+  ],
+  "after": [
+   "a1",
+   "a2",
+   "a4",
+   "a5"
+  ],
+  "expect_changed": [
+   3,
+   4
+  ],
+  "expect_text": "3,4",
+  "spec_quote": "`changed_numbers(before, after)` ... returns the 1-based numbers of the entries in `after` that are new or differ from the entry at the same position in `before`, in order; an unchanged entry is not listed; removed entries are ignored.",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "exactly 12 entries changed: no truncation suffix",
+  "before": [
+   "e1",
+   "e2",
+   "e3",
+   "e4",
+   "e5",
+   "e6",
+   "e7",
+   "e8",
+   "e9",
+   "e10",
+   "e11",
+   "e12"
+  ],
+  "after": [
+   "f1",
+   "f2",
+   "f3",
+   "f4",
+   "f5",
+   "f6",
+   "f7",
+   "f8",
+   "f9",
+   "f10",
+   "f11",
+   "f12"
+  ],
+  "expect_changed": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12
+  ],
+  "expect_text": "1,2,3,4,5,6,7,8,9,10,11,12",
+  "spec_quote": "the numbers joined by \",\" (e.g. \"5,7,9\"); when there are more than 12 only the first 12 are written, followed by \" (+K more)\" where K is the count minus 12; an empty list gives \"?\".",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "13 entries changed: truncated to 12 with (+1 more)",
+  "before": [
+   "e1",
+   "e2",
+   "e3",
+   "e4",
+   "e5",
+   "e6",
+   "e7",
+   "e8",
+   "e9",
+   "e10",
+   "e11",
+   "e12",
+   "e13"
+  ],
+  "after": [
+   "f1",
+   "f2",
+   "f3",
+   "f4",
+   "f5",
+   "f6",
+   "f7",
+   "f8",
+   "f9",
+   "f10",
+   "f11",
+   "f12",
+   "f13"
+  ],
+  "expect_changed": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "expect_text": "1,2,3,4,5,6,7,8,9,10,11,12 (+1 more)",
+  "spec_quote": "when there are more than 12 only the first 12 are written, followed by \" (+K more)\" where K is the count minus 12; an empty list gives \"?\".",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "20 entries changed: truncated to 12 with (+8 more)",
+  "before": [
+   "e1",
+   "e2",
+   "e3",
+   "e4",
+   "e5",
+   "e6",
+   "e7",
+   "e8",
+   "e9",
+   "e10",
+   "e11",
+   "e12",
+   "e13",
+   "e14",
+   "e15",
+   "e16",
+   "e17",
+   "e18",
+   "e19",
+   "e20"
+  ],
+  "after": [
+   "f1",
+   "f2",
+   "f3",
+   "f4",
+   "f5",
+   "f6",
+   "f7",
+   "f8",
+   "f9",
+   "f10",
+   "f11",
+   "f12",
+   "f13",
+   "f14",
+   "f15",
+   "f16",
+   "f17",
+   "f18",
+   "f19",
+   "f20"
+  ],
+  "expect_changed": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ],
+  "expect_text": "1,2,3,4,5,6,7,8,9,10,11,12 (+8 more)",
+  "spec_quote": "when there are more than 12 only the first 12 are written, followed by \" (+K more)\" where K is the count minus 12; an empty list gives \"?\".",
+  "ambiguous": false
+ },
+ {
+  "kind": "numbers",
+  "name": "empty after: everything removed",
+  "before": [
+   "Do you have a forklift certificate: yes",
+   "What is your typing speed: 40 wpm"
+  ],
+  "after": [],
+  "expect_changed": [],
+  "expect_text": "?",
+  "spec_quote": "removed entries are ignored ... an empty list gives \"?\".",
+  "ambiguous": false
+ }
+]

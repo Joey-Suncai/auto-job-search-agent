@@ -1,0 +1,206 @@
+[
+ {
+  "name": "amat_question_ok_rule_beats_cached_earlier_year",
+  "rule": {
+   "status": "ok",
+   "value": "I am in my second to last year of study"
+  },
+  "ds_value": "earlier year",
+  "expect": false
+ },
+ {
+  "name": "amat_question_ok_rule_same_value_as_cache",
+  "rule": {
+   "status": "ok",
+   "value": "I am in my second to last year of study"
+  },
+  "ds_value": "I am in my second to last year of study",
+  "expect": false
+ },
+ {
+  "name": "empty_rule_cached_string_ok",
+  "rule": {},
+  "ds_value": "Cached DeepSeek answer",
+  "expect": true
+ },
+ {
+  "name": "empty_rule_null_cache_false",
+  "rule": {},
+  "ds_value": null,
+  "expect": false
+ },
+ {
+  "name": "empty_rule_empty_string_cache_false",
+  "rule": {},
+  "ds_value": "",
+  "expect": false
+ },
+ {
+  "name": "ok_status_without_leave_false",
+  "rule": {
+   "status": "ok",
+   "value": "Yes"
+  },
+  "ds_value": "No",
+  "expect": false
+ },
+ {
+  "name": "ok_status_leave_true_allows_cache",
+  "rule": {
+   "status": "ok",
+   "leave": true
+  },
+  "ds_value": "cached answer",
+  "expect": true
+ },
+ {
+  "name": "ok_status_leave_false_false",
+  "rule": {
+   "status": "ok",
+   "leave": false
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "ok_status_leave_true_null_cache_false",
+  "rule": {
+   "status": "ok",
+   "leave": true
+  },
+  "ds_value": null,
+  "expect": false
+ },
+ {
+  "name": "no_auto_true_empty_rule_false",
+  "rule": {
+   "no_auto": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "no_auto_true_with_ok_status_false",
+  "rule": {
+   "status": "ok",
+   "no_auto": true,
+   "value": "Yes"
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "ask_true_with_status_none_false",
+  "rule": {
+   "status": "none",
+   "ask": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "ask_true_empty_rule_false",
+  "rule": {
+   "ask": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "consent_status_false",
+  "rule": {
+   "status": "consent"
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "consent_status_null_cache_false",
+  "rule": {
+   "status": "consent"
+  },
+  "ds_value": null,
+  "expect": false
+ },
+ {
+  "name": "status_none_allows_cache",
+  "rule": {
+   "status": "none"
+  },
+  "ds_value": "cached answer",
+  "expect": true
+ },
+ {
+  "name": "status_none_leave_true_allows_cache",
+  "rule": {
+   "status": "none",
+   "leave": true
+  },
+  "ds_value": "cached answer",
+  "expect": true
+ },
+ {
+  "name": "ok_leave_true_no_auto_false",
+  "rule": {
+   "status": "ok",
+   "leave": true,
+   "no_auto": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "ok_leave_true_ask_false",
+  "rule": {
+   "status": "ok",
+   "leave": true,
+   "ask": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "unknown_status_allows_cache",
+  "rule": {
+   "status": "deferred"
+  },
+  "ds_value": "cached answer",
+  "expect": true
+ },
+ {
+  "name": "ok_rule_different_value_false",
+  "rule": {
+   "status": "ok",
+   "value": "I am in my final year of study"
+  },
+  "ds_value": "earlier year",
+  "expect": false
+ },
+ {
+  "name": "ok_leave_true_with_different_value_allows_cache",
+  "rule": {
+   "status": "ok",
+   "leave": true,
+   "value": "I am in my final year of study"
+  },
+  "ds_value": "earlier year",
+  "expect": true
+ },
+ {
+  "name": "consent_with_leave_true_false",
+  "rule": {
+   "status": "consent",
+   "leave": true
+  },
+  "ds_value": "cached answer",
+  "expect": false
+ },
+ {
+  "name": "no_auto_true_null_cache_false",
+  "rule": {
+   "no_auto": true
+  },
+  "ds_value": null,
+  "expect": false
+ }
+]

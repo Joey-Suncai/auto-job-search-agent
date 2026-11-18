@@ -5,6 +5,7 @@
 batch: {"name","date","jobs":[{"id","company","title","url","track"}]}  (Workday URLs: *.myworkdayjobs.com / myworkdaysite.com)
 Questions are not public on Workday → run_wd.py reads them page by page and stops with wd_needs.json for anything unknown.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import json, os, re, subprocess, sys, urllib.request
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -12,6 +13,8 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys
 sys.path.insert(0, os.path.join(HERE, '..', '..', '..', 'config'))   # the repo's config/ (JSA-184: '..' alone = skills/auto-apply/config, missing in the release)
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
 from prep_batch import text_of, slug, ROOT
+import posting as PO  # noqa: E402  (JSA-331: look jobs up by ats_url first)
+import app_folder as AF  # noqa: E402  (JSA-319: one folder per job — found by job id first)
 try:
     from prefilter import RX as FLAGS
 except Exception:
@@ -46,7 +49,7 @@ def via_chrome(api):
     try:                                   # CA-cert issue on python.org builds → read it through the job Chrome
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
-            page = pw.chromium.connect_over_cdp('http://127.0.0.1:9222').contexts[0].new_page()
+            page = cdp_connect.connect(pw, 'http://127.0.0.1:9222').contexts[0].new_page()
             r = page.request.get(api, headers={'Accept': 'application/json'}); page.close()
             return r.json() if r.ok else None
     except Exception:
@@ -72,7 +75,7 @@ def main():
     for j in batch['jobs']:
         row = {'id': j['id'], 'company': j['company'], 'title': j['title'], 'ats': 'workday'}
         try:
-            j['url'] = resolve(j['url']); api = cxs_url(j['url'])
+            j['url'] = resolve(PO.posting_url(j)); api = cxs_url(j['url'])   # JSA-331: ats_url first
             data = fetch(api) if api else None
         except Exception as e:
             api, data = None, None; print(f"✗ {j['company']}: {type(e).__name__} {str(e)[:80]}")
@@ -81,8 +84,7 @@ def main():
             row['status'] = 'closed_or_unreadable'; status.append(row); print(f"✗ {j['company']}: posting not found ({api})"); continue
         jd = text_of(info.get('jobDescription'))
         flags = [k for k, rx in FLAGS.items() if rx.search(jd)]
-        folder = jpaths.apps(f"{batch['date']}_{slug(j['company'], 20)}_{slug(j['title'])}")
-        os.makedirs(folder, exist_ok=True)
+        folder = AF.for_job(j['id'], batch['date'], j['company'], j['title'], jpaths.apps(), AF.submitted_fn())   # JSA-319
         try: subprocess.run(['xattr', '-w', 'com.apple.fileprovider.pinned#PX', '1', folder], capture_output=True)
         except FileNotFoundError: pass
         json.dump({'url': j['url'], 'api': api, 'id': j['id'], 'company': j['company'], 'title': info.get('title'), 'track': j.get('track'),

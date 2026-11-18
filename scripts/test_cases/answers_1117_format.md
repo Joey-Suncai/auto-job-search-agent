@@ -1,0 +1,1 @@
+JSON list of cases: {"name": short string, "label": the question text, "type": "select" | "multi" | "text" | "file", "options": [strings, empty for text/file], "expect": the exact answer string, or "ask"}.

@@ -22,6 +22,9 @@ Second route (JSA-125, 2026-11-03): the tracker's Done button —
 runs scripts/store/action_done.apply() (done = action_needed → action_done history; false = undo) and answers the new
 row's {job_id, action_needed, action_done}. Same guards as /pref. Cases: scripts/test_cases/action_route_*.
 
+Fourth route (JSA-406): POST /decline {job_id, give_up: true|false} — the Waiting-for-you table's Give up (and its Undo):
+status → "Declined by Joey" via action_done.decline; nothing is sent to the company. Cases: scripts/test_cases/give_up_*.
+
 Third route (JSA-179, 2026-11-05): the job detail panel's Apply button (after the page's confirm dialog) —
     POST /apply   X-JSA-Pref: 1   Content-Type: application/json   {"job_id": "J01234", "confirm": true}
 runs scripts/store/apply_req.queue() (checks: 可投, not in the tracker, not requested yet, not on the skip list, a runner
@@ -49,7 +52,7 @@ def validate(method, path, headers, body):
     if not LOCAL_HOST.fullmatch(headers.get('host') or ''):
         return 421, {'error': 'bad host'}
     route = path.split('?')[0]
-    if route not in ('/pref', '/action', '/apply'):
+    if route not in ('/pref', '/action', '/apply', '/decline'):
         return 404, {'error': 'unknown path'}
     if method != 'POST':
         return 405, {'error': 'POST only'}
@@ -73,6 +76,14 @@ def validate(method, path, headers, body):
         if d['confirm'] is not True:
             return 400, {'error': 'confirm must be true'}
         return 200, {'route': '/apply', 'job_id': d['job_id']}
+    if route == '/decline':
+        if not isinstance(d, dict) or set(d) != {'job_id', 'give_up'}:
+            return 400, {'error': 'body must be a JSON object {job_id, give_up}'}
+        if not isinstance(d['job_id'], str) or not ID.fullmatch(d['job_id']):
+            return 400, {'error': 'bad job_id'}
+        if not isinstance(d['give_up'], bool):
+            return 400, {'error': 'give_up must be true or false'}
+        return 200, {'route': '/decline', 'job_id': d['job_id'], 'give_up': d['give_up']}
     if route == '/action':
         if not isinstance(d, dict) or set(d) != {'job_id', 'done'}:
             return 400, {'error': 'body must be a JSON object {job_id, done}'}
@@ -109,7 +120,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):                         # CORS preflight: only for local pages, only for /pref
         h = self._headers()
-        if not LOCAL_HOST.fullmatch(h.get('host') or '') or self.path.split('?')[0] not in ('/pref', '/action', '/apply') or not origin_ok(h.get('origin')):
+        if not LOCAL_HOST.fullmatch(h.get('host') or '') or self.path.split('?')[0] not in ('/pref', '/action', '/apply', '/decline') or not origin_ok(h.get('origin')):
             return self._send(403, {'error': 'preflight refused'})
         self.send_response(204)
         self.send_header('Access-Control-Allow-Origin', h.get('origin') or 'null')
@@ -146,6 +157,19 @@ class H(BaseHTTPRequestHandler):
             desk = apply_req.ensure_desk()                # JSA-182: one desk; none listening → push Joey (never two runners)
             sys.stderr.write(f"pref_server: apply queued {row['id']} {row.get('company', '')} (desk {desk})\n")
             return self._send(200, {'job_id': row['id'], 'apply_req': row['apply_req'], 'apply_req_at': row['apply_req_at'], 'desk': desk})
+        if req.get('route') == '/decline':   # JSA-406: Give up on the Waiting-for-you table (same write path as Done)
+            sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'store'))
+            import action_done
+            try:
+                row = action_done.apply_decline(req['job_id'], req['give_up'])
+            except KeyError:
+                return self._send(404, {'error': f"unknown job_id {req['job_id']}"})
+            except ValueError as e:
+                return self._send(409, {'error': str(e)[:300]})
+            except Exception as e:
+                return self._send(500, {'error': f'{type(e).__name__}: {e}'[:300]})
+            sys.stderr.write(f"pref_server: {'give up' if req['give_up'] else 'undo give up'} {row['job_id']} {row.get('company', '')}\n")
+            return self._send(200, {k: row.get(k) for k in ('job_id', 'status', 'action_needed', 'action_deadline', 'next_step', 'declined')})
         if req.get('route') == '/action':
             sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'store'))
             import action_done

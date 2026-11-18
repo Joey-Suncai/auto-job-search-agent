@@ -1,0 +1,527 @@
+[
+ {
+  "name": "basic pass with case-insensitive org and anchor matching",
+  "why": "Sanity pass case: heading matches org case-insensitively, bullet contains an anchor as a case-insensitive substring, and every bullet number appears in the fact's own text. Nothing should be flagged.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Software Engineer",
+     "dates": "2020-2022"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Scaling",
+     "T": "Event pipeline",
+     "A": "Built a pipeline handling 500 events per second",
+     "R": "Cut latency 70%",
+     "numbers": [
+      "500",
+      "70"
+     ],
+     "skills": [
+      "python"
+     ],
+     "anchors": [
+      "event pipeline"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## acme corp\n- Built an event pipeline handling 500 events per second, cutting latency 70%\n",
+  "expect": "pass",
+  "expect_problems": [],
+  "expect_stale": []
+ },
+ {
+  "name": "number drift in the fact itself",
+  "why": "Spec: 'Every number written in a fact's \"numbers\" list must also appear in that fact's own S/T/A/R text'. 500 is not in any of the S/T/A/R strings, so the checker reports number_drift and the bank is otherwise clean.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a data pipeline",
+     "R": "Improved reliability",
+     "numbers": [
+      "500"
+     ],
+     "skills": [
+      "go"
+     ],
+     "anchors": [
+      "pipeline"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Built a data pipeline\n",
+  "expect": "fail",
+  "expect_problems": [
+   "number_drift"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "bank section matches no entry",
+  "why": "Spec rule 3: heading 'Globex Industries' is not an exact org match and shares zero words with 'Acme Corp', so 'No match -> problem \"no entry\"'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Acme Corp",
+     "role": "Lead",
+     "dates": "2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a dashboard",
+     "R": "Saved time",
+     "numbers": [],
+     "skills": [
+      "react"
+     ],
+     "anchors": [
+      "dashboard"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Globex Industries\n- Built a dashboard\n",
+  "expect": "fail",
+  "expect_problems": [
+   "no_entry"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "bullet maps to no fact (unmapped)",
+  "why": "Spec rule 4: a bullet is mapped only to facts of the entry whose anchors appear in the bullet. The only fact's anchor is 'kafka' and the bullet never contains it, so zero facts -> 'unmapped'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a streaming service",
+     "R": "",
+     "numbers": [],
+     "skills": [
+      "go"
+     ],
+     "anchors": [
+      "kafka"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Mentored junior engineers\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unmapped"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "unsupported number, with fuzzy word-overlap heading match",
+  "why": "Heading 'Acme Corp Platform Team' is not an exact org match but shares the two words 'acme' and 'corp' with the entry, so the section matches. The bullet's 5000 is not 500 and appears in neither the fact's text nor 'numbers' -> 'unsupported number'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a pipeline handling 500 events",
+     "R": "",
+     "numbers": [
+      "500"
+     ],
+     "skills": [
+      "go"
+     ],
+     "anchors": [
+      "pipeline"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp Platform Team\n- Built a pipeline handling 5000 events\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "never phrase from the entry, matched case-insensitively",
+  "why": "Spec rule 6: a bullet containing any 'never' phrase of its entry triggers 'never phrase'. The entry forbids 'Synergy'; the bullet says 'SYNERGY' as a whole word, so the case-insensitive whole-word test hits.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020",
+     "never": [
+      "Synergy"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a pipeline",
+     "R": "",
+     "numbers": [],
+     "skills": [
+      "go"
+     ],
+     "anchors": [
+      "pipeline"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Built a pipeline to drive SYNERGY across teams\n",
+  "expect": "fail",
+  "expect_problems": [
+   "never_phrase"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "never phrase must not fire inside a longer word",
+  "why": "Spec rule 6 requires whole-word/phrase matching, 'not inside a longer word'. The entry forbids 'Rust'; 'trust' contains those letters but is a different word, so this bullet must pass with no false alarm.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020",
+     "never": [
+      "Rust"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a pipeline",
+     "R": "",
+     "numbers": [],
+     "skills": [
+      "go"
+     ],
+     "anchors": [
+      "pipeline"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Built a pipeline that earned stakeholder trust\n",
+  "expect": "pass",
+  "expect_problems": [],
+  "expect_stale": []
+ },
+ {
+  "name": "number found only in history is a stale warning, not a failure",
+  "why": "History rule: 'A bullet number found only in a mapped fact's history (its A, R or numbers) -> NOT a problem; it is reported as a \"stale\" warning (the result is still \"pass\")'. 35 lives only in history, 20 is the current truth.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020-2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Reduced onboarding time by 20%",
+     "R": "",
+     "numbers": [
+      "20"
+     ],
+     "skills": [
+      "ops"
+     ],
+     "anchors": [
+      "onboarding"
+     ],
+     "never": [],
+     "source": "resume",
+     "history": [
+      {
+       "as_of": "2020-06-01",
+       "A": "Reduced onboarding time by 35%",
+       "R": "",
+       "numbers": [
+        "35"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Reduced onboarding time by 35% for new hires\n",
+  "expect": "pass",
+  "expect_problems": [],
+  "expect_stale": [
+   "35"
+  ]
+ },
+ {
+  "name": "stale number and unsupported number in the same bullet",
+  "why": "Same mapping as before: 35 is only in history (stale warning, not a problem) while 40 is in neither current text/numbers nor history, so 'unsupported number' is still a problem and the result is 'fail'.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020-2021"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Reduced onboarding time by 20%",
+     "R": "",
+     "numbers": [
+      "20"
+     ],
+     "skills": [
+      "ops"
+     ],
+     "anchors": [
+      "onboarding"
+     ],
+     "never": [],
+     "source": "resume",
+     "history": [
+      {
+       "as_of": "2020-06-01",
+       "A": "Reduced onboarding time by 35%",
+       "R": "",
+       "numbers": [
+        "35"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Reduced onboarding time by 35% and cut costs 40%\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unsupported_number"
+  ],
+  "expect_stale": [
+   "35"
+  ]
+ },
+ {
+  "name": "history never adds anchors",
+  "why": "History rule: 'History never adds anchors: a bullet that matches only words in a history entry is still \"unmapped\".' The fact's current anchor is 'kubernetes'; 'terraform' appears only in history, so the bullet is unmapped.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Migrated services to Kubernetes",
+     "R": "",
+     "numbers": [],
+     "skills": [
+      "k8s"
+     ],
+     "anchors": [
+      "kubernetes"
+     ],
+     "never": [],
+     "source": "resume",
+     "history": [
+      {
+       "as_of": "2019-01-01",
+       "A": "Migrated services to Terraform",
+       "R": "",
+       "numbers": []
+      }
+     ]
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Migrated services to Terraform\n",
+  "expect": "fail",
+  "expect_problems": [
+   "unmapped"
+  ],
+  "expect_stale": []
+ },
+ {
+  "name": "number normalization: currency, commas, percent, decimals, ranges",
+  "why": "Normalization removes ¥/$ , % and + and keeps decimals, and a range is two numbers, so 10000, 2500, 2.5, 2017 and 2018 in the bullet all match the fact's text/numbers. No drift either, since each listed number appears in A or R after normalization.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "project",
+     "org": "Nimbus Labs",
+     "role": "Creator",
+     "dates": "2017-2018"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Raised ¥10,000 in funding and grew to 2,500 users",
+     "R": "Improved retention from 2017–2018 by 2.5%",
+     "numbers": [
+      "10000",
+      "2500",
+      "2017",
+      "2018",
+      "2.5"
+     ],
+     "skills": [
+      "growth"
+     ],
+     "anchors": [
+      "funding"
+     ],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## nimbus labs\n- Raised $10,000 in funding and grew to 2500 users; retention up 2.5% from 2017–2018\n",
+  "expect": "pass",
+  "expect_problems": [],
+  "expect_stale": []
+ },
+ {
+  "name": "schema problem stops the check",
+  "why": "Spec: 'skills' and 'anchors' non-empty lists is a schema rule; this fact has an empty anchors list, so the checker reports a schema problem and stops (the bank is not checked).",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "experience",
+     "org": "Acme Corp",
+     "role": "Engineer",
+     "dates": "2020"
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Built a pipeline",
+     "R": "",
+     "numbers": [],
+     "skills": [
+      "go"
+     ],
+     "anchors": [],
+     "never": [],
+     "source": "resume"
+    }
+   ]
+  },
+  "bank_md": "## Acme Corp\n- Built a pipeline 999 times\n",
+  "expect": "fail",
+  "expect_problems": [
+   "schema"
+  ],
+  "expect_stale": []
+ }
+]

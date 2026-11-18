@@ -23,7 +23,7 @@ Answer slot: {"text": "…"} | {"yes": true} | {"no": true} | {"pick": "<option>
 import argparse, json, os, re, subprocess, sys
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
-from datetime import date
+from datetime import date, datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
@@ -116,20 +116,95 @@ def qa_args(entry, source):
         return None
     if entry.get('match'):
         args += ['--match', entry['match']]
-    if entry.get('options'):
-        args += ['--options', '|'.join(entry['options'])]
+    sets = entry.get('option_sets') or ([entry['options']] if entry.get('options') else [])
+    if len(sets) == 1 and not any('|' in str(o) for o in sets[0]):
+        args += ['--options', '|'.join(sets[0])]
+    else:                                                       # JSA-241: one shape per form's list; JSON, an option may hold "|"
+        for lst in sets:
+            args += ['--options-json', json.dumps(lst, ensure_ascii=False)]
     return args
 
 
 def sheet_answer(sheet, entry):
     """Pure. The answer slot to apply: the entry's own `answer`; else, when Joey accepted the derived block
     (`accept_derived`: true, the form-prefetch sheet's one click), its `suggested` slot — only for a 'derived' entry that
-    is not high-risk."""
+    is not high-risk. A slot marked `draft` is never applied (JSA-366)."""
     if entry.get('answer'):
-        return entry['answer']
+        return None if isinstance(entry['answer'], dict) and entry['answer'].get('draft') else entry['answer']
     if sheet.get('accept_derived') and entry.get('block') == 'derived' and not entry.get('risk') and entry.get('kind') != 'high_risk':
         return entry.get('suggested') or None
     return None
+
+
+CLAIM_MAX_AGE = 6 * 3600                                       # seconds: an older claim is stale whatever its pid
+
+
+def claim_sheet(forms_dir, name, pid=None):
+    """JSA-366. Take the apply claim of one sheet: (True, None), or (False, holder) when a live process of another session
+    holds it. A claim whose process is gone is taken over. The claim file is created exclusively, so two sessions starting
+    together cannot both get it."""
+    path = _claim_path(forms_dir, name)
+    os.makedirs(forms_dir, exist_ok=True)
+    for _ in range(3):
+        try:
+            fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            holder = {}
+            try:
+                holder = json.load(open(path, encoding='utf-8'))
+                if (datetime.now() - datetime.fromisoformat(holder['at'])).total_seconds() > CLAIM_MAX_AGE:
+                    raise ValueError('too old (a recycled pid must not block the sheet)')
+                os.kill(int(holder['pid']), 0)
+                return False, holder
+            except PermissionError:                               # alive, another user
+                return False, holder
+            except (OSError, ValueError, KeyError, TypeError):    # unreadable or its process is gone: stale
+                try:                                              # takeover by rename: only one session moves the stale file away
+                    os.rename(path, path + f'.stale{os.getpid()}')
+                    os.remove(path + f'.stale{os.getpid()}')
+                except OSError:
+                    pass
+                continue
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            json.dump({'pid': pid or os.getpid(), 'at': datetime.now().isoformat(timespec='seconds')}, f)
+        return True, None
+    return False, {}
+
+
+def _claim_path(forms_dir, name):
+    return os.path.join(forms_dir, re.sub(r'[^A-Za-z0-9._-]', '_', name) + '.apply.lock')
+
+
+def release_sheet(forms_dir, name):
+    try:
+        os.remove(_claim_path(forms_dir, name))
+    except OSError:
+        pass
+
+
+def applied_before(forms_dir, name):
+    """The question texts a session already applied on this sheet (asked.jsonl lines with how == 'answered'; a deferred
+    sheet is not an applied one — JSA-366). None = a legacy line without questions (the whole sheet)."""
+    out = set()
+    try:
+        for l in open(os.path.join(forms_dir, 'asked.jsonl'), encoding='utf-8'):
+            try:
+                x = json.loads(l)
+                if x['sheet'] != name or x.get('how') != 'answered':
+                    continue
+                if x.get('questions') is None:
+                    return None
+                out |= {str(q) for q in x['questions']}
+            except (ValueError, KeyError, TypeError, AttributeError):
+                continue
+    except OSError:
+        pass
+    return out
+
+
+def unhandled(todo, done):
+    """Pure (tested). The entries of a sheet apply not yet handled: `done` = handled question texts (None = the whole sheet)."""
+    return [] if done is None else [e for e in todo if e.get('question') not in done]
 
 
 # ----------------------------------------------------------------------------- folders
@@ -227,24 +302,91 @@ def sheet_md(name, qs, human, skipped):
     return '\n'.join(L)
 
 
+def qa_spec(entry, source):
+    """Pure. A filled sheet entry → one `qa_add.py --batch` item (same fields as qa_args), or None when it has no answer."""
+    args = qa_args(entry, source)
+    if not args:
+        return None
+    sp = {'q': entry['question'], 'source': source}
+    a = entry['answer']
+    if a.get('yes'):
+        sp['yes'] = True
+    elif a.get('no'):
+        sp['yes'] = False
+    elif a.get('pick'):
+        sp['pick'] = list(a['pick']) if isinstance(a['pick'], list) else [a['pick']]
+    elif a.get('text'):
+        sp['text'] = a['text']
+    if entry.get('match'):
+        sp['match'] = entry['match']
+    sets = entry.get('option_sets') or ([entry['options']] if entry.get('options') else [])
+    if len(sets) == 1 and not any('|' in str(o) for o in sets[0]):
+        sp['options'] = '|'.join(sets[0])
+    elif sets:
+        sp['options_json'] = [json.dumps(l, ensure_ascii=False) for l in sets]
+    return sp
+
+
+def apply_sheet(sheet, todo, a, fdir, log):
+    """All answers of the sheet through ONE `qa_add.py --batch` (JSA-420): each is saved and checked like a single qa_add, the
+    ~30 s replay of the stored forms and the data-home commit run once (16 answers: 465 s → ~45 s)."""
+    import tempfile
+    source = a.source or f"Joey {date.today().isoformat()} (batch {sheet.get('name', '')})"
+    specs = [sp for sp in (qa_spec(e, source) for e in todo) if sp]
+    n = len(specs)
+    if specs:
+        with tempfile.TemporaryDirectory() as td:
+            bf = os.path.join(td, 'answers.json')
+            json.dump(specs, open(bf, 'w', encoding='utf-8'), ensure_ascii=False)
+            r = subprocess.run([sys.executable, os.path.join(HERE, '..', 'scripts', 'qa_add.py'), '--batch', bf], capture_output=True, text=True)
+        for l in (r.stdout or r.stderr or '(no output)').strip().splitlines():
+            log('qa_add: ' + l[:220] if not l.startswith(('qa_add:', ' ')) else l[:220])
+        if r.returncode:
+            log(f'collect_batch: qa_add --batch exit {r.returncode}: some answers were NOT saved (see "not saved" above)')
+    log(f'collect_batch: {n} answer(s) sent through qa_add.py --batch')
+    if str(sheet.get('name', '')).startswith('prefetch-'):   # JSA-243: today's morning sheet is handled (no more reminders)
+        sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
+        import prefetch_due
+        prefetch_due.mark(sheet['name'], 'answered', n, fdir, questions=[e.get('question') for e in sheet.get('questions') or []])
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('batch', nargs='*'); ap.add_argument('--name'); ap.add_argument('--run', action='store_true')
     ap.add_argument('--cdp', default='http://127.0.0.1:9222')
     ap.add_argument('--apply'); ap.add_argument('--source', default='')
+    ap.add_argument('--reapply', action='store_true', help='apply a prefetch sheet again although it was already applied (JSA-366)')
     a = ap.parse_args()
     log = print
     if a.apply:
         sheet = _load(a.apply) or {}
-        n = 0
-        for e in sheet.get('questions') or []:
-            e = dict(e, answer=sheet_answer(sheet, e))
-            args = qa_args(e, a.source or f"Joey {date.today().isoformat()} (batch {sheet.get('name', '')})")
-            if not args:
-                continue
-            r = subprocess.run([sys.executable, os.path.join(HERE, '..', 'scripts', 'qa_add.py')] + args, capture_output=True, text=True)
-            log(f"{e['id']}: " + ((r.stdout or r.stderr).strip().splitlines() or ['(no output)'])[0][:200]); n += 1
-        log(f'collect_batch: {n} answer(s) sent through qa_add.py'); return 0
+        fdir = os.path.dirname(os.path.abspath(a.apply))
+        todo = [dict(e, answer=sheet_answer(sheet, e)) for e in sheet.get('questions') or []]
+        if not str(sheet.get('name', '')).startswith('prefetch-'):
+            return apply_sheet(sheet, todo, a, fdir, log)
+        sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))   # JSA-366: one session per morning sheet
+        import prefetch_due
+        got, holder = claim_sheet(fdir, sheet['name'])
+        if not got:
+            log(f"collect_batch: NOT applied — another session is applying {sheet['name']} right now "
+                f"(pid {holder.get('pid')}, since {holder.get('at')}); nothing was written. Wait for it, do not run this twice.")
+            return 1
+        try:
+            done = applied_before(fdir, sheet['name'])
+            if done != set() and not a.reapply:
+                fresh = unhandled(todo, done)
+                if any(e['answer'] for e in todo) and not any(e['answer'] for e in fresh):
+                    log(f"collect_batch: NOT applied — {sheet['name']} was already applied by a session (asked.jsonl); nothing "
+                        f"was written. A second apply would save the same answers twice (--reapply to do it on purpose).")
+                    return 1
+                for e in todo:
+                    if e['answer'] and e not in fresh:
+                        log(f"{e['id']}: skipped — already applied from this sheet (--reapply to save it again)")
+                todo = fresh
+            return apply_sheet(sheet, todo, a, fdir, log)
+        finally:
+            release_sheet(fdir, sheet['name'])
     folders = folders_of(a.batch)
     if not folders:
         ap.error('give a batch file or folder names')

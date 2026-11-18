@@ -1,0 +1,854 @@
+{
+ "_doc": "JSA-361: Claude's verdict on every 'new wrong' of the 2026-11-16 run (rule 13). gold_stale / model_right / same_answer = not a new wrong answer; real = a new wrong answer. Each item holds a list of judged readings; a verdict counts only for the reading it judged ('read'); another reading of the item must be judged again. Reasons cite the decision, never the fact value.",
+ "verdicts": {
+  "r99b03d347f1f": [
+   {
+    "verdict": "gold_stale",
+    "reason": "same key; the audit's answer predates Joey's decision of 2026-11-11 on any-employer questions (JSA-310)",
+    "read": {
+     "fact_key": "any_employer",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r9088e0fd2caf": [
+   {
+    "verdict": "gold_stale",
+    "reason": "same key; the audit's answer predates Joey's decision of 2026-11-11 on any-employer questions (JSA-310)",
+    "read": {
+     "fact_key": "any_employer",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r607234e0fed8": [
+   {
+    "verdict": "gold_stale",
+    "reason": "a GPA question; the corpus source names rule discipline (join defect) — the model's gpa is right",
+    "read": {
+     "fact_key": "gpa",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   },
+   {
+    "verdict": "gold_stale",
+    "reason": "a GPA question; the corpus source names rule discipline (join defect) — the model's gpa is right",
+    "read": {
+     "fact_key": "gpa",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rd6eb9b25d2a5": [
+   {
+    "verdict": "model_right",
+    "reason": "'most recent employer' = recent_employer (Joey 2026-11-10, JSA-288: most recent employer = rule recent_employer)",
+    "read": {
+     "fact_key": "recent_employer",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r9761a8d7be6b": [
+   {
+    "verdict": "model_right",
+    "reason": "'Legal First Name (if different from preferred name)' asks the legal first name = first_name",
+    "read": {
+     "fact_key": "first_name",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r54f5dd41333b": [
+   {
+    "verdict": "model_right",
+    "reason": "'Alternate Email' = secondary_email (the list key for it)",
+    "read": {
+     "fact_key": "secondary_email",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r64ccf6175b84": [
+   {
+    "verdict": "model_right",
+    "reason": "'additional compensation expectations (i.e. bonus)' = bonus",
+    "read": {
+     "fact_key": "bonus",
+     "shape": "paragraph",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   },
+   {
+    "verdict": "model_right",
+    "reason": "'additional compensation expectations (i.e. bonus)' = bonus",
+    "read": {
+     "fact_key": "bonus",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r3d4ab18649e3": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I accept' agreement = attestation / terms; both answers accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r52a590d745f4": [
+   {
+    "verdict": "model_right",
+    "reason": "'consent to the terms and conditions' = terms; both answers agree",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r124bb4d5b5fb": [
+   {
+    "verdict": "model_right",
+    "reason": "'agree to the Terms and Conditions' = terms; both answers agree",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "re05b31814a56": [
+   {
+    "verdict": "same_answer",
+    "reason": "current cumulative GPA: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "gpa_current",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rd02ace9bb7bb": [
+   {
+    "verdict": "same_answer",
+    "reason": "most up-to-date GPA: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "gpa_current",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r7b1a9be05b3d": [
+   {
+    "verdict": "same_answer",
+    "reason": "current cumulative GPA: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "gpa_current",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r91e6badd5254": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation year with year options: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "end_year",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r820b61eb53d9": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation year with year options: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "end_year",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rbb283119ce95": [
+   {
+    "verdict": "same_answer",
+    "reason": "'confirm you are currently enrolled in a Master's or PhD': the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "grad_pursuit",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "re46c407747b0": [
+   {
+    "verdict": "same_answer",
+    "reason": "degree pursuing with Bachelor's / Master's / PhD: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "school_level",
+     "shape": "multi_choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   },
+   {
+    "verdict": "real",
+    "reason": "degree pursuing read as degree_progress (a pursuing-or-completed statement key): not provably the same option as degree",
+    "read": {
+     "fact_key": "degree_progress",
+     "shape": "multi_choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r529356d31f98": [
+   {
+    "verdict": "same_answer",
+    "reason": "start of a summer internship: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "avail_season",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r25bae247b63e": [
+   {
+    "verdict": "same_answer",
+    "reason": "desired start date: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "start_date",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r4e27b1571b2c": [
+   {
+    "verdict": "same_answer",
+    "reason": "CC-305 boxes: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "disability",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r7cc0bda403a7": [
+   {
+    "verdict": "same_answer",
+    "reason": "CC-305 boxes: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "disability",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r9f4b74b58bcd": [
+   {
+    "verdict": "same_answer",
+    "reason": "employed at a named site: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "employed_by_other",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   },
+   {
+    "verdict": "real",
+    "reason": "'currently employed at a member site?' read as the current-employer name key: a value fact on a yes/no question",
+    "read": {
+     "fact_key": "employer",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2
+   }
+  ],
+  "rdbfc585e1d36": [
+   {
+    "verdict": "same_answer",
+    "reason": "provided services as a contract worker here: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "contractor_here",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r8f70e53861a1": [
+   {
+    "verdict": "same_answer",
+    "reason": "employee_statement pick 'I have never been employed' = the same option prev_employed gave: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "employee_statement",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r507e33c41b13": [
+   {
+    "verdict": "same_answer",
+    "reason": "employed here before: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "hired_here_before",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r4f1bfa9d9388": [
+   {
+    "verdict": "same_answer",
+    "reason": "available full-time June–August 2027: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "work_period",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rd7ac95e06481": [
+   {
+    "verdict": "same_answer",
+    "reason": "available full time for the internship: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "work_period",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r106bde4903a2": [
+   {
+    "verdict": "real",
+    "reason": "class standing (Freshman … options) read as undergrad_year (a yes/no 'are you a junior' key) instead of college_year_current",
+    "read": {
+     "fact_key": "undergrad_year",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r1bfa2d97e78c": [
+   {
+    "verdict": "real",
+    "reason": "year in school (Freshman, Sophomore …) read as undergrad_year instead of school_level / college_year_current",
+    "read": {
+     "fact_key": "undergrad_year",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   },
+   {
+    "verdict": "model_right",
+    "reason": "year in school = current year in college; the profile holds a fact written for exactly that question (answers.college_year_current) — truthful, list v2 description",
+    "read": {
+     "fact_key": "college_year_current",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2
+   }
+  ],
+  "r7e4e7936b066": [
+   {
+    "verdict": "real",
+    "reason": "MM/YYYY graduation read as grad_date (a month-name date) instead of degree_end_mmyyyy — the format is lost",
+    "read": {
+     "fact_key": "grad_date",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r991bea8eda96": [
+   {
+    "verdict": "real",
+    "reason": "authorized to work, options are eligibility statements: read as eligibility_3way (gives the sponsorship statement) instead of authorized → 'any employer' (JSA-310)",
+    "read": {
+     "fact_key": "eligibility_3way",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "re6b32c414644": [
+   {
+    "verdict": "real",
+    "reason": "cell number for SMS read as the sms opt-in instead of phone — a yes in a number box",
+    "read": {
+     "fact_key": "sms",
+     "shape": "subscription",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r6dc8f8ce9902": [
+   {
+    "verdict": "same_answer",
+    "reason": "student status with program-year options: school_level's pick (^master) chooses \"Master's program - year 1\", the option the audited answer gave (options checked 2026-11-16, list v2 run)",
+    "read": {
+     "fact_key": "school_level",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r3718e34a1734": [
+   {
+    "verdict": "real",
+    "reason": "'current employer/position' read as recent_employer: the question asks the current one, the rule key employer gave the audited answer",
+    "read": {
+     "fact_key": "recent_employer",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r05429bdabf13": [
+   {
+    "verdict": "real",
+    "reason": "'indicate your agreement by typing your full name' read as a terms attestation: the box wants the name (full_name)",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rb7e215b93d74": [
+   {
+    "verdict": "real",
+    "reason": "'you or any relative employed by the auditor' read as employed_by_other: it drops the relatives half of the question",
+    "read": {
+     "fact_key": "employed_by_other",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r652b9e4a100a": [
+   {
+    "verdict": "model_right",
+    "reason": "'currently a contractor or temporary worker with the company' = contractor_here",
+    "read": {
+     "fact_key": "contractor_here",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "recdd5375a1fa": [
+   {
+    "verdict": "model_right",
+    "reason": "'I acknowledge that my resume must be submitted in PDF' is an acknowledgement (attestation / terms), not data consent; both answers acknowledge",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rb201ed45dc78": [
+   {
+    "verdict": "real",
+    "reason": "a sponsorship question with no time word, after a work-authorization question, read as now; the audited answer came from spons_future",
+    "read": {
+     "fact_key": "spons_now",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "rd2437d4ad177": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation year with year options: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "end_year",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "r2c40f027b40e": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation year with year options: the reading's key and the gold key give the same answer in the user's profile (checked by Claude against config/profile.json answers, 2026-11-16)",
+    "read": {
+     "fact_key": "end_year",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 1
+   }
+  ],
+  "re8ed3223ec35": [
+   {
+    "verdict": "model_right",
+    "reason": "the options are the CC-305 form's three boxes: disability_cc305 is the key for that form and picks the same 'No' option",
+    "read": {
+     "fact_key": "disability_cc305",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2
+   }
+  ],
+  "r807941524629": [
+   {
+    "verdict": "real",
+    "reason": "current degree with BA / BS / Ph.D / Other options read as school_level: its picks match none of the options, the audited answer came from degree",
+    "read": {
+     "fact_key": "school_level",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2
+   }
+  ],
+  "r945127541337": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation 'Month and Year' box: degree_end_mmyyyy gives the same graduation month and year as grad_date, in numbers",
+    "read": {
+     "fact_key": "degree_end_mmyyyy",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2
+   }
+  ],
+  "ra80aa511bf93": [
+   {
+    "verdict": "gold_stale",
+    "reason": "'Name Pronunciation' asks the pronunciation; the same label answered with the plain name is a recorded wrong answer (wrong_answers.jsonl, audit JSA-245) — this audit verdict is inconsistent, the model is right",
+    "read": {
+     "fact_key": "name_pronunciation",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r87f10289df19": [
+   {
+    "verdict": "real",
+    "reason": "'Start date month' (an education entry's start month) read as the availability start date",
+    "read": {
+     "fact_key": "start_date",
+     "shape": "fill",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r2a1a9f663c34": [
+   {
+    "verdict": "real",
+    "reason": "enrollment status with 'Currently enrolled in a … program' options read as school_level: its picks match none of the options, the audited answer came from enrollment_status",
+    "read": {
+     "fact_key": "school_level",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r3c0100586f00": [
+   {
+    "verdict": "same_answer",
+    "reason": "highest degree level pursuing with degree options: school_level's pick (^master) chooses \"Master's Degree\", the same option degree gave",
+    "read": {
+     "fact_key": "school_level",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "re0a55c11b087": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r1f825371d6a6": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "rdac038923862": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r833ff6e77ba8": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r8204d493c8f0": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r24b0a47baa15": [
+   {
+    "verdict": "model_right",
+    "reason": "an 'I agree / acknowledge / accept the terms' box is an attestation (terms); both readings accept",
+    "read": {
+     "fact_key": "terms",
+     "shape": "attestation",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "rbdb56583b2c9": [
+   {
+    "verdict": "gold_stale",
+    "reason": "'I agree to receive updates about new job opportunities' is an opt-in to be sent something, not the data consent (Joey 2026-11-12, JSA-329 option A); the audit predates that decision",
+    "read": {
+     "fact_key": "optin_other",
+     "shape": "subscription",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "r7a73aca8c690": [
+   {
+    "verdict": "gold_stale",
+    "reason": "'I agree to receive updates about new job opportunities' is an opt-in to be sent something, not the data consent (Joey 2026-11-12, JSA-329 option A); the audit predates that decision",
+    "read": {
+     "fact_key": "marketing",
+     "shape": "subscription",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   },
+   {
+    "verdict": "gold_stale",
+    "reason": "'I agree to receive recruiting updates about new job opportunities' is an opt-in to be sent something, not the data consent (Joey 2026-11-12, JSA-329 option A); the audit predates that decision",
+    "read": {
+     "fact_key": "optin_other",
+     "shape": "subscription",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 3,
+    "set": "holdout"
+   }
+  ],
+  "r2e065982082e": [
+   {
+    "verdict": "same_answer",
+    "reason": "employed by this company before: hired_here_before and prev_employed give the same answer in the user's profile (checked by Claude, 2026-11-16)",
+    "read": {
+     "fact_key": "hired_here_before",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 2,
+    "set": "holdout"
+   }
+  ],
+  "reb611ac3c8a1": [
+   {
+    "verdict": "same_answer",
+    "reason": "graduation year with year options: grad_date's pick (^2027$) chooses the same option as end_year",
+    "read": {
+     "fact_key": "grad_date",
+     "shape": "choice",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 3,
+    "set": "tuning"
+   }
+  ],
+  "r795126820695": [
+   {
+    "verdict": "real",
+    "reason": "'Do you currently work for a <company> franchisee?' read as the current-employer name key: a value fact on a yes/no question",
+    "read": {
+     "fact_key": "employer",
+     "shape": "yes_no",
+     "negated": false
+    },
+    "model": "deepseek-flash",
+    "list": 3,
+    "set": "holdout"
+   }
+  ]
+ }
+}

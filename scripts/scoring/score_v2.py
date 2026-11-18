@@ -19,7 +19,10 @@ CLIENT = re.compile(r"\b(forward deployed|solutions|customer|field|consultant|co
 SUMMER27 = re.compile(r"(summer\s*2027|2027\s*summer)", re.I)
 BLOCKED_ELIG = ("不可投", "已关闭", "重复")
 S_VALUE = {"top": 70, "standard": 40, "exclude": 0, "off_target": 0}
-W = {"s_referral": 0.40, "s_timing": 0.25, "s_sponsor": 0.20, "s_fresh": 0.15}   # priors (spec 3); refit from outcomes
+# priors (spec 3); refit from outcomes. JSA-385 (Joey 2026-11-17): sponsorship 0.20 → 0.10, freshness 0.15 → 0.25 — his top goal
+# is an internship (CPT needs no sponsorship); the H-1B question is for the full-time job later
+W = {"s_referral": 0.40, "s_timing": 0.25, "s_sponsor": 0.10, "s_fresh": 0.25}
+NO_SPONSOR_FACTOR = 0.2            # a posting that only says it does not sponsor: a little below an unknown employer (0.4)
 
 
 def value_level(job):
@@ -42,8 +45,10 @@ def _candidate():
     sponsorship, not a citizen / PR (the safe side for an F-1 student)."""
     import json as _json
     try:
-        e = _json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-                                         'config', 'profile.json'), encoding='utf-8')).get('eligibility') or {}
+        import sys as _sys                        # the data home's profile (ADR-0011: no fact copies in the code)
+        _sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'config'))
+        import paths as _paths
+        e = _json.load(open(_paths.config('profile.json'), encoding='utf-8')).get('eligibility') or {}
     except (OSError, ValueError):
         e = {}
     return {'needs_sponsorship': e.get('needs_sponsorship', True) is not False, 'citizen_or_pr': e.get('citizen_or_pr') is True}
@@ -55,19 +60,22 @@ CAND = _candidate()
 def sponsor_factor(label, cand=None):
     """Pure (tested). The sponsorship factor for a job's `sponsorship` label, for this candidate. A candidate who does
     not need sponsorship gets 1.0 whatever the label says (it does not matter to them). Otherwise: a label starting with
-    "Blocked" → 0.0; "Posting offers sponsorship" 1.0, "Strong H-1B sponsor" 0.8, "Some H-1B history" 0.6, anything else 0.4."""
+    "Blocked" → 0.0, except "Blocked: no sponsorship" → 0.2 (JSA-385: an internship runs on CPT); "Posting offers sponsorship" 1.0, "Strong H-1B sponsor" 0.8, "Some H-1B history" 0.6, anything else 0.4."""
     c = cand or CAND
     if not c.get('needs_sponsorship', True):
         return 1.0
     sp = str(label or '')
-    return 0.0 if sp.startswith('Blocked') else {'Posting offers sponsorship': 1.0, 'Strong H-1B sponsor': 0.8,
+    if sp.startswith('Blocked'):
+        return NO_SPONSOR_FACTOR if re.search(r'no sponsorship', sp, re.I) else 0.0
+    return {'Posting offers sponsorship': 1.0, 'Strong H-1B sponsor': 0.8,
                                                   'Some H-1B history': 0.6}.get(sp, 0.4)
 
 
 def label_blocks(label, cand=None):
     """Pure (tested). Does a job's `sponsorship` label rule this candidate out? "Blocked: citizenship required" → only a
-    candidate who is not a citizen / permanent resident; "Blocked: no sponsorship" → only a candidate who needs
-    sponsorship; any other label starting with "Blocked" → yes (an unknown block stays a block); else no."""
+    candidate who is not a citizen / permanent resident; "Blocked: no sponsorship" → never (JSA-385, Joey 2026-11-17: the
+    internship runs on CPT; the gate still blocks a posting that rules the internship itself out); any other label
+    starting with "Blocked" → yes (an unknown block stays a block); else no."""
     c = cand or CAND
     sp = str(label or '')
     if not sp.startswith('Blocked'):
@@ -75,8 +83,19 @@ def label_blocks(label, cand=None):
     if re.search(r'citizenship required', sp, re.I):
         return not c.get('citizen_or_pr', False)
     if re.search(r'no sponsorship', sp, re.I):
-        return bool(c.get('needs_sponsorship', True))
+        return False
     return True
+
+
+def _codes(job):
+    c = job.get("elig_codes") or ""
+    return c if isinstance(c, list) else str(c).split(",")
+
+
+def _one_lower(tier):
+    """JSA-385: a posting that wants a candidate who never needs sponsorship (still applied to, answers stay truthful)
+    is ranked one tier lower, never below C."""
+    return {"A": "B", "B": "C"}.get(tier, tier)
 
 
 def _date(s):
@@ -111,9 +130,15 @@ def score_row(job):
     chance = round(sum(W[k] * v for k, v in f.items()), 3)
     score = round(S_VALUE[lvl] + 30 * chance, 1)
     tier = {"top": "A", "exclude": "D", "off_target": "D"}.get(lvl) or ("B" if chance >= 0.5 else "C")
+    if "NO_FUTURE_SPONSORSHIP_INTERN" in _codes(job):
+        tier = _one_lower(tier)
     out.update(f, v_level=lvl, s_value=S_VALUE[lvl], s_chance=chance, score=score, tier_orig=tier,
                score_version="v2")
-    blocked = job.get("elig") in BLOCKED_ELIG or label_blocks(job.get("sponsorship"))
+    lab = str(job.get("sponsorship") or "")
+    # "Blocked: no sponsorship" blocks only a non-internship (JSA-385: an internship runs on CPT)
+    full_time_refused = bool(re.search(r"no sponsorship", lab, re.I)) and lab.startswith("Blocked") and lvl == "off_target" \
+        and job.get("level") != "Internship" and "intern" not in (job.get("title") or "").lower()
+    blocked = job.get("elig") in BLOCKED_ELIG or label_blocks(lab) or full_time_refused
     out["tier"] = "Blocked" if blocked else tier
     return out
 
@@ -125,7 +150,9 @@ def score_rows(rows):
 if __name__ == "__main__":
     import collections
     here = os.path.dirname(os.path.abspath(__file__))
-    store = os.path.join(os.path.dirname(os.path.dirname(here)), "data", "store", "jobs.jsonl")
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(here)), "config"))
+    import paths                                   # the data home (JSA-375: not the code checkout)
+    store = paths.data("store", "jobs.jsonl")
     rows = [json.loads(l) for l in open(store, encoding="utf-8")]
     new = score_rows(rows)
     live = [(o, n) for o, n in zip(rows, new) if o.get("elig") in ("可投", "待核实")]

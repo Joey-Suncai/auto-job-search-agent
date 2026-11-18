@@ -1,0 +1,416 @@
+[
+ {
+  "id": "f1",
+  "key": "Which of our offices would you be willing to relocate to?",
+  "expected": "fact",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Which of our offices would you be willing to relocate to?",
+   "field_type": "combo",
+   "required": true,
+   "options": [
+    "Austin",
+    "Denver",
+    "Remote"
+   ],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f2",
+  "key": "Do you hold an active security clearance?",
+  "expected": "fact",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Do you hold an active security clearance?",
+   "field_type": "combo",
+   "required": true,
+   "options": [
+    "Yes",
+    "No",
+    "In process"
+   ],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f3",
+  "key": "Do you have a disability or chronic condition?",
+  "expected": "ignore",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Do you have a disability or chronic condition?",
+   "field_type": "combo",
+   "required": false,
+   "options": [
+    "Yes",
+    "No",
+    "I prefer not to answer"
+   ],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f4",
+  "key": "How would you describe your racial / ethnic background?",
+  "expected": "ignore",
+  "group": "ga",
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "How would you describe your racial / ethnic background?",
+   "field_type": "multi",
+   "required": false,
+   "options": [
+    "Asian",
+    "Black",
+    "White",
+    "Two or more"
+   ],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f5",
+  "key": "How would you describe your racial/ethnic background? (mark all that apply)",
+  "expected": "ignore",
+  "group": "ga",
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "How would you describe your racial/ethnic background? (mark all that apply)",
+   "field_type": "multi",
+   "required": false,
+   "options": [
+    "Asian",
+    "Black",
+    "White",
+    "Two or more"
+   ],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f6",
+  "key": "If other, please specify",
+  "expected": "ignore",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "If other, please specify",
+   "field_type": "text",
+   "required": false,
+   "options": [],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f7",
+  "key": "If you selected \"Other\" above, please specify:",
+  "expected": "ignore",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "If you selected \"Other\" above, please specify:",
+   "field_type": "text",
+   "required": false,
+   "options": [],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f8",
+  "key": "Tell us about a project you are proud of",
+  "expected": "ignore",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Tell us about a project you are proud of",
+   "field_type": "textarea",
+   "required": false,
+   "options": [],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f9",
+  "key": "Other URL",
+  "expected": "ignore",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Other URL",
+   "field_type": "text",
+   "required": false,
+   "options": [],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": "none",
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f10",
+  "key": "Enter your college/university",
+  "expected": "rule",
+  "group": null,
+  "material": {
+   "found_by": "the rules left this question unanswered (nothing was filled)",
+   "question": "Enter your college/university",
+   "field_type": "text",
+   "required": false,
+   "options": [],
+   "rules_output": "(nothing)",
+   "rules_source": "",
+   "platforms": [
+    "lever"
+   ],
+   "fact_library": [
+    "profile:education"
+   ],
+   "type_reader": null
+  }
+ },
+ {
+  "id": "f11",
+  "key": "What is your cumulative GPA?",
+  "expected": "rule",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "What is your cumulative GPA?",
+   "what_went_wrong": [
+    "answered '[hidden]' — free-text cumulative GPA = [hidden], not the rounded value (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f12",
+  "key": "Please include your earliest start date",
+  "expected": "rule",
+  "group": "gb",
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Please include your earliest start date",
+   "what_went_wrong": [
+    "answered '[hidden]' — start date fact differs by one week (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f13",
+  "key": "What is your availability to start?",
+  "expected": "rule",
+  "group": "gb",
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "What is your availability to start?",
+   "what_went_wrong": [
+    "answered '[hidden]' — available date is a week later (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f14",
+  "key": "Do you currently require sponsorship for employment visa status?",
+  "expected": "rule",
+  "group": "gc",
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Do you currently require sponsorship for employment visa status?",
+   "what_went_wrong": [
+    "answered 'Yes' — currently require sponsorship: no (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f15",
+  "key": "Will you now require immigration sponsorship to work here?",
+  "expected": "rule",
+  "group": "gc",
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Will you now require immigration sponsorship to work here?",
+   "what_went_wrong": [
+    "answered 'Yes' — currently require sponsorship: no (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f16",
+  "key": "Current most recent employer",
+  "expected": "rule",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Current most recent employer",
+   "what_went_wrong": [
+    "answered '[hidden]' — most recent employer is another company (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f17",
+  "key": "Where are you located?",
+  "expected": "rule",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Where are you located?",
+   "what_went_wrong": [
+    "answered 'US Remote' — located = [hidden] (found by the independent audit, JSA-245)"
+   ]
+  }
+ },
+ {
+  "id": "f18",
+  "key": "For any of the countries listed below are you a citizen or have you resided there?",
+  "expected": "qtype",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "For any of the countries listed below are you a citizen or have you resided there?",
+   "what_went_wrong": [
+    "answered 'NO' — his country is on the list and he is a citizen of it → Yes; found by a whole-question replay"
+   ]
+  }
+ },
+ {
+  "id": "f19",
+  "key": "Do you have any criminal background that would limit your ability to work with minors?",
+  "expected": "qtype",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Do you have any criminal background that would limit your ability to work with minors?",
+   "what_went_wrong": [
+    "answered 'Yes' — a conviction question answered Yes by rule background_drug — it matched 'criminal background check' in the preamble"
+   ]
+  }
+ },
+ {
+  "id": "f20",
+  "key": "Tell us about a time you taught yourself something difficult",
+  "expected": "qtype",
+  "group": null,
+  "material": {
+   "found_by": "the rules ANSWERED this question WRONGLY (found by the independent audit / replay)",
+   "question": "Tell us about a time you taught yourself something difficult",
+   "what_went_wrong": [
+    "answered 'Online job board' — an essay question got the how-heard answer (the answer was put in the wrong field)"
+   ]
+  }
+ },
+ {
+  "id": "f21",
+  "key": "fields not confirmed on the page: Gender ('Man')",
+  "expected": "page",
+  "group": null,
+  "material": {
+   "found_by": "the runner stopped",
+   "platform": "ashby",
+   "stopped_at": "",
+   "status": "blocked",
+   "problems": [
+    "fields not confirmed on the page: Gender ('Man')"
+   ]
+  }
+ },
+ {
+  "id": "f22",
+  "key": "runner error TimeoutError: Locator.click: Timeout #ms exceeded. waiting for locator(\"button\").filter(has_text=\"next\")",
+  "expected": "runner",
+  "group": "gd",
+  "material": {
+   "found_by": "the runner stopped",
+   "platform": "icims",
+   "stopped_at": "platform_page",
+   "status": "blocked",
+   "problems": [
+    "runner error TimeoutError: Locator.click: Timeout #ms exceeded. waiting for locator(\"button\").filter(has_text=\"next\")"
+   ]
+  }
+ },
+ {
+  "id": "f23",
+  "key": "runner error TimeoutError: Locator.click: Timeout #ms exceeded. waiting for locator(\"button\").filter(has_text=\"next\")",
+  "expected": "runner",
+  "group": "gd",
+  "material": {
+   "found_by": "the runner stopped",
+   "platform": "icims",
+   "stopped_at": "",
+   "status": "blocked",
+   "problems": [
+    "runner error TimeoutError: Locator.click: Timeout #ms exceeded. waiting for locator(\"button\").filter(has_text=\"next\")"
+   ]
+  }
+ },
+ {
+  "id": "f24",
+  "key": "sign-in / account creation did not open the application (see run_log)",
+  "expected": "runner",
+  "group": null,
+  "material": {
+   "found_by": "the runner stopped",
+   "platform": "workday",
+   "stopped_at": "",
+   "status": "blocked",
+   "problems": [
+    "sign-in / account creation did not open the application (see run_log)"
+   ]
+  }
+ }
+]

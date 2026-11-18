@@ -6,7 +6,7 @@ description: SAP SuccessFactors (career sites careers.<company>.com/job/…, car
 # SAP SuccessFactors applications (platform skill) — JSA-092 / JSA-153, started 2026-11-04
 
 ## 1. Status
-**Fast path (JSA-230):** `runner/batch_apply.py prepare | approve | submit <batch.json>` runs this platform inside a (mixed) batch (≤ 5 per batch with a sign-in platform); a CAPTCHA / sign-in goes to Joey's queue and the next job starts. Open problem: Job-Specific labels read as the placeholder (JSA-232).
+**Fast path (JSA-230):** `runner/batch_apply.py prepare | approve | submit <batch.json>` runs this platform inside a (mixed) batch (≤ 5 per batch with a sign-in platform); a CAPTCHA / sign-in goes to Joey's queue and the next job starts. Job-Specific labels read as the placeholder: fixed (type AG, JSA-232).
 - Eligibility gate reads SuccessFactors career-site pages since 2026-11-04 (reader v6, `successfactors_page`):
   40 可投 after the first run (they were all 待核实 UNREADABLE before), 14 of them tier C/D internships.
 - Runner `skills/auto-apply/runner/run_successfactors.py`: an employer dry run **33/33** (2026-11-04).
@@ -41,6 +41,7 @@ description: SAP SuccessFactors (career sites careers.<company>.com/job/…, car
   Electronic Signature (full name), then **Apply**.
 
 ## 3. Problem types
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. SuccessFactors: `sf_done` (an employer 11-04 had the same greeting on the form).
 **A. Combo lists load late / stay open.** Reading or setting the next combo right after another failed (no options →
 the rule fell back to Yes). Rule: `_open` waits until the list has real options and reopens once (Escape + click).
 
@@ -65,7 +66,64 @@ opened). Rule: leave the banner alone; click the visible "Apply now" (or open th
 Now" item — Celestica); wait up to 15 s for the form / a *visible* sign-in box (the job page hides one in its menu) / a
 CAPTCHA — the URL may not change. Seen: an employer, Celestica 11-04.
 
+**AG. The question sits in its own row; the field's label is only a placeholder (JSA-232).** an employer's template puts
+each Job-Specific question ("Are you at least 18 years of age?") in a text-only table row (`<tr><th>&nbsp;</th><td>…`)
+right above the field row, whose `<label>` / aria-label is "Please select one of the options"; the veteran and disability
+lists get only a heading row ("PRE-OFFER INVITATION … PROTECTED VETERAN") above a long notice. Read as the label, 7
+questions had no rule and the read-back failed (every row had the same label). Rule: READ also returns the text-only rows
+above the field's row up to the previous field (`QROWS`); `question_label` keeps a real label and gives a placeholder one
+the nearest row ≤ 300 characters (else the last question sentence of a long notice). An empty label stays empty (a combo's
+search box). New wordings answered: "related to anyone that works for <Co>" = relatives (No), "I have read and agree …"
+= data consent, "Do you wish to furnish this information?" = Yes (Joey 11-10, qa). Tests:
+`scripts/test_sf_question_label.py`, `scripts/test_rules_sf_jsa232.py`. Seen: an employer 11-06; dry run 31/31 on 11-10.
+
+**AH. Education rows the filler did not know (JSA-295).** an employer's Education rows label their lists "Education Type",
+"School/Institution Name", "Degree Achieved", "Area of Study", with "If other, enter School / Institution Name", "If other, enter
+Area of Study" and "Major (Legacy)" text boxes. "Education Type" and "School/Institution Name" were not keys the filler knew,
+so the required lists stayed empty and form_check showed `options = []`. The lists do load: the rows only kept no options.
+Rules (`sf_background.canon_label`, `sf_combo_edu.kind`): School Name = "School/Institution Name"; Type = "Education Type" /
+"Education Level"; **Degree Achieved** is a Yes / In Progress / No list there → current degree In Progress, finished
+Yes; elsewhere a degree list, which gets the finished degree only. A finished degree never takes an "… - In progress"
+option (`pick_degree`, UIUC got "Bachelors Degree - In progress" in the first dry run). School not in the list + an "If
+other … school" box → "Other" + the name typed (`other_school_box`); canon accepts School = Other only when that box holds
+his school (`canon.other_school_entries`). **Area of Study** without his major: the list is paginated, so it is searched
+for the major first. If that finds nothing and the row has an "If other, enter Area of Study" box → "Other" + "Applied Data
+Science" typed there (Joey 2026-11-11). With no such box, the old fallback stays: Computer Science, then IS
+(`major_choice` / `major_pick`, also in the combo education rows). form_check keeps each list's options (≤ 400). Tests:
+`scripts/test_sf_edu_block_jsa295.py` (50 DeepSeek cases), `test_sf_background.py`, `test_sf_combo_edu.py`.
+
+**AI. A checkbox labelled only by a heading word (JSA-295).** "* Acknowledgement" sits under "Applicant Statement" and the
+statement "My response … certifies that I have read, understand, accept and agree with the above statements and that the
+information … is complete and correct." The statement is a sibling block (`div.col-xs-12`) two levels up, not a table
+row, so QROWS found nothing and the box went unanswered. Rule: outside a table, QROWS climbs up to 5 parent levels and
+takes the text-only siblings before the field. It skips the field's own `<label>` and stops at a block with inputs. For a
+checkbox whose label is only Acknowledgement / Statement / Attestation / Certification / Agreement, `question_label` uses
+the nearest such text (≤ 1200 characters). That text is the `certify` rule (ticked). "…my electronic signature below
+certifies…" is not the signature rule. Test: `scripts/test_sf_edu_block_jsa295.py`; rules `test_rules_edu_text_jsa296.py`.
+
+**AJ. A register-form radio group with no readable question (JSA-335).** Arthrex's Create Account form
+(`career2.successfactors.eu`, company=1073501P) has a profile-visibility group whose question text is not in any ancestor
+the runner reads — only the options ("Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your
+profile…" / "Only recruiters in my region…"). `radio_question` found nothing, the group went to needs-user and no account
+was created. Rule (Joey 2026-11-12, fix A): such a group is answered from the option content only when exactly one of
+its options matches exactly one saved pick pattern of `OPTION_ANSWER_KEYS` (now `answers.profile_visibility.pick`; Newell
+11-05) — `option_answer`; set, read back, logged as `answers.profile_visibility.pick (option content)`. No match, two
+options matching, or two saved answers matching → still needs-user. Test: `scripts/test_sf_option_answer.py` (25
+DeepSeek cases + the real Arthrex options). Seen: Arthrex 2026-11-12.
+
 **G. CAPTCHA at sign-in.** Celestica's sign-in page has reCAPTCHA → status captcha, push to Joey, queued; never answered.
+
+
+**Text answers the box's own limits refuse (JSA-312, shared with Oracle).** A dry run's read-back does not run the page's
+checks. Rule: the READ extractor reads each box's maxlength / minlength / pattern / type; `run_successfactors.limit_gate`
+completes a bare address in a url box with `https://` (`field_limits.fix_url`) and turns an answer that is still too
+long / too short / not a url into a question for the candidate (required) or an empty box (optional) — never typed in,
+never cut. Tests: `scripts/test_field_limits.py`.
+
+**H. RMK site with a region segment in the path (JSA-332).** `careers.arthrex.com/NorthAmerica/job/<slug>/<id>/` was
+not recognised (the old rule wanted `/job/` right after the host) → "no runner in batch_apply". Rule: `runner/posting.py`
+`SF_RMK` accepts at most one segment before `/job/` (two do not count; builtin.com / LinkedIn never). No `?ats=successfactors`
+workaround needed. Test: `runner/test/t_posting.py`. Seen: Arthrex 2026-11-12.
 
 ## 4. Where it stands (2026-11-04 night)
 - **Submitted 6** (11-04 late: + an employer Product Planning Intern, Kenworth Engineering Operations Intern — page "Your
@@ -375,3 +433,7 @@ store `source`, then the URL host), else `answers.how_heard_board` (LinkedIn, th
 (`custom_apply_widget`, JSA-222): hidden SAP links only + a visible shadow-root Apply → stop at once (blocked, the reason
 names the wizard); a wizard runner is its own row (JSA-225). Test: `scripts/test_sf_custom_apply.py` ←
 `test_cases/sf_custom_apply_cases.json` (DeepSeek 16). Seen: KB Signaling 11-05.
+
+**AG. No 300 s wait for the receipt e-mail (JSA-391).** After the final Apply with no confirmation page the run ends at once
+(`unconfirmed`, `receipt_pending`, no queue line / push); `receipt_confirm` confirms it from the company e-mail later or hands it to Joey after
+48 h. A failed click (button gone, nothing pressed) still goes to Joey. See ats-lever "No in-place wait". Tests: `scripts/test_async_receipt.py`.

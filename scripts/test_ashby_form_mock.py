@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Offline regression test of run_form.Form on an Ashby mock page (JSA-208 + JSA-209), in its own headless Chrome —
 never the job Chrome. skills/auto-apply/runner/test/ashby_school_mock.html (fictional person, made-up org):
-  1. a stale plan's "June 14, 2027" is typed as 06/14/2027 and reads back ok (JSA-208, Creatify 11-02 / 11-05);
+  1. a stale plan's "June 14, 2027" is typed as 06/14/2027 and reads back ok (JSA-208, Sevgalkel 11-02 / 11-05);
   2. the School type-ahead is filled by picking the one option that is the school and reads back after focus left it;
   3. no matching school option → the row's error starts with "needs-user" (Joey), nothing guessed;
-  4. a pick that never registers → BAD on the read-back / re-read before Submit (the Ramp 10-31 hole);
+  4. a pick that never registers → BAD on the read-back / re-read before Submit (the Talkelver 10-31 hole);
   5. Submit with an empty School → submit_errors reads ['School'] from the page (→ status failed, not unconfirmed);
+  7. (JSA-330) a form that leaves out Degree and the start date: nothing times out, Major and the end date are filled, the
+     read-back does not demand a Degree and the plan's edu_excluded keeps the end pair out of the start boxes;
   6. Submit with the school picked → the thank-you text, no errors.
 Run with the venv python (Playwright). Exit 1 on any failure."""
 import json, os, sys
@@ -64,6 +66,15 @@ with sync_playwright() as pw:
     page.locator('#submit').click(); page.wait_for_timeout(300)
     txt = page.inner_text('body')
     check('6 school picked → thank-you, no errors', RF.submit_errors(txt) == [] and bool(RF.CONFIRM.search(txt)), txt[:120])
+    page.close()
+
+    page, f = form('?nodegree', 'edu')
+    f.plan['fields'][0]['edu_excluded'] = ['degree', 'startDate']
+    r = f.run()[0]
+    page.mouse.click(2, 2); f.recheck(('education',))
+    ends = page.eval_on_selector_all('select', 'els => els.map(e => e.options[e.selectedIndex].text)')
+    check('7 no Degree box / start date: reads back ok, end date in the end boxes', r['ok'] and ends == ['December', '2027'],
+          (r, ends))
     page.close()
 
     page, f = form('?noschool', 'edu')

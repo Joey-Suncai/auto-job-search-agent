@@ -1,0 +1,497 @@
+[
+ {
+  "name": "empty_list_opens_tab",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "If there is no tab, it opens one with `PUT <cdp>/json/new?about:blank` and returns `True`."
+ },
+ {
+  "name": "single_page_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "page",
+    "id": "1"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If at least one tab exists, `ensure_tab` changes nothing: it makes no other request and returns `False`."
+ },
+ {
+  "name": "multiple_pages_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "page",
+    "id": "1"
+   },
+   {
+    "type": "page",
+    "id": "2"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If at least one tab exists, `ensure_tab` changes nothing: it makes no other request and returns `False`."
+ },
+ {
+  "name": "page_and_service_worker_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "service_worker",
+    "id": "sw"
+   },
+   {
+    "type": "page",
+    "id": "1"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "A target counts as a tab only when its `type` is `page`."
+ },
+ {
+  "name": "only_service_worker_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "service_worker",
+    "id": "sw"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "A list whose only targets are not `page` also means no tab."
+ },
+ {
+  "name": "only_background_page_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "background_page",
+    "id": "bg"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "Service workers, background pages, extensions and other types do not count."
+ },
+ {
+  "name": "only_iframe_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "iframe",
+    "id": "frame"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "A target counts as a tab only when its `type` is `page`."
+ },
+ {
+  "name": "only_extension_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "extension",
+    "id": "ext"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "Service workers, background pages, extensions and other types do not count."
+ },
+ {
+  "name": "only_other_type_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "other",
+    "id": "x"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "A target counts as a tab only when its `type` is `page`."
+ },
+ {
+  "name": "trailing_slash_empty_list_opens",
+  "cdp": "http://127.0.0.1:9222/",
+  "list_result": [],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "The trailing slash of `cdp` is ignored (`http://127.0.0.1:9222/` and `http://127.0.0.1:9222` give the same URLs)."
+ },
+ {
+  "name": "trailing_slash_page_exists_no_op",
+  "cdp": "http://127.0.0.1:9222/",
+  "list_result": [
+   {
+    "type": "page",
+    "id": "1"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "The trailing slash of `cdp` is ignored (`http://127.0.0.1:9222/` and `http://127.0.0.1:9222` give the same URLs)."
+ },
+ {
+  "name": "trailing_slash_only_nonpage_opens",
+  "cdp": "http://127.0.0.1:9222/",
+  "list_result": [
+   {
+    "type": "service_worker",
+    "id": "sw"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "The trailing slash of `cdp` is ignored (`http://127.0.0.1:9222/` and `http://127.0.0.1:9222` give the same URLs)."
+ },
+ {
+  "name": "listing_unreachable_returns_false",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": "unreachable",
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If Chrome is not reachable (the listing raises `OSError`), `ensure_tab` does not raise and does not try to open a tab; it returns `False` — the later `connect_over_cdp` reports the real error."
+ },
+ {
+  "name": "listing_unreachable_trailing_slash_returns_false",
+  "cdp": "http://127.0.0.1:9222/",
+  "list_result": "unreachable",
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If Chrome is not reachable (the listing raises `OSError`), `ensure_tab` does not raise and does not try to open a tab; it returns `False` — the later `connect_over_cdp` reports the real error."
+ },
+ {
+  "name": "listing_object_returns_false",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": {},
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If the listing is not a list (unexpected answer), it is treated like an unreachable Chrome: no request, returns `False`."
+ },
+ {
+  "name": "listing_object_with_page_type_returns_false",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": {
+   "type": "page",
+   "id": "1"
+  },
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If the listing is not a list (unexpected answer), it is treated like an unreachable Chrome: no request, returns `False`."
+ },
+ {
+  "name": "empty_list_new_tab_unreachable",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [],
+  "new_result": "unreachable",
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "If opening the tab raises `OSError`, `ensure_tab` does not raise and returns `False`."
+ },
+ {
+  "name": "only_nonpage_new_tab_unreachable",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "background_page",
+    "id": "bg"
+   }
+  ],
+  "new_result": "unreachable",
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "If opening the tab raises `OSError`, `ensure_tab` does not raise and returns `False`."
+ },
+ {
+  "name": "trailing_slash_new_tab_unreachable",
+  "cdp": "http://127.0.0.1:9222/",
+  "list_result": [],
+  "new_result": "unreachable",
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "The trailing slash of `cdp` is ignored (`http://127.0.0.1:9222/` and `http://127.0.0.1:9222` give the same URLs)."
+ },
+ {
+  "name": "several_nonpage_targets_open_once",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "service_worker",
+    "id": "sw"
+   },
+   {
+    "type": "background_page",
+    "id": "bg"
+   },
+   {
+    "type": "iframe",
+    "id": "frame"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "`ensure_tab` never closes, navigates or changes an existing tab, and never opens more than one tab per call."
+ },
+ {
+  "name": "page_among_nonpage_targets_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "service_worker",
+    "id": "sw"
+   },
+   {
+    "type": "background_page",
+    "id": "bg"
+   },
+   {
+    "type": "page",
+    "id": "1"
+   },
+   {
+    "type": "extension",
+    "id": "ext"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If at least one tab exists, `ensure_tab` changes nothing: it makes no other request and returns `False`."
+ },
+ {
+  "name": "page_with_extra_fields_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "page",
+    "id": "1",
+    "url": "about:blank",
+    "title": "blank",
+    "webSocketDebuggerUrl": "ws://127.0.0.1:9222/devtools/page/1"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If at least one tab exists, `ensure_tab` changes nothing: it makes no other request and returns `False`."
+ },
+ {
+  "name": "target_without_type_opens",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "id": "1",
+    "url": "about:blank"
+   }
+  ],
+  "new_result": "ok",
+  "expect_return": true,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ],
+   [
+    "PUT",
+    "http://127.0.0.1:9222/json/new?about:blank"
+   ]
+  ],
+  "spec_quote": "A target counts as a tab only when its `type` is `page`."
+ },
+ {
+  "name": "duplicate_page_ids_no_op",
+  "cdp": "http://127.0.0.1:9222",
+  "list_result": [
+   {
+    "type": "page",
+    "id": "dup"
+   },
+   {
+    "type": "page",
+    "id": "dup"
+   }
+  ],
+  "expect_return": false,
+  "expect_requests": [
+   [
+    "GET",
+    "http://127.0.0.1:9222/json/list"
+   ]
+  ],
+  "spec_quote": "If at least one tab exists, `ensure_tab` changes nothing: it makes no other request and returns `False`."
+ }
+]

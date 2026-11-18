@@ -1,0 +1,653 @@
+[
+ {
+  "name": "2b: Not currently accepting applications with only non-apply controls",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Tailor my resume",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Show match details",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Johns Hopkins APL\nData Science Intern\nLaurel, MD · 2 weeks ago · Over 100 applicants\nPromoted by hirer · Responses managed off LinkedIn\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2b: 'No visible easy / external control, and head contains (any case) \"Not currently accepting applications\" or \"No longer accepting applications\" → li_apply \"closed\" (apply_url \"\", ats_url \"\"), even when the page has other controls that are not apply controls (e.g. \"Tailor my resume\", \"Show match details\", \"Save\")'."
+ },
+ {
+  "name": "2b: lowercase no longer accepting applications in head",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Message the job poster",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Applicants",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Set alert",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 3 days ago · 87 applicants\nno longer accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2b: head contains (any case) \"No longer accepting applications\" → li_apply \"closed\"."
+ },
+ {
+  "name": "2b: all-caps NOT CURRENTLY ACCEPTING APPLICATIONS",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Show match details",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "SENIOR DATA ANALYST\nAcme Corp · Remote\nNOT CURRENTLY ACCEPTING APPLICATIONS"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2b: head contains (any case) \"Not currently accepting applications\" → li_apply \"closed\"."
+ },
+ {
+  "name": "2b does not beat a visible Easy Apply control",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 2 weeks ago\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: 'a control whose text ... contains \"Easy Apply\" → li_apply \"easy\" (apply_url \"\", ats_url \"\")' and rule 2b applies only when 'No visible easy / external control'."
+ },
+ {
+  "name": "2b does not beat a visible external Apply control",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fboards.greenhouse.io%2Facme%2Fjobs%2F4476043330&trk=abc",
+      "visible": true
+     },
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 2 weeks ago\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4476043330",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4476043330"
+  },
+  "spec": "Rule 2: external control with company_link(href), and rule 2b applies only when 'No visible easy / external control'."
+ },
+ {
+  "name": "2b precedes 2c: only hidden Apply control plus closure head",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330",
+      "visible": false
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2b: no visible easy/external control and head contains \"Not currently accepting applications\" → closed, before rule 2c examines hidden controls."
+ },
+ {
+  "name": "2c: hidden external Apply control when no closure text",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330?gh_jid=4476043330",
+      "visible": false
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 1 week ago"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4476043330?gh_jid=4476043330",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4476043330?gh_jid=4476043330"
+  },
+  "spec": "Rule 2c: 'Else the same as rule 2 over the hidden controls (visible false)'."
+ },
+ {
+  "name": "2c: hidden Easy Apply control",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": false
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 1 week ago"
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2c applies rule 2 to hidden controls; a control containing \"Easy Apply\" → li_apply \"easy\"."
+ },
+ {
+  "name": "Applied text is not an external Apply control → unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Applied",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: external requires a control that says \"Apply\" as a word '(and not \"applied\" / \"no longer accepting\")'; otherwise rule 3 → \"unknown\"."
+ },
+ {
+  "name": "negative: head mentions accepting applications without not currently or no longer",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Tailor my resume",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Show match details",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Applicants",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 2 weeks ago\nAccepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2b requires \"Not currently accepting applications\" or \"No longer accepting applications\"; with neither, non-apply controls leave li_apply \"unknown\" by rule 3."
+ },
+ {
+  "name": "rule 0: no controls and head Not currently accepting applications",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nNot currently accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 0: 'No controls and head contains (any case) ... \"Not currently accepting applications\" ... → li_apply \"closed\"'."
+ },
+ {
+  "name": "rule 0: no controls and head This job is no longer available",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "This job is no longer available"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 0: no controls and head contains \"This job is no longer available\" → li_apply \"closed\"."
+ },
+ {
+  "name": "rule 0 needs a listed phrase: no controls, no phrase → unknown",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [],
+    "closed": false,
+    "head": "Data Science Intern at Acme. Apply now."
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 0 fires only when the head contains one of its listed phrases; otherwise no controls means rule 3 → \"unknown\"."
+ },
+ {
+  "name": "rule 1: closed true beats visible Easy Apply",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": true,
+    "head": "Acme Corp\nData Science Intern"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 1: 'closed true → li_apply \"closed\", apply_url \"\" and ats_url \"\"'."
+ },
+ {
+  "name": "rule 1: closed true with Apply control and closure head",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330",
+      "visible": true
+     }
+    ],
+    "closed": true,
+    "head": "Acme Corp\nData Science Intern\nNo longer accepting applications"
+   }
+  },
+  "expect": {
+   "li_apply": "closed",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 1: closed true → li_apply \"closed\", apply_url \"\" and ats_url \"\"."
+ },
+ {
+  "name": "2: visible Easy Apply text",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 2 days ago"
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: a visible control whose text contains \"Easy Apply\" → li_apply \"easy\" (apply_url \"\", ats_url \"\")."
+ },
+ {
+  "name": "2: Easy Apply from aria when text says neither",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "",
+      "aria": "Easy Apply to Data Science Intern at Acme",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 2 days ago"
+   }
+  },
+  "expect": {
+   "li_apply": "easy",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: text or, 'if the text says neither, whose aria-label — contains \"Easy Apply\"' → li_apply \"easy\"."
+ },
+ {
+  "name": "2: first visible control decides external before easy",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://example.com/careers",
+      "visible": true
+     },
+     {
+      "text": "Easy Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://example.com/careers",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: 'The first control that is easy or external decides'."
+ },
+ {
+  "name": "2: No longer accepting applications control is not an Apply control",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "No longer accepting applications",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Save",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 3 days ago"
+   }
+  },
+  "expect": {
+   "li_apply": "unknown",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2 excludes 'no longer accepting' from external Apply, and rule 2b needs that phrase in the head; rule 3 → unknown."
+ },
+ {
+  "name": "2: Applied ignored, next visible Apply is external (Lever cleaning)",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Applied",
+      "aria": "",
+      "href": "",
+      "visible": true
+     },
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://jobs.lever.co/acme/1a2b3c4d-1234-5678-9abc-def012345678?utm_source=linkedin&gh_jid=42",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD · 1 week ago"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://jobs.lever.co/acme/1a2b3c4d-1234-5678-9abc-def012345678?gh_jid=42",
+   "ats_url": "https://jobs.lever.co/acme/1a2b3c4d-1234-5678-9abc-def012345678?gh_jid=42"
+  },
+  "spec": "Rule 2: 'Applied' is excluded, a later visible control that says \"Apply\" is external; company_link drops utm_* but keeps gh_jid, and Lever with a UUID in the path is one posting."
+ },
+ {
+  "name": "company_link: unwrap LinkedIn redirect, Workday /details/ ⇒ ats_url",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Facme.wd5.myworkdayjobs.com%2FExternal%2Fdetails%2FData-Science-Intern_R-1234&trk=x",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://acme.wd5.myworkdayjobs.com/External/details/Data-Science-Intern_R-1234",
+   "ats_url": "https://acme.wd5.myworkdayjobs.com/External/details/Data-Science-Intern_R-1234"
+  },
+  "spec": "Rule 2 and company_link: unwrap /redir/redirect?url=..., drop trk, keep other query parameters; Workday path contains /details/ so ats_url is set."
+ },
+ {
+  "name": "external to a Workday careers home page ⇒ no ats_url",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "https://acme.wd5.myworkdayjobs.com/External",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://acme.wd5.myworkdayjobs.com/External",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: ats_url is set only when apply_url is ONE posting on a known system; 'A careers home page (https://acme.wd5.myworkdayjobs.com/External) is not one posting'."
+ },
+ {
+  "name": "external Apply with empty href ⇒ external with empty urls",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "",
+      "href": "",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "",
+   "ats_url": ""
+  },
+  "spec": "Rule 2: text \"Apply\" as a word → li_apply \"external\", apply_url = company_link(href), and company_link returns \"\" when the href is empty."
+ },
+ {
+  "name": "text beats aria: text Apply, aria Easy Apply ⇒ external",
+  "fn": "resolve",
+  "args": {
+   "info": {
+    "controls": [
+     {
+      "text": "Apply",
+      "aria": "Easy Apply",
+      "href": "https://boards.greenhouse.io/acme/jobs/4476043330",
+      "visible": true
+     }
+    ],
+    "closed": false,
+    "head": "Acme Corp\nData Science Intern\nLaurel, MD"
+   }
+  },
+  "expect": {
+   "li_apply": "external",
+   "apply_url": "https://boards.greenhouse.io/acme/jobs/4476043330",
+   "ats_url": "https://boards.greenhouse.io/acme/jobs/4476043330"
+  },
+  "spec": "Rule 2: aria-label is used only 'if the text says neither'; text says \"Apply\" as a word → external, with Greenhouse /jobs/<digits> giving ats_url."
+ }
+]

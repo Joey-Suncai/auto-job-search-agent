@@ -31,6 +31,7 @@ changed answer is logged (`replan: …`); `--no-replan` keeps prep's plan. The f
 - "Application limits" note: no re-applying to the same role within 90 days.
 
 ## 4. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Ashby's success banner often says only "Thanks for your interest in X!" under a "Success" title — `run_form.form_done(…, "ashby")` counts the new "Success" title with the Submit button gone.
 
 **A. Toggles and reruns.** Yes / No buttons toggle; a rerun in a filled tab can switch answers off. Click only when the pressed
 button differs. A blocked run used to leave its tab open (since 2026-11-05 every run closes its tab, only a CAPTCHA stays — `runner/tab_policy.py`) and a rerun opens a new one, so an old, unsubmitted form stays and looks like
@@ -101,3 +102,41 @@ poll (`run_form.submit_errors`); any error → status `failed` with the field na
 `form_check.json → after_submit_errors`, a queue line — never `unconfirmed`, no e-mail wait. Fix the field, re-run.
 Tests: `scripts/test_ashby_submit_school.py` (DeepSeek 30 + the sanitised page text `test_cases/ashby_submit_errors_page.txt`),
 `scripts/test_ashby_form_mock.py`.
+
+**Number fields (JSA-268).** An Ashby `Number` field is an `<input type=number>`: text such as "Open / per internship
+program standard" never sticks, and the read-back stops the submit. `plan_build` marks it `numeric`. A pay answer becomes the
+profile's digits (`answers.comp.digits`: annual / salary → year, otherwise hour); any other text answer goes to Joey.
+
+**I. Critical answers taken from the wrong part of the question (JSA-281, audit 11-10).** A rule or a saved qa entry matched the wrong part of a critical question, or one merged entry covered two different
+questions; the page matched the plan, so nothing stopped it. Rules: the **fact gate** (`runner/fact_gate.py`, called by
+`canon.audit` before every submit, on the page records and the plan's full-label records) checks conviction,
+any-employer authorization, degree level (completed vs once graduated / pursuing), major (undergrad = Economics, a
+second major / minor = none), the internship start date, a value that is a regex (`^agree$`) and the user's saved
+answer for the exact question (when answers.json wrote the value) against config/profile.json — a mismatch blocks the
+submit and goes to Joey (an exception he confirms: `canon.py --learn <tenant> fact:<key> "<value>"`). In the rules:
+`conviction` (answers.conviction; the asking sentence decides, not a "criminal background check" notice), `any_employer`
+also for "any U.S Employer", `majorWhich` (undergrad / second major / minor), `name_pronunciation` also misspelled,
+`comp` also "(salary and bonus)", `applied_before` from the tracker (never a saved fixed answer; Joey 2026-11-10). The
+prefetch keeps wordings with different marks apart (`form_prefetch.sense`). Tests: `scripts/test_fact_gate.py`
+(DeepSeek 45 + the audit's 9), `scripts/test_jsa281_rules.js` (DeepSeek 40), `scripts/test_prefetch_sense.py` (25).
+
+**J. A field filled in another question's box (JSA-323, an Ashby employer / an Ashby employer 11-11).** The runner found a field's box on the
+page by a label SUBSTRING: the EEO "Gender" field (its options: Male / Female / Decline) matched the first box whose label contained
+"Gender" — the custom "What is your gender identity?" (Man / Woman …) above it. "Male" was not there, the click timed
+out and the read-back showed that box's "Man"; nothing was sent, but a value that happened to exist in the other box
+would have been filled into the wrong question. Rules: `Form.entry` finds an Ashby box by the field's **key** (the input's
+name / id is the key, or `<uuid>_<key>` on radio / checkbox groups), else by the **whole** label (`run_form.label_re`:
+any whitespace, an optional trailing "*"); a label that is only part of another label is never used. And every choice
+field (select / radio / multi) is filled only from **its own options** (`run_form.not_in_options`, Joey 2026-11-11
+「Add value-in-list check」): an answer that is not in the field's list stops that field before anything is typed, and
+a radio group without the option is never typed into. Tests: `scripts/test_ashby_field_match.py` (DeepSeek 30 + a
+headless mock of the an Ashby employer layout that fails on the old code).
+
+**K. Education History leaves sub-fields out (JSA-330).** The field's form config (`degree` / `major` / `startDate` /
+`endDate`: required / optional / **excluded**) decides which boxes exist: ibotta excludes Degree and the start date, so the
+page has no `-degree` box and only the end month / year selects. The runner filled Degree unconditionally (30 s timeout,
+nothing after it was filled) and the read-back wanted a degree the page cannot show. Rules: `plan_build` records
+`edu_excluded` on the field; `run_form` fills only the boxes that exist, puts the select values by `edu_select_values`
+(one date pair → the pair the form kept; unknown which → nothing), and the read-back carries a `degree` / `major` key only
+for a box the page has — `edu_same` skips a wanted part whose key is absent (a box that exists but is empty still fails).
+Tests: `scripts/test_education_excluded.py` (DeepSeek 24), `scripts/test_ashby_form_mock.py` case 7.

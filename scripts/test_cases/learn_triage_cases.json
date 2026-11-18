@@ -1,0 +1,693 @@
+[
+ {
+  "name": "real_folder_unknown_existing",
+  "fn": "trial_folder",
+  "name_arg": "2026-11-11_Entrust_AI_Developer_Intern",
+  "existing": null,
+  "expect": false
+ },
+ {
+  "name": "dry_prefix_is_trial",
+  "fn": "trial_folder",
+  "name_arg": "dry_Syngenta_test",
+  "existing": null,
+  "expect": true
+ },
+ {
+  "name": "out_folder_is_trial",
+  "fn": "trial_folder",
+  "name_arg": "out",
+  "existing": null,
+  "expect": true
+ },
+ {
+  "name": "test_prefix_is_trial",
+  "fn": "trial_folder",
+  "name_arg": "test_run_2026-11-12",
+  "existing": null,
+  "expect": true
+ },
+ {
+  "name": "not_in_existing_set_is_trial",
+  "fn": "trial_folder",
+  "name_arg": "2026-11-11_Entrust_AI_Developer_Intern",
+  "existing": [
+   "out",
+   "dry_Syngenta_test"
+  ],
+  "expect": true
+ },
+ {
+  "name": "present_in_existing_set_and_no_prefix_is_real",
+  "fn": "trial_folder",
+  "name_arg": "2026-11-11_Entrust_AI_Developer_Intern",
+  "existing": [
+   "2026-11-11_Entrust_AI_Developer_Intern",
+   "out"
+  ],
+  "expect": false
+ },
+ {
+  "name": "valid_fact_item_with_options",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "fact",
+   "group_with": [],
+   "evidence": "Do you have a disability or chronic condition",
+   "confidence": "high"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1",
+   "c2"
+  ],
+  "expect": {
+   "category": "fact",
+   "group_with": [],
+   "evidence": "Do you have a disability or chronic condition",
+   "confidence": "high",
+   "reason": ""
+  }
+ },
+ {
+  "name": "valid_runner_item_with_timeout_evidence",
+  "fn": "validate_item",
+  "item": {
+   "id": "c2",
+   "category": "runner",
+   "group_with": [
+    "c1"
+   ],
+   "evidence": "TimeoutError: locator.click: Timeout 30000ms exceeded",
+   "confidence": "medium"
+  },
+  "material": "Runner stopped while filling the disability question.\nTimeoutError: locator.click: Timeout 30000ms exceeded",
+  "ids": [
+   "c1",
+   "c2"
+  ],
+  "expect": {
+   "category": "runner",
+   "group_with": [
+    "c1"
+   ],
+   "evidence": "TimeoutError: locator.click: Timeout 30000ms exceeded",
+   "confidence": "medium",
+   "reason": ""
+  }
+ },
+ {
+  "name": "bad_category_wrong_case",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "Fact",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "unsure",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low",
+   "reason": "bad category"
+  }
+ },
+ {
+  "name": "bad_category_missing_field",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low"
+  },
+  "material": "answered 'CPT' instead of 'F-1'",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "unsure",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low",
+   "reason": "bad category"
+  }
+ },
+ {
+  "name": "evidence_not_in_material",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "qtype",
+   "group_with": [],
+   "evidence": "answered 'CPT' instead of 'F-1'",
+   "confidence": "low"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "unsure",
+   "group_with": [],
+   "evidence": "answered 'CPT' instead of 'F-1'",
+   "confidence": "low",
+   "reason": "evidence not in the material"
+  },
+  "ambiguous": true,
+  "why": "Spec states the category/reason on this failure but not whether the returned 'evidence' is the rejected input string or cleared to \"\"; expect uses the given evidence as the more natural pass-through."
+ },
+ {
+  "name": "evidence_whitespace_only",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "page",
+   "group_with": [],
+   "evidence": "   ",
+   "confidence": "low"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "unsure",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low",
+   "reason": "evidence not in the material"
+  },
+  "ambiguous": true,
+  "why": "The evidence is stripped for the comparison so it is empty and fails, but the spec does not say whether the returned 'evidence' is the stripped \"\" or the original three spaces."
+ },
+ {
+  "name": "evidence_case_insensitive_match",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "fact",
+   "group_with": [],
+   "evidence": "DO YOU HAVE A DISABILITY OR CHRONIC CONDITION",
+   "confidence": "high"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "fact",
+   "group_with": [],
+   "evidence": "DO YOU HAVE A DISABILITY OR CHRONIC CONDITION",
+   "confidence": "high",
+   "reason": ""
+  }
+ },
+ {
+  "name": "evidence_whitespace_collapsed_match",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "fact",
+   "group_with": [],
+   "evidence": "disability or chronic condition",
+   "confidence": "medium"
+  },
+  "material": "Do you have a disability  or\n   chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "fact",
+   "group_with": [],
+   "evidence": "disability or chronic condition",
+   "confidence": "medium",
+   "reason": ""
+  }
+ },
+ {
+  "name": "group_with_filters_self_unknown_and_duplicates",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "rule",
+   "group_with": [
+    "c3",
+    "c1",
+    "c2",
+    "c3",
+    "c99"
+   ],
+   "evidence": "I prefer to self-describe",
+   "confidence": "high"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1",
+   "c2",
+   "c3"
+  ],
+  "expect": {
+   "category": "rule",
+   "group_with": [
+    "c3",
+    "c2"
+   ],
+   "evidence": "I prefer to self-describe",
+   "confidence": "high",
+   "reason": ""
+  }
+ },
+ {
+  "name": "group_with_not_a_list_becomes_empty",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "fact",
+   "group_with": "c2",
+   "evidence": "Yes / No",
+   "confidence": "low"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1",
+   "c2"
+  ],
+  "expect": {
+   "category": "fact",
+   "group_with": [],
+   "evidence": "Yes / No",
+   "confidence": "low",
+   "reason": ""
+  }
+ },
+ {
+  "name": "confidence_invalid_value_falls_back_to_low",
+  "fn": "validate_item",
+  "item": {
+   "id": "c1",
+   "category": "fact",
+   "group_with": [],
+   "evidence": "chronic condition",
+   "confidence": "HIGH"
+  },
+  "material": "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?\nOptions: Yes / No / I prefer to self-describe",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "fact",
+   "group_with": [],
+   "evidence": "chronic condition",
+   "confidence": "low",
+   "reason": ""
+  }
+ },
+ {
+  "name": "item_not_an_object",
+  "fn": "validate_item",
+  "item": "fact",
+  "material": "TimeoutError: locator.click: Timeout 30000ms exceeded",
+  "ids": [
+   "c1"
+  ],
+  "expect": {
+   "category": "unsure",
+   "group_with": [],
+   "evidence": "",
+   "confidence": "low",
+   "reason": "not an object"
+  }
+ },
+ {
+  "name": "first_rule_second_fact_keeps_rule",
+  "fn": "combine_reads",
+  "first": "rule",
+  "second": "fact",
+  "expect": "rule"
+ },
+ {
+  "name": "two_fact_reads_stay_fact",
+  "fn": "combine_reads",
+  "first": "fact",
+  "second": "fact",
+  "expect": "fact"
+ },
+ {
+  "name": "fact_read_with_no_second_read",
+  "fn": "combine_reads",
+  "first": "fact",
+  "second": null,
+  "expect": "unsure"
+ },
+ {
+  "name": "fact_read_confirmed_as_rule",
+  "fn": "combine_reads",
+  "first": "fact",
+  "second": "rule",
+  "expect": "unsure"
+ },
+ {
+  "name": "fact_read_disagreed_as_unsure",
+  "fn": "combine_reads",
+  "first": "fact",
+  "second": "unsure",
+  "expect": "unsure"
+ },
+ {
+  "name": "first_ignore_wins_over_second_read",
+  "fn": "combine_reads",
+  "first": "ignore",
+  "second": null,
+  "expect": "ignore"
+ },
+ {
+  "name": "one_way_pair_link",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c2"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": []
+   },
+   {
+    "id": "c3",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ],
+   [
+    "c3"
+   ]
+  ]
+ },
+ {
+  "name": "reverse_one_way_link",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": []
+   },
+   {
+    "id": "c2",
+    "group_with": [
+     "c1"
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ]
+  ]
+ },
+ {
+  "name": "transitive_chain_of_three",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c2"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": [
+     "c3"
+    ]
+   },
+   {
+    "id": "c3",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2",
+    "c3"
+   ]
+  ]
+ },
+ {
+  "name": "two_items_pointing_at_same_target",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c3"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": [
+     "c3"
+    ]
+   },
+   {
+    "id": "c3",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2",
+    "c3"
+   ]
+  ]
+ },
+ {
+  "name": "unknown_ids_ignored",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "ghost",
+     "c2"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ]
+  ]
+ },
+ {
+  "name": "no_links_gives_sorted_singletons",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c2",
+    "group_with": []
+   },
+   {
+    "id": "c1",
+    "group_with": []
+   },
+   {
+    "id": "c3",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1"
+   ],
+   [
+    "c2"
+   ],
+   [
+    "c3"
+   ]
+  ]
+ },
+ {
+  "name": "groups_sorted_by_first_id",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c3",
+    "group_with": [
+     "c4"
+    ]
+   },
+   {
+    "id": "c1",
+    "group_with": [
+     "c2"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": []
+   },
+   {
+    "id": "c4",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ],
+   [
+    "c3",
+    "c4"
+   ]
+  ]
+ },
+ {
+  "name": "self_link_and_duplicate_claims_collapse",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c1",
+     "c2",
+     "c2"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": [
+     "c1"
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ]
+  ]
+ },
+ {
+  "name": "empty_items_list",
+  "fn": "merge_groups",
+  "items": [],
+  "expect": []
+ },
+ {
+  "name": "single_item_no_claims",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1"
+   ]
+  ]
+ },
+ {
+  "name": "four_items_join_through_two_claims",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c2"
+    ]
+   },
+   {
+    "id": "c3",
+    "group_with": [
+     "c2"
+    ]
+   },
+   {
+    "id": "c3",
+    "group_with": [
+     "c4"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": []
+   },
+   {
+    "id": "c4",
+    "group_with": []
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2",
+    "c3",
+    "c4"
+   ]
+  ]
+ },
+ {
+  "name": "two_groups_with_unknown_id_mixed_in",
+  "fn": "merge_groups",
+  "items": [
+   {
+    "id": "c1",
+    "group_with": [
+     "c2",
+     "zz9"
+    ]
+   },
+   {
+    "id": "c2",
+    "group_with": []
+   },
+   {
+    "id": "c5",
+    "group_with": []
+   },
+   {
+    "id": "c6",
+    "group_with": [
+     "c5",
+     "ghost"
+    ]
+   }
+  ],
+  "expect": [
+   [
+    "c1",
+    "c2"
+   ],
+   [
+    "c5",
+    "c6"
+   ]
+  ]
+ }
+]

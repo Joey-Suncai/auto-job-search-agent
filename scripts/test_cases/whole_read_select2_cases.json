@@ -1,0 +1,136 @@
+[
+ {
+  "name": "linkedin_url_value_not_read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "type": "text",
+     "value": "https://www.linkedin.com/in/jdoe",
+     "rule": "sponsorship"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ },
+ {
+  "name": "http_github_link_not_read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "type": "text",
+     "value": "http://github.com/jdoe",
+     "rule": "sponsorship"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ },
+ {
+  "name": "essay_301_chars_not_read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems.!",
+     "rule": "school_name"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ },
+ {
+  "name": "answer_exactly_300_chars_is_read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. I studied computer science with focus on systems. ",
+     "rule": "school_name"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [
+   "k1"
+  ],
+  "spec_quote": "An item is read only when the question's class is critical AND its group is one of: work_auth, education, record, experience. / Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ },
+ {
+  "name": "short_sponsorship_explanation_is_read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "type": "text",
+     "value": "Yes, I will need H-1B sponsorship starting in 2028.",
+     "rule": "sponsorship"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [
+   "k1"
+  ],
+  "spec_quote": "An item is read only when the question's class is critical AND its group is one of: work_auth, education, record, experience. / Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ },
+ {
+  "name": "link_excluded_but_plain_answer_read_in_order",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "type": "text",
+     "value": "https://example.com/my-visa-notes",
+     "rule": "sponsorship"
+    },
+    {
+     "key": "k2",
+     "label": "Are you legally authorized to work in the US?",
+     "options": [],
+     "type": "text",
+     "value": "Yes, I am a US citizen.",
+     "rule": "work_auth"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [
+   "k2"
+  ],
+  "spec_quote": "An item is read only when the question's class is critical AND its group is one of: work_auth, education, record, experience. / Never read: a value that is a link (starts with http:// or https://) or longer than 300 characters (an essay)",
+  "ambiguous": false
+ }
+]

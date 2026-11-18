@@ -31,12 +31,13 @@ async function fillAll(page, skip = new Set(), override = {}) {
     const isCombo = f.type === 'combo' || f.key === 'location';
     if (isCombo) {
       await page.click(f.sel); await page.keyboard.type(f.key === 'location' ? 'Chicago, Ill' : want);
-      await page.waitForSelector('.select__option', { timeout: 2000 });
-      const opts = await page.$$eval('.select__option', ns => ns.map(n => n.textContent));
-      const i = opts.indexOf(f.key === 'location' ? want : want);
-      if (i < 0) throw new Error('option not found ' + f.key + ' ' + want + ' in ' + opts);
-      for (let k = 0; k < i; k++) await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('Enter');
+      // JSA-380: wait on STATE, not wall time. The menu is already open after the click (all options listed), so waiting for
+      // "any .select__option" returned at once and the list was read before react-select re-rendered the filtered one — under
+      // load that gave the wrong ArrowDown count. Wait until the wanted option itself is on screen, then click that option.
+      const opt = page.locator('.select__option').filter({ hasText: new RegExp('^' + want.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$') });
+      try { await opt.first().waitFor({ timeout: 15000 }); } catch (e) {
+        throw new Error('option not found ' + f.key + ' ' + want + ' in ' + await page.$$eval('.select__option', ns => ns.map(n => n.textContent))); }
+      await opt.first().click();
     } else {
       await page.fill(f.sel, String(want));
     }
@@ -54,7 +55,9 @@ function expect(name, r, check) {
 (async () => {
   const br = await chromium.launch({}).catch(() => chromium.launch(Object.assign({}, {}, { channel: 'chrome' })))  /* no downloaded browser → the installed Google Chrome */;
   const ctx = await br.newContext();
-  const fresh = async () => { const p = await ctx.newPage(); await p.goto('file://' + path.join(D, 'mock.html')); await p.waitForSelector('#first_name'); return p; };
+  // JSA_CPU_THROTTLE=<n>: the page runs n× slower (CDP) — a stand-in for a loaded machine, to shake out wall-time races (JSA-380)
+  const throttle = async p => { const n = Number(process.env.JSA_CPU_THROTTLE || 0); if (n > 1) await (await ctx.newCDPSession(p)).send('Emulation.setCPUThrottlingRate', { rate: n }); };
+  const fresh = async () => { const p = await ctx.newPage(); await throttle(p); await p.goto('file://' + path.join(D, 'mock.html')); await p.waitForSelector('#first_name'); return p; };
   const evalVerify = async p => p.evaluate(({ src, plan }) => { eval(src); return __cxVerify(plan); }, { src: VERIFY, plan });
   const scenario = async (name, fn, check) => { const p = await fresh(); await fn(p); const r = await evalVerify(p); expect(name, r, check); await p.close(); };
 
@@ -75,8 +78,8 @@ function expect(name, r, check) {
     }, r => !r.pass && r.bad.some(b => b.key === 'location') && r.errors.some(e => e.key === 'latitude'));
   await scenario('6 value wiped by a re-render after DOM-only fill', async p => {
       await fillAll(p, new Set(['email']));
-      await p.evaluate(() => { document.getElementById('email').value = 'alex.rivera@example.com'; window.__rerender(); });
-      await p.waitForTimeout(100);
+      await p.evaluate(() => { document.getElementById('email').value = 'alex.doe@example.com'; window.__rerender(); });
+      await p.waitForFunction(() => document.getElementById('email').value !== 'alex.doe@example.com', null, { timeout: 3000 }).catch(() => {});   // wait for the wipe (state), bounded
     }, r => !r.pass && r.bad.some(b => b.key === 'email'));
   await scenario('7 wrong text (preferred name Joey instead of plan value)', p => fillAll(p, new Set(), { question_69874412: 'Joey' }),
     r => !r.pass && r.bad.some(b => b.key === 'question_69874412' && b.layer === 'L1'));

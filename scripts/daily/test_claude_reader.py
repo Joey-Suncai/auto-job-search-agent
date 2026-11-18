@@ -64,8 +64,11 @@ ok(ec.apply_mail(A, E, mail("n1", "CorBrakel Events <events@corbrakel.com>", "Co
 
 notes = {}
 R = cr.Reader(A, client=FakeClient(fail=True))
+st = A[2]["status"]
 r = ec.apply_mail(A, E, mail("b1", "CorBrakel <corbrakel@myworkday.com>", "Pre-Interview Assessment with CorBrakel", "Complete the HireVue assessment"), R, notes)
-ok(r and r["reader"] == "rules" and A[2]["status"] == "Assessment" and notes.get("fallback"), "API failure → rules fallback, reported")
+pend = next(e for e in E if e["id"] == "b1")
+ok(r is None and pend["type"] == ec.PENDING and pend["rules_type"] == "Assessment" and A[2]["status"] == st and notes.get("fallback"),
+   "API failure → Pending row, stage unchanged, reported (JSA-281)")
 
 calls = FakeClient(verdict())
 R = cr.Reader(A, client=calls)
@@ -89,7 +92,7 @@ pushed = []
 import notify as nt; nt.notify = lambda t, b: pushed.append(b)
 ec.report("t", [], [{"unmatched": True, "kind": "Interview", "subject": "s", "summary": "Recruiter wants a call"}],
           {"unsure": ["Kelharcor: Assessment?"], "fallback": ["x"]}, {"unavailable": "no key"}, lambda s: None)
-ok(pushed and "没对上申请" in pushed[0] and "请确认" in pushed[0] and "Claude 没有运行" in pushed[0] or "没经过 Claude" in pushed[0], "report pushes unmatched, unsure and fallback")
+ok(pushed and "没对上申请" in pushed[0] and "请确认" in pushed[0] and ("Claude 没有运行" in pushed[0] or "Claude 没读成" in pushed[0]), "report pushes unmatched, unsure and fallback")
 
 print(f"fails {fails}")
 sys.exit(1 if fails else 0)

@@ -34,7 +34,7 @@ CLEARANCE_REQ = re.compile(r"\b(?:requires?|required|must (?:have|hold|possess|b
 # a sanctions screen ("… compliance with U.S. sanctions and export controls. Select all that apply: Citizen or permanent
 # resident of Cuba, Iran, North Korea, or Syria / … / None of the above" — a Greenhouse employer 11-06, JSA-237 smoke run) asks about
 # embargoed countries, not for U.S. citizenship: no restriction for this candidate (the answer is "None of the above")
-# a question that ASKS (JSA-237 full prefetch 2026-11-06: a Greenhouse employer "Would you require an export license …", Zoox "list any
+# a question that ASKS (JSA-237 full prefetch 2026-11-06: an employer "Would you require an export license …", a Lever employer "list any
 # countries of which you are a citizen … export licensing", TRM "If this role requires a security clearance, do you …",
 # ERG "Some of the work … requires a DoD Secret clearance. Are you eligible …") is a question for Joey, not a block
 LICENSE_ASK = re.compile(r"\bwould you (?:\w+ )?require (?:an? )?(?:export )?licen|\bfor the (?:sole )?purpose of determining (?:export )?licens|"

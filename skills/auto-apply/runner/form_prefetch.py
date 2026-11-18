@@ -11,6 +11,8 @@ run_workable.offline_plan), and records per job what still needs Joey; then one 
 
 The JD verdict is JSA-231's (store elig == 可投); this reads forms only. Per question (route()):
   - rule answer, confident → used;
+  - rule answer to a critical question (field_class) → DeepSeek reads the whole question on its own (whole_read.py,
+    JSA-288, cached); a different answer / UNSURE / error → the question goes to Joey like a second-opinion disagreement
   - rule answer, uncertain (answer_rules `uncertain`) → DeepSeek second opinion (second_opinion.py, JSA-202, cached):
     agree → used; disagree / no answer / no key → Joey (listed per job: the qa table cannot override a rule);
   - no rule answer → the sheet; DeepSeek suggests an answer from his facts only, naming the fact, or ASK — never used
@@ -24,6 +26,10 @@ Outputs (data home): data/forms/<id>.json · index.jsonl · questions.md · ques
 collect_batch.py --apply) · runs.jsonl · ds_cache.jsonl (DeepSeek answers by sha256 of prompt version + model + system +
 message; a facts change changes the system prompt, so only what it touches is asked again) · work/<id>/ (plan.json …,
 never applications/). Submit still re-reads the live form, so a stale prefetch can never submit a wrong answer.
+Before the sheet, every saved record is checked against the CURRENT rules (recheck, JSA-243): a question answered since
+the job was read (qa_add) leaves the sheet the next morning, not after the 5-day re-read. A full run with questions on
+the sheet pushes one notification (scripts/daily/notify.py; --no-push; never with --sheet-only); a session learns of the
+sheet from scripts/store/prefetch_due.py (SessionStart hook, --watch).
 """
 import argparse, datetime, hashlib, json, os, re, sys, time, urllib.error, urllib.request
 
@@ -116,6 +122,17 @@ def derived(suggestion, risk=None, facts=()):
     return True
 
 
+OPTION_CUT_UNTIL = '2026-11-09'          # before this day the record kept only the first 60 options of a list (65365687)
+
+
+def cut_options(last):
+    """Pure (tested). True when a saved record was read before OPTION_CUT_UNTIL and has a field with exactly 60 options —
+    the old cut, which hid "University of Chicago" / "Other" on long school lists (a Lever employer 11-06, JSA-276)."""
+    if not last or str(last.get('read_at') or '')[:10] >= OPTION_CUT_UNTIL:
+        return False
+    return any(len(f.get('options') or []) == 60 for k in ('fields', 'questions', 'needs') for f in (last.get(k) if isinstance(last.get(k), list) else []) if isinstance(f, dict))
+
+
 def due(last, today, recheck_days=5, only_new=False):
     """Pure. Read this job on this run? last = its previous record ({read_at, status}) or None."""
     if not last:
@@ -127,6 +144,8 @@ def due(last, today, recheck_days=5, only_new=False):
         return False                       # a closed posting is not read again
     if st == 'error':
         return True                        # a failed read is retried on the next run
+    if cut_options(last):
+        return True                        # read before 11-09 with dropdowns cut to 60 options: read again now (JSA-276)
     try:
         age = (datetime.date.fromisoformat(str(today)[:10]) - datetime.date.fromisoformat(str(last.get('read_at'))[:10])).days
     except ValueError:
@@ -134,14 +153,35 @@ def due(last, today, recheck_days=5, only_new=False):
     return age >= recheck_days
 
 
-def select(rows, index, today, recheck_days=5, only_new=False, ats=None, limit=None, platform=None):
+def skip_names(path=None):
+    """Company names (lower case) of data/dashboard/skip_companies.txt — one per line, "company | reason", # = comment."""
+    out = []
+    try:
+        for line in open(path or jpaths.data('dashboard', 'skip_companies.txt'), encoding='utf-8'):
+            if line.strip() and not line.lstrip().startswith('#'):
+                c = line.partition('|')[0].strip().lower()
+                if c:
+                    out.append(c)
+    except OSError:
+        pass
+    return out
+
+
+def skipped(company, names):
+    """Pure (tested, JSA-244). True when the company name starts with a skip-list name (case and surrounding spaces
+    ignored) — the same test as auto-apply/scripts/prefilter.py, so a job the batch would skip is never read or asked."""
+    c = str(company or '').strip().lower()
+    return bool(c) and any(n and c.startswith(n) for n in (x.strip().lower() for x in names or ()))
+
+
+def select(rows, index, today, recheck_days=5, only_new=False, ats=None, limit=None, platform=None, skip=()):
     """Pure. Store rows → the jobs to read, in score order (higher first): never-read jobs first, then the due re-checks.
-    Only elig == 可投 on a prefetch platform (platform(url) → name)."""
+    Only elig == 可投 on a prefetch platform (platform(url) → name), never a skip-list company (skip = names, JSA-244)."""
     platform = platform or _platform
     want = set(ats or PLATFORMS)
     new, again = [], []
     for r in rows:
-        if r.get('elig') != '可投':
+        if r.get('elig') != '可投' or skipped(r.get('company'), skip):
             continue
         p = platform(r.get('ats_url') or r.get('url'))
         if p not in PLATFORMS or p not in want:
@@ -208,6 +248,27 @@ def rank(jobs, max_questions=MAX_QUESTIONS, long_tail=LONG_TAIL, tiers=None):
 def n_left(need, cand):
     """Pure. True when every blocker left is a sheet candidate (the job can become ready through the sheet)."""
     return all(q in cand for q in need)
+
+
+SENSES = (   # JSA-281 (a Lever employer 11-10): DeepSeek gave "What is your highest level of education?" and "Level of education
+    # completed once you've graduated?" one intent, so one answer (Bachelor) covered both. Wordings of one intent that
+    # differ in any of these marks are different questions; each mark is a word class the fact behind the answer turns on.
+    ('ed_after', re.compile(r"once (you'?ve|you have|you are|you're) graduat|upon graduation|after (you )?graduat|when you graduate|expected (degree|level)|will (you )?(have|hold|receive|earn|complete|obtain)\b|expect to (have|hold|receive|earn|complete|obtain)\b", re.I)),
+    ('ed_now', re.compile(r'\b(currently|now) (pursuing|enrolled|studying|working towards?)|\bpursuing\b|in progress', re.I)),
+    ('ed_done', re.compile(r'highest|completed|attained|earned|obtained', re.I)),
+    ('bachelor', re.compile(r"\bbachelor'?s?\b|\bundergrad(uate)?\b", re.I)),
+    ('master', re.compile(r"\bmaster'?s?\b|\bgraduate (degree|program|school|studies)\b|ph\.?\s?d", re.I)),
+    ('second', re.compile(r'\b(second(ary)?|double|additional) (major|degree|field)|\bminor\b', re.I)),
+    ('crime', re.compile(r'convict|felon|criminal (record|history|offen)|pleaded|found guilty', re.I)),
+    ('any_employer', re.compile(r'\b(any|all) ((u\.?\s?s\.?|united states)\s*)?employers?\b|without (any )?restriction', re.I)),
+    ('yn', re.compile(r'^\W*(are|is|am|do|does|did|will|would|can|could|have|has|had|were|was)\b', re.I)),
+)
+
+
+def sense(q):
+    """Pure (tested). The marks of a wording that decide its answer (SENSES) → '' or '|mark|mark…' (part of the group id)."""
+    q = str(q or '').replace('\u2019', "'").replace('\u2018', "'")
+    return ''.join('|' + k for k, rx in SENSES if rx.search(q))
 
 
 def match_re(wordings):
@@ -487,6 +548,7 @@ class Rules:
     def __init__(self, ds, fact_text, use_so=True):
         self.ds, self.fact_text, self.use_so = ds, fact_text, use_so
         self.last = {}
+        self.wr_cache = None
 
     def wrap(self, fn):
         def inner(fields, *a, **k):
@@ -512,8 +574,46 @@ class Rules:
             else:
                 out[it['key']] = {'status': 'unknown', 'label': it['label'], 'rule': it['rule'], 'rejected': it['value'],
                                   'why': f"second opinion: rules said {it['value']!r} ({it['uncertain']}), the model "
-                                         + (f"said {v.get('model')!r}" if v.get('model') else 'gave no answer')}
+                                         + (f"said {v.get('model')!r}" if v.get('model') else 'gave no answer')
+                                     + (f" — {v['why'][:200]}" if v.get('how') == 'block' and v.get('why') else '')}
+        if self.use_so:
+            self.whole_read(out, fields)
         return out
+
+    def whole_read(self, out, fields):
+        """JSA-288: the rule-answered critical questions read whole by DeepSeek (whole_read.py, its own cache) — a
+        different answer, UNSURE or an error → 'unknown' with so = 'disagree' / 'error', so the question goes to Joey in
+        the morning sheet exactly like a second-opinion disagreement."""
+        import whole_read as W, jsa_profile
+        if not W.enabled(dict(os.environ, CX_SECOND_OPINION='1')):   # CX_WHOLE_READ=0 / tests (JSA_NO_PUSH, CX_DATA) = off
+            return
+        prof = jsa_profile.load()
+        labels = [f.get('label') or '' for f in fields]
+        pos = {f['key']: i for i, f in enumerate(fields)}
+        byk = {f['key']: f for f in fields}
+        cand = [{'key': k, 'label': (byk.get(k) or {}).get('label') or a.get('label') or '', 'options': (byk.get(k) or {}).get('options') or [],
+                 'type': (byk.get(k) or {}).get('type'), 'value': a.get('value'), 'rule': a.get('rule'), 'pos': pos.get(k, 0),
+                 'context': labels[max(0, pos[k] - 4):pos[k]] if k in pos else []}
+                for k, a in out.items() if isinstance(a, dict) and a.get('status') == 'ok' and not a.get('leave') and a.get('rule')]
+        sel = W.select(cand, prof.get('qa') or [])
+        if not sel:
+            return
+        if self.wr_cache is None:
+            self.wr_cache = W.load_cache(W.cache_path())
+        rev, rest = W.blocks_first(cand, sel)                   # JSA-294: education / work block boxes by code, with their entry
+        if rest:
+            rev.update(W.read_items(rest, W.facts(prof), cache=self.wr_cache, path=W.cache_path()))
+        for it in sel:
+            v = rev[it['key']]
+            self.last.setdefault(it['key'], {'status': 'ok', 'rule': it['rule'], 'ask': False, 'uncertain': None})
+            if v['agree']:
+                out[it['key']] = dict(out[it['key']], whole_read='agree')
+                continue
+            self.last[it['key']]['so'] = 'error' if v['how'] == 'error' else 'disagree'
+            out[it['key']] = {'status': 'unknown', 'label': it['label'], 'rule': it['rule'], 'rejected': it['value'], 'whole_read': v['how'],
+                              'why': f"whole read: rules said {it['value']!r} ({it['rule']}), the model "
+                                     + (f"said {v.get('model')!r}" if v.get('model') else 'gave no answer')
+                                     + (f" — {v['why'][:200]}" if v.get('how') == 'block' and v.get('why') else '')}
 
 
 def read_form(job, work, ats):
@@ -553,6 +653,52 @@ def read_form(job, work, ats):
     raise RuntimeError('platform ' + ats)
 
 
+OTHER_FOLLOWUP = re.compile(r"\bif\s+(?:you\s+)?(?:selected|chose|choose|picked|answered|checked)?\s*['\"“]?other\b|\bother\s*[,:(–—-]\s*(?:please\s+)?(?:specify|explain|describe)|^\W*(?:other|please specify|please explain)\W*$", re.I)
+
+
+def _prev_field(fields, i):
+    """The field before fields[i] in page order, hidden and file fields aside (JSA-256 review)."""
+    j = i - 1
+    while j >= 0 and fields[j].get('type') in ('hidden', 'file'):
+        j -= 1
+    return fields[j] if j >= 0 else None
+
+
+def other_followup(fields, i):
+    """Pure (tested, JSA-256). fields = the plan's fields in page order, i = the index of an unanswered field → None (an ordinary
+    question), 'drop' (an "If other, please specify" follow-up whose previous field has no Other answer yet or a different one
+    — never shown / asked later), or the label with its context (the previous field was answered Other)."""
+    f = fields[i]
+    prev = _prev_field(fields, i)
+    if prev is None or not OTHER_FOLLOWUP.search(str(f.get('label') or '')):
+        return None
+    other = [o for o in prev.get('options') or [] if re.match(r'\s*others?\b', str(o), re.I)]
+    if not other:
+        return None
+    ans = prev.get('answer')
+    given = [str(a).strip() for a in (ans if isinstance(ans, (list, tuple)) else [ans]) if a not in (None, '')]
+    if any(g.lower() == o.strip().lower() for g in given for o in other):
+        return f"{prev.get('label')} — you chose {', '.join(given)}: {f.get('label')}"
+    return 'drop'
+
+
+COND_FOLLOWUP = re.compile(r'^\W*if\s+(no|yes|not|so|none|applicable|you)\b', re.I)
+
+
+def conditional_context(fields, i):
+    """Pure (tested, JSA-419). "If no, is your home country listed below?" is unanswerable alone (Fab2 11-17): the context is the
+    PARENT question it depends on (the previous field) and the field's own help text (the list it points to). '' when the field
+    is no follow-up and has no help text. The label stays the form's own."""
+    f = fields[i]
+    parts = []
+    if COND_FOLLOWUP.search(str(f.get('label') or '')) and i > 0:
+        prev = fields[i - 1]
+        parts.append(f"follows: {prev.get('label')}")
+    if f.get('help'):
+        parts.append(f"form text: {f['help']}")
+    return ' — '.join(parts)
+
+
 def items_of_plan(plan, last, essays):
     """Pure-ish. plan.json needs_user → per-question records with their route inputs (rule kind, second opinion)."""
     import canon
@@ -561,6 +707,19 @@ def items_of_plan(plan, last, essays):
         if n['key'] in essays or n.get('survey'):
             continue
         r = last.get(n['key']) or {}
+        fl = plan.get('fields') or []
+        k = next((j for j, f in enumerate(fl) if f.get('key') == n['key']), None)
+        fu = other_followup(fl, k) if k is not None else None
+        ctx, deferred = '', False
+        if fu == 'drop':
+            pv = _prev_field(fl, k)
+            if pv.get('answer') not in (None, '', []):
+                continue                                               # JSA-256: the previous answer is not Other — the follow-up is not shown
+            deferred = True                                            # previous still unanswered: not asked on its own, still open (job not ready)
+        elif fu:
+            ctx = fu[:-len(str(n['label']))].rstrip(': ').rstrip()     # the context only; the label stays the form's own (answers match on it)
+        if not ctx and k is not None:
+            ctx = conditional_context(fl, k)
         why = str(n.get('why') or '')
         if r.get('so') in ('disagree', 'error'):
             rule = 'uncertain'
@@ -570,8 +729,9 @@ def items_of_plan(plan, last, essays):
             rule = 'none'
         ftype = next((f.get('type') for f in plan.get('fields') or [] if f.get('key') == n['key']), None)
         risk = high_risk(n['label'], n.get('options'), ftype, canon.classify(n['label']) if ftype not in ('text', 'textarea', 'date') else None)
-        out.append({'key': n['key'], 'label': n['label'], 'options': list(n.get('options') or [])[:60], 'type': ftype,
-                    'required': bool(n.get('required')), 'why': why[:200], 'rule': rule, 'so': r.get('so'), 'risk': risk})
+        out.append({'key': n['key'], 'label': n['label'], 'options': list(n.get('options') or []), 'type': ftype,   # every option: a cut list hid "University of Chicago" and the sheet answer became "Other" (2026-11-09)
+                    'required': bool(n.get('required')), 'why': why[:200], 'rule': rule, 'so': r.get('so'), 'risk': risk,
+                    **({'context': ctx} if ctx else {}), **({'deferred': True} if deferred else {})})
     return out
 
 
@@ -648,6 +808,8 @@ def read_job(job, rules, today=None, mark=None, cand=None, log=print):
         qitems = items_of_plan(plan, last, essays)
         for q in qitems:
             q.update(route(q['rule'], q['so'], q['risk']))
+            if q.get('deferred'):
+                q['route'] = 'deferred'                                # JSA-256: after its Other question is answered
         rec['questions'] = qitems
         hits = FR.find(plan)
         cand = FR.candidate() if cand is None else cand
@@ -666,6 +828,13 @@ def read_job(job, rules, today=None, mark=None, cand=None, log=print):
             rec['status'] = 'ok'
     except Gone as e:
         rec.update(status='closed', error=str(e)[:200])
+        if mark:                                    # JSA-417: a closed posting stops being 可投 in the store (the public API must agree)
+            try:
+                sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
+                import job_closed
+                rec['store_closed'] = job_closed.confirm_mark(job, str(e), 'prefetch', today) or 'not confirmed by the public API'
+            except Exception as e2:
+                rec['store_closed'] = f'store not updated ({type(e2).__name__}: {str(e2)[:80]})'
     except BaseException as e:                      # one failing job never stops the run
         if isinstance(e, KeyboardInterrupt):
             raise
@@ -700,6 +869,64 @@ def needs_count(rec):
     return q + len(rec.get('files') or []) + len(rec.get('joey_tasks') or [])
 
 
+def recheck(recs, answer, today=None):
+    """Pure but for `answer` (JSA-243). The saved records keep the routes of the day each job was read (re-read every 5
+    days), so a question Joey answered yesterday (qa_add → config qa) stayed on the sheet until then (2026-11-07: "In what
+    city/town do you currently reside?" asked again the day after). Ask the CURRENT rules about every required question
+    not yet 'used' whose rule is 'none' or 'per_job' (never 'uncertain': that one needs a second opinion first).
+    answer(list of {key, label, type, options}) → {key: rules result}; one call for the unique (label, type, options).
+    A result with status 'ok' and no ask / uncertain flag → route 'used', rechecked = today, rule_now = its rule; the
+    record's needs / ready are recomputed. Returns the ids of the records changed (they are changed in place)."""
+    today = today or datetime.date.today().isoformat()
+    uniq, refs = {}, []
+    for r in recs:
+        if r.get('status') != 'ok':
+            continue
+        for x in r.get('questions') or []:
+            if not x.get('required') or x.get('route') == 'used' or x.get('rule') not in ('none', 'per_job'):
+                continue
+            sig = json.dumps([x.get('label'), x.get('type') or 'text', list(x.get('options') or [])], ensure_ascii=False)
+            uniq.setdefault(sig, {'key': str(len(uniq)), 'label': x.get('label') or '', 'type': x.get('type') or 'text', 'options': list(x.get('options') or [])})
+            refs.append((r, x, uniq[sig]['key']))
+    if not refs:
+        return []
+    got = answer(list(uniq.values())) or {}
+    changed = []
+    for r, x, k in refs:
+        a = got.get(k) or {}
+        if a.get('status') == 'ok' and not a.get('ask') and not a.get('uncertain'):
+            x.update(route='used', rechecked=today, rule_now=a.get('rule'))
+            if r['id'] not in changed:
+                changed.append(r['id'])
+    for r in recs:
+        if r.get('id') in changed:
+            r['needs'] = needs_count(r)
+            r['ready'] = r.get('status') == 'ok' and r['needs'] == 0
+    return changed
+
+
+def rules_answer(qs):
+    """The current rules (answer_rules.js through rules_bridge.js, no second opinion) for recheck(); {} when Node fails."""
+    import subprocess
+    try:
+        r = subprocess.run(['node', os.path.join(HERE, 'rules_bridge.js')], input=json.dumps(qs), capture_output=True,
+                           text=True, timeout=300, env=dict(os.environ, CX_SECOND_OPINION='0'))
+        return json.loads(r.stdout or '{}')
+    except Exception as e:
+        print(f'recheck: rules not run ({type(e).__name__}: {str(e)[:120]})')
+        return {}
+
+
+def push_line(summary):
+    """Pure (tested). (title, body) of the morning push, or None when the sheet asks nothing."""
+    n = int((summary or {}).get('questions') or 0)
+    if not n:
+        return None
+    gain = max(int(summary.get('ready_after') or 0) - int(summary.get('ready_now') or 0), 0)
+    return (f'求职助手：{n} 道表单题待答',
+            f'答完可多投 {gain} 个职位（现在 {int(summary.get("ready_now") or 0)} 个可直接投）。打开使用会话，会在聊天里问你。')
+
+
 def blockers(rec):
     """Pure. A record's blockers for rank(): 'q:<key>' for each sheet question (by its merge key), 'x:…' for the rest."""
     out = set()
@@ -713,6 +940,23 @@ def blockers(rec):
 
 
 # ----------------------------------------------------------------------------- the sheet
+def merge_options(lists):
+    """Pure (tested, JSA-241). The option lists the merged forms showed (one per form, in the form's order) → (options, option_sets):
+    options = every distinct option, first-seen order, never cut; option_sets = the distinct non-empty lists, only when there is
+    more than one (None otherwise) — qa_add checks an answer against each list, not only against the union."""
+    opts, sets = [], []
+    for l in lists:
+        l = [str(o) for o in (l or [])]
+        if not l:
+            continue
+        if l not in sets and sorted(l) not in [sorted(x) for x in sets]:
+            sets.append(l)
+        for o in l:
+            if o not in opts:
+                opts.append(o)
+    return opts, (sets if len(sets) > 1 else None)
+
+
 def build_sheet(recs, ds, facts, max_questions=MAX_QUESTIONS, use_ds=True, today=None):
     """Every saved job record → (sheet dict for questions.json, markdown). Same-meaning wordings merged (qnorm, then
     DeepSeek grouping of the non-high-risk ones), greedy order (rank), fact-derived block on top, pattern questions as one
@@ -725,9 +969,10 @@ def build_sheet(recs, ds, facts, max_questions=MAX_QUESTIONS, use_ds=True, today
             if not x.get('required') or x.get('route') == 'used' or not (x.get('route') == 'sheet' or (x.get('risk') and x.get('rule') == 'none')):
                 continue
             k = qkey(x['label'])
-            w = words.setdefault(k, {'k': k, 'q': x['label'], 'options': [], 'risk': x.get('risk'), 'jobs': set(), 'type': x.get('type'), 'optsets': set()})
+            w = words.setdefault(k, {'k': k, 'q': x['label'], 'options': [], 'risk': x.get('risk'), 'jobs': set(), 'type': x.get('type'), 'optsets': set(), 'lists': [], 'context': x.get('context') or ''})
             w['jobs'].add(r['id'])
             w['optsets'].add(tuple(x.get('options') or []))
+            w['lists'].append(list(x.get('options') or []))
             for o in x.get('options') or []:
                 if o not in w['options']:
                     w['options'].append(o)
@@ -735,7 +980,7 @@ def build_sheet(recs, ds, facts, max_questions=MAX_QUESTIONS, use_ds=True, today
     gid = {}                                           # wording key → group id
     for k, w in words.items():
         g = groups.get(k)
-        gid[k] = ('g:' + g['intent']) if g else ('w:' + k)
+        gid[k] = ('g:' + g['intent'] + sense(w['q'])) if g else ('w:' + k)   # JSA-281: same intent, different sense → apart
     jobs = {}
     for j, r in live.items():
         b = set()
@@ -755,24 +1000,26 @@ def build_sheet(recs, ds, facts, max_questions=MAX_QUESTIONS, use_ds=True, today
         if not ms:
             continue
         rep = ms[0]
-        opts = []
-        for w in ms:
-            opts += [o for o in w['options'] if o not in opts]
+        opts, osets = merge_options([l for w in ms for l in w['lists']])
         pattern = bool((groups.get(rep['k']) or {}).get('pattern')) and len(set().union(*[w['optsets'] for w in ms])) > 1   # options differ per company
         risk = next((w['risk'] for w in ms if w['risk']), None)
         sug = None
         if use_ds and not risk:
-            sug = suggest(ds, facts, rep['q'], [] if pattern else opts[:60], pattern)
+            sug = suggest(ds, facts, rep['q'], [] if pattern else opts[:400], pattern)
         before = sum(1 for b in answered.values() if not b)
         for b in answered.values():
             b.discard(sid)
         gain = sum(1 for b in answered.values() if not b) - before
         jl = sorted(set().union(*[w['jobs'] for w in ms]))
-        e = {'id': f'P{n}', 'question': rep['q'], 'options': [] if pattern else opts[:60], 'type': rep.get('type') or '',
+        e = {'id': f'P{n}', 'question': rep['q'], 'options': [] if pattern else opts, 'type': rep.get('type') or '',
              'kind': 'high_risk' if risk else 'pattern' if pattern else 'fact', 'risk': risk, 'jobs': jl, 'folders': jl,
              'n_jobs': len(jl), 'ready_gain': gain, 'wordings': [w['q'] for w in ms][:12], 'answer': None}
+        if rep.get('context'):
+            e['context'] = rep['context']                # JSA-256: "<previous question> — you chose Other"
         if len(ms) > 1:
             e['match'] = match_re([w['k'] for w in ms])
+        if osets and not pattern:
+            e['option_sets'] = osets                     # JSA-241: the lists differ per form — qa_add checks the answer against each
         if pattern:
             e['example_options'] = {w['q'][:80]: w['options'][:12] for w in ms[:4]}
         if sug:
@@ -830,6 +1077,10 @@ def sheet_md(s):
             L.append(f"**{e['id']}** ({e['n_jobs']} jobs, +{e['ready_gain']} ready){' · ' + tag if tag else ''} — {e['question'][:200]}")
             if e.get('options'):
                 L.append('  options: ' + ' / '.join(map(str, e['options'][:12])) + (' …' if len(e['options']) > 12 else ''))
+            if e.get('context'):
+                L.append('  after: ' + e['context'][:200])
+            if e.get('option_sets'):
+                L.append(f"  ({len(e['option_sets'])} different lists across the forms, {len(e['options'])} options in all — the answer is checked against each)")
             if e.get('example_options'):
                 for q, o in list(e['example_options'].items())[:3]:
                     L.append(f"  e.g. {q[:60]}: {' / '.join(o[:6])}")
@@ -889,6 +1140,8 @@ def main(argv=None):
     ap.add_argument('--no-ds', action='store_true'); ap.add_argument('--max-questions', type=int, default=MAX_QUESTIONS)
     ap.add_argument('--no-mark', action='store_true', help='record form restrictions without marking the store 不可投')
     ap.add_argument('--sheet-only', action='store_true'); ap.add_argument('--ids', help='comma-separated job ids (debugging)')
+    ap.add_argument('--no-recheck', action='store_true', help='keep the saved routes (no current-rules pass before the sheet)')
+    ap.add_argument('--no-push', action='store_true', help='no morning notification (it is never sent with --sheet-only)')
     a = ap.parse_args(argv)
     t0 = time.time()
     os.environ['CX_SECOND_OPINION'] = '0'          # the bridge's own (uncached) second opinion is off: Rules does it, cached
@@ -911,7 +1164,15 @@ def main(argv=None):
         if a.ids:
             want = set(a.ids.split(','))
             rows = [r for r in rows if r.get('id') in want]
-        todo = select(rows, index, today, a.recheck_days, a.only_new, a.ats.split(',') if a.ats else None, a.limit)
+        sel_index = dict(index)                      # records from before the 60-option fix carry their lists for due() (JSA-276)
+        for k, v in index.items():
+            if str(v.get('read_at') or '')[:10] < OPTION_CUT_UNTIL and os.path.exists(os.path.join(d, f'{k}.json')):
+                try:
+                    rec = json.load(open(os.path.join(d, f'{k}.json'), encoding='utf-8'))
+                    sel_index[k] = dict(v, **{x: rec.get(x) for x in ('fields', 'questions', 'needs')})
+                except ValueError:
+                    pass
+        todo = select(rows, sel_index, today, a.recheck_days, a.only_new, a.ats.split(',') if a.ats else None, a.limit, skip=skip_names())
         import form_restrictions as FR
         cand = FR.candidate()
         mark = None if a.no_mark else FR.mark_store
@@ -932,9 +1193,36 @@ def main(argv=None):
             time.sleep(a.sleep)
         write_index(ipath, index)
     recs = load_recs(d, index)
+    if not a.no_recheck:                           # JSA-243: questions answered since a job was read leave the sheet now
+        changed = recheck(recs, rules_answer, today)
+        for r in recs:
+            if r['id'] in changed:
+                json.dump(r, open(os.path.join(d, f"{r['id']}.json"), 'w'), ensure_ascii=False, indent=1)
+                index[r['id']] = index_row(r)
+        if changed:
+            write_index(ipath, index)
+        stats['rechecked'] = len(changed)
+        print(f'recheck: {len(changed)} job record(s) lost a question the current rules answer now')
+    names = skip_names()                           # JSA-244: skip-list companies (Leland 11-08) never reach the sheet
+    recs = [r for r in recs if not skipped(r.get('company'), names)]
     sheet, md = build_sheet(recs, ds, facts, a.max_questions, use_ds=ds.enabled, today=today)
     json.dump(sheet, open(os.path.join(d, 'questions.json'), 'w'), ensure_ascii=False, indent=1)
     open(os.path.join(d, 'questions.md'), 'w', encoding='utf-8').write(md)
+    sp = os.path.join(d, 'suggestions.jsonl')                                       # JSA-240: history for the weekly spot check (questions.json is overwritten)
+    seen = set()
+    if os.path.exists(sp):
+        for l in open(sp, encoding='utf-8'):
+            try:
+                x = json.loads(l); seen.add((x.get('date'), x.get('sheet'), x.get('question')))
+            except ValueError:
+                pass
+    with open(sp, 'a', encoding='utf-8') as f:
+        for e in sheet['questions']:
+            sg = e.get('suggestion')
+            if sg and e.get('kind') != 'pattern' and (today, sheet['name'], e['question']) not in seen:
+                f.write(json.dumps({'date': today, 'sheet': sheet['name'], 'question': e['question'], 'options': e.get('options') or [],
+                                    'option_sets': e.get('option_sets'), 'suggestion': sg.get('answer'), 'fact': sg.get('fact'),
+                                    'derived': e.get('block') == 'derived'}, ensure_ascii=False) + '\n')
     stats.update(secs=round(time.time() - t0, 1), ds=ds.usage, sheet=sheet['summary'], at=datetime.datetime.now().isoformat(timespec='seconds'))
     with open(os.path.join(d, 'runs.jsonl'), 'a', encoding='utf-8') as f:
         f.write(json.dumps(stats, ensure_ascii=False) + '\n')
@@ -942,6 +1230,14 @@ def main(argv=None):
     print(f"form_prefetch: read {stats['read']} · ready {stats['ready']} · closed {stats.get('closed', 0)} · restricted {stats.get('restricted', 0)} · errors {stats.get('error', 0)} · "
           f"DeepSeek {ds.usage} · {stats['secs']} s")
     print(f"sheet: answer these {sm['questions']} and {sm['pct_after']} % of the {sm['jobs']} prefetched jobs become ready ({sm['ready_now']} ready now) → {os.path.join(d, 'questions.md')}")
+    p = None if (a.sheet_only or a.no_push) else push_line(sm)
+    if p:                                          # JSA-243: the routine has no model — tell Joey a session should ask
+        sys.path.insert(0, os.path.join(ROOT, 'scripts', 'daily'))
+        try:
+            import notify
+            print('push:', ', '.join(notify.notify(*p)) or 'nothing')
+        except Exception as e:
+            print(f'push failed ({type(e).__name__}: {str(e)[:120]})')
     return 0
 
 

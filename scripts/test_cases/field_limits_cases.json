@@ -1,0 +1,344 @@
+[
+ {
+  "name": "minor_none_too_short",
+  "label": "What is your current degree minor? if applicable.",
+  "value": "None",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "The value must have at least 5 characters. 4 out of 50 characters",
+  "platform": null,
+  "expect": "too_short",
+  "spec": "Combine every source: ... the minimum is the LARGEST minimum found in minlength, hint and platform. ... 'too_short' when the value is shorter than the minimum."
+ },
+ {
+  "name": "minor_not_applicable_passes",
+  "label": "What is your current degree minor? if applicable.",
+  "value": "Not applicable",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "The value must have at least 5 characters. 4 out of 50 characters",
+  "platform": null,
+  "expect": null,
+  "spec": "else null (the answer is fine) — length 14 is at least the minimum 5 and at most the maximum 50."
+ },
+ {
+  "name": "career_answer_1086_too_long",
+  "label": "What are your career aspirations?",
+  "value": {
+   "repeat": "a",
+   "times": 1086
+  },
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "",
+  "platform": {
+   "max": 200,
+   "min": null
+  },
+  "expect": "too_long",
+  "spec": "the maximum is the SMALLEST maximum found in maxlength, hint and platform. ... 'too_long' when the value is longer than the maximum."
+ },
+ {
+  "name": "career_answer_194_passes",
+  "label": "What are your career aspirations?",
+  "value": {
+   "repeat": "a",
+   "times": 194
+  },
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "",
+  "platform": {
+   "max": 200,
+   "min": null
+  },
+  "expect": null,
+  "spec": "else null (the answer is fine) — 194 characters does not exceed the platform maximum of 200."
+ },
+ {
+  "name": "link1_linkedin_no_scheme_not_url",
+  "label": "Link 1",
+  "value": "linkedin.com/in/alexdoe",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "Enter Link 1 in the format: http://example.com.",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "'not_url' when the box wants a web address and the value does not start with http:// or https:// followed by a host containing a dot. A box wants a web address when ... the hint says the format is http://example.com."
+ },
+ {
+  "name": "link1_full_https_passes",
+  "label": "Link 1",
+  "value": "https://linkedin.com/in/alexdoe",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "Enter Link 1 in the format: http://example.com.",
+  "platform": null,
+  "expect": null,
+  "spec": "else null (the answer is fine) — the value starts with https:// followed by a host containing a dot."
+ },
+ {
+  "name": "link2_github_no_scheme_not_url",
+  "label": "Link 2",
+  "value": "github.com/alex-doe-example",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "Enter Link 2 in the format: http://example.com.",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "'not_url' when the box wants a web address and the value does not start with http:// or https:// followed by a host containing a dot."
+ },
+ {
+  "name": "link2_full_https_passes",
+  "label": "Link 2",
+  "value": "https://github.com/alex-doe-example",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "Enter Link 2 in the format: http://example.com.",
+  "platform": null,
+  "expect": null,
+  "spec": "else null (the answer is fine) — https:// plus a dotted host satisfies the url rule."
+ },
+ {
+  "name": "slash_counter_over_max",
+  "label": "Why do you want this role?",
+  "value": {
+   "repeat": "a",
+   "times": 201
+  },
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "0/200 characters",
+  "platform": null,
+  "expect": "too_long",
+  "spec": "In 'N out of M characters' / 'N/M characters' the M is the maximum; N is only the current length. ... 'too_long' when the value is longer than the maximum."
+ },
+ {
+  "name": "slash_counter_exactly_max_passes",
+  "label": "Why do you want this role?",
+  "value": {
+   "repeat": "a",
+   "times": 200
+  },
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "0/200 characters",
+  "platform": null,
+  "expect": null,
+  "spec": "'too_long' when the value is longer than the maximum — exactly 200 equals the maximum, so it is not longer."
+ },
+ {
+  "name": "counter_n_is_not_a_minimum",
+  "label": "What is your current degree minor? if applicable.",
+  "value": "None",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "4 out of 50 characters",
+  "platform": null,
+  "expect": null,
+  "spec": "In 'N out of M characters' ... the M is the maximum; N is only the current length. No minimum is stated here, so only the maximum 50 applies."
+ },
+ {
+  "name": "maxlength_smaller_than_hint_max",
+  "label": "Tell us about a project you are proud of.",
+  "value": {
+   "repeat": "a",
+   "times": 150
+  },
+  "maxlength": 100,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "Up to 500 characters",
+  "platform": null,
+  "expect": "too_long",
+  "spec": "the maximum is the SMALLEST maximum found in maxlength, hint and platform — 100 beats 500."
+ },
+ {
+  "name": "platform_max_smaller_than_hint_max",
+  "label": "Describe your leadership experience.",
+  "value": {
+   "repeat": "a",
+   "times": 250
+  },
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "textarea",
+  "hint": "Enter a maximum of 300 characters.",
+  "platform": {
+   "max": 200,
+   "min": null
+  },
+  "expect": "too_long",
+  "spec": "the maximum is the SMALLEST maximum found in maxlength, hint and platform — 200 beats 300."
+ },
+ {
+  "name": "largest_minimum_wins_across_sources",
+  "label": "Describe your relevant experience.",
+  "value": "I have eight yrs",
+  "maxlength": null,
+  "minlength": 3,
+  "input_type": "textarea",
+  "hint": "The value must have at least 20 characters.",
+  "platform": {
+   "max": null,
+   "min": 8
+  },
+  "expect": "too_short",
+  "spec": "the minimum is the LARGEST minimum found in minlength, hint and platform — 20 beats 8 and 3; 16 characters is shorter than 20."
+ },
+ {
+  "name": "padded_value_trims_to_max_passes",
+  "label": "Job title",
+  "value": "   abcdefghij   ",
+  "maxlength": 10,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": null,
+  "spec": "Lengths count characters of the value after trimming leading/trailing whitespace — 10 characters, not longer than the maximum 10."
+ },
+ {
+  "name": "padded_value_trims_over_max",
+  "label": "Job title",
+  "value": "   abcdefghijk   ",
+  "maxlength": 10,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": "too_long",
+  "spec": "Lengths count characters of the value after trimming leading/trailing whitespace — 11 characters exceeds the maximum 10."
+ },
+ {
+  "name": "padded_value_trims_below_min",
+  "label": "Degree minor",
+  "value": "   ab   ",
+  "maxlength": null,
+  "minlength": 5,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": "too_short",
+  "spec": "Lengths count characters of the value after trimming leading/trailing whitespace — 2 characters is shorter than the minimum 5."
+ },
+ {
+  "name": "empty_value_on_url_box_is_null",
+  "label": "Website",
+  "value": "",
+  "maxlength": null,
+  "minlength": 10,
+  "input_type": "url",
+  "hint": "",
+  "platform": null,
+  "expect": null,
+  "spec": "An empty value (or only whitespace) is always null: emptiness is judged elsewhere."
+ },
+ {
+  "name": "whitespace_only_value_is_null",
+  "label": "Degree minor",
+  "value": "     ",
+  "maxlength": null,
+  "minlength": 5,
+  "input_type": "text",
+  "hint": "The value must have at least 5 characters.",
+  "platform": null,
+  "expect": null,
+  "spec": "An empty value (or only whitespace) is always null: emptiness is judged elsewhere."
+ },
+ {
+  "name": "url_type_without_scheme_not_url",
+  "label": "Portfolio address",
+  "value": "example.com/portfolio",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "url",
+  "hint": "",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "A box wants a web address when input_type is 'url' ... 'not_url' when the box wants a web address and the value does not start with http:// or https:// followed by a host containing a dot."
+ },
+ {
+  "name": "url_type_with_scheme_passes",
+  "label": "Portfolio address",
+  "value": "https://example.com/portfolio",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "url",
+  "hint": "",
+  "platform": null,
+  "expect": null,
+  "spec": "else null (the answer is fine) — value starts with https:// followed by a host containing a dot."
+ },
+ {
+  "name": "url_by_hint_valid_url_phrase",
+  "label": "Other website",
+  "value": "myportfolio.dev",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "Please enter a valid URL.",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "A box wants a web address when ... the hint says the format is http://example.com (or asks for a valid URL)."
+ },
+ {
+  "name": "portfolio_label_is_url_box",
+  "label": "Portfolio?",
+  "value": "dribbble.com/me",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "A box wants a web address when ... the label is ONLY a link name: 'Link 1', 'Link 2', 'URL', 'Website', 'Portfolio', ... (case-insensitive, optional trailing '?')."
+ },
+ {
+  "name": "linkedin_url_label_with_https_passes",
+  "label": "LinkedIn URL",
+  "value": "https://www.linkedin.com/in/jdoe",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": null,
+  "spec": "else null (the answer is fine) — the label 'LinkedIn URL' wants a web address and the value starts with https:// followed by a dotted host."
+ },
+ {
+  "name": "https_with_host_without_dot_not_url",
+  "label": "Website",
+  "value": "http://localhost:8080",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": "not_url",
+  "spec": "'not_url' when the box wants a web address and the value does not start with http:// or https:// followed by a host containing a dot — 'localhost' has no dot."
+ },
+ {
+  "name": "long_question_mentioning_linkedin_is_not_url_box",
+  "label": "How did you hear about us — LinkedIn, website, other?",
+  "value": "LinkedIn",
+  "maxlength": null,
+  "minlength": null,
+  "input_type": "text",
+  "hint": "",
+  "platform": null,
+  "expect": null,
+  "spec": "A long question that merely mentions LinkedIn or a website ('How did you hear about us — LinkedIn, website, other?') does NOT want an address."
+ }
+]

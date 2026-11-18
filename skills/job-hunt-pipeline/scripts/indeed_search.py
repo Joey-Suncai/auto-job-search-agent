@@ -3,7 +3,7 @@
 
 Runs in the job Chrome (CDP 9222, Joey's weekly full refresh — never from a LaunchAgent): 8 searches × first result page,
 8–14 s apart. The cards come from the page's own job-card data (`window.mosaic.providerData["mosaic-provider-jobcards"]`);
-no job page is opened. A challenge page (CAPTCHA / "verify you are human" / Cloudflare) stops the run and is reported —
+no job page is opened. A challenge page (CAPTCHA / "verify you are human" / a Greenhouse employer) stops the run and is reported —
 never solved or worked around.
 Kept: his tracks (data / analytics / BI / product / AI), not senior, in the U.S., and either a Summer 2027 internship
 (wd_search.keep_posting) or a new-grad / entry title with no year other than 2027 / 2028. Dropped: rows already in the

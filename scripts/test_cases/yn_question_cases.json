@@ -1,0 +1,152 @@
+[
+ {
+  "question": "Is your current employer a reseller of Dell?",
+  "expect": true,
+  "why": "Spec example: yes/no sentence starts 'Is'; no value sentence."
+ },
+ {
+  "question": "Are you currently employed?",
+  "expect": true,
+  "why": "Ends '?' and starts 'Are'; no value sentence."
+ },
+ {
+  "question": "Does your current employer compete with us?",
+  "expect": true,
+  "why": "Starts 'Does'; no value sentence."
+ },
+ {
+  "question": "Is your school accredited?",
+  "expect": true,
+  "why": "Starts 'Is'; no value sentence."
+ },
+ {
+  "question": "Do you have a preferred name?",
+  "expect": true,
+  "why": "Starts 'Do'; no value sentence."
+ },
+ {
+  "question": "Was your major declared before your sophomore year?",
+  "expect": true,
+  "why": "Starts 'Was'; no value sentence."
+ },
+ {
+  "question": "Can you provide proof of address?",
+  "expect": true,
+  "why": "Starts 'Can'; 'provide' is not sentence-initial."
+ },
+ {
+  "question": "Will you be using your own means of transportation for the majority of your work?",
+  "expect": true,
+  "why": "Starts 'Will'; no value sentence."
+ },
+ {
+  "question": "Do you perform the majority of your work using your own means of transportation?",
+  "expect": true,
+  "why": "Spec's own-means example; starts 'Do'; no value sentence."
+ },
+ {
+  "question": "Are you currently employed? (if yes, please note Dell may contact your employer)",
+  "expect": true,
+  "why": "Yes/no sentence; 'please note' is not a listed value phrase."
+ },
+ {
+  "question": "Is your employer a Dell partner? If yes, please note we may contact them.",
+  "expect": true,
+  "why": "Yes/no sentence; 'If yes, please note' is not a listed value phrase."
+ },
+ {
+  "question": "Your current employer is a Dell reseller. Is that correct?",
+  "expect": true,
+  "why": "Statement then yes/no 'Is'; no value sentence."
+ },
+ {
+  "question": "Is your mailing address the same as your physical address?",
+  "expect": true,
+  "why": "Starts 'Is'; no value sentence."
+ },
+ {
+  "question": "Have you ever been employed by Dell?",
+  "expect": true,
+  "why": "Starts 'Have'; no value sentence."
+ },
+ {
+  "question": "Do you have an email address?",
+  "expect": true,
+  "why": "Starts 'Do'; no value sentence."
+ },
+ {
+  "question": "Are you currently employed? If so, what is your current employer?",
+  "expect": false,
+  "why": "Spec example: 'If so, what...' asks for a value."
+ },
+ {
+  "question": "Do you have a preferred name? If so, please enter it.",
+  "expect": false,
+  "why": "Spec example: 'If so, please enter...' asks for a value."
+ },
+ {
+  "question": "What is your current employer?",
+  "expect": false,
+  "why": "Starts 'What', a listed value word."
+ },
+ {
+  "question": "Please list your school.",
+  "expect": false,
+  "why": "Starts 'Please list', a listed value phrase."
+ },
+ {
+  "question": "Name your major.",
+  "expect": false,
+  "why": "Starts 'Name', a listed value word."
+ },
+ {
+  "question": "Enter your email address.",
+  "expect": false,
+  "why": "Starts 'Enter', a listed value word."
+ },
+ {
+  "question": "Specify your current address.",
+  "expect": false,
+  "why": "Starts 'Specify', a listed value word."
+ },
+ {
+  "question": "Is your school accredited? If yes, please provide the accreditation body.",
+  "expect": false,
+  "why": "Contains 'If yes, please provide...', a listed value phrase."
+ },
+ {
+  "question": "Do you have a current employer? (If yes, what is the employer's name?)",
+  "expect": false,
+  "why": "Parenthetical starts with 'If yes, what...', asking for a value."
+ },
+ {
+  "question": "Are you a student? If applicable, list your major.",
+  "expect": false,
+  "why": "'If applicable, list...' asks for a value."
+ },
+ {
+  "question": "Current Employer",
+  "expect": false,
+  "why": "Bare label with no '?' is false."
+ },
+ {
+  "question": "Major",
+  "expect": false,
+  "why": "Bare label with no '?' is false."
+ },
+ {
+  "question": "Email",
+  "expect": false,
+  "why": "Bare label with no '?' is false."
+ },
+ {
+  "question": "Are you employed? (If yes, specify your employer.)",
+  "expect": false,
+  "why": "Parenthetical 'specify' asks for a value."
+ },
+ {
+  "question": "Does your employer compete with us? If so, which products?",
+  "expect": false,
+  "why": "'If so, which...' asks for a value."
+ }
+]

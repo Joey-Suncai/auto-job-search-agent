@@ -1,0 +1,12 @@
+{
+ "text box gets box value": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: spec 1 says box is the value beside --pick; a box alone is --text (qa_add.entry refuses it on purpose)",
+ "text box with only a pick gets no answer": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: an existing rule (notice period / start date) answers the text box before qa; qa gave no answer",
+ "anchored regex near miss gets no answer": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: a built-in rule (major / discipline) answers 'Discipline' before the qa table",
+ "single-option consent not ticked by No entry": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: the built-in acknowledgement rule ticks 'I agree to the privacy policy' (JSA-333 ack); the No entry itself does not tick it (tested above with Fundwell wordings)",
+ "two-option no-entry picks No-prefixed option": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: the built-in work-authorisation rule answers 'authorised to work in the UK' before qa",
+ "two-option agree/disagree with Yes entry gets no answer": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: the built-in agree rule picks 'I agree' for a policy question",
+ "two-option agree/disagree with No entry gets no answer": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: same built-in agree rule",
+ "different question wording gets no answer": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: a built-in rule answers the driving-licence question",
+ "single-option field with pick but no yes": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: the pick /consent/i matches the single option, so spec 2 says it is chosen",
+ "single-option No is never ticked by Yes entry": "Claude 2026-11-17 (JSA-419), rule 13: case wrong: the built-in future_contact rule answers 'Opt out of talent pool' = No; the qa Yes entry does not tick 'No' (tested: negated single option)"
+}

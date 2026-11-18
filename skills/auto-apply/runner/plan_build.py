@@ -14,6 +14,7 @@ Answer priority (first hit wins):
   4. otherwise -> needs_user (asked once, when he approves the batch)
 A required field without an answer makes plan.ready = false; the runner never submits a plan that is not ready.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, html, json, os, re, secrets, subprocess, sys, urllib.request
 from datetime import datetime
 
@@ -52,7 +53,7 @@ def gh_fetch(board, job):
     except Exception as e:                      # e.g. macOS Python without CA certificates → fetch through the job Chrome
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
-            br = pw.chromium.connect_over_cdp(os.environ.get('CX_CDP', 'http://127.0.0.1:9222')); page = br.contexts[0].new_page()
+            br = cdp_connect.connect(pw, os.environ.get('CX_CDP', 'http://127.0.0.1:9222')); page = br.contexts[0].new_page()
             page.goto(api); txt = page.evaluate('() => document.body.innerText'); page.close()
             return json.loads(txt)
 
@@ -124,7 +125,97 @@ def gh_fields(data):
                            ('end-month--0', 'End date month'), ('end-year--0', 'End date year')):
             out.append({'key': key, 'label': label, 'type': 'combo' if 'year' not in key else 'text', 'required': req,
                         'options': [], 'sel': f'[id="{key}"]', 'edu': True})
+    emp = data.get('employment')                       # the newer form's Employment section (JSA-228, a Greenhouse employer 11-06)
+    if emp in ('employment_required', 'employment_optional'):
+        out += employment_fields(1, emp == 'employment_required')   # the page renders one block; never more than that
     return out
+
+
+# Greenhouse Employment section (JSA-228): ids company-name-N, title-N, start-date-month-N (react-select), start-date-year-N,
+# end-date-month-N, end-date-year-N, checkbox name current-role-N (id current-role-N_1). The current box is never required.
+EMP_KINDS = (('company', 'company-name-{i}', 'Company name', 'text'), ('title', 'title-{i}', 'Title', 'text'),
+             ('start_month', 'start-date-month-{i}', 'Start date month', 'combo'), ('start_year', 'start-date-year-{i}', 'Start date year', 'text'),
+             ('end_month', 'end-date-month-{i}', 'End date month', 'combo'), ('end_year', 'end-date-year-{i}', 'End date year', 'text'),
+             ('current', 'current-role-{i}', 'Current role', 'checkbox'))
+
+
+def employment_fields(blocks, required):
+    """Pure (tested). The field descriptors of `blocks` Employment blocks (0 … blocks-1), no answers: key, label, type,
+    required (the current-role box never), sel, emp = block index, emp_kind."""
+    out = []
+    for i in range(max(0, int(blocks or 0))):
+        for kind, key, label, t in EMP_KINDS:
+            k = key.format(i=i)
+            out.append({'key': k, 'label': label, 'type': t, 'required': bool(required) and kind != 'current', 'options': [],
+                        'sel': f'[name="{k}"]' if kind == 'current' else f'[id="{k}"]', 'emp': i, 'emp_kind': kind})
+    return out
+
+
+def employment_entries(work):
+    """Pure (tested). The profile's work list (config/wd_profile.json `work`: Company, Job Title, From / To "MM/YYYY",
+    current) → [{company, title, start_month, start_year, start_num, end_month, end_year, end_num, current}], most recent
+    first: current jobs first, then by From date, newest first (no From = last; ties keep the profile's order). Month =
+    English name, *_num = two digits, '' when the date is missing or not MM/YYYY (or YYYY-MM). current = True only when
+    `current` is true. Entries without a company are dropped."""
+    def ym(v):
+        s = str(v or '').strip()
+        m = re.fullmatch(r'(\d{1,2})/(\d{4})', s) or re.fullmatch(r'(\d{4})-(\d{1,2})', s)
+        if not m: return '', '', ''
+        mo, yr = (m.group(1), m.group(2)) if '/' in s else (m.group(2), m.group(1))
+        if not 1 <= int(mo) <= 12: return '', '', ''
+        return EDU_MONTHS[int(mo) - 1], yr, f'{int(mo):02d}'
+    out = []
+    for e in work or []:
+        e = e or {}
+        if not str(e.get('Company') or '').strip():
+            continue
+        sm, sy, sn = ym(e.get('From')); em, ey, en = ym(e.get('To'))
+        out.append({'company': str(e['Company']).strip(), 'title': str(e.get('Job Title') or '').strip(),
+                    'start_month': sm, 'start_year': sy, 'start_num': sn, 'end_month': em, 'end_year': ey, 'end_num': en,
+                    'current': e.get('current') is True})
+    order = sorted(range(len(out)), key=lambda j: (not out[j]['current'], -(int(out[j]['start_year'] + out[j]['start_num']) if out[j]['start_year'] else -1), j))
+    return [out[j] for j in order]
+
+
+def employment_answer(f, entries):
+    """Pure (tested). One Employment field (employment_fields) + employment_entries → the field with answer / status /
+    source. Block N takes entry N; no entry N → nothing is invented (needs_user when required, else skip_optional). A
+    current job: the box is checked and both end fields stay empty (status skip_current). A past job: the box is left
+    unchecked (answer False). A month field also carries alts (3-letter name, two digits, digit) and accept, so a page
+    that lists "Aug" / "08" still matches; month_num = the two digits for a month typed into a text box. An empty fact
+    for a field → needs_user when required, else skip_optional."""
+    f = dict(f)
+    i, kind = f.get('emp', 0), f.get('emp_kind')
+    e = entries[i] if 0 <= i < len(entries or []) else None
+    blank = 'needs_user' if f.get('required') else 'skip_optional'
+    if e is None:
+        f.update(status=blank, source='profile.work:no entry'); return f
+    if kind == 'current':
+        f.update(answer=bool(e['current']), status='ok', source='profile.work'); return f
+    if kind in ('end_month', 'end_year') and e['current']:
+        f.update(status='skip_current', source='profile.work:current'); return f
+    val = e.get(kind) or ''
+    if not val:
+        f.update(status=blank, source='profile.work:empty'); return f
+    f.update(answer=val, status='ok', source='profile.work')
+    if kind in ('start_month', 'end_month'):
+        num = e[kind.replace('month', 'num')]
+        f['alts'] = [x for x in dict.fromkeys([val[:3], num, str(int(num))]) if x != val]
+        f['accept'] = list(dict.fromkeys([val] + f['alts']))
+        f['month_num'] = num
+    return f
+
+
+def month_text_answer(name, num, input_type='text', maxlength=None, placeholder=''):
+    """Pure (tested). The value to type when a month field is a plain input instead of a list: a number input → the
+    digit ("8"); maxlength ≤ 2 or a placeholder like MM → two digits ("08"); otherwise the month name."""
+    if str(input_type or '').lower() == 'number':
+        return str(int(num))
+    try: ml = int(maxlength) if maxlength not in (None, '') else None
+    except (TypeError, ValueError): ml = None
+    if (ml is not None and 0 < ml <= 2) or re.fullmatch(r'\s*(mm|m)\s*', str(placeholder or ''), re.I):
+        return num
+    return name
 
 
 OPT_CAP = 200   # options listed for a needs-user / DeepSeek question: all of them (FT 10-31: only 12 kept, the right one (USD) missing)
@@ -146,10 +237,11 @@ LEVER_STD = [('name', 'Full name', 'text'), ('email', 'Email', 'text'), ('phone'
 
 
 def lever_parse_url(url):
-    m = re.search(r'jobs\.(?:eu\.)?lever\.co/([\w.-]+)/([0-9a-f-]{36})', url or '')
-    if not m:
+    import posting as PO   # the shared Lever parse (JSA-332: tolerates Xpansiv%20)
+    r = PO.lever_parse(url)
+    if not r:
         raise SystemExit('not a Lever URL: ' + str(url))
-    return m.group(1), m.group(2)
+    return r
 
 
 def lever_fetch(site, job):
@@ -257,8 +349,8 @@ ASHBY_TYPES = {'String': 'text', 'Email': 'text', 'Phone': 'text', 'Number': 'te
                'Location': 'combo', 'Date': 'date', 'EducationHistory': 'education'}
 ASHBY_Q = ('query ApiJobPosting($organizationHostedJobsPageName: String!, $jobPostingId: String!) { jobPosting('
            'organizationHostedJobsPageName: $organizationHostedJobsPageName, jobPostingId: $jobPostingId) { id title '
-           'applicationForm { sections { title fieldEntries { ... on FormFieldEntry { id field isRequired } } } } '
-           'surveyForms { sections { title fieldEntries { ... on FormFieldEntry { id field isRequired } } } } } }')
+           'applicationForm { sections { title fieldEntries { ... on FormFieldEntry { id field isRequired descriptionHtml } } } } '
+           'surveyForms { sections { title fieldEntries { ... on FormFieldEntry { id field isRequired descriptionHtml } } } } } }')
 
 
 EDU_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -306,6 +398,29 @@ def ashby_description(org, job):
     return (j or {}).get('descriptionHtml') or (j or {}).get('descriptionPlain') or ''
 
 
+NUMERIC = re.compile(r'^\s*-?\d+(\.\d+)?\s*$')
+
+
+def numeric_answer(label, src, ans):
+    """JSA-268 (an Ashby employer Ashby 11-10): a Number box got the text answer "Open / per internship program standard" — the page
+    keeps it empty and the read-back stops the submit. A pay answer (rules:comp) becomes the profile's digits
+    (answers.comp.digits: annual / yearly / salary → year, otherwise hour — an internship pays by the hour, Joey
+    2026-11-01); any other text answer → (None, why), so Joey is asked instead of a guess."""
+    if src == 'rules:comp':
+        d = ((jsa_profile.load().get('answers') or {}).get('comp') or {}).get('digits') or {}
+        v = d.get('year') if re.search(r'\b(annual|yearly|per year|a year|annum|salary)\b', label, re.I) else d.get('hour')
+        if v is not None and NUMERIC.match(str(v)):
+            return str(v), 'rules:comp (digits)'
+        return None, 'number box: no answers.comp.digits on file'
+    return None, f'number box: the answer {str(ans)[:40]!r} ({src}) is not a number'
+
+
+def html_text(h):
+    """Pure (tested, JSA-419). Description HTML → plain text, whitespace folded ('' for none)."""
+    t = re.sub(r'<(br|/p|/li|/div)\s*/?>', ' ', str(h or ''), flags=re.I)
+    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', t))).strip()
+
+
 def ashby_fields(posting):
     out = []
     def add(entry, demographic=False):
@@ -313,8 +428,13 @@ def ashby_fields(posting):
         t = ASHBY_TYPES.get(f.get('type'), 'text')
         opts = ['Yes', 'No'] if t == 'radio' else [norm(v.get('label')) for v in f.get('selectableValues') or []]
         path = f.get('path') or entry.get('id')
+        help_ = html_text(entry.get('descriptionHtml'))      # JSA-419: the text under the question ("If no, is your home country listed below?" → the country list)
         out.append({'key': path, 'label': norm(f.get('title')), 'type': t, 'required': bool(entry.get('isRequired')),
-                    'options': opts, 'sel': f'[name="{path}"], [id="{path}"]', **({'demographic': True} if demographic else {})})
+                    'options': opts, 'sel': f'[name="{path}"], [id="{path}"]', **({'demographic': True} if demographic else {}),
+                    **({'help': help_} if help_ else {}),
+                    **({'numeric': True} if f.get('type') == 'Number' else {}),
+                    **({'edu_excluded': [k for k in ('degree', 'major', 'startDate', 'endDate') if f.get(k) == 'excluded']}
+                       if f.get('type') == 'EducationHistory' else {})})   # sub-fields the form leaves out (JSA-330)   # an <input type=number> takes digits only (JSA-268)
     for sec in ((posting.get('applicationForm') or {}).get('sections') or []):
         for e in sec.get('fieldEntries') or []:
             add(e)
@@ -360,7 +480,7 @@ def _mon(s):
 
 def date_answer(v):
     """Pure (tested, JSA-073): an answers.json value for a date box → (value, None) or (None, why). Date boxes take
-    MM/DD/YYYY (react-datepicker reads back 06/14/2027, so "June 14, 2027" never matched — Creatify 11-02). A full date in
+    MM/DD/YYYY (react-datepicker reads back 06/14/2027, so "June 14, 2027" never matched — an Ashby employer 11-02). A full date in
     another unambiguous form (M/D/YYYY, YYYY-MM-DD, "June 14, 2027", "14 June 2027") is rewritten; month + year ("December
     2027") is kept (the box shows the 1st, run_form.same accepts it); anything else — a season, DD/MM/YYYY, a date that does not
     exist — is refused with the reason."""
@@ -450,6 +570,12 @@ def load_jd(folder):
     except OSError: return ''
 
 
+def load_cover(folder):
+    """<folder>/cover.txt (the job's cover letter, JSA-286: the optional "message to the hiring manager" box); '' when absent."""
+    try: return open(os.path.join(folder, 'cover.txt'), encoding='utf-8').read()
+    except OSError: return ''
+
+
 def load_company(folder):
     """The hiring company of an application folder (JSA-195): job.json (or Workday's wd_job.json) → company, else the
     jd.md title line '# <title> — <Company>'; '' when none says (the referral rules then ask the user)."""
@@ -468,10 +594,10 @@ def load_company(folder):
     return m.group(1).strip() if m else ''
 
 
-def run_rules(fields, jd='', company=''):
+def run_rules(fields, jd='', company='', cover=''):
     q = [{'key': f['key'], 'label': f['label'], 'type': f['type'], 'options': f.get('options', [])}
          for f in fields if f['type'] not in ('file', 'hidden')]
-    q = {'fields': q, 'jd': jd, 'company': company or ''}   # company: referral questions vs the referrer pool (JSA-195)
+    q = {'fields': q, 'jd': jd, 'company': company or '', 'cover': cover or ''}   # company: referral questions vs the referrer pool (JSA-195); cover: JSA-286
     import shutil
     if shutil.which('node'):
         r = subprocess.run(['node', os.path.join(HERE, 'rules_bridge.js'), RULES], input=json.dumps(q),
@@ -481,16 +607,59 @@ def run_rules(fields, jd='', company=''):
         return json.loads(r.stdout)
     # no Node on this Mac: run the same two files inside a browser page via Playwright
     from playwright.sync_api import sync_playwright
-    js = ('([prof, pool, rules, bridge, q]) => { globalThis.__cxProfile = prof; globalThis.__cxPool = pool; const m1 = {exports: {}}, m2 = {exports: {}}; '
+    js = ('([prof, pool, applied, rules, bridge, q]) => { globalThis.__cxProfile = prof; globalThis.__cxPool = pool; globalThis.__cxApplied = applied; const m1 = {exports: {}}, m2 = {exports: {}}; '
           '(new Function("module", rules))(m1); (new Function("module", "require", bridge))(m2, undefined); '
-          'return m2.exports.answerAll(m1.exports.answerFor, q.fields, {jd: q.jd, company: q.company}); }')
+          'return m2.exports.answerAll(m1.exports.answerFor, q.fields, {jd: q.jd, company: q.company, cover: q.cover}); }')
     with sync_playwright() as pw:
         try:
-            br = pw.chromium.connect_over_cdp(os.environ.get('CX_CDP', 'http://127.0.0.1:9222')); page = br.contexts[0].new_page()
+            br = cdp_connect.connect(pw, os.environ.get('CX_CDP', 'http://127.0.0.1:9222')); page = br.contexts[0].new_page()
         except Exception:
             br = pw.chromium.launch(); page = br.new_page()
-        out = page.evaluate(js, [jsa_profile.load(), jsa_profile.pool(), open(RULES).read(), open(os.path.join(HERE, 'rules_bridge.js')).read(), q]); page.close()
+        out = page.evaluate(js, [jsa_profile.load(), jsa_profile.pool(), jsa_profile.applied(), open(RULES).read(), open(os.path.join(HERE, 'rules_bridge.js')).read(), q]); page.close()
         return out
+
+
+def work_profile():
+    """The work entries from the data home's config/wd_profile.json (the example twin when there is none; JSA_WD_PROFILE)."""
+    return json.load(open(jsa_profile.data_file('wd_profile.json', 'JSA_WD_PROFILE'), encoding='utf-8')).get('work') or []
+
+
+OTHER_WRITERS = re.compile(r'^(answers\.json|ds_answers\.json|canon:)')
+
+
+def whole_read_plan(plan_fields, needs):
+    """JSA-288b (Joey 2026-11-10 「扩」): the critical answers the folder's answers.json, the DeepSeek triage
+    (ds_answers.json) or canon's option pick wrote get the same whole-question read as the rules' answers (those are read in
+    rules_bridge.js) — a different answer, UNSURE or an error → needs_user, the runner asks Joey. Live runs only
+    (whole_read.enabled); in place."""
+    import whole_read as W
+    if not W.enabled():
+        return
+    labels = [f.get('label') or '' for f in plan_fields]
+    items = [{'key': f['key'], 'label': f.get('label') or '', 'options': f.get('options') or [], 'type': f.get('type'), 'value': f.get('answer'),
+              'rule': f.get('source'), 'pos': i, 'context': labels[max(0, i - 4):i]}
+             for i, f in enumerate(plan_fields) if f.get('status') == 'ok' and OTHER_WRITERS.match(str(f.get('source') or ''))]
+    if not items:
+        return
+    rev = W.review(items)
+    for f in plan_fields:
+        v = rev.get(f['key'])
+        if not v or v['agree']:
+            continue
+        why = f"whole read: {f.get('source')} said {f.get('answer')!r}, the model " + (f"said {v['model']!r}" if v.get('model') else 'gave no answer') + (f" — {v['why'][:160]}" if v.get('why') else '')
+        needs.append({'key': f['key'], 'label': f.get('label') or '', 'why': why, 'options': (f.get('options') or [])[:OPT_CAP], 'required': True, 'no_triage': True})
+        f.update(status='needs_user', rejected=f.get('answer'), whole_read=v.get('how'))
+        f.pop('answer', None)
+
+
+def ds_cache_may_answer(rule, ds_value):
+    """JSA-337: may a cached DeepSeek answer (ds_answers.json) fill this field? Never when the rules (incl. Joey's qa table) have
+    an answer, when the question is Joey's (ask / no_auto) or a consent box — the cache only fills what the rules cannot answer."""
+    rule = rule or {}
+    if ds_value is None or ds_value == '': return False
+    if rule.get('no_auto') or rule.get('ask') or rule.get('status') == 'consent' or rule.get('rule') == 'hiring_manager_note': return False   # JSA-286: no cover letter = empty box, never an old cached text
+    if rule.get('status') == 'ok' and not rule.get('leave'): return False
+    return True
 
 
 def build(folder, fields, url, ats):
@@ -501,7 +670,7 @@ def build(folder, fields, url, ats):
     dsp = os.path.join(folder, 'ds_answers.json')      # DeepSeek triage: mapped to a SAVED fact (run_wd.py, 2026-10-28b); Joey's answers.json wins
     ds_over = json.load(open(dsp, encoding='utf-8')) if os.path.exists(dsp) else {}
     opens = load_open_answers(folder)
-    rules = run_rules(fields, load_jd(folder), load_company(folder))
+    rules = run_rules(fields, load_jd(folder), load_company(folder), load_cover(folder))
     tenant = canon.tenant_of(url)
     plan_fields, needs = [], []
     field_keys = {x["key"] for x in fields}             # an answers.json key equal to a field key matches that field only
@@ -523,6 +692,11 @@ def build(folder, fields, url, ats):
             else:
                 f.update(status='needs_user' if f['required'] else 'skip_optional', source='profile.education:empty')
             plan_fields.append(f); continue
+        if f.get('emp') is not None:                       # Greenhouse Employment block (JSA-228): the profile's work, newest first
+            g = employment_answer(f, employment_entries(work_profile()))
+            if g['status'] == 'needs_user':
+                needs.append({'key': g['key'], 'label': g['label'], 'why': g['source'], 'options': [], 'required': True, 'no_triage': True})
+            plan_fields.append(g); continue
         ans, src = None, None
         hit = override_for(f, overrides, field_keys)
         if hit:
@@ -532,6 +706,8 @@ def build(folder, fields, url, ats):
                 try: hit = k == f['key'] or re.search(k, f['label'], re.I)
                 except re.error: hit = k == f['label']
                 if hit and v is not None: ans, src = v, 'ds_answers.json'; break
+            if src == 'ds_answers.json' and not ds_cache_may_answer(rules.get(f['key']), ans):
+                ans, src = None, None                    # the rules / qa answer it (JSA-337) or Joey does (no_auto, JSA-361): an old DeepSeek mapping never fills it
         if src in ('answers.json', 'ds_answers.json') and ans is not None and f['type'] in ('date', 'multi'):
             ans, why = date_answer(ans) if f['type'] == 'date' else multi_answer(ans, f.get('options'))   # JSA-073: format checked at prep
             if why:
@@ -558,16 +734,19 @@ def build(folder, fields, url, ats):
                 src = 'consent'
             elif a.get('ask'):                                # the rule knows the question but the answer is Joey's (JSA-105: the JD asks for years)
                 src, f['no_triage'] = 'ask: ' + a.get('why', a.get('rule', '')), True
+                if a.get('no_auto'): f['no_auto'] = True     # nothing may fill it — canon, a page prefill (run_wd) — Joey answers (JSA-361)
         # canonical fields (sponsorship, authorization, degree, veteran, EEO, source …): the answer must pass canon for this
         # tenant; when the rule text picked a wrong or missing option, take the canon-valid option from the list (JSA-005)
         ckey = canon.classify(f['label']) if f.get('type') not in ('text', 'textarea', 'date') else None
-        if ckey and f.get('options') and src != 'answers.json' and f.get('type') != 'multi':
-            if ans is None or not canon.check(ckey, ans, tenant)[0] or ans not in f['options']:
-                cp = canon.pick(ckey, f['options'], tenant)
+        if ckey and f.get('options') and src != 'answers.json' and f.get('type') != 'multi' and not ra.get('no_auto'):   # no_auto: the rules hand it to Joey and nothing may fill it (JSA-361, Joey 2026-11-16)
+            if ans is None or not canon.judge(ckey, f['label'], ans, tenant)[0] or ans not in f['options']:
+                cp = canon.pick_for(ckey, f['label'], f['options'], tenant)   # the label's inversion applied (JSA-267)
                 if cp is not None:
                     if ans is not None and cp != ans:
                         f['canon_fixed'] = f'{ans!r} → {cp!r}'
                     ans, src = cp, 'canon:' + ckey
+        if f.get('numeric') and ans is not None and not NUMERIC.match(str(ans)):
+            ans, src = numeric_answer(f['label'], src, ans)
         if isinstance(ans, list):                 # multi-select given as a list → the runner's 'A | B' form
             ans = ' | '.join(str(x) for x in ans)
         if ans is not None and f.get('options'):
@@ -595,6 +774,7 @@ def build(folder, fields, url, ats):
         if f['key'] == LEVER_LOC_KEY and f.get('status') == 'ok':
             country = str((f.get('option_values') or {}).get(f['answer']) or '').upper() or None
         plan_fields.append(f)
+    whole_read_plan(plan_fields, needs)
     # de-duplicate needs (same key)
     seen, uniq = set(), []
     for n in needs:

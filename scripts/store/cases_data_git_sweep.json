@@ -1,0 +1,758 @@
+[
+ {
+  "name": "commit_application commits only kept dirty files below target application folder",
+  "files": [
+   {
+    "path": "applications/acme/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/run_log.md",
+    "content": "log",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/sub/notes.txt",
+    "content": "note",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/page.png",
+    "content": "png",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/other/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "config/profile.json",
+    "content": "{}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "applications/acme/content.json",
+   "applications/acme/run_log.md",
+   "applications/acme/sub/notes.txt"
+  ],
+  "expect_dirty_after": [
+   "applications/other/content.json",
+   "config/profile.json"
+  ],
+  "expect_return": "committed",
+  "spec_quote": "commits exactly the dirty, non-ignored files below applications/<folder> (new or modified) in ONE commit and returns 'committed'; returns 'nothing' when there is nothing dirty; files of OTHER application folders and of config/ stay uncommitted.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application with only ignored files returns nothing",
+  "files": [
+   {
+    "path": "applications/acme/page.png",
+    "content": "png",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/runner.out",
+    "content": "out",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/ds_last_response.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/sub/x.lock",
+    "content": "lock",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [],
+  "expect_return": "nothing",
+  "spec_quote": "IGNORED (never committed, never shown as dirty): inside applications/<folder>/ the files filled_check.png, after_submit.png, page.png, runner.out, runner2.out, ds_last_response.json, ds_failed_response.json; any file ending in .lock anywhere.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application missing folder returns nothing",
+  "files": [],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "missing",
+   "quiet_secs": 0
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [],
+  "expect_return": "nothing",
+  "spec_quote": "A missing folder -> 'nothing'. Never raises.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application commits modified and new non-ignored files",
+  "files": [
+   {
+    "path": "applications/acme/content.json",
+    "content": "{\"changed\":true}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/plan.json",
+    "content": "{\"new\":true}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [
+   "applications/acme/run_log.md"
+  ],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "applications/acme/content.json",
+   "applications/acme/plan.json"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": "committed",
+  "spec_quote": "commits exactly the dirty, non-ignored files below applications/<folder> (new or modified) in ONE commit and returns 'committed'.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application keeps listed application artifacts and ignores page.png",
+  "files": [
+   {
+    "path": "applications/acme/submitted_confirmation.png",
+    "content": "png",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/resume.docx",
+    "content": "docx",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/resume.pdf",
+    "content": "pdf",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/plan.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/run_log.md",
+    "content": "log",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/form_check.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/materials_score.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/ds_status.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/resume_report.md",
+    "content": "report",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/page.png",
+    "content": "png",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "applications/acme/submitted_confirmation.png",
+   "applications/acme/resume.docx",
+   "applications/acme/resume.pdf",
+   "applications/acme/content.json",
+   "applications/acme/plan.json",
+   "applications/acme/run_log.md",
+   "applications/acme/form_check.json",
+   "applications/acme/materials_score.json",
+   "applications/acme/ds_status.json",
+   "applications/acme/resume_report.md"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": "committed",
+  "spec_quote": "KEPT (committed): everything else in applications/<folder>/ including submitted_confirmation.png, *.docx, *.pdf, content.json, plan.json, run_log.md, form_check.json, materials_score.json, ds_status.json, resume_report.md.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application ignores .lock anywhere below application folder",
+  "files": [
+   {
+    "path": "applications/acme/sub/x.lock",
+    "content": "lock",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "applications/acme/content.json"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": "committed",
+  "spec_quote": "any file ending in .lock anywhere.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application does not commit files outside target application folder",
+  "files": [
+   {
+    "path": "applications/acme/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "data/learn/triage_cache.jsonl",
+    "content": "{}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "applications/acme/content.json"
+  ],
+  "expect_dirty_after": [
+   "data/learn/proposals.jsonl"
+  ],
+  "expect_return": "committed",
+  "spec_quote": "commits exactly the dirty, non-ignored files below applications/<folder> (new or modified) in ONE commit and returns 'committed'; data/learn/triage_cache.jsonl is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application nothing dirty in target folder leaves other folders dirty",
+  "files": [
+   {
+    "path": "applications/other/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [
+   "applications/other/content.json"
+  ],
+  "expect_return": "nothing",
+  "spec_quote": "returns 'nothing' when there is nothing dirty; files of OTHER application folders and of config/ stay uncommitted.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep commits old files across all tracked roots and leaves outside roots dirty",
+  "files": [
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/runner/batches/b1.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/releases.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "resume/resume.pdf",
+    "content": "pdf",
+    "age_seconds": 1000
+   },
+   {
+    "path": "config/profile.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/runner/results.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/store/x",
+    "content": "x",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "applications/a/content.json",
+   "data/learn/proposals.jsonl",
+   "data/runner/batches/b1.json",
+   "data/releases.jsonl",
+   "resume/resume.pdf"
+  ],
+  "expect_dirty_after": [
+   "config/profile.json",
+   "data/runner/results.jsonl",
+   "data/store/x"
+  ],
+  "expect_return": 5,
+  "spec_quote": "for the tracked roots applications/, data/learn/, data/runner/batches/, data/releases.jsonl, resume/ only: commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old, in one commit with a subject starting 'data: sweep'; returns the number of files committed (0 when none).",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep commits file exactly at quiet_secs and leaves younger file",
+  "files": [
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 99
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 100
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "data/learn/proposals.jsonl"
+  ],
+  "expect_dirty_after": [
+   "applications/a/content.json"
+  ],
+  "expect_return": 1,
+  "spec_quote": "commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old; Files younger than quiet_secs are left (a writer may still be writing).",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep with quiet_secs zero commits an age-zero tracked-root file",
+  "files": [
+   {
+    "path": "resume/resume.pdf",
+    "content": "pdf",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 0
+  },
+  "expect_committed": [
+   "resume/resume.pdf"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": 1,
+  "spec_quote": "commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep all files younger than quiet_secs returns zero and deletes nothing",
+  "files": [
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 10
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 99
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [
+   "applications/a/content.json",
+   "data/learn/proposals.jsonl"
+  ],
+  "expect_return": 0,
+  "spec_quote": "returns the number of files committed (0 when none). Files younger than quiet_secs are left (a writer may still be writing). Never deletes any file.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep ignores old ignored files and caches",
+  "files": [
+   {
+    "path": "applications/a/page.png",
+    "content": "png",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/triage_cache.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/forms/cache.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/work/x",
+    "content": "x",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/roles/y",
+    "content": "y",
+    "age_seconds": 1000
+   },
+   {
+    "path": "applications/a/x.lock",
+    "content": "lock",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/foo.lock",
+    "content": "lock",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [],
+  "expect_return": 0,
+  "spec_quote": "IGNORED (never committed, never shown as dirty): inside applications/<folder>/ the files filled_check.png, after_submit.png, page.png, runner.out, runner2.out, ds_last_response.json, ds_failed_response.json; any file ending in .lock anywhere; data/learn/triage_cache.jsonl; data/forms/ and data/work/ and data/roles/.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep commits old kept file while ignoring old ignored file",
+  "files": [
+   {
+    "path": "applications/a/page.png",
+    "content": "png",
+    "age_seconds": 1000
+   },
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/triage_cache.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "applications/a/content.json",
+   "data/learn/proposals.jsonl"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": 2,
+  "spec_quote": "commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep commits data/runner/batches but not other data/runner files",
+  "files": [
+   {
+    "path": "data/runner/batches/job.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/runner/results.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/runner/other.tmp",
+    "content": "tmp",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "data/runner/batches/job.json"
+  ],
+  "expect_dirty_after": [
+   "data/runner/results.jsonl",
+   "data/runner/other.tmp"
+  ],
+  "expect_return": 1,
+  "spec_quote": "Files outside the tracked roots (e.g. config/profile.json, data/runner/results.jsonl, data/store/) are never committed by sweep.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep commits data/releases.jsonl and resume root files",
+  "files": [
+   {
+    "path": "data/releases.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "resume/resume.pdf",
+    "content": "pdf",
+    "age_seconds": 1000
+   },
+   {
+    "path": "resume/cover.docx",
+    "content": "docx",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "data/releases.jsonl",
+   "resume/resume.pdf",
+   "resume/cover.docx"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": 3,
+  "spec_quote": "for the tracked roots applications/, data/learn/, data/runner/batches/, data/releases.jsonl, resume/ only: commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep covers all application folders and ignores page artifacts",
+  "files": [
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "applications/a/after_submit.png",
+    "content": "png",
+    "age_seconds": 1000
+   },
+   {
+    "path": "applications/a/submitted_confirmation.png",
+    "content": "png",
+    "age_seconds": 1000
+   },
+   {
+    "path": "applications/b/plan.json",
+    "content": "{}",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [
+   "applications/a/content.json",
+   "applications/a/submitted_confirmation.png",
+   "applications/b/plan.json"
+  ],
+  "expect_dirty_after": [],
+  "expect_return": 3,
+  "spec_quote": "for the tracked roots applications/, data/learn/, data/runner/batches/, data/releases.jsonl, resume/ only: commit every dirty non-ignored file whose mtime is at least quiet_secs seconds old.",
+  "ambiguous": false
+ },
+ {
+  "name": "sweep with only old outside-root files returns zero and leaves them dirty",
+  "files": [
+   {
+    "path": "config/profile.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/runner/results.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/store/x",
+    "content": "x",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [
+   "config/profile.json",
+   "data/runner/results.jsonl",
+   "data/store/x"
+  ],
+  "expect_return": 0,
+  "spec_quote": "Files outside the tracked roots (e.g. config/profile.json, data/runner/results.jsonl, data/store/) are never committed by sweep.",
+  "ambiguous": false
+ },
+ {
+  "name": "commit_application skipped when home is not a git repo or JSA_NO_DATA_GIT is set",
+  "files": [
+   {
+    "path": "applications/acme/content.json",
+    "content": "{}",
+    "age_seconds": 0
+   },
+   {
+    "path": "applications/acme/page.png",
+    "content": "png",
+    "age_seconds": 0
+   },
+   {
+    "path": "config/profile.json",
+    "content": "{}",
+    "age_seconds": 0
+   }
+  ],
+  "tracked_already": [],
+  "call": "commit_application",
+  "args": {
+   "folder": "acme",
+   "quiet_secs": 0
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [
+   "applications/acme/content.json",
+   "config/profile.json"
+  ],
+  "expect_return": "skipped: ...",
+  "spec_quote": "When the home is not a git repo, or JSA_NO_DATA_GIT is set, both return a 'skipped: ...' string for commit_application and 0 for sweep.",
+  "ambiguous": true
+ },
+ {
+  "name": "sweep skipped when home is not a git repo or JSA_NO_DATA_GIT is set",
+  "files": [
+   {
+    "path": "applications/a/content.json",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "data/learn/proposals.jsonl",
+    "content": "{}",
+    "age_seconds": 1000
+   },
+   {
+    "path": "config/profile.json",
+    "content": "{}",
+    "age_seconds": 1000
+   }
+  ],
+  "tracked_already": [],
+  "call": "sweep",
+  "args": {
+   "folder": "",
+   "quiet_secs": 100
+  },
+  "expect_committed": [],
+  "expect_dirty_after": [
+   "applications/a/content.json",
+   "data/learn/proposals.jsonl",
+   "config/profile.json"
+  ],
+  "expect_return": 0,
+  "spec_quote": "When the home is not a git repo, or JSA_NO_DATA_GIT is set, both return a 'skipped: ...' string for commit_application and 0 for sweep.",
+  "ambiguous": true
+ }
+]

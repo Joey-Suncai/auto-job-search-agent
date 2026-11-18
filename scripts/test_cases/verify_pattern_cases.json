@@ -1,71 +1,71 @@
 [
  {
   "name": "exact_host_verify_true",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers/verify?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers/verify?token=abc",
   "expect": true,
-  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. invesco.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. ostdelsev.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },
  {
   "name": "exact_host_activate_true",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com/activate-account?x=1",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com/activate-account?x=1",
   "expect": true,
-  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. invesco.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
+  "spec_quote": "A tenant on *.myworkdayjobs.com is identified by the full host name, e.g. ostdelsev.wd1.myworkdayjobs.com. The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },
  {
   "name": "exact_host_confirm_case_insensitive_true",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://INVESCO.WD1.MYWORKDAYJOBS.COM/InvescoCareers/confirm?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://OSTDELSEV.WD1.MYWORKDAYJOBS.COM/InvescoCareers/confirm?token=abc",
   "expect": true,
   "spec_quote": "Host comparison is case-insensitive."
  },
  {
   "name": "exact_host_confirmation_substring_true",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com/account/confirmation?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com/account/confirmation?token=abc",
   "expect": true,
   "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },
  {
   "name": "other_company_host_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
   "link": "https://vsp.wd1.myworkdayjobs.com/verify?token=abc",
   "expect": false,
-  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (invesco.wd5…), is false."
+  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (ostdelsev.wd5…), is false."
  },
  {
   "name": "same_company_other_datacenter_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd5.myworkdayjobs.com/verify?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd5.myworkdayjobs.com/verify?token=abc",
   "expect": false,
-  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (invesco.wd5…), is false."
+  "spec_quote": "Another company's host (vsp.wd1.myworkdayjobs.com), or the same company on another data center (ostdelsev.wd5…), is false."
  },
  {
   "name": "exact_host_non_verify_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers/job/123",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers/job/123",
   "expect": false,
   "spec_quote": "A link without verify/activat/confirm (e.g. a job posting link) is false."
  },
  {
   "name": "exact_host_http_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "http://invesco.wd1.myworkdayjobs.com/verify?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "http://ostdelsev.wd1.myworkdayjobs.com/verify?token=abc",
   "expect": false,
   "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },
  {
   "name": "exact_host_no_trailing_slash_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com?verify=1",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com?verify=1",
   "expect": false,
   "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },
  {
   "name": "exact_host_evil_suffix_false",
-  "page_url": "https://invesco.wd1.myworkdayjobs.com/InvescoCareers",
-  "link": "https://invesco.wd1.myworkdayjobs.com.evil.com/verify?token=abc",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/InvescoCareers",
+  "link": "https://ostdelsev.wd1.myworkdayjobs.com.evil.com/verify?token=abc",
   "expect": false,
   "spec_quote": "The link must start with https:// + exactly that host + \"/\", and contain \"verify\", \"activat\" or \"confirm\" somewhere after it."
  },

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//an employer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.jobagent.learn</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-lc</string>
+    <string>cd {{REPO}} &amp;&amp; {{VENV_PYTHON}} scripts/learn/learn.py</string>
+  </array>
+  <!-- 22:30 daily (JSA-191): proposals.jsonl + card-DATE.md in the data home's data/learn/; proposes only, never changes an answer or a rule -->
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>22</integer><key>Minute</key><integer>30</integer></dict>
+  <key>StandardOutPath</key><string>/tmp/jobagent_learn.log</string>
+  <key>StandardErrorPath</key><string>/tmp/jobagent_learn.err</string>
+</dict>
+</plist>

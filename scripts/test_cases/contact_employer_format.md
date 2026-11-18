@@ -1,0 +1,1 @@
+JSON list of cases: {"name": short string, "label": the question text, "type": "text" or "select", "options": [strings; empty for text], "expect": the exact string to be chosen/typed, "Yes", "N/A", or "ask"}.

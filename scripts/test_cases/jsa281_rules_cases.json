@@ -1,0 +1,454 @@
+[
+ {
+  "name": "conviction felony",
+  "label": "Have you ever been convicted of a felony?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Conviction questions (\"Have you (ever) been convicted of …?\", felony, \"pleaded guilty\", \"criminal record\") are answered from the conviction fact: No.",
+  "ambiguous": false
+ },
+ {
+  "name": "conviction crime",
+  "label": "Have you been convicted of a crime?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Conviction questions (\"Have you (ever) been convicted of …?\", felony, \"pleaded guilty\", \"criminal record\") are answered from the conviction fact: No.",
+  "ambiguous": false
+ },
+ {
+  "name": "pleaded guilty",
+  "label": "Have you ever pleaded guilty to a crime?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Conviction questions (\"Have you (ever) been convicted of …?\", felony, \"pleaded guilty\", \"criminal record\") are answered from the conviction fact: No.",
+  "ambiguous": false
+ },
+ {
+  "name": "criminal record",
+  "label": "Do you have a criminal record?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Conviction questions (\"Have you (ever) been convicted of …?\", felony, \"pleaded guilty\", \"criminal record\") are answered from the conviction fact: No.",
+  "ambiguous": false
+ },
+ {
+  "name": "long notice then conviction question",
+  "label": "Notice: We will conduct a criminal background check. Have you ever been convicted of a misdemeanor?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A long notice that mentions a \"criminal background check\" before the actual question does not make it a background-check question: the sentence that asks (ending in \"?\") decides.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent background check",
+  "label": "Do you consent to a background check?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "A question that only asks for consent to a background check or drug screen is answered Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent drug screen",
+  "label": "Are you willing to undergo a drug screen?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "A question that only asks for consent to a background check or drug screen is answered Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "conviction and background in same asking part",
+  "label": "Have you been convicted of a crime or do you consent to a background check?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "When the asking part names both a conviction and a background check, or it is unclear, the answer is unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized any employer",
+  "label": "Are you authorized to work for any employer in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work for any employer / all employers / any U.S. employer / any US Employer?\" = No (F-1), also when the label writes \"U.S\" without the final dot.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized all employers",
+  "label": "Are you authorized to work for all employers?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work for any employer / all employers / any U.S. employer / any US Employer?\" = No (F-1), also when the label writes \"U.S\" without the final dot.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized any U.S. employer",
+  "label": "Are you authorized to work for any U.S. employer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work for any employer / all employers / any U.S. employer / any US Employer?\" = No (F-1), also when the label writes \"U.S\" without the final dot.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized any US Employer no final dot",
+  "label": "Are you authorized to work for any US Employer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work for any employer / all employers / any U.S. employer / any US Employer?\" = No (F-1), also when the label writes \"U.S\" without the final dot.",
+  "ambiguous": false
+ },
+ {
+  "name": "legally authorized United States",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Plain \"Are you legally authorized to work in the United States?\" = Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized for this internship",
+  "label": "Are you authorized to work in the U.S. for this internship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Authorized to work in the U.S. for the internship (CPT through his school) = Yes, but NOT authorized to work for ANY / ALL employers without restriction (F-1 / CPT is employer-specific) = No.",
+  "ambiguous": false
+ },
+ {
+  "name": "undergraduate major with Economics option",
+  "label": "Undergraduate major",
+  "options": [
+   "Economics",
+   "Data Science",
+   "Other"
+  ],
+  "company": "",
+  "expect": "Economics",
+  "spec_quote": "Major questions: an undergraduate major (\"Undergrad Discipline(s)\", \"Undergraduate major\", \"Bachelor's major\") is Economics — pick the option \"Economics\" when offered; if the options have no Economics, unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "undergrad discipline with Economics option",
+  "label": "Undergrad Discipline(s)",
+  "options": [
+   "Economics",
+   "Business"
+  ],
+  "company": "",
+  "expect": "Economics",
+  "spec_quote": "Major questions: an undergraduate major (\"Undergrad Discipline(s)\", \"Undergraduate major\", \"Bachelor's major\") is Economics — pick the option \"Economics\" when offered; if the options have no Economics, unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "bachelors major with Economics option",
+  "label": "Bachelor's major",
+  "options": [
+   "Data Science",
+   "Economics"
+  ],
+  "company": "",
+  "expect": "Economics",
+  "spec_quote": "Major questions: an undergraduate major (\"Undergrad Discipline(s)\", \"Undergraduate major\", \"Bachelor's major\") is Economics — pick the option \"Economics\" when offered; if the options have no Economics, unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "undergraduate major without Economics option",
+  "label": "Undergraduate major",
+  "options": [
+   "Data Science",
+   "Mathematics"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Major questions: an undergraduate major (\"Undergrad Discipline(s)\", \"Undergraduate major\", \"Bachelor's major\") is Economics — pick the option \"Economics\" when offered; if the options have no Economics, unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "secondary major left empty",
+  "label": "Secondary Major",
+  "options": [],
+  "company": "",
+  "expect": "empty",
+  "spec_quote": "A \"Secondary Major\", \"Second major\", \"Double major\" or \"Minor\" question is left empty (he has none).",
+  "ambiguous": false
+ },
+ {
+  "name": "second major left empty",
+  "label": "Second major",
+  "options": [],
+  "company": "",
+  "expect": "empty",
+  "spec_quote": "A \"Secondary Major\", \"Second major\", \"Double major\" or \"Minor\" question is left empty (he has none).",
+  "ambiguous": false
+ },
+ {
+  "name": "double major left empty",
+  "label": "Double major",
+  "options": [],
+  "company": "",
+  "expect": "empty",
+  "spec_quote": "A \"Secondary Major\", \"Second major\", \"Double major\" or \"Minor\" question is left empty (he has none).",
+  "ambiguous": false
+ },
+ {
+  "name": "minor left empty",
+  "label": "Minor",
+  "options": [],
+  "company": "",
+  "expect": "empty",
+  "spec_quote": "A \"Secondary Major\", \"Second major\", \"Double major\" or \"Minor\" question is left empty (he has none).",
+  "ambiguous": false
+ },
+ {
+  "name": "plain major uses current field",
+  "label": "Major",
+  "options": [
+   "Economics",
+   "Data Science",
+   "Computer Science"
+  ],
+  "company": "",
+  "expect": "Data Science",
+  "spec_quote": "A plain \"Major\" / \"Field of study\" question is his current degree's field (Data Science family).",
+  "ambiguous": false
+ },
+ {
+  "name": "field of study uses current field",
+  "label": "Field of study",
+  "options": [
+   "Economics",
+   "Data Science"
+  ],
+  "company": "",
+  "expect": "Data Science",
+  "spec_quote": "A plain \"Major\" / \"Field of study\" question is his current degree's field (Data Science family).",
+  "ambiguous": false
+ },
+ {
+  "name": "name pronunciation normal spelling",
+  "label": "How do you pronounce your name?",
+  "options": [],
+  "company": "",
+  "expect": "AL-ex DOH (I go by Lex)",
+  "spec_quote": "Name pronunciation questions — also misspelled \"pronounciation\" — get the pronunciation text, never the full name.",
+  "ambiguous": false
+ },
+ {
+  "name": "name pronounciation misspelled",
+  "label": "Name pronounciation",
+  "options": [],
+  "company": "",
+  "expect": "AL-ex DOH (I go by Lex)",
+  "spec_quote": "Name pronunciation questions — also misspelled \"pronounciation\" — get the pronunciation text, never the full name.",
+  "ambiguous": false
+ },
+ {
+  "name": "salary expectations",
+  "label": "What are your salary expectations?",
+  "options": [],
+  "company": "",
+  "expect": "Open / per internship program standard",
+  "spec_quote": "Pay questions, including \"What is your target compensation (salary and bonus)?\", get the pay text.",
+  "ambiguous": false
+ },
+ {
+  "name": "target compensation salary and bonus",
+  "label": "What is your target compensation (salary and bonus)?",
+  "options": [],
+  "company": "",
+  "expect": "Open / per internship program standard",
+  "spec_quote": "Pay questions, including \"What is your target compensation (salary and bonus)?\", get the pay text.",
+  "ambiguous": false
+ },
+ {
+  "name": "bonus expectations only",
+  "label": "What are your bonus expectations?",
+  "options": [],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "A question only about a bonus (\"What are your bonus expectations?\") is not this pay question.",
+  "ambiguous": false
+ },
+ {
+  "name": "desired compensation",
+  "label": "What is your desired compensation?",
+  "options": [],
+  "company": "",
+  "expect": "Open / per internship program standard",
+  "spec_quote": "Pay questions, including \"What is your target compensation (salary and bonus)?\", get the pay text.",
+  "ambiguous": false
+ },
+ {
+  "name": "previously applied Acme",
+  "label": "Have you previously applied to Acme Corp?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "Yes",
+  "spec_quote": "\"Have you previously applied to <company>?\" / \"ever applied … before\" / \"applied … in the last N months\" are answered from the tracker for the hiring company (or a tracker company named in the question): an application before today (inside the window when the question gives one) → Yes; none → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "previously applied Globex no window",
+  "label": "Have you previously applied to Globex Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Globex Inc",
+  "expect": "Yes",
+  "spec_quote": "\"Have you previously applied to <company>?\" / \"ever applied … before\" / \"applied … in the last N months\" are answered from the tracker for the hiring company (or a tracker company named in the question): an application before today (inside the window when the question gives one) → Yes; none → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "ever applied Initech not in tracker",
+  "label": "Have you ever applied to Initech before?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Initech",
+  "expect": "No",
+  "spec_quote": "\"Have you previously applied to <company>?\" / \"ever applied … before\" / \"applied … in the last N months\" are answered from the tracker for the hiring company (or a tracker company named in the question): an application before today (inside the window when the question gives one) → Yes; none → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "applied Acme last 60 days",
+  "label": "Have you applied to Acme Corp in the last 60 days?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "Yes",
+  "spec_quote": "\"Have you previously applied to <company>?\" / \"ever applied … before\" / \"applied … in the last N months\" are answered from the tracker for the hiring company (or a tracker company named in the question): an application before today (inside the window when the question gives one) → Yes; none → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "applied Globex last 60 days outside window",
+  "label": "Have you applied to Globex Inc in the last 60 days?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Globex Inc",
+  "expect": "No",
+  "spec_quote": "\"Have you previously applied to <company>?\" / \"ever applied … before\" / \"applied … in the last N months\" are answered from the tracker for the hiring company (or a tracker company named in the question): an application before today (inside the window when the question gives one) → Yes; none → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "this company unknown hiring company",
+  "label": "Have you previously applied to this company?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "An unknown company (none given, none named) → unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "this role at tracked company",
+  "label": "Have you previously applied to this role?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "unknown",
+  "spec_quote": "When the tracker has the company but the question asks about \"this role / this position\" or \"this recruiting season\", the answer is unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "this recruiting season at tracked company",
+  "label": "Have you applied to Acme Corp this recruiting season?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "unknown",
+  "spec_quote": "When the tracker has the company but the question asks about \"this role / this position\" or \"this recruiting season\", the answer is unknown.",
+  "ambiguous": false
+ },
+ {
+  "name": "employed by or applied to Acme",
+  "label": "Have you previously been employed by or applied to Acme Corp?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "Yes",
+  "spec_quote": "\"Have you previously been employed by or applied to <company>?\" is Yes when the tracker has an application.",
+  "ambiguous": false
+ },
+ {
+  "name": "worked at Acme is not application question",
+  "label": "Have you previously worked at Acme Corp?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Acme Corp",
+  "expect": "No",
+  "spec_quote": "\"Have you previously worked at <company>?\" is NOT an application question (No — he never worked there).",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,862 @@
+[
+ {
+  "name": "Workday no-section: two education blocks back-to-back",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "Master's",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "Applied Data Science",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "University of Illinois Urbana-Champaign",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "Bachelor's",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "Economics",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Workday no-section: two work blocks back-to-back",
+  "rows": [
+   {
+    "label": "Job Title",
+    "page": "Business Analyst Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Company",
+    "page": "Hyde Park Investment Services, Inc.",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Champaign, Illinois",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Job Title",
+    "page": "Consulting Assistant Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Company",
+    "page": "Frost & Sullivan",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Shanghai, China",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Workday with sections Education 1 / Education 2",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "THE UNIVERSITY OF CHICAGO",
+    "section": "Education 1"
+   },
+   {
+    "label": "Degree",
+    "page": "MS",
+    "section": "Education 1"
+   },
+   {
+    "label": "Overall Result (GPA)",
+    "page": "3.60",
+    "section": "Education 1"
+   },
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "section": "Education 2"
+   },
+   {
+    "label": "Degree",
+    "page": "B.A.",
+    "section": "Education 2"
+   },
+   {
+    "label": "Overall Result (GPA)",
+    "page": "3.60",
+    "section": "Education 2"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "bad",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "SuccessFactors prefixed labels",
+  "rows": [
+   {
+    "label": "Education (University of Chicago): Degree",
+    "page": "Master's"
+   },
+   {
+    "label": "Education (University of Chicago): Field of Study",
+    "page": "Statistics"
+   },
+   {
+    "label": "Education (University of Illinois Urbana-Champaign): Degree",
+    "page": "Bachelor's"
+   },
+   {
+    "label": "Education (University of Illinois Urbana-Champaign): Field of Study",
+    "page": "Economics (B.A.)"
+   },
+   {
+    "label": "Previous Employment (Frost & Sullivan): Job Title",
+    "page": "Consulting Assistant Intern"
+   },
+   {
+    "label": "Previous Employment (Frost & Sullivan): Location",
+    "page": "Shanghai, China"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Greenhouse rule rows, all correct for UIUC",
+  "rows": [
+   {
+    "label": "School",
+    "page": "University of Illinois at Urbana-Champaign",
+    "source": "rules:school"
+   },
+   {
+    "label": "Degree",
+    "page": "Bachelor's",
+    "source": "rules:degree"
+   },
+   {
+    "label": "Discipline",
+    "page": "Economics",
+    "source": "rules:discipline"
+   },
+   {
+    "label": "Start date month",
+    "page": "August",
+    "source": "rules:start_month"
+   },
+   {
+    "label": "Start date year",
+    "page": "2024",
+    "source": "rules:start_year"
+   },
+   {
+    "label": "End date month",
+    "page": "May",
+    "source": "rules:end_month"
+   },
+   {
+    "label": "End date year",
+    "page": "2026",
+    "source": "rules:end_year"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Greenhouse rule rows with wrong degree, field, month and year",
+  "rows": [
+   {
+    "label": "School",
+    "page": "UIUC",
+    "source": "rules:school"
+   },
+   {
+    "label": "Degree",
+    "page": "Master's",
+    "source": "rules:degree"
+   },
+   {
+    "label": "Discipline",
+    "page": "Data Science",
+    "source": "rules:discipline"
+   },
+   {
+    "label": "Start date month",
+    "page": "January",
+    "source": "rules:start_month"
+   },
+   {
+    "label": "Start date year",
+    "page": "2023",
+    "source": "rules:start_year"
+   },
+   {
+    "label": "End date month",
+    "page": "December",
+    "source": "rules:end_month"
+   },
+   {
+    "label": "End date year",
+    "page": "2025",
+    "source": "rules:end_year"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "bad",
+   "bad",
+   "bad",
+   "bad",
+   "bad"
+  ]
+ },
+ {
+  "name": "Major GPA 3.85 placed in UIUC's Overall Result (GPA) box",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Illinois Urbana-Champaign",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Overall Result (GPA)",
+    "page": "3.85",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "UIUC Major GPA (3.85) and Institution GPA (3.81) in their own boxes",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Major GPA",
+    "page": "3.85",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Institution GPA",
+    "page": "3.81",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "UChicago block carrying a GPA number",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Overall Result (GPA)",
+    "page": "3.60",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "UChicago block with N/A GPA",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "UChicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "GPA",
+    "page": "N/A",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "M.S.",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Hyde Park block with 'Job Searching Agent' as Job Title",
+  "rows": [
+   {
+    "label": "Company",
+    "page": "Hyde Park Investment Services, Inc.",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Job Title",
+    "page": "Job Searching Agent",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "Hyde Park block showing the other job's title",
+  "rows": [
+   {
+    "label": "Company",
+    "page": "HYDE PARK INVESTMENT SERVICES",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Job Title",
+    "page": "Consulting Assistant Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Champaign, Illinois",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "ok"
+  ]
+ },
+ {
+  "name": "Résumé-parsed description of an unrelated personal project",
+  "rows": [
+   {
+    "label": "Company",
+    "page": "Hyde Park Investment Services, Inc.",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Role Description",
+    "page": "Personal project, built with Claude Code to automate resume tailoring.",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "Swapped degree: bachelor option in the UChicago block",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "B.A.",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "Applied Data Science",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "ok"
+  ]
+ },
+ {
+  "name": "Swapped fields: Economics in UChicago block, Data Science in UIUC block",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "Economics",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "Data Science",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "Wrong start and end years on both education blocks",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "UChicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "From",
+    "page": "2025-09",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "To (Actual or Expected)",
+    "page": "2028-05",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "From",
+    "page": "2024-08",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "To (Actual or Expected)",
+    "page": "2026-05",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "bad",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Wrong month (right year) and a non-date value",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "From",
+    "page": "1/2024",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "To (Actual or Expected)",
+    "page": "TBD",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "bad",
+   "unknown"
+  ]
+ },
+ {
+  "name": "I currently work here: checked on Hyde Park, No on Frost & Sullivan",
+  "rows": [
+   {
+    "label": "Company",
+    "page": "Hyde Park Investment Services, Inc.",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Job Title",
+    "page": "Business Analyst Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "I currently work here",
+    "page": "Yes",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Company",
+    "page": "Frost & Sullivan",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Job Title",
+    "page": "Consulting Assistant Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "I currently work here",
+    "page": "No",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "bad",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Still attending: Yes ok for UChicago, Yes bad for UIUC, No ok for UIUC",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Still attending",
+    "page": "Yes",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Still attending",
+    "page": "Yes",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "I currently attend",
+    "page": "No",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "bad",
+   "ok"
+  ]
+ },
+ {
+  "name": "Degree Achieved: Yes ok for UIUC, In Progress ok for UChicago, Yes bad for UChicago",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "UIUC",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree Achieved",
+    "page": "Yes",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree Achieved",
+    "page": "In Progress",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "UChicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree Achieved",
+    "page": "Yes",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "ok",
+   "bad"
+  ]
+ },
+ {
+  "name": "Upper-case and alternate school / company names",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "THE UNIVERSITY OF CHICAGO",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Company",
+    "page": "HYDE PARK INVESTMENT SERVICES",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "School or University",
+    "page": "Chicago, U of",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "Illinois, U of",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Lone questions and contact fields are not block rows",
+  "rows": [
+   {
+    "label": "What is your GPA?",
+    "page": "3.60"
+   },
+   {
+    "label": "Email Address",
+    "page": "candidate@example.com"
+   }
+  ],
+  "expect": [
+   null,
+   null
+  ]
+ },
+ {
+  "name": "Unknown boxes in a UChicago block: Minor and Division",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Minor",
+    "page": "Computer Science",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Division",
+    "page": "Physical Sciences",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "unknown",
+   "unknown"
+  ]
+ },
+ {
+  "name": "Work block with no company, entry identified by job title",
+  "rows": [
+   {
+    "label": "Job Title",
+    "page": "Business Analyst Intern",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Champaign, Illinois",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "I currently work here",
+    "page": "No",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "School not among the candidate's entries",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "Xi'an Jiaotong-Liverpool University",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "bad"
+  ]
+ },
+ {
+  "name": "Empty page values are ok",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Chicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Field of Study",
+    "page": "",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "name": "Location containing the city is ok, other text is unknown",
+  "rows": [
+   {
+    "label": "Company",
+    "page": "Hyde Park Investment Services, Inc.",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Champaign, IL",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Company",
+    "page": "Frost & Sullivan",
+    "source": "wd_profile:work"
+   },
+   {
+    "label": "Location",
+    "page": "Remote",
+    "source": "wd_profile:work"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "unknown"
+  ]
+ },
+ {
+  "name": "Degree 'Other' ok, option with no level unknown",
+  "rows": [
+   {
+    "label": "School or University",
+    "page": "University of Illinois Urbana-Champaign",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "Other",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "School or University",
+    "page": "UChicago",
+    "source": "wd_profile:education"
+   },
+   {
+    "label": "Degree",
+    "page": "Certificate",
+    "source": "wd_profile:education"
+   }
+  ],
+  "expect": [
+   "ok",
+   "ok",
+   "ok",
+   "unknown"
+  ]
+ }
+]

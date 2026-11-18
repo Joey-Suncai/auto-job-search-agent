@@ -1,0 +1,115 @@
+{
+ "note": "Direction selectors and resume choices for role_library.py (JSA-249). selector picks the JDs (jobs.track, optional title / text regex); section_order, headline_pattern and angles are the resume choices for that direction (angles = how a bullet proving that competency should be told). The statistics (weights, keywords) are generated into roles/<direction>.json. template = harvard (education first, Leadership & Activities) or jakes (projects / experience first, compact skills block) — both rendered by build_a.py (JSA-253).",
+ "directions": {
+  "ai_pm": {
+   "label": "AI Product Manager / AI Product Analytics",
+   "selector": {
+    "tracks": [
+     "AI Product Manager"
+    ],
+    "or_tracks_with_text": {
+     "tracks": [
+      "Product Manager"
+     ],
+     "regex": "\\b(LLMs?|large language models?|generative AI|GenAI|AI[- ]powered|machine learning|AI agents?|agentic|AI products?)\\b",
+     "min_hits": 3
+    }
+   },
+   "section_order": [
+    "Education",
+    "Skills",
+    "Projects",
+    "Experience",
+    "Leadership"
+   ],
+   "headline_pattern": "<exact job title> · <2–4 true JD terms: AI / product / evaluation first>",
+   "angles": {
+    "ai_eval": "what was evaluated, the criteria or rubric, the human check, and the decision or time it changed",
+    "llm_genai": "the LLM in a real workflow: what it did, what stayed with a person, the measurable effect",
+    "agents": "the system's job for its user, how work is split across agents, and the guardrail that keeps it truthful",
+    "product_sense": "the user problem first, then the decision he made (scope, priority, rule) and its outcome",
+    "metrics": "the metric chosen, why it matters for the decision, and the result",
+    "stakeholders": "who used the output and how it changed their work",
+    "experimentation": "the question, the test design that keeps it honest, and what the result did or did not show",
+    "ownership": "what he owned end to end and what shipped"
+   },
+   "template": "harvard"
+  },
+  "data_analyst": {
+   "label": "Data Analyst / BI",
+   "selector": {
+    "tracks": [
+     "Data Analyst"
+    ]
+   },
+   "section_order": [
+    "Education",
+    "Skills",
+    "Experience",
+    "Projects",
+    "Leadership"
+   ],
+   "headline_pattern": "<exact job title> · SQL · <BI tool or Python / R from the JD>",
+   "angles": {
+    "sql": "the data joined or queried and the question it answered",
+    "bi_viz": "the dashboard or chart, who used it, the decision it supported",
+    "data_quality": "the mismatch found, how it was fixed, what became comparable",
+    "metrics": "the metric, the comparison, the business result",
+    "statistics": "the method and what it showed, with the honest caveat",
+    "stakeholders": "the audience and the faster or better decision",
+    "excel": "the model built and who relied on it"
+   },
+   "template": "harvard"
+  },
+  "data_engineer": {
+   "label": "Data Engineer",
+   "selector": {
+    "tracks": [
+     "Data Engineer"
+    ]
+   },
+   "section_order": [
+    "Education",
+    "Skills",
+    "Experience",
+    "Projects",
+    "Leadership"
+   ],
+   "headline_pattern": "<exact job title> · Python · SQL · <pipeline / cloud tool from the JD>",
+   "angles": {
+    "pipelines": "sources in, rows out, what the pipeline guarantees",
+    "data_quality": "the rule (normalization, dedup, validation) and the before / after counts",
+    "cloud_data": "the platform and what was built on it",
+    "data_modeling": "the model or schema and who queries it",
+    "automation": "what runs without a person and how failures are caught",
+    "sql": "the query work and its scale"
+   },
+   "template": "jakes"
+  },
+  "ai_agentic": {
+   "label": "AI / Agentic Engineer",
+   "selector": {
+    "tracks": [
+     "AI Agentic Eng"
+    ]
+   },
+   "section_order": [
+    "Education",
+    "Skills",
+    "Projects",
+    "Experience",
+    "Leadership"
+   ],
+   "headline_pattern": "<exact job title> · LLM agents · <2–3 true JD terms>",
+   "angles": {
+    "agents": "the agents, the orchestration, and what each one is trusted to do",
+    "llm_genai": "the model in the loop and how its output is checked",
+    "ai_eval": "the evaluation or guardrail and what it catches",
+    "automation": "the end-to-end flow and the human approval point",
+    "python": "what the code does, at what scale",
+    "software_eng": "the interfaces and tests that keep it reliable"
+   },
+   "template": "jakes"
+  }
+ }
+}

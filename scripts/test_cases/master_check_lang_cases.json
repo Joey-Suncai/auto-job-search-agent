@@ -1,0 +1,839 @@
+[
+ {
+  "name": "skills_pass_case_insensitive_and_fact_only",
+  "why": "All master skills items resolve either to a skills.true group other than 'Languages' (ignoring case: 'python' matches 'Python') or to the skills of a resume_ok fact ('Pandas' appears only on fact f1). Spec: 'skill_unknown: a skills item that is neither in skills.true (any group except one named \"Languages\") nor in the skills of any fact with resume_ok not false (ignoring case).' Nothing should be reported. Master bullets follow verb/why rules and cite facts with full STAR, so no other kinds fire.",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2023-2024",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2021-2023",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Led engineers on the billing platform migration",
+     "T": "Q1 rollout",
+     "A": "Wrote the invoice pipeline in Python",
+     "R": "Cut billing errors sharply",
+     "numbers": [
+      "30"
+     ],
+     "skills": [
+      "Python",
+      "SQL",
+      "Pandas"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Owned the reporting service",
+     "T": "annual refresh",
+     "A": "Wrote scheduled jobs in SQL",
+     "R": "Saved hours weekly",
+     "numbers": [
+      "6"
+     ],
+     "skills": [
+      "SQL",
+      "Tableau",
+      "Hadoop"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Maintained the payments API",
+     "T": "peak season",
+     "A": "Instrumented request tracing in Go",
+     "R": "Reduced latency",
+     "numbers": [
+      "40"
+     ],
+     "skills": [
+      "Go",
+      "Docker"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Go",
+      "Docker",
+      "Excel"
+     ],
+     "Languages": [
+      "Spanish",
+      "French",
+      "German"
+     ]
+    },
+    "not_true": [
+     "Hadoop"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Backend engineer",
+   "summary": "Engineer with a record of rebuilding billing and reporting systems while keeping payment APIs fast and reliable.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "python",
+      "Pandas",
+      "Tableau",
+      "SQL",
+      "Go",
+      "Docker"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Rebuilt the invoice pipeline in Python to cut billing errors by 30%.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Wrote scheduled SQL jobs, saving 6 hours weekly for the reporting team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Instrumented request tracing in Go for the payments API; cut latency by 40%.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "skill_from_languages_group_is_unknown",
+  "why": "'Spanish' sits only in the skills.true group named 'Languages', which is explicitly excluded from the allowed groups, and no resume_ok fact lists it. Spec: 'skill_unknown: a skills item that is neither in skills.true (any group except one named \"Languages\") nor in the skills of any fact with resume_ok not false.' Exactly one skill_unknown is required; 'Python' and 'SQL' are fine.",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2023-2024",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2021-2023",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Led engineers on the billing platform migration",
+     "T": "Q1 rollout",
+     "A": "Wrote the invoice pipeline in Python",
+     "R": "Cut billing errors sharply",
+     "numbers": [
+      "30"
+     ],
+     "skills": [
+      "Python",
+      "SQL",
+      "Pandas"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Owned the reporting service",
+     "T": "annual refresh",
+     "A": "Wrote scheduled jobs in SQL",
+     "R": "Saved hours weekly",
+     "numbers": [
+      "6"
+     ],
+     "skills": [
+      "SQL",
+      "Tableau",
+      "Hadoop"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Maintained the payments API",
+     "T": "peak season",
+     "A": "Instrumented request tracing in Go",
+     "R": "Reduced latency",
+     "numbers": [
+      "40"
+     ],
+     "skills": [
+      "Go",
+      "Docker"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Go",
+      "Docker",
+      "Excel"
+     ],
+     "Languages": [
+      "Spanish",
+      "French",
+      "German"
+     ]
+    },
+    "not_true": [
+     "Hadoop"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Backend engineer",
+   "summary": "Engineer with a record of rebuilding billing and reporting systems while keeping payment APIs fast and reliable.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Python",
+      "SQL",
+      "Go"
+     ]
+    },
+    {
+     "label": "Languages",
+     "items": [
+      "Spanish"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Rebuilt the invoice pipeline in Python to cut billing errors by 30%.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Wrote scheduled SQL jobs, saving 6 hours weekly for the reporting team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Instrumented request tracing in Go for the payments API; cut latency by 40%.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "skill_unknown"
+  ]
+ },
+ {
+  "name": "languages_word_also_on_fact_is_allowed",
+  "why": "Near miss for the Languages rule: 'Spanish' is in the 'Languages' group but is also a skill of fact f1, which has resume_ok true, so it is covered by the second clause of skill_unknown and must NOT be reported. Spec: 'skill_unknown: a skills item that is neither in skills.true (any group except one named \"Languages\") nor in the skills of any fact with resume_ok not false (ignoring case).' Keyword 'neither...nor' — one satisfier is enough.",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2023-2024",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2021-2023",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Led engineers on the billing platform migration",
+     "T": "Q1 rollout",
+     "A": "Wrote the invoice pipeline in Python",
+     "R": "Cut billing errors sharply",
+     "numbers": [
+      "30"
+     ],
+     "skills": [
+      "Python",
+      "SQL",
+      "Pandas",
+      "Spanish"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Owned the reporting service",
+     "T": "annual refresh",
+     "A": "Wrote scheduled jobs in SQL",
+     "R": "Saved hours weekly",
+     "numbers": [
+      "6"
+     ],
+     "skills": [
+      "SQL",
+      "Tableau",
+      "Hadoop"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Maintained the payments API",
+     "T": "peak season",
+     "A": "Instrumented request tracing in Go",
+     "R": "Reduced latency",
+     "numbers": [
+      "40"
+     ],
+     "skills": [
+      "Go",
+      "Docker"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Go",
+      "Docker",
+      "Excel"
+     ],
+     "Languages": [
+      "Spanish",
+      "French",
+      "German"
+     ]
+    },
+    "not_true": [
+     "Hadoop"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Backend engineer",
+   "summary": "Engineer with a record of rebuilding billing and reporting systems while keeping payment APIs fast and reliable.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Python",
+      "SQL"
+     ]
+    },
+    {
+     "label": "Languages",
+     "items": [
+      "spanish"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Rebuilt the invoice pipeline in Python to cut billing errors by 30%.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Wrote scheduled SQL jobs, saving 6 hours weekly for the reporting team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Instrumented request tracing in Go for the payments API; cut latency by 40%.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "not_true_skill_reported_even_though_held_by_fact",
+  "why": "'Hadoop' is listed in skills.not_true and also appears in the skills of resume_ok fact f2, so it must be flagged as skill_not_true and not as skill_unknown (an implementation must not let fact coverage mask the not_true check). Spec: 'skill_not_true: a skills item equal (ignoring case) to an entry of skills.not_true.' and 'skill_unknown: a skills item that is neither in skills.true (any group except one named \"Languages\") nor in the skills of any fact with resume_ok not false.' The other items are clean, so exactly one problem is expected.",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2023-2024",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2021-2023",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Led engineers on the billing platform migration",
+     "T": "Q1 rollout",
+     "A": "Wrote the invoice pipeline in Python",
+     "R": "Cut billing errors sharply",
+     "numbers": [
+      "30"
+     ],
+     "skills": [
+      "Python",
+      "SQL",
+      "Pandas"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Owned the reporting service",
+     "T": "annual refresh",
+     "A": "Wrote scheduled jobs in SQL",
+     "R": "Saved hours weekly",
+     "numbers": [
+      "6"
+     ],
+     "skills": [
+      "SQL",
+      "Tableau",
+      "Hadoop"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Maintained the payments API",
+     "T": "peak season",
+     "A": "Instrumented request tracing in Go",
+     "R": "Reduced latency",
+     "numbers": [
+      "40"
+     ],
+     "skills": [
+      "Go",
+      "Docker"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Go",
+      "Docker",
+      "Excel"
+     ],
+     "Languages": [
+      "Spanish",
+      "French",
+      "German"
+     ]
+    },
+    "not_true": [
+     "Hadoop"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Backend engineer",
+   "summary": "Engineer with a record of rebuilding billing and reporting systems while keeping payment APIs fast and reliable.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "hadoop",
+      "Python",
+      "Go"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Rebuilt the invoice pipeline in Python to cut billing errors by 30%.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Wrote scheduled SQL jobs, saving 6 hours weekly for the reporting team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Instrumented request tracing in Go for the payments API; cut latency by 40%.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "skill_not_true"
+  ]
+ },
+ {
+  "name": "skill_only_on_non_resume_ok_fact_is_unknown",
+  "why": "'Rust' is a skill only of fact f4, whose resume_ok is false, so it does not count as fact coverage. Spec: 'skill_unknown: a skills item that is neither in skills.true (any group except one named \"Languages\") nor in the skills of any fact with resume_ok not false (ignoring case).' Adding f4 does not change the entry set (hp still has the clean bullet-eligible fact f3), so the only problem should be skill_unknown for 'Rust'; 'Go' and 'Python' remain fine.",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2023-2024",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2021-2023",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Led engineers on the billing platform migration",
+     "T": "Q1 rollout",
+     "A": "Wrote the invoice pipeline in Python",
+     "R": "Cut billing errors sharply",
+     "numbers": [
+      "30"
+     ],
+     "skills": [
+      "Python",
+      "SQL",
+      "Pandas"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Owned the reporting service",
+     "T": "annual refresh",
+     "A": "Wrote scheduled jobs in SQL",
+     "R": "Saved hours weekly",
+     "numbers": [
+      "6"
+     ],
+     "skills": [
+      "SQL",
+      "Tableau",
+      "Hadoop"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Maintained the payments API",
+     "T": "peak season",
+     "A": "Instrumented request tracing in Go",
+     "R": "Reduced latency",
+     "numbers": [
+      "40"
+     ],
+     "skills": [
+      "Go",
+      "Docker"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "hp",
+     "S": "Explored a prototype queue",
+     "T": "offsite week",
+     "A": "Sketched a Rust service",
+     "R": "Shared findings",
+     "numbers": [],
+     "skills": [
+      "Rust"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Go",
+      "Docker",
+      "Excel"
+     ],
+     "Languages": [
+      "Spanish",
+      "French",
+      "German"
+     ]
+    },
+    "not_true": [
+     "Hadoop"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Backend engineer",
+   "summary": "Engineer with a record of rebuilding billing and reporting systems while keeping payment APIs fast and reliable.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Rust",
+      "Go",
+      "Python"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Rebuilt the invoice pipeline in Python to cut billing errors by 30%.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Wrote scheduled SQL jobs, saving 6 hours weekly for the reporting team.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Instrumented request tracing in Go for the payments API; cut latency by 40%.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "skill_unknown"
+  ]
+ }
+]

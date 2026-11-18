@@ -1,0 +1,252 @@
+[
+ {
+  "name": "job_alerts_similar_positions",
+  "label": "I would like to receive job alerts for similar positions.",
+  "expect": "Yes"
+ },
+ {
+  "name": "sign_up_new_job_opportunity_alerts",
+  "label": "Sign me up for new job opportunity alerts.",
+  "expect": "Yes"
+ },
+ {
+  "name": "join_talent_community",
+  "label": "Join our talent community.",
+  "expect": "Yes"
+ },
+ {
+  "name": "talent_pool_future_openings",
+  "label": "Add me to your talent pool for future openings.",
+  "expect": "Yes"
+ },
+ {
+  "name": "contact_future_job_opportunities",
+  "label": "I agree to be contacted about future job opportunities.",
+  "expect": "Yes"
+ },
+ {
+  "name": "notify_new_openings_match_profile",
+  "label": "Notify me about new openings that match my profile.",
+  "expect": "Yes"
+ },
+ {
+  "name": "send_updates_relevant_positions",
+  "label": "Send me updates about relevant positions.",
+  "expect": "Yes"
+ },
+ {
+  "name": "other_job_opportunities_acme",
+  "label": "I would like to receive information about other job opportunities at Acme.",
+  "expect": "Yes"
+ },
+ {
+  "name": "keep_informed_upcoming_job_openings",
+  "label": "Keep me informed about upcoming job openings.",
+  "expect": "Yes"
+ },
+ {
+  "name": "subscribe_job_opportunity_updates",
+  "label": "Subscribe to job opportunity updates.",
+  "expect": "Yes"
+ },
+ {
+  "name": "join_network_future_roles",
+  "label": "I want to join the network and hear about future roles.",
+  "expect": "Yes"
+ },
+ {
+  "name": "receive_alerts_new_positions",
+  "label": "Receive alerts about new positions.",
+  "expect": "Yes"
+ },
+ {
+  "name": "privacy_notice_read_agree",
+  "label": "I have read and agree to the privacy notice.",
+  "expect": "Yes"
+ },
+ {
+  "name": "acknowledge_privacy_policy",
+  "label": "I acknowledge the privacy policy.",
+  "expect": "Yes"
+ },
+ {
+  "name": "consent_process_personal_data_application",
+  "label": "I consent to Acme processing my personal data for this application.",
+  "expect": "Yes"
+ },
+ {
+  "name": "agree_storage_personal_information_application",
+  "label": "I agree to the storage of my personal information for this application.",
+  "expect": "Yes"
+ },
+ {
+  "name": "consent_contact_application_status_email",
+  "label": "I consent to being contacted by email about my application status.",
+  "expect": "Yes"
+ },
+ {
+  "name": "contact_application_hiring_process",
+  "label": "I agree to be contacted regarding my application and the hiring process.",
+  "expect": "Yes"
+ },
+ {
+  "name": "read_agree_candidate_privacy_statement",
+  "label": "I have read and agree to the candidate privacy statement.",
+  "expect": "Yes"
+ },
+ {
+  "name": "understand_data_processed_recruitment",
+  "label": "I understand my personal data will be processed for recruitment purposes.",
+  "expect": "Yes"
+ },
+ {
+  "name": "contact_interviews_this_role",
+  "label": "Contact me via email about interviews for this role.",
+  "expect": "Yes"
+ },
+ {
+  "name": "acknowledge_agree_application_privacy_policy",
+  "label": "I acknowledge and agree to the application privacy policy.",
+  "expect": "Yes"
+ },
+ {
+  "name": "consent_communications_my_application",
+  "label": "I consent to receive communications regarding my application.",
+  "expect": "Yes"
+ },
+ {
+  "name": "recruiting_campaign_communications",
+  "label": "I agree to receive recruiting campaign communications.",
+  "expect": "No"
+ },
+ {
+  "name": "marketing_promotional_emails",
+  "label": "Send me marketing and promotional emails.",
+  "expect": "No"
+ },
+ {
+  "name": "subscribe_newsletter",
+  "label": "Subscribe to our newsletter.",
+  "expect": "No"
+ },
+ {
+  "name": "receive_news_updates_acme",
+  "label": "I would like to receive news and updates from Acme.",
+  "expect": "No"
+ },
+ {
+  "name": "sign_up_events_webinars",
+  "label": "Sign me up for events and webinars.",
+  "expect": "No"
+ },
+ {
+  "name": "consent_offers_products_services",
+  "label": "I consent to receive offers about products and services.",
+  "expect": "No"
+ },
+ {
+  "name": "send_me_surveys",
+  "label": "Send me surveys.",
+  "expect": "No"
+ },
+ {
+  "name": "messages_third_party_partners",
+  "label": "I agree to receive messages from third-party partners.",
+  "expect": "No"
+ },
+ {
+  "name": "communications_partners",
+  "label": "Receive communications from our partners.",
+  "expect": "No"
+ },
+ {
+  "name": "recruiting_news_event_invitations",
+  "label": "I want to receive recruiting news and event invitations.",
+  "expect": "No"
+ },
+ {
+  "name": "job_news_upcoming_webinars",
+  "label": "Keep me posted about job news plus upcoming webinars.",
+  "expect": "No"
+ },
+ {
+  "name": "promotional_communications_acme",
+  "label": "I agree to receive promotional communications from Acme.",
+  "expect": "No"
+ },
+ {
+  "name": "talent_newsletter",
+  "label": "Opt in to our talent newsletter.",
+  "expect": "No"
+ },
+ {
+  "name": "info_products_services",
+  "label": "I would like to receive information about products and services.",
+  "expect": "No"
+ },
+ {
+  "name": "emails_offers_events_company_news",
+  "label": "Send me emails about offers, events and company news.",
+  "expect": "No"
+ },
+ {
+  "name": "communications_from_acme",
+  "label": "I agree to receive communications from Acme.",
+  "expect": "ask"
+ },
+ {
+  "name": "consent_receive_information",
+  "label": "I consent to receive information.",
+  "expect": "ask"
+ },
+ {
+  "name": "updates_from_acme",
+  "label": "I would like to receive updates from Acme.",
+  "expect": "ask"
+ },
+ {
+  "name": "sign_up_receive_communications",
+  "label": "Sign me up to receive communications.",
+  "expect": "ask"
+ },
+ {
+  "name": "contacted_by_acme",
+  "label": "I agree to be contacted by Acme.",
+  "expect": "ask"
+ },
+ {
+  "name": "information_from_company",
+  "label": "I would like to receive information from the company.",
+  "expect": "ask"
+ },
+ {
+  "name": "send_relevant_information",
+  "label": "Please send me relevant information.",
+  "expect": "ask"
+ },
+ {
+  "name": "consent_messages_from_acme",
+  "label": "I consent to receive messages from Acme.",
+  "expect": "ask"
+ },
+ {
+  "name": "keep_me_informed_about_acme",
+  "label": "Keep me informed about Acme.",
+  "expect": "ask"
+ },
+ {
+  "name": "agree_receive_notifications",
+  "label": "I agree to receive notifications.",
+  "expect": "ask"
+ },
+ {
+  "name": "subscribe_acme_communications",
+  "label": "Subscribe to Acme communications.",
+  "expect": "ask"
+ },
+ {
+  "name": "opt_in_communications_recruiting_team",
+  "label": "I opt in to receive communications from the recruiting team.",
+  "expect": "ask"
+ }
+]

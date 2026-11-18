@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Print the key items of a Workday Review page (open tab in the job Chrome) for the pre-submit check.
    ~/.job-agent-venv/bin/python wd_review.py <text in the tab URL, e.g. the job req id>"""
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import os, re, sys, json
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'config'))
 import jsa_profile  # noqa: E402  (JSA-077)
@@ -9,7 +10,7 @@ from playwright.sync_api import sync_playwright
 def main():
     key = sys.argv[1]
     with sync_playwright() as pw:
-        pages = [p for p in pw.chromium.connect_over_cdp('http://127.0.0.1:9222').contexts[0].pages if key in p.url]
+        pages = [p for p in cdp_connect.connect(pw, 'http://127.0.0.1:9222').contexts[0].pages if key in p.url]
         if not pages: print('no tab for', key); return
         t = pages[-1].inner_text('body')
     def g(rx):

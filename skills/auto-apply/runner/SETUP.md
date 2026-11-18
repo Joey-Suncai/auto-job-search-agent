@@ -10,12 +10,12 @@ bash ~/Desktop/"job search agent"/skills/auto-apply/runner/setup.sh
 会打开一个新的 Chrome 窗口（独立配置 `~/.job-agent-chrome`）——这个窗口只用来投递，不用登录你的个人账号。
 
 ## 2. Gmail 应用专用密码（用来自动读取验证码，只读）
-1. 打开 https://myaccount.google.com/security （用 **alex.rivera@example.com** 登录）。
+1. 打开 https://myaccount.google.com/security （用 **<candidate e-mail>** 登录）。
 2. 确认"两步验证"已开启。
 3. 打开 https://myaccount.google.com/apppasswords → 名称填 `job agent` → 创建 → 复制那 16 位密码。
 4. 回到终端，运行下面这行，按提示粘贴两次（输入时不会显示，这是正常的）：
 ```bash
-security add-generic-password -a alex.rivera@example.com -s job-agent-gmail -w
+security add-generic-password -a <candidate e-mail> -s job-agent-gmail -w
 ```
 5. 再运行一次第 1 步，应看到 `== Gmail app password: in Keychain`。
 
@@ -24,7 +24,7 @@ security add-generic-password -a alex.rivera@example.com -s job-agent-gmail -w
 ## 3. 其他网站的密码（以后需要时再做）
 Greenhouse / Lever 不需要账号。Workday、iCIMS 等需要账号的网站，等用到时我会告诉你具体命令，格式是：
 ```bash
-security add-generic-password -a alex.rivera@example.com -s job-agent-<网站名> -w
+security add-generic-password -a <candidate e-mail> -s job-agent-<网站名> -w
 ```
 
 ## 4. 第一次试跑（只填不交）

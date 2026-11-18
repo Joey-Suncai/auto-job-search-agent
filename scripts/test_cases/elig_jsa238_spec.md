@@ -24,3 +24,8 @@ Verdicts: Eligible, Review (a person reads the posting), Ineligible.
    Review (Joey: 「改成待核实」). A co-op in Summer 2027 → Eligible.
 7. Words like "the future of mobility" are not about sponsorship. "Prior internship or co-op experience" describes the
    candidate, not the role.
+
+**JSA-385 (Joey 2026-11-17) supersedes item 3:** a "now or in the future" no-sponsorship internship is no longer Review — it is Eligible
+with code NO_FUTURE_SPONSORSHIP_INTERN, one tier lower (C) in `score_v2`; item 1 gets code NO_SPONSORSHIP_INTERN (tag 「无担保（实习用 CPT）」).
+Wordings that cannot be told apart (a "without / not require sponsorship" sentence with no time word) count as item 3. A student / temporary visa
+named as not accepted without a restrictive pattern match stays Review. Cases: `scripts/test_elig_jsa385.js`.

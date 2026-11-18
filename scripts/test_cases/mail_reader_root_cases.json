@@ -1,0 +1,1088 @@
+[
+ {
+  "name": "subject received overrides rejection body",
+  "fn": "classify",
+  "spec": "A subject saying the application was received/submitted (\"We received your application\", \"Application submitted\") → Confirmation, even when the body lists later statuses such as \"Not selected — we will not be moving forward\".",
+  "ambiguous": false,
+  "args": {
+   "subject": "We received your application",
+   "body": "Not selected — we will not be moving forward."
+  },
+  "expect": "Confirmation"
+ },
+ {
+  "name": "thank you application but chose other candidates is rejection",
+  "fn": "classify",
+  "spec": "A mail titled \"Thank you for your application\" whose body says they chose other candidates is a Rejection.",
+  "ambiguous": false,
+  "args": {
+   "subject": "Thank you for your application",
+   "body": "After reviewing, we chose other candidates for this role."
+  },
+  "expect": "Rejection"
+ },
+ {
+  "name": "conditional HireVue and schedule call not invite",
+  "fn": "classify",
+  "spec": "Conditional sentences are not invites: a sentence with \"if\", \"may\", \"might\", \"once\", \"upon\", \"should you\", \"will contact you\", \"will reach out\", \"potential fit\" names a possible later step. \"The next step may include a HireVue interview\", ... \"we will contact you to schedule an interview\" do NOT make the mail an Assessment or Interview",
+  "ambiguous": false,
+  "args": {
+   "subject": "Application update",
+   "body": "The next step may include a HireVue interview, and we will contact you to schedule an interview."
+  },
+  "expect": "Other"
+ },
+ {
+  "name": "conditional HackerRank not assessment",
+  "fn": "classify",
+  "spec": "\"If selected you will receive a HackerRank assessment\" ... do NOT make the mail an Assessment or Interview",
+  "ambiguous": false,
+  "args": {
+   "subject": "Your application",
+   "body": "If selected you will receive a HackerRank assessment."
+  },
+  "expect": "Other"
+ },
+ {
+  "name": "draft saved and continue to apply is Other",
+  "fn": "classify",
+  "spec": "A mail that says a draft was saved / asks him to \"continue to apply\" / \"complete and submit your job application\" → Other.",
+  "ambiguous": false,
+  "args": {
+   "subject": "Complete and submit your job application",
+   "body": "Your draft was saved. Continue to apply when ready."
+  },
+  "expect": "Other"
+ },
+ {
+  "name": "security code ignored",
+  "fn": "classify",
+  "spec": "None = ignore (security / verification codes, surveys, job alerts in the SUBJECT).",
+  "ambiguous": false,
+  "args": {
+   "subject": "Your security code",
+   "body": "Use verification code 123456 to continue."
+  },
+  "expect": null
+ },
+ {
+  "name": "job alert subject ignored",
+  "fn": "classify",
+  "spec": "None = ignore (security / verification codes, surveys, job alerts in the SUBJECT).",
+  "ambiguous": false,
+  "args": {
+   "subject": "Job alert: new roles this week",
+   "body": "Apply now to many jobs."
+  },
+  "expect": null
+ },
+ {
+  "name": "action required please complete",
+  "fn": "classify",
+  "spec": "Otherwise, first match wins: ... Action (additional info, action required, please complete/provide/submit)",
+  "ambiguous": false,
+  "args": {
+   "subject": "Action required: complete your application",
+   "body": "Please complete the missing information."
+  },
+  "expect": "Action"
+ },
+ {
+  "name": "phone screen availability is interview",
+  "fn": "classify",
+  "spec": "Interview (interview, phone screen, schedule a call, your availability)",
+  "ambiguous": false,
+  "args": {
+   "subject": "Phone screen scheduling",
+   "body": "Please send your availability for a call."
+  },
+  "expect": "Interview"
+ },
+ {
+  "name": "subject submitted overrides regret",
+  "fn": "classify",
+  "spec": "A subject saying the application was received/submitted (\"We received your application\", \"Application submitted\") → Confirmation, even when the body lists later statuses such as \"Not selected — we will not be moving forward\".",
+  "ambiguous": false,
+  "args": {
+   "subject": "Application submitted",
+   "body": "We regret to inform you that the position has been filled."
+  },
+  "expect": "Confirmation"
+ },
+ {
+  "name": "HackerRank assessment direct",
+  "fn": "classify",
+  "spec": "Assessment (assessment, HackerRank, CodeSignal, HireVue, coding challenge, take-home)",
+  "ambiguous": false,
+  "args": {
+   "subject": "Next steps",
+   "body": "Please complete the HackerRank assessment."
+  },
+  "expect": "Assessment"
+ },
+ {
+  "name": "company suffix removed and sender match",
+  "fn": "match",
+  "spec": "The full company name (lower-cased; punctuation removed; Inc / LLC / Corp / Company / Group / Technologies / Labs … removed) counts when it appears as whole words in the sender or subject, or — only when the sender is an applicant-tracking system (greenhouse, myworkday/workday, lever.co, ashbyhq, smartrecruiters, icims, workable, oraclecloud, or an address containing talent / recruit / hire.) — in the body.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Acme Inc",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "recruiting@acme.com",
+   "subject": "Application update",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": "j1"
+ },
+ {
+  "name": "substring is not whole word match",
+  "fn": "match",
+  "spec": "The full company name (lower-cased; punctuation removed; Inc / LLC / Corp / Company / Group / Technologies / Labs … removed) counts when it appears as whole words in the sender or subject, or — only when the sender is an applicant-tracking system (greenhouse, myworkday/workday, lever.co, ashbyhq, smartrecruiters, icims, workable, oraclecloud, or an address containing talent / recruit / hire.) — in the body.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "jobs@notacme.com",
+   "subject": "Application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": null
+ },
+ {
+  "name": "ATS body company match",
+  "fn": "match",
+  "spec": "The full company name (lower-cased; punctuation removed; Inc / LLC / Corp / Company / Group / Technologies / Labs … removed) counts when it appears as whole words in the sender or subject, or — only when the sender is an applicant-tracking system (greenhouse, myworkday/workday, lever.co, ashbyhq, smartrecruiters, icims, workable, oraclecloud, or an address containing talent / recruit / hire.) — in the body.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Delta LLC",
+     "title": "Analyst",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "no-reply@greenhouse.io",
+   "subject": "Application update",
+   "body": "Thanks for applying to Delta.",
+   "date": "2024-06-01"
+  },
+  "expect": "j1"
+ },
+ {
+  "name": "non-ATS body company ignored",
+  "fn": "match",
+  "spec": "The full company name (lower-cased; punctuation removed; Inc / LLC / Corp / Company / Group / Technologies / Labs … removed) counts when it appears as whole words in the sender or subject, or — only when the sender is an applicant-tracking system (greenhouse, myworkday/workday, lever.co, ashbyhq, smartrecruiters, icims, workable, oraclecloud, or an address containing talent / recruit / hire.) — in the body.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Zeta",
+     "title": "Analyst",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "friend@example.com",
+   "subject": "Hello",
+   "body": "I applied to Zeta last week.",
+   "date": "2024-06-01"
+  },
+  "expect": null
+ },
+ {
+  "name": "Shortlisted row never matched",
+  "fn": "match",
+  "spec": "Rows with status Shortlisted or Archived are never matched.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Theta",
+     "title": "Engineer",
+     "status": "Shortlisted",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "jobs@theta.com",
+   "subject": "Theta application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": null
+ },
+ {
+  "name": "first word domain label match",
+  "fn": "match",
+  "spec": "The first word of a multi-word company name counts alone only when ALL hold: it has ≥ 3 letters, it is not an ordinary English word (applied, base, human, major, dynamic …), no other company in the tracker starts with the same word, it appears in the sender or subject (never the body), and the sender is an applicant-tracking system or the word is a label of the sender's e-mail domain (e.g. \"imc\" in recruiting@imc.com).",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "GALLUMPELL Financial Markets",
+     "title": "Trader",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "recruiting@imc.com",
+   "subject": "Application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": "j1"
+ },
+ {
+  "name": "ordinary first word does not match alone",
+  "fn": "match",
+  "spec": "The first word of a multi-word company name counts alone only when ALL hold: it has ≥ 3 letters, it is not an ordinary English word (applied, base, human, major, dynamic …), no other company in the tracker starts with the same word, it appears in the sender or subject (never the body), and the sender is an applicant-tracking system or the word is a label of the sender's e-mail domain (e.g. \"imc\" in recruiting@imc.com).",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Pellwyndel",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "sender": "jobs@applied.com",
+   "subject": "Application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": null
+ },
+ {
+  "name": "shared first word does not match alone",
+  "fn": "match",
+  "spec": "The first word of a multi-word company name counts alone only when ALL hold: it has ≥ 3 letters, it is not an ordinary English word (applied, base, human, major, dynamic …), no other company in the tracker starts with the same word, it appears in the sender or subject (never the body), and the sender is an applicant-tracking system or the word is a label of the sender's e-mail domain (e.g. \"imc\" in recruiting@imc.com).",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Global Dynamics",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    },
+    {
+     "job_id": "j2",
+     "company": "Global Solutions",
+     "title": "Analyst",
+     "status": "Applied",
+     "applied_on": "2024-01-02"
+    }
+   ],
+   "sender": "jobs@global.com",
+   "subject": "Application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": null
+ },
+ {
+  "name": "title overlap picks science row",
+  "fn": "match",
+  "spec": "Several rows match → the one sharing the most title words with the subject + body, words compared by their first five letters (Science = Scientist, Analyst = Analytics), ignoring intern / internship / summer / years / program; ties → the row applied most recently on or before the mail date; rows applied after the mail date rank last.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Acme",
+     "title": "Data Science Intern",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    },
+    {
+     "job_id": "j2",
+     "company": "Acme",
+     "title": "Data Analyst",
+     "status": "Applied",
+     "applied_on": "2024-01-02"
+    }
+   ],
+   "sender": "jobs@acme.com",
+   "subject": "Data Scientist role",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": "j1"
+ },
+ {
+  "name": "tie picks most recent before date and after-date ranks last",
+  "fn": "match",
+  "spec": "Several rows match → the one sharing the most title words with the subject + body, words compared by their first five letters (Science = Scientist, Analyst = Analytics), ignoring intern / internship / summer / years / program; ties → the row applied most recently on or before the mail date; rows applied after the mail date rank last.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "j1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    },
+    {
+     "job_id": "j2",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-05-01"
+    },
+    {
+     "job_id": "j3",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-07-01"
+    }
+   ],
+   "sender": "jobs@acme.com",
+   "subject": "Engineer application",
+   "body": "",
+   "date": "2024-06-01"
+  },
+  "expect": "j2"
+ },
+ {
+  "name": "bulk non-ATS mail dropped",
+  "fn": "apply_mail",
+  "spec": "A bulk mail (List-Unsubscribe / newsletter, m.bulk true) from a sender that is not an applicant-tracking system is dropped (returns None, nothing stored) — even when the sender name is the company.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m1",
+    "date": "2024-06-01",
+    "sender": "Acme <jobs@acme.com>",
+    "subject": "We received your application",
+    "body": "Not selected",
+    "bulk": true
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Rejection",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "returns": "none",
+   "status": {
+    "job1": "Applied"
+   },
+   "stored": {
+    "m1": "absent"
+   }
+  }
+ },
+ {
+  "name": "bulk ATS mail not dropped",
+  "fn": "apply_mail",
+  "spec": "With a Claude reader, Claude's verdict decides; the keyword rules are a filter.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Beta",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m2",
+    "date": "2024-06-01",
+    "sender": "no-reply@greenhouse.io",
+    "subject": "Application update",
+    "body": "Unfortunately we are not moving forward.",
+    "bulk": true
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Rejection",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Rejected"
+   },
+   "stored": {
+    "m2": "Rejection"
+   },
+   "stored_job": {
+    "m2": "job1"
+   }
+  }
+ },
+ {
+  "name": "reader raise with matched rejection stores Pending and keeps rows",
+  "fn": "apply_mail",
+  "spec": "reader.read(m) may raise (credit balance too low, bad key, API down). Then the application rows never change (no status, last_email or action), not even for a rejection. If the rules matched an application or the sender is an applicant-tracking system, one row is stored with type \"Pending\", job_id \"\", reread true, rules_type = the rules' type; else nothing is stored. Returns None.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m3",
+    "date": "2024-06-01",
+    "sender": "jobs@acme.com",
+    "subject": "Application update",
+    "body": "Unfortunately, we are not moving forward.",
+    "bulk": false
+   },
+   "reader": "raise:credit balance is too low"
+  },
+  "expect": {
+   "returns": "none",
+   "status": {
+    "job1": "Applied"
+   },
+   "stored": {
+    "m3": "Pending"
+   },
+   "stored_job": {
+    "m3": ""
+   },
+   "rules_type": "Rejection"
+  }
+ },
+ {
+  "name": "reader raise with ATS sender but no rules match stores Pending",
+  "fn": "apply_mail",
+  "spec": "If the rules matched an application or the sender is an applicant-tracking system, one row is stored with type \"Pending\", job_id \"\", reread true, rules_type = the rules' type; else nothing is stored. Returns None.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Beta",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m4",
+    "date": "2024-06-01",
+    "sender": "no-reply@greenhouse.io",
+    "subject": "Update",
+    "body": "Your application is under review.",
+    "bulk": false
+   },
+   "reader": "raise:invalid API key"
+  },
+  "expect": {
+   "returns": "none",
+   "stored": {
+    "m4": "Pending"
+   },
+   "stored_job": {
+    "m4": ""
+   },
+   "rules_type": "Other",
+   "status": {
+    "job1": "Applied"
+   }
+  }
+ },
+ {
+  "name": "reader raise without match or ATS stores nothing",
+  "fn": "apply_mail",
+  "spec": "reader.read(m) may raise (credit balance too low, bad key, API down). Then the application rows never change (no status, last_email or action), not even for a rejection. If the rules matched an application or the sender is an applicant-tracking system, one row is stored with type \"Pending\", job_id \"\", reread true, rules_type = the rules' type; else nothing is stored. Returns None.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m5",
+    "date": "2024-06-01",
+    "sender": "news@example.com",
+    "subject": "Hello",
+    "body": "Nothing to see.",
+    "bulk": false
+   },
+   "reader": "raise:API down"
+  },
+  "expect": {
+   "returns": "none",
+   "stored": {
+    "m5": "absent"
+   },
+   "status": {
+    "job1": "Applied"
+   }
+  }
+ },
+ {
+  "name": "fresh Claude rejection moves stage and keeps applied_on",
+  "fn": "apply_mail",
+  "spec": "With a Claude reader, Claude's verdict decides; the keyword rules are a filter.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m6",
+    "date": "2024-06-01",
+    "sender": "jobs@acme.com",
+    "subject": "Application",
+    "body": "Unfortunately we cannot move forward.",
+    "bulk": false
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Rejection",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Rejected"
+   },
+   "applied_on": {
+    "job1": "2024-01-01"
+   },
+   "stored": {
+    "m6": "Rejection"
+   },
+   "stored_job": {
+    "m6": "job1"
+   }
+  }
+ },
+ {
+  "name": "fresh Claude Assessment moves Applied to Assessment",
+  "fn": "apply_mail",
+  "spec": "Claude's type moves the stage (Rejection → Rejected; Assessment → Assessment only from Applied).",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Applied",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m7",
+    "date": "2024-06-01",
+    "sender": "jobs@acme.com",
+    "subject": "Next step",
+    "body": "HackerRank assessment",
+    "bulk": false
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Assessment",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Assessment"
+   },
+   "stored": {
+    "m7": "Assessment"
+   },
+   "stored_job": {
+    "m7": "job1"
+   }
+  }
+ },
+ {
+  "name": "Claude Assessment does not move Interview stage",
+  "fn": "apply_mail",
+  "spec": "Assessment → Assessment only from Applied",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Interview",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [],
+   "m": {
+    "id": "m8",
+    "date": "2024-06-01",
+    "sender": "jobs@acme.com",
+    "subject": "Next step",
+    "body": "HackerRank assessment",
+    "bulk": false
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Assessment",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Interview"
+   },
+   "stored": {
+    "m8": "Assessment"
+   },
+   "stored_job": {
+    "m8": "job1"
+   }
+  }
+ },
+ {
+  "name": "reread old Assessment undo then Claude rejection",
+  "fn": "apply_mail",
+  "spec": "Success → Claude's verdict applies fully like a fresh read: the row gets Claude's type and job_id; a stage move the old row made is undone (Assessment → back to Applied); then Claude's type moves the stage (Rejection → Rejected; Assessment → Assessment only from Applied). applied_on never changes.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Assessment",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [
+    {
+     "id": "m9",
+     "job_id": "job1",
+     "type": "Assessment",
+     "reread": true,
+     "stage_before": "Applied"
+    }
+   ],
+   "m": {
+    "id": "m9",
+    "date": "2024-06-02",
+    "sender": "jobs@acme.com",
+    "subject": "Update",
+    "body": "Unfortunately we cannot move forward.",
+    "bulk": false
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Rejection",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Rejected"
+   },
+   "applied_on": {
+    "job1": "2024-01-01"
+   },
+   "stored": {
+    "m9": "Rejection"
+   },
+   "stored_job": {
+    "m9": "job1"
+   }
+  }
+ },
+ {
+  "name": "reread old Assessment undo then Claude Assessment",
+  "fn": "apply_mail",
+  "spec": "Success → Claude's verdict applies fully like a fresh read: the row gets Claude's type and job_id; a stage move the old row made is undone (Assessment → back to Applied); then Claude's type moves the stage (Rejection → Rejected; Assessment → Assessment only from Applied). applied_on never changes.",
+  "ambiguous": false,
+  "args": {
+   "apps": [
+    {
+     "job_id": "job1",
+     "company": "Acme",
+     "title": "Engineer",
+     "status": "Assessment",
+     "applied_on": "2024-01-01"
+    }
+   ],
+   "emails": [
+    {
+     "id": "m10",
+     "job_id": "job1",
+     "type": "Assessment",
+     "reread": true,
+     "stage_before": "Applied"
+    }
+   ],
+   "m": {
+    "id": "m10",
+    "date": "2024-06-02",
+    "sender": "jobs@acme.com",
+    "subject": "Next step",
+    "body": "HackerRank assessment",
+    "bulk": false
+   },
+   "reader": {
+    "is_job_related": true,
+    "job_id": "job1",
+    "company_job_ids": [
+     "job1"
+    ],
+    "type": "Assessment",
+    "summary": "",
+    "action_needed": null,
+    "deadline": null,
+    "confidence": 0.9,
+    "reason": ""
+   }
+  },
+  "expect": {
+   "status": {
+    "job1": "Assessment"
+   },
+   "applied_on": {
+    "job1": "2024-01-01"
+   },
+   "stored": {
+    "m10": "Assessment"
+   },
+   "stored_job": {
+    "m10": "job1"
+   }
+  }
+ },
+ {
+  "name": "health oks returns ok no alert",
+  "fn": "health",
+  "spec": "oks ≥ 1 → ok true, no alert.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "credit balance is too low"
+    ],
+    "alerted": "2024-01-01T10:00:00+00:00"
+   },
+   "fails": [
+    "credit balance is too low"
+   ],
+   "oks": 1,
+   "now": "2024-01-01T15:00:00+00:00"
+  },
+  "expect": {
+   "ok": true,
+   "alert": false,
+   "cause_in_body": null
+  }
+ },
+ {
+  "name": "health no reads state unchanged",
+  "fn": "health",
+  "spec": "No reads (fails empty, oks 0) → state unchanged, no alert.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "timeout"
+    ],
+    "alerted": null
+   },
+   "fails": [],
+   "oks": 0,
+   "now": "2024-01-01T12:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": false,
+   "cause_in_body": null
+  }
+ },
+ {
+  "name": "health first failure no alert yet",
+  "fn": "health",
+  "spec": "No alert at 2 hours or less, whatever the cause.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": true,
+    "since": null,
+    "fails": [],
+    "alerted": null
+   },
+   "fails": [
+    "credit balance is too low"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T11:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": false,
+   "cause_in_body": null
+  }
+ },
+ {
+  "name": "health exactly two hours auth no alert",
+  "fn": "health",
+  "spec": "No alert at 2 hours or less, whatever the cause.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "invalid API key"
+    ],
+    "alerted": null
+   },
+   "fails": [
+    "invalid API key"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T12:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": false,
+   "cause_in_body": null
+  }
+ },
+ {
+  "name": "health over two hours credit alert",
+  "fn": "health",
+  "spec": "One alert when the failures have lasted MORE than 2 hours since `since`; never a second alert for the same outage; a new outage (after a good read) may alert again. No alert at 2 hours or less, whatever the cause.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "credit balance is too low"
+    ],
+    "alerted": null
+   },
+   "fails": [
+    "credit balance is too low"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T12:00:01+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": true,
+   "cause_in_body": "credit"
+  }
+ },
+ {
+  "name": "health over two hours auth alert",
+  "fn": "health",
+  "spec": "The alert body names the cause: \"credit\" when the error says \"credit balance is too low\", \"auth\" for an authentication / API-key error, else \"error\".",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "authentication failed: bad API key"
+    ],
+    "alerted": null
+   },
+   "fails": [
+    "authentication failed: bad API key"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T13:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": true,
+   "cause_in_body": "auth"
+  }
+ },
+ {
+  "name": "health over two hours generic error alert",
+  "fn": "health",
+  "spec": "The alert body names the cause: \"credit\" when the error says \"credit balance is too low\", \"auth\" for an authentication / API-key error, else \"error\".",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "service unavailable"
+    ],
+    "alerted": null
+   },
+   "fails": [
+    "service unavailable"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T13:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": true,
+   "cause_in_body": "error"
+  }
+ },
+ {
+  "name": "health never second alert same outage",
+  "fn": "health",
+  "spec": "One alert when the failures have lasted MORE than 2 hours since `since`; never a second alert for the same outage; a new outage (after a good read) may alert again.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": false,
+    "since": "2024-01-01T10:00:00+00:00",
+    "fails": [
+     "timeout"
+    ],
+    "alerted": "2024-01-01T10:00:00+00:00"
+   },
+   "fails": [
+    "timeout"
+   ],
+   "oks": 0,
+   "now": "2024-01-01T15:00:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": false,
+   "cause_in_body": null
+  }
+ },
+ {
+  "name": "health new outage after good read may alert again",
+  "fn": "health",
+  "spec": "One alert when the failures have lasted MORE than 2 hours since `since`; never a second alert for the same outage; a new outage (after a good read) may alert again.",
+  "ambiguous": false,
+  "args": {
+   "state": {
+    "ok": true,
+    "since": null,
+    "fails": [],
+    "alerted": "2024-01-01T10:00:00+00:00"
+   },
+   "fails": [
+    "credit balance is too low"
+   ],
+   "oks": 0,
+   "now": "2024-01-02T12:30:00+00:00"
+  },
+  "expect": {
+   "ok": false,
+   "alert": true,
+   "cause_in_body": "credit"
+  }
+ }
+]

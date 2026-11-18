@@ -1,0 +1,730 @@
+{
+ "note": "Shared competency lexicon for role_library.py (JSA-249). Each competency = a group of JD terms that mean the same ask; the first term of each keyword is the canonical form, the rest are synonyms / spellings (matched case-insensitively on word boundaries; \"cs\": true = case-sensitive, for short tokens like R). Add terms here when role_library.py lists them under uncovered_terms. No personal data. \"ignore\" = degree fields, job titles and filler phrases that are not resume keywords (dropped from uncovered_terms; plural 's' also ignored). \"gap_suggestion\" = the kind of real experience that would prove the competency (gap_report.py; never wording that claims it).",
+ "competencies": {
+  "sql": {
+   "label": "SQL",
+   "keywords": [
+    [
+     "SQL",
+     "PostgreSQL",
+     "MySQL",
+     "T-SQL",
+     "querying databases"
+    ],
+    [
+     "relational databases",
+     "relational database"
+    ]
+   ],
+   "gap_suggestion": "query a real dataset in SQL for a course or project and report one finding"
+  },
+  "python": {
+   "label": "Python",
+   "keywords": [
+    [
+     "Python"
+    ],
+    [
+     "pandas"
+    ],
+    [
+     "NumPy"
+    ],
+    [
+     "scikit-learn",
+     "sklearn"
+    ],
+    [
+     "Jupyter"
+    ]
+   ],
+   "gap_suggestion": "do one project step in Python (cleaning, analysis or a small tool) instead of another tool"
+  },
+  "r_lang": {
+   "label": "R",
+   "keywords": [
+    [
+     {
+      "t": "R",
+      "cs": true
+     },
+     "RStudio",
+     "tidyverse"
+    ]
+   ],
+   "gap_suggestion": "do one analysis in R"
+  },
+  "excel": {
+   "label": "Excel / spreadsheets",
+   "keywords": [
+    [
+     "Excel",
+     "spreadsheets",
+     "Google Sheets"
+    ],
+    [
+     "pivot tables",
+     "VLOOKUP",
+     "XLOOKUP"
+    ],
+    [
+     "PowerPoint",
+     "Google Slides"
+    ]
+   ],
+   "gap_suggestion": "build one model or tracker in Excel that someone else uses"
+  },
+  "bi_viz": {
+   "label": "BI and visualization",
+   "keywords": [
+    [
+     "Tableau"
+    ],
+    [
+     "Power BI",
+     "PowerBI"
+    ],
+    [
+     "Looker",
+     "Looker Studio"
+    ],
+    [
+     "dashboards",
+     "dashboard",
+     "dashboarding"
+    ],
+    [
+     "data visualization",
+     "visualizations",
+     "data viz"
+    ],
+    [
+     "business intelligence",
+     "BI"
+    ]
+   ],
+   "gap_suggestion": "publish a Tableau / Power BI dashboard that someone uses for a decision"
+  },
+  "statistics": {
+   "label": "Statistics",
+   "keywords": [
+    [
+     "statistics",
+     "statistical analysis",
+     "statistical methods",
+     "statistical modeling"
+    ],
+    [
+     "regression",
+     "linear regression",
+     "logistic regression"
+    ],
+    [
+     "hypothesis testing",
+     "significance testing"
+    ],
+    [
+     "forecasting",
+     "time series"
+    ],
+    [
+     "data analysis",
+     "quantitative analysis",
+     "analytical skills"
+    ]
+   ],
+   "gap_suggestion": "run one analysis with a stated method (regression, test) and its caveat"
+  },
+  "experimentation": {
+   "label": "Experimentation",
+   "keywords": [
+    [
+     "A/B testing",
+     "A/B tests",
+     "AB testing",
+     "split testing"
+    ],
+    [
+     "experimentation",
+     "experiment design",
+     "experiments",
+     "controlled experiments"
+    ],
+    [
+     "causal inference",
+     "causal"
+    ]
+   ],
+   "gap_suggestion": "run a small A/B test or before / after comparison with one defined metric"
+  },
+  "ml": {
+   "label": "Machine learning",
+   "keywords": [
+    [
+     "machine learning",
+     "ML"
+    ],
+    [
+     "predictive modeling",
+     "predictive models"
+    ],
+    [
+     "model training",
+     "training models"
+    ],
+    [
+     "deep learning",
+     "neural networks"
+    ],
+    [
+     "PyTorch"
+    ],
+    [
+     "TensorFlow"
+    ],
+    [
+     "computer vision"
+    ],
+    [
+     "reinforcement learning"
+    ]
+   ],
+   "gap_suggestion": "train and evaluate one model on a held-out set in a course or project"
+  },
+  "llm_genai": {
+   "label": "LLMs and generative AI",
+   "keywords": [
+    [
+     "LLM",
+     "LLMs",
+     "large language models",
+     "large language model"
+    ],
+    [
+     "generative AI",
+     "GenAI",
+     "gen AI"
+    ],
+    [
+     "prompt engineering",
+     "prompting",
+     "prompts"
+    ],
+    [
+     "RAG",
+     "retrieval-augmented generation",
+     "retrieval augmented generation"
+    ],
+    [
+     "fine-tuning",
+     "fine tuning"
+    ],
+    [
+     "AI products",
+     "AI-powered",
+     "AI features"
+    ],
+    [
+     "AI tools",
+     "AI-native tools"
+    ]
+   ],
+   "gap_suggestion": "use an LLM inside a workflow you own and measure what it changed"
+  },
+  "ai_eval": {
+   "label": "AI evaluation and quality",
+   "keywords": [
+    [
+     "evaluation",
+     "evaluations",
+     "evals",
+     "model evaluation"
+    ],
+    [
+     "benchmarks",
+     "benchmarking"
+    ],
+    [
+     "human-in-the-loop",
+     "human in the loop",
+     "human feedback",
+     "RLHF"
+    ],
+    [
+     "quality metrics",
+     "model quality",
+     "accuracy"
+    ],
+    [
+     "guardrails",
+     "responsible AI",
+     "AI safety",
+     "safety"
+    ],
+    [
+     "hallucination",
+     "hallucinations"
+    ]
+   ],
+   "gap_suggestion": "write an evaluation (rubric, test set, error review) for an AI output and report the results"
+  },
+  "agents": {
+   "label": "AI agents and tooling",
+   "keywords": [
+    [
+     "AI agents",
+     "agentic",
+     "autonomous agents",
+     "LLM agents"
+    ],
+    [
+     "multi-agent",
+     "orchestration"
+    ],
+    [
+     "tool use",
+     "function calling",
+     "tool calling"
+    ],
+    [
+     "LangChain",
+     "LangGraph",
+     "LlamaIndex"
+    ],
+    [
+     "MCP",
+     "Model Context Protocol"
+    ],
+    [
+     "Claude",
+     "Anthropic"
+    ],
+    [
+     "ChatGPT",
+     "OpenAI",
+     "GPT"
+    ]
+   ],
+   "gap_suggestion": "build or operate an agent that does a real task, with a human approval step"
+  },
+  "automation": {
+   "label": "Automation and workflows",
+   "keywords": [
+    [
+     "automation",
+     "automate",
+     "automated",
+     "automating"
+    ],
+    [
+     "workflows",
+     "workflow"
+    ],
+    [
+     "scripting",
+     "scripts"
+    ]
+   ],
+   "gap_suggestion": "automate one repeated task end to end and count the time saved"
+  },
+  "pipelines": {
+   "label": "Data pipelines",
+   "keywords": [
+    [
+     "ETL",
+     "ELT"
+    ],
+    [
+     "data pipelines",
+     "data pipeline",
+     "pipelines"
+    ],
+    [
+     "Airflow"
+    ],
+    [
+     "dbt"
+    ],
+    [
+     "Spark",
+     "PySpark"
+    ],
+    [
+     "Kafka",
+     "streaming"
+    ],
+    [
+     "data ingestion",
+     "ingestion"
+    ]
+   ],
+   "gap_suggestion": "build one scheduled pipeline (source → clean → table) and say what it guarantees"
+  },
+  "cloud_data": {
+   "label": "Cloud data platforms",
+   "keywords": [
+    [
+     "AWS",
+     "Amazon Web Services"
+    ],
+    [
+     "GCP",
+     "Google Cloud"
+    ],
+    [
+     "Azure"
+    ],
+    [
+     "Snowflake"
+    ],
+    [
+     "a Greenhouse employer"
+    ],
+    [
+     "BigQuery"
+    ],
+    [
+     "Redshift"
+    ]
+   ],
+   "gap_suggestion": "build something hands-on on a cloud data platform (AWS, GCP, Snowflake, a Greenhouse employer)"
+  },
+  "data_modeling": {
+   "label": "Data modeling and warehousing",
+   "keywords": [
+    [
+     "data modeling",
+     "data models"
+    ],
+    [
+     "data warehouse",
+     "data warehousing",
+     "data lake",
+     "lakehouse"
+    ],
+    [
+     "schema design",
+     "schemas"
+    ]
+   ],
+   "gap_suggestion": "design a small schema or warehouse model that others query"
+  },
+  "data_quality": {
+   "label": "Data quality",
+   "keywords": [
+    [
+     "data quality",
+     "data integrity",
+     "data accuracy"
+    ],
+    [
+     "data cleaning",
+     "data cleansing",
+     "clean data",
+     "data wrangling"
+    ],
+    [
+     "data validation",
+     "validation"
+    ],
+    [
+     "deduplication",
+     "dedup"
+    ]
+   ],
+   "gap_suggestion": "write the cleaning / dedup / validation rules for a dataset and count before / after"
+  },
+  "product_sense": {
+   "label": "Product sense and discovery",
+   "keywords": [
+    [
+     "product requirements",
+     "PRD",
+     "PRDs",
+     "product specs"
+    ],
+    [
+     "roadmap",
+     "roadmaps",
+     "product roadmap"
+    ],
+    [
+     "user research",
+     "customer research",
+     "user interviews",
+     "customer interviews"
+    ],
+    [
+     "user needs",
+     "customer needs",
+     "user problems",
+     "customer problems",
+     "pain points"
+    ],
+    [
+     "prioritization",
+     "prioritize",
+     "trade-offs",
+     "tradeoffs"
+    ],
+    [
+     "product strategy",
+     "product vision"
+    ],
+    [
+     "go-to-market",
+     "GTM",
+     "launch",
+     "launches"
+    ],
+    [
+     "user experience",
+     "UX"
+    ],
+    [
+     "user stories"
+    ],
+    [
+     "product development",
+     "product lifecycle"
+    ]
+   ],
+   "gap_suggestion": "talk to 5+ real users of something you built, write a one-page spec, and ship one change from it"
+  },
+  "metrics": {
+   "label": "Metrics and product analytics",
+   "keywords": [
+    [
+     "metrics",
+     "KPIs",
+     "KPI",
+     "success metrics"
+    ],
+    [
+     "product analytics"
+    ],
+    [
+     "funnel",
+     "conversion"
+    ],
+    [
+     "retention",
+     "churn",
+     "engagement"
+    ],
+    [
+     "cohort analysis",
+     "cohorts"
+    ],
+    [
+     "data-driven",
+     "data driven",
+     "data-informed"
+    ],
+    [
+     "insights",
+     "actionable insights"
+    ]
+   ],
+   "gap_suggestion": "pick a success metric for a project, track it, and report it"
+  },
+  "stakeholders": {
+   "label": "Cross-functional communication",
+   "keywords": [
+    [
+     "cross-functional",
+     "cross functional",
+     "cross-functionally"
+    ],
+    [
+     "stakeholders",
+     "stakeholder"
+    ],
+    [
+     "communication skills",
+     "communicate",
+     "written and verbal"
+    ],
+    [
+     "presentations",
+     "present findings",
+     "storytelling"
+    ]
+   ],
+   "gap_suggestion": "present results to a real audience (club, class client, team) and note what they decided"
+  },
+  "ownership": {
+   "label": "Ownership and project leadership",
+   "keywords": [
+    [
+     "project management",
+     "manage projects",
+     "program management"
+    ],
+    [
+     "ownership",
+     "end-to-end"
+    ],
+    [
+     "leadership"
+    ],
+    [
+     "ambiguity",
+     "ambiguous"
+    ],
+    [
+     "fast-paced",
+     "fast paced"
+    ]
+   ],
+   "gap_suggestion": "own one project end to end with a date and ship it"
+  },
+  "software_eng": {
+   "label": "Software engineering",
+   "keywords": [
+    [
+     "software engineering",
+     "software development"
+    ],
+    [
+     "APIs",
+     "API",
+     "REST"
+    ],
+    [
+     "Git",
+     "GitHub",
+     "version control"
+    ],
+    [
+     "Java"
+    ],
+    [
+     "JavaScript",
+     "TypeScript"
+    ],
+    [
+     "Golang"
+    ],
+    [
+     "C++"
+    ],
+    [
+     "backend",
+     "back-end"
+    ],
+    [
+     "Docker",
+     "Kubernetes"
+    ],
+    [
+     "testing",
+     "unit tests"
+    ],
+    [
+     "data structures",
+     "algorithms"
+    ]
+   ],
+   "gap_suggestion": "use Git, tests and an API in a project"
+  },
+  "pm_tools": {
+   "label": "PM / analytics tools",
+   "keywords": [
+    [
+     "Jira"
+    ],
+    [
+     "Confluence"
+    ],
+    [
+     "a Greenhouse employer",
+     "FigJam"
+    ],
+    [
+     "Amplitude"
+    ],
+    [
+     "Mixpanel"
+    ],
+    [
+     "Google Analytics"
+    ],
+    [
+     "Asana",
+     "Trello"
+    ]
+   ],
+   "gap_suggestion": "use Jira / a Greenhouse employer / an analytics tool in a real team project (a club, a class project, a hackathon)"
+  },
+  "finance": {
+   "label": "Finance and business analysis",
+   "keywords": [
+    [
+     "financial modeling",
+     "financial models"
+    ],
+    [
+     "financial analysis",
+     "financial statements"
+    ],
+    [
+     "business analysis",
+     "business case"
+    ],
+    [
+     "market research",
+     "competitive analysis"
+    ],
+    [
+     "scenario analysis",
+     "sensitivity analysis"
+    ]
+   ],
+   "gap_suggestion": "build one financial or business model with scenarios"
+  },
+  "problem_solving": {
+   "label": "Problem solving and rigor",
+   "keywords": [
+    [
+     "problem-solving",
+     "problem solving"
+    ],
+    [
+     "attention to detail",
+     "detail-oriented"
+    ],
+    [
+     "critical thinking"
+    ]
+   ],
+   "gap_suggestion": "(shown through results — no separate experience needed)"
+  }
+ },
+ "ignore": [
+  "Computer Science",
+  "Computer Engineering",
+  "Data Science",
+  "Data Analytics",
+  "Data Engineering",
+  "Business Analytics",
+  "Information Systems",
+  "Information Technology",
+  "Artificial Intelligence",
+  "related field",
+  "Bachelor's degree",
+  "bachelor’s degree",
+  "Master's degree",
+  "PhD",
+  "hands-on experience",
+  "work experience",
+  "practical experience",
+  "business needs",
+  "data solutions",
+  "Product Management",
+  "product manager",
+  "Data Engineer",
+  "Data Analyst",
+  "AI/ML"
+ ]
+}

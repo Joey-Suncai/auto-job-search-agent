@@ -1,0 +1,8 @@
+{
+ "applied_this_position_only_ask": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — 'Have you applied for this position?' has no before / previously / window word, so it is not an applied_before question (APPLIED_Q); it is answered by applied_here_before, unchanged by this row. The spec sentence is about the reminder text, not this rule's trigger.",
+ "applied_single_season_question_ask": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — 'applied … during this recruiting season' has no before / previously / window word, so applied_before does not fire (applied_here_before answers it). Unchanged by this row.",
+ "overlap_old_list_picks_match_no_option": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — the old entry and the new one have the same normalised q, i.e. a duplicate: qa_add refuses it earlier (spec: 'refused earlier unless --replace'); the new entry's q catches the old q, the always-blocking direction.",
+ "overlap_old_list_pick_on_text_box_does_not_block": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — same normalised q = duplicate refused earlier; the real cases (real_where_intend…, real_industry_years…) use different q.",
+ "overlap_old_text_answer_not_an_option_ambiguous": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — same normalised q = duplicate refused earlier (and the case is marked ambiguous by its author).",
+ "overlap_old_match_regex_catches_new_but_pick_matches_no_option": "Claude 2026-11-17 (JSA-333), rule 13: the case is wrong — same normalised q = duplicate refused earlier."
+}

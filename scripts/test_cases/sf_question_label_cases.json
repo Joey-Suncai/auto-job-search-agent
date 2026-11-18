@@ -1,0 +1,266 @@
+[
+ {
+  "name": "placeholder-options-trailing-star",
+  "label": "Please select one of the options*",
+  "rows": [
+   "Are you at least 18 years of age?"
+  ],
+  "expect": "Are you at least 18 years of age?",
+  "spec_quote": "For a placeholder label: ignore rows with no letters ... Return the NEAREST row whose cleaned text is at most 300 characters long.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-titlecase-one-of-the-options",
+  "label": "Please Select One of the Options",
+  "rows": [
+   "Are you legally authorized to work in the United States?"
+  ],
+  "expect": "Are you legally authorized to work in the United States?",
+  "spec_quote": "Placeholder labels (case-insensitive, after cleaning, whole label): \"select\", \"choose\", \"please select\", \"please choose\", each optionally followed by \" one\", \" one of the options\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-no-selection",
+  "label": "No Selection",
+  "rows": [
+   "Will you now or in the future require sponsorship for employment visa status?"
+  ],
+  "expect": "Will you now or in the future require sponsorship for employment visa status?",
+  "spec_quote": "also \"no selection\" and a run of dashes (\"---\").",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-select-one-with-colon",
+  "label": "Select one:",
+  "rows": [
+   "Do you have any relatives currently employed by this company?"
+  ],
+  "expect": "Do you have any relatives currently employed by this company?",
+  "spec_quote": "Clean the label: collapse whitespace, drop a leading \"*\" and a trailing \"*\", drop a trailing colon. ... Return the NEAREST row whose cleaned text is at most 300 characters long.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-run-of-dashes",
+  "label": "-----",
+  "rows": [
+   "Are you a veteran of the U.S. military?"
+  ],
+  "expect": "Are you a veteran of the U.S. military?",
+  "spec_quote": "also \"no selection\" and a run of dashes (\"---\").",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-choose-an-option-mixed-case",
+  "label": "Choose An Option",
+  "rows": [
+   "Have you signed a non-compete agreement with a previous employer?"
+  ],
+  "expect": "Have you signed a non-compete agreement with a previous employer?",
+  "spec_quote": "Placeholder labels (case-insensitive, after cleaning, whole label): \"select\", \"choose\" ... each optionally followed by ... \" an option\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-please-choose-one-of-the-following",
+  "label": "please choose one of the following",
+  "rows": [
+   "Do you have a disability?"
+  ],
+  "expect": "Do you have a disability?",
+  "spec_quote": "Placeholder labels (case-insensitive, after cleaning, whole label): ... \"please choose\", each optionally followed by ... \" one of the following\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-please-select",
+  "label": "Please Select",
+  "rows": [
+   "Have you ever been convicted of a felony?"
+  ],
+  "expect": "Have you ever been convicted of a felony?",
+  "spec_quote": "Example placeholders: \"Please select one of the options\", \"Please Select One of the Options\", \"Please Select\", \"Select one\", \"Choose an option\", \"No Selection\".",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-nearest-row-too-long-farther-heading",
+  "label": "Please select one of the options",
+  "rows": [
+   "We consider all qualified applicants for employment without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, disability, or protected veteran status, and we comply with all applicable federal, state, and local laws governing non-discrimination in employment in every location in which the company has facilities.",
+   "Veteran Status"
+  ],
+  "expect": "Veteran Status",
+  "spec_quote": "Return the NEAREST row whose cleaned text is at most 300 characters long.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-nearest-row-short-question",
+  "label": "Select",
+  "rows": [
+   "Are you Hispanic or Latino?",
+   "Ethnicity"
+  ],
+  "expect": "Are you Hispanic or Latino?",
+  "spec_quote": "Return the NEAREST row whose cleaned text is at most 300 characters long.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-symbol-row-skipped-then-question",
+  "label": "Choose",
+  "rows": [
+   "---",
+   "Do you have a disability?",
+   "Disability Status"
+  ],
+  "expect": "Do you have a disability?",
+  "spec_quote": "For a placeholder label: ignore rows with no letters (fewer than 2 consecutive letters).",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-nearest-row-irregular-inner-whitespace",
+  "label": "Please choose an option",
+  "rows": [
+   "Are  you   at  least  18  years   of  age?",
+   "Age Verification"
+  ],
+  "expect": "Are you at least 18 years of age?",
+  "spec_quote": "Each row text is cleaned like the label (rule 1).",
+  "ambiguous": false
+ },
+ {
+  "name": "all-rows-over-300-no-question-sentence",
+  "label": "Please select one of the options",
+  "rows": [
+   "The company is an equal opportunity employer committed to a diverse workforce and does not discriminate on the basis of race, color, religion, sex, national origin, age, disability, or veteran status in every employment practice. This policy applies to all applicants and employees without exception. Additional state and local laws may also apply to this employer and its subsidiaries."
+  ],
+  "expect": "The company is an equal opportunity employer committed to a diverse workforce and does not discriminate on the basis of race, color, religion, sex, national origin, age, disability, or veteran status in every employment practice. This policy applies to all applicants and employees without exception.",
+  "spec_quote": "If every lettered row is longer than 300 characters (e.g. a whole legal notice): take the nearest row; if it contains a question sentence ... otherwise return the first 300 characters of that row with trailing spaces removed.",
+  "ambiguous": false
+ },
+ {
+  "name": "all-rows-over-300-last-question-sentence",
+  "label": "Please select one of the options",
+  "rows": [
+   "As a federal contractor this employer is required to take affirmative action to employ and advance in employment qualified individuals with disabilities and protected veterans, and to ensure that all employment decisions are made without regard to protected status, in accordance with Section 503 of the Rehabilitation Act and the Vietnam Era Veterans' Readjustment Assistance Act. Do you have a disability? Have you ever been convicted of a felony?"
+  ],
+  "expect": "Have you ever been convicted of a felony?",
+  "spec_quote": "if it contains a question sentence (text ending in \"?\", sentences split at . ? !), return the LAST such question sentence, cleaned (whitespace collapsed, trimmed), provided it is at most 300 characters",
+  "ambiguous": false
+ },
+ {
+  "name": "all-rows-over-300-nearest-row-question-wins",
+  "label": "Select one",
+  "rows": [
+   "We invite you to voluntarily self-identify as a protected veteran. This invitation is made in accordance with the requirements of the Vietnam Era Veterans' Readjustment Assistance Act and is voluntary; the information you provide will be kept confidential and used only in accordance with applicable law, and refusal to provide it will not subject you to any adverse treatment. Have you ever served on active duty in the United States Armed Forces?",
+   "The company is an equal opportunity employer committed to a diverse workforce and does not discriminate on the basis of race, color, religion, sex, national origin, age, disability, or veteran status in every employment practice. This policy applies to all applicants and employees without exception. Additional state and local laws may also apply to this employer and its subsidiaries."
+  ],
+  "expect": "Have you ever served on active duty in the United States Armed Forces?",
+  "spec_quote": "If every lettered row is longer than 300 characters (e.g. a whole legal notice): take the nearest row; if it contains a question sentence ... return the LAST such question sentence, cleaned (whitespace collapsed, trimmed), provided it is at most 300 characters",
+  "ambiguous": false
+ },
+ {
+  "name": "real-label-gender-not-placeholder",
+  "label": "Please select your gender",
+  "rows": [
+   "Are you at least 18 years of age?"
+  ],
+  "expect": "Please select your gender",
+  "spec_quote": "If the cleaned label is a real label (anything that is not a placeholder), return the cleaned label unchanged — rows are ignored. ... NOT placeholders: \"Please select your gender\"",
+  "ambiguous": false
+ },
+ {
+  "name": "real-label-country-of-residence-not-placeholder",
+  "label": "Select your country of residence",
+  "rows": [
+   "Do you now or in the future require sponsorship?"
+  ],
+  "expect": "Select your country of residence",
+  "spec_quote": "If the cleaned label is a real label (anything that is not a placeholder), return the cleaned label unchanged — rows are ignored. ... NOT placeholders: ... \"Select your country of residence\"",
+  "ambiguous": false
+ },
+ {
+  "name": "real-label-start-date-not-placeholder",
+  "label": "Please select the date you can start",
+  "rows": [
+   "---"
+  ],
+  "expect": "Please select the date you can start",
+  "spec_quote": "NOT placeholders: \"Please select your gender\", \"Select your country of residence\", \"Please select the date you can start\".",
+  "ambiguous": false
+ },
+ {
+  "name": "real-label-question-with-trailing-star",
+  "label": "Are you at least 18 years of age?*",
+  "rows": [
+   "Please select one of the options"
+  ],
+  "expect": "Are you at least 18 years of age?",
+  "spec_quote": "Clean the label: collapse whitespace, drop a leading \"*\" and a trailing \"*\", drop a trailing colon. ... If the cleaned label is a real label (anything that is not a placeholder), return the cleaned label unchanged — rows are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty-label-rows-are-not-used",
+  "label": "",
+  "rows": [
+   "Are you at least 18 years of age?"
+  ],
+  "expect": "",
+  "spec_quote": "If the cleaned label is empty, return \"\" (an unlabeled box is skipped elsewhere; rows are NOT used for it).",
+  "ambiguous": false
+ },
+ {
+  "name": "star-only-label-cleans-to-empty",
+  "label": "*",
+  "rows": [
+   "Do you have a disability?"
+  ],
+  "expect": "",
+  "spec_quote": "Clean the label: collapse whitespace, drop a leading \"*\" and a trailing \"*\", drop a trailing colon. ... If the cleaned label is empty, return \"\"",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-with-empty-rows-list",
+  "label": "Please select one of the options",
+  "rows": [],
+  "expect": "Please select one of the options",
+  "spec_quote": "If there are no lettered rows, return the cleaned placeholder label itself.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-with-null-rows",
+  "label": "Select one:",
+  "rows": null,
+  "expect": "Select one",
+  "spec_quote": "May be empty or missing (null). ... If there are no lettered rows, return the cleaned placeholder label itself. (label cleaned: trailing colon dropped)",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-rows-with-no-letters",
+  "label": "Choose",
+  "rows": [
+   "---",
+   "1,234",
+   "###"
+  ],
+  "expect": "Choose",
+  "spec_quote": "For a placeholder label: ignore rows with no letters (fewer than 2 consecutive letters). ... If there are no lettered rows, return the cleaned placeholder label itself.",
+  "ambiguous": false
+ },
+ {
+  "name": "placeholder-label-wrapped-in-stars",
+  "label": "  *Please select one of the options*  ",
+  "rows": [
+   "Are you a protected veteran?"
+  ],
+  "expect": "Are you a protected veteran?",
+  "spec_quote": "Clean the label: collapse whitespace, drop a leading \"*\" and a trailing \"*\"; ... Example placeholders: \"Please select one of the options\"",
+  "ambiguous": false
+ },
+ {
+  "name": "real-label-stars-and-double-spaces",
+  "label": "*Have  you ever been  convicted of a felony?*",
+  "rows": [
+   "Please select one of the options"
+  ],
+  "expect": "Have you ever been convicted of a felony?",
+  "spec_quote": "Clean the label: collapse whitespace, drop a leading \"*\" and a trailing \"*\", drop a trailing colon.",
+  "ambiguous": false
+ }
+]

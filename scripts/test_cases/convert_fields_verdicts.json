@@ -1,3 +1,5 @@
 {
- "question_truncated_to_300": "Case miscounts: the input label is 338 characters and the spec says the question is cut to 300; the case's expected string is 254 characters long (a counting slip by the case writer). The code returns exactly the first 300 characters — correct."
+ "question_truncated_to_300": "Case miscounts: the input label is 338 characters and the spec says the question is cut to 300; the case's expected string is 254 characters long (a counting slip by the case writer). The code returns exactly the first 300 characters — correct.",
+ "wd_statuses_multi_page": "Spec changed by JSA-320 (Joey 2026-11-11, option A): an old wd_log.json `value` is read before the fill (the résumé parse), so a filled field (status ok, not in `failed`) now takes its planned answer as the page value — it passed run_wd's read-back check. The case expected the old rule (page = value). The code is right; the spec now says so (convert_fields_spec.md).",
+ "precedence_fc_empty_falls_to_wd": "Spec changed by JSA-320 (Joey 2026-11-11, option A): an old wd_log.json `value` is read before the fill (the résumé parse), so a filled field (status ok, not in `failed`) now takes its planned answer as the page value — it passed run_wd's read-back check. The case expected the old rule (page = value). The code is right; the spec now says so (convert_fields_spec.md)."
 }

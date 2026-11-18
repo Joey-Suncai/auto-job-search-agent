@@ -1,0 +1,7 @@
+{
+ "opt_in_job_emails": "Case wrong: spec rule 4 says only that 'Send me emails about new jobs' is an opt-in, not the address. The rules answer it with future_contact = Yes (his job opt-in answer, the 10-27 rule in answer_rules.js); it never gets the e-mail address, which is what JSA-336 checks.",
+ "apploving_or_affiliates": "Outcome allowed: no rule reads 'Have you worked at <Co> … before?' (same unknown for a company with no rule word), so it is asked — the JSA-336 task: a worked-at question that cannot be grounded goes to ask. Not a company-word error; wording coverage is JSA-361 (question-type reading).",
+ "intuitive_surgical_interned": "Outcome allowed: 'Did you intern at <Co>?' matches no rule (also for 'Acme Corp') → asked, per the JSA-336 task ('cannot be grounded → ask'). Not a company-word error; coverage → JSA-361.",
+ "verify_inc_contractor": "Outcome allowed: 'Have you been a contractor for <Co>?' matches no rule (also for 'Acme Corp') → asked, per the JSA-336 task. Not a company-word error; coverage → JSA-361.",
+ "applied_materials_long_sentence_options": "Outcome allowed: 'Have you at any time worked at <Co>?' matches no rule → asked (never Yes from the tracker any more, which was the AMAT error). Coverage → JSA-361."
+}

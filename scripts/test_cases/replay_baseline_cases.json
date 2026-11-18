@@ -1,0 +1,1075 @@
+[
+ {
+  "name": "pass_no_change",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "a question's answer \"changed\" when status or value differs from its baseline entry; a question with no baseline entry is not a change",
+  "ambiguous": false
+ },
+ {
+  "name": "changed_valid_dated_reason",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "Joey 2026-11-16 approved the change"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "a dated decision of the user (\"Joey 2026-11-16 …\" — the user's name or \"user\"/\"decision\"/\"decided\", then a date YYYY-MM-DD)",
+  "ambiguous": false
+ },
+ {
+  "name": "changed_reason_no_source_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "because the client asked"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A changed answer on a submitted form whose only reasons cite no source still fails `--check` (exit 1)",
+  "ambiguous": false
+ },
+ {
+  "name": "changed_no_reason_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A changed answer on a submitted form whose only reasons cite no source still fails `--check` (exit 1)",
+  "ambiguous": false
+ },
+ {
+  "name": "reason_for_exact_new_value_but_no_source_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "Bob is correct"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "even when the reason was recorded for exactly the new value",
+  "ambiguous": false
+ },
+ {
+  "name": "reason_audit_hex_source_ok",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": "right"
+   }
+  ],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "audit:3f2a9c confirms Bob"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "an audit item (\"audit:\" followed by the item's hex key)",
+  "ambiguous": false
+ },
+ {
+  "name": "reason_qa_hash_source_ok",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "qa#12 saved answer says Bob"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "or a saved answer (\"qa#\" followed by its number)",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple_reasons_one_sourced_ok",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "because"
+   },
+   {
+    "question": "Name",
+    "value": "Bob",
+    "text": "audit:ab12cd checked"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A changed answer on a submitted form whose only reasons cite no source still fails `--check`",
+  "ambiguous": false
+ },
+ {
+  "name": "reason_for_old_value_only_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [
+   {
+    "question": "Name",
+    "value": "Alice",
+    "text": "Joey 2026-11-16 approved Alice"
+   }
+  ],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "even when the reason was recorded for exactly the new value",
+  "ambiguous": true,
+  "why": "The spec does not explicitly state that a reason recorded for a different value does not count for the new value; inferred from the reasons log having a value field."
+ },
+ {
+  "name": "merge_submitted_with_judged_audit",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   },
+   {
+    "folder": "F1",
+    "question": "City",
+    "filled": "NY"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": "right"
+   }
+  ],
+  "baseline": {},
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice2"
+   },
+   "City": {
+    "status": "ok",
+    "value": "NY2"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 1,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A SUBMITTED form whose questions are not in the baseline at all, and whose folder has at least one independent-audit item that was judged ... is merged into the baseline on the next replay: every one of its questions gets the current answer as its baseline entry.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_merge_submitted_without_judged_audit",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": null
+   }
+  ],
+  "baseline": {},
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 1,
+  "expect_reasoned": [],
+  "spec_quote": "A submitted form without any judged audit item is not merged.",
+  "ambiguous": false
+ },
+ {
+  "name": "no_merge_not_submitted_with_judged_audit",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": "wrong"
+   }
+  ],
+  "baseline": {},
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A form that was NOT submitted is never merged, audited or not.",
+  "ambiguous": false
+ },
+ {
+  "name": "merge_only_that_form_other_pending_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   },
+   {
+    "folder": "F2",
+    "question": "Amount",
+    "filled": "10"
+   }
+  ],
+  "submitted": [
+   "F1",
+   "F2"
+  ],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": "unsure"
+   }
+  ],
+  "baseline": {
+   "Amount": {
+    "status": "ok",
+    "value": "10"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   },
+   "Amount": {
+    "status": "ok",
+    "value": "20"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 1,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "Only that form is merged — other forms' questions and other pending changes are not touched (a pending change on another form still needs its reason).",
+  "ambiguous": false
+ },
+ {
+  "name": "new_form_diffs_info_only",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   },
+   {
+    "folder": "F1",
+    "question": "City",
+    "filled": "NY"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {},
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alicia"
+   },
+   "City": {
+    "status": "ok",
+    "value": "NY"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 1,
+  "expect_reasoned": [],
+  "spec_quote": "A submitted form not in the baseline (and not merged by rule 1) is reported as \"new, not in baseline\": the current answer is compared with the answer that was filled on the form, and the questions where they differ are listed. This is information only: it never fails `--check`.",
+  "ambiguous": false
+ },
+ {
+  "name": "non_submitted_change_does_not_fail",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A changed answer on a submitted form whose only reasons cite no source still fails `--check`",
+  "ambiguous": true,
+  "why": "The spec only states that changed answers on a submitted form fail --check; it does not explicitly say non-submitted changes pass or fail. Assumed pass."
+ },
+ {
+  "name": "qa_reasons_changed_since_baseline",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Carol"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "Bob"
+    }
+   },
+   "reason": "qa#12 (2026-11-16): Joey 2026-11-16 (prefetch) — Carol"
+  },
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [
+   "Name"
+  ],
+  "spec_quote": "the reason (\"qa#N …\") is recorded only for the questions whose answer differs between before and after AND that changed since the baseline on a submitted form",
+  "ambiguous": false
+ },
+ {
+  "name": "qa_pending_already_no_reason_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "Bob"
+    }
+   },
+   "reason": "qa#13 (2026-11-16): no qualifying question"
+  },
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "Questions that were already pending before the entry (changed since the baseline, but answered the same before and after) get no reason and keep failing `--check` until they get their own.",
+  "ambiguous": false
+ },
+ {
+  "name": "qa_change_not_since_baseline_no_reason",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "Bob"
+    }
+   },
+   "reason": "qa#14 (2026-11-16): reverted to Alice"
+  },
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "whose answer differs between before and after AND that changed since the baseline on a submitted form",
+  "ambiguous": false
+ },
+ {
+  "name": "qa_new_question_no_baseline_no_reason",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {},
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Y"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "X"
+    }
+   },
+   "reason": "qa#15 (2026-11-16): changed X to Y"
+  },
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 1,
+  "expect_reasoned": [],
+  "spec_quote": "a question with no baseline entry is not a change",
+  "ambiguous": false
+ },
+ {
+  "name": "qa_non_submitted_form_no_reason",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Carol"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "Bob"
+    }
+   },
+   "reason": "qa#16 (2026-11-16): Bob to Carol"
+  },
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "changed since the baseline on a submitted form",
+  "ambiguous": true,
+  "why": "The reason-recording rule explicitly requires a submitted form; the --check outcome for a changed non-submitted form is not explicitly specified."
+ },
+ {
+  "name": "qa_no_answer_changed_nothing_recorded",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "qa": {
+   "before": {
+    "Name": {
+     "status": "ok",
+     "value": "Alice"
+    }
+   },
+   "reason": "qa#17 (2026-11-16): no change"
+  },
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "If the new entry changes no answer, nothing is recorded.",
+  "ambiguous": false
+ },
+ {
+  "name": "signature_date_only_differs_not_change",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Date signed",
+    "filled": "11/16/2026"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Date signed": {
+    "status": "ok",
+    "value": "11/16/2026"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Date signed": {
+    "status": "ok",
+    "value": "11/17/2026"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A rule whose answer is today's date (signature date) is not a change when only the date differs.",
+  "ambiguous": false
+ },
+ {
+  "name": "signature_date_status_differs_is_change_fails",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Date signed",
+    "filled": "11/16/2026"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Date signed": {
+    "status": "ok",
+    "value": "11/16/2026"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Date signed": {
+    "status": "unknown",
+    "value": "11/17/2026"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 1,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "is not a change when only the date differs",
+  "ambiguous": false
+ },
+ {
+  "name": "record_reason_no_source_exit2",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": "because",
+  "expect_exit": 1,
+  "expect_record_exit": 2,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "Recording a reason with no source (`--reason \"because\"`) is refused: exit 2, nothing written.",
+  "ambiguous": false
+ },
+ {
+  "name": "record_reason_with_source_ok",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Bob"
+   }
+  },
+  "qa": null,
+  "record_reason": "decision 2026-11-16: approved",
+  "expect_exit": 0,
+  "expect_record_exit": 0,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "the user's name or \"user\"/\"decision\"/\"decided\", then a date YYYY-MM-DD",
+  "ambiguous": false
+ },
+ {
+  "name": "no_merge_partially_in_baseline",
+  "corpus": [
+   {
+    "folder": "F1",
+    "question": "Name",
+    "filled": "Alice"
+   },
+   {
+    "folder": "F1",
+    "question": "City",
+    "filled": "NY"
+   }
+  ],
+  "submitted": [
+   "F1"
+  ],
+  "audit": [
+   {
+    "folder": "F1",
+    "check": "right"
+   }
+  ],
+  "baseline": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   }
+  },
+  "reasons": [],
+  "now": {
+   "Name": {
+    "status": "ok",
+    "value": "Alice"
+   },
+   "City": {
+    "status": "ok",
+    "value": "NY2"
+   }
+  },
+  "qa": null,
+  "record_reason": null,
+  "expect_exit": 0,
+  "expect_record_exit": null,
+  "expect_merged": 0,
+  "expect_new": 0,
+  "expect_reasoned": [],
+  "spec_quote": "A SUBMITTED form whose questions are not in the baseline at all",
+  "ambiguous": true,
+  "why": "Partial baseline membership is not explicitly addressed for merge or for 'new, not in baseline' reporting; assumed neither."
+ }
+]

@@ -1,0 +1,581 @@
+[
+ {
+  "name": "star_missing_empty_S",
+  "why": "Bullet cites one fact whose S is empty; the union cannot supply S, so star_missing is required.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "",
+     "T": "Built reporting flow",
+     "A": "Diagnosed slow mismatch",
+     "R": "Cut review time",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow approval mismatch and rebuilt the flow.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "star_missing_whitespace_T",
+  "why": "Bullet cites one fact whose T is whitespace-only; after trimming T is empty, so star_missing is required.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "   ",
+     "A": "Resolved slow mismatch",
+     "R": "Improved flow",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Resolved slow billing mismatch for the team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "star_missing_empty_A",
+  "why": "Bullet cites one fact whose A is empty; the union lacks A, so star_missing is required.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "",
+     "R": "Sped up review",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow reporting mismatch for the team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "star_missing_empty_R",
+  "why": "Bullet cites one fact whose R is empty; the union lacks R, so star_missing is required.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "Diagnosed slow mismatch",
+     "R": "",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Rebuilt slow billing workflow.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "star_union_covers_four",
+  "why": "Bullet cites two facts whose union supplies S, T, A, and R, so star_missing must not fire.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "",
+     "R": "",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Diagnosed slow mismatch",
+     "R": "Cut review time",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow approval mismatch and rebuilt the flow.",
+       "fact_ids": [
+        "f1",
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "reserve_star_missing_R",
+  "why": "Reserve bullet cites a fact with empty R; star_missing applies to reserve bullets too.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "Diagnosed slow mismatch",
+     "R": "Cut review time",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built billing flow",
+     "A": "Resolved mismatch",
+     "R": "",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow reporting mismatch for the team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Rebuilt slow billing workflow.",
+     "fact_ids": [
+      "f2"
+     ]
+    }
+   ],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "unknown_id_skips_star_missing",
+  "why": "Bullet cites an unknown fact id; star_missing is not judged, so only unknown_fact should fire.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "Diagnosed slow mismatch",
+     "R": "Cut review time",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow approval mismatch and rebuilt the flow.",
+       "fact_ids": [
+        "f1",
+        "fX"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "unknown_fact"
+  ]
+ },
+ {
+  "name": "star_union_still_missing_R_whitespace",
+  "why": "Two cited facts together cover S, T, and A but both R values are empty/whitespace, so star_missing is required.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "jsa",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2021",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Engineer",
+     "T": "Built reporting flow",
+     "A": "",
+     "R": "",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "",
+     "T": "",
+     "A": "Diagnosed slow mismatch",
+     "R": "   ",
+     "numbers": [],
+     "skills": [],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reliable delivery.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Diagnosed slow approval mismatch and rebuilt the flow.",
+       "fact_ids": [
+        "f1",
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ }
+]

@@ -1,0 +1,1979 @@
+[
+ {
+  "name": "reserve brings a missing term and replaces the lowest-weight lossless bullet",
+  "why": "Reserve 'zeta' brings a JD term the page does not hold in any spelling: spec says 'what it \"brings\" = the JD terms it holds in any spelling that the page does not hold in any spelling'. Only the third bullet's removal loses nothing, and it has the lowest top weight, so spec's 'the bullet with the lowest top competency weight ... goes' selects it. After replacement, spec's order rule says 'an entry's first bullet stays first; the others are sorted by how many JD terms they hold (more first, stable)', putting 'gamma delta epsilon' before 'zeta'.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1",
+        "C2"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta epsilon",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      },
+      {
+       "text": "epsilon",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta epsilon zeta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha beta",
+    "gamma delta epsilon",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "reserve brings only the JD spelling of a term the page says another way",
+  "why": "JD has 'alphas' twice, so the cluster's jd_spelling is 'alphas'; the page holds 'alpha'. The reserve thus brings 'the terms it holds in the jd_spelling while the page holds them only in another spelling'. The swap rule does not apply because singular/plural is explicitly not a bullet variant ('workflow'/'workflows' is NOT allowed). Removing the second bullet loses no term because 'alpha' remains in the third; removing the third would lose 'delta', so the second is replaced. Order then puts 'alpha delta' (2 terms) before 'alphas' (1 term).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "beta gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C2",
+        "C3"
+       ],
+       "bold": false
+      },
+      {
+       "text": "alpha",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      },
+      {
+       "text": "alpha delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "alphas",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alphas alphas beta gamma delta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "beta gamma",
+    "alpha delta",
+    "alphas"
+   ]
+  }
+ },
+ {
+  "name": "reserve bringing nothing is skipped",
+  "why": "The reserve bullet 'beta' holds no term absent from the page and no JD spelling while the page holds another spelling, so it brings nothing. Spec says 'Nothing brought → skip.' The bullets therefore remain, and the order rule leaves them as already sorted: first bullet first, then 'beta gamma' (2 terms), then 'delta' (1 term).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "beta gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C2"
+       ],
+       "bold": false
+      },
+      {
+       "text": "delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "beta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha",
+    "beta gamma",
+    "delta"
+   ]
+  }
+ },
+ {
+  "name": "lossy removal not allowed; lower-weight unique-term bullet is skipped",
+  "why": "Reserve 'zeta' brings a missing term. The one-weight bullet 'beta' cannot be removed because 'every term the removed bullet holds (any spelling) ... must still be on the rest of the page': beta would be lost. The 'gamma delta' bullet also cannot be removed because delta would be lost. Only 'gamma' is removable because gamma remains in 'gamma delta'. Thus spec's removal condition selects 'gamma', despite its higher weight, and the final order puts 'gamma delta' (2 terms) before the one-term bullets.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta zeta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha",
+    "gamma delta",
+    "beta",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "removal losing the JD spelling of a term is not allowed",
+  "why": "JD has 'alphas' twice, so the jd_spelling for the alpha cluster is 'alphas'. The one-weight bullet 'alphas' cannot be removed because spec requires 'every term it holds in the jd_spelling must still be on the rest of the page in the same way'; the rest would only have 'alpha', not 'alphas'. The 'gamma' bullet is removable and lower-weight than 'alpha gamma', so it is replaced. Final order puts 'alpha gamma' (2 terms) before 'alphas' and 'zeta'.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "alphas",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      },
+      {
+       "text": "alpha gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alphas alphas gamma zeta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha",
+    "alpha gamma",
+    "alphas",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "lowest top competency weight chosen among allowed removals",
+  "why": "Reserve 'zeta' brings a missing term. Removing 'gamma delta', 'gamma', or 'delta' loses nothing because gamma/delta remain elsewhere. Spec says 'the bullet with the lowest top competency weight ... goes'; 'delta' has top weight 1, so it is replaced. Final order puts 'gamma delta' (2 terms) before the one-term bullets.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      },
+      {
+       "text": "delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta zeta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha beta",
+    "gamma delta",
+    "gamma",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "tie on top weight removes the later bullet",
+  "why": "Reserve 'zeta' brings a missing term. The two identical 'gamma delta' bullets both have top weight 2 and both are removable; spec says 'ties → the later bullet', so the second 'gamma delta' is replaced. The 'epsilon' bullet is not removable because epsilon would be lost. Final order puts 'gamma delta' (2 terms) before 'zeta' and 'epsilon'.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C3"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C3"
+       ],
+       "bold": false
+      },
+      {
+       "text": "epsilon",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta epsilon zeta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha beta",
+    "gamma delta",
+    "zeta",
+    "epsilon"
+   ]
+  }
+ },
+ {
+  "name": "entry with one bullet is skipped",
+  "why": "The alternates rule applies only to 'each reserve bullet in order whose entry is on the master with ≥ 2 bullets'. Entry E2 has only one bullet, so even though reserve 'zeta' brings a missing term, the entry is skipped. The single bullet stays first and no replacement occurs.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E2",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E2",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta zeta",
+  "title": "",
+  "expect_bullets": {
+   "E2": [
+    "alpha beta"
+   ]
+  }
+ },
+ {
+  "name": "two reserve bullets processed in order",
+  "why": "The reserve bullets are processed 'in order'. First 'zeta' brings a missing term; the removable lowest-weight bullet is 'delta' (weight 1), so it is replaced. Then 'eta' is considered against the updated page; now delta exists only in 'gamma delta', so that bullet cannot be removed, and 'gamma' is the only allowable removal. Final order puts 'gamma delta' (2 terms) before the one-term 'eta' and 'zeta' bullets in their processed order.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C4"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C3"
+       ],
+       "bold": false
+      },
+      {
+       "text": "delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C5"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "zeta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C6"
+     ],
+     "bold": false
+    },
+    {
+     "entry_id": "E1",
+     "text": "eta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C7"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta zeta eta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha beta",
+    "gamma delta",
+    "eta",
+    "zeta"
+   ]
+  }
+ },
+ {
+  "name": "final order keeps first bullet first and sorts others by JD term count",
+  "why": "Reserve 'eta' brings a missing term; the tie between 'gamma' and 'delta' at top weight 3 is resolved by 'ties → the later bullet', so 'delta' is replaced. The order rule then applies: 'an entry's first bullet stays first; the others are sorted by how many JD terms they hold (more first, stable)'. Thus 'alpha beta' stays first, then 'gamma delta' (2 terms), then the one-term 'gamma' and 'eta' in stable order.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "E1",
+     "org": "Org1",
+     "on_resume": true
+    },
+    {
+     "id": "E2",
+     "org": "Org2",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "entry": "E1",
+     "skills": [
+      "alpha",
+      "alphas",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon",
+      "zeta",
+      "eta"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "C1",
+     "weight": 5,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": [
+        "alphas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C2",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": [
+        "betas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C3",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": [
+        "gammas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C4",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "delta",
+       "synonyms": [
+        "deltas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C5",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "epsilon",
+       "synonyms": [
+        "epsilons"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C6",
+     "weight": 6,
+     "keywords": [
+      {
+       "term": "zeta",
+       "synonyms": [
+        "zetas"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "C7",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "eta",
+       "synonyms": [
+        "etas"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "E1",
+     "bullets": [
+      {
+       "text": "alpha beta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C2"
+       ],
+       "bold": false
+      },
+      {
+       "text": "delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C2"
+       ],
+       "bold": false
+      },
+      {
+       "text": "gamma delta",
+       "fact_ids": [
+        "F1"
+       ],
+       "competencies": [
+        "C1"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "E1",
+     "text": "eta",
+     "fact_ids": [
+      "F1"
+     ],
+     "competencies": [
+      "C7"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "alpha beta gamma delta eta",
+  "title": "",
+  "expect_bullets": {
+   "E1": [
+    "alpha beta",
+    "gamma delta",
+    "gamma",
+    "eta"
+   ]
+  }
+ }
+]

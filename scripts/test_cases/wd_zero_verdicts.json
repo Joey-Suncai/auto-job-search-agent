@@ -1,0 +1,1 @@
+{"zero_not_listed_ambiguous": "Claude 2026-11-10: case wrong — the spec's list was examples; '000' is a zero in digits (the BCBS NE box turns '0.00' into '000'), so it is returned on purpose."}

@@ -1,0 +1,11 @@
+{
+ "S1-07 sponsorship question with no timing wording — ambiguous": {
+  "verdict": "case",
+  "why": "The spec does not make an untimed sponsorship question unknown; the candidate's Standard answer for 'require sponsorship (now or in the future)' is Yes (candidate-profile), so spons_future Yes is right."
+ },
+ "L1-03 Springfield claim is true and may be picked": {
+  "verdict": "case",
+  "why": "'Do you currently live in the local area where this internship is based?' names no place, so no rule recognises it as a relocation / on-site / commute / local-area question (spec section 3 applies only to those); unknown = asked, which is safe — the internship's location decides."
+ },
+ "R1-03 current or most recent employer → employer name": "Superseded by Joey 2026-11-10 (JSA-288): \"current or most recent employer\" = the most recent employer (answers.recent_employer, rule recent_employer); only \"current company / current employer\" stays answers.employer."
+}

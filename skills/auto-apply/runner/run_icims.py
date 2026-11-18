@@ -19,6 +19,7 @@ data/runner/results.jsonl (status dry-run | needs-user | captcha | signin | bloc
 dry-run | submit). Default out: data/runner/dryrun/icims/<id> (the folder with --folder).
 A stop (unknown required answer, wrong-password sign-in, CAPTCHA not solved in time, unexpected page) keeps the tab open.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -29,12 +30,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 sys.path.insert(0, HERE)
 import human_check  # noqa: E402  (JSA-106)
 import job_board  # noqa: E402  (the "Please specify" job-board list, 2026-11-03)
 import runner_common as RC  # noqa: E402  (JSA-187: opening checks · submit gate · closing books)
+import essay_step as ES  # noqa: E402  (JSA-318: the shared essay-box step)
 
 TRACKS = {'Data Engineer': 'Data_Engineer', 'Data Sci / Analytics': 'Data_Analyst', 'Data Analyst': 'Data_Analyst',
           'Product Manager': 'Product_Manager', 'AI Product Manager': 'Product_Manager', 'AI Agentic Eng': 'AI_Agentic_Engineer'}
@@ -205,13 +208,25 @@ def submit_gate(submit, no_advance, steps, consent):
     return ['press', 'ok']
 
 
-def after_submit(url, text, before):
+def new_done(text, before_text, rx=SUBMITTED_RE):
+    """Pure. A success sentence on the page that was not on it before the click (JSA-299: the form's own intro may
+    thank the candidate). before_text None = unknown → any sentence counts."""
+    if before_text is None:
+        return bool(rx.search(N(text)))
+    seen = {m.group(0).lower() for m in rx.finditer(N(before_text))}
+    return any(m.group(0).lower() not in seen for m in rx.finditer(N(text)))
+
+
+def after_submit(url, text, before, before_text=None):
     """Pure (tested). The page after the final button: 'done' (a thank-you / submitted sentence, and no step bar or a
-    last / Thank-you / Confirmation step) · 'next' (a later step) · 'refused' (the same or an earlier step; no bar but error
-    words) · 'pending' (anything else → wait, then the receipt e-mail)."""
+    last / Thank-you / Confirmation step — and the page changed: the step bar moved or went away, or the sentence is new
+    since the click, JSA-299) · 'next' (a later step) · 'refused' (the same or an earlier step; no bar but error words) ·
+    'pending' (anything else → wait, then the receipt e-mail). `before_text` = the page text before the click."""
     t = N(text)
     cur = current_step(t)
-    if SUBMITTED_RE.search(t) and (not cur or cur[0] >= cur[1] or re.search(r'thank|confirm|complete|submitted|success', cur[2], re.I)):
+    moved = before is not None and (not cur or cur[0] != before)
+    if SUBMITTED_RE.search(t) and (not cur or cur[0] >= cur[1] or re.search(r'thank|confirm|complete|submitted|success', cur[2], re.I)) \
+            and (moved or new_done(t, before_text)):
         return 'done'
     if cur:
         if before is None or cur[0] > before:
@@ -257,7 +272,7 @@ def answer(questions):
 
 
 def keychain(service):
-    r = subprocess.run(['security', 'find-generic-password', '-s', service, '-a', 'alex.rivera@example.com', '-w'],
+    r = subprocess.run(['security', 'find-generic-password', '-s', service, '-a', jsa_profile.email(), '-w'],
                        capture_output=True, text=True)
     return r.stdout.rstrip('\n') if r.returncode == 0 else ''
 
@@ -471,6 +486,10 @@ def fill_step(ic, answers_override, resume, log, _tried=None):
             time.sleep(2)
             return fill_step(ic, answers_override, resume, log, _tried)
     ans = answer(qs) if qs else {}
+    ans, essay_problem = ES.step([{'key': f['id'], 'label': f['rlabel'], 'kind': f['kind'], 'maxlength': f.get('maxlength')}
+                                  for f in fields if f['kind'] == 'textarea'], ans, FOLDER, prefix='ic_')   # JSA-318: prose boxes from open_answers.md, else questions.json
+    if essay_problem:
+        problems.append(essay_problem); log(essay_problem)
     for f in fields:
         lab = f.get('rlabel') or field_label(f['id'], f['label'])
         row = {'id': f['id'], 'label': lab, 'kind': f['kind'], 'required': f['required']}
@@ -586,6 +605,7 @@ def fill_step(ic, answers_override, resume, log, _tried=None):
 
 JOB = {}                                                       # the store row (--job): its source / url pick the job board
 COVER = None                                                   # the --folder's *Cover_Letter*.pdf
+FOLDER = None                                                  # --folder: open_answers.md drafts in, questions.json out (JSA-318)
 SUBMIT = False                                                 # set by main() only after the approval / not-yet-submitted gates
 RUN = None                                                     # runner_common.Run of this run (JSA-187)
 RES = None                                                     # the current run's result (survives a runner error)
@@ -627,7 +647,7 @@ def signin(ic, log, created=False):
     k = classify(pg.url, pg.inner_text('body'))
     if k == 'universal_login':
         pg.locator('#username').click(); pg.keyboard.press('Escape')
-        pg.locator('#username').press_sequentially('alex.rivera@example.com', delay=25)
+        pg.locator('#username').press_sequentially(jsa_profile.email(), delay=25)
         pg.locator('button[name=action]').first.click(); time.sleep(5)
         k = classify(pg.url, pg.inner_text('body'))
     if k != 'universal_password':
@@ -687,14 +707,14 @@ def run(page, posting, resume, log, out, wait_captcha=0, answers_override=None):
         fr = ic.frame()
         if not fr.locator('#email').count():
             break
-        fr.locator('#email').fill('alex.rivera@example.com')
+        fr.locator('#email').fill(jsa_profile.email())
         if fr.locator('#accept_gdpr').count():
             res['consent_text'] = N(fr.inner_text('body'))[:1500]
             res['consent'] = consent_gate(res['consent_text'], PROFILE_CONSENTS)
             fr.locator('#accept_gdpr').check()
             log('privacy consent ticked (required to continue; text saved in form_check.json → consent_text)'
                 + ('' if res['consent'] == 'ok' else ' — wording beyond the application: NO submit until Joey approves it'))
-        if fr.locator('#email').input_value() != 'alex.rivera@example.com':
+        if fr.locator('#email').input_value() != jsa_profile.email():
             continue                                            # the iframe reloaded under us: fill again
         fr.wait_for_selector('#enterEmailSubmitButton:enabled', timeout=30000); fr.locator('#enterEmailSubmitButton').click()   # disabled while hCaptcha loads
         for _ in range(12):                                     # a challenge, or the next page
@@ -753,10 +773,11 @@ def page_text(ic):
 
 
 def confirmed(page, res, out, log, how):
+    import confirm_page as CP
     res['status'], res['confirmed_by'] = 'submitted', 'page'
     log(f'CONFIRMED by the page: {how}')
     try:
-        page.screenshot(path=os.path.join(out, 'submitted_confirmation.png'), full_page=True)
+        CP.confirmation_shot(page, os.path.join(out, 'submitted_confirmation.png'), log)   # JSA-299 / JSA-223
     except Exception:
         pass
     return res
@@ -768,6 +789,7 @@ def submit_final(ic, page, res, btn, n, steps, log, out):
     'pending' → the receipt e-mail (Gmail read-only, 180 s) → submitted, else unconfirmed. A hCaptcha → Joey."""
     since = datetime.now(timezone.utc) - timedelta(minutes=1)
     before = steps['current'] if steps else None
+    before_text = page_text(ic)                                 # JSA-299: a thank-you counts only when the page changed
     ic.frame().locator(button_sel(btn)).first.click()
     res['pressed'] = res.get('pressed', 0) + 1
     res.setdefault('pressed_at', since.isoformat())
@@ -778,7 +800,7 @@ def submit_final(ic, page, res, btn, n, steps, log, out):
         if ic.captcha_up() and not hold_for_captcha(ic, out, f'the submit ("{btn["text"]}", step {n})', log):
             res['status'] = 'captcha'; res['problems'].append(f'step {n}: hCaptcha after "{btn["text"]}" not solved — not submitted')
             return 'stop'
-        k = after_submit(page.url, page_text(ic), before)
+        k = after_submit(page.url, page_text(ic), before, before_text)
         if k == 'done':
             confirmed(page, res, out, log, f'"{btn["text"]}" (step {n})'); return 'done'
         if k == 'next':
@@ -872,6 +894,7 @@ def steps_loop(ic, page, res, resume, log, out, answers_override):
                 continue                                        # the hand-in button led to a further step: fill it too
             return res
         log(f'step {n} → "{btn["text"]}"')
+        pre_text = page_text(ic)                                # JSA-299: the thank-you below must be new since this click
         ic.frame().locator(button_sel(btn)).first.click(); time.sleep(8)
         if not hold_for_captcha(ic, out, f'"{btn["text"]}" (step {n})', log):
             res['status'] = 'captcha'; res['problems'].append(f'hCaptcha after step {n} not solved'); return res
@@ -888,7 +911,7 @@ def steps_loop(ic, page, res, resume, log, out, answers_override):
         if st3 is None:
             st3 = ic.state()
         s3 = parse_steps(st3['text'])
-        if classify(page.url, st3['text']) == 'done':
+        if classify(page.url, st3['text']) == 'done' and new_done(st3['text'], pre_text, DONE_RE):
             if SUBMIT:                                          # approved batch, every step read back: record what happened
                 return confirmed(page, res, out, log, f'thank-you page after "{btn["text"]}" (step {n})')
             res['problems'].append('a thank-you page appeared — the application may have been submitted'); return res
@@ -932,12 +955,12 @@ def main():
     if not login_url(posting)[0]:
         sys.exit(f'not an iCIMS posting: {posting}')
     track = a.track or TRACKS.get(job.get('track'), 'Data_Analyst')
-    resume = a.resume or jpaths.resume('2026-10', f'Alex_Rivera_Resume_{track}_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file(f'{track}_A-Classic.pdf'))
     m = re.search(r'/jobs/(\d+)', posting)
     out = os.path.abspath(a.out or os.path.join(DATA, 'dryrun', 'icims', (urlparse(posting).hostname or 'x').split('.')[0] + '_' + (m.group(1) if m else 'job')))
     os.makedirs(out, exist_ok=True)
     over = json.load(open(a.answers)) if a.answers else {}
-    global NO_ADVANCE, WAIT_CAPTCHA, JOB, COVER, SUBMIT, RUN
+    global NO_ADVANCE, WAIT_CAPTCHA, JOB, COVER, SUBMIT, RUN, FOLDER
     JOB = job or {}
     if fj.get('company') and not JOB.get('company'):
         JOB = dict(JOB, company=fj['company'])                 # the receipt e-mail is matched by company
@@ -945,6 +968,7 @@ def main():
     if a.submit and not SUBMIT:
         print('NOT submitting: batch not approved (data/runner/approved_batches.json) — dry-run only')
     COVER = find_cover(folder)
+    FOLDER = folder
     wait = a.wait_captcha if a.wait_captcha is not None else (10 if SUBMIT else 0)
     NO_ADVANCE, WAIT_CAPTCHA = a.no_advance, wait
     t0 = time.time()
@@ -957,7 +981,7 @@ def main():
         return
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = next((p for p in ctx.pages if a.attach and a.attach in p.url), None) or ctx.new_page()
         R.mark('page')
         try:

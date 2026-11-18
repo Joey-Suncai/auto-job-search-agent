@@ -16,7 +16,7 @@ SERVICE, ACCOUNT = "jobagent-anthropic", "jobagent"
 MODEL = os.environ.get("JOBAGENT_READER_MODEL", "claude-opus-5-5")
 TYPES = ["Rejection", "Assessment", "Interview", "Offer", "Action", "Confirmation", "Other", "NotJob"]
 
-SYSTEM = """You read messages that arrived in Joey Sun's job-search inbox (e-mail or SMS/iMessage) and decide what each
+SYSTEM = """You read messages that arrived in the user's job-search inbox (e-mail or SMS/iMessage) and decide what each
 one means for his application tracker. Joey is a student applying to internships and new-grad roles.
 
 For the message, return:
@@ -36,8 +36,20 @@ For the message, return:
   forward") is still a Confirmation; a mail titled "Thank you for your application" that says they chose other
   candidates is a Rejection.
 - summary: one plain English sentence a busy reader can act on (company + what happened).
-- action_needed: what Joey must do, or "" when nothing.
-- deadline: YYYY-MM-DD if the message gives or implies one (e.g. "within 5 days" of the message date), else "".
+- action_needed: the next step, written so Joey never has to open the message to know what to do (JSA-265). One
+  imperative sentence, verb first: WHAT to do, WHERE (the platform, portal or tool the message names — HackerRank,
+  the Workday candidate home, a Calendly link, a reply to the recruiter …; say "via the link in the email" for a link),
+  BY WHEN (the deadline as a date, e.g. "by Nov 12"; "within 24 hours of receiving it" when that is all it says), and HOW
+  LONG when the message says (e.g. "(25 min)"). Several required steps → name them all in order. Good examples:
+  "Take the Coderbyte assessment (60 min) via the link in the email by Nov 14" ·
+  "Book a start time for the take-home assignment via the Google Calendar link (check the time zone), then submit it
+  within 24 hours of receiving the package" ·
+  "Complete the Work Opportunity Tax Credit (WOTC) questionnaire via the link in the email" ·
+  "Log in to the HPE Workday candidate home and finish the open application task".
+  Never write a generic line such as "Read the email and act", "See the link" or "Check the email" — if you cannot tell
+  what is asked, say what the message seems to want and add "(unclear — check the email)". Return "" when there is nothing
+  for him to do (a confirmation, a rejection, a pure status update).
+- deadline: YYYY-MM-DD if the message gives or implies one (e.g. "within 5 days" → the message date + 5), else "".
 - confidence: high · medium · low. Use low whenever you are unsure of the type or the application.
 - reason: one short sentence quoting the words that decided the type.
 

@@ -6,6 +6,10 @@ CRITICAL (0 wrong answers allowed on a submitted form):
   education   ② school, degree, major / field of study, GPA, degree start / graduation dates
   contact     ③ his name, e-mail, phone, address
   eeo         ④ gender, race / ethnicity, disability, veteran (and the other self-identification questions)
+  record      ⑥ crime / conviction questions (convicted, felony, criminal record, pleaded guilty — JSA-281, Joey 2026-11-10:
+              the a Workday employer 18 USC 1033 felony question had been filed non-critical)
+  defense     ⑦ supporting military / defense missions (willing / able / any reason not to — JSA-316, a Lever employer 11-05:
+              answered No by a rule, Joey: Yes; = fact_gate.DEFENSE_SUPPORT)
   experience  ⑤ anything written as his experience (work history, employer, job titles, years of experience, projects)
               or as other people's contact details (references)
 NON-CRITICAL (answer accuracy ≥ 95 %): how-heard / source, communication preference, pay expectation, available start date,
@@ -27,6 +31,10 @@ try:
     import canon  # noqa: E402  (classify(label) → the canonical high-stakes key)
 except Exception:                                                  # never break a report because the facts file is missing
     canon = None
+try:
+    from fact_gate import DEFENSE_SUPPORT  # noqa: E402  (JSA-316: one pattern for the gate and this class)
+except Exception:
+    DEFENSE_SUPPORT = None
 
 CANON_GROUP = {'work_auth_any_employer': 'work_auth', 'work_auth_today': 'work_auth', 'work_permit': 'work_auth',
                'sponsorship_countries': 'work_auth', 'sponsorship_now': 'work_auth', 'sponsorship_future': 'work_auth',
@@ -44,6 +52,8 @@ NON_CRITICAL = re.compile(r'how did you (hear|find|learn)|where did you (hear|fi
                           r'work (arrangement|model|schedule)|\bremote\b|hybrid|on-?site|in[- ]office|travel', re.I)
 EDUCATION = re.compile(r'\bgpa\b|grade point|\bdegree\b|\bmajor\b|\bminor\b|field of study|area of study|discipline|school|university|college|'
                        r'graduat|enrol|class standing|year in school|academic (year|standing|level)|transcript|coursework', re.I)
+CRIME = re.compile(r'convict|\b18 u\.?s\.?c\.? (§ ?)?1033|violent crime control|\bfelon(y|ies)?\b|\bmisdemeanou?r|criminal (record|history|offen[cs]e|conviction|charges?|case)|'
+                   r'pl(ea|e)d(ed)? (guilty|no contest|nolo)|found guilty|\bcharged with\b', re.I)
 EEO = re.compile(r'\brace\b|ethnic|hispanic|latino|gender|\bsex\b|disabilit|veteran|military|pronoun|sexual orientation|transgender|lgbt', re.I)
 DATES = re.compile(r'^(start|end|from|to)( date)?\s*(month|year|date)?$|^(start|end) date (month|year)$|^(from|to) (month|year)$|'
                    r'date (started|ended|of graduation)|graduation (date|year|month)', re.I)   # Workday education / work-history blocks
@@ -69,6 +79,10 @@ def field_class(label):
             key = None
     if (key and CANON_GROUP.get(key) == 'work_auth') or WORK_AUTH.search(q):
         return 'critical', 'work_auth'
+    if DEFENSE_SUPPORT is not None and DEFENSE_SUPPORT.search(q):
+        return 'critical', 'defense'                               # before the non-critical words ("travel", "on-site") in a long mission notice
+    if CRIME.search(q):
+        return 'critical', 'record'                                # before pay / location words in a long legal notice (a Workday employer 11-10)
     if DATES.search(q):
         return 'critical', 'education'                             # his degree / work dates (Workday names the block, not the field)
     if key == 'source_channel' or NON_CRITICAL.search(q):

@@ -1,0 +1,4 @@
+{
+ "category_work_auth": {"expect": "neither", "why": "Claude 2026-11-10: the spec I gave DeepSeek described auth_kind as kind / type / category, but the rule has never matched 'category of your work authorization'. Widening auth_kind (more CPT answers) is outside the fix Joey picked (immigration status → F-1) and no real form has shown it; the question stays with the other rules / Joey."},
+ "work_auth_category_applies": {"expect": "neither", "why": "Claude 2026-11-10: same as category_work_auth — 'which work authorization category applies' is not auth_kind today; not widened in JSA-287."}
+}

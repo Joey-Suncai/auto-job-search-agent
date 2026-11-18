@@ -2,7 +2,7 @@
 
 The candidate: F-1 student. Current program: **M.S. Applied Data Science** (University of Chicago, Sep 2026 – Dec 2027,
 in progress; level = master). Completed: **B.A. Economics** (UIUC, May 2026; level = bachelor). No minor on file. His own
-e-mail is alex.rivera@example.com, phone 555-010-2030, name Alex Rivera. He is legally authorized to work in the U.S.
+e-mail is alex.doe@example.com, phone 555-010-2030, name Alex Doe. He is legally authorized to work in the U.S.
 for the internship (on CPT); he does NOT need sponsorship now (for the internship) but WILL need it in the future (after
 graduation, H-1B). He is not on OPT. Field-of-study preference, in this order: Data Science → Applied Data Science → Data
 Analytics → Computer Science → Information Systems → Statistics → Other.

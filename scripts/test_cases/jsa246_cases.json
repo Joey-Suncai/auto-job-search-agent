@@ -1,0 +1,407 @@
+[
+ {
+  "name": "S1-01 future wording 'now or in the future' → Yes",
+  "spec_quote": "A question that says \"now or in the future\", \"in the future\", \"ever\", \"after graduation\" or \"at any time\" is the FUTURE question → Yes.",
+  "field": {
+   "label": "Do you now or in the future require visa sponsorship for employment?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "S1-02 'to begin working' sponsorship question → No (NOW)",
+  "spec_quote": "A question whose wording asks whether the candidate needs sponsorship \"for this internship\", \"during the internship\" or \"to begin / start working\" (and does NOT also say future / ever / after graduation / at any time / later / eventually) is the NOW question → No.",
+  "field": {
+   "label": "Will you require visa sponsorship to begin working in this internship?",
+   "type": "combo",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "S1-03 'eligible WITHOUT sponsorship for this internship' opposite wording → Yes",
+  "spec_quote": "\"Are you eligible to work ... WITHOUT sponsorship for this internship?\" is the opposite wording → Yes.",
+  "field": {
+   "label": "Are you eligible to work in the United States without sponsorship for this internship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "S1-04 'at any time in the future' → Yes",
+  "spec_quote": "A question that says \"now or in the future\", \"in the future\", \"ever\", \"after graduation\" or \"at any time\" is the FUTURE question → Yes.",
+  "field": {
+   "label": "Will you need sponsorship at any time in the future?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "S1-05 'during the internship' → No (NOW)",
+  "spec_quote": "A question whose wording asks whether the candidate needs sponsorship \"for this internship\", \"during the internship\" or \"to begin / start working\" (and does NOT also say future / ever / after graduation / at any time / later / eventually) is the NOW question → No.",
+  "field": {
+   "label": "Do you require visa sponsorship during the internship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "S1-06 'after graduation' → Yes",
+  "spec_quote": "A question that says \"now or in the future\", \"in the future\", \"ever\", \"after graduation\" or \"at any time\" is the FUTURE question → Yes.",
+  "field": {
+   "label": "Will you require sponsorship after graduation?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "S1-07 sponsorship question with no timing wording — ambiguous",
+  "spec_quote": "A question whose wording asks whether the candidate needs sponsorship \"for this internship\", \"during the internship\" or \"to begin / start working\" ... is the NOW question → No. A question that says \"now or in the future\", \"in the future\", \"ever\", \"after graduation\" or \"at any time\" is the FUTURE question → Yes.",
+  "field": {
+   "label": "Do you require visa sponsorship?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "ambiguous": true,
+  "why": "The spec only defines NOW (this internship / during / to begin) and FUTURE (now or in the future / ever / after graduation / at any time) wordings; a bare 'Do you require visa sponsorship?' has neither, so neither the No nor the Yes rule is stated to apply."
+ },
+ {
+  "name": "M1-01 checkbox 'Consent: marketing' → No (left unchecked)",
+  "spec_quote": "A checkbox or Yes/No question that is a marketing opt-in → No (a checkbox with no options answers \"No\", which leaves it unchecked).",
+  "field": {
+   "label": "Consent: marketing",
+   "type": "checkbox",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "M1-02 'I consent to receive marketing communications' Yes/No → No",
+  "spec_quote": "Marketing opt-ins include labels like \"Consent: marketing\", \"I consent to receive marketing communications\", \"Opt in to marketing emails\", \"marketing purposes\".",
+  "field": {
+   "label": "I consent to receive marketing communications",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "M1-03 'Opt in to marketing emails' checkbox → No",
+  "spec_quote": "Marketing opt-ins include labels like \"Consent: marketing\", \"I consent to receive marketing communications\", \"Opt in to marketing emails\", \"marketing purposes\".",
+  "field": {
+   "label": "Opt in to marketing emails",
+   "type": "checkbox",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "M1-04 'marketing purposes' Yes/No → No",
+  "spec_quote": "Marketing opt-ins include labels like \"Consent: marketing\", \"I consent to receive marketing communications\", \"Opt in to marketing emails\", \"marketing purposes\".",
+  "field": {
+   "label": "May we use your contact information for marketing purposes?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "M1-05 privacy-only consent stays Yes",
+  "spec_quote": "A consent to the processing of personal data / privacy notice that does not mention marketing stays Yes.",
+  "field": {
+   "label": "I consent to the processing of my personal data as described in the privacy notice",
+   "type": "checkbox",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "M1-06 data-processing consent that also mentions marketing → No",
+  "spec_quote": "A consent to the processing of personal data / privacy notice that does not mention marketing stays Yes.",
+  "field": {
+   "label": "I consent to the processing of my personal data, including for marketing purposes",
+   "type": "checkbox",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "No"
+ },
+ {
+  "name": "M1-07 privacy notice acknowledgement (no marketing mention) → Yes",
+  "spec_quote": "A consent to the processing of personal data / privacy notice that does not mention marketing stays Yes.",
+  "field": {
+   "label": "I acknowledge that I have read the privacy notice and agree to the processing of my personal data",
+   "type": "checkbox",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes"
+ },
+ {
+  "name": "L1-01 place claim false, pick relocating option",
+  "spec_quote": "an option saying the candidate already is / lives / is located / is based in a place (\"Yes, I'm in SF / Bay Area ...\", \"Yes, I am located in Idaho ...\", \"I live in Boston\") is false unless that place is Springfield. Instead the rule picks the option about relocating (\"Yes, I'm willing to relocate ...\", \"planning on relocating\") that is not negative",
+  "field": {
+   "label": "Are you willing to relocate for this internship?",
+   "type": "combo",
+   "options": [
+    "Yes, I'm in the SF Bay Area and can start immediately",
+    "Yes, I'm willing to relocate to the Bay Area",
+    "No, I'm not willing to relocate"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes, I'm willing to relocate to the Bay Area"
+ },
+ {
+  "name": "L1-02 only place claims + negative, no relocate option → unknown",
+  "spec_quote": "an option saying the candidate already is / lives / is located / is based in a place ... is false unless that place is Springfield. ... No such option → status unknown.",
+  "field": {
+   "label": "Are you local to the Boston area?",
+   "type": "combo",
+   "options": [
+    "Yes, I live in Boston",
+    "No, I am not willing to relocate"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null
+ },
+ {
+  "name": "L1-03 Springfield claim is true and may be picked",
+  "spec_quote": "An option that claims Springfield is true and may be picked.",
+  "field": {
+   "label": "Do you currently live in the local area where this internship is based?",
+   "type": "combo",
+   "options": [
+    "Yes, I'm located in Idaho and available immediately",
+    "Yes, I currently live in Springfield",
+    "No, I cannot relocate"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes, I currently live in Springfield"
+ },
+ {
+  "name": "L1-04 option claiming no place works as before → Yes",
+  "spec_quote": "Options that claim no place (\"Yes\", \"Yes, I can commute\") work as before (Yes).",
+  "field": {
+   "label": "Are you able to work on-site at our office?",
+   "type": "radio",
+   "options": [
+    "Yes, I can commute",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes, I can commute"
+ },
+ {
+  "name": "L1-05 'planning on relocating' option chosen over 'based in Bay Area'",
+  "spec_quote": "Instead the rule picks the option about relocating (\"Yes, I'm willing to relocate ...\", \"planning on relocating\") that is not negative (not \"not willing\", \"unable\", \"cannot\", \"no\").",
+  "field": {
+   "label": "This role is on-site in the Bay Area. What is your situation?",
+   "type": "combo",
+   "options": [
+    "Yes, I am based in the Bay Area",
+    "Yes, I am planning on relocating to the Bay Area",
+    "No"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes, I am planning on relocating to the Bay Area"
+ },
+ {
+  "name": "L1-06 all options are non-Springfield place claims → unknown",
+  "spec_quote": "an option saying the candidate already is / lives / is located / is based in a place ... is false unless that place is Springfield. ... No such option → status unknown.",
+  "field": {
+   "label": "Are you in the San Francisco Bay Area?",
+   "type": "combo",
+   "options": [
+    "Yes, I'm in SF",
+    "Yes, I live in Boston"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null
+ },
+ {
+  "name": "L1-07 negative relocate option is not picked",
+  "spec_quote": "Instead the rule picks the option about relocating (\"Yes, I'm willing to relocate ...\", \"planning on relocating\") that is not negative (not \"not willing\", \"unable\", \"cannot\", \"no\").",
+  "field": {
+   "label": "Would you relocate for this internship?",
+   "type": "combo",
+   "options": [
+    "Yes, I'm willing to relocate",
+    "No, I am unable to relocate"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Yes, I'm willing to relocate"
+ },
+ {
+  "name": "P1-01 hourly + numbers only → 25",
+  "spec_quote": "\"numerical format\", \"numbers only\", \"digits only\", \"without special characters\", \"whole number\" — gets \"25\" when the label says hourly / per hour",
+  "field": {
+   "label": "Hourly rate (numbers only)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "25"
+ },
+ {
+  "name": "P1-02 annual + numerical format → 52000",
+  "spec_quote": "gets ... \"52000\" when it says annual / yearly / per year / salary (and not hourly)",
+  "field": {
+   "label": "Annual salary in numerical format",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "52000"
+ },
+ {
+  "name": "P1-03 yearly + digits only → 52000",
+  "spec_quote": "A pay / salary / compensation text box (no options) whose label says the answer must be digits only — ... \"digits only\" ... — gets ... \"52000\" when it says annual / yearly / per year / salary (and not hourly).",
+  "field": {
+   "label": "Yearly compensation (digits only)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "52000"
+ },
+ {
+  "name": "P1-04 salary + whole number, without special characters → 52000",
+  "spec_quote": "\"numerical format\", \"numbers only\", \"digits only\", \"without special characters\", \"whole number\" — ... \"52000\" when it says annual / yearly / per year / salary (and not hourly).",
+  "field": {
+   "label": "Salary (whole number, without special characters)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "52000"
+ },
+ {
+  "name": "P1-05 digits-only box naming neither hour nor year nor salary → unknown",
+  "spec_quote": "A digits-only pay box naming neither hour nor year nor salary → unknown.",
+  "field": {
+   "label": "Compensation (digits only)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null
+ },
+ {
+  "name": "P1-06 pay text box with no digits-only wording → free-text answer",
+  "spec_quote": "A pay text box with no digits-only wording → \"Open / per internship program standard\".",
+  "field": {
+   "label": "What are your pay expectations?",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Open / per internship program standard"
+ },
+ {
+  "name": "P1-07 hourly pay box without digits-only wording → free-text answer",
+  "spec_quote": "A pay text box with no digits-only wording → \"Open / per internship program standard\".",
+  "field": {
+   "label": "Desired hourly pay",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Open / per internship program standard"
+ },
+ {
+  "name": "R1-01 reason for leaving → reason text, not employer",
+  "spec_quote": "\"Reason for leaving\", \"reason(s) for leaving any job(s) held ...\", \"Why did you leave your last job?\" → the reason-for-leaving text above, never the employer name.",
+  "field": {
+   "label": "Reason for leaving your last job",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Fixed-term internship that ended as scheduled; returned to school full time."
+ },
+ {
+  "name": "R1-02 'Why did you leave your last job?' → reason text",
+  "spec_quote": "\"Reason for leaving\", \"reason(s) for leaving any job(s) held ...\", \"Why did you leave your last job?\" → the reason-for-leaving text above, never the employer name.",
+  "field": {
+   "label": "Why did you leave your last job?",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Fixed-term internship that ended as scheduled; returned to school full time."
+ },
+ {
+  "name": "R1-03 current or most recent employer → employer name",
+  "spec_quote": "\"Current or most recent employer\" still → \"Example State University\".",
+  "field": {
+   "label": "Current or most recent employer",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Example State University"
+ },
+ {
+  "name": "R1-04 'reason(s) for leaving any job(s) held in the past' → reason text",
+  "spec_quote": "\"Reason for leaving\", \"reason(s) for leaving any job(s) held ...\", \"Why did you leave your last job?\" → the reason-for-leaving text above, never the employer name.",
+  "field": {
+   "label": "Please list the reason(s) for leaving any job(s) held in the past",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Fixed-term internship that ended as scheduled; returned to school full time."
+ }
+]

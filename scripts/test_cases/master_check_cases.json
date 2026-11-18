@@ -1,0 +1,1843 @@
+[
+ {
+  "name": "clean_pass_with_valid_bold",
+  "why": "All bullets cite valid facts with current numbers and STAR; the bold term is an exact skill of the cited fact. Spec: 'bold_unknown: a term that contains a digit, or that (ignoring case) is neither a skill of a cited fact, nor in skills.true ...' and 'number: a number in the bullet text that is not among the CURRENT numbers of the cited facts.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "SQL"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 SQL dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": [
+        "SQL"
+       ]
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "not_resume_entry_education",
+  "why": "Master entry edu1 is education, so it is not a resume entry. Spec: 'not_resume_entry: a master entry_id that is not a resume entry.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "edu1",
+     "kind": "education",
+     "org": "State U",
+     "role": "Student",
+     "dates": "2014–2018",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 SQL dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "edu1",
+     "bullets": []
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_resume_entry"
+  ]
+ },
+ {
+  "name": "entries_missing_hp",
+  "why": "hp is a resume entry but has no master entry. Spec: 'entries_missing: a resume entry with no master entry.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Hp Corp",
+     "role": "Engineer",
+     "dates": "2018–2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "hp",
+     "S": "Built services",
+     "T": "for clients",
+     "A": "using Python",
+     "R": "saved 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "entries_missing"
+  ]
+ },
+ {
+  "name": "too_many_hp_bullets",
+  "why": "hp has 4 bullets but its maximum is 3. Spec: 'too_many: more bullets than the entry's maximum (jsa 5, hp 3, stock 2, fs 2, voice 3; any other id 5).'",
+  "facts": {
+   "entries": [
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Hp Corp",
+     "role": "Engineer",
+     "dates": "2018–2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "hp",
+     "S": "Built dashboards",
+     "T": "for sales",
+     "A": "using SQL",
+     "R": "cut time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "hp",
+     "S": "Cut costs",
+     "T": "for stores",
+     "A": "using audits",
+     "R": "saved 5 percent and 3 stores and 2 audits",
+     "numbers": [
+      "5",
+      "3",
+      "2"
+     ],
+     "skills": [
+      "Audit"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "hp",
+     "S": "Automated reports",
+     "T": "for sales team",
+     "A": "using scripts",
+     "R": "saved 4 hours and 2 hours",
+     "numbers": [
+      "4",
+      "2"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f4",
+     "entry": "hp",
+     "S": "Found mismatches",
+     "T": "in data",
+     "A": "when auditing",
+     "R": "found 2 issues",
+     "numbers": [
+      "2"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Python",
+      "Audit"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Cut costs by 5% for 3 stores; ran 2 audits.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Automated 4 slow reports for the sales team, saving 2 hours a week.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Found 2 mismatches when auditing data.",
+       "fact_ids": [
+        "f4"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "too_many"
+  ]
+ },
+ {
+  "name": "no_fact_ids_empty",
+  "why": "Bullet has empty fact_ids; with no cited facts the STAR union is empty. Spec: 'no_fact_ids: a bullet (or reserve bullet) with an empty fact_ids list.' and 'star_missing: a bullet ... whose cited facts ... together have an empty S, T, A or R.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Found mismatches when auditing data.",
+       "fact_ids": [],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "no_fact_ids",
+   "star_missing"
+  ]
+ },
+ {
+  "name": "unknown_fact_id",
+  "why": "Bullet cites f999 which does not exist. Spec: 'unknown_fact / wrong_entry / off_resume / not_bullet: a cited id that does not exist...'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1",
+        "f999"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "unknown_fact"
+  ]
+ },
+ {
+  "name": "wrong_entry_cite",
+  "why": "jsa bullet cites f2, a fact of hp. Spec: 'wrong_entry ... a cited id that ... belongs to another entry.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "hp",
+     "kind": "job",
+     "org": "Hp Corp",
+     "role": "Engineer",
+     "dates": "2018–2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "hp",
+     "S": "Built services",
+     "T": "for clients",
+     "A": "using Python",
+     "R": "saved 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "hp",
+     "bullets": [
+      {
+       "text": "Built 3 services to speed up delivery.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "wrong_entry"
+  ]
+ },
+ {
+  "name": "off_resume_cite",
+  "why": "Bullet cites f2 with resume_ok false. Spec: 'off_resume ... has resume_ok false.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Built prototypes",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "saved 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": false,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 prototypes to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "off_resume"
+  ]
+ },
+ {
+  "name": "not_bullet_cite",
+  "why": "Bullet cites f2 with bullet_ok false. Spec: 'not_bullet ... has bullet_ok false.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Built prototypes",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "saved 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 prototypes to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_bullet"
+  ]
+ },
+ {
+  "name": "number_not_current",
+  "why": "Bullet says 5 but cited fact numbers are ['3']. Spec: 'number: a number in the bullet text that is not among the CURRENT numbers of the cited facts.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 5 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "number"
+  ]
+ },
+ {
+  "name": "never_phrase_bullet",
+  "why": "Entry never includes 'synergy' and bullet contains it. Spec: 'never: the bullet contains (case-insensitive, whole phrase) a \"never\" phrase of its entry or of a cited fact.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": [
+      "synergy"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 synergy dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "never"
+  ]
+ },
+ {
+  "name": "pair_missing_other",
+  "why": "Cited fact pair ['dashboard','summary']; bullet contains dashboard but not summary. Spec: 'pair: a cited fact has pair [a, b], the bullet contains a ... but not b.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [
+      [
+       "dashboard",
+       "summary"
+      ]
+     ],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "pair"
+  ]
+ },
+ {
+  "name": "star_missing_A",
+  "why": "Cited fact has empty A. Spec: 'star_missing: a bullet ... whose cited facts ... together have an empty S, T, A or R.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "star_missing"
+  ]
+ },
+ {
+  "name": "skill_not_true_item",
+  "why": "Master skill 'Excel' equals skills.not_true. Spec: 'skill_not_true: a skills item equal (ignoring case) to an entry of skills.not_true.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Excel"
+     ]
+    },
+    "not_true": [
+     "Excel"
+    ]
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "Excel"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "skill_not_true"
+  ]
+ },
+ {
+  "name": "skill_unknown_item",
+  "why": "Master skill 'COBOL' is not in skills.true or any resume_ok fact skills. Spec: 'skill_unknown: a skills item that is neither in skills.true ... nor in the skills of any fact with resume_ok not false.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [
+    {
+     "label": "Tools",
+     "items": [
+      "COBOL"
+     ]
+    }
+   ],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "skill_unknown"
+  ]
+ },
+ {
+  "name": "summary_number_bad",
+  "why": "Summary says 7 but no resume_ok fact has 7. Spec: 'summary_number: a number in the summary that is not a current number of any resume_ok fact.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst with 7 years of experience.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "summary_number"
+  ]
+ },
+ {
+  "name": "summary_never_phrase",
+  "why": "Summary contains entry never phrase 'synergy'. Spec: 'summary_never: the summary contains any never phrase of any entry or fact.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": [
+      "synergy"
+     ]
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst who avoids synergy.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "summary_never"
+  ]
+ },
+ {
+  "name": "summary_too_long",
+  "why": "Summary is over 320 characters. Spec: 'summary_length: summary longer than 320 characters.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting, dashboards, and clean data. Works with teams to improve processes, document results, and share clear updates. Builds reports that help leaders understand trends and make decisions. Keeps data tidy and supports daily operations with accurate records and timely summaries. Communicates findings in plain language and keeps stakeholders informed.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "summary_length"
+  ]
+ },
+ {
+  "name": "bold_too_many_terms",
+  "why": "Bold list has 3 terms. Spec: 'bold_too_many: more than 2 terms.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL",
+      "Excel",
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Excel",
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 SQL Excel Python dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": [
+        "SQL",
+        "Excel",
+        "Python"
+       ]
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "bold_too_many"
+  ]
+ },
+ {
+  "name": "bold_missing_case",
+  "why": "Bold term 'SQL' is not exact case-sensitive substring of 'sql'. Spec: 'bold_missing: a term that is empty or not written exactly (case-sensitive substring) in the bullet text.'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 sql dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": [
+        "SQL"
+       ]
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "bold_missing"
+  ]
+ },
+ {
+  "name": "bold_unknown_term",
+  "why": "Bold term 'Excel' is not a skill of cited fact nor in skills.true. Spec: 'bold_unknown: a term that contains a digit, or that (ignoring case) is neither a skill of a cited fact, nor in skills.true...'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "Built 3 Excel dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": [
+        "Excel"
+       ]
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "bold_unknown"
+  ]
+ },
+ {
+  "name": "opener_and_causal",
+  "why": "First bullet opens with 'To ...' before comma; second contains 'because'. Spec: 'a bullet opening with a context phrase ... is an \"opener\" problem' and 'a \"causal\" problem: the text contains ... \"because\"...'",
+  "facts": {
+   "entries": [
+    {
+     "id": "jsa",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Analyst",
+     "dates": "2020–2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "jsa",
+     "S": "Built dashboards",
+     "T": "for sales team",
+     "A": "using SQL",
+     "R": "cut reporting time by 3 hours",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "jsa",
+     "S": "Found mismatches",
+     "T": "in data",
+     "A": "when auditing",
+     "R": "data was slow",
+     "numbers": [],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data analyst",
+   "summary": "Data analyst focused on reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "jsa",
+     "bullets": [
+      {
+       "text": "To improve reporting, built 3 dashboards to speed up reviews.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Found mismatches because the data was slow.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "opener",
+   "causal"
+  ]
+ }
+]

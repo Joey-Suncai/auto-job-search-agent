@@ -1,0 +1,3 @@
+{
+  "saved_defense_answer_armed_forces_unable": "Claude 2026-11-11: the case reads 'unable to work for the armed forces' as the saved kind, but the saved entry is Joey's own pattern ('would/could not (be able to) … contribute/support/work … military'), which does not cover 'unable'; and 'work for the armed forces' may ask about employment. The rules give 'unknown' = Joey is asked, the safe side the spec allows for every non-saved defense question (rule 2). Not a code fault; widening the saved pattern is a data change for Joey."
+}

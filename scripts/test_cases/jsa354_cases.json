@@ -1,0 +1,388 @@
+[
+ {
+  "name": "A multi option list picks Mandarin but not Other",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "Spanish",
+    "French",
+    "Mandarin",
+    "Other"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Mandarin",
+  "spec_quote": "E.g. label \"Languages Spoken\", type multi, options Spanish / French / Mandarin / Other → \"Mandarin\" (English has no option; \"Other\" is NOT picked)."
+ },
+ {
+  "name": "A option list joins profile-order picks with pipe",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "English",
+    "Mandarin",
+    "Spanish"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Mandarin | English",
+  "spec_quote": "Options English / Mandarin / Spanish → \"Mandarin | English\"."
+ },
+ {
+  "name": "A exact-start option beats earlier containing option",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "Chinese (Mandarin) - native",
+    "Fluency in Chinese (Mandarin)",
+    "American English",
+    "English"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin) - native | English",
+  "spec_quote": "For each profile language, in profile order, pick the option that starts with it, else the first option containing it; answer = picks joined by \" | \"."
+ },
+ {
+  "name": "A profile language with no matching option is omitted",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "Spanish",
+    "French",
+    "English"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "English",
+  "spec_quote": "A profile language with no matching option is simply not picked (never invent an option)."
+ },
+ {
+  "name": "A plural label combo list is answered as option list",
+  "fn": "rules",
+  "field": {
+   "label": "Languages",
+   "type": "combo",
+   "options": [
+    "English",
+    "Mandarin"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Mandarin | English",
+  "spec_quote": "A. Option lists (multi / checkbox, or a plural label) — existing behaviour, must stay"
+ },
+ {
+  "name": "A checkbox language list is answered",
+  "fn": "rules",
+  "field": {
+   "label": "Select all languages spoken",
+   "type": "checkbox",
+   "options": [
+    "Spanish",
+    "English",
+    "Mandarin"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Mandarin | English",
+  "spec_quote": "At least two options name a language and no option is a level code (A1..C2)."
+ },
+ {
+  "name": "A containing but not starting option is used when needed",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "Fluency in Chinese (Mandarin)",
+    "English"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Fluency in Chinese (Mandarin) | English",
+  "spec_quote": "pick the option that starts with it, else the first option containing it"
+ },
+ {
+  "name": "A option list with a level code is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "English",
+    "Mandarin",
+    "A1"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "At least two options name a language and no option is a level code (A1..C2)."
+ },
+ {
+  "name": "A option list with fewer than two language options is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Languages Spoken",
+   "type": "multi",
+   "options": [
+    "English",
+    "Other"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "At least two options name a language"
+ },
+ {
+  "name": "B textarea asking which languages you speak lists all profile languages",
+  "fn": "rules",
+  "field": {
+   "label": "Which languages do you speak?",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "answers with every profile language NAME, in profile order, joined by \", \": \"Chinese (Mandarin), English\"."
+ },
+ {
+  "name": "B text languages you know lists all profile languages",
+  "fn": "rules",
+  "field": {
+   "label": "Languages you know",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "the label contains \"language\" or \"languages\" or \"language(s)\" AND one of: spoken, speak, speaks, fluent, know, list"
+ },
+ {
+  "name": "B textarea list fluent languages lists all profile languages",
+  "fn": "rules",
+  "field": {
+   "label": "List languages you are fluent in",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "the label contains \"language\" or \"languages\" or \"language(s)\" AND one of: spoken, speak, speaks, fluent, know, list"
+ },
+ {
+  "name": "B language(s) speak label lists all profile languages",
+  "fn": "rules",
+  "field": {
+   "label": "Which language(s) do you speak fluently?",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "the label contains \"language\" or \"languages\" or \"language(s)\" AND one of: spoken, speak, speaks, fluent, know, list"
+ },
+ {
+  "name": "B spoken label lists all profile languages",
+  "fn": "rules",
+  "field": {
+   "label": "Languages spoken",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "the label contains \"language\" or \"languages\" or \"language(s)\" AND one of: spoken, speak, speaks, fluent, know, list"
+ },
+ {
+  "name": "B other than English excludes English",
+  "fn": "rules",
+  "field": {
+   "label": "Other than English, which languages do you speak?",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin)",
+  "spec_quote": "If the label says \"other than English\" (or \"besides English\", \"apart from English\"), leave out English: \"Chinese (Mandarin)\"."
+ },
+ {
+  "name": "B besides English excludes English",
+  "fn": "rules",
+  "field": {
+   "label": "Besides English, list languages spoken",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin)",
+  "spec_quote": "If the label says \"other than English\" (or \"besides English\", \"apart from English\"), leave out English: \"Chinese (Mandarin)\"."
+ },
+ {
+  "name": "B apart from English excludes English",
+  "fn": "rules",
+  "field": {
+   "label": "Apart from English, which languages are you fluent in?",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin)",
+  "spec_quote": "If the label says \"other than English\" (or \"besides English\", \"apart from English\"), leave out English: \"Chinese (Mandarin)\"."
+ },
+ {
+  "name": "B preferred label is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Preferred languages",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Not answered by this rule (status unknown or no answer — NOT \"ok\" with a language list): labels with \"preferred\", \"proficiency\", \"level\", \"rate\", \"native language\", \"first language\", \"primary language\", \"mother tongue\""
+ },
+ {
+  "name": "B rate/proficiency/level label is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Rate your language proficiency level",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Not answered by this rule (status unknown or no answer — NOT \"ok\" with a language list): labels with \"preferred\", \"proficiency\", \"level\", \"rate\", \"native language\", \"first language\", \"primary language\", \"mother tongue\""
+ },
+ {
+  "name": "B native language label is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Native language",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Not answered by this rule (status unknown or no answer — NOT \"ok\" with a language list): labels with \"preferred\", \"proficiency\", \"level\", \"rate\", \"native language\", \"first language\", \"primary language\", \"mother tongue\""
+ },
+ {
+  "name": "B first language label is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "First language",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Not answered by this rule (status unknown or no answer — NOT \"ok\" with a language list): labels with \"preferred\", \"proficiency\", \"level\", \"rate\", \"native language\", \"first language\", \"primary language\", \"mother tongue\""
+ },
+ {
+  "name": "B primary language / mother tongue label is not answered",
+  "fn": "rules",
+  "field": {
+   "label": "Primary language (mother tongue)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Not answered by this rule (status unknown or no answer — NOT \"ok\" with a language list): labels with \"preferred\", \"proficiency\", \"level\", \"rate\", \"native language\", \"first language\", \"primary language\", \"mother tongue\""
+ },
+ {
+  "name": "B coding language question is never answered by this rule",
+  "fn": "rules",
+  "field": {
+   "label": "What coding language(s) are you proficient in?",
+   "type": "textarea",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Questions about programming / coding / code / software / scripting languages are never answered by this rule (status stays whatever the other rules give; here: not \"ok\" with a language)."
+ },
+ {
+  "name": "B single yes/no question naming one language is not a list",
+  "fn": "rules",
+  "field": {
+   "label": "Do you speak Mandarin?",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "A single yes/no style question that names one language (\"Do you speak Mandarin?\") is not a list: not answered here."
+ },
+ {
+  "name": "B singular statement label stays unanswered (Elanco 11-01, replay)",
+  "fn": "rules",
+  "field": {
+   "label": "I am fluent in this language.",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "a singular label such as \"I am fluent in this language.\" ... is not answered by this rule"
+ },
+ {
+  "name": "B singular question stays unanswered",
+  "fn": "rules",
+  "field": {
+   "label": "Which language do you speak at home?",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "Which language do you speak at home? is not a list question"
+ },
+ {
+  "name": "B other than two languages leaves none (review)",
+  "fn": "rules",
+  "field": {
+   "label": "List any languages you speak (other than English and Chinese)",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "review finding"
+ },
+ {
+  "name": "B other than a non-fact language keeps both (review)",
+  "fn": "rules",
+  "field": {
+   "label": "Languages you speak other than Spanish or French",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "ok",
+  "expect_value": "Chinese (Mandarin), English",
+  "spec_quote": "review finding"
+ },
+ {
+  "name": "B natively is a native-language question, never answered (English is never Native, 11-08)",
+  "fn": "rules",
+  "field": {
+   "label": "What languages do you speak natively?",
+   "type": "text",
+   "options": []
+  },
+  "expect_status": "unknown",
+  "expect_value": null,
+  "spec_quote": "review finding"
+ }
+]

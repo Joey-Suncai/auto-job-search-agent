@@ -214,8 +214,8 @@
   "label": "Signature of Applicant",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -223,8 +223,8 @@
   "label": "Applicant Signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -232,8 +232,8 @@
   "label": "Electronic Signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "\"Signature of Applicant\", \"Applicant Signature\", \"Electronic Signature\" (text) → \"Alex Doe\".",
   "ambiguous": false
  },
  {

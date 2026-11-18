@@ -1,0 +1,428 @@
+[
+ {
+  "name": "norm_step_none",
+  "fn": "norm_step",
+  "value": null,
+  "expect": ""
+ },
+ {
+  "name": "norm_step_blank_whitespace",
+  "fn": "norm_step",
+  "value": "   ",
+  "expect": ""
+ },
+ {
+  "name": "norm_step_current_step_prefix",
+  "fn": "norm_step",
+  "value": "current step 3 of 6 Application Questions",
+  "expect": "application questions"
+ },
+ {
+  "name": "norm_step_completed_step_prefix_case",
+  "fn": "norm_step",
+  "value": "Completed Step 2 of 6 My Experience",
+  "expect": "my experience"
+ },
+ {
+  "name": "norm_step_step_prefix_uppercase_numbers",
+  "fn": "norm_step",
+  "value": "STEP 1 OF 6 My Information",
+  "expect": "my information"
+ },
+ {
+  "name": "norm_step_collapse_spaces_trim_lower",
+  "fn": "norm_step",
+  "value": "  My   Experience  ",
+  "expect": "my experience"
+ },
+ {
+  "name": "norm_step_current_step_prefix_extra_spaces_after",
+  "fn": "norm_step",
+  "value": "current step 12 of 13   Voluntary Disclosures",
+  "expect": "voluntary disclosures"
+ },
+ {
+  "name": "norm_step_no_prefix_case",
+  "fn": "norm_step",
+  "value": "self IDENTIFY",
+  "expect": "self identify"
+ },
+ {
+  "name": "checkpoint_update_none_cp_adds_normalized_step",
+  "fn": "checkpoint_update",
+  "cp": null,
+  "step": "My Information",
+  "at": "2026-11-17T10:00:00Z",
+  "expect": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_empty_cp_adds_prefixed_step",
+  "fn": "checkpoint_update",
+  "cp": {},
+  "step": "current step 2 of 6 My Experience",
+  "at": "2026-11-17T10:05:00Z",
+  "expect": {
+   "done": [
+    "my experience"
+   ],
+   "at": "2026-11-17T10:05:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_does_not_mutate_original_cp",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": "My Experience",
+  "at": "2026-11-17T10:10:00Z",
+  "expect": {
+   "done": [
+    "my information",
+    "my experience"
+   ],
+   "at": "2026-11-17T10:10:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_duplicate_step_keeps_single_entry_updates_at",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "my information",
+    "my experience"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": " My   Information ",
+  "at": "2026-11-17T10:15:00Z",
+  "expect": {
+   "done": [
+    "my information",
+    "my experience"
+   ],
+   "at": "2026-11-17T10:15:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_blank_step_no_append_updates_at",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": "   ",
+  "at": "2026-11-17T10:20:00Z",
+  "expect": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:20:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_empty_string_step_no_append_updates_at",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": "",
+  "at": "2026-11-17T10:25:00Z",
+  "expect": {
+   "done": [
+    "my information"
+   ],
+   "at": "2026-11-17T10:25:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_adds_third_step_preserves_order",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "my information",
+    "my experience"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": "Application Questions",
+  "at": "2026-11-17T10:30:00Z",
+  "expect": {
+   "done": [
+    "my information",
+    "my experience",
+    "application questions"
+   ],
+   "at": "2026-11-17T10:30:00Z"
+  }
+ },
+ {
+  "name": "checkpoint_update_duplicate_after_normalizing_screen_reader_prefix",
+  "fn": "checkpoint_update",
+  "cp": {
+   "done": [
+    "voluntary disclosures"
+   ],
+   "at": "2026-11-17T10:00:00Z"
+  },
+  "step": "current step 4 of 6 Voluntary Disclosures",
+  "at": "2026-11-17T10:35:00Z",
+  "expect": {
+   "done": [
+    "voluntary disclosures"
+   ],
+   "at": "2026-11-17T10:35:00Z"
+  }
+ },
+ {
+  "name": "resume_vanguard_stop_targets_application_questions",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": "Application Questions"
+ },
+ {
+  "name": "resume_nothing_saved_returns_null",
+  "fn": "resume_target",
+  "done": [],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": null
+ },
+ {
+  "name": "resume_everything_saved_returns_null",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience",
+   "application questions",
+   "voluntary disclosures",
+   "self identify",
+   "review"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": null
+ },
+ {
+  "name": "resume_skips_create_account_sign_in",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience"
+  ],
+  "bar": [
+   "Create Account/Sign In",
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Review"
+  ],
+  "expect": "Application Questions"
+ },
+ {
+  "name": "resume_first_application_page_is_target_returns_null",
+  "fn": "resume_target",
+  "done": [
+   "my experience"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": null
+ },
+ {
+  "name": "resume_target_after_first_application_page_saved",
+  "fn": "resume_target",
+  "done": [
+   "my information"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": "My Experience"
+ },
+ {
+  "name": "resume_compares_done_with_normalization_case_and_spacing",
+  "fn": "resume_target",
+  "done": [
+   "  My   Information ",
+   "MY EXPERIENCE"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": "Application Questions"
+ },
+ {
+  "name": "resume_returns_bar_entry_exactly_with_screen_reader_prefix",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience"
+  ],
+  "bar": [
+   "current step 1 of 6 My Information",
+   "current step 2 of 6 My Experience",
+   "current step 3 of 6 Application Questions",
+   "current step 4 of 6 Voluntary Disclosures",
+   "current step 5 of 6 Self Identify",
+   "current step 6 of 6 Review"
+  ],
+  "expect": "current step 3 of 6 Application Questions"
+ },
+ {
+  "name": "resume_skips_sign_in_prefix_and_targets_review",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience",
+   "application questions",
+   "voluntary disclosures"
+  ],
+  "bar": [
+   "Sign In",
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Review"
+  ],
+  "expect": "Review"
+ },
+ {
+  "name": "resume_all_application_pages_saved_with_account_entries_returns_null",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience",
+   "application questions",
+   "review"
+  ],
+  "bar": [
+   "Create Account/Sign In",
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Review"
+  ],
+  "expect": null
+ },
+ {
+  "name": "resume_done_includes_account_step_and_skips_it",
+  "fn": "resume_target",
+  "done": [
+   "create account/sign in",
+   "my information"
+  ],
+  "bar": [
+   "Create Account/Sign In",
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Review"
+  ],
+  "expect": "My Experience"
+ },
+ {
+  "name": "resume_first_non_done_is_first_application_page_even_after_account_skip_returns_null",
+  "fn": "resume_target",
+  "done": [
+   "my experience"
+  ],
+  "bar": [
+   "Create Account/Sign In",
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Review"
+  ],
+  "expect": null
+ },
+ {
+  "name": "resume_target_voluntary_disclosures",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my experience",
+   "application questions"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": "Voluntary Disclosures"
+ },
+ {
+  "name": "resume_duplicate_done_entries_do_not_change_target",
+  "fn": "resume_target",
+  "done": [
+   "my information",
+   "my information",
+   "my experience"
+  ],
+  "bar": [
+   "My Information",
+   "My Experience",
+   "Application Questions",
+   "Voluntary Disclosures",
+   "Self Identify",
+   "Review"
+  ],
+  "expect": "Application Questions"
+ }
+]

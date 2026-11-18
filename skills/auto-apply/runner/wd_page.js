@@ -64,7 +64,17 @@ function __wdExtract() {
     else if (ta) { type = 'textarea'; value = ta.value; }
     else if (inp) { type = 'text'; value = inp.value; }
     else return;
-    out.push({ key: k, label, required, type, options, value: N(value), section, panel, sel: '[data-cx-k="' + k + '"]', aid: box.getAttribute('data-automation-id') });
+    const rec = { key: k, label, required, type, options, value: N(value), section, panel, sel: '[data-cx-k="' + k + '"]', aid: box.getAttribute('data-automation-id') };
+    const tb = type === 'textarea' ? ta : (type === 'text' ? inp : null);
+    if (tb) {                                                    // JSA-312: the box's own limits and hint ("0/200 characters")
+      if (tb.maxLength > 0) rec.maxlength = tb.maxLength;
+      if (tb.minLength > 0) rec.minlength = tb.minLength;
+      if (tb.getAttribute('pattern')) rec.pattern = tb.getAttribute('pattern');
+      rec.input_type = tb.type || '';
+      const hint = [...box.querySelectorAll('[data-automation-id*="haracter"], [data-automation-id="formFieldHint"], [id$="-hint"], [data-automation-id="errorMessage"]')].map(x => N(x.textContent)).join(' ');
+      if (hint) rec.hint = hint.slice(0, 300);
+    }
+    out.push(rec);
   });
   return { step: __wdStep(), url: location.href, auth: __wdAuth(), fields: out };
 }

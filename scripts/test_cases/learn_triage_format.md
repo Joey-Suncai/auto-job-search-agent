@@ -1,0 +1,6 @@
+A JSON array of 36 cases of four kinds.
+Kind 1: {"name": "<unique snake_case>", "fn": "trial_folder", "name_arg": "<folder name or null>", "existing": [names] or null, "expect": true|false}.
+Kind 2: {"name": "...", "fn": "validate_item", "item": <any JSON value>, "material": "<text>", "ids": [ids], "expect": {"category":..., "group_with": [...], "evidence": "...", "confidence": "...", "reason": "..."}}.
+Kind 3: {"name": "...", "fn": "combine_reads", "first": "<cat>", "second": "<cat>" or null, "expect": "<cat>"}.
+Kind 4: {"name": "...", "fn": "merge_groups", "items": [{"id": "c1", "group_with": ["c2"]}], "expect": [["c1","c2"], ["c3"]]}.
+Make 6 of kind 1, 12 of kind 2, 6 of kind 3, 12 of kind 4. Use real material text (a form question like "Do you have a disability or chronic condition (physical, visual, auditory, cognitive, mental, emotional)?" with options Yes / No / I prefer to self-describe; a runner timeout "TimeoutError: locator.click: Timeout 30000ms exceeded"; a wrong answer note "answered 'CPT' instead of 'F-1'") and real folders (2026-11-11_Entrust_AI_Developer_Intern, dry_Syngenta_test, out). Cover case differences in evidence, collapsed whitespace, evidence only whitespace, group_with with unknown / self / duplicate ids, non-list group_with, transitive chains, one-way claims.

@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
 sys.path.insert(0, HERE)
 import store  # noqa: E402
+import data_git  # noqa: E402  (JSA-358: the writer commits its own file)
 sys.path.insert(0, os.path.join(ROOT, 'skills', 'auto-apply', 'scripts'))
 import tiktok_slots  # noqa: E402  (TikTok / ByteDance rows carry their half-year `period`, JSA-097)
 
@@ -55,6 +56,18 @@ def folder_job_ids(apps_dir=APPS, batches_dir=os.path.join(RUNNER, 'batches')):
     return out
 
 
+RESUME_FILE = re.compile(r'_Resume_.*_([A-Z]-[A-Za-z]+)\.(?:pdf|docx)$')
+
+
+def resume_version(files):
+    """Pure (tested). The résumé version (A-Classic …) named in a folder's file names, '' when none (JSA-360)."""
+    for f in sorted(files or []):
+        m = RESUME_FILE.search(f)
+        if m:
+            return m.group(1)
+    return ''
+
+
 def new_row(job, folder, day):
     return {'action_needed': '', 'applied_on': day, 'company': job.get('company', ''), 'cycle': 'Summer 2027' if 'intern' in (job.get('level') or '').lower() else '',
             'days_since_applied': 0, 'email_url': '', 'job_id': job['id'], 'last_checked': day, 'last_email': '暂无回应', 'last_email_date': '',
@@ -64,8 +77,10 @@ def new_row(job, folder, day):
             'track': job.get('track', ''), 'updated': day, 'url': job.get('url', '')}
 
 
-def sync(results, apps, jobs, fmap):
-    """Pure step (tested). Mutates apps; returns (changes, unknown_folders, submitted_folders)."""
+def sync(results, apps, jobs, fmap, versions=None):
+    """Pure step (tested). Mutates apps; returns (changes, unknown_folders, submitted_folders). versions = {folder: résumé
+    version} (JSA-360): written as `resume_version` on a row this sync creates or promotes."""
+    versions = versions or {}
     jobs_by = {j['id']: j for j in jobs}
     changes, unknown, done = [], [], []
     for r in results:
@@ -84,10 +99,12 @@ def sync(results, apps, jobs, fmap):
             a.update(status='Applied', applied_on=a.get('applied_on') or day, updated=day, last_checked=day,
                      last_email=a.get('last_email') or '暂无回应',
                      notes=(a.get('notes', '') + f' | submitted {day} (runner, synced)').strip(' |'))
+            if versions.get(folder): a['resume_version'] = versions[folder]
             if tiktok_slots.counted(a): a.setdefault('period', tiktok_slots.app_period(a))
             changes.append(f'{jid} {a.get("company")}: {rows[0].get("status") or "—"} → Applied')
         elif jid in jobs_by:
             apps.append(new_row(jobs_by[jid], folder, day))
+            if versions.get(folder): apps[-1]['resume_version'] = versions[folder]
             if tiktok_slots.counted(apps[-1]): apps[-1]['period'] = tiktok_slots.app_period(apps[-1])
             changes.append(f'{jid} {jobs_by[jid].get("company")}: new Applied row')
         else:
@@ -95,13 +112,68 @@ def sync(results, apps, jobs, fmap):
     return changes, unknown, sorted(set(done))
 
 
-def close_queue(text, folders, day=''):
-    """Tick every open queue line of a submitted folder. Returns (new_text, n_closed)."""
-    n = 0
+CLOSED_STATUS = ('Applied', 'Rejected')                       # tracker statuses that end a queue line (JSA-373)
+
+
+def settled_reason(files, record_text, status):
+    """Pure (tested; JSA-373). Why a folder's open queue lines are moot: the tracker says Applied / Rejected, the folder holds
+    a confirmation page (submitted_confirmation.png), or its application_record.md has a `## Submitted…` section (a hand
+    submit). '' when none — a folder that only reached review / needs-user stays open."""
+    if status in CLOSED_STATUS:
+        return f'tracker {status}'
+    if 'submitted_confirmation.png' in (files or ()):
+        return 'confirmation page'
+    if any(re.match(r'## Submitted( by\b|\s*$|\s*[(—-])', l) for l in (record_text or '').split('\n')):
+        return 'application record: Submitted'
+    return ''
+
+
+def queue_folders(text):
+    """Pure. The folder names (the **bold** token) of the open `- [ ]` lines."""
     out = []
     for line in text.split('\n'):
-        if line.startswith('- [ ]') and any(f'**{f}**' in line for f in folders):
-            line = line.replace('- [ ]', '- [x]', 1) + ' · closed: submitted (sync_results)'
+        if line.startswith('- [ ]'):
+            m = re.search(r'\*\*(.+?)\*\*', line)
+            if m and m.group(1) not in out:
+                out.append(m.group(1))
+    return out
+
+
+def settled_folders(text, apps_dir, apps, fmap):
+    """folder → reason for the open queue lines whose application is over (settled_reason on the folder's files, record and
+    tracker row). A folder that does not exist under applications/ is skipped."""
+    by_job = {}
+    for a in apps:
+        by_job.setdefault(a.get('job_id'), []).append(a.get('status'))
+    out = {}
+    for f in queue_folders(text):
+        d = os.path.join(apps_dir, f)
+        if not os.path.isdir(d):
+            continue
+        rec = os.path.join(d, 'application_record.md')
+        try:
+            rtext = open(rec, encoding='utf-8').read() if os.path.exists(rec) else ''
+        except OSError:
+            rtext = ''
+        sts = by_job.get(fmap.get(f), [])
+        st = next((s for s in sts if s in CLOSED_STATUS), None)
+        why = settled_reason(os.listdir(d), rtext, st)
+        if why:
+            out[f] = why
+    return out
+
+
+def close_queue(text, folders, day=''):
+    """Tick every open queue line of a settled folder. `folders` = submitted folder names, or {folder: reason} (JSA-373).
+    Returns (new_text, n_closed)."""
+    n = 0
+    out = []
+    reasons = folders if isinstance(folders, dict) else {f: 'submitted (sync_results)' for f in folders}
+    for line in text.split('\n'):
+        m = re.search(r'\*\*(.+?)\*\*', line) if line.startswith('- [ ]') else None
+        hit = m.group(1) if m and m.group(1) in reasons else None      # the line's own folder = its first bold token
+        if hit:
+            line = line.replace('- [ ]', '- [x]', 1) + f' · closed: {reasons[hit]}'
             n += 1
         out.append(line)
     return '\n'.join(out), n
@@ -113,14 +185,27 @@ def run(dry=False, only=None, log=print):
     if only:
         results = [r for r in results if r.get('folder') == only]
     apps, jobs = store.load('applications'), store.load('jobs')
-    changes, unknown, done = sync(results, apps, jobs, folder_job_ids())
+    versions = {}
+    for r in results:
+        try:
+            v = resume_version(os.listdir(os.path.join(APPS, r.get('folder') or '')))
+        except OSError:
+            v = ''
+        if v: versions[r['folder']] = v
+    changes, unknown, done = sync(results, apps, jobs, folder_job_ids(), versions)
     qp = os.path.join(RUNNER, 'queue.md')
-    qtext, closed = (close_queue(open(qp, encoding='utf-8').read(), done) if os.path.exists(qp) else ('', 0))
+    qraw = open(qp, encoding='utf-8').read() if os.path.exists(qp) else ''
+    reasons = {f: 'submitted (sync_results)' for f in done}
+    if not only:                                                 # the full pass also ticks folders settled by hand or by the tracker (JSA-373)
+        for f, why in settled_folders(qraw, APPS, apps, folder_job_ids()).items():
+            reasons.setdefault(f, f'{why} (sync_results)')
+    qtext, closed = close_queue(qraw, reasons) if qraw else ('', 0)
     if not dry:
         if changes:
             store.save('applications', apps)
         if closed:
             open(qp, 'w', encoding='utf-8').write(qtext)
+            data_git.commit_paths([qp], f'data: queue — {closed} line(s) closed by sync_results')   # JSA-358
     for c in changes:
         log('tracker: ' + c)
     for u in unknown:

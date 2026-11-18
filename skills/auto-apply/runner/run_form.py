@@ -19,6 +19,7 @@ data/runner/results.jsonl + queue.md; after a confirmed submit the tracker row (
 Lever: when every check passed but nothing was confirmed (dry-run, CAPTCHA, "error verifying"), manual_submit.md for Joey
 (manual_submit.py, JSA-042); he records his own submit with `sync_results.py --manual <folder>`.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, hashlib, json, os, re, shutil, subprocess, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -43,7 +44,38 @@ SOLVED = {'lever': 'textarea[name="h-captcha-response"], textarea[name="g-recapt
           'ashby': 'textarea[name="g-recaptcha-response"]'}
 SUBMIT = {'lever': '#btn-submit, button[type="submit"]:has-text("Submit")', 'ashby': 'button:has-text("Submit Application")'}
 VERIFY_ERR = re.compile(r'error verifying your application', re.I)   # Lever: hCaptcha token rejected → form reset, re-attach + resubmit
-CONFIRM = re.compile(r'application (has been |was )?(successfully )?(submitted|received)|thank(s| you) for (applying|your (application|interest)|submitting your application)|we.ve received your application', re.I)
+CONFIRM = re.compile(r'application (has been |was )?(successfully )?(submitted|received)|thank(s| you) for (applying|your application|submitting your application)|we.ve received your application', re.I)
+# JSA-299: no "thanks for your interest" (Lever / Ashby forms greet with it); a confirmation also needs the page to change
+
+
+def form_snap(page, ats):
+    """{'url', 'text', 'form'} for confirm_page.judge: form = the Submit button is visible."""
+    try:
+        b = page.locator(SUBMIT[ats]).first
+        form = b.is_visible() if page.locator(SUBMIT[ats]).count() else False
+    except Exception:
+        form = None
+    try:
+        text = page.inner_text('body')[:20000]
+    except Exception:
+        text = ''
+    return {'url': page.url, 'text': text, 'form': form}
+
+
+ASHBY_SUCCESS = re.compile(r'(?m)^\s*Success\s*$')   # Ashby's green banner title over "Thanks for your interest in X!" (an Ashby employer 10-31)
+
+
+def form_done(before, after, ats=None):
+    """Pure (tested). (confirmed, why) after the Submit click: the page changed and says so (JSA-299). Ashby: its success
+    banner ("Success" title line, new since the click, the Submit button gone) counts too — the banner's own sentence is
+    often only "Thanks for your interest in X!", which alone never counts."""
+    import confirm_page as CP
+    ok, why = CP.judge(before, after, done_re=CONFIRM,
+                       extra=lambda s: bool(re.search(r'/thanks|/confirmation|application-submitted', CP.url_key(s.get('url')))))
+    if not ok and ats == 'ashby' and CP.changed(before, after) and after.get('form') is False \
+            and ASHBY_SUCCESS.search(after.get('text') or '') and not ASHBY_SUCCESS.search(before.get('text') or ''):
+        return True, 'Ashby success banner (form gone)'
+    return ok, why
 
 
 def now():
@@ -52,6 +84,28 @@ def now():
 
 def N(s):
     return re.sub(r'\s+', ' ', str(s or '')).strip()
+
+
+def label_re(label):
+    """Pure (tested, JSA-323). A regex for the WHOLE label of an Ashby field: spaces may be any whitespace (Ashby writes
+    "LinkedIn\xa0 Profile"), a trailing required "*" is allowed, nothing else before or after."""
+    words = [re.escape(w) for w in str(label or '').split()]
+    return re.compile(r'^\s*' + r'\s+'.join(words) + r'\s*\*?\s*$', re.I)
+
+
+def not_in_options(f):
+    """Pure (tested, JSA-323, Joey 2026-11-11 「Add value-in-list check」). A choice field (select / radio / multi) whose
+    answer is not one of ITS OWN options → the error that stops it; None when the answer is in the list or the field
+    has no option list. Each field is filled only from its own options (an Ashby employer 11-11: "Man" was meant for one gender
+    question and must never be tried on a Male / Female list)."""
+    if f.get('type') not in ('select', 'radio', 'multi') or not f.get('options'):
+        return None
+    opts = {N(o).lower() for o in f['options']}
+    parts = [x.strip() for x in str(f.get('answer')).split(' | ')] if f['type'] == 'multi' else [str(f.get('answer'))]
+    miss = [x for x in parts if N(x).lower() not in opts]
+    if miss:
+        return f'answer "{" | ".join(miss)[:60]}" is not one of this field\'s options — not filled'
+    return None
 
 
 def queue(folder, msg, url):
@@ -193,6 +247,15 @@ def pick_file(folder, f):
     return None
 
 
+def receipt_plan(mail_wait, captcha_seen):
+    """Pure (tested, JSA-391). What to do when the page gave no confirmation after Submit: 'joey' (a CAPTCHA was met — the
+    submit probably did not go through), 'wait' (only when --mail-wait N > 0 asks for the old in-place wait), else 'pending':
+    record `unconfirmed` quietly — receipt_confirm finds the company e-mail later; 48 h without it goes to Joey's list."""
+    if captcha_seen:
+        return 'joey'
+    return 'wait' if isinstance(mail_wait, (int, float)) and not isinstance(mail_wait, bool) and mail_wait > 0 else 'pending'
+
+
 def mail_receipt(folder, since, wait, log):
     """After a submit with no thank-you page: wait up to `wait` seconds for the company's application-received e-mail
     (Gmail read-only, gmail_code.wait_for_mail). Returns its subject or None; any mail error → None (logged)."""
@@ -248,12 +311,29 @@ def edu_same(want, got):
     norm_ = lambda x: re.sub(r'\s+', ' ', str(x or '')).strip().lower()
     if not norm_(w.get('school')) or norm_(w.get('school')) not in norm_(g.get('school')):
         return False
-    return all(not norm_(w.get(k)) or norm_(w.get(k)) == norm_(g.get(k)) for k in ('degree', 'major'))
+    # JSA-330 (ibotta 11-11): a part whose key is absent from `got` has no box on the page (the form config says
+    # "excluded") — the page cannot show it, so it is not checked; a box that exists but is empty still fails.
+    return all(not norm_(w.get(k)) or k not in g or norm_(w.get(k)) == norm_(g.get(k)) for k in ('degree', 'major'))
+
+
+def edu_select_values(ent, n_selects, excluded):
+    """Pure (tested, JSA-330). The values for the Education entry's <select> boxes, in page order. Four boxes = start
+    month / year + end month / year; two boxes = the one date pair the form kept (the other is "excluded" in its config:
+    ibotta has no start date); two boxes and no hint which pair → nothing (never a guess); any other count → nothing."""
+    g = lambda k: (ent or {}).get(k) or ''
+    start, end = [g('start_month'), g('start_year')], [g('end_month'), g('end_year')]
+    if n_selects == 4:
+        return start + end
+    if n_selects == 2 and 'startDate' in (excluded or []):
+        return end
+    if n_selects == 2 and 'endDate' in (excluded or []):
+        return start
+    return []
 
 
 def date_value(want):
     """Pure (tested, JSA-208). What the runner types into an Ashby date box for the planned answer → [value, reason].
-    The prep-time check (plan_build.date_answer, JSA-073) only reaches plans written after it: Creatify's plan.json was
+    The prep-time check (plan_build.date_answer, JSA-073) only reaches plans written after it: an Ashby employer's plan.json was
     written 11-02 with "June 14, 2027", before that fix, and every run since typed it as is → the box showed 06/14/2027 and
     the read-back blocked. So the runner checks every date again: a full date → MM/DD/YYYY, "December 2027" kept,
     anything else → [None, reason] (the field is reported, nothing is guessed)."""
@@ -322,7 +402,7 @@ def submit_errors(text):
     corrections" box lists, in order ([] = none). "Missing entry for required field: School" anywhere → "School"; after
     the heading, each following error-looking line (required / invalid / must / please enter / please select / not valid /
     missing) until the first other non-empty line; a field label ending in "*" is not an error. The heading alone →
-    ["form needs corrections"]. Ramp 10-31: the box named School while the run was logged "unconfirmed"."""
+    ["form needs corrections"]. an Ashby employer 10-31: the box named School while the run was logged "unconfirmed"."""
     out = []
     def add(x):
         x = N(x)
@@ -389,10 +469,19 @@ class Form:
 
     # ---------- locating ----------
     def entry(self, f):
-        """Ashby: the field's own container (label text); Lever: the <li> around the named input."""
+        """Ashby: the field's own container; Lever: the <li> around the named input.
+        Ashby (JSA-323, an Ashby employer / an Ashby employer 11-11): found by the field's KEY first — its input's name / id is the key, or
+        "<uuid>_<key>" on radio / checkbox groups — then by the WHOLE label. The old label-substring match took the first
+        container whose label CONTAINED the text: "Gender" matched "What is your gender identity?", so the EEO Gender
+        answer "Male" went into the wrong question. A label that is only part of several labels is never used."""
         if self.ats == 'ashby':
-            return self.page.locator('div[class*="_fieldEntry"], fieldset[class*="_fieldEntry"]').filter(
-                has=self.page.locator('label', has_text=f['label'][:60])).first
+            boxes = self.page.locator('div[class*="_fieldEntry"], fieldset[class*="_fieldEntry"]')
+            k = str(f.get('key') or '')
+            if k:
+                byk = boxes.filter(has=self.page.locator(f'[name="{k}"], [id="{k}"], [name$="_{k}"], [id^="{k}-"]'))
+                if byk.count():
+                    return byk.first
+            return boxes.filter(has=self.page.locator('label', has_text=label_re(f.get('label', '')))).first
         return self.page.locator('li.application-question, li.application-additional, div.application-question').filter(
             has=self.page.locator(f'[name="{f["key"]}"]')).first
 
@@ -411,6 +500,9 @@ class Form:
             return None
         if a is None:
             return None
+        bad = not_in_options(f)
+        if bad:
+            return bad
         if self.ats == 'lever':
             return self.fill_lever(f, t, str(a))
         return self.fill_ashby(f, t, str(a))
@@ -445,7 +537,7 @@ class Form:
         e = self.entry(f)
         if not e.count():
             return 'field not on the page'
-        if f.get('key') == '_systemfield_education_history' and t != 'education':   # a plan from before JSA-056 (Ramp 10-31):
+        if f.get('key') == '_systemfield_education_history' and t != 'education':   # a plan from before JSA-056 (an Ashby employer 10-31):
             return 'needs-user: School is an Education History type-ahead but the plan has it as ' + t + ' — re-plan / re-run prep'
         if t == 'education':                               # structured Education History (JSA-056): the first entry block
             ent = (json.loads(a) or [{}])[0]
@@ -464,10 +556,11 @@ class Form:
             opts[i].click(); time.sleep(0.6)
             sch.evaluate('el => el.blur()'); time.sleep(0.3)   # a type-ahead keeps only a picked option once it loses focus
             for part in ('degree', 'major'):
-                if ent.get(part):
-                    e.locator(f'[id="{k}-{part}"]').first.fill(ent[part])
-            sels = e.locator('select').all()               # start month, start year, end month, end year
-            for sel, v in zip(sels, [ent.get('start_month'), ent.get('start_year'), ent.get('end_month'), ent.get('end_year')]):
+                box = e.locator(f'[id="{k}-{part}"]').first
+                if ent.get(part) and box.count():          # JSA-330: a sub-field the form leaves out has no box — skip it
+                    box.fill(ent[part])
+            sels = e.locator('select').all()               # start month, start year, end month, end year (or one pair)
+            for sel, v in zip(sels, edu_select_values(ent, len(sels), f.get('edu_excluded'))):
                 if v:
                     try:
                         sel.select_option(label=v)
@@ -478,7 +571,7 @@ class Form:
                 cur.check()
             return None
         if t == 'date':                                    # JSA-208: re-check the format here too — a plan written before
-            v, why = date_value(a)                         # the prep-time check (Creatify 11-02) still holds "June 14, 2027"
+            v, why = date_value(a)                         # the prep-time check (an Ashby employer 11-02) still holds "June 14, 2027"
             if v is None:
                 return f'needs-user: date answer {why}'
             if v != a:
@@ -517,6 +610,8 @@ class Form:
             radio = e.locator('label', has_text=re.compile(rf'^\s*{re.escape(a)}\s*$')).first
             if radio.count():
                 radio.click()
+            elif e.locator('input[type=radio]').count():      # JSA-323: a radio group without this option = wrong field / value
+                return f'option "{a}" is not in this field on the page — not filled'
             else:
                 box = e.locator('input').first; box.click(); box.type(a[:20], delay=40); time.sleep(1)
                 self.page.locator('[role=option]').filter(has_text=a).first.click()
@@ -547,11 +642,13 @@ class Form:
         if t == 'education':                               # the read-back is the same JSON shape: school / degree / major
             k = f['key']
             p.evaluate('() => document.activeElement && document.activeElement.blur && document.activeElement.blur()')
-            time.sleep(0.3)                                # read the committed choice, not text still being typed (Ramp 10-31)
+            time.sleep(0.3)                                # read the committed choice, not text still being typed (an Ashby employer 10-31)
             got = {'school': N(e.locator('input[placeholder*="school" i]').first.input_value()) or
                    N((e.locator('[class*=school], [class*=Selected], [class*=selected]').first.inner_text() if e.locator('[class*=school], [class*=Selected], [class*=selected]').count() else '')),
-                   'degree': N(e.locator(f'[id="{k}-degree"]').first.input_value()) if e.locator(f'[id="{k}-degree"]').count() else '',
-                   'major': N(e.locator(f'[id="{k}-major"]').first.input_value()) if e.locator(f'[id="{k}-major"]').count() else ''}
+                   }
+            for part in ('degree', 'major'):               # JSA-330: a key only for a box the page has
+                if e.locator(f'[id="{k}-{part}"]').count():
+                    got[part] = N(e.locator(f'[id="{k}-{part}"]').first.input_value())
             return json.dumps(got)
         if t == 'file':
             txt = N(e.inner_text())
@@ -654,7 +751,7 @@ def main():
     ap.add_argument('folder'); ap.add_argument('--submit', action='store_true'); ap.add_argument('--attach')
     ap.add_argument('--wait-captcha', type=float, default=0, help='minutes to wait for Joey to solve a CAPTCHA, then submit')
     ap.add_argument('--cdp', default='http://127.0.0.1:9222')
-    ap.add_argument('--mail-wait', type=int, default=180, help='seconds to wait for the company receipt e-mail when no thank-you page shows (0 = off)')
+    ap.add_argument('--mail-wait', type=int, default=0, help='seconds to wait IN PLACE for the company receipt e-mail when no thank-you page shows (default 0 = confirm later, receipt_confirm, JSA-391)')
     ap.add_argument('--no-handoff', action='store_true', help='Lever: do not open an hCaptcha-stopped page in Joey\'s Edge')
     ap.add_argument('--no-replan', action='store_true', help='use plan.json as prep wrote it (default: rebuild it from the live posting with today\'s rules, qa and answers.json — JSA-213)')
     a = ap.parse_args()
@@ -668,6 +765,10 @@ def main():
     logf = open(os.path.join(folder, 'run_log.md'), 'a', encoding='utf-8')
     def log(m): logf.write(f'- {now()} {m}\n'); logf.flush(); print(m)
     log(f'start {ats} {"submit" if a.submit else "dry-run"} {url}')
+    import runner_common as RC                           # JSA-196: the closing books are the common ones
+    R = RC.Run(ats, url, folder, folder, submit=a.submit, log=log, label=ats.capitalize())
+    R.queued = True                                      # this runner queues / pushes its own stops: never twice
+    R.mark('page')
     if not a.no_replan:
         plan = replan(folder, plan, log)
     import materials_gate
@@ -679,7 +780,7 @@ def main():
     import chrome_guard                                       # JSA-227: no autofill / password extension in the job Chrome
     if chrome_guard.stop(folder, url, log, queue, DATA, ats): return
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = next((p for p in ctx.pages if a.attach and a.attach in p.url), None)
         if page is None:
             page = ctx.new_page(); page.goto(url, wait_until='domcontentloaded', timeout=60000); time.sleep(4)
@@ -700,15 +801,18 @@ def main():
             problems.append('plan not ready: ' + '; '.join(n['label'][:50] for n in plan.get('needs_user', [])[:4]))
         if bad:
             problems.append('fields not confirmed on the page: ' + '; '.join(f"{r['label'][:40]} ({r['page']!r})" for r in bad[:6]))
-        recs = [{'label': f['label'], 'value': f['answer']} for f in plan['fields'] if f.get('status') == 'ok' and isinstance(f.get('answer'), str)]
+        recs = [{'label': f['label'], 'value': f['answer'], 'options': f.get('options') or [], 'source': f.get('source') or ''}   # options / source: the fact gate (JSA-281)
+                for f in plan['fields'] if f.get('status') == 'ok' and isinstance(f.get('answer'), str)]
         cbad = canon.audit(recs, canon.tenant_of(url))
         if cbad:
             problems.extend(canon.block(cbad))
+        import final_review                                    # JSA-355: a second model re-reads the key cells
+        problems.extend(final_review.problems(recs, log, tag=folder))
         json.dump({'at': now(), 'url': url, 'fields': res, 'canon': cbad, 'problems': problems},
                   open(os.path.join(folder, 'form_check.json'), 'w'), indent=1, ensure_ascii=False)
         cap = lambda: any(l.is_visible() for l in page.locator(CAPTCHA[ats]).all())
         solved = lambda: any((x.input_value() or '').strip() for x in page.locator(SOLVED[ats]).all())
-        status, confirmed_by = 'dry-run', None
+        status, confirmed_by, receipt_pending = 'dry-run', None, False
         if problems:
             log('NOT submitted: ' + ' | '.join(problems)); status = 'needs-user' if needs else 'blocked' if a.submit else 'dry-run'
             if a.submit: queue(folder, 'not submitted: ' + ' | '.join(problems)[:300], url)
@@ -735,26 +839,30 @@ def main():
                     except Exception:
                         pass
                 page.locator(SUBMIT[ats]).first.scroll_into_view_if_needed()
-                pre = page.url
+                import confirm_page as CP
+                R.mark('submit')
+                before = form_snap(page, ats)                 # JSA-299: the page before the click
                 t_submit = datetime.now().astimezone()
                 page.locator(SUBMIT[ats]).first.click(); log('submit clicked')
-                ok, errs = False, []
+                ok, errs, why = False, [], ''
+                captcha_seen = False
                 for _ in range(60):
                     time.sleep(0.5)
-                    txt = page.inner_text('body')[:20000]
+                    cur = form_snap(page, ats); txt = cur['text']
                     errs = submit_errors(txt) if ats == 'ashby' else []   # JSA-209: the page's validation errors first
                     if errs:
                         break
-                    if (page.url != pre and re.search(r'/thanks|/confirmation|application-submitted', page.url)) or CONFIRM.search(txt):
-                        ok = True; break
+                    ok, why = form_done(before, cur, ats)
+                    if ok:
+                        break
                     if cap() and not solved():
-                        log('CAPTCHA challenge after submit (never answered by the runner) — the submit may still go through')
+                        log('CAPTCHA challenge after submit (never answered by the runner) — the submit may still go through'); captcha_seen = True
                         end = time.time() + a.wait_captcha * 60
-                        while time.time() < end and not CONFIRM.search(page.inner_text('body')[:20000]):
+                        while time.time() < end and not form_done(before, form_snap(page, ats), ats)[0]:
                             if VERIFY_ERR.search(page.inner_text('body')[:20000]):
                                 log('Lever rejected the CAPTCHA verification ("error verifying your application") — form reset, rerun'); break
                             time.sleep(3)
-                        ok = bool(CONFIRM.search(page.inner_text('body')[:20000])); break
+                        ok, why = form_done(before, form_snap(page, ats), ats); break
                 if errs:                                     # Ashby refused the form: nothing was sent — failed, with the fields
                     page.screenshot(path=os.path.join(folder, 'after_submit.png'), full_page=True)
                     status = 'failed'
@@ -767,54 +875,55 @@ def main():
                     except Exception:
                         pass
                 elif ok:
-                    page.screenshot(path=os.path.join(folder, 'submitted_confirmation.png'), full_page=True)
+                    CP.confirmation_shot(page, os.path.join(folder, 'submitted_confirmation.png'), log)   # JSA-299 / JSA-223
                     m = CONFIRM.search(page.inner_text('body')[:20000])
-                    log('CONFIRMED: ' + (m.group(0) if m else page.url)); status = 'submitted'
+                    log('CONFIRMED: ' + (m.group(0) if m else page.url) + f' ({why})'); status = 'submitted'
                     with open(os.path.join(folder, 'application_record.md'), 'a', encoding='utf-8') as rec:
                         rec.write(f"\n## Submitted by run_form.py ({ats}) {now()}\n- URL: {url}\n- Field check: {len(res)} fields read back, all ok\n"
                                   f"- Files: {', '.join(r['want'] for r in res if r['type'] == 'file' and r['want'])}\n- Confirmation: submitted_confirmation.png\n")
                 else:
                     page.screenshot(path=os.path.join(folder, 'after_submit.png'), full_page=True)
-                    subj = mail_receipt(folder, t_submit, a.mail_wait, log)   # Lever 10-31: 7 of 10 "unconfirmed" submits had gone through
+                    try:                                     # a CAPTCHA the poll never saw: the rejected-token banner or a challenge still on the page
+                        if VERIFY_ERR.search(page.inner_text('body')[:20000]) or (cap() and not solved()):
+                            captcha_seen = True
+                    except Exception:
+                        pass
+                    plan_ = receipt_plan(a.mail_wait, captcha_seen)
+                    subj = mail_receipt(folder, t_submit, a.mail_wait, log) if plan_ == 'wait' else None   # Lever 10-31: 7 of 10 "unconfirmed" submits had gone through
                     if subj:
                         status, confirmed_by = 'submitted', 'email'
                         log(f'CONFIRMED by e-mail: "{subj[:90]}"')
                         with open(os.path.join(folder, 'application_record.md'), 'a', encoding='utf-8') as rec:
                             rec.write(f"\n## Submitted by run_form.py ({ats}) {now()}\n- URL: {url}\n- Field check: {len(res)} fields read back, all ok\n"
                                       f"- Confirmation: company e-mail \"{subj[:120]}\" (the page showed no thank-you; see after_submit.png)\n")
+                    elif plan_ == 'pending':                 # JSA-391: no waiting in place — receipt_confirm records the e-mail when it comes
+                        status, receipt_pending = 'unconfirmed', True
+                        log('no confirmation page — receipt pending: receipt_confirm checks Gmail later (48 h without it → Joey)')
                     else:
                         status = 'unconfirmed'
                         queue(folder, 'clicked Submit but no confirmation page and no company e-mail — check Gmail, then manual submit', url)
                         push('求职 runner：没有确认', os.path.basename(folder)[11:60] + ' — 页面和邮件都没确认，交给你')
                         log('no confirmation seen (page or e-mail)')
-        os.makedirs(DATA, exist_ok=True)
-        with open(os.path.join(DATA, 'results.jsonl'), 'a') as out:
-            out.write(json.dumps({'at': now(), 'folder': os.path.basename(folder), 'url': url, 'ats': ats, 'status': status,
-                                  'problems': problems[:8], 'fields': len(res), 'bad': len([r for r in res if not r['ok']]),
-                                  'secs': round(time.time() - t0, 1), 'by': 'runner', **({'confirmed_by': confirmed_by} if confirmed_by else {})}) + '\n')
         clear_runner(folder)                                 # from here a /thanks page is Joey's (Edge hand-off, a parked CAPTCHA)
-        if ats == 'lever':                                   # JSA-042: clean dry-run / unconfirmed → hand-off sheet for Joey
-            import manual_submit; manual_submit.write(folder, plan, res, problems, status, now()[:10], log)
-            cmd = None if a.no_handoff else handoff_cmd(ats, status, problems, url)
-            if cmd:                                          # JSA-072: open it in Joey's Edge; close the job-Chrome tab
-                try:
-                    subprocess.run(cmd, timeout=20, check=True); log(f'hand-off: opened in {cmd[2]} — Joey clicks Submit there')
-                    page.close()
-                except Exception as e:
-                    log(f'hand-off: could not open {cmd[2]} ({type(e).__name__}) — use manual_submit.md')
-        if status == 'submitted':
-            sys.path.insert(0, os.path.join(ROOT, 'scripts', 'store'))
-            import sync_results; sync_results.sync_folder(folder, log)
-            try: page.close()
-            except Exception: pass
-            log(f'closed {close_posting_tabs(ctx, url)} other tab(s) of this posting')   # JSA-145: dry-run tabs stay until the submit (Joey 11-04)
+        if ats == 'lever' and not receipt_pending:           # JSA-042: clean dry-run / unconfirmed → hand-off sheet for Joey (not for a pending receipt, JSA-391)
+            try:                                             # never lose the results line to a hand-off error (JSA-196)
+                import manual_submit; manual_submit.write(folder, plan, res, problems, status, now()[:10], log)
+                cmd = None if a.no_handoff else handoff_cmd(ats, status, problems, url)
+                if cmd:                                      # JSA-072: open it in Joey's Edge; close the job-Chrome tab
+                    try:
+                        subprocess.run(cmd, timeout=20, check=True); log(f'hand-off: opened in {cmd[2]} — Joey clicks Submit there')
+                        page.close()
+                    except Exception as e:
+                        log(f'hand-off: could not open {cmd[2]} ({type(e).__name__}) — use manual_submit.md')
+            except Exception as e:
+                log(f'manual hand-off sheet failed: {type(e).__name__}: {str(e)[:100]}')
+        # closing books (JSA-196): results line (+ phases, stopped_at, tenant) and one fields.jsonl line per field, the tracker row and
+        # the posting's tabs for a submit (JSA-145), a stopped / dry-run tab closed except a parked CAPTCHA (tab_policy, Joey 11-05)
+        R.stopped_at = None if status in ('submitted', 'dry-run', 'unconfirmed') or receipt_pending else (RC.COMMON if status == 'blocked' else RC.PAGE)
+        R.finish({'status': status, 'problems': problems[:8], 'fields': res, 'canon': cbad, 'receipt_pending': receipt_pending},
+                 ctx=ctx, page=page, confirmed_by=confirmed_by, keep_tab=getattr(a, 'keep_tab', False), told=True,
+                 extra=({'receipt': 'pending', 'submit_at': t_submit.isoformat(timespec='seconds')} if receipt_pending else None))
         if status != 'captcha': human_check.resolve(folder, status)
-        import tab_policy                                     # Joey 2026-11-05: dry-run / stopped tabs close too (supersedes JSA-145's 「干跑页保留到提交」); only a CAPTCHA stays
-        if not tab_policy.keep_open(status, getattr(a, 'keep_tab', False)):
-            try:
-                if not page.is_closed(): page.close()
-            except Exception: pass
-        log(f'STATUS {status}'); print(f'TIME {round(time.time() - t0, 1)}s')
 
 
 if __name__ == '__main__':

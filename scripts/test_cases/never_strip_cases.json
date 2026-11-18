@@ -1,0 +1,221 @@
+[
+ {
+  "name": "rule4_basic",
+  "spec_quote": "Any remaining \"<phrase>\" plus the whitespace right after it is removed: \"XJTLU students\" → \"students\".",
+  "args": {
+   "text": "XJTLU students",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "students"
+ },
+ {
+  "name": "rule1_in",
+  "spec_quote": "\" in|at|of [the ]<phrase>\" (with the whitespace before \"in/at/of\") is removed: 'the \"Voice in XJTLU\" flagship' → 'the \"Voice\" flagship'.",
+  "args": {
+   "text": "the \"Voice in XJTLU\" flagship",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "the \"Voice\" flagship"
+ },
+ {
+  "name": "rule2_comma",
+  "spec_quote": "\", <phrase>\" (comma, optional spaces) is removed: \"U-stage Voice Club, XJTLU, 2022–2024\" → \"U-stage Voice Club, 2022–2024\".",
+  "args": {
+   "text": "U-stage Voice Club, XJTLU, 2022–2024",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "U-stage Voice Club, 2022–2024"
+ },
+ {
+  "name": "rule3_parentheses",
+  "spec_quote": "\" (<phrase>)\" (optional space before the parenthesis, optional spaces inside) is removed.",
+  "args": {
+   "text": "Club (XJTLU)",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Club"
+ },
+ {
+  "name": "rule3_no_space_before",
+  "spec_quote": "\" (<phrase>)\" (optional space before the parenthesis, optional spaces inside) is removed.",
+  "args": {
+   "text": "Club(XJTLU)",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Club"
+ },
+ {
+  "name": "rule3_spaces_inside",
+  "spec_quote": "\" (<phrase>)\" (optional space before the parenthesis, optional spaces inside) is removed.",
+  "args": {
+   "text": "Club ( XJTLU )",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Club"
+ },
+ {
+  "name": "case_insensitive",
+  "spec_quote": "case-insensitive",
+  "args": {
+   "text": "xjltu students",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "students"
+ },
+ {
+  "name": "whole_word_no_match",
+  "spec_quote": "the phrase matched as a whole word (word boundary right after it)",
+  "args": {
+   "text": "XJTLUs students",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "XJTLUs students"
+ },
+ {
+  "name": "non_string_none",
+  "spec_quote": "A non-string (None, a number) is returned as it is.",
+  "args": {
+   "text": null,
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": null
+ },
+ {
+  "name": "non_string_number",
+  "spec_quote": "A non-string (None, a number) is returned as it is.",
+  "args": {
+   "text": 42,
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": 42
+ },
+ {
+  "name": "empty_phrases",
+  "spec_quote": "An empty phrases list returns the text unchanged.",
+  "args": {
+   "text": "XJTLU students",
+   "phrases": []
+  },
+  "expect": "XJTLU students"
+ },
+ {
+  "name": "no_phrase",
+  "spec_quote": "A text without the phrase is returned unchanged.",
+  "args": {
+   "text": "Hello world",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Hello world"
+ },
+ {
+  "name": "multiple_occurrences_rule4",
+  "spec_quote": "Any remaining \"<phrase>\" plus the whitespace right after it is removed.",
+  "args": {
+   "text": "XJTLU students and XJTLU teachers",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "students and teachers"
+ },
+ {
+  "name": "rule1_at",
+  "spec_quote": "\" in|at|of [the ]<phrase>\" (with the whitespace before \"in/at/of\") is removed",
+  "args": {
+   "text": "Conference at XJTLU today",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Conference today"
+ },
+ {
+  "name": "rule1_of_the",
+  "spec_quote": "\" in|at|of [the ]<phrase>\" (with the whitespace before \"in/at/of\") is removed",
+  "args": {
+   "text": "University of the XJTLU",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "University"
+ },
+ {
+  "name": "rule2_optional_spaces",
+  "spec_quote": "\", <phrase>\" (comma, optional spaces) is removed",
+  "args": {
+   "text": "Club,   XJTLU, 2022",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Club, 2022"
+ },
+ {
+  "name": "rule4_phrase_at_end",
+  "spec_quote": "Any remaining \"<phrase>\" plus the whitespace right after it is removed",
+  "args": {
+   "text": "Welcome to XJTLU",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Welcome to "
+ },
+ {
+  "name": "rule4_followed_by_punctuation",
+  "spec_quote": "Any remaining \"<phrase>\" plus the whitespace right after it is removed",
+  "args": {
+   "text": "XJTLU, 2022",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": ", 2022"
+ },
+ {
+  "name": "multiple_phrases_order",
+  "spec_quote": "phrases is a list of names, longest first. For each phrase, in this order",
+  "args": {
+   "text": "XJTLU and XJTLU University",
+   "phrases": [
+    "XJTLU University",
+    "XJTLU"
+   ]
+  },
+  "expect": "and "
+ },
+ {
+  "name": "rule1_before_rule4",
+  "spec_quote": "For each phrase, in this order, case-insensitive, ... 1. ... 4. Any remaining",
+  "args": {
+   "text": "Voice in XJTLU students",
+   "phrases": [
+    "XJTLU"
+   ]
+  },
+  "expect": "Voice students"
+ }
+]

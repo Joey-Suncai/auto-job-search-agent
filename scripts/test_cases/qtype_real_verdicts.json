@@ -1,0 +1,34 @@
+{
+ "_doc": "JSA-352: judged cases for scripts/test_qtype_real.js. verdicts = a later / more specific rule answers it, judged not a misread (reason + source per case); open = known misreads still present (the test reports them and fails when one is fixed without leaving this list). rules = the rule each judged case is pinned to: another rule answering it fails the test.",
+ "verdicts": {
+  "w03e6427626c0": "Claude 2026-11-17 (JSA-352), rule 13: 'Secondary Major' is now answered by second_major (JSA-281), which leaves the box empty when the facts hold no second major — not the current major, so the label's 'ask, not the current major' is met.",
+  "w32bbe0571de5": "Claude 2026-11-17 (JSA-352), rule 13: same question as w03e6427626c0 (a second copy of the same form): second_major leaves it empty (JSA-281).",
+  "w261938db8234": "Claude 2026-11-17 (JSA-352), rule 13: housing_have answers 'do you have housing in <city>' from the facts (No when the facts' home is elsewhere; asks when no home is on file), which is exactly the label's reading 'does he HAVE housing in Austin', not 'needs housing assistance'.",
+  "re05b31814a56": "Claude 2026-11-17 (JSA-352), rule 13: 'current cumulative GPA' is answered by gpa_current, the more specific rule of the same type (gold key gpa predates it). (Value 'N/A' with the live facts is not judged here.)",
+  "r7b1a9be05b3d": "Claude 2026-11-17 (JSA-352), rule 13: same as re05b31814a56: gpa_current is the specific rule for 'current cumulative GPA'. (Value not judged here.)",
+  "rd6eb9b25d2a5": "Claude 2026-11-17 (JSA-352), rule 13: 'most recent employer' → recent_employer, the specific rule of the employer type (gold key employer predates it).",
+  "r1bfa2d97e78c": "Claude 2026-11-17 (JSA-352), rule 13: 'year in school (Freshman, Sophomore…)' → college_year_current, the specific rule; school_level was the broader older key.",
+  "r9761a8d7be6b": "Claude 2026-11-17 (JSA-352), rule 13: 'Legal First Name (if different from preferred name)' asks the LEGAL first name → first_name is right; gold key preferred_name was the old reading.",
+  "rf7501db33091": "Claude 2026-11-17 (JSA-352), rule 13: a box asking degree AND major(s) is answered by degree_major (JSA-197, one text from the education entry); gold key discipline covers only the major half.",
+  "r6dc8f8ce9902": "Claude 2026-11-17 (JSA-352), rule 13: 'current student status' → enrollment_status, the rule written for exactly this wording (JSA-296 cases); gold key enrolled is the yes/no sibling.",
+  "r52f27e03f8ee": "Claude 2026-11-17 (JSA-352), rule 13: 'previously worked for X (including as a contractor or intern)' is both prior_employer and contractor_here type; both read 'worked for this company before' — contractor_here has the contractor / intern wording. Value not compared against the audit.",
+  "r30d243234498": "Claude 2026-11-17 (JSA-352), rule 13: 'I agree to the terms & to candidacy updates by SMS' mixes two consent types (terms = data_consent, SMS = sms); both are consent checkboxes. Joey decided 2026-11-17 (JSA-382): the combined box is always Yes (terms needed to submit) — rule terms_sms; the test pins it.",
+  "r54f5dd41333b": "Claude 2026-11-17 (JSA-352), rule 13: 'Alternate Email' is answered by secondary_email, the specific rule; gold key email is the primary-address rule. Answered only when the facts hold a secondary email."
+ },
+ "open": {},
+ "rules": {
+  "w03e6427626c0": "second_major",
+  "w32bbe0571de5": "second_major",
+  "w261938db8234": "housing_have",
+  "re05b31814a56": "gpa_current",
+  "r7b1a9be05b3d": "gpa_current",
+  "rd6eb9b25d2a5": "recent_employer",
+  "r1bfa2d97e78c": "college_year_current",
+  "r9761a8d7be6b": "first_name",
+  "rf7501db33091": "degree_major",
+  "r6dc8f8ce9902": "enrollment_status",
+  "r52f27e03f8ee": "contractor_here",
+  "r30d243234498": "terms_sms",
+  "r54f5dd41333b": "secondary_email"
+ }
+}

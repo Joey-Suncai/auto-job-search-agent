@@ -47,7 +47,8 @@ Solve problems first; ask Joey only for new facts / preferences / consents / pas
      (`{"<answer_key>": "<exact option>"}`, written on the Mac) and continues on the same page;
    - other wrong fields → DeepSeek click fix (max 3) → `handoff.json`.
 7. **Every page is checked before it is left** (canonical audit of that page's answers; on an experience page each
-   school's block: entry present, degree level, its own GPA). A failure stops **on that page**: fix `answers.json`, rerun
+   school's block: entry present, degree level, its own GPA; and every education / work block box against the entry of
+   its block, by code — `runner/block_check.py`, JSA-294). A failure stops **on that page**: fix `answers.json`, rerun
    `--attach` — it re-fills the same page, no Back.
 8. **Review gate**: `verify.json` (every recorded answer + essentials: legal name, phone digits, every profile company /
    school / language where the tenant has that section) + the **canonical audit** (`canon.json`: recorded answers vs the
@@ -64,6 +65,9 @@ change only the listed fields — no Submit, no Back, no sign-in, no CAPTCHA; on
 cannot fix → `l3_log.md` + `data/runner/queue.md`, tab left for Joey.
 
 ## 2. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Workday: `wd_done` — the footer Submit button gone or the URL changed (…/jobTasks/completed/application, /userHome). 
+- **Rerun resumes (JSA-392):** every saved page is recorded in `checkpoint.json`; a rerun clicks the progress bar to the first page not saved yet (`resume_target`, `jump_to_step`), so My Experience is not saved again (it can drop the second school, JSA-032); a bar that cannot be clicked → every page is walked as before; `--no-resume` forces the full walk; the jump is forward only, each saved page's answers go to `wd_answered.json` at once, and a Review problem deletes the checkpoint.
+- **No page confirmation (JSA-306):** `wd_mail_receipt` waits `--mail-wait` s (180) for the company e-mail (Gmail read-only): mail → submitted, `confirmed_by: email`; none → unconfirmed + queue line (JSA-306).
 **Fast path (JSA-230):** `runner/batch_apply.py prepare | approve | submit <batch.json>` runs this platform inside a (mixed) batch — never waits in place for Joey; a CAPTCHA / sign-in / unknown goes to his queue and the next job starts. ≤ 5 per batch with a sign-in platform.
 
 **A. The page is not ready / not what it seems.** Workday renders late and lazily, re-renders whole blocks after each
@@ -100,7 +104,36 @@ needs the click on the `click_filter` overlay; e-mail verification (the link hos
 the verify link (wait 15 s); the in-wizard "Create Account/Sign In" step (run `auto_signin` again); tenant password
 length rules (`choose_password()` → the long Keychain item); a lingering "verify your account" after one fresh retry →
 skip the role (Joey's rule); "wrong password / locked" on a tenant where Joey had an old account → Joey. Tests
-`t_wd_signin.py`, `test_verify_pattern.py`, `test_choose_password.py`. The agent never changes Joey's passwords.
+`t_wd_signin.py`, `test_verify_pattern.py`, `test_verify_mail.py`, `test_choose_password.py`. The agent never changes Joey's passwords.
+- *Degree option "<abbreviation> - <full name>" refused by the canonical audit* (JSA-282). Symptom: My Experience not
+  left — `degree_level = 'B.A. - Bachelor of Arts' (want level he holds …)`, a true answer (UIUC B.A.) handed to Joey
+  (Vanguard 2026-11-10). Cause: the accept patterns are anchored at the start ("^bachelor of arts") or end ("^b.a.$"),
+  so a short prefix broke both. Rule: for `degree_level` (`canon.ABBR_PREFIX`) a prefix of 1–6 letters with dots, then
+  `- – : / |`, is cut off (`canon.abbr_rest()`) and the full name is judged by the same accept rules; reject patterns
+  (Technology, MBA, doctorate, associate) still see the whole text. Test `scripts/test_degree_abbr.py` (DeepSeek cases).
+- *Wrong degree picked from a prefixed list* (JSA-282, same run). Symptom: UChicago block's Degree = "M.S.T. - Master of
+  Science in Taxation" (dry run, not submitted). Cause: (1) `degree_rank()` was anchored too, so every "<abbr> - …"
+  option ranked the same and page order won; (2) a "Master of Science in <another field>" counted as his M.S. Rule
+  (Joey 11-10): rank on the full name (`degree_full()`); an option that names a field is his only for his fields
+  (`canon.degree_field_ok()`: master → data science / applied data science / analytics / statistics / computer science;
+  bachelor → economics) — any other field is never picked and the canonical audit refuses it; order plain M.S. →
+  plain Master's → M.S. in his field → the rest. Test `scripts/test_degree_field.py` (DeepSeek cases + the Vanguard list).
+- *"Please provide your immigration status" answered CPT* (JSA-287). Symptom: Application Questions not left —
+  `immigration_status = 'CPT' (want F-1)` (Vanguard 2026-11-10, "If no, please provide your immigration status in the
+  U.S."). Cause: `immigration_status` (F-1) knew only "current / what is your immigration status"; the bare
+  "immigration status" at the end of `auth_kind` (CPT) took the rest. Rule (Joey 11-10): any fill-in that asks the
+  immigration status is F-1 (not a yes/no question, not sponsorship, not how long / number of / petition); `auth_kind`
+  never matches "immigration status". Test `scripts/test_imm_status_rule.js` (DeepSeek cases + the Vanguard label).
+- *Verification mail from the tenant's own HR domain* (JSA-274). Symptom: "waiting for the verification e-mail" → 3 min →
+  `no_verify_mail`, though the mail is in Gmail (Vanguard 2026-11-10: `CrewCentral_noreply@vanguardhr.com`, "Verify your
+  candidate account", link on `vanguard.wd5.myworkdayjobs.com`). Cause: the search asked IMAP for `FROM workday` only.
+  Rule: the sender is a signal, not a filter — `wait_verify_link()` reads every INBOX mail since the account form
+  (− 2 min clock margin; `gmail_code.recent_mails()`, headers first, bodies only for mails in the window) and
+  `choose_verify_link()` takes a **tenant link** (host match `verify_pattern()`, or `*.myworkday.com/<tenant>/…`) on its
+  own; a mail without one counts only with a verify subject AND a sender domain naming the tenant / company (folder
+  name); preference tenant link > verify subject > newest. `tenant_mails()` (failure diagnosis) also counts the tenant's
+  own domain. Spec `scripts/test_cases/verify_mail_spec.md`, test `scripts/test_verify_mail.py` (DeepSeek cases + the
+  real Vanguard mail).
 - *Sign-in still fails after the create-account form* (JSA-207). Symptom: "account form submitted → credentials submitted →
   sign-in failed after creating the account", the queue only said "sign in / create the account". Cause: three different
   cases looked the same — (1) **Joey's own old account** on the tenant (he applied there before; the create form says
@@ -117,7 +150,18 @@ skip the role (Joey's rule); "wrong password / locked" on a tenant where Joey ha
   ("WORKDAY SIGN-IN: … [old_account] — Joey: sign in with your old password (or Forgot your password?) …"). The agent
   never resets a password: old accounts and locked accounts are Joey's. Tests `t_wd_signin.py` (mock modes oldacct /
   lateverify / locked), `scripts/test_wd_fixes_1105.py` (DeepSeek cases `wd_signin_fail_*` + the 11-05 traces).
-  Invesco (agent account verified 11-01, no readable answer on 11-05 — needs a live look) 11-05
+  a Workday employer (agent account verified 11-01, no readable answer on 11-05 — needs a live look) 11-05
+- *Generic "…or your account might be locked." read as a lock* (JSA-334). Symptom: first sign-in on a new tenant →
+  "failure type locked", handed to Joey with `tried_long: false` and no Create Account try. Cause: Workday's one generic
+  alert for every failed sign-in ("You may have entered the wrong email address or password or your account might be
+  locked.") matched `LOCKED`. Rule (Joey 11-12, fix B): only a **definite** lock is `locked` ("has been locked", "is
+  temporarily disabled", "too many failed attempts", "locked out"); hedged / conditional / future mentions ("might / may /
+  could be locked", "if your account is locked", "after 5 failed attempts your account will be locked") are removed
+  first (`HEDGED`, `WARN`) and mean `wrong_password`. After a wrong password `after_wrong()` decides: the long Keychain
+  password once → this tenant's Gmail mails (`tenant_mails()`, read once per run) — an old-account mail (before
+  `AGENT_SINCE`, no agent verify mail) → `old_account` to Joey **without** creating an account → otherwise Create
+  Account (one try per run) → still failing → `failure_code()` as above. Never a password reset. Tests
+  `t_wd_signin.py` (mock modes generic / longacct), `scripts/test_wd_fixes_1105.py` (DeepSeek cases `wd_signin_hedge_*`).
 
 **D. Résumé autofill blocks.** The parser invents blocks (projects / clubs as jobs), mixes descriptions, adds or drops
 languages, names blocks "Work Experience N", "Professional Experience N", "Your Experience N" or "Academic Experience N".
@@ -137,12 +181,50 @@ from one school's block into the other by a shared label; schools are spelled di
 no education section at all.
 Rules: the master's picks **Master of Science** first, never Technology / MBA-only / law / executive / education specialty
 masters (`master_options()`); the bachelor's picks B.A. → plain Bachelor's → combined Arts, never a specialty or a lone
-B.S. (`bachelor_options()`); level-only lists (Graduate / Post Graduate / Undergraduate) map by level; field of study
-follows the profile's `Field_prefs` order through `pick_by_prefs()` (exact → substring with ≥ 2 real words → all tokens),
+B.S. (`bachelor_options()`); level-only lists (Graduate / Post Graduate / Undergraduate) map by level; level-worded bachelor options ("Bachelor's Level Degree", "4-year Degree (Bachelor's)") count as a plain Bachelor's, and a post-graduate option that lists PhD as an example ("Post-Graduate Degree (Master's, PhD, JD, etc.)") is the master's level for the block check; field of study
+follows the profile's `Field_prefs` order through `pick_by_prefs()` (exact → the closest of the substring-with-≥-2-real-words / all-token matches, JSA-283),
 the model only when nothing matches, optional + nothing fits → empty; per-school values only (GPA '' stays empty; required
 + empty → "N/A"), no shared-label fallback; `School_alts` for tenant spellings; schools are essential on Review only where
 the tenant has an education section (`has_education_section()`); per-application overrides `edu:<School>:Field|GPA|Degree`.
+**School search by alias (JSA-370, an employer 2026-11-12):** a tenant's school prompt may answer the profile's full name with "No items"
+(the list spells UIUC differently or searches word starts). `fill_one` therefore searches every name from `school_queries()` —
+the facts' `School`, its `School_alts`, the general `SCHOOL_ALIAS_TABLE` names for that school (UIUC, "…at Urbana-Champaign",
+"Illinois Urbana-Champaign") — and accepts an option by `same_school()` (same words in any
+order, ignoring of / at / the / punctuation; "University of Illinois Chicago" or "Urbana University" never match). Only when no
+alias finds the school does the field go to DeepSeek / Joey. The table holds only well-known short names of schools the profile
+lists; never add a school the facts do not name. Review's "education entry" check keeps its substring test for the facts' names only; aliases match by `same_school()` (a bare "Chicago" must not pass for UChicago).
+
+**"Required" on a box we filled (JSA-369, Micron Self Identify 2026-11-11):** the CC-305 Name box read back "<the profile name>" yet the
+page answered "The field Name is required and must have a value" (the value sat in the input but not in the form's state, or the
+error was stale). `filled_but_rejected()` picks text boxes we filled with a real answer that the page names in a required error;
+the loop types them again key by key (`_typed`) and presses Save once more, once per page. Zero answers stay with
+`zero_rejected()`; boxes we left empty are not retried. Not replayed on a live Micron page: the retry is the generic recovery.
+
+**0 fields on a page after a rerun (JSA-371, Midland 2026-11-01 / a Workday employer 2026-11-12):** `--attach` / a rerun reads "My Information"
+as 0 fields while it is still rendering, then Save fails with "no Save and Continue button". `reread_empty_page()` waits 3 s and reads
+(`extract()` only — never `do_page`, which uploads the résumé again) a non-autofill, non-file, non-experience, non-Review page up to 3 times, then `do_page` runs once; experience pages keep their own stricter
+re-read and `zero_field_experience()` verdict. Still 0 fields after the waits → the old path (Save / its error) decides.
+
+**Skills box takes one skill per search (JSA-372, a Workday employer 2026-10-30 / a Greenhouse employer ePro, a Workday employer 2026-11-12):** the qa answer for "Type to Add
+Skills" is a list ("Python, SQL, R, …"); typed whole it finds nothing. `skill_items()` splits it (only on a label with "skill"), `fill_one`
+searches and picks each skill on its own (`_one_of`: the chips already added are never cleared; a skill the tenant does not offer is
+logged and skipped — partial is accepted on purpose, none added at all = failure; chips that are not one of the skills are cleared first, a skill already shown counts as added on a rerun), and `check_one` reads the chips back: every added skill must be shown
+(`skills_present()`: whole-name match, "Python (Programming Language)" counts for "Python", "R" is not "Rust"). Not replayed on a live
+tenant page.
+
+**Assessment step = Joey's task (JSA-374, EMC / Copart / Allison / Centene):** a wizard step named like a third-party assessment ("Take Assessment",
+questionnaire, WOTC — `joey_step()`) is never clicked (Save on it only says "page did not change"). The run stops with status
+`assessment` (`joey_step_result()`: state `needs-user`, no `failed` entry, no handoff.json) and queues one line "JOEY TASK: … open the saved draft
+(Continue Application — the tab is closed after the run) and take it, then rerun". Every rerun that stops on the same step queues the line again (queue is append-only). Before this it was logged as a failed handoff.
+
+**Résumé-parsed values in a block (JSA-294):** the résumé parse writes UIUC's "Overall Result (GPA)" = the major GPA 3.85
+(want 3.60), Hyde Park's Job Title = "Job Searching Agent" (the side project) and its Role Description = the project text;
+a fill that does not take would leave them. Rule: before a page is left, `block_problems()` reads
+every education and work block box as the page shows it and compares it with the entry of its block (`block_check.py`:
+school, degree level, field, from / to, GPA — overall 3.60 · major 3.85 · institution 3.81 · none for the M.S.; job title,
+company, location, dates, "currently work here", description); a wrong box stops on that page. Test `scripts/test_block_check.py`.
 Tests `t_wd_logic.py`, `test_pick_by_prefs.py`, `test_degree_rank.py`, `test_bachelor_rank.py`, `test_edu_section.py`.
+Seen (JSA-294, parse values before the fill — the fill overwrote them, Review screenshots show 3.60): a Workday employer ×4, Jain ×4, an employer, BJ's, a Workday employer, a Workday employer 11-01 – 11-10 (GPA); a Workday employer, a Workday employer (Job Title). Note: run_wd's wd_log / fields.jsonl record that pre-fill value as the page value (JSA-320).
 
 **G. Dates.** Real inputs are hidden behind a display element; tenants split dates into parts; month-year answers land in
 MM/DD/YYYY boxes. Rules: click the visible `dateSection…-display` and type digits; compare dates as numbers; date fields
@@ -167,7 +249,10 @@ must not match a label that mentions "future" anywhere; "please provide details 
 free-text question (`visa_details`), not the status pick; a status list without the plain status → the closest one, never
 a status the candidate does not hold; statements like "I require sponsorship to work in this country" are valid answers
 in both audits; "type of sponsorship you require" and "details of your work permit (type / expiry)" are not yes/no
-questions. Tests `test_auth_restrict.js`, `test_imm_answer.py`, `test_immigration_label.py`, `test_spons_statement.py`,
+questions. **JSA-310 (Joey 2026-11-11, `work_auth.claim_authorized`): every authorization question = Yes** — "for any employer" /
+"without restriction" / "as of today" too; the unrestricted / any-employer Yes wins, "with restrictions" / "require
+sponsorship" only when no plain Yes is offered, never "not authorized"; "…any employer WITHOUT sponsorship" = the
+sponsorship question (No); "permanently authorized" = No; never a citizen / PR / no-sponsorship Yes. Tests `test_jsa310_auth.js`, `test_auth_restrict.js`, `test_imm_answer.py`, `test_immigration_label.py`, `test_spons_statement.py`,
 `test_spons_canon_label.py`, `test_work_permit_label.py`.
 
 **J. EEO questions.** Veteran options that start like the right answer but are not ("…just not a protected Veteran",
@@ -226,6 +311,12 @@ no file yet, plus the folder's cover-letter PDF into a multi-file résumé field
 a cover letter, or `answers.json` `"files:cover_letter": true|false`), and the cover letter into a cover-letter field;
 `uploads.json` records it, and only then the "uploaded both" question is answered Yes. Reference letters and transcripts
 are Joey's documents (needs, never triaged). Tests `t_wd_logic.py`, `scripts/test_wd_fixes_1103.py` (`wd_files_*`).
+**Upload box text is not a document name** (JSA-368). A Workday file box shows the file it already holds
+(`<First>_<Last>_Resume_X.pdf` — underscores defeat `\bresume\b`) and the widget's own words ("Upload a file (5MB max)",
+"Drop files here", "Select files"). The materials gate (`materials_gate.wd_slot_kind`) strips both before naming the
+box: nothing else left → the résumé box the runner fills (never `other_file`, whatever its position on the page); a
+named other document — in the heading or in the held file name (cover letter, transcript, writing sample, unrecognised text) — keeps its kind and still stops; bare widget words with no file stay other_file (only the page's first box is exempt).
+Test `t_materials_gate.py` §16b. Seen: a Greenhouse employer BI 11-12.
 
 **O. Handed to Joey by design.** CAPTCHAs and "verify you are human" questions (skip the role), WOTC / tax-credit
 assessments and other third-party questionnaires, letters of recommendation, consent boxes not yet in the profile,
@@ -242,6 +333,43 @@ in the job Chrome; read compact files, not whole pages (cost: ≈ 16–30 k Clau
 checkout and fails in the release (`No module named 'paths'`): every config insert must reach the repo's `config/`
 (`scripts/config_path_check.py`; `scripts/test_config_paths.py` imports each entry module the way `python <script>` does, JSA-184).
 
+**Q. Recert round 11-10 (JSA-267, 269, 270, 271).**
+- A canonical pick must apply the "…without sponsorship…" inversion: use `canon.pick_for(key, label, options)` /
+  `canon.judge(...)`, never `canon.pick` alone. Otherwise the plain sponsorship answer (Yes) replaces the rules' right No.
+- Review prints the state inside the address ("<City>, <ST> <ZIP>"): `state_on_review()`.
+- Review folds a long multi-select behind "MORE (n)": `expand_review()` clicks it before reading.
+- A run with no open question deletes the old `wd_needs.json`.
+- "Schools Attended N" is an education block. When an Add click does not raise the block count (`blocks_of()`), the run stops
+  and records a failure instead of piling up blocks.
+- `batch_apply approve` accepts a folder whose only open item is the DeepSeek spot-check; `submit --ds-ok` still needs it.
+- The plan's block test uses `block_kind_of()` too (JSA-272): before, "Schools Attended N" fields were answered as plain
+  questions (every block got University of Chicago) and leftover blocks were never deleted. Now they are matched by school name
+  and the extras deleted (an employer: 13 deleted, UIUC added, Review clean).
+- Some tenants keep digits only and count **0 as empty** on a required box ("current annual salary", BCBS NE: "0", "0.00" →
+  "000" all refused). `zero_rejected()` turns that page error into needs-user ("Joey decides: another number, or skip") —
+  no true number fits, so the runner never types another one.
+- A page can render its fields late (NCR Voluntary Disclosures: 1 of 5 fields for 0.7 s; the Hispanic question was left
+  empty and caught on Review). `settle()` now wants the same field count on 3 reads. When Save and Continue does not take
+  and fields the plan never saw are on the page (`unplanned_fields()`), the page is read and filled again (once per step)
+  instead of clicking Save a second time.
+
+
+**Text answers the box's own limits refuse (JSA-312, shared with Oracle).** A dry run's read-back does not run the page's
+checks. Rule: `wd_page.js` reads each text box's maxlength / minlength / pattern / type and hint text; `run_wd.limit_gate`
+completes a bare address in a url box with `https://` (`field_limits.fix_url`) and turns an answer that is still too
+long / too short / not a url into a question for the candidate (required) or an empty box (optional) — never typed in,
+never cut. Tests: `scripts/test_field_limits.py`.
+
+**The run log kept the page value from before the fill (JSA-320).** `wd_log.json` used to keep each field's `value` as
+first read, before the runner typed anything. On many tenants that is the résumé parse: the UIUC Overall Result held the
+major GPA 3.85, and a work block's Job Title held "Job Searching Agent". The audit and the replays took it as the submitted
+answer and logged 8 wrong answers (a Workday employer ×4, Jain ×2, an employer; a Workday employer's title and description). The Review
+screenshots show 3.60, Business Analyst Intern and the Hyde Park bullet. Rule: `check_one` keeps the read-back and
+`record_field` writes it as `page` (and `value`), with the first-read value as `before`. A field fixed after its last
+check is read again before the page is logged. Old logs: `scripts/learn/convert_fields.wd_field` takes the answer as the
+page for a filled field outside `failed`, because it passed the read-back check. The 8 lines moved to
+`data/runner/wrong_answers_withdrawn.jsonl`. Tests: `scripts/test_wd_record.py`.
+
 ## 3. Review checklist (what Joey and Claude look at before Submit)
 Every value matches the candidate's facts in `config/profile.json` / `config/canonical.json` / `config/wd_profile.json`: legal +
 preferred name, address, e-mail, phone (Mobile, **no extension**) · Work: exactly the profile's jobs, no projects / clubs as
@@ -252,6 +380,17 @@ profile's plain status · every `verify.json.deepseek_answers` item matches the 
 ## 4. Open items
 - None open from JSA-065 / 067 / 068 / 071 (fixed 2026-11-03; see types A, K, Q).
 - History: the per-company problem table (#1–#144, 2026-10-28 → 11-02) is in git history before this rewrite.
+
+**Text box listing the countries that need sponsorship (2026-11-10, JSA-279).** Symptom: "For those locations or
+countries … indicate all locations or countries for which you now, or in the future, require sponsorship … If this does
+not apply, indicate N/A" (HPE) was answered "Yes" by `spons_future`; canon `sponsorship_countries` stopped it before the
+page was left. Rule: a list / indicate / which-countries question about sponsorship → rule `spons_countries` (high-risk,
+work_auth group), answered from the profile's sponsorship facts: needs it now or later → "United States", needs it neither
+→ "N/A"; a question that opens with Do / Will / Are / Would you stays the Yes / No `spons_future`. "Name the countries …"
+is not the full name. Same day: "Without sponsorship, are you legally permitted to work in the country where this job is
+located?" (Ankura) is the FUTURE question → No; a "without sponsorship" question is the now one only with now / this
+internship / this position wording or OPT / CPT named as an example (= canon `NOW_ONLY_RE`). Tests: `t_rules.js` (JSA-279 cases), `scripts/test_cases/spons_countries_*` (DeepSeek cases +
+verdicts).
 
 **Sponsorship "now … or at any time after graduation" (2026-11-04, JSA-159).** Symptom: a sponsorship question that says
 "now" and also a future time ("at any time after graduation", "later", "upon graduation") was answered No. Cause: canon
@@ -264,3 +403,16 @@ may we contact" gets company, title, city, dates and "May contact this employer:
 and none is invented (Joey 「Yes to both」). "Bonus expectations" bands → the lowest band (rule `bonus`, t_rules). Seen: a Workday employer 11-04.
 A tenant where a fresh account cannot sign in and no verify e-mail arrives (gaig twice) → park the role for Joey (type C;
 since JSA-207 the queue names the case).
+
+**R. Critical answers taken from the wrong part of the question (JSA-281, audit 11-10).** A rule or a saved qa entry matched the wrong part of a critical question, or one merged entry covered two different
+questions; the page matched the plan, so nothing stopped it. Rules: the **fact gate** (`runner/fact_gate.py`, called by
+`canon.audit` before every submit, on the page records and the plan's full-label records) checks conviction,
+any-employer authorization, degree level (completed vs once graduated / pursuing), major (undergrad = Economics, a
+second major / minor = none), the internship start date, a value that is a regex (`^agree$`) and the user's saved
+answer for the exact question (when answers.json wrote the value) against config/profile.json — a mismatch blocks the
+submit and goes to Joey (an exception he confirms: `canon.py --learn <tenant> fact:<key> "<value>"`). In the rules:
+`conviction` (answers.conviction; the asking sentence decides, not a "criminal background check" notice), `any_employer`
+also for "any U.S Employer", `majorWhich` (undergrad / second major / minor), `name_pronunciation` also misspelled,
+`comp` also "(salary and bonus)", `applied_before` from the tracker (never a saved fixed answer; Joey 2026-11-10). The
+prefetch keeps wordings with different marks apart (`form_prefetch.sense`). Tests: `scripts/test_fact_gate.py`
+(DeepSeek 45 + the audit's 9), `scripts/test_jsa281_rules.js` (DeepSeek 40), `scripts/test_prefetch_sense.py` (25).

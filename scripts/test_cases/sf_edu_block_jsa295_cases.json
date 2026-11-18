@@ -1,0 +1,422 @@
+[
+ {
+  "name": "label_key_school_name_exact",
+  "fn": "label_key",
+  "input": {
+   "label": "School Name"
+  },
+  "expect": "School Name",
+  "spec_quote": "\"School Name\" for the school list: \"School\", \"School Name\", \"College/University\", \"School/Institution Name\", \"School / Institution Name\", \"University/College\", \"Institution Name\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_school_institution_spaced_slash",
+  "fn": "label_key",
+  "input": {
+   "label": "School / Institution Name"
+  },
+  "expect": "School Name",
+  "spec_quote": "\"School Name\" for the school list: \"School\", \"School Name\", \"College/University\", \"School/Institution Name\", \"School / Institution Name\", \"University/College\", \"Institution Name\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_institution_name",
+  "fn": "label_key",
+  "input": {
+   "label": "Institution Name"
+  },
+  "expect": "School Name",
+  "spec_quote": "\"School Name\" for the school list: ... \"Institution Name\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_degree_certificate",
+  "fn": "label_key",
+  "input": {
+   "label": "Degree/Certificate"
+  },
+  "expect": "Type",
+  "spec_quote": "\"Type\" for the degree type list: \"Degree\", \"Degree Type\", \"Education Type\", \"Type of Education\", \"Education Level\", \"Level of Education\", \"Degree Level\", \"Degree/Certificate\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_level_of_education",
+  "fn": "label_key",
+  "input": {
+   "label": "Level of Education"
+  },
+  "expect": "Type",
+  "spec_quote": "\"Type\" for the degree type list: ... \"Level of Education\" ...",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_degree_awarded",
+  "fn": "label_key",
+  "input": {
+   "label": "Degree Awarded"
+  },
+  "expect": "Achieved",
+  "spec_quote": "\"Achieved\" for \"Degree Achieved\", \"Degree Earned\", \"Degree Obtained\", \"Degree Received\", \"Degree Awarded\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_major_legacy",
+  "fn": "label_key",
+  "input": {
+   "label": "Major (Legacy)"
+  },
+  "expect": "Subject",
+  "spec_quote": "\"Subject\" for \"Major\", \"Area of Study\", \"Field of Study\", \"Major (Legacy)\", \"Subject\".",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_if_other_enter_school_passthrough",
+  "fn": "label_key",
+  "input": {
+   "label": "If other, enter School / Institution Name"
+  },
+  "expect": "If other, enter School / Institution Name",
+  "spec_quote": "Anything else comes back as the label itself (star and colon dropped): \"If other, enter School / Institution Name\", \"If other, enter Area of Study\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "label_key_gpa_colon_dropped",
+  "fn": "label_key",
+  "input": {
+   "label": "GPA:"
+  },
+  "expect": "GPA",
+  "spec_quote": "Anything else comes back as the label itself (star and colon dropped): ... \"GPA\".",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_simple_text",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "k_school",
+     "label": "School/Institution Name",
+     "type": "combo"
+    },
+    {
+     "key": "k_other",
+     "label": "If other, enter School / Institution Name",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": "k_other",
+  "spec_quote": "a text / textarea box whose label says other / not listed / specify AND names school / institution / college / university, and does NOT name area of study / major / field of study / subject / discipline / degree.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_combo_never_counts",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "k_other_combo",
+     "label": "If other, specify school",
+     "type": "combo"
+    },
+    {
+     "key": "k_type",
+     "label": "Degree Type",
+     "type": "combo"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "A combo (type \"combo\") never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_area_of_study_excluded",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "k_aos",
+     "label": "If other, enter Area of Study",
+     "type": "text"
+    },
+    {
+     "key": "k_inst",
+     "label": "If not listed, specify institution",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": "k_inst",
+  "spec_quote": "a text / textarea box whose label says other / not listed / specify AND names school / institution / college / university, and does NOT name area of study / major / field of study / subject / discipline / degree.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_textarea_not_listed_college",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "ta_college",
+     "label": "If your college is not listed, specify",
+     "type": "textarea"
+    }
+   ]
+  },
+  "expect": "ta_college",
+  "spec_quote": "a text / textarea box whose label says other / not listed / specify AND names school / institution / college / university ...",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_degree_named_excluded",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "k_deg",
+     "label": "If other, specify degree institution",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "... and does NOT name area of study / major / field of study / subject / discipline / degree. None (null) when the row has no such box.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_box_none_present",
+  "fn": "other_school_box",
+  "input": {
+   "fields": [
+    {
+     "key": "k_school",
+     "label": "School/Institution Name",
+     "type": "text"
+    },
+    {
+     "key": "k_major",
+     "label": "Major",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "None (null) when the row has no such box.",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_acknowledgement_uses_row",
+  "fn": "question_label",
+  "input": {
+   "label": "Acknowledgement",
+   "rows": [
+    "I acknowledge that the information provided in this application is true and complete."
+   ],
+   "kind": "checkbox"
+  },
+  "expect": "I acknowledge that the information provided in this application is true and complete.",
+  "spec_quote": "When kind is \"checkbox\" and the label is only a heading word — \"Acknowledgement\", ... — the answer is the nearest row that is at most 1200 characters and is not itself such a heading word",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_lowercase_heading_skips_heading_row",
+  "fn": "question_label",
+  "input": {
+   "label": "acknowledgment",
+   "rows": [
+    "Statement",
+    "I agree to the terms above."
+   ],
+   "kind": "checkbox"
+  },
+  "expect": "I agree to the terms above.",
+  "spec_quote": "the answer is the nearest row that is at most 1200 characters and is not itself such a heading word",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_all_rows_are_headings",
+  "fn": "question_label",
+  "input": {
+   "label": "Statement",
+   "rows": [
+    "Attestation",
+    "Statement"
+   ],
+   "kind": "checkbox"
+  },
+  "expect": "Statement",
+  "spec_quote": "no such row → the label unchanged",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_skips_row_over_1200_chars",
+  "fn": "question_label",
+  "input": {
+   "label": "I Acknowledge.",
+   "rows": [
+    "The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. The information I have provided in this application is accurate and complete to the best of my knowledge. ",
+    "Short valid statement."
+   ],
+   "kind": "checkbox"
+  },
+  "expect": "Short valid statement.",
+  "spec_quote": "the answer is the nearest row that is at most 1200 characters and is not itself such a heading word",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_text_kind_keeps_label",
+  "fn": "question_label",
+  "input": {
+   "label": "Acknowledgement",
+   "rows": [
+    "I acknowledge that the above is true."
+   ],
+   "kind": "text"
+  },
+  "expect": "Acknowledgement",
+  "spec_quote": "For any other kind (text, combo) or any other label, a real label is returned unchanged (whitespace collapsed).",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_electronic_signature_never_replaced",
+  "fn": "question_label",
+  "input": {
+   "label": "Electronic Signature",
+   "rows": [
+    "I acknowledge that I agree to use an electronic signature for this application."
+   ],
+   "kind": "checkbox"
+  },
+  "expect": "Electronic Signature",
+  "spec_quote": "Rows never replace a real label like \"I certify.\" or \"Electronic Signature\".",
+  "ambiguous": false
+ },
+ {
+  "name": "question_label_combo_kind_heading_word_kept",
+  "fn": "question_label",
+  "input": {
+   "label": "Applicant Statement",
+   "rows": [
+    "I agree that my responses are accurate."
+   ],
+   "kind": "combo"
+  },
+  "expect": "Applicant Statement",
+  "spec_quote": "For any other kind (text, combo) or any other label, a real label is returned unchanged (whitespace collapsed).",
+  "ambiguous": false
+ },
+ {
+  "name": "school_ok_chicago_accepted",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (University of Chicago): School/Institution Name",
+     "value": "University of Chicago"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "Accepted values name Chicago or Illinois.",
+  "ambiguous": false
+ },
+ {
+  "name": "school_ok_northwestern_rejected",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (Northwestern University): School/Institution Name",
+     "value": "Northwestern University"
+    }
+   ]
+  },
+  "expect": [
+   "Education (Northwestern University): School/Institution Name"
+  ],
+  "spec_quote": "Values like \"Northwestern University\" are rejected.",
+  "ambiguous": false
+ },
+ {
+  "name": "school_ok_other_with_illinois_box_accepted",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (School A): School/Institution Name",
+     "value": "Other"
+    },
+    {
+     "label": "Education (School A): If other, enter School/Institution Name",
+     "value": "University of Illinois at Urbana-Champaign"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "A School list whose value is \"Other\" is accepted ONLY when the same entry (the text before the colon, e.g. \"Education (University of Chicago)\") has an \"If other …\" school box whose value names Chicago or Illinois.",
+  "ambiguous": false
+ },
+ {
+  "name": "school_ok_other_without_box_rejected",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (School B): School/Institution Name",
+     "value": "Other"
+    },
+    {
+     "label": "Education (School B): Degree",
+     "value": "Bachelor's Degree"
+    }
+   ]
+  },
+  "expect": [
+   "Education (School B): School/Institution Name"
+  ],
+  "spec_quote": "An \"Other\" in an entry without such a box, or whose box is empty or names another school, is rejected.",
+  "ambiguous": false
+ },
+ {
+  "name": "school_ok_other_with_box_naming_other_school",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (School C): School/Institution Name",
+     "value": "Other"
+    },
+    {
+     "label": "Education (School C): If other, enter School / Institution Name",
+     "value": "Northwestern University"
+    }
+   ]
+  },
+  "expect": [
+   "Education (School C): School/Institution Name",
+   "Education (School C): If other, enter School / Institution Name"
+  ],
+  "spec_quote": "An \"Other\" in an entry without such a box, or whose box is empty or names another school, is rejected.",
+  "ambiguous": true
+ },
+ {
+  "name": "school_ok_non_school_field_ignored",
+  "fn": "school_other_ok",
+  "input": {
+   "records": [
+    {
+     "label": "Education (DePaul University): GPA",
+     "value": "3.75"
+    },
+    {
+     "label": "Education (DePaul University): School/Institution Name",
+     "value": "University of Illinois Chicago"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "A school field is any label whose part after the colon names school / university / institution.",
+  "ambiguous": false
+ }
+]

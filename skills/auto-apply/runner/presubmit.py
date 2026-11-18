@@ -67,7 +67,8 @@ def records(result):
     recs = []
     for f in fields_of(result):
         recs.append({'label': f.get('label') or f.get('key') or '', 'value': f.get('page'),
-                     'type': f.get('type') or f.get('kind') or '', 'required': bool(f.get('required'))})
+                     'type': f.get('type') or f.get('kind') or '', 'required': bool(f.get('required')),
+                     'options': f.get('options') or []})
     return recs
 
 
@@ -81,6 +82,12 @@ def audit(result, url, log=None):
     for w in warn:
         log(f"canon (warning): {w['key']} left empty on an optional field: {w['label'][:80]}")
     return hard, warn
+
+
+def review(result, log=None, tag=''):
+    """JSA-355: the independent last look at the key cells of the page (final_review.py); blocking problem sentences."""
+    import final_review
+    return final_review.problems(records(result), log, tag=tag)
 
 
 def lines(hard):

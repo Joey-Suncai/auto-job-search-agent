@@ -238,11 +238,11 @@
    "field": {
     "type": "text",
     "label": "Street Address",
-    "value": "100 Main St"
+    "value": "1200 S Sample Ave"
    }
   },
   "expect": false,
-  "spec_quote": "\"100 Main St\" stays (Indiana is not all caps). ... Otherwise false (e.g. an address box...).",
+  "spec_quote": "\"1200 S Sample Ave\" stays (Indiana is not all caps). ... Otherwise false (e.g. an address box...).",
   "ambiguous": false
  },
  {

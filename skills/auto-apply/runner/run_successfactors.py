@@ -17,6 +17,7 @@ read back; a required field empty on the page blocks. Dry-run by default (stops 
 already submitted. Confirmed by the thank-you page or the receipt e-mail → submitted, tracker row (sync_results), the
 posting's tabs closed. Writes <out>/run_log.md, form_check.json, page.png; one line in data/runner/results.jsonl.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -26,11 +27,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(ROOT, 'config'))
-import run_workable as W  # noqa: E402  (confirmed_page, required_empty, read_open_answers, apply_drafts, N)
+import run_workable as W  # noqa: E402  (confirmed_page, required_empty, N)
+import essay_step as ES  # noqa: E402  (JSA-318: the shared essay-box step)
+import field_limits as FL  # noqa: E402  (JSA-312: the box's own length / format limits)
 import sf_background as SB  # noqa: E402  (Previous Employment / Formal Education rows, an employer 2026-11-04)
 import sf_combo_edu as CE  # noqa: E402  (education rows of School / Degree / Major combo lists, Erie 2026-11-04)
 import job_board  # noqa: E402  (a source list that names job boards: the row's own board when listed)
@@ -81,7 +85,28 @@ def clean_label(t):
     return N(t)
 
 
-READ = r"""() => [...document.querySelectorAll('input,select,textarea')].filter(e => e.offsetParent !== null && !['hidden','button','submit','file','password','radio'].includes(e.type)).map(e => {
+QROWS = r"""const qrows = e => {                      // JSA-232: the text-only table rows right above the field's row (nearest first), up to the previous field
+  const tr = e.closest('tr'); const out = []; let p = tr && tr.previousElementSibling;
+  const HAS = 'input,select,textarea,[role=combobox],[role=radiogroup]';
+  for (let i = 0; i < 4 && p; i++, p = p.previousElementSibling) {
+    if (p.querySelector(HAS)) break;
+    const t = (p.innerText || '').replace(/\s+/g, ' ').trim(); if (t) out.push(t.slice(0, 2000));
+  }
+  if (!tr) {                                     // JSA-295 (an employer "Acknowledgement"): no table — the text-only blocks before the field, climbing up to 5 levels
+    let stop = false;
+    for (let a = e, d = 0; a && d < 5 && !out.length && !stop; a = a.parentElement, d++) {
+      for (let q = a.previousElementSibling, i = 0; q && i < 4; q = q.previousElementSibling, i++) {
+        if (q.matches(HAS) || q.querySelector(HAS)) { stop = true; break; }
+        if (q.tagName === 'LABEL') continue;     // the field's own label ("* Acknowledgement"), not the text above it
+        const t = (q.innerText || '').replace(/\s+/g, ' ').trim(); if (t) out.push(t.slice(0, 2000));
+      }
+    }
+  }
+  return out;
+};"""
+
+
+READ = r"""() => { """ + QROWS + r""" return [...document.querySelectorAll('input,select,textarea')].filter(e => e.offsetParent !== null && !['hidden','button','submit','file','password','radio'].includes(e.type)).map(e => {
   let lab = ''; if (e.labels && e.labels[0]) lab = e.labels[0].innerText;
   if (!lab) { const ids = e.getAttribute('aria-labelledby'); if (ids) lab = ids.split(' ').map(x => (document.getElementById(x) || {}).innerText || '').join(' '); }
   if (!lab) lab = e.getAttribute('aria-label') || e.getAttribute('title') || '';
@@ -89,8 +114,65 @@ READ = r"""() => [...document.querySelectorAll('input,select,textarea')].filter(
   return {id: e.id, tag: e.tagName.toLowerCase(), type: combo ? 'combo' : (e.tagName === 'TEXTAREA' ? 'textarea' : e.type === 'checkbox' ? 'checkbox' : e.tagName === 'SELECT' ? 'select' : 'text'),
           label: lab.replace(/\s+/g, ' ').trim(), required: e.required || e.getAttribute('aria-required') === 'true' || /^\s*\*/.test(lab),
           list: e.getAttribute('aria-owns') || '', value: e.type === 'checkbox' ? (e.checked ? 'checked' : '') : (e.value || ''),
-          options: e.tagName === 'SELECT' ? [...e.options].map(o => o.text.trim()) : []};
-})"""
+          options: e.tagName === 'SELECT' ? [...e.options].map(o => o.text.trim()) : [], rows: qrows(e),
+          maxlength: e.maxLength > 0 ? e.maxLength : null, minlength: e.minLength > 0 ? e.minLength : null,   // JSA-312: the box's own limits
+          pattern: e.getAttribute('pattern') || '', input_type: e.type || ''};
+}); }"""
+
+
+def limit_gate(fields, ans):
+    """Pure (tested, JSA-312). A text answer that breaks the box's own limits (maxlength — the box would cut it; minlength;
+    pattern; a url label / type=url without http(s)://) → status unknown with the reason, so the row stops for Joey
+    instead of being typed in. Returns the new answers."""
+    out = dict(ans)
+    for f in fields:
+        a = out.get(f['key']) or {}
+        if f.get('type') not in ('text', 'textarea') or a.get('status') != 'ok' or a.get('leave') or not str(a.get('value') or '').strip():
+            continue
+        lim = FL.merge({'max': f.get('maxlength'), 'min': f.get('minlength'), 'pattern': f.get('pattern') or None,
+                        'format': 'url' if FL.url_box(f.get('label') or '', f.get('input_type')) else None, 'source': 'the box'})
+        if isinstance(a.get('value'), str):
+            fx = FL.fix_url(a['value'], lim, f.get('label') or '', f.get('input_type'))   # a bare address in a url box → https://
+            if fx != a['value']:
+                a = out[f['key']] = dict(a, value=fx, rule=f"{a.get('rule')}+https")
+        bad = FL.check(str(a['value']), lim, f.get('label') or '')
+        if bad:
+            out[f['key']] = {'status': 'unknown', 'label': f['label'], 'rule': a.get('rule'),
+                             'why': "the answer breaks the box's limit — " + FL.why(bad, a['value'], lim)}
+    return out
+
+
+PLACEHOLDER_LABEL = re.compile(r'^(please )?(select|choose)( one( of the (options|following))?| an option| from the list)?\s*:?$|^no selection$|^-+$', re.I)
+QUESTION_MAX = 300
+
+
+HEADING_LABEL = re.compile(r'^(i )?acknowledge?(ment)?s?\.?$|^(applicant |candidate )?(statement|attestation|certification|agreement|acknowledge?ment)s?\.?$', re.I)
+STATEMENT_MAX = 1200                                              # the statement a heading-labelled box agrees to may be long; a longer row is a notice, not it
+
+
+def question_label(label, rows=None, kind=None):
+    """Pure (tested). The question text of a field (JSA-232). SuccessFactors templates put the question in its own
+    text-only row above the field (an employer 11-06: "Are you at least 18 years of age?") and give the field itself the
+    generic label "Please select one of the options". `rows` = the text-only rows above the field's row, nearest first,
+    up to the previous field. A real label is kept (cleaned); a placeholder label takes the nearest row of at
+    most 300 characters; when every row is longer (a whole notice), its last question sentence, else its first 300
+    characters. Never returns the placeholder text when a row is there (else the placeholder, for label_from_options).
+    An empty label stays empty."""
+    lab = clean_label(label)
+    texts = [clean_label(t) for t in rows or [] if re.search(r'[A-Za-z]{2,}', str(t or ''))]
+    if lab and kind == 'checkbox' and HEADING_LABEL.match(lab):   # a one-word box label ("Acknowledgement") under the statement it agrees to (an employer 11-10, JSA-295)
+        stmt = next((t for t in texts if len(t) <= STATEMENT_MAX and not HEADING_LABEL.match(t)), None)
+        return stmt or lab
+    if not lab or not PLACEHOLDER_LABEL.match(lab):               # an unlabeled box (a combo's search box) stays unlabeled: plan() skips it
+        return lab
+    short = next((t for t in texts if len(t) <= QUESTION_MAX), None)
+    if short:
+        return short
+    if texts:
+        qs = re.findall(r'[^.?!]*\?', texts[0])
+        q = clean_label(qs[-1]) if qs else ''
+        return q if q and len(q) <= QUESTION_MAX else texts[0][:QUESTION_MAX].rstrip()
+    return lab
 
 
 def plan(raw):
@@ -98,12 +180,14 @@ def plan(raw):
     search box of a combo list are left out; text-type options of a <select> drop the 'No Selection' placeholder."""
     out = []
     for f in raw or []:
-        lab = clean_label(f.get('label') or '')
+        lab = question_label(f.get('label') or '', f.get('rows'), f.get('type'))
         if not lab or not f.get('id'):
             continue
         opts = [o for o in f.get('options') or [] if o and not re.match(r'^(no selection|select|-+|please select)', o, re.I)]
         out.append({'key': f['id'], 'label': lab, 'type': f.get('type') or 'text', 'required': bool(f.get('required')),
-                    'options': opts, 'list': f.get('list') or '', 'value': f.get('value') or ''})
+                    'options': opts, 'list': f.get('list') or '', 'value': f.get('value') or '',
+                    'maxlength': f.get('maxlength'), 'minlength': f.get('minlength'),   # JSA-318: READ had them, plan dropped them, so limit_gate (JSA-312) never saw a limit
+                    'pattern': f.get('pattern') or '', 'input_type': f.get('input_type') or ''})
     return out
 
 
@@ -175,7 +259,7 @@ EDU_ROWS = r"""() => [...document.querySelectorAll('input')].filter(e => e.offse
 def unsplit(t):
     """Pure (tested). The resume parser splits words after a capital ("U NIVERSITY OF C HICAGO", "H YDE P ARK"): a lone
     capital letter followed by a space and another capital word is joined back ("UNIVERSITY OF CHICAGO")."""
-    return re.sub(r'\b([A-Z]) (?=[A-Z]{2,}\b)', r'\1', str(t or ''))   # only before an ALL-CAPS word: "100 Main St" stays
+    return re.sub(r'\b([A-Z]) (?=[A-Z]{2,}\b)', r'\1', str(t or ''))   # only before an ALL-CAPS word: "<street>" stays
 
 
 SPLIT_LABEL = re.compile(r'employer|company|school|college|university|institution|organi[sz]ation|job title|title', re.I)
@@ -780,7 +864,6 @@ def press_apply(page, btn, log, tries=2):
     return False, why
 
 
-PLACEHOLDER_LABEL = re.compile(r'^(please )?(select|choose)( one| an option| from the list)?\s*:?$|^no selection$|^-+$', re.I)
 
 
 def label_from_options(label, options):
@@ -817,6 +900,46 @@ REG_RADIOS = r"""() => {
 }""".replace('__OPTC__', RADIO_TEXT_JS)
 
 
+OPTION_ANSWER_KEYS = ('profile_visibility',)   # saved answers whose pick pattern may answer a register radio group with no readable question (JSA-335)
+
+
+def js_pattern(s):
+    """'/re/flags' (answer_rules form) → compiled Python regex; None when it does not compile."""
+    m = re.fullmatch(r'/(.+)/([a-z]*)', str(s or '').strip(), re.S)
+    try:
+        return re.compile(m.group(1), re.I if 'i' in m.group(2) else 0) if m else None
+    except re.error:
+        return None
+
+
+def option_answer(options, saved):
+    """Pure (tested). A register-form radio group with no readable question (Arthrex 11-12): `saved` = {key: [pick
+    patterns '/re/flags']} for OPTION_ANSWER_KEYS. When exactly one option of the group matches exactly one saved
+    answer's pattern — and no other saved answer matches any option — returns (option text, 'answers.<key>.pick (option
+    content)'); otherwise None (the group still stops for Joey)."""
+    opts = [str(o or '').strip() for o in options or [] if str(o or '').strip()]
+    hits = []                                                     # (key, option)
+    for key, pats in (saved or {}).items():
+        rxs = [r for r in (js_pattern(x) for x in (pats if isinstance(pats, (list, tuple)) else [pats])) if r]
+        for o in opts:
+            if any(r.search(o) for r in rxs):
+                hits.append((key, o))
+    if len(hits) != 1:
+        return None
+    return hits[0][1], f'answers.{hits[0][0]}.pick (option content)'
+
+
+def saved_option_picks():
+    """{key: [pick patterns]} of OPTION_ANSWER_KEYS from config (answers.<key>.pick)."""
+    import jsa_profile
+    out = {}
+    for k in OPTION_ANSWER_KEYS:
+        p = jsa_profile.get(f'answers.{k}.pick')
+        if p:
+            out[k] = p if isinstance(p, list) else [p]
+    return out
+
+
 def register_radios(page, log, need):
     """Answer every radio group on the register form (e.g. "Make My Profile Visible to" — Newell 11-05) from the rules
     (config answers.profile_visibility …); a group with no answer goes to `need` (→ needs-user). True when all are set."""
@@ -830,7 +953,20 @@ def register_radios(page, log, need):
         if g['label']:
             fields.append(g)
         elif not g.get('value'):
-            need.append(f"register form: a radio group with no readable question (options: {' / '.join(g.get('options') or [])[:120]})")
+            hit = option_answer(g.get('options'), saved_option_picks())      # JSA-335: exactly one option matches a saved pick
+            if not hit:
+                need.append(f"register form: a radio group with no readable question (options: {' / '.join(g.get('options') or [])[:120]})")
+                continue
+            val, rule = hit
+            try:
+                radio_set(page, g, val)
+                now_v = next((x.get('value') for x in radio_texts(page.evaluate(REG_RADIOS)) if x['id'] == g['id']), '')
+                if N(now_v).lower() != N(val).lower():
+                    need.append(f"register form: radio group without a question — set {val[:40]!r}, page shows {str(now_v)[:40]!r}")
+                else:
+                    log(f"register form: radio group without a question → {val[:60]} ({rule}, read back)")
+            except Exception as e:
+                need.append(f"register form: radio group without a question — could not set {val[:40]!r} ({type(e).__name__})")
     if not fields:
         return not need
     ans = answer([{'key': g['id'], 'label': g['label'], 'type': 'radio', 'options': g['options']} for g in fields])
@@ -863,7 +999,7 @@ def sign_in(page, log, create_first=False, wait_captcha_min=0, need=None):
         log('no Keychain password (jobagent-workday)'); return False
     sys.path.insert(0, os.path.join(ROOT, 'config'))
     import jsa_profile
-    email = jsa_profile.get('email') or jsa_profile.get('contact.email') or 'alex.rivera@example.com'
+    email = jsa_profile.get('email') or jsa_profile.get('contact.email') or ''
     if not create_first and page.locator('#username').count() and page.locator('#username').first.is_visible():
         page.fill('#username', email); page.fill('#password', pw)
         page.locator('button:has-text("Sign In"), input[value="Sign In"]').first.click(); time.sleep(6)
@@ -893,13 +1029,13 @@ def sign_in(page, log, create_first=False, wait_captcha_min=0, need=None):
     pw = got[1]
     _fill(page, '#fbclc_userName', email); _fill(page, '#fbclc_emailConf', email)
     _fill(page, '#fbclc_pwd', pw); _fill(page, '#fbclc_pwdConf', pw)
-    first, last = (jsa_profile.get('name.first') or 'Alex'), (jsa_profile.get('name.last') or 'Sun')
+    first, last = (jsa_profile.get('name.first') or ''), (jsa_profile.get('name.last') or '')
     _fill(page, '#fbclc_fName', first); _fill(page, '#fbclc_lName', last)
     for sel, rx in (('#fbclc_ituCode', r'^United States \(\+1\)$'), ('#fbclc_country', r'^United States$')):
         if page.locator(sel).count():
             lab = next((o for o in page.locator(sel + ' option').all_inner_texts() if re.match(rx, o.strip())), None)
             if lab: page.select_option(sel, label=lab)
-    phone = re.sub(r'\D', '', jsa_profile.get('phone') or '5550102030')[-10:]
+    phone = re.sub(r'\D', '', jsa_profile.get('phone') or jsa_profile.get('contact.phone') or '')[-10:]
     if page.locator('#fbclc_phoneNumber:visible').count(): _fill(page, '#fbclc_phoneNumber', phone)
     for cb in ('#fbclc_emailEnabled', '#fbclc_campaignEmailEnabled'):   # job-alert / marketing mails: off (they come ticked on some sites)
         if page.locator(cb).count() and page.locator(cb).first.is_checked():
@@ -990,11 +1126,11 @@ def fill_account(page, log):
     got = pick_password(page_text(page), keychain_items())       # the page's own length rule (Newell / Danfoss 11-05: at most 18)
     pw = got[1] if got else ''
     log(f'account fields: password from Keychain item {got[0]}' if got else 'account fields: no Keychain password fits the stated length rule — password left empty')
-    email = jsa_profile.get('email') or 'alex.rivera@example.com'
+    email = jsa_profile.email()
     done, want = set(), {}
     for sel, val in (('#fbclc_userName', email), ('#fbclc_emailConf', email)) + ((('#fbclc_pwd', pw), ('#fbclc_pwdConf', pw)) if pw else ()) + (
-                     ('#fbclc_fName', jsa_profile.get('name.first') or 'Alex'), ('#fbclc_lName', jsa_profile.get('name.last') or 'Sun'),
-                     ('#fbclc_phoneNumber', re.sub(r'\D', '', jsa_profile.get('phone') or '5550102030')[-10:])):
+                     ('#fbclc_fName', jsa_profile.get('name.first') or ''), ('#fbclc_lName', jsa_profile.get('name.last') or ''),
+                     ('#fbclc_phoneNumber', re.sub(r'\D', '', jsa_profile.get('phone') or jsa_profile.get('contact.phone') or '')[-10:])):
         loc = page.locator(sel)
         if loc.count() and loc.first.is_visible():
             loc.first.fill(val); done.add(sel[1:]); want[sel[1:]] = val
@@ -1337,6 +1473,10 @@ def run(page, job_url, resume, cover_pdf, log, out, folder=None, jd='', company_
             if t.get('status') == 'ok' and t.get('value') and not str(t['value']).lower().startswith('other'):
                 ans[f['key']] = {'status': 'ok', 'label': f['label'], 'rule': 'other_text:' + str(t.get('rule')), 'value': t['value']}
         prev = f if f['type'] in ('combo', 'select', 'radio') else (prev if f['type'] in ('text', 'textarea') and IF_FOLLOW.search(f['label']) else None)
+    ans, essay_problem = ES.step([dict(f, kind=f['type']) for f in fields], ans, folder, prefix='sf_')   # JSA-318: prose boxes from open_answers.md, else questions.json
+    if essay_problem:
+        res['problems'].append(essay_problem); log(essay_problem)
+    ans = limit_gate(fields, ans)                                 # JSA-312: an answer the box's own limits refuse is never typed in
     for f in fields:
         if f['type'] == 'date':                                   # UI5 date picker: today / the rule's MM/DD/YYYY
             row = dict(f); v = extra_answer(f, ans.get(f['key']))
@@ -1354,7 +1494,8 @@ def run(page, job_url, resume, cover_pdf, log, out, folder=None, jd='', company_
             if a.get('status') != 'ok' or a.get('leave'):
                 row['want'] = None; row['why'] = a.get('why')
                 if f['required'] and not a.get('leave'):
-                    res['unknown'].append(f['label'] + (f" (options: {' / '.join(f['options'][:6])})" if f['options'] else ''))
+                    res['unknown'].append(f['label'] + (f" (options: {' / '.join(f['options'][:6])})" if f['options'] else '') +
+                                          (f" — {a['why']}" if "breaks the box's limit" in str(a.get('why') or '') else ''))
                 rows.append(row); continue
             want = a.get('value'); row['want'] = want; row['rule'] = a.get('rule')
             if f.get('value') and N(f['value']).lower() == N(want).lower():   # already right: never touch it (re-picking Country reloads the whole form)
@@ -1444,7 +1585,7 @@ def run(page, job_url, resume, cover_pdf, log, out, folder=None, jd='', company_
 COOKIE_RX = re.compile(r'\bcookies?\b', re.I)
 OTHER_TEXT = re.compile(r'^if other( source)?\b.{0,40}(specify|explain|list|enter)|^other\b.{0,30}(free text|specify|please)|^please specify\b', re.I)
 IF_FOLLOW = re.compile(r'^if (other|yes|no|employee referral|you (selected|answered))\b', re.I)   # follow-ups that sit between a list and its Other box
-DONE = re.compile(r'thank you for (applying|your application|your interest)|application (has been |was )?(successfully )?(submitted|received|sent)|you have (successfully )?applied', re.I)   # "Your application has been sent. Thank you!" (an employer 11-04)
+DONE = re.compile(r'thank you for (applying|your application)|application (has been |was )?(successfully )?(submitted|received|sent)|you have (successfully )?applied', re.I)   # "Your application has been sent. Thank you!" (an employer 11-04)
 
 
 def done_text(after, before=''):
@@ -1456,6 +1597,26 @@ def done_text(after, before=''):
 
 
 REFUSED = re.compile(r'please (complete all required fields|correct the errors)|fields require a valid input', re.I)
+BACK_ONLY = lambda t: 'Back to Job Listings' in t and not re.search(r'Upload a Resume|Expand all sections|Email Address', t)   # an employer's success page
+
+
+def sf_done(before, after):
+    """Pure (tested). (confirmed, why) after Apply (JSA-299): confirm_page.judge with the SF sentences — the page must
+    have changed (the Apply button gone or the URL changed) and show a success URL or a success sentence that is new
+    ("thank you for your interest" never counts) — or an employer's bare "Back to Job Listings" page. A refusal first.
+    `before` / `after` = {'url', 'text', 'form'}."""
+    import confirm_page as CP
+    if REFUSED.search(after.get('text') or ''):
+        return False, 'refused by the page'
+    return CP.judge(before, after, done_re=DONE, extra=lambda s: s.get('form') is False and BACK_ONLY(s.get('text') or ''))
+
+
+def sf_snap(page, text=None):
+    try:
+        form = apply_button(page).count() > 0
+    except Exception:
+        form = None
+    return {'url': page.url, 'text': page_text(page) if text is None else text, 'form': form}
 
 INVALID_FIELDS = r"""() => [...document.querySelectorAll('input, textarea')].filter(e => e.offsetParent !== null && !['hidden','button','submit','file','radio','checkbox'].includes(e.type)).map(e => {
   let a = e, msg = '';
@@ -1498,8 +1659,10 @@ def submit(page, company, log, retry=True):
     click that never landed is never reported as "pressed the final button" (Danfoss 11-05, type AF)."""
     from datetime import timedelta
     import gmail_code
+    import confirm_page as CP
     since = datetime.now(timezone.utc) - timedelta(minutes=1)
     before = page_text(page)
+    snap0 = sf_snap(page, before)
     b = apply_button(page)
     if not b.count():
         if DONE.search(before) and not on_application(page):
@@ -1510,9 +1673,9 @@ def submit(page, company, log, retry=True):
         log(f'{why or "Apply not clicked"} — checking whether the page already moved on')
         for _ in range(5):
             time.sleep(2)
-            t = page_text(page)
-            if done_text(t, before) or ('Back to Job Listings' in t and not re.search(r'Upload a Resume|Expand all sections|Email Address', t)):
-                return 'submitted', 'page', None
+            ok, why = sf_done(snap0, sf_snap(page))
+            if ok:
+                log(f'confirmation page: {why}'); CP.settle(page); return 'submitted', 'page', None
         if apply_button(page).count():                            # the form is still there, unpressed: nothing was sent — no e-mail wait
             st, note = press_result(False, None, False)
             log(note); return st, None, note
@@ -1524,12 +1687,12 @@ def submit(page, company, log, retry=True):
             if fixed and all(N(x['page']) == x['want'] for x in fixed):
                 log('Apply again after the number fix'); return submit(page, company, log, retry=False)
             log('Apply refused by the page: ' + t[:200]); return 'refused', None, None
-        if done_text(t, before) or ('Back to Job Listings' in t and not re.search(r'Upload a Resume|Expand all sections|Email Address', t)):   # an employer's success page is just "Back to Job Listings"
-            return 'submitted', 'page', None
-    log('no thank-you page — waiting up to 300 s for the receipt e-mail (Gmail read-only)')
-    subj = gmail_code.wait_for_mail(since, company, timeout=300)
-    st, note = press_result(clicked, 'email' if subj else None, True)
-    return st, ('email' if subj else None), note
+        ok, why = sf_done(snap0, sf_snap(page, t))                # JSA-299: a changed page that says so (an employer: "Back to Job Listings")
+        if ok:
+            log(f'confirmation page: {why}'); CP.settle(page); return 'submitted', 'page', None
+    log('no thank-you page — receipt pending: receipt_confirm checks Gmail later (JSA-391; no waiting in place)')
+    st, note = press_result(clicked, None, True)
+    return st, None, note
 
 
 def write_form_check(r, out, url, a):
@@ -1592,7 +1755,7 @@ def main():
     url = re.sub(r'\?.*$', '', a.url or '')
     if not parse_job(url):
         sys.exit(f'not a SuccessFactors career-site job URL: {a.url}')
-    resume = a.resume or jpaths.resume('2026-10', 'Alex_Rivera_Resume_Data_Analyst_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file('Data_Analyst_A-Classic.pdf'))
     p = parse_job(url)
     out = os.path.abspath(a.out or os.path.join(DATA, 'dryrun', 'successfactors', f"{p['host'].split('.')[1] if p['host'].count('.') > 1 else p['host']}_{p['id']}"))
     os.makedirs(out, exist_ok=True)
@@ -1606,7 +1769,7 @@ def main():
     if not R.opening(resume):                                    # submit + materials problem: stopped before filling
         return
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         stale = [q for q in ctx.pages if parse_job(re.sub(r'\?.*$', '', q.url or '')) == p]
         for q in stale:                                           # one tab per posting: only older tabs of THIS job page — never another company's tab (a tab waiting for Joey's CAPTCHA was closed once, SPX 11-04)
             try: q.close()
@@ -1638,6 +1801,7 @@ def main():
             R.mark('submit')
             company = json.load(open(os.path.join(folder, 'job.json'))).get('company') or p['host']
             note = None
+            t_sub = datetime.now(timezone.utc).astimezone().isoformat(timespec='seconds')   # the click time: receipt_confirm looks for mail since then (JSA-391)
             try:
                 out_ = submit(page, company, log)
                 r['status'], r['confirmed_by'] = out_[:2]; note = out_[2] if len(out_) > 2 else None   # (status, confirmed_by[, queue note])
@@ -1653,8 +1817,10 @@ def main():
                 R._q('not submitted: ' + (note or 'Apply not pressed'))
             elif note and note != PRESSED_NOTE:                  # unconfirmed after a failed click: never "pressed the final button" (type AF)
                 R._q(note)
+            elif r['status'] == 'unconfirmed' and note == PRESSED_NOTE:   # pressed, the page showed nothing: the receipt e-mail is checked later (JSA-391)
+                r['receipt_pending'] = True
         write_form_check(r, out, url, a)
-        R.finish(r, ctx=ctx, page=page)
+        R.finish(r, ctx=ctx, page=page, extra=({'receipt': 'pending', 'submit_at': t_sub} if r.get('receipt_pending') else None))
 
 if __name__ == '__main__':
     main()

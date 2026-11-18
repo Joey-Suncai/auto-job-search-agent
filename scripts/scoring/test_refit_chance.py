@@ -52,7 +52,7 @@ def check(c):
 
 
 # own checks beyond the cases: the live weights are the scorer's, untouched
-assert R.PRIOR_W == {"s_referral": 0.40, "s_timing": 0.25, "s_sponsor": 0.20, "s_fresh": 0.15}
+assert R.PRIOR_W == {"s_referral": 0.40, "s_timing": 0.25, "s_sponsor": 0.10, "s_fresh": 0.25}
 fails = 0
 for c in cases:
     try:

@@ -1,0 +1,18 @@
+{
+ "bullet_causal_because": {
+  "verdict": "case",
+  "why": "No digit, and the text holds none of the spec's problem markers (\"when\", \"found\", \"mismatch\", \"slow\", \"wrong\", \"without\", …; \"because\" is no longer one), so rule 3 \"problem\" fires too; the case listed only causal. (\"confused\" is not a marker)"
+ },
+ "bullet_causal_since": {
+  "verdict": "case",
+  "why": "No digit, and the text holds none of the spec's problem markers (\"when\", \"found\", \"mismatch\", \"slow\", \"wrong\", \"without\", …; \"because\" is no longer one), so rule 3 \"problem\" fires too; the case listed only causal. (\"failing\" is not a marker)"
+ },
+ "bullet_causal_due_to": {
+  "verdict": "case",
+  "why": "No digit, and the text holds none of the spec's problem markers (\"when\", \"found\", \"mismatch\", \"slow\", \"wrong\", \"without\", …; \"because\" is no longer one), so rule 3 \"problem\" fires too; the case listed only causal. (\"backlog\", \"late\" are not markers)"
+ },
+ "bullet_opener_suppresses_verb_check": {
+  "verdict": "case",
+  "why": "No digit, and the text holds none of the spec's problem markers (\"when\", \"found\", \"mismatch\", \"slow\", \"wrong\", \"without\", …; \"because\" is no longer one), so rule 3 \"problem\" fires too; the case listed only opener. (opener suppresses only the verb rule, not the problem rule)"
+ }
+}

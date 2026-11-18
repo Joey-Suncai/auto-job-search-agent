@@ -1,0 +1,493 @@
+[
+ {
+  "name": "blank_want_returns_empty_search",
+  "fn": "prompt_queries",
+  "want": "",
+  "expect": [
+   ""
+  ],
+  "spec": "An empty or blank `want` returns [\"\"]."
+ },
+ {
+  "name": "whitespace_want_returns_empty_search",
+  "fn": "prompt_queries",
+  "want": "   ",
+  "expect": [
+   ""
+  ],
+  "spec": "An empty or blank `want` returns [\"\"]."
+ },
+ {
+  "name": "single_word_duplicate_removed",
+  "fn": "prompt_queries",
+  "want": "Python",
+  "expect": [
+   "Python",
+   ""
+  ],
+  "spec": "No entry appears twice (compare case-insensitively; the first occurrence stays)."
+ },
+ {
+  "name": "data_science_first_word_length_four",
+  "fn": "prompt_queries",
+  "want": "Data Science",
+  "expect": [
+   "Data Science",
+   "Data",
+   ""
+  ],
+  "spec": "The first word of `want` (punctuation removed) is the next entry when it has at least 4 characters."
+ },
+ {
+  "name": "art_history_short_first_word_omitted",
+  "fn": "prompt_queries",
+  "want": "Art History",
+  "expect": [
+   "Art History",
+   ""
+  ],
+  "spec": "The first word of `want` (punctuation removed) is the next entry when it has at least 4 characters."
+ },
+ {
+  "name": "comma_prefix_computer_sciences",
+  "fn": "prompt_queries",
+  "want": "Computer Sciences, Technology, or Business",
+  "expect": [
+   "Computer Sciences, Technology, or Business",
+   "Computer Sciences",
+   "Computer",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "comma_prefix_economics_general",
+  "fn": "prompt_queries",
+  "want": "Economics, General",
+  "expect": [
+   "Economics, General",
+   "Economics",
+   "Economics General",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "paren_prefix_python",
+  "fn": "prompt_queries",
+  "want": "Python (Programming Language)",
+  "expect": [
+   "Python (Programming Language)",
+   "Python",
+   "Python Programming",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "colon_prefix_business_analytics",
+  "fn": "prompt_queries",
+  "want": "Business: Analytics",
+  "expect": [
+   "Business: Analytics",
+   "Business",
+   "Business Analytics",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "semicolon_prefix_computer_science",
+  "fn": "prompt_queries",
+  "want": "Computer Science; Math",
+  "expect": [
+   "Computer Science; Math",
+   "Computer Science",
+   "Computer",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "slash_prefix_computer_science",
+  "fn": "prompt_queries",
+  "want": "Computer Science / Engineering",
+  "expect": [
+   "Computer Science / Engineering",
+   "Computer Science",
+   "Computer",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "short_prefix_before_comma_ignored",
+  "fn": "prompt_queries",
+  "want": "A, B",
+  "expect": [
+   "A, B",
+   "A B",
+   ""
+  ],
+  "spec": "If `want` has two or more words, the first two words (punctuation removed from them, joined with one space) are the next entry."
+ },
+ {
+  "name": "two_char_prefix_before_comma_ignored",
+  "fn": "prompt_queries",
+  "want": "AB, CD",
+  "expect": [
+   "AB, CD",
+   "AB CD",
+   ""
+  ],
+  "spec": "If `want` has two or more words, the first two words (punctuation removed from them, joined with one space) are the next entry."
+ },
+ {
+  "name": "three_char_prefix_included",
+  "fn": "prompt_queries",
+  "want": "abc (def)",
+  "expect": [
+   "abc (def)",
+   "abc",
+   "abc def",
+   ""
+  ],
+  "spec": "If `want` contains one of `,` `(` `:` `;` `/` and the text before the first of them (trimmed) has at least 3 characters, that text is the next entry."
+ },
+ {
+  "name": "four_char_prefix_and_first_word_duplicate",
+  "fn": "prompt_queries",
+  "want": "abcd (ef)",
+  "expect": [
+   "abcd (ef)",
+   "abcd",
+   "abcd ef",
+   ""
+  ],
+  "spec": "No entry appears twice (compare case-insensitively; the first occurrence stays)."
+ },
+ {
+  "name": "duplicate_case_insensitive_science",
+  "fn": "prompt_queries",
+  "want": "Science, Science",
+  "expect": [
+   "Science, Science",
+   "Science",
+   "Science Science",
+   ""
+  ],
+  "spec": "No entry appears twice (compare case-insensitively; the first occurrence stays)."
+ },
+ {
+  "name": "short_first_word_ma_omitted",
+  "fn": "prompt_queries",
+  "want": "MA in Economics",
+  "expect": [
+   "MA in Economics",
+   "MA in",
+   ""
+  ],
+  "spec": "The first word of `want` (punctuation removed) is the next entry when it has at least 4 characters."
+ },
+ {
+  "name": "management_information_systems_queries",
+  "fn": "prompt_queries",
+  "want": "Management Information Systems",
+  "expect": [
+   "Management Information Systems",
+   "Management Information",
+   "Management",
+   ""
+  ],
+  "spec": "If `want` has two or more words, the first two words (punctuation removed from them, joined with one space) are the next entry."
+ },
+ {
+  "name": "exact_match_returns_option",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Accounting",
+   "Computer Science",
+   "Data Science"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "an option equal to it → that option (first in list order)."
+ },
+ {
+  "name": "exact_normalized_first_in_list",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Science.",
+   "computer   science",
+   "Data Science"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science.",
+  "spec": "Comparison ignores case, repeated spaces and a trailing dot."
+ },
+ {
+  "name": "exact_beats_substring_candidate",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Sciences, Technology, or Business",
+   "Computer Science"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "an option equal to it → that option (first in list order)."
+ },
+ {
+  "name": "lower_preference_never_jumps_queue",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Data Science and Analytics",
+   "Computer Science"
+  ],
+  "prefs": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect": "Data Science and Analytics",
+  "spec": "Go through the preferences in order; the first preference that matches any option decides (a lower preference never jumps the queue)."
+ },
+ {
+  "name": "no_candidate_then_next_preference",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Science"
+  ],
+  "prefs": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "no candidate → try the next preference; no preference matches → None."
+ },
+ {
+  "name": "spec_example_closest_word_difference",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Accounting",
+   "Computer Sciences, Technology, or Business",
+   "Computer and Information Science"
+  ],
+  "prefs": [
+   "Data Science",
+   "Computer Science"
+  ],
+  "expect": "Computer and Information Science",
+  "spec": "among the candidates the CLOSEST wins: the smallest number of words in the symmetric difference of the two word sets (option words vs preference words, stop words removed); on a tie the first in list order."
+ },
+ {
+  "name": "tie_goes_to_first_in_list_order",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Science and Mathematics",
+   "Computer Science and Engineering"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science and Mathematics",
+  "spec": "on a tie the first in list order."
+ },
+ {
+  "name": "substring_candidate_selected",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Applied Data Science",
+   "Data Analytics"
+  ],
+  "prefs": [
+   "Data Science"
+  ],
+  "expect": "Applied Data Science",
+  "spec": "the candidates are the options that contain the preference as a substring."
+ },
+ {
+  "name": "contained_multiword_option_selected",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Data Science",
+   "Applied Mathematics"
+  ],
+  "prefs": [
+   "Applied Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "plus the options (with at least two words) contained in the preference."
+ },
+ {
+  "name": "bare_one_word_option_not_candidate",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Science",
+   "Data Analytics"
+  ],
+  "prefs": [
+   "Data Science"
+  ],
+  "expect": null,
+  "spec": "A bare one-word option contained in the preference (e.g. \"Science\" in \"Data Science\") is never a candidate by containment."
+ },
+ {
+  "name": "stop_words_ignored_in_preference",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Management Information Systems",
+   "Information Systems"
+  ],
+  "prefs": [
+   "Management of Information Systems"
+  ],
+  "expect": "Management Information Systems",
+  "spec": "the words \"and of the a an or in for\" do not count."
+ },
+ {
+  "name": "short_preference_does_not_match_longer_option",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Information Technology"
+  ],
+  "prefs": [
+   "IT",
+   "Information Technology"
+  ],
+  "expect": "Information Technology",
+  "spec": "a preference shorter than 4 characters only matches exactly."
+ },
+ {
+  "name": "short_preference_exact_match",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Information Technology",
+   "IT"
+  ],
+  "prefs": [
+   "IT"
+  ],
+  "expect": "IT",
+  "spec": "a preference shorter than 4 characters only matches exactly."
+ },
+ {
+  "name": "other_preference_ignored",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Other",
+   "Data Science"
+  ],
+  "prefs": [
+   "Other",
+   "Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "Preferences \"\" and \"other\" are ignored."
+ },
+ {
+  "name": "empty_preference_ignored",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Data Science"
+  ],
+  "prefs": [
+   "",
+   "Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "Preferences \"\" and \"other\" are ignored."
+ },
+ {
+  "name": "no_match_returns_none",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Accounting",
+   "Biology"
+  ],
+  "prefs": [
+   "Nursing"
+  ],
+  "expect": null,
+  "spec": "no preference matches → None."
+ },
+ {
+  "name": "closest_among_multiple_candidates",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Science and Engineering",
+   "Computer Science and Information Technology",
+   "Computer Sciences"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science and Engineering",
+  "spec": "among the candidates the CLOSEST wins: the smallest number of words in the symmetric difference of the two word sets (option words vs preference words, stop words removed)."
+ },
+ {
+  "name": "every_word_candidate_selected",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Data Analytics and Science",
+   "Analytics"
+  ],
+  "prefs": [
+   "Data Science"
+  ],
+  "expect": "Data Analytics and Science",
+  "spec": "plus the options that contain every word of the preference."
+ },
+ {
+  "name": "empty_prefs_returns_none",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Data Science"
+  ],
+  "prefs": [],
+  "expect": null,
+  "spec": "no preference matches → None."
+ },
+ {
+  "name": "short_preference_no_exact_returns_none",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Information Technology"
+  ],
+  "prefs": [
+   "IT"
+  ],
+  "expect": null,
+  "spec": "a preference shorter than 4 characters only matches exactly."
+ },
+ {
+  "name": "exact_match_later_beats_earlier_substring",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Computer Science and Engineering",
+   "Computer Science"
+  ],
+  "prefs": [
+   "Computer Science"
+  ],
+  "expect": "Computer Science",
+  "spec": "an option equal to it → that option (first in list order)."
+ },
+ {
+  "name": "length_three_preference_exact_match",
+  "fn": "pick_by_prefs",
+  "opts": [
+   "Art History",
+   "Art"
+  ],
+  "prefs": [
+   "Art"
+  ],
+  "expect": "Art",
+  "spec": "a preference shorter than 4 characters only matches exactly."
+ }
+]

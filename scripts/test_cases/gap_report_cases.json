@@ -1,0 +1,1404 @@
+[
+ {
+  "name": "proven: coverage above threshold with one uncovered group",
+  "why": "Skill string 'Python programming' matches group Python (after 'Python' comes a space, so the whole-token rule holds). covered df = 3; total df = 3 (Python) + 1 (SQL) = 4; coverage = 3/4 = 0.75 >= default proven_share 0.5 -> 'proven'. facts = the fact that produced the skill match. missing = groups with df > 0 not covered = ['SQL'].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Data",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": [
+        "py"
+       ],
+       "df": 3
+      },
+      {
+       "term": "SQL",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "Engineer",
+     "R": "Built pipelines",
+     "skills": [
+      "Python programming"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 0.75,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "SQL"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "proven at exactly the 0.5 threshold (boundary inclusive)",
+  "why": "covered = Docker (df 2); total = 2 (Docker) + 2 (Kubernetes) = 4; coverage = 2/4 = 0.5. Spec: 'coverage >= proven_share -> level \"proven\"', so exactly 0.5 with the default proven_share 0.5 must be proven, not partial. missing = ['Kubernetes'].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Ops",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 2
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Docker"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 0.5,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Kubernetes"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "partial: coverage just below the 0.5 threshold",
+  "why": "covered = Docker (df 2); total = 2 + 3 (Kubernetes) = 5; coverage = 2/5 = 0.4; 'coverage > 0 but < proven_share -> \"partial\"'. missing lists the uncovered group with df > 0: ['Kubernetes'].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Ops",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Docker"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "partial",
+    "coverage": 0.4,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Kubernetes"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "custom proven_share 0.75 reached exactly",
+  "why": "covered = Go (df 3); total = 3 + 1 (Rust) = 4; coverage = 3/4 = 0.75, which equals the supplied proven_share 0.75, so 'coverage >= proven_share' makes it proven. missing = ['Rust'].",
+  "fn": "assess",
+  "proven_share": 0.75,
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Backend",
+     "weight": 0.7,
+     "keywords": [
+      {
+       "term": "Go",
+       "synonyms": [],
+       "df": 3
+      },
+      {
+       "term": "Rust",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "Engineer",
+     "R": "Wrote services",
+     "skills": [
+      "Go"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 0.75,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Rust"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "default min_weight 0.03: weight equal to it is kept, lower is dropped",
+  "why": "One row per competency 'whose weight >= min_weight'. Default min_weight is 0.03, so weight 0.9 and weight 0.03 (equal, boundary inclusive) are returned and weight 0.02 is filtered out. Nothing matches any group, so both rows are 'gap' with every df>0 group in missing.",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "A",
+     "weight": 0.9,
+     "keywords": [
+      {
+       "term": "Alpha",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "B",
+     "weight": 0.03,
+     "keywords": [
+      {
+       "term": "Beta",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "label": "C",
+     "weight": 0.02,
+     "keywords": [
+      {
+       "term": "Gamma",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "Alpha"
+    ]
+   },
+   {
+    "id": "c2",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "Beta"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "explicit min_weight 0.25 combined with proven_share 0.6",
+  "why": "min_weight 0.25 keeps c1 (0.6) and c2 (0.5) and drops c3 (0.2). c1: covered Spark df 3, total 3+2 (Hive) = 5, coverage 0.6 >= 0.6 -> proven. c2: covered Kafka df 1, total 1+1 (Flink) = 2, coverage 0.5 < 0.6 -> partial. Rows in the role's order.",
+  "fn": "assess",
+  "min_weight": 0.25,
+  "proven_share": 0.6,
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Streaming",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Spark",
+       "synonyms": [],
+       "df": 3
+      },
+      {
+       "term": "Hive",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "Messaging",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Kafka",
+       "synonyms": [],
+       "df": 1
+      },
+      {
+       "term": "Flink",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "label": "Legacy",
+     "weight": 0.2,
+     "keywords": [
+      {
+       "term": "Hadoop",
+       "synonyms": [],
+       "df": 5
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Spark",
+      "Kafka"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 0.6,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Hive"
+    ]
+   },
+   {
+    "id": "c2",
+    "level": "partial",
+    "coverage": 0.5,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Flink"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "resume_ok=false fact's skills do not count for coverage",
+  "why": "Step 1 only uses 'facts with resume_ok not false', so f1's skill 'Python' is ignored -> no covered groups, no skill match. No resume_ok fact exists for step 2, skills.true is empty, so step 4 decides: a resume_ok=false fact matching by skills -> 'off resume'. missing: every df>0 group counts, ordered by df desc: Python (3), Go (1).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Backend",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": [],
+       "df": 3
+      },
+      {
+       "term": "Go",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": false
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "off resume",
+    "coverage": 0.0,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Python",
+     "Go"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "missing resume_ok is treated as true",
+  "why": "Spec: 'resume_ok: true|false (missing = true)'. f1 has no resume_ok, so its skill 'Python' counts: covered df 2, total 2 + 1 (Java) = 3, coverage = 2/3 = 0.6666... -> 0.667 rounded to 3 decimals, >= 0.5 -> proven. missing = ['Java'].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Backend",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Java",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Python"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 0.667,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Java"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "mentioned: no skill match but A/R text matches",
+  "why": "No fact has a matching skill, so step 1 does not apply and coverage is 0. Step 2: resume_ok f1's A text 'Led agile transformation' contains the whole token 'agile' (case-insensitive) and f2's R text 'Scrum master' contains 'Scrum' -> 'mentioned'. Facts at the deciding level, in fact order: f1, f2. For levels other than proven/partial every df>0 group is uncovered, missing ordered by df desc: Agile (2), Scrum (1).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Delivery",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Agile",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Scrum",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "Led agile transformation",
+     "R": "Managed teams",
+     "skills": []
+    },
+    {
+     "id": "f2",
+     "A": "Coach",
+     "R": "Scrum master",
+     "skills": []
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "mentioned",
+    "coverage": 0.0,
+    "facts": [
+     "f1",
+     "f2"
+    ],
+    "missing": [
+     "Agile",
+     "Scrum"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "listed only: match comes from skills.true",
+  "why": "There are no facts and skills.true contains 'k8s', a synonym spelling of the Kubernetes group -> step 3 'listed only'. The level is not decided by any fact, so facts = []. missing = ['Kubernetes'] (df 2 > 0, uncovered).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Platform",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 2
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {
+     "Platform": [
+      "k8s"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "listed only",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "Kubernetes"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "off resume: only an excluded fact matches, via A text",
+  "why": "f1 is resume_ok=false, so it cannot produce a skill match (step 1) or a mention (step 2). Step 3: skills.true empty. Step 4: the resume_ok=false fact's A text 'Built infra with Terraform' matches the Terraform group -> 'off resume' with facts ['f1']. missing = ['Terraform'].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Infra",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "Built infra with Terraform",
+     "R": "",
+     "skills": [],
+     "resume_ok": false
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "off resume",
+    "coverage": 0.0,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Terraform"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "gap: nothing matches at any step",
+  "why": "The only fact has skill 'Java' and text 'Java developer'/'Spring Boot'; none matches the group Scala. skills.true is empty and no fact is resume_ok=false, so all four steps fail -> 'gap' with facts [] and missing ['Scala'] (df 3 > 0, uncovered).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Functional",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Scala",
+       "synonyms": [],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "Java developer",
+     "R": "Spring Boot",
+     "skills": [
+      "Java"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "Scala"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "whole-token traps: 'R' does not match 'R&D', 'SQL' does not match 'NoSQL'",
+  "why": "Group 'R': the only occurrence in 'R&D leader' is followed by '&', which is in the forbidden after-set, and 'NoSQL' contains no 'R' at all, so no match -> gap. Group 'SQL': 'NoSQL' has 'o' (a letter) before 'SQL', so it is not a whole token; A/R texts contain no 'SQL' -> gap. facts = [] for both; missing holds each uncovered df>0 group.",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c_lang",
+     "label": "Stats language",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "R",
+       "synonyms": [],
+       "df": 3
+      }
+     ]
+    },
+    {
+     "id": "c_db",
+     "label": "Databases",
+     "weight": 0.3,
+     "keywords": [
+      {
+       "term": "SQL",
+       "synonyms": [],
+       "df": 4
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "R&D leader",
+     "R": "Owned roadmap",
+     "skills": [
+      "NoSQL"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c_lang",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "R"
+    ]
+   },
+   {
+    "id": "c_db",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "SQL"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "sum of all df is 0 and something is covered -> coverage 1.0, proven",
+  "why": "Group Excel has df 0 and is matched by f1's skill 'Excel'. Spec: 'If the sum of all df is 0: coverage = 1.0 when something is covered.' -> coverage 1.0 >= 0.5 -> proven. missing only lists groups with df > 0, and both groups have df 0, so missing = [].",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Spreadsheets",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Excel",
+       "synonyms": [],
+       "df": 0
+      },
+      {
+       "term": "VBA",
+       "synonyms": [],
+       "df": 0
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Excel"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 1.0,
+    "facts": [
+     "f1"
+    ],
+    "missing": []
+   }
+  ]
+ },
+ {
+  "name": "covered group with df 0 while another group has df > 0 -> partial with coverage 0",
+  "why": "Group Excel (df 0) is covered; total df = 0 (Excel) + 5 (Tableau) = 5, so coverage = 0/5 = 0. Spec: 'If groups are covered but all their df are 0 while others have df > 0, coverage is 0 -> \"partial\".' facts = the skill-match fact ['f1']; missing = ['Tableau'] (df 5 > 0, uncovered).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Analytics",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Excel",
+       "synonyms": [],
+       "df": 0
+      },
+      {
+       "term": "Tableau",
+       "synonyms": [],
+       "df": 5
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Excel"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "partial",
+    "coverage": 0.0,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Tableau"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "missing is capped at 5 and ordered by df descending",
+  "why": "Nothing matches, so the level is 'gap' and, per spec, 'for levels other than proven/partial every group with df > 0 counts as not covered'. Six groups have df > 0 (10, 8, 6, 4, 2, 1); missing keeps 'most-asked first by df, at most 5', i.e. Spark(10), Hive(8), Kafka(6), Flink(4), Hadoop(2) and drops Pig(1).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Big data",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Spark",
+       "synonyms": [],
+       "df": 10
+      },
+      {
+       "term": "Hive",
+       "synonyms": [],
+       "df": 8
+      },
+      {
+       "term": "Kafka",
+       "synonyms": [],
+       "df": 6
+      },
+      {
+       "term": "Flink",
+       "synonyms": [],
+       "df": 4
+      },
+      {
+       "term": "Hadoop",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Pig",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "gap",
+    "coverage": 0.0,
+    "facts": [],
+    "missing": [
+     "Spark",
+     "Hive",
+     "Kafka",
+     "Flink",
+     "Hadoop"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "coverage rounded to 3 decimals (1/3 and 2/3)",
+  "why": "Both competencies are matched by f1's skill 'Excel'. c1: covered df 1, total 1 + 2 (Tableau) = 3 -> 1/3 = 0.3333... rounded to 0.333, below 0.5 -> partial. c2: covered df 2, total 2 + 1 = 3 -> 2/3 = 0.6666... rounded to 0.667, >= 0.5 -> proven. Uncovered Tableau (df > 0) is in missing for both.",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "A",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Excel",
+       "synonyms": [],
+       "df": 1
+      },
+      {
+       "term": "Tableau",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "B",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Excel",
+       "synonyms": [],
+       "df": 2
+      },
+      {
+       "term": "Tableau",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Excel"
+     ]
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "partial",
+    "coverage": 0.333,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Tableau"
+    ]
+   },
+   {
+    "id": "c2",
+    "level": "proven",
+    "coverage": 0.667,
+    "facts": [
+     "f1"
+    ],
+    "missing": [
+     "Tableau"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "synonyms, case-insensitive matching, several facts, unique ids in fact order",
+  "why": "f1's 'PYTHON' matches group Python ignoring case; f2's 'k8s' matches the Kubernetes group through its synonym; f3's 'Terraform and Python' matches both Terraform and Python (whole tokens). f4 is resume_ok=false and is ignored for coverage. covered df = 1+2+3 = 6 of total 6 -> coverage 1.0 -> proven. facts are unique and in fact order: f1, f2, f3 (f3 counted once although it matches two groups). missing = [] (every df>0 group is covered).",
+  "fn": "assess",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "DevOps",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": [
+        "py"
+       ],
+       "df": 1
+      },
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 2
+      },
+      {
+       "term": "Terraform",
+       "synonyms": [],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [
+    {
+     "id": "f1",
+     "A": "",
+     "R": "",
+     "skills": [
+      "PYTHON"
+     ]
+    },
+    {
+     "id": "f2",
+     "A": "",
+     "R": "",
+     "skills": [
+      "k8s"
+     ]
+    },
+    {
+     "id": "f3",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Terraform and Python"
+     ]
+    },
+    {
+     "id": "f4",
+     "A": "",
+     "R": "",
+     "skills": [
+      "Terraform"
+     ],
+     "resume_ok": false
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   {
+    "id": "c1",
+    "level": "proven",
+    "coverage": 1.0,
+    "facts": [
+     "f1",
+     "f2",
+     "f3"
+    ],
+    "missing": []
+   }
+  ]
+ },
+ {
+  "name": "missing_tools: two matching tools sorted by df descending",
+  "why": "'KUBERNETES' equals the spelling 'Kubernetes' ignoring case (df 3); 'Docker' equals its term (df 2). Sorted by df descending -> Kubernetes(3) then Docker(2). The tool name reported is the skills.not_true entry.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Ops",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": [
+        "containerization"
+       ],
+       "df": 2
+      },
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "KUBERNETES",
+     "Docker"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "KUBERNETES",
+    3
+   ],
+   [
+    "Docker",
+    2
+   ]
+  ]
+ },
+ {
+  "name": "missing_tools: a synonym spelling counts as a match",
+  "why": "'k8s' is a synonym spelling of the Kubernetes group, so it 'equals (ignoring case) a spelling of some keyword group'; df = that group's df = 3.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Platform",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": [
+        "k8s"
+       ],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "k8s"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "k8s",
+    3
+   ]
+  ]
+ },
+ {
+  "name": "missing_tools: tools not in the role are left out",
+  "why": "Only 'Docker' equals a spelling of a role keyword group (df 2). 'Excel' and 'Photoshop' appear in no group of the role, so they are excluded.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Ops",
+     "weight": 0.5,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "Excel",
+     "Docker",
+     "Photoshop"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "Docker",
+    2
+   ]
+  ]
+ },
+ {
+  "name": "missing_tools: same spelling in several groups -> largest df",
+  "why": "'Tableau' equals a spelling of the group with df 1 and of the group with df 4; spec says df = 'that group's df (the largest if several)' -> 4.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "A",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Tableau",
+       "synonyms": [],
+       "df": 1
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "B",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Tableau",
+       "synonyms": [
+        "viz"
+       ],
+       "df": 4
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "Tableau"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "Tableau",
+    4
+   ]
+  ]
+ },
+ {
+  "name": "missing_tools: equal df -> tool name ascending",
+  "why": "Both 'Zeta' (group Zeta, df 2) and 'Alpha' (group Alpha, df 2) match. Equal df, so the tie-break 'then tool name ascending' gives Alpha before Zeta.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "A",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Zeta",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "B",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "Alpha",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "Zeta",
+     "Alpha"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "Alpha",
+    2
+   ],
+   [
+    "Zeta",
+    2
+   ]
+  ]
+ },
+ {
+  "name": "missing_tools: near misses by equality are not matches",
+  "why": "A not_true entry must 'equal (ignoring case) a spelling of some keyword group'. 'Docker Compose' is not equal to 'Docker' and 'NoSQL' is not equal to 'SQL' (no whole-token matching is used here), so nothing matches and the result is an empty list.",
+  "fn": "missing_tools",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "label": "Ops",
+     "weight": 0.6,
+     "keywords": [
+      {
+       "term": "Docker",
+       "synonyms": [],
+       "df": 2
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "label": "DB",
+     "weight": 0.4,
+     "keywords": [
+      {
+       "term": "SQL",
+       "synonyms": [],
+       "df": 3
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "facts": [],
+   "skills": {
+    "true": {},
+    "not_true": [
+     "Docker Compose",
+     "NoSQL"
+    ]
+   }
+  },
+  "expect": []
+ }
+]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Harness for plan_build.date_answer / multi_answer (rule 13, JSA-073): DeepSeek cases in
-test_cases/answer_format_cases.json, verdicts in answer_format_verdicts.json. Plus the Creatify / Scientech regressions
+test_cases/answer_format_cases.json, verdicts in answer_format_verdicts.json. Plus the Sevgalkel / Scientech regressions
 through build()."""
 import json, os, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))

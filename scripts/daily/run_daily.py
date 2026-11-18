@@ -2,7 +2,8 @@
 
   refresh  (08:15)  append_new.py against the 13 curated GitHub lists — append only; then board_search.py adds new
                     Lever / Ashby internships from every board in the store + references/extra_boards.txt (JSA-076)
-  gate     (08:45)  gate_run.py eligibility check (rows never checked / older than 7 days / transient fails; --all on Sundays)
+  gate     (08:45)  gate_run.py eligibility check (rows never checked / older than 7 days / transient fails; --all on Sundays;
+                    Sundays also the independent audit of submitted forms, scripts/audit_sample.py --run, JSA-245; --no-audit)
 
 Each stage works on a temp copy, checks the result, and only then saves data/store/jobs.jsonl, commits that path alone
 and pushes. Any failure leaves the store untouched and pushes a "失败" message. Log: data/runner/daily/<date>.md.
@@ -19,6 +20,7 @@ PIPE = os.path.join(ROOT, "skills", "job-hunt-pipeline", "scripts")
 sys.path.insert(0, os.path.join(ROOT, "scripts", "store"))
 sys.path.insert(0, HERE)
 import store  # noqa: E402
+os.environ.setdefault('JSA_DATA_GIT_DEFER', '1')   # JSA-358: the routines commit data/store themselves in git_publish (and push)
 from notify import notify  # noqa: E402
 
 ENV = dict(os.environ, PATH=":".join([os.path.expanduser("~/.local/bin"), "/opt/homebrew/bin", "/usr/local/bin",
@@ -143,6 +145,12 @@ def stage_gate(work, full):
         lines.append(f"每周抽查：硬理由样本 {sum(v['sampled'] for v in sr['audit'].values())} 行，DeepSeek 不同意 {n} 行 → {sr['audit_report']}")
     elif sr.get("error"):
         lines.append(f"DeepSeek 复读失败（{sr['error'][:80]}），本次只用规则")
+    rd = s.get("render") or {}   # JSA-284: job-Chrome rendered-page fallback for unreadable ats_url rows
+    if rd.get("picked"):
+        lines.append(f"Chrome 读页面 {rd['picked']} 行：读到 {rd.get('ok', 0)} · 已关闭 {rd.get('closed', 0)} · 仍读不到 {rd.get('unreadable', 0)}"
+                     + (f" · 跳过（{rd['skipped']}）" if rd.get("skipped") else "") + (f" · 停在 {rd['stopped'][:80]}" if rd.get("stopped") else ""))
+    if rd.get("picked") or rd.get("error"):
+        log("render fallback: " + json.dumps(rd, ensure_ascii=False)[:300])
     return new, s["checked"], f"{s['checked']} checked", "\n".join(lines)
 
 
@@ -176,6 +184,69 @@ def git_publish(subject):
     return "committed locally; push pending (remote ahead and the working tree is not clean)"
 
 
+def weekly_audit():
+    """Sundays after the gate (JSA-245): the independent audit of submitted forms (scripts/audit_sample.py --run). A
+    failure is logged and never fails the gate. Returns one line for the push."""
+    try:
+        # 50 forms per platform a week (Joey 2026-11-09 「每个平台五十份」, JSA-259)
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "audit_sample.py"), "--run", "--n", "50"], capture_output=True,
+                           text=True, timeout=1800)
+        line = (r.stdout.strip().splitlines() or ["audit: no output"])[-1]
+        log(line if r.returncode == 0 else f"audit failed: {(r.stderr or r.stdout)[-300:]}")
+        extra = ""
+        try:                                           # JSA-240: DeepSeek's prefetch suggestions vs what Joey answered (never fails the gate)
+            p2 = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "audit_prefetch.py"), "--run"], capture_output=True, text=True, timeout=600)
+            l2 = (p2.stdout.strip().splitlines() or [""])[-1]
+            log(l2 if p2.returncode == 0 else f"prefetch audit failed: {(p2.stderr or p2.stdout)[-200:]}")
+            extra = (" · 预读建议：" + l2.split("agreement")[-1].strip()) if p2.returncode == 0 and "agreement" in l2 else ""
+        except Exception as e2:
+            log(f"prefetch audit failed: {e2}")
+        return ("抽查：" + line.split(" → ")[0] + extra) if r.returncode == 0 else "抽查失败（见日志）"
+    except Exception as e:
+        log(f"audit failed: {e}")
+        return "抽查失败（见日志）"
+
+
+def post_submit():
+    """Every gate run (JSA-192, apply self-optimization step 7): the independent audit of the forms submitted since the last run
+    (audit_sample.py --run only takes forms never audited), then scripts/learn/post_submit.py — qa PROPOSALS from verified DeepSeek
+    triage answers (never written to qa) and the audit doubts waiting more than 2 days. A failure is logged and never fails the gate."""
+    out = []
+    for name, cmd, tmo in (("audit", ["audit_sample.py", "--run", "--n", "50"], 1800), ("review", [os.path.join("learn", "post_submit.py"), "--run"], 600)):
+        try:
+            r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", cmd[0])] + cmd[1:], capture_output=True, text=True, timeout=tmo)
+            line = (r.stdout.strip().splitlines() or [name + ": no output"])[-1]
+            log(line if r.returncode == 0 else f"{name} failed: {(r.stderr or r.stdout)[-300:]}")
+            if r.returncode == 0:
+                out.append(line.split(" → ")[0])
+        except Exception as e:
+            log(f"{name} failed: {e}")
+    return ("交后复核：" + " · ".join(out)) if out else "交后复核失败（见日志）"
+
+
+def sweep_data():
+    """JSA-412: commit what unwired writers left in the data home (tracked roots only; JSA_DATA_GIT_DEFER only covers data/store)."""
+    try:
+        import data_git
+        defer = os.environ.pop("JSA_DATA_GIT_DEFER", None)
+        try:
+            return data_git.sweep()
+        finally:
+            if defer is not None:
+                os.environ["JSA_DATA_GIT_DEFER"] = defer
+    except Exception as e:  # noqa: BLE001
+        log(f"sweep failed: {e}")
+        return 0
+
+
+def overdue():
+    try:
+        import data_git
+        return data_git.reminder()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def main(a):
     stage = a[0] if a and a[0] in ("refresh", "gate") else None
     if not stage:
@@ -191,7 +262,15 @@ def main(a):
             store.save("jobs", new)
         src_changed = stage == "refresh" and save_sources(store.load("jobs"))
         pub = "skipped" if "--no-git" in a or not (n or src_changed) else git_publish(f"data: {stage} {TODAY} ({short})")
+        swept = 0 if "--no-git" in a else sweep_data()
         log(f"{stage} ok in {round(time.time() - t0)} s · {short} · git: {pub}")
+        if stage == "gate" and "--no-audit" not in a:
+            report += "\n" + post_submit()                 # JSA-192: every day, for the forms submitted since
+            if full:
+                report += "\n" + weekly_audit()
+        late = overdue()                                   # JSA-412: what is still uncommitted after the sweep reaches Joey, not only a session note
+        if late:
+            report += "\n⚠ " + late
         if "--no-notify" not in a:
             notify(f"{title} {TODAY}", report + ("" if pub in ("pushed", "rebased and pushed", "skipped", "nothing to commit") else f"\n⚠ git: {pub}"))
         return 0

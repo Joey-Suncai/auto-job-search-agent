@@ -1,0 +1,590 @@
+[
+ {
+  "name": "Conviction question answered Yes blocks",
+  "label": "Have you ever been convicted of a felony?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:conviction",
+  "spec_quote": "a question that ASKS whether he was convicted / pleaded guilty / has a criminal record … blocks unless the value is No (or \"I have not …\", \"Never\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Conviction question answered No passes",
+  "label": "Have you ever been convicted of a felony?",
+  "value": "No",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "blocks unless the value is No (or \"I have not …\", \"Never\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Notice before the question only explains; Yes still blocks",
+  "label": "Note: a conviction does not automatically disqualify you. Have you ever been convicted of a crime?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:conviction",
+  "spec_quote": "the sentence ending in \"?\" decides; a notice before it only explains … blocks unless the value is No",
+  "ambiguous": false
+ },
+ {
+  "name": "Certification statement is not checked",
+  "label": "I certify that I have never been convicted of a felony.",
+  "value": "true",
+  "type": "checkbox",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A statement like \"I certify that I have never been convicted\" is not checked.",
+  "ambiguous": false
+ },
+ {
+  "name": "Background check consent is not a conviction question",
+  "label": "Do you consent to a background check?",
+  "value": "No",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A question about consenting to a background check is not a conviction question.",
+  "ambiguous": false
+ },
+ {
+  "name": "Pleaded guilty answered Never passes",
+  "label": "Have you ever pleaded guilty to a crime?",
+  "value": "Never",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Never"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "blocks unless the value is No (or \"I have not …\", \"Never\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Criminal record question answered Yes blocks",
+  "label": "Do you have a criminal record?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:conviction",
+  "spec_quote": "a question that ASKS whether he was convicted / pleaded guilty / has a criminal record … blocks unless the value is No",
+  "ambiguous": false
+ },
+ {
+  "name": "Any employer authorization answered Yes blocks",
+  "label": "Are you authorized to work for any employer in the U.S.?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:any_employer",
+  "spec_quote": "an authorization question for \"any employer\", \"all employers\", \"any U.S. employer\" or \"without restriction\" blocks a Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Any employer authorization answered No passes",
+  "label": "Are you authorized to work for any employer in the U.S.?",
+  "value": "No",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "an authorization question for \"any employer\" … blocks a Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Without restriction answered Yes blocks",
+  "label": "Are you authorized to work without restriction?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:any_employer",
+  "spec_quote": "an authorization question for \"any employer\", \"all employers\", \"any U.S. employer\" or \"without restriction\" blocks a Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Sponsorship question is not checked here",
+  "label": "Will you now or in the future require sponsorship?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A question that is about sponsorship is not checked here.",
+  "ambiguous": false
+ },
+ {
+  "name": "All employers authorization answered Yes blocks",
+  "label": "Are you authorized to work for all employers?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:any_employer",
+  "spec_quote": "an authorization question for \"any employer\", \"all employers\", \"any U.S. employer\" or \"without restriction\" blocks a Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Degree held on graduation answered Bachelor's blocks",
+  "label": "What degree will you hold once you graduate?",
+  "value": "Bachelor's",
+  "type": "select",
+  "options": [
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "deepseek",
+  "expect": "block:degree_level",
+  "spec_quote": "a question about the degree he will hold once graduated / is currently pursuing blocks a Bachelor's (or lower / Doctorate) value",
+  "ambiguous": false
+ },
+ {
+  "name": "Highest completed education answered Master's blocks",
+  "label": "What is your highest completed education?",
+  "value": "Master's",
+  "type": "select",
+  "options": [
+   "High School",
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "deepseek",
+  "expect": "block:degree_level",
+  "spec_quote": "a question about his HIGHEST COMPLETED education blocks a Master's / MBA / Doctorate value (the M.S. is in progress).",
+  "ambiguous": false
+ },
+ {
+  "name": "Highest completed education answered Bachelor's passes",
+  "label": "What is your highest completed education?",
+  "value": "Bachelor's",
+  "type": "select",
+  "options": [
+   "High School",
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a question about his HIGHEST COMPLETED education blocks a Master's / MBA / Doctorate value (the M.S. is in progress).",
+  "ambiguous": false
+ },
+ {
+  "name": "Currently pursuing degree answered Master's passes",
+  "label": "What degree are you currently pursuing?",
+  "value": "Master's",
+  "type": "select",
+  "options": [
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a question about the degree he will hold once graduated / is currently pursuing blocks a Bachelor's (or lower / Doctorate) value",
+  "ambiguous": false
+ },
+ {
+  "name": "Pursuing STEM Master's Yes/No answered No blocks",
+  "label": "Are you currently pursuing a Bachelor's, Master's, or PhD in Data Science, Statistics, or a related field?",
+  "value": "No",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:degree_level",
+  "spec_quote": "A Yes/No \"Are you currently pursuing a Bachelor's, Master's, or PhD in Data Science, Statistics …?\" blocks No",
+  "ambiguous": false
+ },
+ {
+  "name": "Pursuing bachelor's in Business answered Yes blocks",
+  "label": "Are you currently pursuing a bachelor's degree in Business?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:degree_level",
+  "spec_quote": "\"Are you currently pursuing a bachelor's degree in Business?\" blocks Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Value naming both undergraduate and graduate passes",
+  "label": "What degree level are you seeking? (undergraduate or graduate program)",
+  "value": "Undergraduate or Graduate Program",
+  "type": "select",
+  "options": [
+   "Undergraduate",
+   "Graduate",
+   "Undergraduate or Graduate Program"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A value that names both (\"undergraduate or graduate program\") passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Parenthetical explanation does not change block",
+  "label": "What degree will you hold upon graduation? (Note: your Bachelor's degree does not count.)",
+  "value": "Bachelor's",
+  "type": "select",
+  "options": [
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "deepseek",
+  "expect": "block:degree_level",
+  "spec_quote": "Text in parentheses only explains.",
+  "ambiguous": false
+ },
+ {
+  "name": "Undergrad major not Economics blocks",
+  "label": "What was your undergraduate major?",
+  "value": "Data Science",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:major",
+  "spec_quote": "an undergrad major question blocks any value that is not Economics",
+  "ambiguous": false
+ },
+ {
+  "name": "Undergrad major Economics passes",
+  "label": "What was your undergraduate major?",
+  "value": "Economics",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "an undergrad major question blocks any value that is not Economics",
+  "ambiguous": false
+ },
+ {
+  "name": "Second major field value blocks",
+  "label": "Do you have a second major or minor? If so, list it.",
+  "value": "Computer Science",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:major",
+  "spec_quote": "a second major / secondary major / minor question blocks any field value (empty, \"None\", \"N/A\" pass)",
+  "ambiguous": false
+ },
+ {
+  "name": "Second major None passes",
+  "label": "Do you have a second major or minor? If so, list it.",
+  "value": "None",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a second major / secondary major / minor question blocks any field value (empty, \"None\", \"N/A\" pass)",
+  "ambiguous": false
+ },
+ {
+  "name": "Minor field value blocks",
+  "label": "Minor",
+  "value": "Mathematics",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:major",
+  "spec_quote": "a second major / secondary major / minor question blocks any field value",
+  "ambiguous": false
+ },
+ {
+  "name": "Major and minor together passes either field",
+  "label": "What is your major and minor?",
+  "value": "Economics and Data Science",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a question that asks \"major and minor\" together, or a plain \"Major\" / \"Field of study\", passes either of his fields.",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain Field of study passes",
+  "label": "Field of study",
+  "value": "Economics",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a question that asks \"major and minor\" together, or a plain \"Major\" / \"Field of study\", passes either of his fields.",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain Major passes grad field",
+  "label": "Major",
+  "value": "Applied Data Science",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a plain \"Major\" / \"Field of study\", passes either of his fields.",
+  "ambiguous": false
+ },
+ {
+  "name": "Secondary major N/A passes",
+  "label": "Secondary major",
+  "value": "N/A",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a second major / secondary major / minor question blocks any field value (empty, \"None\", \"N/A\" pass)",
+  "ambiguous": false
+ },
+ {
+  "name": "Start date other than 06/14/2027 blocks",
+  "label": "When can you start?",
+  "value": "07/01/2027",
+  "type": "date",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:start_date",
+  "spec_quote": "an \"availability to start\" / \"start date\" / \"when can you start\" question with a date value blocks a date other than 06/14/2027",
+  "ambiguous": false
+ },
+ {
+  "name": "Start date 06/14/2027 passes",
+  "label": "When can you start?",
+  "value": "06/14/2027",
+  "type": "date",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "blocks a date other than 06/14/2027",
+  "ambiguous": false
+ },
+ {
+  "name": "Month-only June 2027 passes",
+  "label": "What is your availability to start?",
+  "value": "June 2027",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a month-only value June 2027 passes",
+  "ambiguous": false
+ },
+ {
+  "name": "January 2028 full-time start passes",
+  "label": "When can you start?",
+  "value": "January 2028",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a date in January 2028 or later passes — full-time",
+  "ambiguous": false
+ },
+ {
+  "name": "Work-history start date is not checked",
+  "label": "Previous Employment (Acme): Start Date",
+  "value": "03/2020",
+  "type": "date",
+  "options": [],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A \"Start Date\" inside a work-history or education entry (\"Previous Employment (Acme): Start Date\") is not checked.",
+  "ambiguous": false
+ },
+ {
+  "name": "Regex value on agreement question blocks",
+  "label": "Do you agree to the terms and conditions?",
+  "value": "^agree$",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:pattern",
+  "spec_quote": "a value that is a regular expression (like \"^agree$\" or \"AI\\ product\") blocks, on any question.",
+  "ambiguous": false
+ },
+ {
+  "name": "Regex value with escape on any question blocks",
+  "label": "Which team interests you most?",
+  "value": "AI\\ product",
+  "type": "text",
+  "options": [],
+  "source": "deepseek",
+  "expect": "block:pattern",
+  "spec_quote": "a value that is a regular expression (like \"^agree$\" or \"AI\\ product\") blocks, on any question.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved Yes/No answer contradicted blocks",
+  "label": "Do you have a valid driver's license?",
+  "value": "No",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "block:qa",
+  "spec_quote": "a saved Yes / No answer for the exact question blocks a contradicting value whatever wrote it.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved Yes/No answer matched passes",
+  "label": "Do you have a valid driver's license?",
+  "value": "Yes",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "a saved Yes / No answer for the exact question blocks a contradicting value whatever wrote it.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved option answer from answers.json contradicted blocks",
+  "label": "What best describes the type of opportunities you're interested in:",
+  "value": "Engineering",
+  "type": "select",
+  "options": [
+   "Product",
+   "Engineering",
+   "Design"
+  ],
+  "source": "answers.json",
+  "expect": "block:qa",
+  "spec_quote": "A saved option answer is checked only when the value came from the folder's answers.json (source \"answers.json\"), or when the offered options include the saved option and another was taken; otherwise it passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved option offered but another taken blocks regardless of source",
+  "label": "What best describes the type of opportunities you're interested in:",
+  "value": "Design",
+  "type": "select",
+  "options": [
+   "Product",
+   "Design"
+  ],
+  "source": "deepseek",
+  "expect": "block:qa",
+  "spec_quote": "…or when the offered options include the saved option and another was taken; otherwise it passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved option not offered passes for non-answers.json source",
+  "label": "What best describes the type of opportunities you're interested in:",
+  "value": "Engineering",
+  "type": "select",
+  "options": [
+   "Engineering",
+   "Design"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "…otherwise it passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Saved option answer matched passes",
+  "label": "What best describes the type of opportunities you're interested in:",
+  "value": "Product",
+  "type": "select",
+  "options": [
+   "Product",
+   "Engineering",
+   "Design"
+  ],
+  "source": "deepseek",
+  "expect": "pass",
+  "spec_quote": "A saved option answer is checked only when the value came from the folder's answers.json … or when the offered options include the saved option and another was taken; otherwise it passes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Empty value on authorization question passes",
+  "label": "Are you authorized to work for any employer in the U.S.?",
+  "value": "",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "source": "",
+  "expect": "pass",
+  "spec_quote": "Empty values, unticked boxes and questions that are none of the above pass.",
+  "ambiguous": false
+ },
+ {
+  "name": "Unticked conviction checkbox passes",
+  "label": "Have you ever been convicted of a felony?",
+  "value": "",
+  "type": "checkbox",
+  "options": [],
+  "source": "",
+  "expect": "pass",
+  "spec_quote": "Empty values, unticked boxes and questions that are none of the above pass.",
+  "ambiguous": false
+ },
+ {
+  "name": "Empty value on highest education question passes",
+  "label": "What is your highest level of education completed?",
+  "value": "",
+  "type": "select",
+  "options": [
+   "Bachelor's",
+   "Master's",
+   "Doctorate"
+  ],
+  "source": "",
+  "expect": "pass",
+  "spec_quote": "Empty values, unticked boxes and questions that are none of the above pass.",
+  "ambiguous": false
+ }
+]

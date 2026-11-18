@@ -1,0 +1,375 @@
+[
+ {
+  "name": "fast answer matches rule — same, no strong step",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "fast": {
+    "q1": "No"
+   },
+   "strong": {},
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": true,
+    "how": "same"
+   }
+  },
+  "spec_quote": "same(rule value, fast answer) → agree true, how \"same\" (no further step for that item).",
+  "ambiguous": false
+ },
+ {
+  "name": "fast unsure, strong same — confirm",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "value": "Yes"
+    }
+   ],
+   "fast": {
+    "q1": "UNSURE"
+   },
+   "strong": {
+    "q1": "Yes"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": true,
+    "how": "confirm"
+   }
+  },
+  "spec_quote": "same(rule value, strong answer) → agree true, how \"confirm\".",
+  "ambiguous": false
+ },
+ {
+  "name": "fast different, strong unsure — unsure",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "fast": {
+    "q1": "Yes"
+   },
+   "strong": {
+    "q1": "UNSURE"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": false,
+    "how": "unsure"
+   }
+  },
+  "spec_quote": "no answer → agree false, how \"unsure\".",
+  "ambiguous": false
+ },
+ {
+  "name": "strong call fails — error",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "What is your graduation date?",
+     "options": [],
+     "value": "12/2027"
+    }
+   ],
+   "fast": {
+    "q1": "ERROR"
+   },
+   "strong": {
+    "q1": "ERROR"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": false,
+    "how": "error"
+   }
+  },
+  "spec_quote": "The strong call raised an error → agree false, how \"error\".",
+  "ambiguous": false
+ },
+ {
+  "name": "item with options disagrees — step 3 never runs even if meaning says SAME",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Are you a protected veteran?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "value": "No"
+    }
+   ],
+   "fast": {
+    "q1": "Yes"
+   },
+   "strong": {
+    "q1": "Yes"
+   },
+   "meaning": {
+    "q1": "SAME"
+   }
+  },
+  "expect": {
+   "q1": {
+    "agree": false,
+    "how": "disagree"
+   }
+  },
+  "spec_quote": "Items with options never get step 3.",
+  "ambiguous": false
+ },
+ {
+  "name": "no options, strong differs, meaning SAME — meaning",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "School",
+     "options": [],
+     "value": "University of Chicago"
+    }
+   ],
+   "fast": {
+    "q1": "Hyde Park"
+   },
+   "strong": {
+    "q1": "Hyde Park"
+   },
+   "meaning": {
+    "q1": "SAME"
+   }
+  },
+  "expect": {
+   "q1": {
+    "agree": true,
+    "how": "meaning"
+   }
+  },
+  "spec_quote": "Only for a \"disagree\" item WITHOUT options: the STRONG model judges whether the two answers (rule's and strong's) mean the same thing (JSON {\"answer\": \"SAME\" or \"DIFFERENT\"}). SAME → agree true, how \"meaning\".",
+  "ambiguous": false
+ },
+ {
+  "name": "no options, strong differs, meaning DIFFERENT — stays disagree",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "What degree do you hold?",
+     "options": [],
+     "value": "Bachelor"
+    }
+   ],
+   "fast": {
+    "q1": "Master's"
+   },
+   "strong": {
+    "q1": "Master's"
+   },
+   "meaning": {
+    "q1": "DIFFERENT"
+   }
+  },
+  "expect": {
+   "q1": {
+    "agree": false,
+    "how": "disagree"
+   }
+  },
+  "spec_quote": "DIFFERENT → stays \"disagree\".",
+  "ambiguous": false
+ },
+ {
+  "name": "three items: same, confirm, error",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "value": "No"
+    },
+    {
+     "key": "q2",
+     "label": "What year did you graduate?",
+     "options": [],
+     "value": "2027"
+    },
+    {
+     "key": "q3",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "fast": {
+    "q1": "No",
+    "q2": "UNSURE",
+    "q3": "ERROR"
+   },
+   "strong": {
+    "q2": "2027",
+    "q3": "ERROR"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": true,
+    "how": "same"
+   },
+   "q2": {
+    "agree": true,
+    "how": "confirm"
+   },
+   "q3": {
+    "agree": false,
+    "how": "error"
+   }
+  },
+  "spec_quote": "same(rule value, fast answer) → agree true, how \"same\" ... Every other item (fast answer different, no answer, or the call failed) is asked again — the same question — by the STRONG model. ... The strong call raised an error → agree false, how \"error\".",
+  "ambiguous": false
+ },
+ {
+  "name": "three items: options-disagree, meaning-same, unsure",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "Are you a protected veteran?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "value": "No"
+    },
+    {
+     "key": "q2",
+     "label": "What is your visa status?",
+     "options": [],
+     "value": "F-1"
+    },
+    {
+     "key": "q3",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "value": "Yes"
+    }
+   ],
+   "fast": {
+    "q1": "Yes",
+    "q2": "J-1",
+    "q3": "UNSURE"
+   },
+   "strong": {
+    "q1": "Yes",
+    "q2": "J-1",
+    "q3": "UNSURE"
+   },
+   "meaning": {
+    "q1": "SAME",
+    "q2": "SAME"
+   }
+  },
+  "expect": {
+   "q1": {
+    "agree": false,
+    "how": "disagree"
+   },
+   "q2": {
+    "agree": true,
+    "how": "meaning"
+   },
+   "q3": {
+    "agree": false,
+    "how": "unsure"
+   }
+  },
+  "spec_quote": "Items with options never get step 3. ... DIFFERENT → stays \"disagree\". ... SAME → agree true, how \"meaning\". ... no answer → agree false, how \"unsure\".",
+  "ambiguous": false
+ },
+ {
+  "name": "fast numeric same; empty and errored fast answers resolved by strong",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "q1",
+     "label": "What is your GPA?",
+     "options": [],
+     "value": "3.60"
+    },
+    {
+     "key": "q2",
+     "label": "Will you require sponsorship?",
+     "options": [],
+     "value": "Yes"
+    },
+    {
+     "key": "q3",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "fast": {
+    "q1": "3.60/4.0",
+    "q2": "",
+    "q3": "ERROR"
+   },
+   "strong": {
+    "q2": "Yes",
+    "q3": "No"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "q1": {
+    "agree": true,
+    "how": "same"
+   },
+   "q2": {
+    "agree": true,
+    "how": "confirm"
+   },
+   "q3": {
+    "agree": true,
+    "how": "confirm"
+   }
+  },
+  "spec_quote": "Numbers: same value (\"3.60\" = \"3.60/4.0\" = \"3.790\"). ... \"UNSURE\" or an empty answer = no answer. ... Every other item (fast answer different, no answer, or the call failed) is asked again — the same question — by the STRONG model. ... same(rule value, strong answer) → agree true, how \"confirm\".",
+  "ambiguous": false
+ }
+]

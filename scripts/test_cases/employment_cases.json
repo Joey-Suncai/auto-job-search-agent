@@ -1,0 +1,730 @@
+[
+ {
+  "name": "fields_one_block_required",
+  "fn": "employment_fields",
+  "args": [
+   1,
+   true
+  ],
+  "expect": [
+   {
+    "key": "company-name-0",
+    "label": "Company name",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"company-name-0\"]",
+    "emp": 0,
+    "emp_kind": "company"
+   },
+   {
+    "key": "title-0",
+    "label": "Title",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"title-0\"]",
+    "emp": 0,
+    "emp_kind": "title"
+   },
+   {
+    "key": "start-date-month-0",
+    "label": "Start date month",
+    "type": "combo",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"start-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "start_month"
+   },
+   {
+    "key": "start-date-year-0",
+    "label": "Start date year",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"start-date-year-0\"]",
+    "emp": 0,
+    "emp_kind": "start_year"
+   },
+   {
+    "key": "end-date-month-0",
+    "label": "End date month",
+    "type": "combo",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"end-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "end_month"
+   },
+   {
+    "key": "end-date-year-0",
+    "label": "End date year",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"end-date-year-0\"]",
+    "emp": 0,
+    "emp_kind": "end_year"
+   },
+   {
+    "key": "current-role-0",
+    "label": "Current role",
+    "type": "checkbox",
+    "required": false,
+    "options": [],
+    "sel": "[name=\"current-role-0\"]",
+    "emp": 0,
+    "emp_kind": "current"
+   }
+  ]
+ },
+ {
+  "name": "fields_two_blocks_optional",
+  "fn": "employment_fields",
+  "args": [
+   2,
+   false
+  ],
+  "expect": [
+   {
+    "key": "company-name-0",
+    "label": "Company name",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"company-name-0\"]",
+    "emp": 0,
+    "emp_kind": "company"
+   },
+   {
+    "key": "title-0",
+    "label": "Title",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"title-0\"]",
+    "emp": 0,
+    "emp_kind": "title"
+   },
+   {
+    "key": "start-date-month-0",
+    "label": "Start date month",
+    "type": "combo",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"start-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "start_month"
+   },
+   {
+    "key": "start-date-year-0",
+    "label": "Start date year",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"start-date-year-0\"]",
+    "emp": 0,
+    "emp_kind": "start_year"
+   },
+   {
+    "key": "end-date-month-0",
+    "label": "End date month",
+    "type": "combo",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"end-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "end_month"
+   },
+   {
+    "key": "end-date-year-0",
+    "label": "End date year",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"end-date-year-0\"]",
+    "emp": 0,
+    "emp_kind": "end_year"
+   },
+   {
+    "key": "current-role-0",
+    "label": "Current role",
+    "type": "checkbox",
+    "required": false,
+    "options": [],
+    "sel": "[name=\"current-role-0\"]",
+    "emp": 0,
+    "emp_kind": "current"
+   },
+   {
+    "key": "company-name-1",
+    "label": "Company name",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"company-name-1\"]",
+    "emp": 1,
+    "emp_kind": "company"
+   },
+   {
+    "key": "title-1",
+    "label": "Title",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"title-1\"]",
+    "emp": 1,
+    "emp_kind": "title"
+   },
+   {
+    "key": "start-date-month-1",
+    "label": "Start date month",
+    "type": "combo",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"start-date-month-1\"]",
+    "emp": 1,
+    "emp_kind": "start_month"
+   },
+   {
+    "key": "start-date-year-1",
+    "label": "Start date year",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"start-date-year-1\"]",
+    "emp": 1,
+    "emp_kind": "start_year"
+   },
+   {
+    "key": "end-date-month-1",
+    "label": "End date month",
+    "type": "combo",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"end-date-month-1\"]",
+    "emp": 1,
+    "emp_kind": "end_month"
+   },
+   {
+    "key": "end-date-year-1",
+    "label": "End date year",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"end-date-year-1\"]",
+    "emp": 1,
+    "emp_kind": "end_year"
+   },
+   {
+    "key": "current-role-1",
+    "label": "Current role",
+    "type": "checkbox",
+    "required": false,
+    "options": [],
+    "sel": "[name=\"current-role-1\"]",
+    "emp": 1,
+    "emp_kind": "current"
+   }
+  ]
+ },
+ {
+  "name": "entries_full_mm_yyyy_string_true",
+  "fn": "employment_entries",
+  "args": [
+   [
+    {
+     "Company": " Acme Corp ",
+     "Job Title": " Senior Engineer ",
+     "From": "08/2020",
+     "To": "05/2022",
+     "current": "true"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "company": "Acme Corp",
+    "title": "Senior Engineer",
+    "start_month": "August",
+    "start_year": "2020",
+    "start_num": "08",
+    "end_month": "May",
+    "end_year": "2022",
+    "end_num": "05",
+    "current": false
+   }
+  ]
+ },
+ {
+  "name": "entries_yyyy_mm_one_digit",
+  "fn": "employment_entries",
+  "args": [
+   [
+    {
+     "Company": "Beta",
+     "Job Title": "Designer",
+     "From": "2019-7",
+     "To": "2020-12",
+     "current": false
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "company": "Beta",
+    "title": "Designer",
+    "start_month": "July",
+    "start_year": "2019",
+    "start_num": "07",
+    "end_month": "December",
+    "end_year": "2020",
+    "end_num": "12",
+    "current": false
+   }
+  ]
+ },
+ {
+  "name": "entries_missing_to_and_bad_month",
+  "fn": "employment_entries",
+  "args": [
+   [
+    {
+     "Company": "NoEnd",
+     "Job Title": "Analyst",
+     "From": "5/2020",
+     "current": false
+    },
+    {
+     "Company": "BadMonth",
+     "Job Title": "",
+     "From": "13/2020",
+     "To": "2020-13",
+     "current": false
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "company": "NoEnd",
+    "title": "Analyst",
+    "start_month": "May",
+    "start_year": "2020",
+    "start_num": "05",
+    "end_month": "",
+    "end_year": "",
+    "end_num": "",
+    "current": false
+   },
+   {
+    "company": "BadMonth",
+    "title": "",
+    "start_month": "",
+    "start_year": "",
+    "start_num": "",
+    "end_month": "",
+    "end_year": "",
+    "end_num": "",
+    "current": false
+   }
+  ]
+ },
+ {
+  "name": "entries_order_current_past_no_company",
+  "fn": "employment_entries",
+  "args": [
+   [
+    {
+     "Company": "OldCo",
+     "Job Title": "Old",
+     "From": "01/2010",
+     "To": "12/2012",
+     "current": false
+    },
+    {
+     "Company": "",
+     "Job Title": "Ghost",
+     "From": "05/2025",
+     "To": "06/2025",
+     "current": false
+    },
+    {
+     "Company": "CurrentCo",
+     "Job Title": "Current",
+     "From": "01/2020",
+     "To": "",
+     "current": true
+    },
+    {
+     "Company": "MidCo",
+     "Job Title": "Mid",
+     "From": "06/2015",
+     "To": "12/2018",
+     "current": false
+    },
+    {
+     "Company": "NoFromCo",
+     "Job Title": "No From",
+     "From": "",
+     "To": "01/2000",
+     "current": false
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "company": "CurrentCo",
+    "title": "Current",
+    "start_month": "January",
+    "start_year": "2020",
+    "start_num": "01",
+    "end_month": "",
+    "end_year": "",
+    "end_num": "",
+    "current": true
+   },
+   {
+    "company": "MidCo",
+    "title": "Mid",
+    "start_month": "June",
+    "start_year": "2015",
+    "start_num": "06",
+    "end_month": "December",
+    "end_year": "2018",
+    "end_num": "12",
+    "current": false
+   },
+   {
+    "company": "OldCo",
+    "title": "Old",
+    "start_month": "January",
+    "start_year": "2010",
+    "start_num": "01",
+    "end_month": "December",
+    "end_year": "2012",
+    "end_num": "12",
+    "current": false
+   },
+   {
+    "company": "NoFromCo",
+    "title": "No From",
+    "start_month": "",
+    "start_year": "",
+    "start_num": "",
+    "end_month": "January",
+    "end_year": "2000",
+    "end_num": "01",
+    "current": false
+   }
+  ]
+ },
+ {
+  "name": "answer_past_start_month_alts",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "start-date-month-0",
+    "label": "Start date month",
+    "type": "combo",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"start-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "start_month"
+   },
+   [
+    {
+     "company": "Acme Corp",
+     "title": "Engineer",
+     "start_month": "August",
+     "start_year": "2020",
+     "start_num": "08",
+     "end_month": "May",
+     "end_year": "2022",
+     "end_num": "05",
+     "current": false
+    }
+   ]
+  ],
+  "expect": {
+   "key": "start-date-month-0",
+   "label": "Start date month",
+   "type": "combo",
+   "required": true,
+   "options": [],
+   "sel": "[id=\"start-date-month-0\"]",
+   "emp": 0,
+   "emp_kind": "start_month",
+   "answer": "August",
+   "status": "ok",
+   "source": "profile.work",
+   "alts": [
+    "Aug",
+    "08",
+    "8"
+   ],
+   "accept": [
+    "August",
+    "Aug",
+    "08",
+    "8"
+   ],
+   "month_num": "08"
+  }
+ },
+ {
+  "name": "answer_current_end_month_skip",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "end-date-month-0",
+    "label": "End date month",
+    "type": "combo",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"end-date-month-0\"]",
+    "emp": 0,
+    "emp_kind": "end_month"
+   },
+   [
+    {
+     "company": "CurrentCo",
+     "title": "Manager",
+     "start_month": "January",
+     "start_year": "2020",
+     "start_num": "01",
+     "end_month": "May",
+     "end_year": "2022",
+     "end_num": "05",
+     "current": true
+    }
+   ]
+  ],
+  "expect": {
+   "key": "end-date-month-0",
+   "label": "End date month",
+   "type": "combo",
+   "required": true,
+   "options": [],
+   "sel": "[id=\"end-date-month-0\"]",
+   "emp": 0,
+   "emp_kind": "end_month",
+   "status": "skip_current",
+   "source": ""
+  }
+ },
+ {
+  "name": "answer_current_box",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "current-role-0",
+    "label": "Current role",
+    "type": "checkbox",
+    "required": false,
+    "options": [],
+    "sel": "[name=\"current-role-0\"]",
+    "emp": 0,
+    "emp_kind": "current"
+   },
+   [
+    {
+     "company": "CurrentCo",
+     "title": "Manager",
+     "start_month": "January",
+     "start_year": "2020",
+     "start_num": "01",
+     "end_month": "May",
+     "end_year": "2022",
+     "end_num": "05",
+     "current": true
+    }
+   ]
+  ],
+  "expect": {
+   "key": "current-role-0",
+   "label": "Current role",
+   "type": "checkbox",
+   "required": false,
+   "options": [],
+   "sel": "[name=\"current-role-0\"]",
+   "emp": 0,
+   "emp_kind": "current",
+   "answer": true,
+   "status": "ok",
+   "source": "profile.work"
+  }
+ },
+ {
+  "name": "answer_block1_required_no_entry",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "company-name-1",
+    "label": "Company name",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"company-name-1\"]",
+    "emp": 1,
+    "emp_kind": "company"
+   },
+   [
+    {
+     "company": "OnlyCo",
+     "title": "Only",
+     "start_month": "February",
+     "start_year": "2021",
+     "start_num": "02",
+     "end_month": "March",
+     "end_year": "2022",
+     "end_num": "03",
+     "current": false
+    }
+   ]
+  ],
+  "expect": {
+   "key": "company-name-1",
+   "label": "Company name",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "[id=\"company-name-1\"]",
+   "emp": 1,
+   "emp_kind": "company",
+   "status": "needs_user",
+   "source": ""
+  }
+ },
+ {
+  "name": "answer_block1_optional_no_entry",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "company-name-1",
+    "label": "Company name",
+    "type": "text",
+    "required": false,
+    "options": [],
+    "sel": "[id=\"company-name-1\"]",
+    "emp": 1,
+    "emp_kind": "company"
+   },
+   [
+    {
+     "company": "OnlyCo",
+     "title": "Only",
+     "start_month": "February",
+     "start_year": "2021",
+     "start_num": "02",
+     "end_month": "March",
+     "end_year": "2022",
+     "end_num": "03",
+     "current": false
+    }
+   ]
+  ],
+  "expect": {
+   "key": "company-name-1",
+   "label": "Company name",
+   "type": "text",
+   "required": false,
+   "options": [],
+   "sel": "[id=\"company-name-1\"]",
+   "emp": 1,
+   "emp_kind": "company",
+   "status": "skip_optional",
+   "source": ""
+  }
+ },
+ {
+  "name": "answer_empty_title_required",
+  "fn": "employment_answer",
+  "args": [
+   {
+    "key": "title-0",
+    "label": "Title",
+    "type": "text",
+    "required": true,
+    "options": [],
+    "sel": "[id=\"title-0\"]",
+    "emp": 0,
+    "emp_kind": "title"
+   },
+   [
+    {
+     "company": "NoTitleCo",
+     "title": "",
+     "start_month": "January",
+     "start_year": "2020",
+     "start_num": "01",
+     "end_month": "",
+     "end_year": "",
+     "end_num": "",
+     "current": false
+    }
+   ]
+  ],
+  "expect": {
+   "key": "title-0",
+   "label": "Title",
+   "type": "text",
+   "required": true,
+   "options": [],
+   "sel": "[id=\"title-0\"]",
+   "emp": 0,
+   "emp_kind": "title",
+   "status": "needs_user",
+   "source": ""
+  }
+ },
+ {
+  "name": "month_number_input",
+  "fn": "month_text_answer",
+  "args": [
+   "August",
+   "08",
+   "number",
+   null,
+   null
+  ],
+  "expect": "8"
+ },
+ {
+  "name": "month_maxlength_two",
+  "fn": "month_text_answer",
+  "args": [
+   "August",
+   "08",
+   "text",
+   "2",
+   null
+  ],
+  "expect": "08"
+ },
+ {
+  "name": "month_placeholder_mm",
+  "fn": "month_text_answer",
+  "args": [
+   "August",
+   "08",
+   "text",
+   null,
+   " mm "
+  ],
+  "expect": "08"
+ },
+ {
+  "name": "month_plain_text",
+  "fn": "month_text_answer",
+  "args": [
+   "August",
+   "08",
+   "text",
+   null,
+   "Choose month"
+  ],
+  "expect": "August"
+ }
+]

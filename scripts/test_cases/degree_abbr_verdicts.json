@@ -1,0 +1,1 @@
+{"long_word_not_abbreviation": {"expect": true, "why": "Claude 2026-11-10: 'Bachelors - Arts' is not an abbreviation prefix, so it is judged as before; the existing accept rule ^bachelor'?s\\b takes it, and a bachelor's level is true for Joey (UIUC B.A.). The case expected false only because the spec's list of bare levels omits that older rule."}}

@@ -1,0 +1,252 @@
+[
+ {
+  "name": "bare_school",
+  "label": "School",
+  "expect": true
+ },
+ {
+  "name": "bare_university",
+  "label": "University",
+  "expect": true
+ },
+ {
+  "name": "school_or_university",
+  "label": "School or University",
+  "expect": true
+ },
+ {
+  "name": "college_university_slash",
+  "label": "College/University",
+  "expect": true
+ },
+ {
+  "name": "school_name",
+  "label": "School name",
+  "expect": true
+ },
+ {
+  "name": "name_of_school",
+  "label": "Name of school",
+  "expect": true
+ },
+ {
+  "name": "enter_your_university",
+  "label": "Enter your university",
+  "expect": true
+ },
+ {
+  "name": "select_current_school",
+  "label": "Please select your current school from the list",
+  "expect": true
+ },
+ {
+  "name": "university_you_attend",
+  "label": "the university you currently attend",
+  "expect": true
+ },
+ {
+  "name": "which_college_attend",
+  "label": "Which college do you attend?",
+  "expect": true
+ },
+ {
+  "name": "what_university_enrolled",
+  "label": "What university are you currently enrolled with?",
+  "expect": true
+ },
+ {
+  "name": "if_school_not_listed",
+  "label": "If your school is not listed above, please enter the school name",
+  "expect": true
+ },
+ {
+  "name": "if_other_school_institution",
+  "label": "If other, enter school / institution name",
+  "expect": true
+ },
+ {
+  "name": "college_star",
+  "label": "College*",
+  "expect": true
+ },
+ {
+  "name": "university_attended",
+  "label": "University attended",
+  "expect": true
+ },
+ {
+  "name": "school_attended",
+  "label": "School attended",
+  "expect": true
+ },
+ {
+  "name": "university_name_colon",
+  "label": "University name:",
+  "expect": true
+ },
+ {
+  "name": "current_school_question",
+  "label": "Current school?",
+  "expect": true
+ },
+ {
+  "name": "enter_name_college_university",
+  "label": "Please enter the name of your college or university.",
+  "expect": true
+ },
+ {
+  "name": "which_school_attend",
+  "label": "Which school do you attend?",
+  "expect": true
+ },
+ {
+  "name": "school_institution_name",
+  "label": "School / Institution Name",
+  "expect": true
+ },
+ {
+  "name": "name_college_attended",
+  "label": "Name of the college you attended",
+  "expect": true
+ },
+ {
+  "name": "select_university",
+  "label": "Select your university:",
+  "expect": true
+ },
+ {
+  "name": "enter_school_if_not_listed",
+  "label": "Enter school name if not listed",
+  "expect": true
+ },
+ {
+  "name": "what_school_enrolled",
+  "label": "What school are you enrolled in?",
+  "expect": true
+ },
+ {
+  "name": "school_gpa",
+  "label": "School GPA",
+  "expect": false
+ },
+ {
+  "name": "cumulative_gpa_school",
+  "label": "What is your cumulative GPA at school?",
+  "expect": false
+ },
+ {
+  "name": "grading_scale_university",
+  "label": "Grading scale used by your university",
+  "expect": false
+ },
+ {
+  "name": "graduation_date_college",
+  "label": "Graduation date from college",
+  "expect": false
+ },
+ {
+  "name": "graduation_year",
+  "label": "Graduation year",
+  "expect": false
+ },
+ {
+  "name": "school_email_address",
+  "label": "School email address",
+  "expect": false
+ },
+ {
+  "name": "university_email",
+  "label": "University email",
+  "expect": false
+ },
+ {
+  "name": "school_city",
+  "label": "School city",
+  "expect": false
+ },
+ {
+  "name": "college_location",
+  "label": "College location",
+  "expect": false
+ },
+ {
+  "name": "state_of_school",
+  "label": "State of school",
+  "expect": false
+ },
+ {
+  "name": "country_of_university",
+  "label": "Country of university",
+  "expect": false
+ },
+ {
+  "name": "high_school_name",
+  "label": "High school name",
+  "expect": false
+ },
+ {
+  "name": "high_school_graduation_year",
+  "label": "High school graduation year",
+  "expect": false
+ },
+ {
+  "name": "did_attend_high_school",
+  "label": "Did you attend high school?",
+  "expect": false
+ },
+ {
+  "name": "currently_enrolled_school",
+  "label": "Are you currently enrolled in school?",
+  "expect": false
+ },
+ {
+  "name": "return_to_school",
+  "label": "Will you return to school?",
+  "expect": false
+ },
+ {
+  "name": "degree",
+  "label": "Degree",
+  "expect": false
+ },
+ {
+  "name": "major",
+  "label": "Major",
+  "expect": false
+ },
+ {
+  "name": "field_of_study",
+  "label": "Field of study",
+  "expect": false
+ },
+ {
+  "name": "major_at_university",
+  "label": "What is your major at university?",
+  "expect": false
+ },
+ {
+  "name": "employer",
+  "label": "Employer",
+  "expect": false
+ },
+ {
+  "name": "employer_or_public_institution",
+  "label": "Name of employer or public institution",
+  "expect": false
+ },
+ {
+  "name": "describe_project_from_school",
+  "label": "Describe a project from school",
+  "expect": false
+ },
+ {
+  "name": "university_experience_essay",
+  "label": "Tell us about your university experience",
+  "expect": false
+ },
+ {
+  "name": "essay_about_school",
+  "label": "Essay about your school",
+  "expect": false
+ }
+]

@@ -1,0 +1,543 @@
+[
+ {
+  "name": "verdict_joey_null_open",
+  "kind": "verdict",
+  "suggestion": "Yes",
+  "joey": null,
+  "options": [],
+  "expect": "open",
+  "spec_quote": "- joey is null → \"open\" (not answered yet; not counted either way)."
+ },
+ {
+  "name": "verdict_joey_null_beats_ask",
+  "kind": "verdict",
+  "suggestion": "ASK",
+  "joey": null,
+  "options": [],
+  "expect": "open",
+  "spec_quote": "- joey is null → \"open\" (not answered yet; not counted either way)."
+ },
+ {
+  "name": "verdict_empty_joey_is_null_open",
+  "kind": "verdict",
+  "suggestion": "Yes",
+  "joey": "",
+  "options": [],
+  "expect": "open",
+  "spec_quote": "An empty / whitespace suggestion counts as \"ASK\"; an empty joey as null."
+ },
+ {
+  "name": "verdict_ask_suggestion_asked",
+  "kind": "verdict",
+  "suggestion": "ASK",
+  "joey": "Blue",
+  "options": [],
+  "expect": "asked",
+  "spec_quote": "- suggestion is \"ASK\" (any case, spaces around ignored) and joey is given → \"asked\" (the suggestion declined; not counted as agree or disagree)."
+ },
+ {
+  "name": "verdict_ask_case_and_spaces_asked",
+  "kind": "verdict",
+  "suggestion": "  aSk  ",
+  "joey": "Yes",
+  "options": [],
+  "expect": "asked",
+  "spec_quote": "- suggestion is \"ASK\" (any case, spaces around ignored) and joey is given → \"asked\" (the suggestion declined; not counted as agree or disagree)."
+ },
+ {
+  "name": "verdict_empty_suggestion_asked",
+  "kind": "verdict",
+  "suggestion": "",
+  "joey": "Yes",
+  "options": [],
+  "expect": "asked",
+  "spec_quote": "An empty / whitespace suggestion counts as \"ASK\"; an empty joey as null."
+ },
+ {
+  "name": "verdict_whitespace_suggestion_asked",
+  "kind": "verdict",
+  "suggestion": "   ",
+  "joey": "Yes",
+  "options": [],
+  "expect": "asked",
+  "spec_quote": "An empty / whitespace suggestion counts as \"ASK\"; an empty joey as null."
+ },
+ {
+  "name": "verdict_normalise_case_punctuation_agree",
+  "kind": "verdict",
+  "suggestion": "United States",
+  "joey": "united states.",
+  "options": [],
+  "expect": "agree",
+  "spec_quote": "they AGREE when they are the same after normalising (lower case, punctuation and runs of spaces ignored, so \"United States\" = \"united states.\" and \"Yes\" = \"yes\")"
+ },
+ {
+  "name": "verdict_normalise_runs_of_spaces_agree",
+  "kind": "verdict",
+  "suggestion": "New   York",
+  "joey": "new york",
+  "options": [],
+  "expect": "agree",
+  "spec_quote": "they AGREE when they are the same after normalising (lower case, punctuation and runs of spaces ignored, so \"United States\" = \"united states.\" and \"Yes\" = \"yes\")"
+ },
+ {
+  "name": "verdict_normalise_punctuation_agree",
+  "kind": "verdict",
+  "suggestion": "No, thanks!",
+  "joey": "no thanks",
+  "options": [],
+  "expect": "agree",
+  "spec_quote": "they AGREE when they are the same after normalising (lower case, punctuation and runs of spaces ignored, so \"United States\" = \"united states.\" and \"Yes\" = \"yes\")"
+ },
+ {
+  "name": "verdict_plain_disagree",
+  "kind": "verdict",
+  "suggestion": "Yes",
+  "joey": "No",
+  "options": [],
+  "expect": "disagree",
+  "spec_quote": "Otherwise \"disagree\"."
+ },
+ {
+  "name": "verdict_options_exact_same_agree",
+  "kind": "verdict",
+  "suggestion": "yes",
+  "joey": "Yes",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "agree",
+  "spec_quote": "when options are given, when both pick the same option, where an answer picks the first option whose normalised text equals the normalised answer, else the first option whose normalised text starts with the normalised answer"
+ },
+ {
+  "name": "verdict_options_prefix_same_option_agree",
+  "kind": "verdict",
+  "suggestion": "No",
+  "joey": "No, I do not",
+  "options": [
+   "No, I do not",
+   "Yes"
+  ],
+  "expect": "agree",
+  "spec_quote": "else the first option whose normalised text starts with the normalised answer (the answer \"No\" picks \"No, I do not\" when no option is exactly \"No\")"
+ },
+ {
+  "name": "verdict_options_first_prefix_match_disagree",
+  "kind": "verdict",
+  "suggestion": "No",
+  "joey": "No, never",
+  "options": [
+   "No, I do not",
+   "No, never"
+  ],
+  "expect": "disagree",
+  "spec_quote": "where an answer picks the first option whose normalised text equals the normalised answer, else the first option whose normalised text starts with the normalised answer"
+ },
+ {
+  "name": "verdict_options_exact_beats_prefix_disagree",
+  "kind": "verdict",
+  "suggestion": "Yes",
+  "joey": "Yes, always",
+  "options": [
+   "Yes",
+   "Yes, always"
+  ],
+  "expect": "disagree",
+  "spec_quote": "where an answer picks the first option whose normalised text equals the normalised answer, else the first option whose normalised text starts with the normalised answer"
+ },
+ {
+  "name": "verdict_same_text_even_with_unmatched_options_agree",
+  "kind": "verdict",
+  "suggestion": "Maybe",
+  "joey": "maybe",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "agree",
+  "spec_quote": "they AGREE when they are the same after normalising (lower case, punctuation and runs of spaces ignored, so \"United States\" = \"united states.\" and \"Yes\" = \"yes\")"
+ },
+ {
+  "name": "verdict_options_no_match_different_disagree",
+  "kind": "verdict",
+  "suggestion": "Maybe",
+  "joey": "Perhaps",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "disagree",
+  "spec_quote": "Otherwise \"disagree\"."
+ },
+ {
+  "name": "verdict_options_punctuation_prefix_agree",
+  "kind": "verdict",
+  "suggestion": "no",
+  "joey": "No, I do not",
+  "options": [
+   "No, I do not."
+  ],
+  "expect": "agree",
+  "spec_quote": "else the first option whose normalised text starts with the normalised answer (the answer \"No\" picks \"No, I do not\" when no option is exactly \"No\")"
+ },
+ {
+  "name": "verdict_ask_with_empty_joey_open",
+  "kind": "verdict",
+  "suggestion": "ASK",
+  "joey": "",
+  "options": [],
+  "expect": "open",
+  "spec_quote": "- joey is null → \"open\" (not answered yet; not counted either way). An empty / whitespace suggestion counts as \"ASK\"; an empty joey as null."
+ },
+ {
+  "name": "audit_basic_counts",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Q1",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "Q2",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   },
+   {
+    "question": "Q3",
+    "suggestion": "ASK",
+    "joey": "Blue",
+    "options": [],
+    "fact": "f3",
+    "sheet": "s3"
+   },
+   {
+    "question": "Q4",
+    "suggestion": "Yes",
+    "joey": null,
+    "options": [],
+    "fact": "f4",
+    "sheet": "s4"
+   }
+  ],
+  "expect": {
+   "agree": 1,
+   "disagree": 1,
+   "asked": 1,
+   "open": 1,
+   "agreement": 0.5,
+   "disagreeing": [
+    "Q2"
+   ]
+  },
+  "spec_quote": "audit(rows) takes a list of {question, suggestion, joey, options, fact, sheet} and returns counts {agree, disagree, asked, open} and agreement = agree / (agree + disagree) rounded to 3 decimals (null when agree + disagree is 0), plus the list of the disagreeing rows (question, suggestion, joey, fact) in input order."
+ },
+ {
+  "name": "audit_no_agree_or_disagree_null_agreement",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Q1",
+    "suggestion": "ASK",
+    "joey": "x",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "Q2",
+    "suggestion": "Yes",
+    "joey": null,
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   }
+  ],
+  "expect": {
+   "agree": 0,
+   "disagree": 0,
+   "asked": 1,
+   "open": 1,
+   "agreement": null,
+   "disagreeing": []
+  },
+  "spec_quote": "agreement = agree / (agree + disagree) rounded to 3 decimals (null when agree + disagree is 0)"
+ },
+ {
+  "name": "audit_rounding_three_decimals",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "A",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "fa",
+    "sheet": "sa"
+   },
+   {
+    "question": "B",
+    "suggestion": "No",
+    "joey": "no",
+    "options": [],
+    "fact": "fb",
+    "sheet": "sb"
+   },
+   {
+    "question": "C",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "fc",
+    "sheet": "sc"
+   }
+  ],
+  "expect": {
+   "agree": 2,
+   "disagree": 1,
+   "asked": 0,
+   "open": 0,
+   "agreement": 0.667,
+   "disagreeing": [
+    "C"
+   ]
+  },
+  "spec_quote": "agreement = agree / (agree + disagree) rounded to 3 decimals"
+ },
+ {
+  "name": "audit_duplicate_last_wins_agree",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Same question",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "same question",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   }
+  ],
+  "expect": {
+   "agree": 1,
+   "disagree": 0,
+   "asked": 0,
+   "open": 0,
+   "agreement": 1.0,
+   "disagreeing": []
+  },
+  "spec_quote": "A question text that appears more than once in the input (same question after lower-casing and collapsing spaces) is counted once: the LAST row wins."
+ },
+ {
+  "name": "audit_duplicate_last_wins_disagree",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Duplicate",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "duplicate",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   }
+  ],
+  "expect": {
+   "agree": 0,
+   "disagree": 1,
+   "asked": 0,
+   "open": 0,
+   "agreement": 0.0,
+   "disagreeing": [
+    "duplicate"
+   ]
+  },
+  "spec_quote": "A question text that appears more than once in the input (same question after lower-casing and collapsing spaces) is counted once: the LAST row wins."
+ },
+ {
+  "name": "audit_duplicate_case_and_collapsed_spaces_last_disagree",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "What   is this?",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "what is this?",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   }
+  ],
+  "expect": {
+   "agree": 0,
+   "disagree": 1,
+   "asked": 0,
+   "open": 0,
+   "agreement": 0.0,
+   "disagreeing": [
+    "what is this?"
+   ]
+  },
+  "spec_quote": "A question text that appears more than once in the input (same question after lower-casing and collapsing spaces) is counted once: the LAST row wins."
+ },
+ {
+  "name": "audit_duplicate_last_wins_open",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Repeated",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "repeated",
+    "suggestion": "Yes",
+    "joey": null,
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   }
+  ],
+  "expect": {
+   "agree": 0,
+   "disagree": 0,
+   "asked": 0,
+   "open": 1,
+   "agreement": null,
+   "disagreeing": []
+  },
+  "spec_quote": "A question text that appears more than once in the input (same question after lower-casing and collapsing spaces) is counted once: the LAST row wins."
+ },
+ {
+  "name": "audit_disagreeing_rows_in_input_order",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "First",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "Second",
+    "suggestion": "Yes",
+    "joey": "yes",
+    "options": [],
+    "fact": "f2",
+    "sheet": "s2"
+   },
+   {
+    "question": "Third",
+    "suggestion": "No",
+    "joey": "Yes",
+    "options": [],
+    "fact": "f3",
+    "sheet": "s3"
+   },
+   {
+    "question": "Fourth",
+    "suggestion": "ASK",
+    "joey": "x",
+    "options": [],
+    "fact": "f4",
+    "sheet": "s4"
+   }
+  ],
+  "expect": {
+   "agree": 1,
+   "disagree": 2,
+   "asked": 1,
+   "open": 0,
+   "agreement": 0.333,
+   "disagreeing": [
+    "First",
+    "Third"
+   ]
+  },
+  "spec_quote": "plus the list of the disagreeing rows (question, suggestion, joey, fact) in input order."
+ },
+ {
+  "name": "audit_options_affect_verdicts",
+  "kind": "audit",
+  "rows": [
+   {
+    "question": "Opt1",
+    "suggestion": "No",
+    "joey": "No, I do not",
+    "options": [
+     "No, I do not",
+     "Yes"
+    ],
+    "fact": "f1",
+    "sheet": "s1"
+   },
+   {
+    "question": "Opt2",
+    "suggestion": "Yes",
+    "joey": "No",
+    "options": [
+     "Yes",
+     "No"
+    ],
+    "fact": "f2",
+    "sheet": "s2"
+   },
+   {
+    "question": "Opt3",
+    "suggestion": "Yes",
+    "joey": "Yes, always",
+    "options": [
+     "Yes",
+     "Yes, always"
+    ],
+    "fact": "f3",
+    "sheet": "s3"
+   }
+  ],
+  "expect": {
+   "agree": 1,
+   "disagree": 2,
+   "asked": 0,
+   "open": 0,
+   "agreement": 0.333,
+   "disagreeing": [
+    "Opt2",
+    "Opt3"
+   ]
+  },
+  "spec_quote": "when options are given, when both pick the same option, where an answer picks the first option whose normalised text equals the normalised answer, else the first option whose normalised text starts with the normalised answer"
+ }
+]

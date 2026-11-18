@@ -40,6 +40,17 @@ def get(dotted, default=None):
     return v
 
 
+def email():
+    """The user's sign-in / contact e-mail from the profile (JSA-403: runners never hold an address of their own)."""
+    return get('contact.email') or get('accounts.gmail') or ''
+
+
+def resume_file(suffix):
+    """'<file_prefix>_Resume_<suffix>' — the generated resume's file name, the prefix from the profile (name.file_prefix)."""
+    pre = get('name.file_prefix')
+    return f'{pre}_Resume_{suffix}' if pre else f'Resume_{suffix}'
+
+
 def repo_path(dotted):
     """A profile path (relative to the repo) → absolute path, or None."""
     v = get(dotted)
@@ -84,7 +95,31 @@ def pool():
     return {'connections': raw.get('connections') or {}, 'aliases': raw.get('aliases') or {}}
 
 
+def applied():
+    """The tracker's applications (JSA-281) → {'date': today, 'rows': [{'company', 'applied_on'}]} | None — the same as
+    config/applied.js ($JSA_APPLIED overrides). For "Have you previously applied to …?" questions."""
+    import datetime
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import paths
+    p = os.environ.get('JSA_APPLIED') or paths.data('store', 'applications.jsonl')
+    try:
+        lines = open(p, encoding='utf-8').read().splitlines()
+    except OSError:
+        return None
+    rows = []
+    for line in lines:
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        if r.get('company') and r.get('applied_on'):
+            rows.append({'company': r['company'], 'applied_on': str(r['applied_on'])[:10]})
+    return {'date': datetime.date.today().isoformat(), 'rows': rows}
+
+
 def page_js():
-    """The lines that install the profile and the referrer pool in a browser page before answer_rules.js is evaluated."""
+    """The lines that install the profile, the referrer pool and the tracker's applications (dated: the rules ask the user
+    when the date is not today, JSA-281) in a browser page before answer_rules.js is evaluated."""
     return ('globalThis.__cxProfile = ' + json.dumps(load(), ensure_ascii=False) + ';\n'
-            + 'globalThis.__cxPool = ' + json.dumps(pool(), ensure_ascii=False) + ';\n')
+            + 'globalThis.__cxPool = ' + json.dumps(pool(), ensure_ascii=False) + ';\n'
+            + 'globalThis.__cxApplied = ' + json.dumps(applied(), ensure_ascii=False) + ';\n')

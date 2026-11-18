@@ -7,26 +7,44 @@
 cd "$(dirname "$0")/.." || exit 1
 ROOT="$PWD"
 PY="${JSA_VENV:-$HOME/.job-agent-venv}/bin/python"; [ -x "$PY" ] || PY=python3
-# tests never touch the live data home (ADR-0008): they use this checkout's own files, whatever the pointer file says
+# tests never touch the live data home (ADR-0008 / ADR-0011): they run on an APFS clone of it (copy-on-write, ~3 s, removed
+# at exit) — so they test the user's current facts, and the repo holds no fact copies. JSA_TEST_HOME = use that folder
+# instead; no data home (an open-source checkout) → this checkout with the fictional fixture below.
+if [ -z "${JSA_TEST_HOME:-}" ] && [ ! -f .jsa-public ]; then
+  LIVE=$(cat "$HOME/.config/job-search-agent/home" 2>/dev/null); LIVE="${LIVE/#\~/$HOME}"
+  if [ -n "$LIVE" ] && [ -d "$LIVE/config" ]; then
+    JSA_TEST_HOME=$(mktemp -d "${TMPDIR:-/tmp}/jsa_test_home.XXXXXX")
+    for d in config facts resume data applications; do
+      [ -e "$LIVE/$d" ] || continue; cp -cR "$LIVE/$d" "$JSA_TEST_HOME/" 2>/dev/null || cp -R "$LIVE/$d" "$JSA_TEST_HOME/"
+    done
+    CLONED=1
+    echo "== test home: clone of $LIVE"
+    # JSA-403: the repo's tests state a fictional identity (config/fixtures/fake_identity.json); the clone keeps the user's real
+    # answers but carries that identity, so the user's own name / address / e-mail / phone never need to appear in a test
+    python3 scripts/fake_identity.py --home "$JSA_TEST_HOME" || { rm -rf "$JSA_TEST_HOME"; exit 1; }
+    export JSA_REAL_HOME="$LIVE"      # test_no_personal_facts scans the repo for the LIVE profile's values
+  fi
+fi
 export JSA_HOME="${JSA_TEST_HOME:-$ROOT}"
+# the browser bundle from THIS checkout's code + the test home's profile (t_jsdom.js reads it there)
+[ "$JSA_HOME" != "$ROOT" ] && python3 skills/auto-apply/scripts/build_bundle.py >/dev/null 2>&1
 # tests never push to Joey (JSA-181: t_run.sh's fake CAPTCHA for app_fake reached him after every release)
 export JSA_NO_PUSH=1
 # public tree (.jsa-public, written by the export): tests run against the fictional F-1 fixture, whatever the user's own
 # config/ says; the private repo tests the real config/ files (JSA-086)
-if [ -f .jsa-public ] && [ -d config/fixtures/f1_student ]; then
+if { [ -f .jsa-public ] || [ "$JSA_HOME" = "$ROOT" ]; } && [ -d config/fixtures/f1_student ]; then
   export JSA_PROFILE="$ROOT/config/fixtures/f1_student/profile.json" JSA_CANONICAL="$ROOT/config/fixtures/f1_student/canonical.json" \
          JSA_WD_PROFILE="$ROOT/config/fixtures/f1_student/wd_profile.json"
   echo "== test profile: config/fixtures/f1_student (fictional F-1 student)"
 fi
 pass=0; failed=()
-run() {   # run <dir> <cmd…>: one test, from its own folder
+OUT=$(mktemp "${TMPDIR:-/tmp}/jsa_test_out.XXXXXX"); trap 'rm -f "$OUT"; [ -n "${JSA_TEST_HOME:-}" ] && [ -n "${CLONED:-}" ] && rm -rf "$JSA_TEST_HOME"' EXIT
+run() {   # run <dir> <cmd…>: one test, from its own folder. A failing test's WHOLE output goes into the log (JSA-380: a
+          # flaky failure used to leave only the summary line — the failing case was lost). Own temp file per run, not a shared /tmp name.
   local dir="$1"; shift
-  if (cd "$dir" && "$@" >/tmp/jsa_test.out 2>&1); then pass=$((pass + 1))
-  else failed+=("$dir/${*: -1}"); echo "FAIL $dir/${*: -1}"; tail -5 /tmp/jsa_test.out | sed 's/^/     /'; fi
+  if (cd "$dir" && "$@" >"$OUT" 2>&1); then pass=$((pass + 1))
+  else failed+=("$dir/${*: -1}"); echo "FAIL $dir/${*: -1}"; sed 's/^/     | /' "$OUT"; fi
 }
-# t_run.sh rewrites its tracked fixtures: put them back afterwards when they were clean before
-FIX="skills/auto-apply/runner/test/app_bad skills/auto-apply/runner/test/app_fake skills/auto-apply/runner/test/app_notready skills/auto-apply/runner/test/data"
-clean_fix=0; git rev-parse --git-dir >/dev/null 2>&1 && [ -z "$(git status --porcelain -- $FIX 2>/dev/null)" ] && clean_fix=1
 
 echo "== Python ($PY)"
 while IFS= read -r t; do
@@ -49,7 +67,6 @@ fi
 if [ "${1:-}" != "--quick" ] && [ -f skills/auto-apply/runner/test/t_run.sh ]; then
   echo "== runner end-to-end (t_run.sh)"
   PYTHON="$PY" run skills/auto-apply/runner/test bash t_run.sh
-  [ $clean_fix = 1 ] && git checkout -q -- $FIX 2>/dev/null
 fi
 
 echo

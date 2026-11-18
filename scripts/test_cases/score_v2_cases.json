@@ -52,7 +52,7 @@
    "s_sponsor": 0.6,
    "s_fresh": 0.3,
    "s_chance": 0.45,
-   "score": 83.5,
+   "score": 82.6,
    "tier_orig": "A",
    "tier": "A"
   },
@@ -77,7 +77,7 @@
    "s_value": 40,
    "s_timing": 0.8,
    "s_chance": 0.91,
-   "score": 67.3,
+   "score": 67.9,
    "tier_orig": "B",
    "tier": "B"
   },
@@ -105,7 +105,7 @@
    "s_sponsor": 0.4,
    "s_fresh": 0.3,
    "s_chance": 0.25,
-   "score": 47.5,
+   "score": 47.2,
    "tier_orig": "C",
    "tier": "C"
   },
@@ -156,7 +156,7 @@
    "s_fresh": 0.8,
    "s_sponsor": 0.6,
    "s_chance": 0.44,
-   "score": 13.2,
+   "score": 13.8,
    "tier_orig": "D",
    "tier": "D"
   },
@@ -182,7 +182,7 @@
    "s_referral": 0.6,
    "s_timing": 1.0,
    "s_chance": 0.8,
-   "score": 24.0,
+   "score": 24.6,
    "tier_orig": "D",
    "tier": "D"
   },
@@ -206,7 +206,7 @@
    "v_level": "standard",
    "s_value": 40,
    "s_chance": 0.52,
-   "score": 55.6,
+   "score": 56.8,
    "tier_orig": "B",
    "tier": "B"
   },
@@ -231,7 +231,7 @@
    "v_level": "top",
    "s_value": 70,
    "s_chance": 0.63,
-   "score": 88.9,
+   "score": 90.1,
    "tier_orig": "A",
    "tier": "A"
   },
@@ -475,7 +475,7 @@
   "ambiguous": false
  },
  {
-  "name": "sponsor_blocked_zero_and_tier_blocked",
+  "name": "sponsor_label_no_sponsorship_is_0_2_not_blocked (JSA-385)",
   "job": {
    "id": "J20",
    "title": "Data Analyst Intern",
@@ -489,11 +489,11 @@
   },
   "expect": {
    "v_level": "standard",
-   "s_sponsor": 0.0,
-   "s_chance": 0.8,
-   "score": 64.0,
+   "s_sponsor": 0.2,
+   "s_chance": 0.92,
+   "score": 67.6,
    "tier_orig": "B",
-   "tier": "Blocked"
+   "tier": "B"
   },
   "spec_quote": "anything else → 0.4 (a \"Blocked…\" value → 0.0) ... tier = \"Blocked\" if ... `sponsorship` starts with \"Blocked\"; otherwise tier = tier_orig",
   "ambiguous": false
@@ -539,7 +539,7 @@
   "expect": {
    "s_fresh": 0.8,
    "s_chance": 0.57,
-   "score": 57.1,
+   "score": 56.5,
    "v_level": "standard",
    "tier_orig": "B",
    "tier": "B"
@@ -563,8 +563,8 @@
   "expect": {
    "s_fresh": 0.3,
    "s_timing": 0.5,
-   "s_chance": 0.37,
-   "score": 51.1,
+   "s_chance": 0.3,
+   "score": 49.0,
    "v_level": "standard",
    "tier_orig": "C",
    "tier": "C"
@@ -610,8 +610,8 @@
   },
   "expect": {
    "s_fresh": 0.2,
-   "s_chance": 0.48,
-   "score": 54.4,
+   "s_chance": 0.4,
+   "score": 52.0,
    "v_level": "standard",
    "tier_orig": "C",
    "tier": "C"
@@ -727,7 +727,7 @@
   "expect": {
    "s_fresh": 0.8,
    "s_chance": 0.81,
-   "score": 64.3,
+   "score": 63.7,
    "v_level": "standard",
    "tier_orig": "B",
    "tier": "B"
@@ -756,6 +756,166 @@
    "tier": "D"
   },
   "spec_quote": "Off-target rows get v_level \"off_target\". ... `joey_pref` \"up\" / \"down\" wins over everything above except the target gate (an off-target row stays off_target).",
+  "ambiguous": false
+ },
+ {
+  "name": "385_no_sponsorship_label_eligible_and_ranked_below_unknown",
+  "job": {
+   "id": "J385",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Blocked: no sponsorship"
+  },
+  "expect": {
+   "s_sponsor": 0.2,
+   "tier": "B",
+   "s_chance": 0.9
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_unknown_sponsorship_same_job_ranks_higher",
+  "job": {
+   "id": "J385",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Unknown — verify"
+  },
+  "expect": {
+   "s_sponsor": 0.4,
+   "tier": "B",
+   "s_chance": 0.92
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_future_code_standard_B_to_C",
+  "job": {
+   "id": "J385",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Unknown — verify",
+   "elig_codes": "NO_FUTURE_SPONSORSHIP_INTERN,GRAD_OK"
+  },
+  "expect": {
+   "tier": "C",
+   "tier_orig": "C"
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_future_code_top_A_to_B",
+  "job": {
+   "id": "J385",
+   "title": "AI Product Manager Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Unknown — verify",
+   "elig_codes": [
+    "NO_FUTURE_SPONSORSHIP_INTERN"
+   ]
+  },
+  "expect": {
+   "tier": "B",
+   "v_level": "top"
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_plain_no_sponsor_code_keeps_tier",
+  "job": {
+   "id": "J385",
+   "title": "AI Product Manager Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Unknown — verify",
+   "elig_codes": "NO_SPONSORSHIP_INTERN"
+  },
+  "expect": {
+   "tier": "A"
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_future_code_exclude_stays_D",
+  "job": {
+   "id": "J385",
+   "title": "Hardware Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "elig_codes": "NO_FUTURE_SPONSORSHIP_INTERN"
+  },
+  "expect": {
+   "tier": "D"
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_citizenship_label_still_blocked",
+  "job": {
+   "id": "J385",
+   "title": "Data Analyst Intern",
+   "level": "Internship",
+   "elig": "可投",
+   "referral": "1st-degree connection",
+   "posted": "2026-10-20",
+   "added": "2026-10-25",
+   "sources": "Summer 2027",
+   "sponsorship": "Blocked: citizenship required"
+  },
+  "expect": {
+   "tier": "Blocked",
+   "s_sponsor": 0.0
+  },
+  "spec_quote": "JSA-385: no-sponsorship internship → eligible, factor 0.2; must-not-need-future → one tier lower, never below C",
+  "ambiguous": false
+ },
+ {
+  "name": "385_full_time_row_with_no_sponsorship_label_still_blocked",
+  "job": {
+   "id": "J385b",
+   "title": "Data Analyst",
+   "level": "New grad",
+   "elig": "可投",
+   "sponsorship": "Blocked: no sponsorship"
+  },
+  "expect": {
+   "tier": "Blocked"
+  },
+  "spec_quote": "JSA-385: only an internship is un-blocked",
   "ambiguous": false
  }
 ]

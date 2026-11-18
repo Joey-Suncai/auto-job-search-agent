@@ -1,0 +1,1856 @@
+{
+ "direction": "data_engineer",
+ "label": "Data Engineer",
+ "built": "2026-11-08",
+ "n_jds": 239,
+ "levels": {
+  "Internship": 119,
+  "New grad": 73,
+  "Early career": 44,
+  "New Grad / Entry": 3
+ },
+ "tracks": {
+  "Data Engineer": 239
+ },
+ "template": "jakes",
+ "section_order": [
+  "Education",
+  "Skills",
+  "Experience",
+  "Projects",
+  "Leadership"
+ ],
+ "headline_pattern": "<exact job title> · Python · SQL · <pipeline / cloud tool from the JD>",
+ "competencies": [
+  {
+   "id": "software_eng",
+   "label": "Software engineering",
+   "df": 0.774,
+   "req_share": 0.903,
+   "keywords": [
+    {
+     "term": "software engineering",
+     "synonyms": [
+      "software development"
+     ],
+     "df": 0.356,
+     "req_share": 0.847
+    },
+    {
+     "term": "testing",
+     "synonyms": [
+      "unit tests"
+     ],
+     "df": 0.305,
+     "req_share": 0.849
+    },
+    {
+     "term": "Git",
+     "synonyms": [
+      "GitHub",
+      "version control"
+     ],
+     "df": 0.247,
+     "req_share": 0.542
+    },
+    {
+     "term": "Java",
+     "synonyms": [],
+     "df": 0.226,
+     "req_share": 0.833
+    },
+    {
+     "term": "APIs",
+     "synonyms": [
+      "API",
+      "REST"
+     ],
+     "df": 0.184,
+     "req_share": 0.682
+    },
+    {
+     "term": "data structures",
+     "synonyms": [
+      "algorithms"
+     ],
+     "df": 0.159,
+     "req_share": 0.737
+    },
+    {
+     "term": "backend",
+     "synonyms": [
+      "back-end"
+     ],
+     "df": 0.067,
+     "req_share": 0.625
+    },
+    {
+     "term": "Docker",
+     "synonyms": [
+      "Kubernetes"
+     ],
+     "df": 0.063,
+     "req_share": 0.467
+    },
+    {
+     "term": "C++",
+     "synonyms": [],
+     "df": 0.054,
+     "req_share": 0.923
+    },
+    {
+     "term": "JavaScript",
+     "synonyms": [
+      "TypeScript"
+     ],
+     "df": 0.038,
+     "req_share": 0.667
+    },
+    {
+     "term": "Golang",
+     "synonyms": [],
+     "df": 0.017,
+     "req_share": 0.75
+    }
+   ],
+   "weight": 0.0819,
+   "angle": ""
+  },
+  {
+   "id": "sql",
+   "label": "SQL",
+   "df": 0.782,
+   "req_share": 0.85,
+   "keywords": [
+    {
+     "term": "SQL",
+     "synonyms": [
+      "PostgreSQL",
+      "MySQL",
+      "T-SQL",
+      "querying databases"
+     ],
+     "df": 0.757,
+     "req_share": 0.845
+    },
+    {
+     "term": "relational databases",
+     "synonyms": [
+      "relational database"
+     ],
+     "df": 0.205,
+     "req_share": 0.837
+    }
+   ],
+   "weight": 0.0805,
+   "angle": "the query work and its scale"
+  },
+  {
+   "id": "python",
+   "label": "Python",
+   "df": 0.757,
+   "req_share": 0.89,
+   "keywords": [
+    {
+     "term": "Python",
+     "synonyms": [],
+     "df": 0.757,
+     "req_share": 0.89
+    },
+    {
+     "term": "pandas",
+     "synonyms": [],
+     "df": 0.05,
+     "req_share": 0.417
+    },
+    {
+     "term": "NumPy",
+     "synonyms": [],
+     "df": 0.013,
+     "req_share": 0.667
+    },
+    {
+     "term": "scikit-learn",
+     "synonyms": [
+      "sklearn"
+     ],
+     "df": 0.013,
+     "req_share": 0.0
+    },
+    {
+     "term": "Jupyter",
+     "synonyms": [],
+     "df": 0.004,
+     "req_share": 0.0
+    }
+   ],
+   "weight": 0.0796,
+   "angle": ""
+  },
+  {
+   "id": "pipelines",
+   "label": "Data pipelines",
+   "df": 0.728,
+   "req_share": 0.943,
+   "keywords": [
+    {
+     "term": "data pipelines",
+     "synonyms": [
+      "data pipeline",
+      "pipelines"
+     ],
+     "df": 0.569,
+     "req_share": 0.963
+    },
+    {
+     "term": "ETL",
+     "synonyms": [
+      "ELT"
+     ],
+     "df": 0.435,
+     "req_share": 0.76
+    },
+    {
+     "term": "Spark",
+     "synonyms": [
+      "PySpark"
+     ],
+     "df": 0.247,
+     "req_share": 0.712
+    },
+    {
+     "term": "data ingestion",
+     "synonyms": [
+      "ingestion"
+     ],
+     "df": 0.184,
+     "req_share": 0.977
+    },
+    {
+     "term": "Airflow",
+     "synonyms": [],
+     "df": 0.142,
+     "req_share": 0.735
+    },
+    {
+     "term": "Kafka",
+     "synonyms": [
+      "streaming"
+     ],
+     "df": 0.142,
+     "req_share": 0.676
+    },
+    {
+     "term": "dbt",
+     "synonyms": [],
+     "df": 0.142,
+     "req_share": 0.765
+    }
+   ],
+   "weight": 0.0787,
+   "angle": "sources in, rows out, what the pipeline guarantees"
+  },
+  {
+   "id": "stakeholders",
+   "label": "Cross-functional communication",
+   "df": 0.669,
+   "req_share": 0.819,
+   "keywords": [
+    {
+     "term": "communication skills",
+     "synonyms": [
+      "communicate",
+      "written and verbal"
+     ],
+     "df": 0.456,
+     "req_share": 0.67
+    },
+    {
+     "term": "stakeholders",
+     "synonyms": [
+      "stakeholder"
+     ],
+     "df": 0.289,
+     "req_share": 0.928
+    },
+    {
+     "term": "cross-functional",
+     "synonyms": [
+      "cross functional",
+      "cross-functionally"
+     ],
+     "df": 0.243,
+     "req_share": 0.862
+    },
+    {
+     "term": "presentations",
+     "synonyms": [
+      "present findings",
+      "storytelling"
+     ],
+     "df": 0.033,
+     "req_share": 0.75
+    }
+   ],
+   "weight": 0.0677,
+   "angle": ""
+  },
+  {
+   "id": "automation",
+   "label": "Automation and workflows",
+   "df": 0.611,
+   "req_share": 0.884,
+   "keywords": [
+    {
+     "term": "automation",
+     "synonyms": [
+      "automate",
+      "automated",
+      "automating"
+     ],
+     "df": 0.444,
+     "req_share": 0.858
+    },
+    {
+     "term": "workflows",
+     "synonyms": [
+      "workflow"
+     ],
+     "df": 0.385,
+     "req_share": 0.837
+    },
+    {
+     "term": "scripting",
+     "synonyms": [
+      "scripts"
+     ],
+     "df": 0.197,
+     "req_share": 0.809
+    }
+   ],
+   "weight": 0.064,
+   "angle": "what runs without a person and how failures are caught"
+  },
+  {
+   "id": "metrics",
+   "label": "Metrics and product analytics",
+   "df": 0.548,
+   "req_share": 0.901,
+   "keywords": [
+    {
+     "term": "insights",
+     "synonyms": [
+      "actionable insights"
+     ],
+     "df": 0.289,
+     "req_share": 0.928
+    },
+    {
+     "term": "data-driven",
+     "synonyms": [
+      "data driven",
+      "data-informed"
+     ],
+     "df": 0.188,
+     "req_share": 0.956
+    },
+    {
+     "term": "metrics",
+     "synonyms": [
+      "KPIs",
+      "KPI",
+      "success metrics"
+     ],
+     "df": 0.167,
+     "req_share": 0.875
+    },
+    {
+     "term": "retention",
+     "synonyms": [
+      "churn",
+      "engagement"
+     ],
+     "df": 0.121,
+     "req_share": 0.759
+    },
+    {
+     "term": "funnel",
+     "synonyms": [
+      "conversion"
+     ],
+     "df": 0.021,
+     "req_share": 0.6
+    },
+    {
+     "term": "product analytics",
+     "synonyms": [],
+     "df": 0.013,
+     "req_share": 0.667
+    },
+    {
+     "term": "cohort analysis",
+     "synonyms": [
+      "cohorts"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0579,
+   "angle": ""
+  },
+  {
+   "id": "data_modeling",
+   "label": "Data modeling and warehousing",
+   "df": 0.536,
+   "req_share": 0.883,
+   "keywords": [
+    {
+     "term": "data modeling",
+     "synonyms": [
+      "data models"
+     ],
+     "df": 0.368,
+     "req_share": 0.864
+    },
+    {
+     "term": "data warehouse",
+     "synonyms": [
+      "data warehousing",
+      "data lake",
+      "lakehouse"
+     ],
+     "df": 0.276,
+     "req_share": 0.879
+    },
+    {
+     "term": "schema design",
+     "synonyms": [
+      "schemas"
+     ],
+     "df": 0.071,
+     "req_share": 0.647
+    }
+   ],
+   "weight": 0.0561,
+   "angle": "the model or schema and who queries it"
+  },
+  {
+   "id": "cloud_data",
+   "label": "Cloud data platforms",
+   "df": 0.527,
+   "req_share": 0.817,
+   "keywords": [
+    {
+     "term": "AWS",
+     "synonyms": [
+      "Amazon Web Services"
+     ],
+     "df": 0.326,
+     "req_share": 0.718
+    },
+    {
+     "term": "Snowflake",
+     "synonyms": [],
+     "df": 0.218,
+     "req_share": 0.788
+    },
+    {
+     "term": "Azure",
+     "synonyms": [],
+     "df": 0.192,
+     "req_share": 0.63
+    },
+    {
+     "term": "GCP",
+     "synonyms": [
+      "Google Cloud"
+     ],
+     "df": 0.151,
+     "req_share": 0.694
+    },
+    {
+     "term": "a Greenhouse employer",
+     "synonyms": [],
+     "df": 0.146,
+     "req_share": 0.686
+    },
+    {
+     "term": "BigQuery",
+     "synonyms": [],
+     "df": 0.092,
+     "req_share": 0.818
+    },
+    {
+     "term": "Redshift",
+     "synonyms": [],
+     "df": 0.075,
+     "req_share": 0.722
+    }
+   ],
+   "weight": 0.0533,
+   "angle": "the platform and what was built on it"
+  },
+  {
+   "id": "ownership",
+   "label": "Ownership and project leadership",
+   "df": 0.519,
+   "req_share": 0.839,
+   "keywords": [
+    {
+     "term": "ownership",
+     "synonyms": [
+      "end-to-end"
+     ],
+     "df": 0.226,
+     "req_share": 0.852
+    },
+    {
+     "term": "leadership",
+     "synonyms": [],
+     "df": 0.222,
+     "req_share": 0.774
+    },
+    {
+     "term": "fast-paced",
+     "synonyms": [
+      "fast paced"
+     ],
+     "df": 0.159,
+     "req_share": 0.842
+    },
+    {
+     "term": "ambiguity",
+     "synonyms": [
+      "ambiguous"
+     ],
+     "df": 0.067,
+     "req_share": 0.938
+    },
+    {
+     "term": "project management",
+     "synonyms": [
+      "manage projects",
+      "program management"
+     ],
+     "df": 0.054,
+     "req_share": 0.615
+    }
+   ],
+   "weight": 0.0531,
+   "angle": ""
+  },
+  {
+   "id": "data_quality",
+   "label": "Data quality",
+   "df": 0.439,
+   "req_share": 0.914,
+   "keywords": [
+    {
+     "term": "data quality",
+     "synonyms": [
+      "data integrity",
+      "data accuracy"
+     ],
+     "df": 0.381,
+     "req_share": 0.901
+    },
+    {
+     "term": "data validation",
+     "synonyms": [
+      "validation"
+     ],
+     "df": 0.192,
+     "req_share": 0.913
+    },
+    {
+     "term": "data cleaning",
+     "synonyms": [
+      "data cleansing",
+      "clean data",
+      "data wrangling"
+     ],
+     "df": 0.025,
+     "req_share": 1.0
+    },
+    {
+     "term": "deduplication",
+     "synonyms": [
+      "dedup"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0468,
+   "angle": "the rule (normalization, dedup, validation) and the before / after counts"
+  },
+  {
+   "id": "problem_solving",
+   "label": "Problem solving and rigor",
+   "df": 0.49,
+   "req_share": 0.701,
+   "keywords": [
+    {
+     "term": "problem-solving",
+     "synonyms": [
+      "problem solving"
+     ],
+     "df": 0.402,
+     "req_share": 0.677
+    },
+    {
+     "term": "attention to detail",
+     "synonyms": [
+      "detail-oriented"
+     ],
+     "df": 0.188,
+     "req_share": 0.689
+    },
+    {
+     "term": "critical thinking",
+     "synonyms": [],
+     "df": 0.033,
+     "req_share": 0.625
+    }
+   ],
+   "weight": 0.0463,
+   "angle": ""
+  },
+  {
+   "id": "bi_viz",
+   "label": "BI and visualization",
+   "df": 0.397,
+   "req_share": 0.811,
+   "keywords": [
+    {
+     "term": "business intelligence",
+     "synonyms": [
+      "BI"
+     ],
+     "df": 0.234,
+     "req_share": 0.661
+    },
+    {
+     "term": "dashboards",
+     "synonyms": [
+      "dashboard",
+      "dashboarding"
+     ],
+     "df": 0.222,
+     "req_share": 0.943
+    },
+    {
+     "term": "data visualization",
+     "synonyms": [
+      "visualizations",
+      "data viz"
+     ],
+     "df": 0.163,
+     "req_share": 0.641
+    },
+    {
+     "term": "Tableau",
+     "synonyms": [],
+     "df": 0.134,
+     "req_share": 0.656
+    },
+    {
+     "term": "Power BI",
+     "synonyms": [
+      "PowerBI"
+     ],
+     "df": 0.126,
+     "req_share": 0.6
+    },
+    {
+     "term": "Looker",
+     "synonyms": [
+      "Looker Studio"
+     ],
+     "df": 0.063,
+     "req_share": 0.667
+    }
+   ],
+   "weight": 0.04,
+   "angle": ""
+  },
+  {
+   "id": "statistics",
+   "label": "Statistics",
+   "df": 0.339,
+   "req_share": 0.728,
+   "keywords": [
+    {
+     "term": "data analysis",
+     "synonyms": [
+      "quantitative analysis",
+      "analytical skills"
+     ],
+     "df": 0.218,
+     "req_share": 0.731
+    },
+    {
+     "term": "statistics",
+     "synonyms": [
+      "statistical analysis",
+      "statistical methods",
+      "statistical modeling"
+     ],
+     "df": 0.151,
+     "req_share": 0.694
+    },
+    {
+     "term": "forecasting",
+     "synonyms": [
+      "time series"
+     ],
+     "df": 0.013,
+     "req_share": 0.667
+    },
+    {
+     "term": "regression",
+     "synonyms": [
+      "linear regression",
+      "logistic regression"
+     ],
+     "df": 0.004,
+     "req_share": 0.0
+    },
+    {
+     "term": "hypothesis testing",
+     "synonyms": [
+      "significance testing"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0326,
+   "angle": ""
+  },
+  {
+   "id": "product_sense",
+   "label": "Product sense and discovery",
+   "df": 0.314,
+   "req_share": 0.853,
+   "keywords": [
+    {
+     "term": "prioritization",
+     "synonyms": [
+      "prioritize",
+      "trade-offs",
+      "tradeoffs"
+     ],
+     "df": 0.113,
+     "req_share": 0.593
+    },
+    {
+     "term": "go-to-market",
+     "synonyms": [
+      "GTM",
+      "launch",
+      "launches"
+     ],
+     "df": 0.1,
+     "req_share": 0.958
+    },
+    {
+     "term": "product development",
+     "synonyms": [
+      "product lifecycle"
+     ],
+     "df": 0.063,
+     "req_share": 1.0
+    },
+    {
+     "term": "roadmap",
+     "synonyms": [
+      "roadmaps",
+      "product roadmap"
+     ],
+     "df": 0.063,
+     "req_share": 0.867
+    },
+    {
+     "term": "user experience",
+     "synonyms": [
+      "UX"
+     ],
+     "df": 0.025,
+     "req_share": 0.833
+    },
+    {
+     "term": "user needs",
+     "synonyms": [
+      "customer needs",
+      "user problems",
+      "customer problems",
+      "pain points"
+     ],
+     "df": 0.017,
+     "req_share": 0.75
+    },
+    {
+     "term": "product requirements",
+     "synonyms": [
+      "PRD",
+      "PRDs",
+      "product specs"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "product strategy",
+     "synonyms": [
+      "product vision"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "user stories",
+     "synonyms": [],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "user research",
+     "synonyms": [
+      "customer research",
+      "user interviews",
+      "customer interviews"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0323,
+   "angle": ""
+  },
+  {
+   "id": "ai_eval",
+   "label": "AI evaluation and quality",
+   "df": 0.276,
+   "req_share": 0.833,
+   "keywords": [
+    {
+     "term": "quality metrics",
+     "synonyms": [
+      "model quality",
+      "accuracy"
+     ],
+     "df": 0.134,
+     "req_share": 0.875
+    },
+    {
+     "term": "guardrails",
+     "synonyms": [
+      "responsible AI",
+      "AI safety",
+      "safety"
+     ],
+     "df": 0.113,
+     "req_share": 0.667
+    },
+    {
+     "term": "evaluation",
+     "synonyms": [
+      "evaluations",
+      "evals",
+      "model evaluation"
+     ],
+     "df": 0.067,
+     "req_share": 0.75
+    },
+    {
+     "term": "benchmarks",
+     "synonyms": [
+      "benchmarking"
+     ],
+     "df": 0.008,
+     "req_share": 1.0
+    },
+    {
+     "term": "human-in-the-loop",
+     "synonyms": [
+      "human in the loop",
+      "human feedback",
+      "RLHF"
+     ],
+     "df": 0.008,
+     "req_share": 0.0
+    },
+    {
+     "term": "hallucination",
+     "synonyms": [
+      "hallucinations"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0282,
+   "angle": ""
+  },
+  {
+   "id": "llm_genai",
+   "label": "LLMs and generative AI",
+   "df": 0.28,
+   "req_share": 0.657,
+   "keywords": [
+    {
+     "term": "LLM",
+     "synonyms": [
+      "LLMs",
+      "large language models",
+      "large language model"
+     ],
+     "df": 0.13,
+     "req_share": 0.645
+    },
+    {
+     "term": "AI tools",
+     "synonyms": [
+      "AI-native tools"
+     ],
+     "df": 0.1,
+     "req_share": 0.583
+    },
+    {
+     "term": "generative AI",
+     "synonyms": [
+      "GenAI",
+      "gen AI"
+     ],
+     "df": 0.067,
+     "req_share": 0.625
+    },
+    {
+     "term": "AI products",
+     "synonyms": [
+      "AI-powered",
+      "AI features"
+     ],
+     "df": 0.063,
+     "req_share": 0.867
+    },
+    {
+     "term": "prompt engineering",
+     "synonyms": [
+      "prompting",
+      "prompts"
+     ],
+     "df": 0.033,
+     "req_share": 0.625
+    },
+    {
+     "term": "RAG",
+     "synonyms": [
+      "retrieval-augmented generation",
+      "retrieval augmented generation"
+     ],
+     "df": 0.025,
+     "req_share": 0.833
+    },
+    {
+     "term": "fine-tuning",
+     "synonyms": [
+      "fine tuning"
+     ],
+     "df": 0.008,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0258,
+   "angle": ""
+  },
+  {
+   "id": "agents",
+   "label": "AI agents and tooling",
+   "df": 0.251,
+   "req_share": 0.85,
+   "keywords": [
+    {
+     "term": "multi-agent",
+     "synonyms": [
+      "orchestration"
+     ],
+     "df": 0.13,
+     "req_share": 0.71
+    },
+    {
+     "term": "AI agents",
+     "synonyms": [
+      "agentic",
+      "autonomous agents",
+      "LLM agents"
+     ],
+     "df": 0.1,
+     "req_share": 0.875
+    },
+    {
+     "term": "Claude",
+     "synonyms": [
+      "OpenAI",
+      "GPT",
+      "ChatGPT",
+      "Anthropic"
+     ],
+     "df": 0.084,
+     "req_share": 0.8
+    },
+    {
+     "term": "LangChain",
+     "synonyms": [
+      "LangGraph",
+      "LlamaIndex"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "MCP",
+     "synonyms": [
+      "Model Context Protocol"
+     ],
+     "df": 0.004,
+     "req_share": 0.0
+    },
+    {
+     "term": "tool use",
+     "synonyms": [
+      "function calling",
+      "tool calling"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0258,
+   "angle": ""
+  },
+  {
+   "id": "ml",
+   "label": "Machine learning",
+   "df": 0.234,
+   "req_share": 0.821,
+   "keywords": [
+    {
+     "term": "machine learning",
+     "synonyms": [
+      "ML"
+     ],
+     "df": 0.218,
+     "req_share": 0.827
+    },
+    {
+     "term": "predictive modeling",
+     "synonyms": [
+      "predictive models"
+     ],
+     "df": 0.021,
+     "req_share": 0.8
+    },
+    {
+     "term": "computer vision",
+     "synonyms": [],
+     "df": 0.013,
+     "req_share": 0.333
+    },
+    {
+     "term": "model training",
+     "synonyms": [
+      "training models"
+     ],
+     "df": 0.013,
+     "req_share": 1.0
+    },
+    {
+     "term": "PyTorch",
+     "synonyms": [],
+     "df": 0.008,
+     "req_share": 0.0
+    },
+    {
+     "term": "TensorFlow",
+     "synonyms": [],
+     "df": 0.008,
+     "req_share": 0.0
+    },
+    {
+     "term": "deep learning",
+     "synonyms": [
+      "neural networks"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    },
+    {
+     "term": "reinforcement learning",
+     "synonyms": [],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0237,
+   "angle": ""
+  },
+  {
+   "id": "r_lang",
+   "label": "R",
+   "df": 0.071,
+   "req_share": 0.882,
+   "keywords": [
+    {
+     "term": "R",
+     "synonyms": [
+      "RStudio",
+      "tidyverse"
+     ],
+     "df": 0.071,
+     "req_share": 0.882
+    }
+   ],
+   "weight": 0.0074,
+   "angle": ""
+  },
+  {
+   "id": "excel",
+   "label": "Excel / spreadsheets",
+   "df": 0.075,
+   "req_share": 0.556,
+   "keywords": [
+    {
+     "term": "Excel",
+     "synonyms": [
+      "spreadsheets",
+      "Google Sheets"
+     ],
+     "df": 0.075,
+     "req_share": 0.556
+    },
+    {
+     "term": "PowerPoint",
+     "synonyms": [
+      "Google Slides"
+     ],
+     "df": 0.021,
+     "req_share": 0.6
+    },
+    {
+     "term": "pivot tables",
+     "synonyms": [
+      "VLOOKUP",
+      "XLOOKUP"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0065,
+   "angle": ""
+  },
+  {
+   "id": "experimentation",
+   "label": "Experimentation",
+   "df": 0.059,
+   "req_share": 0.929,
+   "keywords": [
+    {
+     "term": "experimentation",
+     "synonyms": [
+      "experiment design",
+      "experiments",
+      "controlled experiments"
+     ],
+     "df": 0.054,
+     "req_share": 0.923
+    },
+    {
+     "term": "A/B testing",
+     "synonyms": [
+      "A/B tests",
+      "AB testing",
+      "split testing"
+     ],
+     "df": 0.008,
+     "req_share": 1.0
+    },
+    {
+     "term": "causal inference",
+     "synonyms": [
+      "causal"
+     ],
+     "df": 0.008,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0063,
+   "angle": ""
+  },
+  {
+   "id": "pm_tools",
+   "label": "PM / analytics tools",
+   "df": 0.054,
+   "req_share": 0.769,
+   "keywords": [
+    {
+     "term": "Asana",
+     "synonyms": [
+      "Trello"
+     ],
+     "df": 0.013,
+     "req_share": 1.0
+    },
+    {
+     "term": "Confluence",
+     "synonyms": [],
+     "df": 0.013,
+     "req_share": 1.0
+    },
+    {
+     "term": "Jira",
+     "synonyms": [],
+     "df": 0.013,
+     "req_share": 0.667
+    },
+    {
+     "term": "a Greenhouse employer",
+     "synonyms": [
+      "FigJam"
+     ],
+     "df": 0.008,
+     "req_share": 1.0
+    },
+    {
+     "term": "Google Analytics",
+     "synonyms": [],
+     "df": 0.008,
+     "req_share": 0.5
+    },
+    {
+     "term": "Mixpanel",
+     "synonyms": [],
+     "df": 0.004,
+     "req_share": 0.0
+    },
+    {
+     "term": "Amplitude",
+     "synonyms": [],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0054,
+   "angle": ""
+  },
+  {
+   "id": "finance",
+   "label": "Finance and business analysis",
+   "df": 0.038,
+   "req_share": 1.0,
+   "keywords": [
+    {
+     "term": "business analysis",
+     "synonyms": [
+      "business case"
+     ],
+     "df": 0.029,
+     "req_share": 1.0
+    },
+    {
+     "term": "financial analysis",
+     "synonyms": [
+      "financial statements"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "scenario analysis",
+     "synonyms": [
+      "sensitivity analysis"
+     ],
+     "df": 0.004,
+     "req_share": 1.0
+    },
+    {
+     "term": "financial modeling",
+     "synonyms": [
+      "financial models"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    },
+    {
+     "term": "market research",
+     "synonyms": [
+      "competitive analysis"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0,
+   "angle": ""
+  }
+ ],
+ "top_keywords": [
+  {
+   "term": "Python",
+   "competency": "python",
+   "df": 0.757,
+   "req_share": 0.89,
+   "score": 0.7154
+  },
+  {
+   "term": "SQL",
+   "competency": "sql",
+   "df": 0.757,
+   "req_share": 0.845,
+   "score": 0.6983
+  },
+  {
+   "term": "data pipelines",
+   "competency": "pipelines",
+   "df": 0.569,
+   "req_share": 0.963,
+   "score": 0.5585
+  },
+  {
+   "term": "automation",
+   "competency": "automation",
+   "df": 0.444,
+   "req_share": 0.858,
+   "score": 0.4125
+  },
+  {
+   "term": "ETL",
+   "competency": "pipelines",
+   "df": 0.435,
+   "req_share": 0.76,
+   "score": 0.3828
+  },
+  {
+   "term": "communication skills",
+   "competency": "stakeholders",
+   "df": 0.456,
+   "req_share": 0.67,
+   "score": 0.3808
+  },
+  {
+   "term": "data quality",
+   "competency": "data_quality",
+   "df": 0.381,
+   "req_share": 0.901,
+   "score": 0.3621
+  },
+  {
+   "term": "workflows",
+   "competency": "automation",
+   "df": 0.385,
+   "req_share": 0.837,
+   "score": 0.3536
+  },
+  {
+   "term": "data modeling",
+   "competency": "data_modeling",
+   "df": 0.368,
+   "req_share": 0.864,
+   "score": 0.343
+  },
+  {
+   "term": "problem-solving",
+   "competency": "problem_solving",
+   "df": 0.402,
+   "req_share": 0.677,
+   "score": 0.3371
+  },
+  {
+   "term": "software engineering",
+   "competency": "software_eng",
+   "df": 0.356,
+   "req_share": 0.847,
+   "score": 0.3288
+  },
+  {
+   "term": "testing",
+   "competency": "software_eng",
+   "df": 0.305,
+   "req_share": 0.849,
+   "score": 0.282
+  },
+  {
+   "term": "AWS",
+   "competency": "cloud_data",
+   "df": 0.326,
+   "req_share": 0.718,
+   "score": 0.28
+  },
+  {
+   "term": "insights",
+   "competency": "metrics",
+   "df": 0.289,
+   "req_share": 0.928,
+   "score": 0.2786
+  },
+  {
+   "term": "stakeholders",
+   "competency": "stakeholders",
+   "df": 0.289,
+   "req_share": 0.928,
+   "score": 0.2786
+  },
+  {
+   "term": "data warehouse",
+   "competency": "data_modeling",
+   "df": 0.276,
+   "req_share": 0.879,
+   "score": 0.2593
+  },
+  {
+   "term": "cross-functional",
+   "competency": "stakeholders",
+   "df": 0.243,
+   "req_share": 0.862,
+   "score": 0.2262
+  },
+  {
+   "term": "dashboards",
+   "competency": "bi_viz",
+   "df": 0.222,
+   "req_share": 0.943,
+   "score": 0.2157
+  },
+  {
+   "term": "Spark",
+   "competency": "pipelines",
+   "df": 0.247,
+   "req_share": 0.712,
+   "score": 0.2114
+  },
+  {
+   "term": "ownership",
+   "competency": "ownership",
+   "df": 0.226,
+   "req_share": 0.852,
+   "score": 0.2093
+  },
+  {
+   "term": "Java",
+   "competency": "software_eng",
+   "df": 0.226,
+   "req_share": 0.833,
+   "score": 0.2071
+  },
+  {
+   "term": "machine learning",
+   "competency": "ml",
+   "df": 0.218,
+   "req_share": 0.827,
+   "score": 0.1991
+  },
+  {
+   "term": "leadership",
+   "competency": "ownership",
+   "df": 0.222,
+   "req_share": 0.774,
+   "score": 0.1969
+  },
+  {
+   "term": "Snowflake",
+   "competency": "cloud_data",
+   "df": 0.218,
+   "req_share": 0.788,
+   "score": 0.1949
+  },
+  {
+   "term": "business intelligence",
+   "competency": "bi_viz",
+   "df": 0.234,
+   "req_share": 0.661,
+   "score": 0.1943
+  },
+  {
+   "term": "Git",
+   "competency": "software_eng",
+   "df": 0.247,
+   "req_share": 0.542,
+   "score": 0.1904
+  },
+  {
+   "term": "data analysis",
+   "competency": "statistics",
+   "df": 0.218,
+   "req_share": 0.731,
+   "score": 0.1887
+  },
+  {
+   "term": "relational databases",
+   "competency": "sql",
+   "df": 0.205,
+   "req_share": 0.837,
+   "score": 0.1883
+  },
+  {
+   "term": "data-driven",
+   "competency": "metrics",
+   "df": 0.188,
+   "req_share": 0.956,
+   "score": 0.1839
+  },
+  {
+   "term": "data validation",
+   "competency": "data_quality",
+   "df": 0.192,
+   "req_share": 0.913,
+   "score": 0.1836
+  }
+ ],
+ "uncovered_terms": [
+  {
+   "term": "data platforms",
+   "df": 0.247
+  },
+  {
+   "term": "big data",
+   "df": 0.159
+  },
+  {
+   "term": "data infrastructure",
+   "df": 0.155
+  },
+  {
+   "term": "data platform",
+   "df": 0.151
+  },
+  {
+   "term": "cloud platforms",
+   "df": 0.146
+  },
+  {
+   "term": "new technologies",
+   "df": 0.142
+  },
+  {
+   "term": "data integration",
+   "df": 0.138
+  },
+  {
+   "term": "programming languages",
+   "df": 0.138
+  },
+  {
+   "term": "code reviews",
+   "df": 0.13
+  },
+  {
+   "term": "data management",
+   "df": 0.13
+  },
+  {
+   "term": "Data Scientists",
+   "df": 0.126
+  },
+  {
+   "term": "enterprise data",
+   "df": 0.126
+  },
+  {
+   "term": "programming language",
+   "df": 0.121
+  },
+  {
+   "term": "GPA",
+   "df": 0.117
+  },
+  {
+   "term": "CI/CD",
+   "df": 0.109
+  },
+  {
+   "term": "data products",
+   "df": 0.105
+  },
+  {
+   "term": "data architecture",
+   "df": 0.092
+  },
+  {
+   "term": "data sources",
+   "df": 0.092
+  },
+  {
+   "term": "visualization tools",
+   "df": 0.088
+  },
+  {
+   "term": "data assets",
+   "df": 0.084
+  },
+  {
+   "term": "quality checks",
+   "df": 0.084
+  },
+  {
+   "term": "technical field",
+   "df": 0.084
+  },
+  {
+   "term": "technical solutions",
+   "df": 0.084
+  },
+  {
+   "term": "use cases",
+   "df": 0.084
+  }
+ ],
+ "jd_ids": [
+  "J00001",
+  "J00033",
+  "J00075",
+  "J00123",
+  "J00130",
+  "J00166",
+  "J00254",
+  "J00260",
+  "J00261",
+  "J00278",
+  "J00285",
+  "J00286",
+  "J00295",
+  "J00324",
+  "J00355",
+  "J00357",
+  "J00376",
+  "J00391",
+  "J00406",
+  "J00414",
+  "J00415",
+  "J00431",
+  "J00524",
+  "J00528",
+  "J00546",
+  "J00560",
+  "J00565",
+  "J00664",
+  "J00665",
+  "J00676",
+  "J00679",
+  "J00691",
+  "J00719",
+  "J00732",
+  "J00963",
+  "J01010",
+  "J01036",
+  "J01058",
+  "J01072",
+  "J01073",
+  "J01083",
+  "J01220",
+  "J01228",
+  "J01290",
+  "J01300",
+  "J01304",
+  "J01316",
+  "J01342",
+  "J01345",
+  "J01355",
+  "J01359",
+  "J01377",
+  "J01442",
+  "J01450",
+  "J01508",
+  "J01518",
+  "J01529",
+  "J01538",
+  "J01546",
+  "J01549",
+  "J01609",
+  "J01666",
+  "J01672",
+  "J01742",
+  "J01779",
+  "J01865",
+  "J01918",
+  "J01944",
+  "J02033",
+  "J02042",
+  "J02092",
+  "J02173",
+  "J02628",
+  "J02634",
+  "J02648",
+  "J02656",
+  "J02697",
+  "J02813",
+  "J02824",
+  "J02994",
+  "J03011",
+  "J03012",
+  "J03013",
+  "J03119",
+  "J03129",
+  "J03249",
+  "J03287",
+  "J03388",
+  "J03389",
+  "J03390",
+  "J03405",
+  "J03412",
+  "J03418",
+  "J03461",
+  "J03541",
+  "J03542",
+  "J03764",
+  "J03796",
+  "J03797",
+  "J03802",
+  "J03806",
+  "J03866",
+  "J03876",
+  "J03894",
+  "J03933",
+  "J04517",
+  "J04568",
+  "J04570",
+  "J04691",
+  "J05024",
+  "J05052",
+  "J05055",
+  "J05085",
+  "J05095",
+  "J05123",
+  "J05124",
+  "J05158",
+  "J07789",
+  "J07804",
+  "J07814",
+  "J08294",
+  "J08375",
+  "J08376",
+  "J08378",
+  "J09805",
+  "J09820",
+  "J09868",
+  "J09883",
+  "J09917",
+  "J09944",
+  "J10103",
+  "J10195",
+  "J10197",
+  "J10269",
+  "J10375",
+  "J10389",
+  "J10421",
+  "J10526",
+  "J10932",
+  "J11105",
+  "J11226",
+  "J11342",
+  "J11345",
+  "J11619",
+  "J11620",
+  "J11621",
+  "J11622",
+  "J11631",
+  "J11636",
+  "J11794",
+  "J12020",
+  "J12022",
+  "J12187",
+  "J12194",
+  "J12224",
+  "J12243",
+  "J12248",
+  "J12284",
+  "J12304",
+  "J12351",
+  "J12381",
+  "J12389",
+  "J12390",
+  "J12395",
+  "J12556",
+  "J12559",
+  "J12560",
+  "J12563",
+  "J12573",
+  "J12638",
+  "J12702",
+  "J12712",
+  "J12734",
+  "J12739",
+  "J12743",
+  "J12771",
+  "J12772",
+  "J12927",
+  "J12938",
+  "J13134",
+  "J13145",
+  "J13164",
+  "J13165",
+  "J13211",
+  "J13301",
+  "J13379",
+  "J13394",
+  "J13396",
+  "J13413",
+  "J13418",
+  "J13434",
+  "J13440",
+  "J13481",
+  "J13966",
+  "J14167",
+  "J14451",
+  "J14453",
+  "J14462",
+  "J14481",
+  "J14599",
+  "J14600",
+  "J14603",
+  "J14607",
+  "J14737",
+  "J14744",
+  "J14792",
+  "J14807",
+  "J14809",
+  "J14850",
+  "J14853",
+  "J14906",
+  "J14964",
+  "J15015",
+  "J15032",
+  "J15037",
+  "J15052",
+  "J15054",
+  "J15062",
+  "J15081",
+  "J15082",
+  "J15125",
+  "J15194",
+  "J15196",
+  "J15215",
+  "J15270",
+  "J15283",
+  "J15290",
+  "J15453",
+  "J15476",
+  "J15494",
+  "J15622",
+  "J15627",
+  "J15632",
+  "J15633",
+  "J15637",
+  "J15745",
+  "J15753",
+  "J15805",
+  "J15905"
+ ],
+ "discover_usage": {
+  "calls": 0,
+  "prompt": 0,
+  "out": 0
+ }
+}

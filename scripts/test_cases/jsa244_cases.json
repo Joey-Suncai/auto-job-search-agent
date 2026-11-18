@@ -1,0 +1,609 @@
+[
+ {
+  "name": "skipped: exact prefix match",
+  "fn": "skipped",
+  "company": "Leland Inc",
+  "names": [
+   "Leland"
+  ],
+  "expect": true,
+  "spec_quote": "\"Leland\" skips \"Leland Inc\" and \"leland\"; it does not skip \"Cleland\""
+ },
+ {
+  "name": "skipped: case-insensitive prefix match",
+  "fn": "skipped",
+  "company": "leland",
+  "names": [
+   "Leland"
+  ],
+  "expect": true,
+  "spec_quote": "True when the company name, trimmed and lower-cased, STARTS WITH any of the names (each trimmed and lower-cased; empty names ignored)."
+ },
+ {
+  "name": "skipped: no prefix match inside a word",
+  "fn": "skipped",
+  "company": "Cleland",
+  "names": [
+   "Leland"
+  ],
+  "expect": false,
+  "spec_quote": "it does not skip \"Cleland\" (no prefix match inside a word start other than the beginning)."
+ },
+ {
+  "name": "skipped: missing company",
+  "fn": "skipped",
+  "company": null,
+  "names": [
+   "Leland"
+  ],
+  "expect": false,
+  "spec_quote": "False for an empty / missing company, or when names is empty / None."
+ },
+ {
+  "name": "skipped: empty names list",
+  "fn": "skipped",
+  "company": "Leland Inc",
+  "names": [],
+  "expect": false,
+  "spec_quote": "False for an empty / missing company, or when names is empty / None."
+ },
+ {
+  "name": "skipped: trims both sides and ignores empty name",
+  "fn": "skipped",
+  "company": "  Leland Inc  ",
+  "names": [
+   "",
+   " leland "
+  ],
+  "expect": true,
+  "spec_quote": "True when the company name, trimmed and lower-cased, STARTS WITH any of the names (each trimmed and lower-cased; empty names ignored)."
+ },
+ {
+  "name": "pending: dict without sheet name, unanswered question waits, answered one does not",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why do you want this job?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q2",
+     "question": "Salary expectations?",
+     "answer": "Negotiable",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    }
+   ]
+  },
+  "handled": {
+   "Referrals": [
+    "Why do you want this job?"
+   ]
+  },
+  "expect": [
+   "q1"
+  ],
+  "spec_quote": "handled is a dict {name: set-or-list of question TEXTS, or None}: name missing → every unanswered question waits"
+ },
+ {
+  "name": "pending: dict value None means nothing waits",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why do you want this job?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q2",
+     "question": "Salary expectations?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": "100k"
+    }
+   ]
+  },
+  "handled": {
+   "Careers": null
+  },
+  "expect": [],
+  "spec_quote": "value None → nothing waits"
+ },
+ {
+  "name": "pending: dict texts exclude only the listed question texts",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why us?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q2",
+     "question": "Salary expectations?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q3",
+     "question": "Earliest start date?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    }
+   ]
+  },
+  "handled": {
+   "Careers": [
+    "Why us?",
+    "Earliest start date?"
+   ]
+  },
+  "expect": [
+   "q2"
+  ],
+  "spec_quote": "otherwise a question waits only when its \"question\" text is NOT in that collection."
+ },
+ {
+  "name": "pending: handled as list of sheet names",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why us?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q2",
+     "question": "Salary expectations?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    }
+   ]
+  },
+  "handled": [
+   "Other Sheet",
+   "Careers"
+  ],
+  "expect": [],
+  "spec_quote": "handled is a list / set / None of sheet NAMES: when the sheet's name is in it, nothing waits"
+ },
+ {
+  "name": "pending: derived answer accepted, but not when risk present or kind high_risk",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": true,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Will you need visa sponsorship?",
+     "answer": "",
+     "block": "derived",
+     "risk": null,
+     "kind": "boolean",
+     "suggested": "No"
+    },
+    {
+     "id": "q2",
+     "question": "Notice period?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": "2 weeks"
+    },
+    {
+     "id": "q3",
+     "question": "Have you worked here before?",
+     "answer": "",
+     "block": "derived",
+     "risk": "high",
+     "kind": "boolean",
+     "suggested": "No"
+    },
+    {
+     "id": "q4",
+     "question": "Do you have the right to work?",
+     "answer": "",
+     "block": "derived",
+     "risk": null,
+     "kind": "high_risk",
+     "suggested": "Yes"
+    }
+   ]
+  },
+  "handled": {
+   "Careers": []
+  },
+  "expect": [
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "spec_quote": "when sheet.accept_derived is true and the question has block \"derived\", no risk, kind != \"high_risk\" and a truthy \"suggested\"."
+ },
+ {
+  "name": "pending: sheet without a name yields no ids",
+  "fn": "pending",
+  "sheet": {
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why us?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    }
+   ]
+  },
+  "handled": [
+   "Careers"
+  ],
+  "expect": [],
+  "spec_quote": "Not a dict sheet, or no / empty name → []."
+ },
+ {
+  "name": "pending: handled None waits on every unanswered question in sheet order",
+  "fn": "pending",
+  "sheet": {
+   "name": "Careers",
+   "accept_derived": false,
+   "questions": [
+    {
+     "id": "q1",
+     "question": "Why us?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q2",
+     "question": "Salary expectations?",
+     "answer": "100k",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    },
+    {
+     "id": "q3",
+     "question": "Earliest start date?",
+     "answer": "",
+     "block": "standard",
+     "risk": null,
+     "kind": "text",
+     "suggested": null
+    }
+   ]
+  },
+  "handled": null,
+  "expect": [
+   "q1",
+   "q3"
+  ],
+  "spec_quote": "otherwise every unanswered question waits."
+ },
+ {
+  "name": "languages: multi-select list joins picks in profile order",
+  "fn": "rules",
+  "field": {
+   "label": "Which languages do you speak fluently?",
+   "type": "multi",
+   "options": [
+    "English",
+    "Spanish",
+    "French",
+    "German"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Spanish | English",
+  "spec_quote": "when the field type is multi / checkbox, or the label contains \"languages\" (plural), \"all that apply\", \"select all\", \"check all\" or \"fluency\": the answer is all picks joined by \" | \" (e.g. \"Spanish | English\")."
+ },
+ {
+  "name": "languages: radio but plural label counts as multi",
+  "fn": "rules",
+  "field": {
+   "label": "Languages you are fluent in",
+   "type": "radio",
+   "options": [
+    "English",
+    "Spanish",
+    "French"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Spanish | English",
+  "spec_quote": "when the field type is multi / checkbox, or the label contains \"languages\" (plural) ... the answer is all picks joined by \" | \"."
+ },
+ {
+  "name": "languages: first / mother tongue asks for the single native language",
+  "fn": "rules",
+  "field": {
+   "label": "What is your first language / mother tongue?",
+   "type": "checkbox",
+   "options": [
+    "English",
+    "Spanish",
+    "French"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Spanish",
+  "spec_quote": "If the label says native / first / mother / primary: a single answer, the native language's option."
+ },
+ {
+  "name": "languages: Spanish level picks Native",
+  "fn": "rules",
+  "field": {
+   "label": "What is your level of Spanish?",
+   "type": "combo",
+   "options": [
+    "Beginner",
+    "Intermediate",
+    "Advanced",
+    "Native"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Native",
+  "spec_quote": "It names a profile language → the first option ... matching, in order: native → native|mother tongue, C2, bilingual, fluent, expert, advanced"
+ },
+ {
+  "name": "languages: English professional level picks professional working",
+  "fn": "rules",
+  "field": {
+   "label": "English proficiency level",
+   "type": "combo",
+   "options": [
+    "Intermediate",
+    "Professional working proficiency",
+    "Native"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Professional working proficiency",
+  "spec_quote": "professional → \"full professional\" or \"professional working\", professional, fluent, C1, advanced or expert."
+ },
+ {
+  "name": "languages: German level maps to None option",
+  "fn": "rules",
+  "field": {
+   "label": "German language proficiency",
+   "type": "combo",
+   "options": [
+    "Native",
+    "Fluent",
+    "Intermediate",
+    "None"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "None",
+  "spec_quote": "It names another language → the option that starts with none / no proficiency / not applicable / n/a / I do not speak / no knowledge / no experience / not proficient"
+ },
+ {
+  "name": "languages: German level with no none option stays unknown",
+  "fn": "rules",
+  "field": {
+   "label": "German language proficiency",
+   "type": "combo",
+   "options": [
+    "Native",
+    "Fluent",
+    "Advanced"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": true,
+  "spec_quote": "no such option → unknown, ask = true (never claim a level in a language the candidate does not speak)."
+ },
+ {
+  "name": "languages: unnamed CEFR level asks per job",
+  "fn": "rules",
+  "field": {
+   "label": "CEFR Level",
+   "type": "combo",
+   "options": [
+    "A1",
+    "B1",
+    "C1",
+    "C2"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": true,
+  "spec_quote": "The label names no language (e.g. \"CEFR Level\") → status unknown with ask = true (asked per job, not answered)."
+ },
+ {
+  "name": "languages: programming languages are not language questions",
+  "fn": "rules",
+  "field": {
+   "label": "Which programming languages are you proficient in?",
+   "type": "multi",
+   "options": [
+    "Python",
+    "Java",
+    "Go",
+    "Rust"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "Not language questions (no answer from this rule): labels about programming / coding / code / software / scripting / query language / frameworks."
+ },
+ {
+  "name": "languages: query language is not a language question",
+  "fn": "rules",
+  "field": {
+   "label": "Which query language do you use most?",
+   "type": "combo",
+   "options": [
+    "SQL",
+    "SPARQL",
+    "Cypher"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "Not language questions (no answer from this rule): labels about programming / coding / code / software / scripting / query language / frameworks."
+ },
+ {
+  "name": "no-answer: single negative statement in a statement list",
+  "fn": "rules",
+  "field": {
+   "label": "Have you previously been employed at Affirm?",
+   "type": "radio",
+   "options": [
+    "I have been employed at Affirm as a full-time employee",
+    "I have not previously been employed at Affirm",
+    "I have been employed at Affirm as an intern"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "I have not previously been employed at Affirm",
+  "spec_quote": "pick the option when EXACTLY ONE option starts with a negative statement ... Example: options \"I have not previously been employed at Affirm\" ... → the first."
+ },
+ {
+  "name": "no-answer: two negative statements leave it unknown",
+  "fn": "rules",
+  "field": {
+   "label": "Have you ever worked at Acme?",
+   "type": "radio",
+   "options": [
+    "I have not worked at Acme",
+    "I have never worked at Acme",
+    "I have worked at Acme as an intern"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "Two or more negative statements, or none → no answer (unknown)."
+ },
+ {
+  "name": "no-answer: no negative statement leaves it unknown",
+  "fn": "rules",
+  "field": {
+   "label": "Have you previously been employed at Globex?",
+   "type": "radio",
+   "options": [
+    "I worked at Globex full-time",
+    "I worked at Globex as an intern",
+    "I worked at Globex as a contractor"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "Two or more negative statements, or none → no answer (unknown)."
+ },
+ {
+  "name": "languages: options starting with level codes are not a language list",
+  "fn": "rules",
+  "field": {
+   "label": "Which languages do you speak?",
+   "type": "multi",
+   "options": [
+    "A1 - Beginner Spanish",
+    "B2 - Upper intermediate English",
+    "C1 - Advanced French"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "A LIST of languages: the label contains \"language\" or \"languages\" and at least two options name a language, and no option starts with a level code (A1..C2, L1..L3)."
+ },
+ {
+  "name": "languages: native language not among options → no pick, unknown",
+  "fn": "rules",
+  "field": {
+   "label": "What is your native language?",
+   "type": "radio",
+   "options": [
+    "English",
+    "French",
+    "German"
+   ]
+  },
+  "expect_status": "unknown",
+  "expect_ask": null,
+  "spec_quote": "For each profile language (in profile order) pick the option that starts with it, else the first option that contains it. ... No pick → no answer from this rule."
+ },
+ {
+  "name": "languages: certification options are ignored when matching a level",
+  "fn": "rules",
+  "field": {
+   "label": "Spanish proficiency",
+   "type": "combo",
+   "options": [
+    "C2 certified by DELE",
+    "Bilingual",
+    "Intermediate"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "Bilingual",
+  "spec_quote": "It names a profile language → the first option (ignoring options that mention a certification) matching, in order: native → native|mother tongue, C2, bilingual, fluent, expert, advanced"
+ },
+ {
+  "name": "languages: list where only one profile language has an option",
+  "fn": "rules",
+  "field": {
+   "label": "Which languages do you speak?",
+   "type": "multi",
+   "options": [
+    "English",
+    "French"
+   ]
+  },
+  "expect_status": "ok",
+  "expect_value": "English",
+  "spec_quote": "For each profile language (in profile order) pick the option that starts with it, else the first option that contains it. ... the answer is all picks joined by \" | \""
+ }
+]

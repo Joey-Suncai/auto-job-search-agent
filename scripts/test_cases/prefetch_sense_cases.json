@@ -1,0 +1,202 @@
+[
+ {
+  "name": "Capitals and punctuation ignored",
+  "a": "Do you have a bachelor's degree?",
+  "b": "DO YOU HAVE A BACHELOR'S DEGREE",
+  "expect": "same",
+  "spec_quote": "Capitals, punctuation, curly vs straight apostrophes and other words do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "Curly vs straight apostrophe",
+  "a": "What's your major?",
+  "b": "What’s your major?",
+  "expect": "same",
+  "spec_quote": "Capitals, punctuation, curly vs straight apostrophes and other words do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "AFTER graduation vs NOW",
+  "a": "What degree will you hold?",
+  "b": "What degree are you currently pursuing?",
+  "expect": "split",
+  "spec_quote": "AFTER graduation (“once you've graduated”, “upon graduation”, “expected degree”, “will have / hold / earn”), NOW (“currently pursuing / enrolled”, “pursuing”, “in progress”)",
+  "ambiguous": false
+ },
+ {
+  "name": "AFTER expected degree vs COMPLETED highest",
+  "a": "What is your expected degree?",
+  "b": "What is your highest degree?",
+  "expect": "split",
+  "spec_quote": "AFTER graduation (... “expected degree” ...), NOW (...), or COMPLETED (“highest”, “completed”, “attained”, “earned”, “obtained”) — each of these three is a separate mark",
+  "ambiguous": false
+ },
+ {
+  "name": "NOW enrolled vs COMPLETED obtained (same degree level, same yes/no form)",
+  "a": "Are you currently enrolled in a master's program?",
+  "b": "Have you obtained a master's degree?",
+  "expect": "split",
+  "spec_quote": "each of these three is a separate mark; a wording may carry several;",
+  "ambiguous": false
+ },
+ {
+  "name": "Two AFTER wordings, both open",
+  "a": "What degree will you earn?",
+  "b": "What degree do you expect to hold upon graduation?",
+  "expect": "same",
+  "spec_quote": "Two wordings stay together (\"same\") only when they agree on every one of these:",
+  "ambiguous": false
+ },
+ {
+  "name": "Two COMPLETED wordings, both open",
+  "a": "What is your highest degree attained?",
+  "b": "What degree have you obtained?",
+  "expect": "same",
+  "spec_quote": "COMPLETED (“highest”, “completed”, “attained”, “earned”, “obtained”)",
+  "ambiguous": false
+ },
+ {
+  "name": "Two NOW wordings, both yes/no",
+  "a": "Are you currently pursuing a degree?",
+  "b": "Is your degree in progress?",
+  "expect": "same",
+  "spec_quote": "NOW (“currently pursuing / enrolled”, “pursuing”, “in progress”)",
+  "ambiguous": false
+ },
+ {
+  "name": "Bachelor's named vs not named",
+  "a": "Do you have a bachelor's degree?",
+  "b": "Do you have a degree?",
+  "expect": "split",
+  "spec_quote": "whether it names a bachelor's / undergraduate degree;",
+  "ambiguous": false
+ },
+ {
+  "name": "Bachelor's vs master's",
+  "a": "What is your bachelor's degree?",
+  "b": "What is your master's degree?",
+  "expect": "split",
+  "spec_quote": "whether it names a bachelor's / undergraduate degree; whether it names a master's / graduate degree / PhD;",
+  "ambiguous": false
+ },
+ {
+  "name": "Master's vs PhD (single graduate-degree mark)",
+  "a": "Do you have a master's degree?",
+  "b": "Do you hold a PhD?",
+  "expect": "same",
+  "spec_quote": "whether it names a master's / graduate degree / PhD;",
+  "ambiguous": false
+ },
+ {
+  "name": "Minor vs second major (single mark)",
+  "a": "Do you have a minor?",
+  "b": "Do you have a second major?",
+  "expect": "same",
+  "spec_quote": "whether it is about a second / secondary / double major or a minor;",
+  "ambiguous": false
+ },
+ {
+  "name": "Minor named vs not named",
+  "a": "Do you have a minor?",
+  "b": "Do you have a degree?",
+  "expect": "split",
+  "spec_quote": "whether it is about a second / secondary / double major or a minor;",
+  "ambiguous": false
+ },
+ {
+  "name": "Convicted vs criminal record (both crime)",
+  "a": "Have you been convicted of a felony?",
+  "b": "Do you have a criminal record?",
+  "expect": "same",
+  "spec_quote": "whether it is about a crime (convicted, felony, criminal record, pleaded guilty);",
+  "ambiguous": false
+ },
+ {
+  "name": "Crime vs unrelated yes/no question",
+  "a": "Have you ever been convicted of a crime?",
+  "b": "Have you ever been fired from a job?",
+  "expect": "split",
+  "spec_quote": "whether it is about a crime (convicted, felony, criminal record, pleaded guilty);",
+  "ambiguous": false
+ },
+ {
+  "name": "Any employer vs without restriction",
+  "a": "Are you authorized to work for any employer?",
+  "b": "Are you authorized to work without restriction?",
+  "expect": "same",
+  "spec_quote": "whether it is about authorization for any / all employers or without restriction;",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain work authorization vs all-employers authorization",
+  "a": "Are you authorized to work in the United States?",
+  "b": "Are you authorized to work for all employers?",
+  "expect": "split",
+  "spec_quote": "whether it is about authorization for any / all employers or without restriction;",
+  "ambiguous": false
+ },
+ {
+  "name": "Same bachelor's content, yes/no vs open",
+  "a": "Do you have a bachelor's degree?",
+  "b": "Which bachelor's degree do you have?",
+  "expect": "split",
+  "spec_quote": "whether it is a yes/no question (starts with are / is / do / does / did / will / would / can / could / have / has / had / were / was) or an open one (what / which / please …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Same NOW content, yes/no vs open",
+  "a": "Are you currently pursuing a degree?",
+  "b": "What degree are you currently pursuing?",
+  "expect": "split",
+  "spec_quote": "whether it is a yes/no question (starts with are / is / do / does / did / will / would / can / could / have / has / had / were / was) or an open one (what / which / please …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Two open phrasings, please vs what",
+  "a": "Please list your degrees.",
+  "b": "What degrees do you hold?",
+  "expect": "same",
+  "spec_quote": "an open one (what / which / please …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Multi-mark: AFTER + bachelor's, both open",
+  "a": "What bachelor's degree will you hold upon graduation?",
+  "b": "What undergraduate degree will you earn once you've graduated?",
+  "expect": "same",
+  "spec_quote": "a wording may carry several;",
+  "ambiguous": false
+ },
+ {
+  "name": "Multi-mark vs single-mark: AFTER present in only one",
+  "a": "Will you have a bachelor's degree upon graduation?",
+  "b": "Do you have a bachelor's degree?",
+  "expect": "split",
+  "spec_quote": "each of these three is a separate mark; a wording may carry several;",
+  "ambiguous": false
+ },
+ {
+  "name": "Crime yes/no vs crime open (please)",
+  "a": "Have you been convicted of a felony?",
+  "b": "Please describe any criminal convictions.",
+  "expect": "split",
+  "spec_quote": "whether it is a yes/no question (starts with are / is / do / does / did / will / would / can / could / have / has / had / were / was) or an open one (what / which / please …).",
+  "ambiguous": false
+ },
+ {
+  "name": "Extra words do not matter within crime yes/no",
+  "a": "Do you have, or have you ever had, a criminal record?",
+  "b": "Do you have a criminal record?",
+  "expect": "same",
+  "spec_quote": "Capitals, punctuation, curly vs straight apostrophes and other words do not matter.",
+  "ambiguous": false
+ },
+ {
+  "name": "Two COMPLETED yes/no phrasings",
+  "a": "Has your degree been completed?",
+  "b": "Is your degree completed?",
+  "expect": "same",
+  "spec_quote": "COMPLETED (“highest”, “completed”, “attained”, “earned”, “obtained”)",
+  "ambiguous": false
+ }
+]

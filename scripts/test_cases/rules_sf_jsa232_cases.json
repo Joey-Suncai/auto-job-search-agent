@@ -1,0 +1,262 @@
+[
+ {
+  "name": "relatives_01_anyone_works_for",
+  "label": "Are you related to anyone that works for Ostlumcor?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "Relatives: questions asking whether the candidate is related to someone who works for the company → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_02_someone_works_at_yes_no_order",
+  "label": "Are you related to someone who works at Ostlumcor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "Wordings include: \"Are you related to anyone that works for <Company>?\", \"Are you related to someone who works at <Company>?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_03_associated_with_employed_by",
+  "label": "Are you related to or associated with anyone who is employed by Ostlumcor Incorporated?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "Wordings include: \"Are you related to or associated with anyone who is employed by <Company>?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_04_have_any_relatives_yes_no",
+  "label": "Do you have any relatives working for Ostlumcor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "Wordings include: \"Do you have any relatives working for <Company>?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_05_any_employee_of",
+  "label": "Are you related to any employee of Ostlumcor Power Systems?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "Wordings include: \"Are you related to any employee of <Company>?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_06_radio_type_yes_no",
+  "label": "Are you related to anyone that works for Ostlumcor?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec_quote": "The rules see a question text (label), its type (\"select\" or \"radio\") and its options; they return the option to pick. ... questions asking whether the candidate is related to someone who works for the company → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_nearmiss_07_name_box_text",
+  "label": "If yes, please identify the name of the employee",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "Near misses that are NOT this question (the rules must not answer them \"No\" as a relatives question): \"If yes, please identify the name of the employee\" (a name box, type text — expect \"none\")",
+  "ambiguous": false
+ },
+ {
+  "name": "relatives_nearmiss_08_referral",
+  "label": "Were you referred by a current employee?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "No",
+  "spec_quote": "\"Were you referred by a current employee?\" (a referral question — expect \"No\" too, but not because of relatives; still expect \"No\").",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_09_upper_no_yes",
+  "label": "I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Read-and-agree statement: \"I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS\", \"I have read and agree to the terms above\", \"I have read and accept the privacy notice\" with options No / Yes → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_10_terms_above_yes_no",
+  "label": "I have read and agree to the terms above",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Read-and-agree statement: \"I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS\", \"I have read and agree to the terms above\", \"I have read and accept the privacy notice\" with options No / Yes → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_11_privacy_notice_no_yes",
+  "label": "I have read and accept the privacy notice",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Read-and-agree statement: ... \"I have read and accept the privacy notice\" with options No / Yes → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_12_upper_radio_no_yes",
+  "label": "I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Read-and-agree statement: \"I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS\", ... with options No / Yes → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_13_i_agree_single_option",
+  "label": "I have read and agree to the terms above",
+  "type": "radio",
+  "options": [
+   "I Agree"
+  ],
+  "expect": "I Agree",
+  "spec_quote": "Read-and-agree statement: ... with options like \"I Agree\" → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_14_privacy_i_agree_options",
+  "label": "I have read and accept the privacy notice",
+  "type": "select",
+  "options": [
+   "I Agree",
+   "I Do Not Agree"
+  ],
+  "expect": "I Agree",
+  "spec_quote": "Read-and-agree statement: ... with options like \"I Agree\" → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "agree_15_upper_yes_no_order",
+  "label": "I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Read-and-agree statement: \"I HAVE READ AND AGREE WITH THE ABOVE STATEMENTS\", ... with options No / Yes → \"Yes\"",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_16_furnish_no_yes",
+  "label": "Do you wish to furnish this information?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: \"Do you wish to furnish this information?\", \"Do you wish to provide this information?\", \"Do you wish to self-identify?\" with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_17_provide_yes_no",
+  "label": "Do you wish to provide this information?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: ... \"Do you wish to provide this information?\" ... with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_18_self_identify_no_yes",
+  "label": "Do you wish to self-identify?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: ... \"Do you wish to self-identify?\" with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_19_furnish_radio_yes_no",
+  "label": "Do you wish to furnish this information?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: \"Do you wish to furnish this information?\", ... with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_20_provide_radio_no_yes",
+  "label": "Do you wish to provide this information?",
+  "type": "radio",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: ... \"Do you wish to provide this information?\" ... with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_21_self_identify_yes_no",
+  "label": "Do you wish to self-identify?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "EEO furnish: ... \"Do you wish to self-identify?\" with options No / Yes → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "eeo_nearmiss_22_job_alerts",
+  "label": "Do you wish to receive job alerts by email?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "none",
+  "spec_quote": "Near miss: \"Do you wish to receive job alerts by email?\" is NOT this question (expect \"none\" or anything but a furnish answer — write expect \"none\").",
+  "ambiguous": false
+ }
+]

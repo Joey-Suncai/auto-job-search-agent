@@ -1,6 +1,6 @@
 # Browser techniques (Claude in Chrome) — what worked on 2026-10-22
 
-Environment facts: Chrome viewport 960×820, devicePixelRatio 1. The user is signed in to GitHub (example), LinkedIn, and Gemini in Chrome. The cloud container cannot push to GitHub (`add_repo` → "link your GitHub account") and `gh api users/...` is blocked ("sessions are bound to their configured repositories"). `git clone` of **public** repos works from the container.
+Environment facts: Chrome viewport 960×820, devicePixelRatio 1. The user is signed in to GitHub (<github-user>), LinkedIn, and Gemini in Chrome. The cloud container cannot push to GitHub (`add_repo` → "link your GitHub account") and `gh api users/...` is blocked ("sessions are bound to their configured repositories"). `git clone` of **public** repos works from the container.
 
 ## 0. Setup
 1. Read the `anthropic-skills:chrome-browser` skill.
@@ -14,7 +14,7 @@ Environment facts: Chrome viewport 960×820, devicePixelRatio 1. The user is sig
 - Raw files of public repos: clone in the container instead of `fetch` in page (fetching raw.githubusercontent from page JS was blocked).
 
 ## 2. LinkedIn
-- Main profile: `https://www.linkedin.com/in/example/` (redirects to `?isSelfProfile=true`). Main text: `document.querySelector('main').innerText` sliced from `indexOf('About')`.
+- Main profile: `https://www.linkedin.com/in/<handle>/` (redirects to `?isSelfProfile=true`). Main text: `document.querySelector('main').innerText` sliced from `indexOf('About')`.
 - Section detail pages (best source of full text): `/details/experience/`, `/details/education/`, `/details/projects/`, `/details/skills/`, `/details/certifications/`. The first navigation sometimes bounces back to the main profile — navigate again, wait 3 s, then screenshot or read `main`.
 - Expand "… more" by clicking short buttons whose text matches /more/.
 - **Getting the unframed profile photo** (all page `<img>`s are `profile-framedphoto-*`, i.e. with the #OPENTOWORK ring):
@@ -32,10 +32,10 @@ Environment facts: Chrome viewport 960×820, devicePixelRatio 1. The user is sig
 3. `device_stage_files` that device path → it appears at `/mnt/user-data/uploads/job search agent/<file>`.
 4. `file_upload` with that `/mnt/user-data/uploads/...` path. ✅
 
-## 4. GitHub (web UI, signed in as example)
+## 4. GitHub (web UI, signed in as <github-user>)
 - Avatar: `https://github.com/settings/profile` → `find "profile picture file upload input"` (button "Upload a photo…", type=file) → `file_upload` → crop modal → click **Set new profile picture** (≈ (472,616)). Banner "Your profile picture has been updated."
 - Profile fields (same page): `read_page filter:interactive` gives refs for Name, Bio textarea, Pronouns, URL; `find` gives Social profile 1–4, Company, Location, **Update profile** button. Use `form_input`, then `scroll_to` + click Update profile → "Profile updated successfully".
-- Publishing README/banner without git push: `https://github.com/example/example/upload/main` → `find` the file input → `file_upload` both `README.md` and `banner.png` (staged via route §3) → commit message → "Commit changes". Or edit README in the web editor at `/edit/main/README.md`.
+- Publishing README/banner without git push: `https://github.com/<user>/<user>/upload/main` → `find` the file input → `file_upload` both `README.md` and `banner.png` (staged via route §3) → commit message → "Commit changes". Or edit README in the web editor at `/edit/main/README.md`.
 
 ## 5. Gemini image capture (full resolution, no download)
 - Gemini shows the generated image as a `blob:` `<img>` with `naturalWidth` 1024 (banner 1024×318, 16:9 maps 1024×572).
@@ -73,6 +73,6 @@ Environment facts: Chrome viewport 960×820, devicePixelRatio 1. The user is sig
 - (2026-10-25) Ashby: `form_input` on Phone didn't register ("Missing entry for required field: Phone"). Click the field and type instead. The Mac uses **cmd+a**, not ctrl+a, to select all.
 - (2026-10-25) Greenhouse comboboxes (Country, School, Degree, Discipline, Yes/No questions): click → type → Enter (or click the option). Check each value afterwards via the `single-value` element next to the input. The Simplify extension shows a modal after submitting — close it with the ×.
 - (2026-10-25 DA batch) Even with the rule above, refs were mistyped twice (ref_907 for ref_904, ref_870 for ref_868). **Click the Submit button by its screen coordinates from a fresh screenshot**, never by a typed ref.
-- Lever: uploading the resume triggers autofill that overwrites fields seconds later (Current company → "Hyde Park…"/"ECON 491", location). Upload first, wait ~5 s, then fill, then re-check every field before submit. Lever location is an autocomplete — type "Chicago" and click "Chicago, IL, USA".
+- Lever: uploading the resume triggers autofill that overwrites fields seconds later (Current company → "Hyde Park…"/"ECON 491", location). Upload first, wait ~5 s, then fill, then re-check every field before submit. Lever location is an autocomplete — type "Chicago" and click "<City>, <ST>, USA".
 - Greenhouse may show "A verification code was sent to <email>" after Submit (anti-bot). Stop; he enters the code himself. Keep that tab open and continue the others in new tabs.
 - javascript_tool output is blocked ("Cookie/query string data") when it contains URLs/emails or `=`; strip non-alphanumerics from values before returning them.

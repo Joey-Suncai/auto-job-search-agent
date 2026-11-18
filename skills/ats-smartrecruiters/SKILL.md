@@ -34,7 +34,7 @@ by question id (the runner writes questions.json and stops when a draft is missi
   `input#confirm-email-input`, `input#linkedin-input`, `input#website-input`, `input[type=tel]` (country code defaults
   to +1), `textarea#hiring-manager-message-input`, resume = `input#spl-dropzone-file-input-1` (the other dropzone is the
   Easy Apply parser — never use it).
-- City: autocomplete — type "Chicago", then click `spl-select-option` with text `Chicago, IL, US`; a typed value alone
+- City: autocomplete — type "Chicago", then click `spl-select-option` with text `<City>, <ST>, US`; a typed value alone
   fails validation ("Please provide your place of residence").
 - Buttons are `spl-button` (Next / Back / Submit), not `button`.
 - Page 2 "Preliminary questions": company screening questions (radio Yes/No, autocomplete selects for state / gender /
@@ -42,6 +42,13 @@ by question id (the runner writes questions.json and stops when a draft is missi
   checkbox, then **Submit**. `inner_text('body')` does not show them (shadow DOM) — read through the components.
 
 ## 3. Problem types
+- **A degree / school question typed into a text box (JSA-296, all platforms).** The "Other (free text)" box under a
+  BA / BS / Ph.D / Other list asks the parent question again as text. The degree rule could only pick from options, so the
+  required box stayed empty. Rule (answer_rules `degree_full`): a typed "which degree are you pursuing / please confirm your
+  current degree" = "Master of Science in Applied Data Science, University of Chicago", built from the current education
+  entry. "Can / could you (please) confirm …" is a request, not a yes/no question (`REQ_Q`). Tests
+  `scripts/test_rules_edu_text_jsa296.py`. Seen: Bosch 11-10 (qa 222, retired 11-11).
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. SmartRecruiters (Bosch 11-11: "CONFIRMED by page" while the form was still spinning; the form says "Again, thank you for your interest…"): `sr_snap` + `W.page_done`.
 **A. Autocomplete options are deep in the shadow root.** `locator(...).filter(has_text=…)` finds the `spl-select-option`
 elements but never matches their text, so the click times out. Rule: find the option by its whole normalised text in JS
 (`OPTS_JS`), scroll it into view and click its centre with the mouse; type the answer first when the list is long. Test:
@@ -141,3 +148,40 @@ Rule (`open_entry`, JSA-221): the button is scrolled to the middle first (`ARIA_
 Institution box is awaited 6 s, one more click if it did not open, then the entry is reported not saved (never a 30 s
 hang). Save is clicked the same way. Test: `scripts/test_sr_open_entry.py` ← `test_cases/sr_open_entry_cases.json`
 (DeepSeek 12; headless page, button in a shadow root). Seen: an employer 11-05.
+
+**W. Required work experience blocks Next; month pickers never read as set (JSA-233).** Symptom: "page 2 (Preliminary
+questions) did not open after Next" with no reason, and "education: From month not set" on every run. Causes: (1) the
+form config (`…/publication/<uuid>/config` → `fieldSets.experience.required: true`, SyngentaGroup) requires at least one
+work experience entry — the page said "Please provide at least one work experience entry" in a `validation-summary-entry`
+list the old error reader (class *error* only) did not see; the runner only ever added Education. (2) The From / To month
+picker box holds an ISO date (`2026-09-01`), the runner compared it with `09/2026`. Rule (Joey 2026-11-10, option
+「必填时自动填两段经历」): the runner reads the config from the page's own response; **only when Experience is required**
+it adds every `config/wd_profile.json → work` entry (the same entries Workday uses: Title / Company / Office location
+autocompletes — click the option that is the typed text, the location option "<city>, …" via `location_option`, never
+"Cannot find your city?" — Description, From / To months, Save), oldest first so the most recent ends on top; each entry
+is read back from the saved list, a failed entry is cancelled, never saved half-filled. If the config was not read and
+the page names the missing experience after Next, the entries are added and Next pressed once more. Month pickers:
+`pick_month` steps the year until the cell "<Month> 1, <year>" exists and checks the box with `picker_ym`. "Page 2 did not
+open" now quotes the page's validation messages (`validation_text`). Tests: `scripts/test_sr_experience.py` ←
+`test_cases/sr_experience_cases.json` (DeepSeek 30); live dry run SyngentaGroup Agronomic Research Intern 24/24 (the
+Syngenta Data Scientist Intern posting itself expired before the fix). Seen: Syngenta 11-06.
+
+**X. Required employment declarations no rule covers (JSA-326).** Symptom: three required single-option checkboxes on page 2
+stayed unticked (`unknown`): the release of past-employment information ("I hereby grant permission to any person, firm or
+corporation to release …"), the at-will understanding ("… nothing contained in the application … employment contract …
+at-will basis") and the I-9 notice ("all persons hired will be required to verify identity and eligibility to work …").
+They are acknowledgements of the hiring process, not facts about the user; Joey agreed to tick them (JSA-326). Rule:
+`run_smartrecruiters.declaration_rule` / `apply_declarations` answer exactly these three kinds (single option, required,
+not negated) after the rules ran; everything else stays with the rules. Tests: `scripts/test_sr_declaration.py` ←
+`test_cases/sr_declaration_cases.json` (DeepSeek 26). Not covered: the "How did you hear … select all that apply" list
+(`spl-autocomplete#q4` was not found, 30 s timeout) — separate row.
+
+**Y. "Select all that apply" lists are `spl-multiselect-autocomplete` (JSA-387).** Symptom: "How did you hear about this position?"
+timed out (`spl-autocomplete#q4 input` not found) and `source_channel` read back empty. The control is its own component: an
+empty `input#question_<uuid>` (role combobox), a menu of `spl-select-option`, and each pick shown as a tag in an
+`spl-tags-list`, all inside its shadow root; `READ_Q` did not list it among the controls, so the question got the fallback
+key `q<idx>`. Rules: `READ_Q` names `spl-multiselect-autocomplete` as a control, the autocomplete locators and `OPTS_JS` accept
+both tags (`AC`), the read-back is the tags (`TAGS_JS`) and matches when the wanted option is one whole tag
+(`multi_has`), and a control that cannot be found keeps its wrapper's markup in the row (`dom`). Tests:
+`scripts/test_sr_multiselect.py` (DeepSeek 20 + a headless mock of the component); live dry run Arista 11-17: 26/27, the
+only open question is the sponsorship radio (the user answers each one).

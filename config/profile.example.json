@@ -1,23 +1,23 @@
 {
- "_doc": "EXAMPLE profile of a fictional candidate (Alex Rivera) — copy to config/profile.json and replace every value with your own facts. 'answers' maps a form rule id (skills/auto-apply/scripts/answer_rules.js) to its answer: text / yes (true|false) / pick (option regexes as \"/re/flags\", best first) / alts / combo / date / note. Delete a rule's entry and that question is left for you to answer.",
+ "_doc": "EXAMPLE profile of a fictional candidate (Alex Doe) — copy to config/profile.json and replace every value with your own facts. 'answers' maps a form rule id (skills/auto-apply/scripts/answer_rules.js) to its answer: text / yes (true|false) / pick (option regexes as \"/re/flags\", best first) / alts / combo / date / note. Delete a rule's entry and that question is left for you to answer.",
  "name": {
   "first": "Alex",
-  "last": "Rivera",
+  "last": "Doe",
   "preferred": "Alex",
-  "full": "Alex Rivera",
-  "signature": "Alex Rivera",
-  "file_prefix": "Alex_Rivera"
+  "full": "Alex Doe",
+  "signature": "Alex Doe",
+  "file_prefix": "Alex_Doe"
  },
  "contact": {
-  "email": "alex.rivera@example.com",
+  "email": "alex.doe@example.com",
   "phone": "555-010-2030",
   "city_state": "Springfield, IL",
   "linkedin": "linkedin.com/in/example",
   "website": "github.com/example"
  },
  "accounts": {
-  "gmail": "alex.rivera@example.com",
-  "workday_email": "alex.rivera@example.com"
+  "gmail": "alex.doe@example.com",
+  "workday_email": "alex.doe@example.com"
  },
  "education": [
   {
@@ -76,7 +76,7 @@
  },
  "transcript": {
   "path": "",
-  "file_name": "Alex_Rivera_Transcript.pdf",
+  "file_name": "Alex_Doe_Transcript.pdf",
   "label": "official transcript"
  },
  "resume_template": "resume/TEMPLATE.docx",
@@ -129,13 +129,13 @@
    "text": "Alex"
   },
   "last_name": {
-   "text": "Rivera"
+   "text": "Doe"
   },
   "full_name": {
-   "text": "Alex Rivera"
+   "text": "Alex Doe"
   },
   "email": {
-   "text": "alex.rivera@example.com"
+   "text": "alex.doe@example.com"
   },
   "phone_device": {
    "text": "Mobile",
@@ -267,8 +267,18 @@
   "contact_employer": {
    "yes": true
   },
+  "contact_employer_cond": {
+   "text": "N/A",
+   "pick": [
+    "/^(n\\/a|na)\\b|^not applicable|^does not apply|^not (currently )?(employed|working)|^i am not (currently )?(employed|working)|^unemployed/i"
+   ]
+  },
   "interview_travel": {
    "yes": false
+  },
+  "recent_employer": {
+   "text": "Acme Analytics",
+   "source": "example"
   },
   "employer": {
    "text": "Example State University"
@@ -436,6 +446,34 @@
   "spons_now": {
    "yes": false
   },
+  "accommodation_need": {
+   "yes": false
+  },
+  "course_done": {
+   "pick": [
+    "/^not yet/i",
+    "/^no\\b/i"
+   ]
+  },
+  "visitor_visa": {
+   "yes": false
+  },
+  "eeo_furnish": {
+   "yes": true
+  },
+  "reloc_other": {
+   "countries": [
+    "United States",
+    "China"
+   ]
+  },
+  "education_level_now": {
+   "text": "Master's",
+   "pick": [
+    "/^master/i",
+    "/^graduate\\b/i"
+   ]
+  },
   "degree_start_mmyyyy": {
    "text": "09/2025"
   },
@@ -482,6 +520,10 @@
   "background_drug": {
    "yes": true
   },
+  "conviction": {
+   "yes": false,
+   "source": "example"
+  },
   "citizenship_country": {
    "pick": [
     "/^canada\\b/i"
@@ -499,7 +541,9 @@
   },
   "enrollment_status": {
    "pick": [
-    "/bachelor/i"
+    "/bachelor/i",
+    "/full[- ]?time.{0,30}\\b(graduate|master)/i",
+    "/^full[- ]?time\\b(?!.*\\b(under ?grad|bachelor|high school|part[- ]?time))/i"
    ],
    "text": "Currently enrolled in a Bachelor's degree program"
   },
@@ -639,7 +683,11 @@
   },
   "comp": {
    "text": "Open / per internship program standard",
-   "yes": true
+   "yes": true,
+   "digits": {
+    "hour": "25",
+    "year": "52000"
+   }
   },
   "how_heard_board": {
    "default": "LinkedIn",
@@ -809,14 +857,36 @@
    "text": "Only recruiters managing jobs I apply to"
   },
   "preferred_last_name": {
-   "text": "Rivera",
+   "text": "Doe",
    "note": "= last_name (no other preferred surname); JSA-230 2026-11-06"
   },
   "preferred_full_name": {
-   "text": "Alex Rivera",
+   "text": "Alex Doe",
    "note": "= preferred_name + last_name; JSA-230 2026-11-06"
+  },
+  "leave_reason": {
+   "text": "Fixed-term internship that ended as scheduled; returned to school full time.",
+   "note": "derived from the experience facts (both jobs were fixed-term internships); JSA-246 2026-11-08"
+  },
+  "language_pref": {
+   "pick": [
+    "/^english\\b/i"
+   ],
+   "text": "English"
   }
  },
+ "languages": [
+  {
+   "name": "Spanish",
+   "re": "spanish|español",
+   "level": "native"
+  },
+  {
+   "name": "English",
+   "re": "english",
+   "level": "professional"
+  }
+ ],
  "not_work_items": [],
  "education_note": "",
  "eligibility": {

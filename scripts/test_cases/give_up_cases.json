@@ -1,0 +1,773 @@
+[
+ {
+  "name": "decline basic give_up records old state and clears action",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1234",
+   "company": "Acme Corp",
+   "status": "Applied",
+   "action_needed": "Complete assessment",
+   "action_deadline": "2026-11-20",
+   "action_done": [
+    {
+     "on": "2026-11-02",
+     "action": "Started"
+    }
+   ],
+   "next_step": "Wait for reply",
+   "updated": "2026-11-01"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1234",
+   "company": "Acme Corp",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "action_done": [
+    {
+     "on": "2026-11-02",
+     "action": "Started"
+    }
+   ],
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Applied",
+    "action": "Complete assessment",
+    "deadline": "2026-11-20",
+    "next_step": "Wait for reply"
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "else new row: `declined` = {\"on\": today, \"status\": <old status>, \"action\": <action_needed trimmed>, \"deadline\": <old action_deadline or \"\">, \"next_step\": <old next_step or \"\">}; status = \"Declined by Joey\"; action_needed = \"\"; action_deadline = \"\"; next_step = \"Declined by Joey \" + today; updated = today. error = null. Nothing else changes (action_done history stays as it was)."
+ },
+ {
+  "name": "decline with missing deadline and next_step fills empty strings",
+  "fn": "decline",
+  "row": {
+   "job_id": "J2222",
+   "company": "Beta LLC",
+   "status": "Applied",
+   "action_needed": "Fill form"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J2222",
+   "company": "Beta LLC",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "",
+    "next_step": ""
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "\"deadline\": <old action_deadline or \"\">, \"next_step\": <old next_step or \"\">"
+ },
+ {
+  "name": "decline trims action_needed into declined.action",
+  "fn": "decline",
+  "row": {
+   "job_id": "J3333",
+   "company": "Gamma",
+   "status": "Assessment",
+   "action_needed": "  Submit documents  ",
+   "action_deadline": "2026-11-25",
+   "next_step": "Send docs",
+   "updated": "2026-11-05"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J3333",
+   "company": "Gamma",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Assessment",
+    "action": "Submit documents",
+    "deadline": "2026-11-25",
+    "next_step": "Send docs"
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "\"action\": <action_needed trimmed>"
+ },
+ {
+  "name": "decline refused when action_needed is exactly 等结果",
+  "fn": "decline",
+  "row": {
+   "job_id": "J4444",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "等结果",
+   "updated": "2026-11-01"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J4444",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "等结果",
+   "updated": "2026-11-01"
+  },
+  "expect_error": "no open action on this row",
+  "spec_quote": "\"No open action\" = action_needed missing, empty / only spaces, or exactly \"等结果\". ... no open action → (unchanged row, \"no open action on this row\")."
+ },
+ {
+  "name": "decline refused when action_needed is empty string",
+  "fn": "decline",
+  "row": {
+   "job_id": "J4445",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "",
+   "action_deadline": "2026-11-20",
+   "updated": "2026-11-01"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J4445",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "",
+   "action_deadline": "2026-11-20",
+   "updated": "2026-11-01"
+  },
+  "expect_error": "no open action on this row",
+  "spec_quote": "\"No open action\" = action_needed missing, empty / only spaces, or exactly \"等结果\"."
+ },
+ {
+  "name": "decline refused when action_needed is only spaces",
+  "fn": "decline",
+  "row": {
+   "job_id": "J4446",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "   ",
+   "updated": "2026-11-01"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J4446",
+   "company": "Delta",
+   "status": "Applied",
+   "action_needed": "   ",
+   "updated": "2026-11-01"
+  },
+  "expect_error": "no open action on this row",
+  "spec_quote": "\"No open action\" = action_needed missing, empty / only spaces, or exactly \"等结果\"."
+ },
+ {
+  "name": "decline refused when action_needed key missing",
+  "fn": "decline",
+  "row": {
+   "job_id": "J4447",
+   "company": "Delta",
+   "status": "Applied",
+   "updated": "2026-11-01"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J4447",
+   "company": "Delta",
+   "status": "Applied",
+   "updated": "2026-11-01"
+  },
+  "expect_error": "no open action on this row",
+  "spec_quote": "\"No open action\" = action_needed missing, empty / only spaces, or exactly \"等结果\"."
+ },
+ {
+  "name": "decline on already declined row with open action returns already declined",
+  "fn": "decline",
+  "row": {
+   "job_id": "J6666",
+   "company": "Zeta",
+   "status": "Declined by Joey",
+   "action_needed": "Fill form",
+   "action_deadline": "2026-11-20",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "2026-11-20",
+    "next_step": ""
+   }
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J6666",
+   "company": "Zeta",
+   "status": "Declined by Joey",
+   "action_needed": "Fill form",
+   "action_deadline": "2026-11-20",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "2026-11-20",
+    "next_step": ""
+   }
+  },
+  "expect_error": "already declined",
+  "spec_quote": "status is already \"Declined by Joey\" → (unchanged row, \"already declined\")."
+ },
+ {
+  "name": "already declined wins over no open action when both apply",
+  "fn": "decline",
+  "row": {
+   "job_id": "J6667",
+   "company": "Zeta",
+   "status": "Declined by Joey",
+   "updated": "2026-11-10"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J6667",
+   "company": "Zeta",
+   "status": "Declined by Joey",
+   "updated": "2026-11-10"
+  },
+  "expect_error": "already declined",
+  "spec_quote": "- status is already \"Declined by Joey\" → (unchanged row, \"already declined\").\n  - no open action → (unchanged row, \"no open action on this row\")."
+ },
+ {
+  "name": "decline records a non-Applied old status",
+  "fn": "decline",
+  "row": {
+   "job_id": "J7777",
+   "company": "Eta",
+   "status": "Interviewing",
+   "action_needed": "Schedule interview",
+   "action_deadline": "2026-11-21",
+   "next_step": "Pick a slot",
+   "updated": "2026-11-06"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J7777",
+   "company": "Eta",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Interviewing",
+    "action": "Schedule interview",
+    "deadline": "2026-11-21",
+    "next_step": "Pick a slot"
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "\"status\": <old status>"
+ },
+ {
+  "name": "undo restores status action deadline next_step and drops declined",
+  "fn": "decline",
+  "row": {
+   "job_id": "J3000",
+   "company": "Gamma",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Assessment",
+    "action": "Do the assessment",
+    "deadline": "2026-11-15",
+    "next_step": "Wait"
+   }
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J3000",
+   "company": "Gamma",
+   "status": "Assessment",
+   "action_needed": "Do the assessment",
+   "action_deadline": "2026-11-15",
+   "next_step": "Wait",
+   "updated": "2026-11-17"
+  },
+  "expect_error": null,
+  "spec_quote": "else status, action_needed, action_deadline, next_step are restored from `declined` (status, action, deadline, next_step); the `declined` key is removed; updated = today. error = null."
+ },
+ {
+  "name": "undo on non-declined row with a stale declined key returns not declined",
+  "fn": "decline",
+  "row": {
+   "job_id": "J8888",
+   "company": "Theta",
+   "status": "Applied",
+   "action_needed": "Fill form",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "",
+    "next_step": ""
+   },
+   "updated": "2026-11-10"
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J8888",
+   "company": "Theta",
+   "status": "Applied",
+   "action_needed": "Fill form",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "",
+    "next_step": ""
+   },
+   "updated": "2026-11-10"
+  },
+  "expect_error": "not declined",
+  "spec_quote": "status is not \"Declined by Joey\" → (unchanged row, \"not declined\")."
+ },
+ {
+  "name": "undo on declined row without declined key returns nothing to undo",
+  "fn": "decline",
+  "row": {
+   "job_id": "J9999",
+   "company": "Iota",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10"
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J9999",
+   "company": "Iota",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10"
+  },
+  "expect_error": "nothing to undo",
+  "spec_quote": "no `declined` key → (unchanged row, \"nothing to undo\")."
+ },
+ {
+  "name": "undo restores empty deadline and next_step",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1010",
+   "company": "Kappa",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-10",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "",
+    "next_step": ""
+   }
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1010",
+   "company": "Kappa",
+   "status": "Applied",
+   "action_needed": "Fill form",
+   "action_deadline": "",
+   "next_step": "",
+   "updated": "2026-11-17"
+  },
+  "expect_error": null,
+  "spec_quote": "action_needed, action_deadline, next_step are restored from `declined` (status, action, deadline, next_step)"
+ },
+ {
+  "name": "undo keeps action_done history and unrelated fields",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1111",
+   "company": "Lambda",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-10",
+   "action_done": [
+    {
+     "on": "2026-11-03",
+     "action": "Emailed"
+    }
+   ],
+   "notes": "urgent",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Offer",
+    "action": "Sign contract",
+    "deadline": "2026-11-18",
+    "next_step": "Read contract"
+   }
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1111",
+   "company": "Lambda",
+   "status": "Offer",
+   "action_needed": "Sign contract",
+   "action_deadline": "2026-11-18",
+   "action_done": [
+    {
+     "on": "2026-11-03",
+     "action": "Emailed"
+    }
+   ],
+   "next_step": "Read contract",
+   "notes": "urgent",
+   "updated": "2026-11-17"
+  },
+  "expect_error": null,
+  "spec_quote": "the `declined` key is removed; updated = today. error = null."
+ },
+ {
+  "name": "decline with deadline present but next_step missing",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1212",
+   "company": "Mu",
+   "status": "Applied",
+   "action_needed": "Take test",
+   "action_deadline": "2026-11-22",
+   "updated": "2026-11-07"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1212",
+   "company": "Mu",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Applied",
+    "action": "Take test",
+    "deadline": "2026-11-22",
+    "next_step": ""
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "\"deadline\": <old action_deadline or \"\">, \"next_step\": <old next_step or \"\">"
+ },
+ {
+  "name": "undo overwrites whatever is currently in action fields",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1313",
+   "company": "Nu",
+   "status": "Declined by Joey",
+   "action_needed": "stale",
+   "action_deadline": "2099-01-01",
+   "next_step": "stale step",
+   "updated": "2026-11-10",
+   "declined": {
+    "on": "2026-11-10",
+    "status": "Applied",
+    "action": "Complete assessment",
+    "deadline": "2026-11-20",
+    "next_step": "Wait"
+   }
+  },
+  "give_up": false,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1313",
+   "company": "Nu",
+   "status": "Applied",
+   "action_needed": "Complete assessment",
+   "action_deadline": "2026-11-20",
+   "next_step": "Wait",
+   "updated": "2026-11-17"
+  },
+  "expect_error": null,
+  "spec_quote": "status, action_needed, action_deadline, next_step are restored from `declined` (status, action, deadline, next_step)"
+ },
+ {
+  "name": "decline with empty-string next_step present keeps empty in declined",
+  "fn": "decline",
+  "row": {
+   "job_id": "J1414",
+   "company": "Xi",
+   "status": "Applied",
+   "action_needed": "Fill form",
+   "next_step": "",
+   "updated": "2026-11-08"
+  },
+  "give_up": true,
+  "today": "2026-11-17",
+  "expect_row": {
+   "job_id": "J1414",
+   "company": "Xi",
+   "status": "Declined by Joey",
+   "action_needed": "",
+   "action_deadline": "",
+   "next_step": "Declined by Joey 2026-11-17",
+   "updated": "2026-11-17",
+   "declined": {
+    "on": "2026-11-17",
+    "status": "Applied",
+    "action": "Fill form",
+    "deadline": "",
+    "next_step": ""
+   }
+  },
+  "expect_error": null,
+  "spec_quote": "\"next_step\": <old next_step or \"\">; ... next_step = \"Declined by Joey \" + today"
+ },
+ {
+  "name": "validate accepts a well-formed /decline POST with query string",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline?job=J1234",
+  "headers": {
+   "host": "localhost:5173",
+   "origin": "http://localhost:5173",
+   "x-jsa-pref": "1",
+   "content-type": "Application/JSON; charset=utf-8"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 200,
+  "expect_payload": {
+   "route": "/decline",
+   "job_id": "J1234",
+   "give_up": true
+  },
+  "spec_quote": "path (query string ignored) must be one of /pref, /action, /apply, /decline ... content-type starts with application/json (case-insensitive) else 415 ... Success → (200, {\"route\": \"/decline\", \"job_id\": <job_id>, \"give_up\": <give_up>})."
+ },
+ {
+  "name": "validate rejects foreign Host header with 421",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline",
+  "headers": {
+   "host": "evil.example.com:8080",
+   "origin": "http://localhost:5173",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 421,
+  "spec_quote": "Host header must be localhost or 127.0.0.1 (optional :port) else 421"
+ },
+ {
+  "name": "validate rejects unknown path with 404",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline/extra",
+  "headers": {
+   "host": "localhost",
+   "origin": "http://localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 404,
+  "spec_quote": "path (query string ignored) must be one of /pref, /action, /apply, /decline else 404"
+ },
+ {
+  "name": "validate rejects GET with 405",
+  "fn": "validate",
+  "method": "GET",
+  "path": "/decline",
+  "headers": {
+   "host": "127.0.0.1:8080",
+   "origin": "http://127.0.0.1:8080",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 405,
+  "spec_quote": "method must be POST else 405"
+ },
+ {
+  "name": "validate rejects look-alike localhost origin with 403",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline",
+  "headers": {
+   "host": "localhost",
+   "origin": "http://localhost.evil.com",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 403,
+  "spec_quote": "Origin absent, \"null\", or http://localhost[:port] / http://127.0.0.1[:port] else 403"
+ },
+ {
+  "name": "validate rejects missing x-jsa-pref header with 403",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline",
+  "headers": {
+   "host": "localhost",
+   "origin": "http://localhost",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 403,
+  "spec_quote": "header x-jsa-pref exactly \"1\" else 403"
+ },
+ {
+  "name": "validate rejects non-JSON content-type with 415",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline",
+  "headers": {
+   "host": "localhost",
+   "origin": "http://localhost",
+   "x-jsa-pref": "1",
+   "content-type": "text/plain"
+  },
+  "body": "{\"job_id\":\"J1234\",\"give_up\":true}",
+  "expect_code": 415,
+  "spec_quote": "content-type starts with application/json (case-insensitive) else 415"
+ },
+ {
+  "name": "validate rejects give_up given as 1 instead of boolean",
+  "fn": "validate",
+  "method": "POST",
+  "path": "/decline",
+  "headers": {
+   "host": "localhost",
+   "origin": "http://localhost",
+   "x-jsa-pref": "1",
+   "content-type": "application/json"
+  },
+  "body": "{\"job_id\":\"J12345\",\"give_up\":1}",
+  "expect_code": 400,
+  "spec_quote": "give_up a JSON boolean (not 0/1, not \"true\"), else 400."
+ },
+ {
+  "name": "todo skips declined rows even when they still have an action",
+  "fn": "todo",
+  "apps": [
+   {
+    "job_id": "J1",
+    "company": "A",
+    "status": "Declined by Joey",
+    "action_needed": "Fill form"
+   },
+   {
+    "job_id": "J2",
+    "company": "B",
+    "status": "Applied",
+    "action_needed": "Fill form"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect_job_ids": [
+   "J2"
+  ],
+  "spec_quote": "A tracker row whose status is \"Declined by Joey\" yields no to-do row, even when it still has an action_needed."
+ },
+ {
+  "name": "todo produces nothing when every row is declined",
+  "fn": "todo",
+  "apps": [
+   {
+    "job_id": "J3",
+    "company": "C",
+    "status": "Declined by Joey",
+    "action_needed": "Complete assessment"
+   },
+   {
+    "job_id": "J4",
+    "company": "D",
+    "status": "Declined by Joey",
+    "action_needed": "Schedule interview"
+   }
+  ],
+  "today": "2026-11-17",
+  "expect_job_ids": [],
+  "spec_quote": "A tracker row whose status is \"Declined by Joey\" yields no to-do row, even when it still has an action_needed."
+ },
+ {
+  "name": "echo marks declined application with 1 and others with 0",
+  "fn": "echo",
+  "apps": [
+   {
+    "job_id": "J1",
+    "status": "Declined by Joey",
+    "applied_on": "2026-11-01"
+   },
+   {
+    "job_id": "J2",
+    "status": "Applied",
+    "applied_on": "2026-11-01"
+   }
+  ],
+  "expect": {
+   "J1": 1,
+   "J2": 0
+  },
+  "spec_quote": "Each record gets `declined` = 1 when the application's status is \"Declined by Joey\", else 0. Such an application is still counted as sent (it keeps its other fields)."
+ },
+ {
+  "name": "echo does not flag a merely similar status",
+  "fn": "echo",
+  "apps": [
+   {
+    "job_id": "J3",
+    "status": "Declined",
+    "applied_on": "2026-11-01"
+   },
+   {
+    "job_id": "J4",
+    "status": "Declined by Joey",
+    "applied_on": "2026-11-01"
+   }
+  ],
+  "expect": {
+   "J3": 0,
+   "J4": 1
+  },
+  "spec_quote": "Each record gets `declined` = 1 when the application's status is \"Declined by Joey\", else 0."
+ }
+]

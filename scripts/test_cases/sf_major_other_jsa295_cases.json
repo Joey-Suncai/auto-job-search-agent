@@ -1,0 +1,441 @@
+[
+ {
+  "name": "mc_exact_case_insensitive_match",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Computer Science",
+    "Economics",
+    "Business Administration",
+    "Other"
+   ],
+   "major": "economics",
+   "has_box": false
+  },
+  "expect": [
+   "Economics",
+   "match"
+  ],
+  "spec_quote": "An option equal to the major (case-insensitive) → [that option, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_rule2_option_words_subset_of_major",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Computer Science",
+    "Data Science",
+    "Economics",
+    "Business Administration"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Data Science",
+   "match"
+  ],
+  "spec_quote": "Else an option of 2+ words whose words all appear in the major (\"Data Science\" for \"Applied Data Science\"), or an option that contains the whole major as words → [it, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_rule2_option_contains_whole_major_as_words",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Applied Data Science and Analytics",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Applied Data Science and Analytics",
+   "match"
+  ],
+  "spec_quote": "Else an option of 2+ words whose words all appear in the major (\"Data Science\" for \"Applied Data Science\"), or an option that contains the whole major as words → [it, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_single_word_options_are_not_rule2_match_no_fallback_available",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Science",
+    "Data",
+    "Data Management",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Note: single-word options such as \"Science\" or \"Data\" are NOT a rule-2 match (2+ words needed) unless equal to the major.",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_single_word_option_equal_to_major_matches",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Science",
+    "Data",
+    "Economics"
+   ],
+   "major": "Data",
+   "has_box": false
+  },
+  "expect": [
+   "Data",
+   "match"
+  ],
+  "spec_quote": "An option equal to the major (case-insensitive) → [that option, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_has_box_true_picks_other",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Computer Science",
+    "Economics",
+    "Other"
+   ],
+   "major": "Applied Data Science",
+   "has_box": true
+  },
+  "expect": [
+   "Other",
+   "other"
+  ],
+  "spec_quote": "Else, when has_box is true (the row has an \"If other, enter Area of Study\" text box) → the option that is exactly \"Other\" (case / spaces ignored) → [that option, \"other\"]; no such option → [null, null]. Never Computer Science here.",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_has_box_true_no_other_option_returns_null_never_cs",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Computer Science",
+    "Economics",
+    "Information Systems"
+   ],
+   "major": "Applied Data Science",
+   "has_box": true
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Else, when has_box is true (the row has an \"If other, enter Area of Study\" text box) → the option that is exactly \"Other\" (case / spaces ignored) → [that option, \"other\"]; no such option → [null, null]. Never Computer Science here.",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_has_box_true_other_with_case_and_spaces_ignored",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Economics",
+    " other "
+   ],
+   "major": "Applied Data Science",
+   "has_box": true
+  },
+  "expect": [
+   " other ",
+   "other"
+  ],
+  "spec_quote": "Else, when has_box is true (the row has an \"If other, enter Area of Study\" text box) → the option that is exactly \"Other\" (case / spaces ignored) → [that option, \"other\"]; no such option → [null, null]. Never Computer Science here.",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_fallback_information_systems_when_cs_absent",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Information Systems",
+    "Management Information Systems",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Information Systems",
+   "fallback"
+  ],
+  "spec_quote": "Else (has_box false) the fallback, in order: \"Computer Science\"; then \"Information Systems\" / \"Information System\" / \"Computer Information Systems\" / \"Management Information Systems\"; then \"Other\" → [it, \"fallback\"]; none → [null, null].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_fallback_computer_science_beats_information_systems",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Information Systems",
+    "Computer Science",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Computer Science",
+   "fallback"
+  ],
+  "spec_quote": "Else (has_box false) the fallback, in order: \"Computer Science\"; then \"Information Systems\" / \"Information System\" / \"Computer Information Systems\" / \"Management Information Systems\"; then \"Other\" → [it, \"fallback\"]; none → [null, null].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_fallback_to_other_when_no_cs_or_is",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Select",
+    "Other",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Other",
+   "fallback"
+  ],
+  "spec_quote": "Else (has_box false) the fallback, in order: \"Computer Science\"; then \"Information Systems\" / \"Information System\" / \"Computer Information Systems\" / \"Management Information Systems\"; then \"Other\" → [it, \"fallback\"]; none → [null, null].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_fallback_none_available_returns_null",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Select",
+    "--",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Else (has_box false) the fallback, in order: \"Computer Science\"; then \"Information Systems\" / \"Information System\" / \"Computer Information Systems\" / \"Management Information Systems\"; then \"Other\" → [it, \"fallback\"]; none → [null, null].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_placeholder_never_picked_even_if_equals_major",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Select",
+    "Please select",
+    "--"
+   ],
+   "major": "No Selection",
+   "has_box": false
+  },
+  "expect": [
+   null,
+   null
+  ],
+  "spec_quote": "Placeholder options (\"No Selection\", \"Select\", \"Please select\", \"--\") are never picked.",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_exact_match_beats_rule2_subset_option",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "No Selection",
+    "Data Science",
+    "Applied Data Science",
+    "Economics"
+   ],
+   "major": "Applied Data Science",
+   "has_box": false
+  },
+  "expect": [
+   "Applied Data Science",
+   "match"
+  ],
+  "spec_quote": "An option equal to the major (case-insensitive) → [that option, \"match\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "mc_has_box_true_but_rule1_match_wins_over_other",
+  "fn": "major_choice",
+  "input": {
+   "options": [
+    "Other",
+    "Economics",
+    "Computer Science"
+   ],
+   "major": "Economics",
+   "has_box": true
+  },
+  "expect": [
+   "Economics",
+   "match"
+  ],
+  "spec_quote": "Else, when has_box is true (the row has an \"If other, enter Area of Study\" text box) → the option that is exactly \"Other\" (case / spaces ignored) → [that option, \"other\"]; no such option → [null, null]. Never Computer Science here.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_area_of_study_other_text_box",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "schoolName",
+     "label": "School / Institution Name",
+     "type": "text"
+    },
+    {
+     "key": "areaOfStudyOther",
+     "label": "If other, enter Area of Study",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": "areaOfStudyOther",
+  "spec_quote": "type \"text\" or \"textarea\", label says other / not listed / specify AND names area of study / major / field of study / subject / discipline / course of study.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_school_box_only_is_not_it",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "schoolOther",
+     "label": "If other, enter School / Institution Name",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "A box for the school (\"If other, enter School / Institution Name\") is not it.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_combo_never_counts",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "majorOther",
+     "label": "Other Major (specify)",
+     "type": "combo"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "A combo never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_area_of_study_box_without_other_keyword_is_not_it",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "comments",
+     "label": "Comments",
+     "type": "text"
+    },
+    {
+     "key": "gpa",
+     "label": "Overall GPA",
+     "type": "text"
+    },
+    {
+     "key": "areaOfStudy",
+     "label": "Area of Study",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": null,
+  "spec_quote": "type \"text\" or \"textarea\", label says other / not listed / specify AND names area of study / major / field of study / subject / discipline / course of study.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_field_of_study_not_listed_specify_textarea",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "fieldOfStudyNotListed",
+     "label": "Field of Study Not Listed - Specify",
+     "type": "textarea"
+    }
+   ]
+  },
+  "expect": "fieldOfStudyNotListed",
+  "spec_quote": "type \"text\" or \"textarea\", label says other / not listed / specify AND names area of study / major / field of study / subject / discipline / course of study.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_picks_major_box_among_school_box_and_combo",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "schoolOther",
+     "label": "If other, enter School / Institution Name",
+     "type": "text"
+    },
+    {
+     "key": "otherMajorTxt",
+     "label": "Other Major",
+     "type": "text"
+    },
+    {
+     "key": "areaOfStudyList",
+     "label": "Other Area of Study",
+     "type": "combo"
+    }
+   ]
+  },
+  "expect": "otherMajorTxt",
+  "spec_quote": "A box for the school (\"If other, enter School / Institution Name\") is not it. A combo never counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "omb_other_subject_discipline_specify_textarea",
+  "fn": "other_major_box",
+  "input": {
+   "fields": [
+    {
+     "key": "comments",
+     "label": "Additional Comments",
+     "type": "textarea"
+    },
+    {
+     "key": "subjectOther",
+     "label": "Other Subject / Discipline - Please Specify",
+     "type": "textarea"
+    }
+   ]
+  },
+  "expect": "subjectOther",
+  "spec_quote": "type \"text\" or \"textarea\", label says other / not listed / specify AND names area of study / major / field of study / subject / discipline / course of study.",
+  "ambiguous": false
+ }
+]

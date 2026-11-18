@@ -1,0 +1,481 @@
+[
+ {
+  "name": "single row matches job tier A",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "A"
+  ],
+  "spec_quote": "A row's tier is the `tier` of the job whose `id` equals the row's `job_id` (values A, B, C, D, ...).",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple rows keep order and each resolves its own job",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j2",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   },
+   {
+    "id": "j2",
+    "tier": "B"
+   }
+  ],
+  "expect": [
+   "A",
+   "B",
+   "A"
+  ],
+  "spec_quote": "It returns the same rows in the same order, each with a `tier` field added.",
+  "ambiguous": false
+ },
+ {
+  "name": "tier D is passed through",
+  "rows": [
+   {
+    "job_id": "j9",
+    "folder": "X",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j9",
+    "tier": "D"
+   }
+  ],
+  "expect": [
+   "D"
+  ],
+  "spec_quote": "A row's tier is the `tier` of the job whose `id` equals the row's `job_id` (values A, B, C, D, ...).",
+  "ambiguous": false
+ },
+ {
+  "name": "Blocked job shows tier_orig",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "Blocked",
+    "tier_orig": "C"
+   }
+  ],
+  "expect": [
+   "C"
+  ],
+  "spec_quote": "If the job's tier is `Blocked`, the row shows the job's `tier_orig` (its original tier); if `tier_orig` is missing or empty, it shows `Blocked`.",
+  "ambiguous": false
+ },
+ {
+  "name": "Blocked job with missing tier_orig shows Blocked",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "Blocked"
+   }
+  ],
+  "expect": [
+   "Blocked"
+  ],
+  "spec_quote": "If the job's tier is `Blocked`, the row shows the job's `tier_orig` (its original tier); if `tier_orig` is missing or empty, it shows `Blocked`.",
+  "ambiguous": false
+ },
+ {
+  "name": "Blocked job with empty tier_orig shows Blocked",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "Blocked",
+    "tier_orig": ""
+   }
+  ],
+  "expect": [
+   "Blocked"
+  ],
+  "spec_quote": "If the job's tier is `Blocked`, the row shows the job's `tier_orig` (its original tier); if `tier_orig` is missing or empty, it shows `Blocked`.",
+  "ambiguous": false
+ },
+ {
+  "name": "row with job_id key absent gets dash",
+  "rows": [
+   {
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "row with empty job_id gets dash",
+  "rows": [
+   {
+    "job_id": "",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "row with null job_id gets dash",
+  "rows": [
+   {
+    "job_id": null,
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown job id gets dash",
+  "rows": [
+   {
+    "job_id": "jX",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "job with tier key missing gets dash",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "job with empty tier gets dash",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": ""
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty jobs list gives dash everywhere",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [],
+  "expect": [
+   "—",
+   "—"
+  ],
+  "spec_quote": "`jobs` may be empty or None: every row gets `—`.",
+  "ambiguous": false
+ },
+ {
+  "name": "null jobs gives dash everywhere",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j2",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": null,
+  "expect": [
+   "—",
+   "—"
+  ],
+  "spec_quote": "`jobs` may be empty or None: every row gets `—`.",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate job ids: first wins",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   },
+   {
+    "id": "j1",
+    "tier": "B"
+   }
+  ],
+  "expect": [
+   "A"
+  ],
+  "spec_quote": "If several jobs share an id the first one wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate job ids where first is Blocked: first wins",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "Blocked",
+    "tier_orig": "D"
+   },
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "D"
+  ],
+  "spec_quote": "If several jobs share an id the first one wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "tier_orig ignored when tier is not Blocked",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "B",
+    "tier_orig": "A"
+   }
+  ],
+  "expect": [
+   "B"
+  ],
+  "spec_quote": "A row's tier is the `tier` of the job whose `id` equals the row's `job_id` (values A, B, C, D, ...).",
+  "ambiguous": false
+ },
+ {
+  "name": "mixed rows: missing id, matching, unknown, empty tier",
+  "rows": [
+   {
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "jZ",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j2",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "C"
+   },
+   {
+    "id": "j2",
+    "tier": ""
+   }
+  ],
+  "expect": [
+   "—",
+   "C",
+   "—",
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing), or no job has that id, or the job's tier is missing / empty: the tier is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "Blocked job matched by several rows",
+  "rows": [
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   },
+   {
+    "job_id": "j1",
+    "folder": "Inbox",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "Blocked",
+    "tier_orig": "A"
+   }
+  ],
+  "expect": [
+   "A",
+   "A"
+  ],
+  "spec_quote": "If the job's tier is `Blocked`, the row shows the job's `tier_orig` (its original tier); if `tier_orig` is missing or empty, it shows `Blocked`.",
+  "ambiguous": false
+ },
+ {
+  "name": "all rows without job_id but jobs populated",
+  "rows": [
+   {
+    "folder": "A",
+    "kind": "task"
+   },
+   {
+    "folder": "B",
+    "kind": "task"
+   }
+  ],
+  "jobs": [
+   {
+    "id": "j1",
+    "tier": "A"
+   }
+  ],
+  "expect": [
+   "—",
+   "—"
+  ],
+  "spec_quote": "Never guess a tier from the company name or anything else.",
+  "ambiguous": false
+ }
+]

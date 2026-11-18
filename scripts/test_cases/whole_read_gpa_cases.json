@@ -1,0 +1,146 @@
+[
+ {
+  "name": "gpa_plain_vs_slash_form_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "3.60",
+   "b": "3.60/4.0"
+  },
+  "expect": true,
+  "spec_quote": "true only when the label is a GPA question (contains \"GPA\", \"grade point\", \"cumulative average/result\" or \"overall result\") that does NOT mention \"major\", AND both a and b are each either 3.60 (also \"3.60/4.0\", \"3.60 / 4\") or a none-like value",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_leading_zero_vs_spaced_form_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "Cumulative GPA",
+   "a": "3.790",
+   "b": "3.60 / 4"
+  },
+  "expect": true,
+  "spec_quote": "AND both a and b are each either 3.60 (also \"3.60/4.0\", \"3.60 / 4\") or a none-like value",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_none_like_pair_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "N/A",
+   "b": "not applicable"
+  },
+  "expect": true,
+  "spec_quote": "a none-like value: N/A, n/a, NA, none, not applicable, other, no GPA, no GPA yet, not yet available, \"-\" (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_dash_vs_none_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "Grade point average",
+   "a": "-",
+   "b": "none"
+  },
+  "expect": true,
+  "spec_quote": "a none-like value: N/A, n/a, NA, none, not applicable, other, no GPA, no GPA yet, not yet available, \"-\" (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_band_holds_379_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "3.5 - 3.9",
+   "b": "3.60"
+  },
+  "expect": true,
+  "spec_quote": "a band whose range holds 3.60 (\"3.5 - 3.9\", \"3.70-3.89\", \"3.5 to 3.9\") counts as 3.60 (JSA-288b)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_band_to_vs_none_like_true",
+  "fn": "gpa_either",
+  "args": {
+   "label": "Cumulative average",
+   "a": "3.5 to 3.9",
+   "b": "no GPA yet"
+  },
+  "expect": true,
+  "spec_quote": "a band whose range holds 3.60 (\"3.5 - 3.9\", \"3.70-3.89\", \"3.5 to 3.9\") counts as 3.60 (JSA-288b)",
+  "ambiguous": false
+ },
+ {
+  "name": "major_gpa_question_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your major GPA?",
+   "a": "3.60",
+   "b": "3.60"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty), for \"major GPA\" questions, and for non-GPA questions.",
+  "ambiguous": false
+ },
+ {
+  "name": "non_gpa_question_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "How many years of experience do you have?",
+   "a": "3.60",
+   "b": "3.60"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty), for \"major GPA\" questions, and for non-GPA questions.",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_385_vs_na_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "3.85",
+   "b": "N/A"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_381_vs_379_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "Overall result",
+   "a": "3.81",
+   "b": "3.60"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_band_not_holding_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "3.8 - 4.0",
+   "b": "3.60"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty)",
+  "ambiguous": false
+ },
+ {
+  "name": "gpa_empty_value_false",
+  "fn": "gpa_either",
+  "args": {
+   "label": "What is your GPA?",
+   "a": "",
+   "b": "3.60"
+  },
+  "expect": false,
+  "spec_quote": "false for any other value on either side (3.85, 3.81, a band that does not hold 3.60 such as \"3.8 - 4.0\", empty)",
+  "ambiguous": false
+ }
+]

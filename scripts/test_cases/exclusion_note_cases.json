@@ -1,0 +1,178 @@
+[
+ {
+  "name": "plain_relocation_question",
+  "label": "Are you willing to relocate for this role?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "why": "Rule 3: \"a genuine relocation question (\\\"Are you willing to relocate for this role?\\\") is still answered \\\"Yes\\\"\"."
+ },
+ {
+  "name": "plain_on_site_attendance",
+  "label": "Are you willing to work on site 4 days a week?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "why": "Rule 3: \"a genuine office-attendance question (\\\"Are you willing to work on site 4 days a week?\\\") is still answered \\\"Yes\\\"\"."
+ },
+ {
+  "name": "on_site_five_days",
+  "label": "Are you comfortable working on site 5 days a week?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "why": "Rule 3: a genuine office-attendance question is still answered \"Yes\"; the candidate \"works hybrid/on site happily (Yes)\"."
+ },
+ {
+  "name": "hybrid_schedule_comfort",
+  "label": "Are you comfortable with a hybrid schedule of 3 days on site and 2 days remote?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "why": "Spec header: the candidate \"works hybrid/on site happily (Yes)\"; Rule 3 keeps genuine office-attendance questions answered \"Yes\"."
+ },
+ {
+  "name": "accommodation_with_examples_list",
+  "label": "Do you require any reasonable adjustments or accommodations to take part in the recruitment process (e.g., extra time on tests, wheelchair access in the office, sign-language interpreter)?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1: an accommodations/adjustments question for the application process is answered \"No\", \"even when its text lists examples (extra time on tests, wheelchair access in the office, sign-language interpreter)\"."
+ },
+ {
+  "name": "accommodation_with_visa_relocation_exclusion",
+  "label": "Do you require reasonable adjustments to take part in the interview process? (Do not include VISA or relocation expectations)",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1: accommodations question answered \"No\" \"even when its text lists ... an exclusion note (\\\"Do not include VISA or relocation expectations\\\")\"."
+ },
+ {
+  "name": "accommodation_with_excluding_travel_note",
+  "label": "Do you require accommodations for the interview (excluding travel)?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1: accommodations question answered \"No\" even with an exclusion note such as \"(excluding travel)\"."
+ },
+ {
+  "name": "accommodation_plain_wording",
+  "label": "Do you require reasonable adjustments / accommodations to take part in the recruitment process / interview?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1: \"a question that asks whether the candidate requires accommodations or adjustments for the application process is answered \\\"No\\\"\"; spec header: needs \"NO accommodation of any kind\"."
+ },
+ {
+  "name": "accommodation_with_relocation_exclusion",
+  "label": "Do you require any accommodations to take part in the recruitment process? (Do not include relocation)",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1 (accommodations question → \"No\") and Rule 2: \"relocation\" appears only inside the exclusion note, so it is not part of the question — this is not a relocation question."
+ },
+ {
+  "name": "assistive_equipment_adjustments_interview",
+  "label": "Do you require any assistive equipment or adjustments to take part in the interview?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "why": "Rule 1: a question about accommodations/adjustments for the application process is answered \"No\" regardless of how the adjustments are phrased."
+ },
+ {
+  "name": "exclusion_note_relocation_only",
+  "label": "Do you have any questions about the role? Do not include relocation questions here.",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "Rule 2: \"a question that says \\\"Do not include relocation\\\" is never a relocation question\" — so Rule 3 does not apply and no spec rule answers it."
+ },
+ {
+  "name": "exclusion_note_relocation_and_remote_only",
+  "label": "Please share your salary expectations (do not include relocation or remote work details).",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "Rule 2: \"words that appear only inside an exclusion note (\\\"do not include X\\\", \\\"excluding X\\\", \\\"other than X\\\") are NOT part of the question\" — no relocation or work-arrangement question remains."
+ },
+ {
+  "name": "relocation_question_with_remote_exclusion_note",
+  "label": "Are you willing to relocate for this position? (Do not include remote work in your answer)",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "why": "Rule 2: \"remote work\" appears only in the exclusion note, so it is not part of the question; the genuine relocation question is answered \"Yes\" per Rule 3."
+ },
+ {
+  "name": "housing_accommodation_internship",
+  "label": "Do you need accommodation (housing) during the internship?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "Rule 3: \"A housing question (\\\"Do you need accommodation (housing) during the internship?\\\") is NOT this rule: it must not be answered by it (expect \\\"ask\\\")\"."
+ },
+ {
+  "name": "past_workplace_accommodation_history",
+  "label": "Have you previously received reasonable adjustments in a workplace?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "Rule 1 covers only a question asking \"whether the candidate requires accommodations or adjustments for the application process\"; a question about past workplace history is not covered by any rule, so no rule answers it."
+ },
+ {
+  "name": "visa_sponsorship_uncovered",
+  "label": "Will you now or in the future require sponsorship for employment visa status?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "why": "The spec's rules cover relocation, work arrangement, and application-process accommodations only; visa sponsorship is not covered by any rule, so it must not be auto-answered."
+ }
+]

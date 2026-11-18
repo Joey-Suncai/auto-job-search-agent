@@ -1,0 +1,189 @@
+[
+ {
+  "name": "claude_plain",
+  "text": "Claude",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "group \"Claude\": spellings Claude, Anthropic. A text naming Claude or Anthropic hits \"Claude\" only."
+ },
+ {
+  "name": "anthropic_plain",
+  "text": "Anthropic",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "group \"Claude\": spellings Claude, Anthropic. A text naming Claude or Anthropic hits \"Claude\" only."
+ },
+ {
+  "name": "chatgpt_plain",
+  "text": "ChatGPT",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "group \"ChatGPT\": spellings ChatGPT, OpenAI, GPT. A text that names only OpenAI / GPT / ChatGPT hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "openai_plain",
+  "text": "OpenAI",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "group \"ChatGPT\": spellings ChatGPT, OpenAI, GPT. A text that names only OpenAI / GPT / ChatGPT hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "gpt_plain",
+  "text": "GPT",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "group \"ChatGPT\": spellings ChatGPT, OpenAI, GPT. A text that names only OpenAI / GPT / ChatGPT hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "openai_api_example",
+  "text": "experience with the OpenAI API",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "A text that names only OpenAI / GPT / ChatGPT (e.g. \"experience with the OpenAI API\") hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "gpt4_prompts",
+  "text": "GPT-4 prompts",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "A text that names only OpenAI / GPT / ChatGPT (e.g. \"GPT-4 prompts\") hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "chatgpt_plugins",
+  "text": "ChatGPT plugins",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "A text that names only OpenAI / GPT / ChatGPT (e.g. \"ChatGPT plugins\") hits \"ChatGPT\" only — never \"Claude\"."
+ },
+ {
+  "name": "claude_code",
+  "text": "Claude Code",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "A text naming Claude or Anthropic hits \"Claude\" only (\"Claude Code\", \"Anthropic's API\")."
+ },
+ {
+  "name": "anthropic_api",
+  "text": "Anthropic's API",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "A text naming Claude or Anthropic hits \"Claude\" only (\"Claude Code\", \"Anthropic's API\")."
+ },
+ {
+  "name": "both_claude_gpt",
+  "text": "Claude and GPT-4",
+  "expect": [
+   "ChatGPT",
+   "Claude"
+  ],
+  "spec": "A text naming both hits both."
+ },
+ {
+  "name": "both_anthropic_openai",
+  "text": "Anthropic and OpenAI",
+  "expect": [
+   "ChatGPT",
+   "Claude"
+  ],
+  "spec": "A text naming both hits both."
+ },
+ {
+  "name": "both_mixed",
+  "text": "OpenAI's GPT-4 and Claude's API",
+  "expect": [
+   "ChatGPT",
+   "Claude"
+  ],
+  "spec": "A text naming both hits both. \"GPT-4\" matches (a hyphen is a boundary); \"Claude's\" matches."
+ },
+ {
+  "name": "other_models_gemini_llama",
+  "text": "Gemini and Llama",
+  "expect": [],
+  "spec": "Other model names (Gemini, Llama, Mistral, \"LLM\", \"generative AI\") hit neither."
+ },
+ {
+  "name": "other_models_mistral_llm",
+  "text": "Mistral, LLM, generative AI",
+  "expect": [],
+  "spec": "Other model names (Gemini, Llama, Mistral, \"LLM\", \"generative AI\") hit neither."
+ },
+ {
+  "name": "gpts_no_match",
+  "text": "GPTs are useful",
+  "expect": [],
+  "spec": "A word boundary is required: \"GPTs\" does not match GPT (a letter follows)."
+ },
+ {
+  "name": "openais_no_match",
+  "text": "OpenAIs everywhere",
+  "expect": [],
+  "spec": "A word boundary is required: \"OpenAIs\" does not match."
+ },
+ {
+  "name": "claudeish_no_match",
+  "text": "claudeish behavior",
+  "expect": [],
+  "spec": "A word boundary is required: \"claudeish\" does not match."
+ },
+ {
+  "name": "slash_block_x_claude",
+  "text": "x/Claude",
+  "expect": [],
+  "spec": "\"/\" directly before a term blocks a match, e.g. \"x/Claude\" does not match Claude."
+ },
+ {
+  "name": "claude_possessive",
+  "text": "Claude's",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "\"Claude's\" matches."
+ },
+ {
+  "name": "case_insensitive_mixed",
+  "text": "cLaUdE and OPENAI",
+  "expect": [
+   "ChatGPT",
+   "Claude"
+  ],
+  "spec": "matched case-insensitively ... A text naming both hits both."
+ },
+ {
+  "name": "slash_block_claude_openai",
+  "text": "Claude/OpenAI",
+  "expect": [
+   "Claude"
+  ],
+  "spec": "\"/\" directly before a term blocks a match ... the \"/\" sits before Anthropic — does NOT match Anthropic either, only OpenAI."
+ },
+ {
+  "name": "slash_openai_anthropic_ambiguous",
+  "text": "OpenAI/Anthropic",
+  "expect": [
+   "ChatGPT"
+  ],
+  "spec": "\"OpenAI/Anthropic\" matches both ... the \"/\" sits before Anthropic — does NOT match Anthropic either, only OpenAI.",
+  "ambiguous": true,
+  "why": "The spec first says \"OpenAI/Anthropic\" matches both, then explicitly says the slash before Anthropic blocks Anthropic so only OpenAI matches; the expected value follows the more specific parenthetical."
+ },
+ {
+  "name": "slash_space_openai_anthropic",
+  "text": "OpenAI / Anthropic",
+  "expect": [
+   "ChatGPT",
+   "Claude"
+  ],
+  "spec": "\"/\" directly before a term blocks a match; here the slash is not directly before Anthropic, so both groups match."
+ }
+]

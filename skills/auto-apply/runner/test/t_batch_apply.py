@@ -14,7 +14,7 @@ import run_workable as RW
 def load(name):
     c = json.load(open(os.path.join(REPO, 'scripts', 'test_cases', name)))
     return c.get('cases', c) if isinstance(c, dict) else c
-cases = load('batch_apply_cases.json') + load('batch_apply_230_cases.json') + load('batch_apply_note_cases.json') + load('batch_apply_235_cases.json') + load('run_stop_cases.json') + load('workable_offline_cases.json')   # JSA-229 + JSA-230 (spec grew)
+cases = load('batch_apply_cases.json') + load('batch_apply_230_cases.json') + load('batch_apply_note_cases.json') + load('batch_apply_235_cases.json') + load('run_stop_cases.json') + load('workable_offline_cases.json') + load('jsa418_flag_cleared_cases.json')   # JSA-229 + JSA-230 (spec grew)
 vp = os.path.join(REPO, 'scripts', 'test_cases', 'batch_apply_verdicts.json')
 skip = json.load(open(vp)) if os.path.exists(vp) else {}
 
@@ -38,6 +38,15 @@ def call(c):
     if f == 'offline_unknowns': return RW.offline_unknowns(i.get('fields'), i.get('ans') or {}, i.get('missing') or [])
     if f == 'last_note': return B.last_note(i.get('output'))
     if f == 'merge': return B.merge(i.get('stdout') or {}, i.get('results'))
+    if f == 'flag_cleared': return B.flag_cleared(i.get('job'))
+    if f == 'effective_prep': return B.effective_prep(i.get('status'), i.get('job'))
+    if f == 'clear_flag':
+        try:
+            nb, jid = B.clear_flag(i.get('batch'), i.get('ident'), i.get('by'), i.get('note'), i.get('at'))
+        except ValueError:
+            return {'error': 'ValueError'}
+        job = next(j for j in nb['jobs'] if str(j.get('id')) == str(jid))
+        return {'job_id': jid, 'flag_cleared': job.get('flag_cleared')}
     raise ValueError(f)
 
 def same(got, exp):

@@ -5,12 +5,13 @@
 // degree_level = the degree the candidate is enrolled in: "bachelors" | "masters" (default) | "phd".
 // verdict: "Eligible" | "Review" | "Ineligible" | "Closed". reasons: [{code, level:"block"|"review"|"plus", ev:"snippet"}]
 (function (root) {
-  const CAND = { needs_sponsorship: true, citizen_or_pr: false, grad: 2027 + 11 / 12, degree_level: "masters" };   // grad: decimal year (Dec 2027)
+  const CAND = { needs_sponsorship: true, citizen_or_pr: false, grad: 2027 + 11 / 12, degree_level: "masters", intern_summer: 2027 };   // grad: decimal year (Dec 2027)
   const DEGREE = { bachelors: "bachelors", bachelor: "bachelors", undergraduate: "bachelors", masters: "masters", master: "masters",
     phd: "phd", doctoral: "phd" };
   function setCandidate(c) {                 // {needs_sponsorship, citizen_or_pr, grad: decimal year or "YYYY-MM", degree_level}
     for (const k of ["needs_sponsorship", "citizen_or_pr"]) if (c && typeof c[k] === "boolean") CAND[k] = c[k];
     if (c && typeof c.degree_level === "string" && DEGREE[c.degree_level.toLowerCase().replace(/['’]/g, "")]) CAND.degree_level = DEGREE[c.degree_level.toLowerCase().replace(/['’]/g, "")];
+    if (c && Number.isInteger(c.intern_summer) && c.intern_summer > 2000) CAND.intern_summer = c.intern_summer;
     if (c && typeof c.grad === "number") CAND.grad = c.grad;
     else if (c && /^\d{4}-\d{2}$/.test(c.grad || "")) CAND.grad = +c.grad.slice(0, 4) + (+c.grad.slice(5) - 1) / 12;
     return Object.assign({}, CAND);
@@ -46,6 +47,9 @@
   const NO_SPONSOR_RESTRICTIVE = NO_SPONSOR.filter(re => /F-\?1|any employer|anyone other than|permanent\|unrestricted/.test(re.source)).concat([
     // "unable to sponsor … any type of employment visa, including F-1 (OPT/CPT), H-1B" (Viget): the student visa named in the no
     /\b(?:unable|cannot|can ?not|can't|will not|won't|do(?:es)? not|not)\b[^.;]{0,140}\b(?:F-?1|CPT|STEM OPT|OPT(?![- ]?(?:out|in)\b)|student visas?)\b/i]);
+  // the candidate's side of the sentence ("must not require sponsorship", "authorized to work without sponsorship") — the
+  // employer's side is "does not sponsor" (JSA-385)
+  const MUST_NOT_NEED = /\b(?:not|never)\s+(?:to\s+)?(?:currently\s+)?(?:require|need)s?\b[^.;]{0,40}\bsponsor|\bwithout (?:the )?(?:need (?:for|of) |requiring |needing )?(?:current or future |now or in the future |future |any |the )?(?:employer[- ]|company[- ]|visa |immigration |employment |work )*(?:visa )?sponsorship|\b(?:do(?:es)? not|don't) (?:currently )?(?:require|need) (?:visa |immigration |employment |work )*sponsorship/i;
   const OFFERS_SPONSOR = /\b(will|can|may|able to|happy to|open to|does|do)\s+(?:provide |offer |consider )?(?:visa |H-?1B |immigration )?sponsor(?:ship)?\b(?![^.;]{0,30}\b(?:not|unable)\b)|(?<!\bno (?:visa |H-?1B |immigration |employment |work )?)\bsponsorship (?:is )?(?:available|provided|offered)\b|\bvisa sponsorship: ?yes\b/i;
   const CITIZEN = [
     /\b(?:must|required to|need to) be (?:a )?(?:U\.?S\.?|United States) citizens?\b/i,
@@ -166,6 +170,40 @@
   }
   // "Minimum Years of Work Experience: 0" (Home Depot's labelled field) outranks any preferred floor
   const EXP_ZERO = /\bminimum (?:years of )?(?:work |relevant )?experience(?: \(years\))?\s*:\s*(?:0|none|no)\b/i;
+  // JSA-416: the internship's own term. Season + year ("Summer 2026") and month ranges with a year ("June – August 2026") are the
+  // terms the posting offers; a posted date, a deadline or graduation wording is not. Returns the years found with a snippet.
+  function cycleYears(t) {
+    const out = [];
+    const skip = (i, len) => { const pre = t.slice(Math.max(0, i - 60), i), sent = pre.slice(Math.max(pre.lastIndexOf(". "), pre.lastIndexOf("; ")) + 1);   // this sentence only
+      return /graduat|class of|degree|commencement|apply (?:by|before|until)|application|deadline|posted|recruit|copyright|©|opens?\b|closes?\b/i.test(sent)
+        || /\b(?:was|were|last|previous|prior|past|successful|success)\b/i.test(sent + " " + t.slice(i, i + len + 80).split(/[.;]\s/)[0])
+        || /^\s*(?:applications?|recruit\w*|deadline|posting)/i.test(t.slice(i + len, i + len + 20)); };
+    let m, re = /\b(summer|fall|autumn|spring|winter)\s+(?:term\s+|session\s+|cohort\s+|internship\s+)?(?:of\s+)?(?:20)?(2[5-9]|3[0-2])\b/gi;
+    while ((m = re.exec(t))) if (!skip(m.index, m[0].length)) out.push({ year: 2000 + +m[2], ev: snip(t, m.index) });
+    re = /\b(?:20)(2[5-9]|3[0-2])\s+(?:summer|fall|autumn|spring|winter)\b/gi;
+    while ((m = re.exec(t))) if (!skip(m.index, m[0].length)) out.push({ year: 2000 + +m[1], ev: snip(t, m.index) });
+    re = /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s*(?:\d{1,2}(?:st|nd|rd|th)?,?\s*)?(?:(?:20)?\d\d\s*)?(?:-|–|—|to|through|until)\s*(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s*(?:\d{1,2}(?:st|nd|rd|th)?,?\s*)?(?:20)(2[5-9]|3[0-2])\b/gi;
+    while ((m = re.exec(t))) if (!skip(m.index, m[0].length)) out.push({ year: 2000 + +m[2], ev: snip(t, m.index) });
+    return out;
+  }
+  // JSA-416: a postdoc, or a posting that needs the doctorate already finished (the candidate is a master's student)
+  function doctorateHeld(title, t) {
+    if (/\bpost-?doc(?:toral)?\b/i.test(title)) return title;
+    { const pm = /\bthis (?:is|role is|position is) an? (?:[\w–-]+ ){0,3}post-?doc(?:toral)? (?:appointment|position|fellowship|role)\b/i.exec(t); if (pm) return snip(t, pm.index); }   // "This is a 12-24 month postdoctoral appointment"
+    const DOC = "(?:Ph\\.?\\s?D\\.?|doctorate|doctoral degree)";
+    const re = new RegExp("\\b" + DOC + "\\b[^.;]{0,60}\\bmust be (?:completed|conferred|awarded|obtained|earned|received)\\b|\\b(?:must|required to|need to|should) (?:have|hold|possess) (?:a |an )?(?:completed |earned |recent )?" + DOC + "\\b|\\b" + DOC + "\\b(?: degree)? (?:is |are )?required\\b|\\b(?:completed|received|earned) (?:a |an |your |their )?" + DOC + "\\b[^.;]{0,30}\\b(?:prior to|before) (?:the )?start", "gi");
+    let m;
+    while ((m = re.exec(t))) {
+      const a = Math.max(t.lastIndexOf(".", m.index), t.lastIndexOf(";", m.index)) + 1, e = t.indexOf(".", m.index + m[0].length);
+      const sent = t.slice(a, e < 0 ? t.length : e);
+      if (/\b(?:prefer\w*|plus|bonus|desired|ideal\w*|or equivalent|master'?s|M\.?S\.?\b|bachelor'?s|or higher)\b/i.test(sent)) continue;
+      // JSA-416 review: a sentence about the candidate's own PhD studies, or about another role / the mentor, is not this role's requirement
+      if (/\b(?:pursuing|enrolled|candidacy|in progress|qualifying)\b/i.test(sent)) continue;
+      if (/\b(?:mentor\w*|supervis\w*|manager|senior|staff|principal|other roles?|our (?:scientists|researchers|team)|for the [\w ]{0,40}\brole)\b/i.test(sent) && !/\bthis (?:role|position|internship)\b|\bcandidates?\b|\bapplicants?\b|\byou\b/i.test(sent)) continue;
+      return snip(t, m.index);
+    }
+    return null;
+  }
   function classify(job) {
     // job: {title, text (html or plain), loc, level: "Internship"|"New grad"|"Early career", closed}
     const title = clean(job.title), t = clean(job.text), all = title + " . " + t, R = [];
@@ -202,8 +240,18 @@
     const futureSp = noSp && find(spText, new RegExp("\\bsponsor\\w*\\b[^.;]{0,90}\\b" + FUT + "\\b|\\b" + FUT + "\\b[^.;]{0,60}\\bsponsor\\w*|\\bfuture (?:visa |immigration |employment |work )?sponsorship\\b", "i"));
     if (noSp && !CAND.needs_sponsorship) { /* "no sponsorship" does not matter to this candidate */ }
     else if (noSp && internRole && !restrictive && !offers && !discretion) {
-      if (futureSp) R.push({ code: "NO_FUTURE_SPONSORSHIP_INTERN", level: "review", ev: futureSp });
-      /* else: CPT covers the internship — not a reason */
+      // JSA-385 (Joey 2026-11-17: his top goal is an internship; CPT needs no sponsorship): both wordings are Eligible now, as a
+      // 'plus' code the scorer reads. (1) the employer only says it does not sponsor → NO_SPONSORSHIP_INTERN (ranked a little
+      // lower by the sponsor factor). (2) the candidate must not need sponsorship now or in the future, or a "without /
+      // not require sponsorship" sentence with no time word (unsure → treat as 2) → NO_FUTURE_SPONSORSHIP_INTERN (one tier
+      // lower, C; the form answers stay truthful).
+      const mustNotNeed = futureSp || find(spText, MUST_NOT_NEED);
+      // a student / temporary visa named as not accepted, in words the restrictive patterns miss ("temporary visas … not
+      // eligible", "CPT, OPT … do not meet the requirements"): unsure → a person reads it, as before JSA-385
+      const visaNamed = find(spText, /\b(?:CPT|OPT|F-?1|J-?1|STEM OPT|temporary visas?|student visas?|visa holders?|international students?|foreign nationals?|non-?citizens?)\b[^.;]{0,120}\b(?:not|ineligible|unable|cannot)\b|\b(?:not eligible|ineligible|cannot|unable)\b[^.;]{0,80}\b(?:CPT|OPT|F-?1|temporary visas?|student visas?|international students?|foreign nationals?|non-?citizens?)\b|\bclearance\b[^.;]{0,60}\b(?:eligib\w*|required|requirement)\b|\beligib\w*[^.;]{0,30}\bclearance\b/i);
+      if (visaNamed) R.push({ code: "NO_FUTURE_SPONSORSHIP_INTERN", level: "review", ev: visaNamed });
+      else if (mustNotNeed) R.push({ code: "NO_FUTURE_SPONSORSHIP_INTERN", level: "plus", ev: mustNotNeed });
+      else R.push({ code: "NO_SPONSORSHIP_INTERN", level: "plus", ev: noSp });
     }
     else if (noSp && !offers && !discretion) R.push({ code: "NO_SPONSORSHIP", level: "block", ev: restrictive || noSp });
     else if (noSp && (offers || discretion)) R.push({ code: "SPONSORSHIP_MIXED", level: "review", ev: noSp });
@@ -230,6 +278,8 @@
       }
       // a dated range that never touches June–August (Hitachi "Duration: 3 Months (January - March 2027)", 2026-10-30)
       if (!R.some(r => r.code === "OFF_CYCLE")) { const off = termRange(t); if (off) R.push({ code: "OFF_CYCLE", level: summerAny ? "review" : "block", ev: off }); }
+      // JSA-416: every term / date the posting states is before the candidate's internship summer → a cycle that has passed
+      { const cy = cycleYears(all); if (cy.length && Math.max(...cy.map(c => c.year)) < CAND.intern_summer) R.push({ code: "PAST_CYCLE", level: "block", ev: cy[0].ev + " (before Summer " + CAND.intern_summer + ")" }); }
       const tm = title.match(/(?<!\d\s?[-–]\s?)\b(?:5|6|7|8|9|10|11|12|five|six|seven|eight|nine|ten|twelve)[- ]?months?\b/i);
       if (tm) R.push({ code: "TOO_LONG", level: "block", ev: title });
       else if ((ev = find(t, /\b(?:duration|length|period|lasts?|runs? for|internship of|for a period of)\b[^.;:]{0,15}:?\s*(?<!\b[1-4]\s?(?:-|to|or)\s?)(?:5|6|7|8|9|10|11|12|five|six|seven|eight|nine|ten|twelve)[- ]?months?\b/i))) R.push({ code: "TOO_LONG", level: "block", ev });
@@ -271,6 +321,8 @@
       else if (req && req.n === 2) R.push({ code: "EXPERIENCE_2", level: "review", ev: snip(t, req.i) });
       else if (pref && pref.n >= 3) R.push({ code: "EXPERIENCE_PREFERRED", level: "review", ev: snip(t, pref.i) });
     }
+    // JSA-416: postdoc / doctorate already held — a master's student cannot meet it (a PhD student may ask for the doctorate)
+    if (CAND.degree_level !== "phd" && (ev = doctorateHeld(title, t))) R.push({ code: "POSTDOC_OR_PHD_DONE", level: "block", ev });
     if (/\bMBA\b/.test(title) && !/\b(?:M\.?S\.?|MSc|Master'?s?|Masters|graduate|Ph\.?D|M\.?Eng)\b/i.test(title.replace(/\bMBA\b/g, ""))) R.push({ code: "MBA_ONLY", level: "block", ev: title });
     else if ((ev = find(t, /\b(?:current|currently enrolled|currently pursuing) MBA students?\b/i))) R.push({ code: "MBA_ONLY", level: "block", ev });
     // "Enrolled in an MBA program …", "looking for an MBA candidate" (Nike/Converse 2026-10-30) — not when the JD offers

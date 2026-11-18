@@ -122,8 +122,8 @@
   "loc": "Seattle, WA",
   "level": "Internship",
   "text": "Our Growth Analytics team is hiring a Product Analytics Intern for Summer 2027 (June 9 - August 22, 2027). The internship is open to master's students in statistics, economics, or a related quantitative field. You will define metrics, write SQL, and run experiments with the growth team. Interns present a readout to the analytics org in the final week and receive mentorship from a senior data scientist. Candidates must be able to work without sponsorship now or in the future. Housing support and a relocation stipend are available for the summer.",
-  "expect": "Review",
-  "reason": "Item 3: no-sponsorship sentence covers the future ('now or in the future') and names no F-1/CPT/OPT → Review."
+  "expect": "Eligible",
+  "reason": "Item 3: no-sponsorship sentence covers the future ('now or in the future') and names no F-1/CPT/OPT → Review. [JSA-385, Joey 2026-11-17: now Eligible, one tier lower (C) — see scripts/test_elig_jsa385.js]"
  },
  {
   "name": "intern_future_currently_or_in_the_future",
@@ -131,8 +131,8 @@
   "loc": "Columbus, OH",
   "level": "Internship",
   "text": "We are hiring a Supply Chain Analyst Intern for Summer 2027 (June 3 - August 14, 2027). This internship is open to master's students in supply chain management, operations research, or industrial engineering. You will build demand forecasts, analyze carrier performance, and support the annual network review with the planning team. Interns present their project to the operations leadership team at the end of the program. This position does not offer visa sponsorship, currently or in the future. A housing stipend and a mentor are provided for the ten-week internship.",
-  "expect": "Review",
-  "reason": "Item 3: 'currently or in the future' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review."
+  "expect": "Eligible",
+  "reason": "Item 3: 'currently or in the future' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review. [JSA-385, Joey 2026-11-17: now Eligible, one tier lower (C) — see scripts/test_elig_jsa385.js]"
  },
  {
   "name": "intern_future_at_any_time",
@@ -140,8 +140,8 @@
   "loc": "Raleigh, NC",
   "level": "Internship",
   "text": "Our Infrastructure team is looking for a Backend Engineering Intern for Summer 2027 (June 8 - August 21, 2027) in Raleigh. The internship is open to master's students in computer science or a related field. You will build internal services in Python and Go, improve observability, and write tests for the deployment pipeline. Interns take part in on-call shadowing and present a project at the end of the program. Candidates must not require sponsorship at any time. The team provides a mentor, a laptop, and a housing stipend for the twelve-week internship.",
-  "expect": "Review",
-  "reason": "Item 3: 'at any time' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review."
+  "expect": "Eligible",
+  "reason": "Item 3: 'at any time' future-scoped no-sponsorship, no F-1/CPT/OPT named → Review. [JSA-385, Joey 2026-11-17: now Eligible, one tier lower (C) — see scripts/test_elig_jsa385.js]"
  },
  {
   "name": "intern_future_future_sponsorship",
@@ -149,8 +149,8 @@
   "loc": "San Diego, CA",
   "level": "Internship",
   "text": "Join our Data Science team as an intern for Summer 2027 (June 15 - August 28, 2027). The internship is open to master's students in statistics, computer science, or a related field. You will build models for customer lifetime value, design A/B tests, and share results with marketing partners. Interns present at the end-of-summer analytics showcase and receive weekly mentorship. Please note that we do not offer future sponsorship for this role. The program includes a competitive hourly rate, a housing stipend, and social events with the broader analytics organization.",
-  "expect": "Review",
-  "reason": "Item 3: 'future sponsorship' language, no F-1/CPT/OPT named → Review (a return offer would need H-1B)."
+  "expect": "Eligible",
+  "reason": "Item 3: 'future sponsorship' language, no F-1/CPT/OPT named → Review (a return offer would need H-1B). [JSA-385, Joey 2026-11-17: now Eligible, one tier lower (C) — see scripts/test_elig_jsa385.js]"
  },
  {
   "name": "fulltime_plain_no_sponsorship",

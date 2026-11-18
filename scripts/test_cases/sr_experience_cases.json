@@ -1,0 +1,475 @@
+[
+ {
+  "name": "picker_ym ISO date normalises to YYYY-MM",
+  "fn": "picker_ym",
+  "args": {
+   "value": "2026-09-01"
+  },
+  "expect": "2026-09",
+  "spec_quote": "Accepted forms: an ISO date \"YYYY-MM-DD\" (what the box holds today, e.g. \"2026-09-01\" → \"2026-09\")",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym already YYYY-MM unchanged",
+  "fn": "picker_ym",
+  "args": {
+   "value": "2025-08"
+  },
+  "expect": "2025-08",
+  "spec_quote": "Accepted forms: ... \"YYYY-MM\"",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym one-digit month with slash",
+  "fn": "picker_ym",
+  "args": {
+   "value": "9/2026"
+  },
+  "expect": "2026-09",
+  "spec_quote": "\"MM/YYYY\" (month may be one digit: \"9/2026\" → \"2026-09\")",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym trims surrounding spaces",
+  "fn": "picker_ym",
+  "args": {
+   "value": " 2025-12 "
+  },
+  "expect": "2025-12",
+  "spec_quote": "Leading/trailing spaces are ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym rejects month 13",
+  "fn": "picker_ym",
+  "args": {
+   "value": "2026-13"
+  },
+  "expect": null,
+  "spec_quote": "The month must be 1–12, else null.",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym rejects month name",
+  "fn": "picker_ym",
+  "args": {
+   "value": "Sep 2026"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (empty, null, \"Sep 2026\", \"2026\", \"09-2026\", \"2026/09\") → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym empty string",
+  "fn": "picker_ym",
+  "args": {
+   "value": ""
+  },
+  "expect": null,
+  "spec_quote": "Anything else (empty, null, \"Sep 2026\", \"2026\", \"09-2026\", \"2026/09\") → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "picker_ym rejects 09-2026",
+  "fn": "picker_ym",
+  "args": {
+   "value": "09-2026"
+  },
+  "expect": null,
+  "spec_quote": "Anything else (empty, null, \"Sep 2026\", \"2026\", \"09-2026\", \"2026/09\") → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "ym_of profile YYYY-MM",
+  "fn": "ym_of",
+  "args": {
+   "value": "2025-08"
+  },
+  "expect": "2025-08",
+  "spec_quote": "A profile date (\"2025-08\", \"08/2025\", \"2025-08-01\") → \"YYYY-MM\"; same rules as picker_ym.",
+  "ambiguous": false
+ },
+ {
+  "name": "ym_of profile MM/YYYY",
+  "fn": "ym_of",
+  "args": {
+   "value": "08/2025"
+  },
+  "expect": "2025-08",
+  "spec_quote": "A profile date (\"2025-08\", \"08/2025\", \"2025-08-01\") → \"YYYY-MM\"; same rules as picker_ym.",
+  "ambiguous": false
+ },
+ {
+  "name": "ym_of profile ISO date",
+  "fn": "ym_of",
+  "args": {
+   "value": "2025-08-01"
+  },
+  "expect": "2025-08",
+  "spec_quote": "A profile date (\"2025-08\", \"08/2025\", \"2025-08-01\") → \"YYYY-MM\"; same rules as picker_ym.",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required required and visible",
+  "fn": "experience_required",
+  "args": {
+   "cfg": {
+    "fieldSets": {
+     "experience": {
+      "required": true,
+      "visible": true
+     }
+    }
+   }
+  },
+  "expect": true,
+  "spec_quote": "True only when fieldSets.experience.required is true and visible is not false",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required required but hidden",
+  "fn": "experience_required",
+  "args": {
+   "cfg": {
+    "fieldSets": {
+     "experience": {
+      "required": true,
+      "visible": false
+     }
+    }
+   }
+  },
+  "expect": false,
+  "spec_quote": "True only when fieldSets.experience.required is true and visible is not false",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required missing visible counts as visible",
+  "fn": "experience_required",
+  "args": {
+   "cfg": {
+    "fieldSets": {
+     "experience": {
+      "required": true
+     }
+    }
+   }
+  },
+  "expect": true,
+  "spec_quote": "(a missing \"visible\" counts as visible)",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required not required",
+  "fn": "experience_required",
+  "args": {
+   "cfg": {
+    "fieldSets": {
+     "experience": {
+      "required": false,
+      "visible": true
+     }
+    }
+   }
+  },
+  "expect": false,
+  "spec_quote": "True only when fieldSets.experience.required is true",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required missing experience section",
+  "fn": "experience_required",
+  "args": {
+   "cfg": {
+    "fieldSets": {}
+   }
+  },
+  "expect": false,
+  "spec_quote": "Missing fieldSets, missing experience, null cfg → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_required null config",
+  "fn": "experience_required",
+  "args": {
+   "cfg": null
+  },
+  "expect": false,
+  "spec_quote": "Missing fieldSets, missing experience, null cfg → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries null work",
+  "fn": "exp_entries",
+  "args": {
+   "work": null
+  },
+  "expect": [],
+  "spec_quote": "Empty / null work → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries full non-current entry",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Job Title": "Engineer",
+     "Company": "Acme",
+     "Location": "Chicago, IL",
+     "From": "08/2023",
+     "To": "09/2024",
+     "current": false,
+     "Description": " Built stuff "
+    }
+   ]
+  },
+  "expect": [
+   {
+    "title": "Engineer",
+    "company": "Acme",
+    "city": "Chicago",
+    "description": "Built stuff",
+    "start": "2023-08",
+    "end": "2024-09",
+    "current": false
+   }
+  ],
+  "spec_quote": "Output, one dict per usable entry: {\"title\", \"company\", \"city\", \"description\", \"start\", \"end\", \"current\"} where title/company are the trimmed values with runs of whitespace collapsed to one space, city = the Location part before the first comma (trimmed; \"\" when there is no Location), description = Description trimmed (\"\" when missing)",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries current entry forces end null and city before comma",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Job Title": "Dev",
+     "Company": "Beta",
+     "Location": "Berlin, Germany",
+     "From": "01/2024",
+     "To": "12/2024",
+     "current": true
+    }
+   ]
+  },
+  "expect": [
+   {
+    "title": "Dev",
+    "company": "Beta",
+    "city": "Berlin",
+    "description": "",
+    "start": "2024-01",
+    "end": null,
+    "current": true
+   }
+  ],
+  "spec_quote": "start = ym_of(From), end = ym_of(To) — but null when current is true, current = bool(current).",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries sorted most recent start first",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Job Title": "Old",
+     "Company": "A",
+     "Location": "X, Y",
+     "From": "01/2019",
+     "To": "12/2019",
+     "current": false,
+     "Description": ""
+    },
+    {
+     "Job Title": "New",
+     "Company": "B",
+     "Location": "X, Y",
+     "From": "05/2023",
+     "To": "06/2024",
+     "current": false,
+     "Description": ""
+    }
+   ]
+  },
+  "expect": [
+   {
+    "title": "New",
+    "company": "B",
+    "city": "X",
+    "description": "",
+    "start": "2023-05",
+    "end": "2024-06",
+    "current": false
+   },
+   {
+    "title": "Old",
+    "company": "A",
+    "city": "X",
+    "description": "",
+    "start": "2019-01",
+    "end": "2019-12",
+    "current": false
+   }
+  ],
+  "spec_quote": "Sorted by start, most recent first.",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries drops entries missing title or company",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Company": "Acme",
+     "Location": "NY, NY",
+     "From": "01/2020",
+     "To": "02/2021",
+     "current": false,
+     "Description": ""
+    },
+    {
+     "Job Title": "Dev",
+     "Location": "NY, NY",
+     "From": "01/2020",
+     "To": "02/2021",
+     "current": false,
+     "Description": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "An entry without a title, without a company, or whose From is not a valid date is left out (never guessed).",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries drops entry with invalid From",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Job Title": "Dev",
+     "Company": "Acme",
+     "Location": "NY, NY",
+     "From": "2020",
+     "To": "02/2021",
+     "current": false,
+     "Description": ""
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "An entry without a title, without a company, or whose From is not a valid date is left out (never guessed).",
+  "ambiguous": false
+ },
+ {
+  "name": "exp_entries bad To kept with null end and whitespace normalised",
+  "fn": "exp_entries",
+  "args": {
+   "work": [
+    {
+     "Job Title": "  Senior   Engineer ",
+     "Company": " Acme  Corp ",
+     "Location": " Chicago , IL",
+     "From": "03/2022",
+     "To": "garbage",
+     "current": false,
+     "Description": "  did  things "
+    }
+   ]
+  },
+  "expect": [
+   {
+    "title": "Senior Engineer",
+    "company": "Acme Corp",
+    "city": "Chicago",
+    "description": "did  things",
+    "start": "2022-03",
+    "end": null,
+    "current": false
+   }
+  ],
+  "spec_quote": "An invalid To on a non-current entry gives end null (the entry is kept).",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option skips Chicago Heights near miss",
+  "fn": "location_option",
+  "args": {
+   "city": "Chicago",
+   "options": [
+    "Chicago Heights, IL, US",
+    "Chicago, IL, US"
+   ]
+  },
+  "expect": "Chicago, IL, US",
+  "spec_quote": "\"Chicago\" must not match \"Chicago Heights, IL, US\" (the comma must follow the city name directly).",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option only near miss gives null",
+  "fn": "location_option",
+  "args": {
+   "city": "Chicago",
+   "options": [
+    "Chicago Heights, IL, US"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "\"Chicago\" must not match \"Chicago Heights, IL, US\" (the comma must follow the city name directly).",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option skips Cannot find entry",
+  "fn": "location_option",
+  "args": {
+   "city": "Springfield",
+   "options": [
+    "Cannot find your city? Click here to fill in manually",
+    "Springfield, IL, US"
+   ]
+  },
+  "expect": "Springfield, IL, US",
+  "spec_quote": "Never an option starting with \"Cannot find\" (the \"Cannot find your city? Click here to fill in manually\" entry).",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option match is case-insensitive",
+  "fn": "location_option",
+  "args": {
+   "city": "chicago",
+   "options": [
+    "CHICAGO, IL, US"
+   ]
+  },
+  "expect": "CHICAGO, IL, US",
+  "spec_quote": "compared case-insensitively (city trimmed, whitespace collapsed)",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option collapses city and option whitespace",
+  "fn": "location_option",
+  "args": {
+   "city": "  New   York ",
+   "options": [
+    "New York, NY, US"
+   ]
+  },
+  "expect": "New York, NY, US",
+  "spec_quote": "the first option whose text (whitespace collapsed, trimmed) starts with \"<city>,\"",
+  "ambiguous": false
+ },
+ {
+  "name": "location_option empty city gives null",
+  "fn": "location_option",
+  "args": {
+   "city": "",
+   "options": [
+    "Chicago, IL, US"
+   ]
+  },
+  "expect": null,
+  "spec_quote": "Empty city, no options, or no match → null.",
+  "ambiguous": false
+ }
+]

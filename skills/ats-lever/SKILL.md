@@ -55,6 +55,7 @@ update §4:** the kind of problem and its rule + test, not which company showed 
   after a few minutes; if it did, rerun the submit command while Joey is at the Mac.
 
 ## 4. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Lever: the /thanks URL, or a new thank-you sentence on a changed page.
 
 **A. hCaptcha after Submit.** Invisible until Submit; in the job Chrome (CDP-driven) Lever often answers "There was an error
 verifying your application" — even after a person solved the challenge there — and the form resets. That banner means
@@ -128,3 +129,23 @@ School Graduation" (grad_date → now `hs_grad_year` 2022), "If yes, what type o
 format questions are never sent to the essay writer (`prep_batch.FACT_FORMAT`); canon no longer reads "accomplishments
 from school or past internships" as the school field. Tests `scripts/test_rules_fix150.py` (DeepSeek 26),
 `scripts/test_prep_fix150.py` (18), t_rules. Seen: a Lever employer / a Lever employer / Belvedere prep 11-05
+
+**L. Critical answers taken from the wrong part of the question (JSA-281, audit 11-10).** A rule or a saved qa entry matched the wrong part of a critical question, or one merged entry covered two different
+questions; the page matched the plan, so nothing stopped it. Rules: the **fact gate** (`runner/fact_gate.py`, called by
+`canon.audit` before every submit, on the page records and the plan's full-label records) checks conviction,
+any-employer authorization, degree level (completed vs once graduated / pursuing), major (undergrad = Economics, a
+second major / minor = none), the internship start date, a value that is a regex (`^agree$`) and the user's saved
+answer for the exact question (when answers.json wrote the value) against config/profile.json — a mismatch blocks the
+submit and goes to Joey (an exception he confirms: `canon.py --learn <tenant> fact:<key> "<value>"`). In the rules:
+`conviction` (answers.conviction; the asking sentence decides, not a "criminal background check" notice), `any_employer`
+also for "any U.S Employer", `majorWhich` (undergrad / second major / minor), `name_pronunciation` also misspelled,
+`comp` also "(salary and bonus)", `applied_before` from the tracker (never a saved fixed answer; Joey 2026-11-10). The
+prefetch keeps wordings with different marks apart (`form_prefetch.sense`). Tests: `scripts/test_fact_gate.py`
+(DeepSeek 45 + the audit's 9), `scripts/test_jsa281_rules.js` (DeepSeek 40), `scripts/test_prefetch_sense.py` (25).
+
+**No in-place wait for the receipt e-mail (JSA-391, Lever and SuccessFactors).** A Submit whose page shows no confirmation used to
+hold the run for 180 s (Lever, `--mail-wait`) / 300 s (SuccessFactors) and then push "no confirmation". Now the run ends at
+once: status `unconfirmed`, results line `receipt: pending`, no queue line, no push, no Edge hand-off — `scripts/daily/receipt_confirm.py`
+(called by email_check) records `submitted` when the company's e-mail arrives and puts the application on Joey's list after
+48 h without one. A CAPTCHA met on the run (`receipt_plan` = joey) and a click that never landed still go to Joey at once;
+`--mail-wait N` brings the old wait back. Tests: `scripts/test_async_receipt.py` (DeepSeek 26), `scripts/test_receipt_confirm.py`.

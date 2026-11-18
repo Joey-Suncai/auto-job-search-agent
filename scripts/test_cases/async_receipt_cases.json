@@ -1,0 +1,282 @@
+[
+ {
+  "name": "captcha with zero mail_wait yields joey",
+  "fn": "receipt_plan",
+  "args": [
+   0,
+   true
+  ],
+  "expect": "joey",
+  "spec": "\"joey\": a CAPTCHA challenge was met on this run (captcha_seen true) — the submit probably did not go through and Joey must finish it (Edge hand-off, queue line, push). This wins over everything, also when mail_wait is positive."
+ },
+ {
+  "name": "captcha wins over positive mail_wait 180",
+  "fn": "receipt_plan",
+  "args": [
+   180,
+   true
+  ],
+  "expect": "joey",
+  "spec": "This wins over everything, also when mail_wait is positive."
+ },
+ {
+  "name": "captcha wins over positive mail_wait 300",
+  "fn": "receipt_plan",
+  "args": [
+   300,
+   true
+  ],
+  "expect": "joey",
+  "spec": "This wins over everything, also when mail_wait is positive."
+ },
+ {
+  "name": "captcha with null mail_wait yields joey",
+  "fn": "receipt_plan",
+  "args": [
+   null,
+   true
+  ],
+  "expect": "joey",
+  "spec": "\"joey\": a CAPTCHA challenge was met on this run (captcha_seen true) — the submit probably did not go through and Joey must finish it (Edge hand-off, queue line, push)."
+ },
+ {
+  "name": "captcha with negative mail_wait yields joey",
+  "fn": "receipt_plan",
+  "args": [
+   -1,
+   true
+  ],
+  "expect": "joey",
+  "spec": "\"joey\": a CAPTCHA challenge was met on this run (captcha_seen true) — the submit probably did not go through and Joey must finish it (Edge hand-off, queue line, push). This wins over everything, also when mail_wait is positive."
+ },
+ {
+  "name": "no captcha with explicit --mail-wait 180 waits",
+  "fn": "receipt_plan",
+  "args": [
+   180,
+   false
+  ],
+  "expect": "wait",
+  "spec": "\"wait\": mail_wait is a positive number of seconds (the old in-place wait, only when asked for with --mail-wait N)."
+ },
+ {
+  "name": "no captcha with minimal positive mail_wait 1 waits",
+  "fn": "receipt_plan",
+  "args": [
+   1,
+   false
+  ],
+  "expect": "wait",
+  "spec": "\"wait\": mail_wait is a positive number of seconds (the old in-place wait, only when asked for with --mail-wait N)."
+ },
+ {
+  "name": "no captcha with SuccessFactors 300 s positive wait waits",
+  "fn": "receipt_plan",
+  "args": [
+   300,
+   false
+  ],
+  "expect": "wait",
+  "spec": "\"wait\": mail_wait is a positive number of seconds (the old in-place wait, only when asked for with --mail-wait N)."
+ },
+ {
+  "name": "no captcha with zero mail_wait is pending",
+  "fn": "receipt_plan",
+  "args": [
+   0,
+   false
+  ],
+  "expect": "pending",
+  "spec": "\"pending\": otherwise (mail_wait 0, None or negative; no CAPTCHA) — record `unconfirmed` with receipt pending: no queue line, no push, no waiting; receipt_confirm confirms it later."
+ },
+ {
+  "name": "no captcha with null mail_wait is pending",
+  "fn": "receipt_plan",
+  "args": [
+   null,
+   false
+  ],
+  "expect": "pending",
+  "spec": "\"pending\": otherwise (mail_wait 0, None or negative; no CAPTCHA) — record `unconfirmed` with receipt pending: no queue line, no push, no waiting; receipt_confirm confirms it later."
+ },
+ {
+  "name": "no captcha with mail_wait -1 is pending",
+  "fn": "receipt_plan",
+  "args": [
+   -1,
+   false
+  ],
+  "expect": "pending",
+  "spec": "\"pending\": otherwise (mail_wait 0, None or negative; no CAPTCHA) — record `unconfirmed` with receipt pending: no queue line, no push, no waiting; receipt_confirm confirms it later."
+ },
+ {
+  "name": "no captcha with large negative mail_wait is pending",
+  "fn": "receipt_plan",
+  "args": [
+   -180,
+   false
+  ],
+  "expect": "pending",
+  "spec": "\"pending\": otherwise (mail_wait 0, None or negative; no CAPTCHA) — record `unconfirmed` with receipt pending: no queue line, no push, no waiting; receipt_confirm confirms it later."
+ },
+ {
+  "name": "receipt_pending exactly true means pending",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": true
+   }
+  ],
+  "expect": "pending",
+  "spec": "\"pending\" when `result[\"receipt_pending\"]` is exactly true (log only: no queue line, no push)."
+ },
+ {
+  "name": "receipt_pending false means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": false
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "missing receipt_pending key means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {}
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending null means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": null
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending numeric 0 means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": 0
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending string 'true' means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": "true"
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending string 'True' means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": "True"
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending true with other keys present means pending",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "status": "unconfirmed",
+    "receipt_pending": true
+   }
+  ],
+  "expect": "pending",
+  "spec": "\"pending\" when `result[\"receipt_pending\"]` is exactly true (log only: no queue line, no push)."
+ },
+ {
+  "name": "receipt_pending false with status unconfirmed means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "status": "unconfirmed",
+    "receipt_pending": false
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending numeric 1 is not exactly true",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": 1
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"pending\" when `result[\"receipt_pending\"]` is exactly true (log only: no queue line, no push); \"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\".",
+  "ambiguous": true,
+  "why": "The spec requires 'exactly true' and enumerates 0 and \"true\" as non-true, but does not say whether the number 1 counts; under an identity check it is joey, under truthiness it is pending."
+ },
+ {
+  "name": "receipt_pending empty list means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": []
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending string 'yes' means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "receipt_pending": "yes"
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ },
+ {
+  "name": "receipt_pending true with extra result fields means pending",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "exit_code": 0,
+    "receipt_pending": true,
+    "message": "no confirmation on page"
+   }
+  ],
+  "expect": "pending",
+  "spec": "\"pending\" when `result[\"receipt_pending\"]` is exactly true (log only: no queue line, no push)."
+ },
+ {
+  "name": "receipt_pending false alongside other data means joey",
+  "fn": "unconfirmed_action",
+  "args": [
+   {
+    "applications": [],
+    "status": "unconfirmed",
+    "receipt_pending": false
+   }
+  ],
+  "expect": "joey",
+  "spec": "\"joey\" otherwise (queue line + push as before) — also when the key is missing, false, null, 0, or the string \"true\"."
+ }
+]

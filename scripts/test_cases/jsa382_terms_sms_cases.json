@@ -1,0 +1,174 @@
+[
+ {
+  "name": "combined_exact_real_wording",
+  "label": "I agree to the terms & to candidacy updates by SMS/WhatsApp to my # if provided, unless I opt out.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "Without agreeing to the terms the form cannot be submitted, so such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_terms_and_conditions_plus_text_messages",
+  "label": "I agree to the terms and conditions and to receive text messages about my application.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "Some forms have ONE checkbox that combines agreeing to the terms (terms of use / terms and conditions / privacy policy / user agreement) with agreeing to receive SMS / text messages / WhatsApp",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_terms_of_use_plus_sms",
+  "label": "By checking this box I accept the terms of use and consent to receive SMS updates.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_privacy_policy_plus_whatsapp",
+  "label": "I agree to the privacy policy and to being contacted by WhatsApp regarding my candidacy.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "combines agreeing to the terms (terms of use / terms and conditions / privacy policy / user agreement) with agreeing to receive SMS / text messages / WhatsApp",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_sms_part_first",
+  "label": "I consent to receive SMS/text updates and I agree to the terms and conditions.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "the SMS part first or second",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_user_agreement_plus_text_messages",
+  "label": "I accept the user agreement and agree to receive text messages at the number provided.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "Some forms have ONE checkbox that combines agreeing to the terms (terms of use / terms and conditions / privacy policy / user agreement) with agreeing to receive SMS / text messages / WhatsApp",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_whatsapp_part_first_privacy_policy",
+  "label": "I agree to receive WhatsApp messages and accept the privacy policy.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_short_terms_and_sms_updates",
+  "label": "Agree to terms & conditions and to candidacy updates via SMS",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "Some forms have ONE checkbox that combines agreeing to the terms (terms of use / terms and conditions / privacy policy / user agreement) with agreeing to receive SMS / text messages / WhatsApp",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_terms_of_use_plus_sms_notifications",
+  "label": "I agree to the terms of use and to receive SMS notifications about my application status.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_privacy_policy_plus_text_messages_recruiter",
+  "label": "I have read the privacy policy and consent to text messages from the recruiter.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "combines agreeing to the terms (terms of use / terms and conditions / privacy policy / user agreement) with agreeing to receive SMS / text messages / WhatsApp",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_opt_in_whatsapp_sms_with_terms",
+  "label": "I accept the terms and conditions and opt in to WhatsApp/SMS communication.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "combined_terms_of_use_and_privacy_plus_sms_whatsapp_optout",
+  "label": "I agree to the terms of use & privacy policy and to receive SMS/WhatsApp updates unless I opt out.",
+  "expect": "Yes",
+  "expect_rule": "terms_sms",
+  "spec_quote": "such a combined box is ALWAYS answered \"Yes\" (checked), whatever the candidate's SMS preference is.",
+  "ambiguous": false
+ },
+ {
+  "name": "sms_only_use_sms_for_communication",
+  "label": "Use SMS for communication",
+  "expect": "Yes",
+  "expect_rule": "sms",
+  "spec_quote": "A box that is ONLY an SMS / text-message opt-in (\"Use SMS for communication\", \"I agree to receive text messages about my application\") keeps its own rule: expect rule \"sms\" (its answer follows the candidate's SMS preference, which is Yes now).",
+  "ambiguous": false
+ },
+ {
+  "name": "sms_only_text_messages_about_application",
+  "label": "I agree to receive text messages about my application",
+  "expect": "Yes",
+  "expect_rule": "sms",
+  "spec_quote": "A box that is ONLY an SMS / text-message opt-in (\"Use SMS for communication\", \"I agree to receive text messages about my application\") keeps its own rule: expect rule \"sms\" (its answer follows the candidate's SMS preference, which is Yes now).",
+  "ambiguous": false
+ },
+ {
+  "name": "sms_only_send_sms_updates",
+  "label": "Send me SMS updates about my candidacy",
+  "expect": "Yes",
+  "expect_rule": "sms",
+  "spec_quote": "A box that is ONLY an SMS / text-message opt-in ... keeps its own rule: expect rule \"sms\" (its answer follows the candidate's SMS preference, which is Yes now).",
+  "ambiguous": false
+ },
+ {
+  "name": "sms_only_whatsapp_contact_no_terms",
+  "label": "I agree to be contacted by WhatsApp about my application",
+  "expect": "Yes",
+  "expect_rule": "sms",
+  "spec_quote": "A box that is ONLY an SMS / text-message opt-in ... keeps its own rule: expect rule \"sms\" (its answer follows the candidate's SMS preference, which is Yes now).",
+  "ambiguous": false
+ },
+ {
+  "name": "sms_only_text_message_notifications_opt_in",
+  "label": "Opt in to text message notifications for this application",
+  "expect": "Yes",
+  "expect_rule": "sms",
+  "spec_quote": "A box that is ONLY an SMS / text-message opt-in ... keeps its own rule: expect rule \"sms\" (its answer follows the candidate's SMS preference, which is Yes now).",
+  "ambiguous": false
+ },
+ {
+  "name": "terms_only_terms_and_conditions",
+  "label": "I agree to the terms and conditions",
+  "expect": "Yes",
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "A box that is only the terms / privacy agreement without any SMS / text / WhatsApp wording: expect rule \"terms\" or \"data_consent\" (not the combined rule).",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec states the expected rule (not terms_sms) for terms-only boxes but never states what answer such a box must receive; 'Yes' is the assumed answer since agreeing to terms is required to submit, but this is not explicitly specified."
+ },
+ {
+  "name": "terms_only_terms_of_use",
+  "label": "I accept the terms of use",
+  "expect": "Yes",
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "A box that is only the terms / privacy agreement without any SMS / text / WhatsApp wording: expect rule \"terms\" or \"data_consent\" (not the combined rule).",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec fixes only the rule (not terms_sms) for terms-only boxes, not the Yes/No/unknown answer; 'Yes' is assumed but not stated."
+ },
+ {
+  "name": "terms_only_privacy_policy",
+  "label": "I have read and accept the privacy policy",
+  "expect": "Yes",
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "A box that is only the terms / privacy agreement without any SMS / text / WhatsApp wording: expect rule \"terms\" or \"data_consent\" (not the combined rule).",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec fixes only the rule (terms or data_consent, not terms_sms) for a privacy-only box, not the Yes/No/unknown answer."
+ },
+ {
+  "name": "terms_only_user_agreement",
+  "label": "I agree to the user agreement",
+  "expect": "Yes",
+  "expect_rule_not": "terms_sms",
+  "spec_quote": "A box that is only the terms / privacy agreement without any SMS / text / WhatsApp wording: expect rule \"terms\" or \"data_consent\" (not the combined rule).",
+  "ambiguous": true,
+  "ambiguous_reason": "The spec fixes only the rule (not terms_sms) for terms-only boxes, not the answer value; 'Yes' is assumed but not explicitly specified."
+ }
+]

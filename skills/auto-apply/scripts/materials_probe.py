@@ -114,8 +114,10 @@ JS_ENUM = """() => {
 
 def probe_live(folder, url=None, cdp='http://127.0.0.1:9222'):
     from playwright.sync_api import sync_playwright
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'runner'))
+    import cdp_connect                                        # JSA-386: opens a tab when the job Chrome has none
     with sync_playwright() as pw:
-        b = pw.chromium.connect_over_cdp(cdp)
+        b = cdp_connect.connect(pw, cdp)
         ctx = b.contexts[0]
         page = None
         if url:

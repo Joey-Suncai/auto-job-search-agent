@@ -32,6 +32,20 @@ import run_form as RF      # noqa: E402  queue / push / approved_for / already_s
 import presubmit as PS     # noqa: E402  materials gate + tailored resume + canon audit (JSA-186)
 import canon               # noqa: E402
 
+
+def start_shadow(data_dir):
+    """JSA-361 shadow run (Joey 2026-11-16): the question-type layer reads the fields this run just wrote, beside the live
+    rules, in a detached process (scripts/learn/qtype_shadow.py). It changes no answer; anything that goes wrong here is
+    swallowed — a run is never stopped or slowed by it. Off in tests and with CX_QTYPE_SHADOW=0."""
+    try:
+        learn = os.path.join(ROOT, 'scripts', 'learn')
+        if learn not in sys.path:
+            sys.path.insert(0, learn)
+        import qtype_shadow
+        return qtype_shadow.start_shadow(data_dir)
+    except Exception:
+        return False
+
 COMMON, PAGE = 'common_gate', 'platform_page'
 LAYER_ZH = {COMMON: '停在：公共关卡', PAGE: '停在：平台页面'}
 DONE = ('submitted', 'dry-run')
@@ -47,7 +61,7 @@ def field_rows(result):
     shape: {question, planned, page, source, type, required, ok, options}."""
     rows = []
     for f in PS.fields_of(result or {}):
-        rows.append({'question': str(f.get('label') or f.get('key') or '')[:300],
+        rows.append({'question': str(f.get('label') or f.get('key') or '')[:4000],   # the whole question (JSA-288: a 300 cut lost the asking sentence after a long notice)
                      'planned': f.get('want') if 'want' in f else f.get('answer'),
                      'page': f.get('page') if 'page' in f else f.get('value'),
                      'source': f.get('source') or f.get('rule') or f.get('why') or '',
@@ -56,6 +70,20 @@ def field_rows(result):
                      'ok': f.get('ok') if 'ok' in f else (f.get('status') in ('ok', 'keep', 'skip') if f.get('status') else None),
                      'options': list(f.get('options') or [])[:40]})
     return rows
+
+
+def block_problems(result, folder=None, log=None):
+    """JSA-294: every education / work block box the page holds, judged by code against the entry of its block
+    (block_check.py: "Education (UIUC): Degree" label prefixes, sections, the runner's entry). A failing check is a
+    problem too: a block that cannot be checked is not submitted."""
+    try:
+        import block_check as BC
+        out = ['block check: ' + p for p in BC.problems(PS.fields_of(result or {}), overrides=BC.load_overrides(folder))]
+    except Exception as e:
+        out = [f'block check failed: {type(e).__name__}: {str(e)[:100]}']
+    for p in out:
+        (log or (lambda m: None))(p)
+    return out
 
 
 def readback_bad(rows):
@@ -73,6 +101,18 @@ def stopped_layer(platform_problems, common_problems, status):
     if common_problems:
         return COMMON
     return None if status in DONE else PAGE
+
+
+def _commit_result(path, line):
+    """JSA-358: the runner commits its own results.jsonl line on the spot (best effort; never fails a run)."""
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'scripts', 'store'))
+        import data_git
+        data_git.commit_paths([path], f"data: runner {line.get('status')} — {line.get('folder')}")
+        if line.get('folder'):                             # JSA-412: and the application folder's files this run wrote (run_log, form_check, plan, application_record …)
+            data_git.commit_application(line['folder'], f"data: application {line.get('status')} — {line.get('folder')}")
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def results_line(*, at, folder, url, ats, status, mode, problems, fields, bad, secs, phases, stopped_at, tenant,
@@ -102,6 +142,12 @@ def field_lines(rows, *, run_id, at, folder, ats, tenant, hard):
 
 
 # ----------------------------------------------------------------------------- the run
+def unconfirmed_action(r):
+    """Pure (tested, JSA-391). 'pending' for an `unconfirmed` result flagged receipt_pending (the receipt e-mail is checked
+    later by receipt_confirm: log only), else 'joey' (queue line + push)."""
+    return 'pending' if (r or {}).get('receipt_pending') is True else 'joey'
+
+
 class Run:
     """One application run. `submit` = the runner will press the final button when every gate passes (the platform runner
     decides what it passes here: --submit, or --submit AND approved); `label` names the platform in pushes to Joey."""
@@ -175,12 +221,13 @@ class Run:
         hard, warn = PS.audit(r, self.posting, self.log)
         r['canon'], r['canon_warn'] = hard, warn
         rows = field_rows(r)
-        probs = PS.lines(hard)
+        probs = PS.lines(hard) + PS.review(r, self.log, self.folder or '')    # final_review: independent re-read of the key cells (JSA-355)
         bad = readback_bad(rows)
         if bad:
             probs.append('fields not confirmed on the page: ' + '; '.join(q[:40] for q in bad[:6]))
         if not rows:
             probs.append('no field was read back')
+        probs += block_problems(r, self.folder, self.log)
         return probs
 
     def gate(self, r, checked=None):
@@ -218,7 +265,7 @@ class Run:
         True = press. False = res is blocked (problems added; the runner returns res)."""
         hard, warn = PS.audit(res, self.posting, self.log)
         res['canon'], res['canon_warn'] = hard, warn
-        probs = PS.lines(hard)
+        probs = PS.lines(hard) + PS.review(res, self.log, self.folder or '')    # final_review (JSA-355)
         if not self.approved():
             probs.append('batch not approved (data/runner/approved_batches.json)')
         if probs:
@@ -259,15 +306,17 @@ class Run:
                             stopped_at=self.stopped_at, tenant=self.tenant, confirmed_by=confirmed_by, extra=extra)
         with open(os.path.join(self.data, 'results.jsonl'), 'a') as o:
             o.write(json.dumps(line) + '\n')
+        _commit_result(os.path.join(self.data, 'results.jsonl'), line)
         if rows:
             fdir = os.path.join(self.data, 'fields'); os.makedirs(fdir, exist_ok=True)
             run_id = f"{line['folder']}@{at}"
             with open(os.path.join(fdir, at[:7] + '.jsonl'), 'a') as o:
                 for fl in field_lines(rows, run_id=run_id, at=at, folder=line['folder'], ats=self.ats, tenant=self.tenant, hard=hard):
                     o.write(json.dumps(fl, ensure_ascii=False) + '\n')
+            start_shadow(self.data)
         return line
 
-    def finish(self, r, ctx=None, page=None, confirmed_by=None, extra_urls=(), keep_tab=False, extra=None):
+    def finish(self, r, ctx=None, page=None, confirmed_by=None, extra_urls=(), keep_tab=False, extra=None, told=False):
         """Results line + fields.jsonl, then: submitted → confirmation screenshot (if the runner did not), tracker row
         (sync_results), every tab of the posting closed; unconfirmed → queue + push; another non-final status of a submit
         run → queue (once). Never raises: the books of a pressed button must not be lost to a closing error."""
@@ -280,7 +329,9 @@ class Run:
         if status == 'submitted' and page is not None and self.out:
             shot = os.path.join(self.out, 'submitted_confirmation.png')
             if not os.path.exists(shot):
-                try: page.screenshot(path=shot, full_page=True)
+                try:
+                    import confirm_page as CP
+                    CP.confirmation_shot(page, shot, self.log)   # JSA-223
                 except Exception: pass
         line = self._write(r, rows, r.get('canon') or [], confirmed_by=confirmed_by, extra=extra)
         try:
@@ -293,6 +344,10 @@ class Run:
                 if page is not None and not page.is_closed():
                     page.close(); closed += 1
                 self.log(f'closed {closed} tab(s) of this posting')
+            elif told and status == 'unconfirmed':                 # the runner already queued / pushed this stop itself (JSA-196)
+                pass
+            elif status == 'unconfirmed' and unconfirmed_action(r) == 'pending':
+                self.log('receipt pending — receipt_confirm checks Gmail later (48 h without a receipt → Joey)')
             elif status == 'unconfirmed':
                 self._q('pressed the final button but no confirmation page and no company e-mail — check Gmail')
                 RF.push('求职 runner：没有确认', os.path.basename(self.out or '')[11:60] + f' — {self.label} 页面和邮件都没确认，交给你')

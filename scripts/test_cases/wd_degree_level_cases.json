@@ -1,0 +1,295 @@
+[
+ {
+  "name": "bachelor_options_micron_list",
+  "fn": "bachelor_options",
+  "opts": [
+   "Master's Level Degree",
+   "Bachelor's Level Degree"
+  ],
+  "expect": [
+   "Bachelor's Level Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_entrust_list",
+  "fn": "bachelor_options",
+  "opts": [
+   "4-year Degree (Bachelor's)",
+   "Post-Graduate Degree (Master's, PhD, JD, etc.)"
+  ],
+  "expect": [
+   "4-year Degree (Bachelor's)"
+  ]
+ },
+ {
+  "name": "bachelor_options_corbrakel_list",
+  "fn": "bachelor_options",
+  "opts": [
+   "Undergraduate Degree",
+   "Post Graduate Degree"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_empty_list",
+  "fn": "bachelor_options",
+  "opts": [],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_named_ba_before_level",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor's Level Degree",
+   "Bachelor of Arts"
+  ],
+  "expect": [
+   "Bachelor of Arts",
+   "Bachelor's Level Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_ba_abbrev_before_plain",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor's Degree",
+   "B.A."
+  ],
+  "expect": [
+   "B.A.",
+   "Bachelor's Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_bs_alone_excluded",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Science"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_bs_with_ba",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Science",
+   "Bachelor of Arts"
+  ],
+  "expect": [
+   "Bachelor of Arts"
+  ]
+ },
+ {
+  "name": "bachelor_options_fine_arts_excluded",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Fine Arts"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_nursing_excluded",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Science in Nursing"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_business_admin_excluded",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Business Administration"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_bba_with_ba",
+  "fn": "bachelor_options",
+  "opts": [
+   "BBA",
+   "Bachelor of Arts"
+  ],
+  "expect": [
+   "Bachelor of Arts"
+  ]
+ },
+ {
+  "name": "bachelor_options_or_combo_with_arts",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Science or Bachelor of Arts"
+  ],
+  "expect": [
+   "Bachelor of Science or Bachelor of Arts"
+  ]
+ },
+ {
+  "name": "bachelor_options_or_combo_without_arts",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Science or Bachelor of Engineering"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_or_combo_after_plain",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelor of Arts or Bachelor of Science",
+   "Bachelor's Degree"
+  ],
+  "expect": [
+   "Bachelor's Degree",
+   "Bachelor of Arts or Bachelor of Science"
+  ]
+ },
+ {
+  "name": "bachelor_options_bachelors_degree_plain",
+  "fn": "bachelor_options",
+  "opts": [
+   "Bachelors Degree"
+  ],
+  "expect": [
+   "Bachelors Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_four_year_bachelor",
+  "fn": "bachelor_options",
+  "opts": [
+   "4 Year Bachelor's Degree"
+  ],
+  "expect": [
+   "4 Year Bachelor's Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_mixed_levels_filtered",
+  "fn": "bachelor_options",
+  "opts": [
+   "Associate Degree",
+   "Bachelor's Level Degree",
+   "Master's Level Degree",
+   "Doctorate Degree"
+  ],
+  "expect": [
+   "Bachelor's Level Degree"
+  ]
+ },
+ {
+  "name": "bachelor_options_undergraduate_no_bachelor_word",
+  "fn": "bachelor_options",
+  "opts": [
+   "Undergraduate Degree"
+  ],
+  "expect": []
+ },
+ {
+  "name": "bachelor_options_ba_and_bs_abbrev",
+  "fn": "bachelor_options",
+  "opts": [
+   "B.S.",
+   "B.A."
+  ],
+  "expect": [
+   "B.A."
+  ]
+ },
+ {
+  "name": "level_undergraduate_degree_is_bachelor",
+  "fn": "level_of",
+  "value": "Undergraduate Degree",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_graduate_degree_is_master",
+  "fn": "level_of",
+  "value": "Graduate Degree",
+  "expect": "master"
+ },
+ {
+  "name": "level_post_graduate_with_phd_jd_is_master",
+  "fn": "level_of",
+  "value": "Post-Graduate Degree (Master's, PhD, JD, etc.)",
+  "expect": "master"
+ },
+ {
+  "name": "level_masters_level_degree_is_master",
+  "fn": "level_of",
+  "value": "Master's Level Degree",
+  "expect": "master"
+ },
+ {
+  "name": "level_doctorate_degree_is_phd",
+  "fn": "level_of",
+  "value": "Doctorate Degree",
+  "expect": "phd"
+ },
+ {
+  "name": "level_phd_is_phd",
+  "fn": "level_of",
+  "value": "PhD",
+  "expect": "phd"
+ },
+ {
+  "name": "level_bachelors_level_degree_is_bachelor",
+  "fn": "level_of",
+  "value": "Bachelor's Level Degree",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_four_year_degree_bachelors_is_bachelor",
+  "fn": "level_of",
+  "value": "4-year Degree (Bachelor's)",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_ba_abbrev_is_bachelor",
+  "fn": "level_of",
+  "value": "B.A.",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_bs_abbrev_is_bachelor",
+  "fn": "level_of",
+  "value": "B.S.",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_baccalaureate_is_bachelor",
+  "fn": "level_of",
+  "value": "Baccalaureate Degree",
+  "expect": "bachelor"
+ },
+ {
+  "name": "level_associate_degree_is_other",
+  "fn": "level_of",
+  "value": "Associate Degree",
+  "expect": "other"
+ },
+ {
+  "name": "level_high_school_diploma_is_other",
+  "fn": "level_of",
+  "value": "High School Diploma",
+  "expect": "other"
+ },
+ {
+  "name": "level_ged_is_other",
+  "fn": "level_of",
+  "value": "GED",
+  "expect": "other"
+ },
+ {
+  "name": "level_mba_is_master",
+  "fn": "level_of",
+  "value": "MBA",
+  "expect": "master"
+ },
+ {
+  "name": "level_unknown_certificate_is_none",
+  "fn": "level_of",
+  "value": "Certificate of Completion",
+  "expect": null
+ }
+]

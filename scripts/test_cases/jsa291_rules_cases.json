@@ -1,0 +1,324 @@
+[
+ {
+  "name": "Plain legal authorization yes/no",
+  "label": "Are you legally authorized to work in the U.S.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "\"Are you legally authorized to work in the U.S.?\" (plain, no \"any employer\" / \"without restriction\") = Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Any-employer yes/no",
+  "label": "Are you authorized to work for any employer in the U.S.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A yes/no question (options exactly \"Yes\" / \"No\", or a text box) asking whether he is authorized for ANY employer / without restriction → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Unrestricted yes/no",
+  "label": "Do you have unrestricted work authorization?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A yes/no question (options exactly \"Yes\" / \"No\", or a text box) asking whether he is authorized for ANY employer / without restriction → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Permanent authorization yes/no",
+  "label": "Are you permanently authorized to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work for ANY employer / without restriction / permanently / unrestricted?\" = No.",
+  "ambiguous": false
+ },
+ {
+  "name": "Any-employer text box",
+  "label": "Are you authorized to work for any employer?",
+  "options": [],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A yes/no question (options exactly \"Yes\" / \"No\", or a text box) asking whether he is authorized for ANY employer / without restriction → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Without-restriction text box",
+  "label": "Are you able to work without restriction?",
+  "options": [],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A yes/no question (options exactly \"Yes\" / \"No\", or a text box) asking whether he is authorized for ANY employer / without restriction → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Plain legal authorization text box",
+  "label": "Are you legally authorized to work in the U.S.?",
+  "options": [],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "\"Are you legally authorized to work in the U.S.?\" (plain, no \"any employer\" / \"without restriction\") = Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list with restrictions despite yes/no label",
+  "label": "Are you authorized to work for any employer in the U.S.?",
+  "options": [
+   "Yes, with restrictions",
+   "Yes, without restriction",
+   "No, I am not authorized to work"
+  ],
+  "company": "",
+  "expect": "Yes, with restrictions",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list with 'Yes, but with restrictions' variant",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "No, I am not authorized",
+   "Yes, but with restrictions (CPT only)",
+   "Yes, authorized for any employer"
+  ],
+  "company": "",
+  "expect": "Yes, but with restrictions (CPT only)",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list restrictions beats future sponsorship",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I will require visa sponsorship in the future",
+   "No, I am not authorized to work",
+   "Yes, with restrictions"
+  ],
+  "company": "",
+  "expect": "Yes, with restrictions",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list future sponsorship",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "Yes, I am authorized for any employer",
+   "No, I am not authorized to work",
+   "I will require visa sponsorship in the future"
+  ],
+  "company": "",
+  "expect": "I will require visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list future sponsorship beats unrestricted and not-currently-authorized",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I will need visa sponsorship in the future",
+   "Yes, authorized without restriction",
+   "No, not currently authorized"
+  ],
+  "company": "",
+  "expect": "I will need visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list requires future sponsorship with do-not-require distractor",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I do not require visa sponsorship",
+   "I will require visa sponsorship in the future",
+   "No, I am not authorized"
+  ],
+  "company": "",
+  "expect": "I will require visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list only do-not-require sponsorship",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "Yes, I am authorized for any employer",
+   "No, I am not authorized",
+   "I do not require visa sponsorship"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list only not-authorized and any-employer options",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "No, I am not authorized to work",
+   "Yes, authorized for any employer",
+   "My status is unknown"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list not-eligible and unrestricted and present-employer-only",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I am not eligible to work",
+   "I have unrestricted work authorization",
+   "I am authorized for my present employer only"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "c. Never pick an option saying he is \"not authorized\" / \"not currently authorized\" / \"not eligible\" to work, nor the option claiming authorization for any employer / without restriction / permanently / as a citizen. d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list present-employer-only plus any-employer plus not-authorized",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I am authorized to work for my present employer only",
+   "I am authorized for any employer",
+   "No, I am not authorized to work"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list unknown-status option",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "My status is unknown",
+   "Yes, authorized for any employer",
+   "No, not authorized"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list restrictions phrase not at start",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I can work with restrictions",
+   "I am authorized for any employer",
+   "No, not authorized"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option. d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list without-restrictions option only",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "Yes, without restrictions",
+   "No, not authorized",
+   "My status is unknown"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "c. Never pick an option saying he is \"not authorized\" / \"not currently authorized\" / \"not eligible\" to work, nor the option claiming authorization for any employer / without restriction / permanently / as a citizen. d. If neither (a) nor (b) is offered → \"unknown\" (he is asked). Options such as \"for my present employer only\" or \"my status is unknown\" are not picked by the rule.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list restrictions beats not-authorized and any-employer",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "No, I am not authorized",
+   "Yes, authorized for any employer",
+   "Yes, with restrictions"
+  ],
+  "company": "",
+  "expect": "Yes, with restrictions",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list future sponsorship beats permanent and not-authorized",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I am authorized to work permanently",
+   "I need visa sponsorship in the future",
+   "No, I am not authorized"
+  ],
+  "company": "",
+  "expect": "I need visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list future sponsorship beats not-currently-authorized and without-restriction",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I am not currently authorized to work",
+   "I am authorized without restriction",
+   "I require visa sponsorship in the future"
+  ],
+  "company": "",
+  "expect": "I require visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ },
+ {
+  "name": "Status list restrictions beats do-not-require and not-eligible",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I do not require visa sponsorship",
+   "No, I am not eligible to work",
+   "Yes, with restrictions"
+  ],
+  "company": "",
+  "expect": "Yes, with restrictions",
+  "spec_quote": "a. If an option starts with \"Yes, with restrictions\" (or \"Yes, but with restrictions\") → that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "Any-employer without-restriction yes/no",
+  "label": "Are you authorized to work without restriction?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A yes/no question (options exactly \"Yes\" / \"No\", or a text box) asking whether he is authorized for ANY employer / without restriction → \"No\".",
+  "ambiguous": false
+ },
+ {
+  "name": "Four-option status list future sponsorship",
+  "label": "Which best describes your work authorization status?",
+  "options": [
+   "I need visa sponsorship in the future",
+   "I do not require visa sponsorship",
+   "Yes, authorized for any employer",
+   "No, not authorized"
+  ],
+  "company": "",
+  "expect": "I need visa sponsorship in the future",
+  "spec_quote": "b. Otherwise, the option stating that he requires / needs (now or in the future) visa sponsorship → that option. An option saying he does NOT require sponsorship is never this one.",
+  "ambiguous": false
+ }
+]

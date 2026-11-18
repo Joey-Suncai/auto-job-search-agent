@@ -87,6 +87,11 @@ def save(name, rows):
         for r in clean:
             f.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
     os.replace(tmp, path(name))
+    try:                                                         # JSA-358: the writer commits its own file on the spot (best effort)
+        import data_git
+        data_git.commit_paths([path(name)], f"data: {name} ({len(clean)} rows)")
+    except Exception:                                            # noqa: BLE001 — a data write never fails because of git
+        pass
     return len(clean)
 
 

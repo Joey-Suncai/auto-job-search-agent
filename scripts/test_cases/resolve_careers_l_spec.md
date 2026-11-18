@@ -5,7 +5,7 @@ removed). `label` = the registrable label of the final host ("bcbsm" for www.bcb
 JSON-LD name + copyright line + logo alt, lower case. These three additions are new; everything else is unchanged.
 
 1. Initials without small words: the label may equal the initials of the company name with "of", "the", "and", "for"
-   left out: "Blue Cross Blue Shield of Michigan" → "bcbsm" passes the host check (the page names must still name the
+   left out: "an employer" → "bcbsm" passes the host check (the page names must still name the
    company as before: e.g. contain all of the words squashed together, or its first two words).
 2. Whole-name domain, empty names: when the label equals all distinctive words squashed together (or the whole name
    squashed) and the page names are empty (rendered by JavaScript), the page counts as the company

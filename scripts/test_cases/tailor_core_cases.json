@@ -1,0 +1,2080 @@
+[
+ {
+  "name": "tailor: reserve would target the lowest-weight bullet, but it is the entry's first (core) bullet — next eligible non-core goes",
+  "why": "Core definition: 'core = the entry's first bullet, or any bullet with \"core\": true; a core bullet is never replaced'. b1 is index 0 so it is core even though its top competency weight (iac = 1) is the lowest of the three. Eligible non-core bullets are b2 (lang = 2) and b3 (ops = 3); among those 'the bullet with the lowest top competency weight ... goes' → b2 is removed, and its removal 'loses nothing' because b2 holds no JD term. The reserve brings two JD terms the page does not hold (Observability, Incident). Order: 'an entry's core bullets come first, in their master order; the others follow, sorted by how many JD terms they hold (more first, stable)' → b1, then reserve (2 terms), then b3 (0 terms).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Instrumented observability dashboards and led incident review processes.",
+    "Facilitated team retrospectives and documented onboarding runbooks."
+   ]
+  }
+ },
+ {
+  "name": "tailor: every non-first bullet marked core — reserve brings new terms but no non-core bullet exists, so it is skipped",
+  "why": "'a core bullet is never replaced' and replacement only happens for 'one non-core bullet of its entry'. Here b1 is core by position (index 0) and b2, b3 carry \"core\": true, so there is no replaceable bullet and the reserve bullet is skipped. Order leaves the list unchanged: core bullets come first in master order (b1, b2, b3), and there are no non-core bullets to sort after them.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false,
+       "core": true
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false,
+       "core": true
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Wrote quarterly release notes and coordinated sprint demos.",
+    "Facilitated team retrospectives and documented onboarding runbooks."
+   ]
+  }
+ },
+ {
+  "name": "tailor: marked core bullet is hoisted ahead of a non-core bullet that holds more JD terms",
+  "why": "'an entry's core bullets come first, in their master order; the others follow, sorted by how many JD terms they hold (more first, stable)'. b1 (index 0) and b3 (\"core\": true) are core, so they come first in master order — even though b2 holds two JD terms (Kubernetes, Python) versus b3's zero. b2 then follows as the only non-core bullet. Reserve is empty so no replacement step applies.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Kubernetes operators and Python deployment pipelines for the platform team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops",
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false,
+       "core": true
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Wrote quarterly release notes and coordinated sprint demos.",
+    "Built Kubernetes operators and Python deployment pipelines for the platform team."
+   ]
+  }
+ },
+ {
+  "name": "tailor: several core bullets interleaved with non-core ones keep master order; non-core bullets are sorted after them",
+  "why": "'an entry's core bullets come first, in their master order' — the cores are b1 (index 0), b2 (\"core\": true) and b3 (\"core\": true), so they appear as b1, b2, b3 even though b3 holds three JD terms (Kubernetes, Python, Incident) and b2 holds none. 'the others follow, sorted by how many JD terms they hold (more first, stable)' — b4 (Observability, 1 term) before b5 (0 terms). No reserve, so nothing is replaced.",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Instrumented observability dashboards for service health.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "obs"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false,
+       "core": true
+      },
+      {
+       "text": "Led Kubernetes cluster migrations, built Python tooling and ran incident response drills.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false,
+       "core": true
+      },
+      {
+       "text": "Coordinated vendor onboarding sessions for the platform group.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Wrote quarterly release notes and coordinated sprint demos.",
+    "Facilitated team retrospectives and documented onboarding runbooks.",
+    "Led Kubernetes cluster migrations, built Python tooling and ran incident response drills.",
+    "Instrumented observability dashboards for service health.",
+    "Coordinated vendor onboarding sessions for the platform group."
+   ]
+  }
+ },
+ {
+  "name": "tailor: bullet marked \"core\": false in a non-first position is a replaceable non-core bullet",
+  "why": "Core is defined as 'the entry's first bullet, or any bullet with \"core\": true'; a bullet carrying \"core\": false at index 1 is therefore non-core and may be replaced. b2's removal 'loses nothing' (it holds no JD term), so the reserve — which brings Observability and Incident, neither held by the page — replaces it. Final order: core b1 first, then the incoming reserve bullet (2 JD terms).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "obs"
+       ],
+       "bold": false,
+       "core": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Instrumented observability dashboards and led incident review processes."
+   ]
+  }
+ },
+ {
+  "name": "tailor: non-core bullet is replaceable because its JD term survives on another bullet (removal loses nothing)",
+  "why": "Removal is allowed only when 'every term the removed bullet holds (any spelling) ... must still be on the rest of the page in the same way'. b2 holds Python, but b3 also holds Python, so removing b2 loses nothing; b2's top competency weight (lang = 2) is the lowest among eligible non-core bullets (b3 = ops = 3). Core b1 (index 0) is untouched. Order: core b1, then non-core sorted by JD-term count — reserve (Observability + Incident = 2) ahead of b3 (Python = 1).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Extended Python data pipeline test suites.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Instrumented observability dashboards and led incident review processes.",
+    "Extended Python data pipeline test suites."
+   ]
+  }
+ },
+ {
+  "name": "tailor: equal-weight tie among non-core bullets — the later one goes, and an equal-weight core bullet is untouched",
+  "why": "Among the eligible bullets 'the bullet with the lowest top competency weight ... goes, ties → the later bullet'. b2 and b4 both have only competency lang (weight 2) and neither holds a JD term, so the later bullet b4 is removed. b3 has the same weight but carries \"core\": true, and 'a core bullet is never replaced'. Order: cores b1, b3 in master order, then reserve (2 JD terms) ahead of b2 (0 terms).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false,
+       "core": true
+      },
+      {
+       "text": "Coordinated vendor onboarding sessions for the platform group.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Facilitated team retrospectives and documented onboarding runbooks.",
+    "Instrumented observability dashboards and led incident review processes.",
+    "Wrote quarterly release notes and coordinated sprint demos."
+   ]
+  }
+ },
+ {
+  "name": "tailor: reserve skipped because removing either non-core bullet would drop a JD term; ordering still applies",
+  "why": "A bullet may only be removed if 'every term the removed bullet holds (any spelling) ... must still be on the rest of the page in the same way'. Python is held only by b2 and Kubernetes only by b3, so neither is eligible; the reserve bullet is therefore skipped ('Nothing brought → skip' does not apply, but there is no removable bullet). The order step still runs: core b1 first, then non-core sorted by JD-term count — b3 (Kubernetes + Terraform = 2) before b2 (Python = 1).",
+  "fn": "tailor",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes",
+      "Python",
+      "Terraform",
+      "Observability",
+      "Incident"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "role": {
+   "competencies": [
+    {
+     "id": "ops",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "Kubernetes",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "lang",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "Python",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "iac",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Terraform",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "obs",
+     "weight": 4,
+     "keywords": [
+      {
+       "term": "Observability",
+       "synonyms": [
+        "monitoring"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "inc",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "Incident",
+       "synonyms": [
+        "incidents"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote release notes for the Python tooling launch.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Led Kubernetes cluster migrations and automated Terraform refactors.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards and led incident review processes.",
+     "fact_ids": [
+      "f1"
+     ],
+     "competencies": [
+      "obs",
+      "inc"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "jd": "We are hiring a platform engineer. You will work with Kubernetes, Python and Terraform. Experience with Observability and incident response is required.",
+  "title": "",
+  "expect_bullets": {
+   "e1": [
+    "Managed Terraform modules for all production cloud environments.",
+    "Led Kubernetes cluster migrations and automated Terraform refactors.",
+    "Wrote release notes for the Python tooling launch."
+   ]
+  }
+ },
+ {
+  "name": "tailored: entry's first bullet deleted — core_dropped",
+  "why": "'core_dropped: a core bullet of the approved master (index 0 of its entry, or \"core\": true) whose text is not the text of some bullet of the same entry in the tailored master, nor equal to one after undoing every swap.' b1 is index 0 of e1 and is absent from the tailored e1; the remaining bullet matches an approved bullet, so there is no new_sentence.",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Terraform",
+      "Kubernetes"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Terraform",
+      "Kubernetes"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": []
+  },
+  "title": null,
+  "expect_kinds": [
+   "core_dropped"
+  ]
+ },
+ {
+  "name": "tailored: first bullet deleted without any core mark — still core_dropped",
+  "why": "'core_dropped: a core bullet of the approved master (index 0 of its entry, or \"core\": true) ...' — core status is positional for the first bullet, so removing b1 without a \"core\" flag is still a dropped core bullet. The two remaining bullets match approved bullets verbatim, so no new_sentence.",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Kubernetes"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led Kubernetes cluster migrations for the platform team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Facilitated team retrospectives and documented onboarding runbooks.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": []
+  },
+  "title": null,
+  "expect_kinds": [
+   "core_dropped"
+  ]
+ },
+ {
+  "name": "tailored: non-core bullet replaced by a reserve bullet — clean",
+  "why": "'new_sentence: a tailored bullet whose text is not the text of an approved bullet or approved reserve bullet ...' — the incoming bullet's text is exactly an approved reserve bullet's text, so it is not a new sentence. The core bullet b1 (index 0) is still present, so no core_dropped. Result: no problems.",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Terraform"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Observability"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Terraform",
+      "Observability"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "entry_id": "e1",
+     "text": "Instrumented observability dashboards for service health.",
+     "fact_ids": [
+      "f2"
+     ],
+     "competencies": [
+      "obs"
+     ],
+     "bold": false
+    }
+   ]
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Instrumented observability dashboards for service health.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "obs"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": []
+  },
+  "title": null,
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored: core bullets reordered — clean",
+  "why": "'core_dropped ... Reordering is fine; only absence counts.' All approved core bullets (b1 at index 0 and b3 with \"core\": true) still appear in the tailored entry e1, just in a different order, so there is no problem. Every tailored bullet's text equals an approved bullet's text, so no new_sentence.",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Terraform"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f3",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Terraform",
+      "Python",
+      "Kubernetes"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Led Kubernetes cluster migrations for the platform team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false,
+       "core": true
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led Kubernetes cluster migrations for the platform team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false,
+       "core": true
+      },
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": []
+  },
+  "title": null,
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored: core bullet readable only after undoing a listed swap — clean",
+  "why": "core_dropped compares the approved core bullet's text with the tailored bullets 'or equal to one after undoing every swap'. The swap large language model → LLM passes is_bullet_variant (acronym ↔ expansion, both singular), and undoing it reproduces the approved first bullet exactly, so it is not dropped. new_sentence also passes because 'undoing every swap (replace each \"to\" by its \"from\", case-insensitive)' restores an approved bullet text. Result: no problems.",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Kubernetes"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Python",
+      "Kubernetes"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built a large language model evaluation harness for the research team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built a LLM evaluation harness for the research team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": [
+    {
+     "from": "large language model",
+     "to": "LLM"
+    }
+   ]
+  },
+  "title": null,
+  "expect_kinds": []
+ },
+ {
+  "name": "tailored: core bullet moved into another entry — core_dropped",
+  "why": "b1 is index 0 of approved entry e1. In the tailored master it appears only under e2, so 'a core bullet of the approved master ... whose text is not the text of some bullet of the same entry in the tailored master' is missing from e1 → core_dropped. It is not a new_sentence, since its text equals an approved bullet's text (the entry_moved kind is not part of the compared set).",
+  "fn": "tailored",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Northwind Systems",
+     "on_resume": true
+    },
+    {
+     "id": "e2",
+     "org": "Contoso Labs",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Terraform"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f3",
+     "entry": "e2",
+     "skills": [
+      "Kubernetes"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f4",
+     "entry": "e2",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "Cloud": [
+      "Terraform",
+      "Kubernetes",
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "approved": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Led Kubernetes cluster migrations for the platform team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f4"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": []
+  },
+  "tailored": {
+   "headline": "",
+   "summary": "",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Wrote quarterly release notes and coordinated sprint demos.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": false
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Led Kubernetes cluster migrations for the platform team.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [
+        "ops"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Built Python tooling for release automation.",
+       "fact_ids": [
+        "f4"
+       ],
+       "competencies": [
+        "lang"
+       ],
+       "bold": false
+      },
+      {
+       "text": "Managed Terraform modules for all production cloud environments.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [
+        "iac"
+       ],
+       "bold": false
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "swaps": []
+  },
+  "title": null,
+  "expect_kinds": [
+   "core_dropped"
+  ]
+ }
+]

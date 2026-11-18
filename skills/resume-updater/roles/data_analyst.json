@@ -1,0 +1,2435 @@
+{
+ "direction": "data_analyst",
+ "label": "Data Analyst / BI",
+ "built": "2026-11-08",
+ "n_jds": 862,
+ "levels": {
+  "Internship": 485,
+  "New grad": 312,
+  "Early career": 53,
+  "New Grad / Entry": 12
+ },
+ "tracks": {
+  "Data Analyst": 862
+ },
+ "template": "harvard",
+ "section_order": [
+  "Education",
+  "Skills",
+  "Experience",
+  "Projects",
+  "Leadership"
+ ],
+ "headline_pattern": "<exact job title> · SQL · <BI tool or Python / R from the JD>",
+ "competencies": [
+  {
+   "id": "stakeholders",
+   "label": "Cross-functional communication",
+   "df": 0.854,
+   "req_share": 0.887,
+   "keywords": [
+    {
+     "term": "communication skills",
+     "synonyms": [
+      "communicate",
+      "written and verbal"
+     ],
+     "df": 0.679,
+     "req_share": 0.728
+    },
+    {
+     "term": "stakeholders",
+     "synonyms": [
+      "stakeholder"
+     ],
+     "df": 0.413,
+     "req_share": 0.902
+    },
+    {
+     "term": "cross-functional",
+     "synonyms": [
+      "cross functional",
+      "cross-functionally"
+     ],
+     "df": 0.295,
+     "req_share": 0.882
+    },
+    {
+     "term": "presentations",
+     "synonyms": [
+      "present findings",
+      "storytelling"
+     ],
+     "df": 0.241,
+     "req_share": 0.899
+    }
+   ],
+   "weight": 0.1047,
+   "angle": "the audience and the faster or better decision"
+  },
+  {
+   "id": "metrics",
+   "label": "Metrics and product analytics",
+   "df": 0.679,
+   "req_share": 0.935,
+   "keywords": [
+    {
+     "term": "insights",
+     "synonyms": [
+      "actionable insights"
+     ],
+     "df": 0.493,
+     "req_share": 0.925
+    },
+    {
+     "term": "metrics",
+     "synonyms": [
+      "KPIs",
+      "KPI",
+      "success metrics"
+     ],
+     "df": 0.258,
+     "req_share": 0.919
+    },
+    {
+     "term": "data-driven",
+     "synonyms": [
+      "data driven",
+      "data-informed"
+     ],
+     "df": 0.232,
+     "req_share": 0.895
+    },
+    {
+     "term": "retention",
+     "synonyms": [
+      "churn",
+      "engagement"
+     ],
+     "df": 0.123,
+     "req_share": 0.877
+    },
+    {
+     "term": "funnel",
+     "synonyms": [
+      "conversion"
+     ],
+     "df": 0.049,
+     "req_share": 0.952
+    },
+    {
+     "term": "product analytics",
+     "synonyms": [],
+     "df": 0.012,
+     "req_share": 1.0
+    },
+    {
+     "term": "cohort analysis",
+     "synonyms": [
+      "cohorts"
+     ],
+     "df": 0.009,
+     "req_share": 0.875
+    }
+   ],
+   "weight": 0.0853,
+   "angle": "the metric, the comparison, the business result"
+  },
+  {
+   "id": "bi_viz",
+   "label": "BI and visualization",
+   "df": 0.648,
+   "req_share": 0.869,
+   "keywords": [
+    {
+     "term": "business intelligence",
+     "synonyms": [
+      "BI"
+     ],
+     "df": 0.433,
+     "req_share": 0.769
+    },
+    {
+     "term": "dashboards",
+     "synonyms": [
+      "dashboard",
+      "dashboarding"
+     ],
+     "df": 0.415,
+     "req_share": 0.933
+    },
+    {
+     "term": "Power BI",
+     "synonyms": [
+      "PowerBI"
+     ],
+     "df": 0.363,
+     "req_share": 0.649
+    },
+    {
+     "term": "data visualization",
+     "synonyms": [
+      "visualizations",
+      "data viz"
+     ],
+     "df": 0.319,
+     "req_share": 0.829
+    },
+    {
+     "term": "Tableau",
+     "synonyms": [],
+     "df": 0.266,
+     "req_share": 0.524
+    },
+    {
+     "term": "Looker",
+     "synonyms": [
+      "Looker Studio"
+     ],
+     "df": 0.057,
+     "req_share": 0.49
+    }
+   ],
+   "weight": 0.0788,
+   "angle": "the dashboard or chart, who used it, the decision it supported"
+  },
+  {
+   "id": "statistics",
+   "label": "Statistics",
+   "df": 0.619,
+   "req_share": 0.856,
+   "keywords": [
+    {
+     "term": "data analysis",
+     "synonyms": [
+      "quantitative analysis",
+      "analytical skills"
+     ],
+     "df": 0.435,
+     "req_share": 0.8
+    },
+    {
+     "term": "statistics",
+     "synonyms": [
+      "statistical analysis",
+      "statistical methods",
+      "statistical modeling"
+     ],
+     "df": 0.327,
+     "req_share": 0.791
+    },
+    {
+     "term": "forecasting",
+     "synonyms": [
+      "time series"
+     ],
+     "df": 0.064,
+     "req_share": 0.782
+    },
+    {
+     "term": "regression",
+     "synonyms": [
+      "linear regression",
+      "logistic regression"
+     ],
+     "df": 0.021,
+     "req_share": 0.778
+    },
+    {
+     "term": "hypothesis testing",
+     "synonyms": [
+      "significance testing"
+     ],
+     "df": 0.007,
+     "req_share": 0.833
+    }
+   ],
+   "weight": 0.0747,
+   "angle": "the method and what it showed, with the honest caveat"
+  },
+  {
+   "id": "ownership",
+   "label": "Ownership and project leadership",
+   "df": 0.614,
+   "req_share": 0.822,
+   "keywords": [
+    {
+     "term": "leadership",
+     "synonyms": [],
+     "df": 0.338,
+     "req_share": 0.787
+    },
+    {
+     "term": "fast-paced",
+     "synonyms": [
+      "fast paced"
+     ],
+     "df": 0.231,
+     "req_share": 0.693
+    },
+    {
+     "term": "ownership",
+     "synonyms": [
+      "end-to-end"
+     ],
+     "df": 0.186,
+     "req_share": 0.781
+    },
+    {
+     "term": "project management",
+     "synonyms": [
+      "manage projects",
+      "program management"
+     ],
+     "df": 0.122,
+     "req_share": 0.695
+    },
+    {
+     "term": "ambiguity",
+     "synonyms": [
+      "ambiguous"
+     ],
+     "df": 0.074,
+     "req_share": 0.672
+    }
+   ],
+   "weight": 0.0727,
+   "angle": ""
+  },
+  {
+   "id": "problem_solving",
+   "label": "Problem solving and rigor",
+   "df": 0.58,
+   "req_share": 0.7,
+   "keywords": [
+    {
+     "term": "problem-solving",
+     "synonyms": [
+      "problem solving"
+     ],
+     "df": 0.389,
+     "req_share": 0.713
+    },
+    {
+     "term": "attention to detail",
+     "synonyms": [
+      "detail-oriented"
+     ],
+     "df": 0.34,
+     "req_share": 0.608
+    },
+    {
+     "term": "critical thinking",
+     "synonyms": [],
+     "df": 0.099,
+     "req_share": 0.647
+    }
+   ],
+   "weight": 0.0641,
+   "angle": ""
+  },
+  {
+   "id": "excel",
+   "label": "Excel / spreadsheets",
+   "df": 0.538,
+   "req_share": 0.679,
+   "keywords": [
+    {
+     "term": "Excel",
+     "synonyms": [
+      "spreadsheets",
+      "Google Sheets"
+     ],
+     "df": 0.534,
+     "req_share": 0.676
+    },
+    {
+     "term": "PowerPoint",
+     "synonyms": [
+      "Google Slides"
+     ],
+     "df": 0.167,
+     "req_share": 0.597
+    },
+    {
+     "term": "pivot tables",
+     "synonyms": [
+      "VLOOKUP",
+      "XLOOKUP"
+     ],
+     "df": 0.073,
+     "req_share": 0.556
+    }
+   ],
+   "weight": 0.0587,
+   "angle": "the model built and who relied on it"
+  },
+  {
+   "id": "sql",
+   "label": "SQL",
+   "df": 0.53,
+   "req_share": 0.681,
+   "keywords": [
+    {
+     "term": "SQL",
+     "synonyms": [
+      "PostgreSQL",
+      "MySQL",
+      "T-SQL",
+      "querying databases"
+     ],
+     "df": 0.528,
+     "req_share": 0.681
+    },
+    {
+     "term": "relational databases",
+     "synonyms": [
+      "relational database"
+     ],
+     "df": 0.05,
+     "req_share": 0.628
+    }
+   ],
+   "weight": 0.0579,
+   "angle": "the data joined or queried and the question it answered"
+  },
+  {
+   "id": "automation",
+   "label": "Automation and workflows",
+   "df": 0.415,
+   "req_share": 0.866,
+   "keywords": [
+    {
+     "term": "automation",
+     "synonyms": [
+      "automate",
+      "automated",
+      "automating"
+     ],
+     "df": 0.285,
+     "req_share": 0.878
+    },
+    {
+     "term": "workflows",
+     "synonyms": [
+      "workflow"
+     ],
+     "df": 0.226,
+     "req_share": 0.836
+    },
+    {
+     "term": "scripting",
+     "synonyms": [
+      "scripts"
+     ],
+     "df": 0.081,
+     "req_share": 0.7
+    }
+   ],
+   "weight": 0.0503,
+   "angle": ""
+  },
+  {
+   "id": "ai_eval",
+   "label": "AI evaluation and quality",
+   "df": 0.4,
+   "req_share": 0.826,
+   "keywords": [
+    {
+     "term": "quality metrics",
+     "synonyms": [
+      "model quality",
+      "accuracy"
+     ],
+     "df": 0.258,
+     "req_share": 0.878
+    },
+    {
+     "term": "guardrails",
+     "synonyms": [
+      "responsible AI",
+      "AI safety",
+      "safety"
+     ],
+     "df": 0.123,
+     "req_share": 0.708
+    },
+    {
+     "term": "evaluation",
+     "synonyms": [
+      "evaluations",
+      "evals",
+      "model evaluation"
+     ],
+     "df": 0.06,
+     "req_share": 0.769
+    },
+    {
+     "term": "benchmarks",
+     "synonyms": [
+      "benchmarking"
+     ],
+     "df": 0.024,
+     "req_share": 0.524
+    },
+    {
+     "term": "hallucination",
+     "synonyms": [
+      "hallucinations"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    },
+    {
+     "term": "human-in-the-loop",
+     "synonyms": [
+      "human in the loop",
+      "human feedback",
+      "RLHF"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0475,
+   "angle": ""
+  },
+  {
+   "id": "data_quality",
+   "label": "Data quality",
+   "df": 0.371,
+   "req_share": 0.9,
+   "keywords": [
+    {
+     "term": "data quality",
+     "synonyms": [
+      "data integrity",
+      "data accuracy"
+     ],
+     "df": 0.253,
+     "req_share": 0.894
+    },
+    {
+     "term": "data validation",
+     "synonyms": [
+      "validation"
+     ],
+     "df": 0.179,
+     "req_share": 0.877
+    },
+    {
+     "term": "data cleaning",
+     "synonyms": [
+      "data cleansing",
+      "clean data",
+      "data wrangling"
+     ],
+     "df": 0.051,
+     "req_share": 0.795
+    },
+    {
+     "term": "deduplication",
+     "synonyms": [
+      "dedup"
+     ],
+     "df": 0.002,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.0458,
+   "angle": "the mismatch found, how it was fixed, what became comparable"
+  },
+  {
+   "id": "software_eng",
+   "label": "Software engineering",
+   "df": 0.375,
+   "req_share": 0.814,
+   "keywords": [
+    {
+     "term": "testing",
+     "synonyms": [
+      "unit tests"
+     ],
+     "df": 0.22,
+     "req_share": 0.816
+    },
+    {
+     "term": "data structures",
+     "synonyms": [
+      "algorithms"
+     ],
+     "df": 0.067,
+     "req_share": 0.81
+    },
+    {
+     "term": "software engineering",
+     "synonyms": [
+      "software development"
+     ],
+     "df": 0.066,
+     "req_share": 0.719
+    },
+    {
+     "term": "APIs",
+     "synonyms": [
+      "API",
+      "REST"
+     ],
+     "df": 0.061,
+     "req_share": 0.623
+    },
+    {
+     "term": "Git",
+     "synonyms": [
+      "GitHub",
+      "version control"
+     ],
+     "df": 0.058,
+     "req_share": 0.82
+    },
+    {
+     "term": "Java",
+     "synonyms": [],
+     "df": 0.016,
+     "req_share": 0.357
+    },
+    {
+     "term": "JavaScript",
+     "synonyms": [
+      "TypeScript"
+     ],
+     "df": 0.013,
+     "req_share": 0.273
+    },
+    {
+     "term": "C++",
+     "synonyms": [],
+     "df": 0.012,
+     "req_share": 0.5
+    },
+    {
+     "term": "Docker",
+     "synonyms": [
+      "Kubernetes"
+     ],
+     "df": 0.008,
+     "req_share": 0.857
+    },
+    {
+     "term": "backend",
+     "synonyms": [
+      "back-end"
+     ],
+     "df": 0.006,
+     "req_share": 0.8
+    },
+    {
+     "term": "Golang",
+     "synonyms": [],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0442,
+   "angle": ""
+  },
+  {
+   "id": "python",
+   "label": "Python",
+   "df": 0.386,
+   "req_share": 0.616,
+   "keywords": [
+    {
+     "term": "Python",
+     "synonyms": [],
+     "df": 0.384,
+     "req_share": 0.616
+    },
+    {
+     "term": "pandas",
+     "synonyms": [],
+     "df": 0.022,
+     "req_share": 0.895
+    },
+    {
+     "term": "NumPy",
+     "synonyms": [],
+     "df": 0.01,
+     "req_share": 1.0
+    },
+    {
+     "term": "Jupyter",
+     "synonyms": [],
+     "df": 0.007,
+     "req_share": 0.667
+    },
+    {
+     "term": "scikit-learn",
+     "synonyms": [
+      "sklearn"
+     ],
+     "df": 0.006,
+     "req_share": 0.8
+    }
+   ],
+   "weight": 0.0405,
+   "angle": ""
+  },
+  {
+   "id": "product_sense",
+   "label": "Product sense and discovery",
+   "df": 0.29,
+   "req_share": 0.748,
+   "keywords": [
+    {
+     "term": "prioritization",
+     "synonyms": [
+      "prioritize",
+      "trade-offs",
+      "tradeoffs"
+     ],
+     "df": 0.15,
+     "req_share": 0.605
+    },
+    {
+     "term": "go-to-market",
+     "synonyms": [
+      "GTM",
+      "launch",
+      "launches"
+     ],
+     "df": 0.079,
+     "req_share": 0.882
+    },
+    {
+     "term": "user needs",
+     "synonyms": [
+      "customer needs",
+      "user problems",
+      "customer problems",
+      "pain points"
+     ],
+     "df": 0.049,
+     "req_share": 0.81
+    },
+    {
+     "term": "product development",
+     "synonyms": [
+      "product lifecycle"
+     ],
+     "df": 0.031,
+     "req_share": 0.852
+    },
+    {
+     "term": "user experience",
+     "synonyms": [
+      "UX"
+     ],
+     "df": 0.021,
+     "req_share": 0.667
+    },
+    {
+     "term": "user stories",
+     "synonyms": [],
+     "df": 0.02,
+     "req_share": 1.0
+    },
+    {
+     "term": "roadmap",
+     "synonyms": [
+      "roadmaps",
+      "product roadmap"
+     ],
+     "df": 0.016,
+     "req_share": 0.857
+    },
+    {
+     "term": "product requirements",
+     "synonyms": [
+      "PRD",
+      "PRDs",
+      "product specs"
+     ],
+     "df": 0.002,
+     "req_share": 1.0
+    },
+    {
+     "term": "user research",
+     "synonyms": [
+      "customer research",
+      "user interviews",
+      "customer interviews"
+     ],
+     "df": 0.002,
+     "req_share": 1.0
+    },
+    {
+     "term": "product strategy",
+     "synonyms": [
+      "product vision"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0329,
+   "angle": ""
+  },
+  {
+   "id": "llm_genai",
+   "label": "LLMs and generative AI",
+   "df": 0.191,
+   "req_share": 0.752,
+   "keywords": [
+    {
+     "term": "AI tools",
+     "synonyms": [
+      "AI-native tools"
+     ],
+     "df": 0.104,
+     "req_share": 0.7
+    },
+    {
+     "term": "AI products",
+     "synonyms": [
+      "AI-powered",
+      "AI features"
+     ],
+     "df": 0.039,
+     "req_share": 0.882
+    },
+    {
+     "term": "prompt engineering",
+     "synonyms": [
+      "prompting",
+      "prompts"
+     ],
+     "df": 0.039,
+     "req_share": 0.824
+    },
+    {
+     "term": "generative AI",
+     "synonyms": [
+      "GenAI",
+      "gen AI"
+     ],
+     "df": 0.032,
+     "req_share": 0.571
+    },
+    {
+     "term": "LLM",
+     "synonyms": [
+      "LLMs",
+      "large language models",
+      "large language model"
+     ],
+     "df": 0.028,
+     "req_share": 0.5
+    },
+    {
+     "term": "RAG",
+     "synonyms": [
+      "retrieval-augmented generation",
+      "retrieval augmented generation"
+     ],
+     "df": 0.002,
+     "req_share": 1.0
+    },
+    {
+     "term": "fine-tuning",
+     "synonyms": [
+      "fine tuning"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0218,
+   "angle": ""
+  },
+  {
+   "id": "finance",
+   "label": "Finance and business analysis",
+   "df": 0.166,
+   "req_share": 0.846,
+   "keywords": [
+    {
+     "term": "business analysis",
+     "synonyms": [
+      "business case"
+     ],
+     "df": 0.086,
+     "req_share": 0.824
+    },
+    {
+     "term": "market research",
+     "synonyms": [
+      "competitive analysis"
+     ],
+     "df": 0.039,
+     "req_share": 0.971
+    },
+    {
+     "term": "financial analysis",
+     "synonyms": [
+      "financial statements"
+     ],
+     "df": 0.034,
+     "req_share": 0.69
+    },
+    {
+     "term": "financial modeling",
+     "synonyms": [
+      "financial models"
+     ],
+     "df": 0.03,
+     "req_share": 0.846
+    },
+    {
+     "term": "scenario analysis",
+     "synonyms": [
+      "sensitivity analysis"
+     ],
+     "df": 0.007,
+     "req_share": 0.667
+    }
+   ],
+   "weight": 0.0199,
+   "angle": ""
+  },
+  {
+   "id": "pipelines",
+   "label": "Data pipelines",
+   "df": 0.147,
+   "req_share": 0.78,
+   "keywords": [
+    {
+     "term": "data pipelines",
+     "synonyms": [
+      "data pipeline",
+      "pipelines"
+     ],
+     "df": 0.082,
+     "req_share": 0.915
+    },
+    {
+     "term": "ETL",
+     "synonyms": [
+      "ELT"
+     ],
+     "df": 0.049,
+     "req_share": 0.667
+    },
+    {
+     "term": "Spark",
+     "synonyms": [
+      "PySpark"
+     ],
+     "df": 0.026,
+     "req_share": 0.545
+    },
+    {
+     "term": "dbt",
+     "synonyms": [],
+     "df": 0.026,
+     "req_share": 0.591
+    },
+    {
+     "term": "Airflow",
+     "synonyms": [],
+     "df": 0.009,
+     "req_share": 0.5
+    },
+    {
+     "term": "Kafka",
+     "synonyms": [
+      "streaming"
+     ],
+     "df": 0.007,
+     "req_share": 1.0
+    },
+    {
+     "term": "data ingestion",
+     "synonyms": [
+      "ingestion"
+     ],
+     "df": 0.002,
+     "req_share": 1.0
+    }
+   ],
+   "weight": 0.017,
+   "angle": ""
+  },
+  {
+   "id": "cloud_data",
+   "label": "Cloud data platforms",
+   "df": 0.164,
+   "req_share": 0.582,
+   "keywords": [
+    {
+     "term": "Snowflake",
+     "synonyms": [],
+     "df": 0.058,
+     "req_share": 0.58
+    },
+    {
+     "term": "Azure",
+     "synonyms": [],
+     "df": 0.048,
+     "req_share": 0.415
+    },
+    {
+     "term": "a Greenhouse employer",
+     "synonyms": [],
+     "df": 0.045,
+     "req_share": 0.564
+    },
+    {
+     "term": "AWS",
+     "synonyms": [
+      "Amazon Web Services"
+     ],
+     "df": 0.034,
+     "req_share": 0.345
+    },
+    {
+     "term": "BigQuery",
+     "synonyms": [],
+     "df": 0.021,
+     "req_share": 0.722
+    },
+    {
+     "term": "GCP",
+     "synonyms": [
+      "Google Cloud"
+     ],
+     "df": 0.02,
+     "req_share": 0.412
+    },
+    {
+     "term": "Redshift",
+     "synonyms": [],
+     "df": 0.009,
+     "req_share": 0.125
+    }
+   ],
+   "weight": 0.0168,
+   "angle": ""
+  },
+  {
+   "id": "r_lang",
+   "label": "R",
+   "df": 0.154,
+   "req_share": 0.541,
+   "keywords": [
+    {
+     "term": "R",
+     "synonyms": [
+      "RStudio",
+      "tidyverse"
+     ],
+     "df": 0.154,
+     "req_share": 0.541
+    }
+   ],
+   "weight": 0.0154,
+   "angle": ""
+  },
+  {
+   "id": "data_modeling",
+   "label": "Data modeling and warehousing",
+   "df": 0.132,
+   "req_share": 0.746,
+   "keywords": [
+    {
+     "term": "data modeling",
+     "synonyms": [
+      "data models"
+     ],
+     "df": 0.101,
+     "req_share": 0.793
+    },
+    {
+     "term": "data warehouse",
+     "synonyms": [
+      "data warehousing",
+      "data lake",
+      "lakehouse"
+     ],
+     "df": 0.05,
+     "req_share": 0.698
+    },
+    {
+     "term": "schema design",
+     "synonyms": [
+      "schemas"
+     ],
+     "df": 0.008,
+     "req_share": 0.571
+    }
+   ],
+   "weight": 0.015,
+   "angle": ""
+  },
+  {
+   "id": "ml",
+   "label": "Machine learning",
+   "df": 0.126,
+   "req_share": 0.771,
+   "keywords": [
+    {
+     "term": "machine learning",
+     "synonyms": [
+      "ML"
+     ],
+     "df": 0.103,
+     "req_share": 0.742
+    },
+    {
+     "term": "predictive modeling",
+     "synonyms": [
+      "predictive models"
+     ],
+     "df": 0.027,
+     "req_share": 0.783
+    },
+    {
+     "term": "computer vision",
+     "synonyms": [],
+     "df": 0.01,
+     "req_share": 1.0
+    },
+    {
+     "term": "deep learning",
+     "synonyms": [
+      "neural networks"
+     ],
+     "df": 0.005,
+     "req_share": 0.0
+    },
+    {
+     "term": "PyTorch",
+     "synonyms": [],
+     "df": 0.001,
+     "req_share": 0.0
+    },
+    {
+     "term": "TensorFlow",
+     "synonyms": [],
+     "df": 0.001,
+     "req_share": 0.0
+    },
+    {
+     "term": "model training",
+     "synonyms": [
+      "training models"
+     ],
+     "df": 0.001,
+     "req_share": 1.0
+    },
+    {
+     "term": "reinforcement learning",
+     "synonyms": [],
+     "df": 0.001,
+     "req_share": 0.0
+    }
+   ],
+   "weight": 0.0145,
+   "angle": ""
+  },
+  {
+   "id": "agents",
+   "label": "AI agents and tooling",
+   "df": 0.074,
+   "req_share": 0.766,
+   "keywords": [
+    {
+     "term": "Claude",
+     "synonyms": [
+      "OpenAI",
+      "GPT",
+      "ChatGPT",
+      "Anthropic"
+     ],
+     "df": 0.049,
+     "req_share": 0.738
+    },
+    {
+     "term": "AI agents",
+     "synonyms": [
+      "agentic",
+      "autonomous agents",
+      "LLM agents"
+     ],
+     "df": 0.024,
+     "req_share": 0.81
+    },
+    {
+     "term": "multi-agent",
+     "synonyms": [
+      "orchestration"
+     ],
+     "df": 0.01,
+     "req_share": 0.556
+    },
+    {
+     "term": "MCP",
+     "synonyms": [
+      "Model Context Protocol"
+     ],
+     "df": 0.001,
+     "req_share": 1.0
+    },
+    {
+     "term": "LangChain",
+     "synonyms": [
+      "LangGraph",
+      "LlamaIndex"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    },
+    {
+     "term": "tool use",
+     "synonyms": [
+      "function calling",
+      "tool calling"
+     ],
+     "df": 0.0,
+     "req_share": 0
+    }
+   ],
+   "weight": 0.0085,
+   "angle": ""
+  },
+  {
+   "id": "experimentation",
+   "label": "Experimentation",
+   "df": 0.056,
+   "req_share": 0.896,
+   "keywords": [
+    {
+     "term": "experimentation",
+     "synonyms": [
+      "experiment design",
+      "experiments",
+      "controlled experiments"
+     ],
+     "df": 0.041,
+     "req_share": 0.943
+    },
+    {
+     "term": "A/B testing",
+     "synonyms": [
+      "A/B tests",
+      "AB testing",
+      "split testing"
+     ],
+     "df": 0.02,
+     "req_share": 0.824
+    },
+    {
+     "term": "causal inference",
+     "synonyms": [
+      "causal"
+     ],
+     "df": 0.007,
+     "req_share": 0.833
+    }
+   ],
+   "weight": 0.0069,
+   "angle": ""
+  },
+  {
+   "id": "pm_tools",
+   "label": "PM / analytics tools",
+   "df": 0.057,
+   "req_share": 0.653,
+   "keywords": [
+    {
+     "term": "Jira",
+     "synonyms": [],
+     "df": 0.028,
+     "req_share": 0.667
+    },
+    {
+     "term": "Google Analytics",
+     "synonyms": [],
+     "df": 0.017,
+     "req_share": 0.533
+    },
+    {
+     "term": "Confluence",
+     "synonyms": [],
+     "df": 0.014,
+     "req_share": 0.667
+    },
+    {
+     "term": "Asana",
+     "synonyms": [
+      "Trello"
+     ],
+     "df": 0.008,
+     "req_share": 0.714
+    },
+    {
+     "term": "Mixpanel",
+     "synonyms": [],
+     "df": 0.003,
+     "req_share": 1.0
+    },
+    {
+     "term": "Amplitude",
+     "synonyms": [],
+     "df": 0.002,
+     "req_share": 1.0
+    },
+    {
+     "term": "a Greenhouse employer",
+     "synonyms": [
+      "FigJam"
+     ],
+     "df": 0.002,
+     "req_share": 0.0
+    }
+   ],
+   "weight": 0.0061,
+   "angle": ""
+  }
+ ],
+ "top_keywords": [
+  {
+   "term": "communication skills",
+   "competency": "stakeholders",
+   "df": 0.679,
+   "req_share": 0.728,
+   "score": 0.5867
+  },
+  {
+   "term": "insights",
+   "competency": "metrics",
+   "df": 0.493,
+   "req_share": 0.925,
+   "score": 0.4745
+  },
+  {
+   "term": "Excel",
+   "competency": "excel",
+   "df": 0.534,
+   "req_share": 0.676,
+   "score": 0.4475
+  },
+  {
+   "term": "SQL",
+   "competency": "sql",
+   "df": 0.528,
+   "req_share": 0.681,
+   "score": 0.4438
+  },
+  {
+   "term": "dashboards",
+   "competency": "bi_viz",
+   "df": 0.415,
+   "req_share": 0.933,
+   "score": 0.4011
+  },
+  {
+   "term": "stakeholders",
+   "competency": "stakeholders",
+   "df": 0.413,
+   "req_share": 0.902,
+   "score": 0.3928
+  },
+  {
+   "term": "data analysis",
+   "competency": "statistics",
+   "df": 0.435,
+   "req_share": 0.8,
+   "score": 0.3915
+  },
+  {
+   "term": "business intelligence",
+   "competency": "bi_viz",
+   "df": 0.433,
+   "req_share": 0.769,
+   "score": 0.383
+  },
+  {
+   "term": "problem-solving",
+   "competency": "problem_solving",
+   "df": 0.389,
+   "req_share": 0.713,
+   "score": 0.3332
+  },
+  {
+   "term": "Python",
+   "competency": "python",
+   "df": 0.384,
+   "req_share": 0.616,
+   "score": 0.3103
+  },
+  {
+   "term": "leadership",
+   "competency": "ownership",
+   "df": 0.338,
+   "req_share": 0.787,
+   "score": 0.302
+  },
+  {
+   "term": "Power BI",
+   "competency": "bi_viz",
+   "df": 0.363,
+   "req_share": 0.649,
+   "score": 0.2993
+  },
+  {
+   "term": "statistics",
+   "competency": "statistics",
+   "df": 0.327,
+   "req_share": 0.791,
+   "score": 0.2928
+  },
+  {
+   "term": "data visualization",
+   "competency": "bi_viz",
+   "df": 0.319,
+   "req_share": 0.829,
+   "score": 0.2917
+  },
+  {
+   "term": "cross-functional",
+   "competency": "stakeholders",
+   "df": 0.295,
+   "req_share": 0.882,
+   "score": 0.2776
+  },
+  {
+   "term": "attention to detail",
+   "competency": "problem_solving",
+   "df": 0.34,
+   "req_share": 0.608,
+   "score": 0.2734
+  },
+  {
+   "term": "automation",
+   "competency": "automation",
+   "df": 0.285,
+   "req_share": 0.878,
+   "score": 0.2676
+  },
+  {
+   "term": "metrics",
+   "competency": "metrics",
+   "df": 0.258,
+   "req_share": 0.919,
+   "score": 0.2476
+  },
+  {
+   "term": "quality metrics",
+   "competency": "ai_eval",
+   "df": 0.258,
+   "req_share": 0.878,
+   "score": 0.2423
+  },
+  {
+   "term": "data quality",
+   "competency": "data_quality",
+   "df": 0.253,
+   "req_share": 0.894,
+   "score": 0.2396
+  },
+  {
+   "term": "presentations",
+   "competency": "stakeholders",
+   "df": 0.241,
+   "req_share": 0.899,
+   "score": 0.2288
+  },
+  {
+   "term": "data-driven",
+   "competency": "metrics",
+   "df": 0.232,
+   "req_share": 0.895,
+   "score": 0.2198
+  },
+  {
+   "term": "workflows",
+   "competency": "automation",
+   "df": 0.226,
+   "req_share": 0.836,
+   "score": 0.2075
+  },
+  {
+   "term": "Tableau",
+   "competency": "bi_viz",
+   "df": 0.266,
+   "req_share": 0.524,
+   "score": 0.2027
+  },
+  {
+   "term": "testing",
+   "competency": "software_eng",
+   "df": 0.22,
+   "req_share": 0.816,
+   "score": 0.1998
+  },
+  {
+   "term": "fast-paced",
+   "competency": "ownership",
+   "df": 0.231,
+   "req_share": 0.693,
+   "score": 0.1955
+  },
+  {
+   "term": "data validation",
+   "competency": "data_quality",
+   "df": 0.179,
+   "req_share": 0.877,
+   "score": 0.168
+  },
+  {
+   "term": "ownership",
+   "competency": "ownership",
+   "df": 0.186,
+   "req_share": 0.781,
+   "score": 0.1656
+  },
+  {
+   "term": "PowerPoint",
+   "competency": "excel",
+   "df": 0.167,
+   "req_share": 0.597,
+   "score": 0.1333
+  },
+  {
+   "term": "prioritization",
+   "competency": "product_sense",
+   "df": 0.15,
+   "req_share": 0.605,
+   "score": 0.1204
+  }
+ ],
+ "uncovered_terms": [
+  {
+   "term": "Verbal communication",
+   "df": 0.195
+  },
+  {
+   "term": "an employer Office",
+   "df": 0.142
+  },
+  {
+   "term": "business processes",
+   "df": 0.125
+  },
+  {
+   "term": "data sources",
+   "df": 0.116
+  },
+  {
+   "term": "process improvement",
+   "df": 0.116
+  },
+  {
+   "term": "business decisions",
+   "df": 0.114
+  },
+  {
+   "term": "Business requirements",
+   "df": 0.104
+  },
+  {
+   "term": "working knowledge",
+   "df": 0.103
+  },
+  {
+   "term": "Organizational skills",
+   "df": 0.101
+  },
+  {
+   "term": "data management",
+   "df": 0.1
+  },
+  {
+   "term": "business problems",
+   "df": 0.094
+  },
+  {
+   "term": "best practices",
+   "df": 0.089
+  },
+  {
+   "term": "data sets",
+   "df": 0.084
+  }
+ ],
+ "jd_ids": [
+  "J00041",
+  "J00048",
+  "J00100",
+  "J00127",
+  "J00155",
+  "J00156",
+  "J00164",
+  "J00168",
+  "J00181",
+  "J00191",
+  "J00192",
+  "J00195",
+  "J00231",
+  "J00245",
+  "J00253",
+  "J00270",
+  "J00275",
+  "J00281",
+  "J00282",
+  "J00284",
+  "J00294",
+  "J00312",
+  "J00323",
+  "J00339",
+  "J00340",
+  "J00349",
+  "J00350",
+  "J00360",
+  "J00367",
+  "J00368",
+  "J00373",
+  "J00389",
+  "J00392",
+  "J00413",
+  "J00420",
+  "J00422",
+  "J00433",
+  "J00440",
+  "J00441",
+  "J00442",
+  "J00454",
+  "J00458",
+  "J00475",
+  "J00479",
+  "J00486",
+  "J00491",
+  "J00492",
+  "J00532",
+  "J00545",
+  "J00581",
+  "J00594",
+  "J00597",
+  "J00598",
+  "J00609",
+  "J00610",
+  "J00618",
+  "J00622",
+  "J00624",
+  "J00640",
+  "J00644",
+  "J00660",
+  "J00670",
+  "J00677",
+  "J00682",
+  "J00699",
+  "J00702",
+  "J00714",
+  "J00716",
+  "J00721",
+  "J00731",
+  "J00736",
+  "J00759",
+  "J00798",
+  "J00820",
+  "J00822",
+  "J00846",
+  "J00854",
+  "J00859",
+  "J00889",
+  "J00890",
+  "J00894",
+  "J00900",
+  "J00906",
+  "J00908",
+  "J00909",
+  "J00918",
+  "J00940",
+  "J00946",
+  "J00960",
+  "J00961",
+  "J00969",
+  "J00971",
+  "J00972",
+  "J00973",
+  "J00979",
+  "J00984",
+  "J00993",
+  "J00995",
+  "J00996",
+  "J01001",
+  "J01004",
+  "J01016",
+  "J01021",
+  "J01049",
+  "J01057",
+  "J01066",
+  "J01138",
+  "J01144",
+  "J01163",
+  "J01173",
+  "J01187",
+  "J01196",
+  "J01197",
+  "J01318",
+  "J01336",
+  "J01338",
+  "J01339",
+  "J01340",
+  "J01385",
+  "J01408",
+  "J01416",
+  "J01421",
+  "J01444",
+  "J01467",
+  "J01475",
+  "J01499",
+  "J01525",
+  "J01559",
+  "J01566",
+  "J01581",
+  "J01620",
+  "J01626",
+  "J01627",
+  "J01646",
+  "J01663",
+  "J01678",
+  "J01706",
+  "J01709",
+  "J01721",
+  "J01723",
+  "J01733",
+  "J01845",
+  "J01857",
+  "J01936",
+  "J02011",
+  "J02031",
+  "J02195",
+  "J02213",
+  "J02242",
+  "J02247",
+  "J02253",
+  "J02266",
+  "J02306",
+  "J02311",
+  "J02319",
+  "J02328",
+  "J02331",
+  "J02336",
+  "J02338",
+  "J02343",
+  "J02347",
+  "J02354",
+  "J02359",
+  "J02364",
+  "J02368",
+  "J02374",
+  "J02379",
+  "J02383",
+  "J02384",
+  "J02386",
+  "J02393",
+  "J02394",
+  "J02415",
+  "J02420",
+  "J02436",
+  "J02445",
+  "J02449",
+  "J02450",
+  "J02466",
+  "J02468",
+  "J02470",
+  "J02473",
+  "J02474",
+  "J02481",
+  "J02482",
+  "J02517",
+  "J02518",
+  "J02519",
+  "J02524",
+  "J02528",
+  "J02533",
+  "J02538",
+  "J02539",
+  "J02542",
+  "J02550",
+  "J02554",
+  "J02560",
+  "J02565",
+  "J02569",
+  "J02570",
+  "J02572",
+  "J02578",
+  "J02580",
+  "J02588",
+  "J02589",
+  "J02593",
+  "J02594",
+  "J02604",
+  "J02607",
+  "J02637",
+  "J02638",
+  "J02660",
+  "J02672",
+  "J02675",
+  "J02679",
+  "J02682",
+  "J02685",
+  "J02763",
+  "J02874",
+  "J02877",
+  "J02878",
+  "J02879",
+  "J02884",
+  "J02888",
+  "J02890",
+  "J02895",
+  "J02897",
+  "J02898",
+  "J02901",
+  "J02906",
+  "J02907",
+  "J02910",
+  "J02923",
+  "J02927",
+  "J02928",
+  "J02929",
+  "J02931",
+  "J02939",
+  "J02942",
+  "J02945",
+  "J02957",
+  "J02959",
+  "J02965",
+  "J02968",
+  "J02969",
+  "J02976",
+  "J03015",
+  "J03044",
+  "J03055",
+  "J03062",
+  "J03104",
+  "J03113",
+  "J03147",
+  "J03155",
+  "J03176",
+  "J03241",
+  "J03250",
+  "J03255",
+  "J03464",
+  "J03515",
+  "J03516",
+  "J03518",
+  "J03523",
+  "J03525",
+  "J03527",
+  "J03534",
+  "J03584",
+  "J03585",
+  "J03648",
+  "J03671",
+  "J03712",
+  "J03757",
+  "J03759",
+  "J03760",
+  "J03761",
+  "J03762",
+  "J03924",
+  "J04063",
+  "J04069",
+  "J04072",
+  "J04083",
+  "J04535",
+  "J04553",
+  "J04554",
+  "J04563",
+  "J04589",
+  "J04605",
+  "J04609",
+  "J04630",
+  "J04687",
+  "J04956",
+  "J05015",
+  "J05077",
+  "J05149",
+  "J05156",
+  "J05171",
+  "J07762",
+  "J07791",
+  "J07792",
+  "J07799",
+  "J07800",
+  "J07802",
+  "J07865",
+  "J08010",
+  "J08162",
+  "J08169",
+  "J09826",
+  "J09894",
+  "J09957",
+  "J10086",
+  "J10198",
+  "J10202",
+  "J10402",
+  "J10443",
+  "J10452",
+  "J10472",
+  "J10482",
+  "J10525",
+  "J10698",
+  "J10889",
+  "J10894",
+  "J10925",
+  "J10930",
+  "J11068",
+  "J11265",
+  "J11356",
+  "J11357",
+  "J11358",
+  "J11360",
+  "J11361",
+  "J11363",
+  "J11368",
+  "J11374",
+  "J11416",
+  "J11462",
+  "J11465",
+  "J11471",
+  "J11474",
+  "J11475",
+  "J11477",
+  "J11478",
+  "J11482",
+  "J11483",
+  "J11485",
+  "J11486",
+  "J11492",
+  "J11494",
+  "J11495",
+  "J11498",
+  "J11506",
+  "J11511",
+  "J11513",
+  "J11515",
+  "J11516",
+  "J11518",
+  "J11520",
+  "J11525",
+  "J11533",
+  "J11535",
+  "J11536",
+  "J11537",
+  "J11540",
+  "J11541",
+  "J11542",
+  "J11648",
+  "J11649",
+  "J11651",
+  "J11652",
+  "J11653",
+  "J11654",
+  "J11655",
+  "J11657",
+  "J11658",
+  "J11661",
+  "J11662",
+  "J11665",
+  "J11667",
+  "J11669",
+  "J11671",
+  "J11672",
+  "J11673",
+  "J11674",
+  "J11675",
+  "J11676",
+  "J11678",
+  "J11681",
+  "J11682",
+  "J11684",
+  "J11685",
+  "J11686",
+  "J11688",
+  "J11689",
+  "J11690",
+  "J11692",
+  "J11695",
+  "J11696",
+  "J11698",
+  "J11699",
+  "J11700",
+  "J11702",
+  "J11704",
+  "J11706",
+  "J11709",
+  "J11710",
+  "J11711",
+  "J11713",
+  "J11714",
+  "J11715",
+  "J11721",
+  "J11725",
+  "J11726",
+  "J11727",
+  "J11728",
+  "J11730",
+  "J11731",
+  "J11732",
+  "J11736",
+  "J11737",
+  "J11738",
+  "J11740",
+  "J11742",
+  "J11746",
+  "J11748",
+  "J11749",
+  "J11751",
+  "J11752",
+  "J11753",
+  "J11754",
+  "J11755",
+  "J11759",
+  "J11760",
+  "J11761",
+  "J11762",
+  "J11763",
+  "J11764",
+  "J11766",
+  "J11767",
+  "J11768",
+  "J11769",
+  "J11770",
+  "J11773",
+  "J11774",
+  "J11776",
+  "J11777",
+  "J11780",
+  "J11782",
+  "J11783",
+  "J11784",
+  "J11785",
+  "J11786",
+  "J11787",
+  "J11788",
+  "J11789",
+  "J11790",
+  "J11791",
+  "J11792",
+  "J11793",
+  "J11796",
+  "J11797",
+  "J11798",
+  "J11804",
+  "J11805",
+  "J11806",
+  "J11807",
+  "J11808",
+  "J11809",
+  "J11810",
+  "J11811",
+  "J11812",
+  "J11813",
+  "J11814",
+  "J11815",
+  "J11816",
+  "J11817",
+  "J11818",
+  "J11819",
+  "J11820",
+  "J11821",
+  "J11822",
+  "J11823",
+  "J11826",
+  "J12001",
+  "J12005",
+  "J12006",
+  "J12011",
+  "J12025",
+  "J12044",
+  "J12063",
+  "J12069",
+  "J12072",
+  "J12085",
+  "J12114",
+  "J12115",
+  "J12120",
+  "J12122",
+  "J12132",
+  "J12161",
+  "J12197",
+  "J12212",
+  "J12221",
+  "J12236",
+  "J12244",
+  "J12252",
+  "J12257",
+  "J12266",
+  "J12268",
+  "J12282",
+  "J12300",
+  "J12313",
+  "J12316",
+  "J12319",
+  "J12344",
+  "J12355",
+  "J12370",
+  "J12378",
+  "J12379",
+  "J12410",
+  "J12412",
+  "J12418",
+  "J12425",
+  "J12428",
+  "J12429",
+  "J12430",
+  "J12431",
+  "J12432",
+  "J12443",
+  "J12460",
+  "J12461",
+  "J12462",
+  "J12463",
+  "J12466",
+  "J12470",
+  "J12480",
+  "J12495",
+  "J12504",
+  "J12508",
+  "J12511",
+  "J12514",
+  "J12532",
+  "J12537",
+  "J12545",
+  "J12547",
+  "J12550",
+  "J12555",
+  "J12557",
+  "J12564",
+  "J12590",
+  "J12620",
+  "J12621",
+  "J12630",
+  "J12645",
+  "J12646",
+  "J12656",
+  "J12657",
+  "J12666",
+  "J12667",
+  "J12668",
+  "J12672",
+  "J12684",
+  "J12685",
+  "J12690",
+  "J12692",
+  "J12695",
+  "J12700",
+  "J12706",
+  "J12707",
+  "J12708",
+  "J12717",
+  "J12718",
+  "J12730",
+  "J12746",
+  "J12748",
+  "J12751",
+  "J12758",
+  "J12774",
+  "J12801",
+  "J12802",
+  "J12813",
+  "J12817",
+  "J12821",
+  "J12826",
+  "J12830",
+  "J12844",
+  "J12853",
+  "J12863",
+  "J12864",
+  "J12880",
+  "J12888",
+  "J12892",
+  "J12915",
+  "J12939",
+  "J12940",
+  "J12950",
+  "J12951",
+  "J12958",
+  "J12959",
+  "J12963",
+  "J12976",
+  "J12997",
+  "J13014",
+  "J13019",
+  "J13022",
+  "J13033",
+  "J13034",
+  "J13040",
+  "J13045",
+  "J13050",
+  "J13052",
+  "J13054",
+  "J13060",
+  "J13066",
+  "J13071",
+  "J13074",
+  "J13078",
+  "J13079",
+  "J13096",
+  "J13099",
+  "J13109",
+  "J13116",
+  "J13126",
+  "J13127",
+  "J13129",
+  "J13144",
+  "J13153",
+  "J13157",
+  "J13158",
+  "J13163",
+  "J13166",
+  "J13171",
+  "J13179",
+  "J13181",
+  "J13183",
+  "J13184",
+  "J13185",
+  "J13189",
+  "J13200",
+  "J13220",
+  "J13235",
+  "J13242",
+  "J13246",
+  "J13252",
+  "J13260",
+  "J13264",
+  "J13272",
+  "J13275",
+  "J13280",
+  "J13365",
+  "J13495",
+  "J13504",
+  "J13895",
+  "J13900",
+  "J13904",
+  "J14019",
+  "J14026",
+  "J14164",
+  "J14165",
+  "J14204",
+  "J14407",
+  "J14409",
+  "J14413",
+  "J14420",
+  "J14424",
+  "J14426",
+  "J14445",
+  "J14447",
+  "J14450",
+  "J14454",
+  "J14465",
+  "J14477",
+  "J14493",
+  "J14494",
+  "J14509",
+  "J14510",
+  "J14511",
+  "J14514",
+  "J14522",
+  "J14531",
+  "J14536",
+  "J14538",
+  "J14540",
+  "J14612",
+  "J14614",
+  "J14739",
+  "J14740",
+  "J14743",
+  "J14751",
+  "J14757",
+  "J14758",
+  "J14766",
+  "J14769",
+  "J14775",
+  "J14782",
+  "J14784",
+  "J14791",
+  "J14798",
+  "J14800",
+  "J14801",
+  "J14803",
+  "J14804",
+  "J14810",
+  "J14812",
+  "J14815",
+  "J14816",
+  "J14823",
+  "J14825",
+  "J14829",
+  "J14830",
+  "J14832",
+  "J14833",
+  "J14836",
+  "J14838",
+  "J14839",
+  "J14840",
+  "J14841",
+  "J14851",
+  "J14855",
+  "J14859",
+  "J14862",
+  "J14865",
+  "J14876",
+  "J14878",
+  "J14883",
+  "J14884",
+  "J14886",
+  "J14887",
+  "J14888",
+  "J14890",
+  "J14893",
+  "J14896",
+  "J14904",
+  "J14905",
+  "J14907",
+  "J14908",
+  "J14914",
+  "J14915",
+  "J14916",
+  "J14926",
+  "J14927",
+  "J14932",
+  "J14933",
+  "J14934",
+  "J14937",
+  "J14938",
+  "J14940",
+  "J14946",
+  "J14948",
+  "J14949",
+  "J14950",
+  "J14951",
+  "J14953",
+  "J14958",
+  "J14965",
+  "J14976",
+  "J14977",
+  "J14980",
+  "J14987",
+  "J14989",
+  "J14998",
+  "J15005",
+  "J15008",
+  "J15011",
+  "J15018",
+  "J15024",
+  "J15030",
+  "J15033",
+  "J15035",
+  "J15042",
+  "J15050",
+  "J15051",
+  "J15057",
+  "J15058",
+  "J15059",
+  "J15064",
+  "J15066",
+  "J15076",
+  "J15088",
+  "J15100",
+  "J15101",
+  "J15105",
+  "J15116",
+  "J15123",
+  "J15131",
+  "J15132",
+  "J15134",
+  "J15138",
+  "J15153",
+  "J15154",
+  "J15160",
+  "J15170",
+  "J15177",
+  "J15178",
+  "J15179",
+  "J15181",
+  "J15182",
+  "J15183",
+  "J15184",
+  "J15185",
+  "J15207",
+  "J15208",
+  "J15209",
+  "J15212",
+  "J15225",
+  "J15226",
+  "J15236",
+  "J15237",
+  "J15242",
+  "J15246",
+  "J15255",
+  "J15264",
+  "J15267",
+  "J15271",
+  "J15273",
+  "J15274",
+  "J15277",
+  "J15281",
+  "J15287",
+  "J15293",
+  "J15299",
+  "J15300",
+  "J15301",
+  "J15303",
+  "J15305",
+  "J15374",
+  "J15416",
+  "J15429",
+  "J15430",
+  "J15444",
+  "J15448",
+  "J15449",
+  "J15452",
+  "J15470",
+  "J15471",
+  "J15473",
+  "J15478",
+  "J15481",
+  "J15495",
+  "J15507",
+  "J15531",
+  "J15546",
+  "J15550",
+  "J15565",
+  "J15596",
+  "J15599",
+  "J15605",
+  "J15610",
+  "J15612",
+  "J15620",
+  "J15626",
+  "J15643",
+  "J15666",
+  "J15705",
+  "J15706",
+  "J15731",
+  "J15738",
+  "J15760",
+  "J15798",
+  "J15809",
+  "J15829",
+  "J15832",
+  "J15835",
+  "J15897",
+  "J15909"
+ ],
+ "discover_usage": {
+  "calls": 0,
+  "prompt": 0,
+  "out": 0
+ }
+}

@@ -1,0 +1,814 @@
+[
+ {
+  "name": "rule answer ok is kept even when a draft exists",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 1000
+    }
+   ],
+   {
+    "1": {
+     "status": "ok",
+     "value": "Rule answer",
+     "rule": "x"
+    }
+   },
+   {
+    "ID(Why do you want this job?)": "Draft answer"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "value": "Rule answer",
+     "rule": "x"
+    }
+   },
+   []
+  ],
+  "spec_quote": "If ans[key].status == \"ok\": leave it untouched (a rule answer is never replaced), even if a draft exists."
+ },
+ {
+  "name": "unknown answer plus draft by ID becomes open_answers ok",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 1000
+    }
+   ],
+   {
+    "1": {
+     "status": "unknown"
+    }
+   },
+   {
+    "ID(Why do you want this job?)": "My draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Why do you want this job?",
+     "rule": "open_answers",
+     "value": "My draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "Else look up the draft: drafts[\"ID(<label>)\"] first, else drafts[\"label:\" + cleaned lower-case label]."
+ },
+ {
+  "name": "absent answer plus draft by ID becomes open_answers ok",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 1000
+    }
+   ],
+   {},
+   {
+    "ID(Why do you want this job?)": "Absent draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Why do you want this job?",
+     "rule": "open_answers",
+     "value": "Absent draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "Else look up the draft: drafts[\"ID(<label>)\"] first, else drafts[\"label:\" + cleaned lower-case label]."
+ },
+ {
+  "name": "draft found by label key after stars, required, and extra spaces are cleaned",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "***Why   do you want   this job?***(required)",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:why do you want this job?": "Label draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "***Why   do you want   this job?***(required)",
+     "rule": "open_answers",
+     "value": "Label draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "Label cleaning (\"cleaned label\"): whitespace runs collapsed to one space and trimmed; a trailing \"(required)\" or \"(optional)\" (any case), a trailing word \"required\" (optionally followed by \".\"), a trailing run of \"*\" and a leading run of \"*\" are removed."
+ },
+ {
+  "name": "missing essay uses positive maxlength as limit",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Describe your experience",
+     "kind": "textarea",
+     "maxlength": 200
+    }
+   ],
+   {},
+   {}
+  ],
+  "expect": [
+   {},
+   [
+    {
+     "id": "ID(Describe your experience)",
+     "label": "Describe your experience",
+     "limit": 200
+    }
+   ]
+  ],
+  "spec_quote": "not found: append to missing {\"id\": \"ID(<label> as given)\", \"label\": <cleaned label, original case>, \"limit\": maxlength if it is a positive number else 1500}; ans unchanged for that key."
+ },
+ {
+  "name": "missing essay uses 1500 when maxlength is null",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Tell us about yourself",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {}
+  ],
+  "expect": [
+   {},
+   [
+    {
+     "id": "ID(Tell us about yourself)",
+     "label": "Tell us about yourself",
+     "limit": 1500
+    }
+   ]
+  ],
+  "spec_quote": "not found: append to missing {\"id\": \"ID(<label> as given)\", \"label\": <cleaned label, original case>, \"limit\": maxlength if it is a positive number else 1500}; ans unchanged for that key."
+ },
+ {
+  "name": "missing essay uses 1500 when maxlength is zero",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Share your story",
+     "kind": "textarea",
+     "maxlength": 0
+    }
+   ],
+   {},
+   {}
+  ],
+  "expect": [
+   {},
+   [
+    {
+     "id": "ID(Share your story)",
+     "label": "Share your story",
+     "limit": 1500
+    }
+   ]
+  ],
+  "spec_quote": "not found: append to missing {\"id\": \"ID(<label> as given)\", \"label\": <cleaned label, original case>, \"limit\": maxlength if it is a positive number else 1500}; ans unchanged for that key."
+ },
+ {
+  "name": "text kind is never an essay box even with why and a draft",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "text",
+     "maxlength": 50
+    }
+   ],
+   {},
+   {
+    "ID(Why do you want this job?)": "Draft"
+   }
+  ],
+  "expect": [
+   {},
+   []
+  ],
+  "spec_quote": "kind == \"textarea\" (a \"text\" input is never an essay box), and"
+ },
+ {
+  "name": "cover_letter key is excluded from essay boxes",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "cover_letter",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 500
+    }
+   ],
+   {},
+   {
+    "ID(Why do you want this job?)": "Draft"
+   }
+  ],
+  "expect": [
+   {},
+   []
+  ],
+  "spec_quote": "key is not \"cover_letter\" and not \"summary\", and"
+ },
+ {
+  "name": "summary key is excluded from essay boxes",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "summary",
+     "label": "Describe your experience",
+     "kind": "textarea",
+     "maxlength": 500
+    }
+   ],
+   {},
+   {
+    "ID(Describe your experience)": "Draft"
+   }
+  ],
+  "expect": [
+   {},
+   []
+  ],
+  "spec_quote": "key is not \"cover_letter\" and not \"summary\", and"
+ },
+ {
+  "name": "why inside whyte is not a whole-word match",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Whyte paper experience",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "ID(Whyte paper experience)": "Draft"
+   }
+  ],
+  "expect": [
+   {},
+   []
+  ],
+  "spec_quote": "contains the whole word \"why\";"
+ },
+ {
+  "name": "short textarea with whole word why is an essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why this role",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "ID(Why this role)": "Because"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Why this role",
+     "rule": "open_answers",
+     "value": "Because"
+    }
+   },
+   []
+  ],
+  "spec_quote": "contains the whole word \"why\";"
+ },
+ {
+  "name": "describe after leading spaces triggers essay box and label key lookup",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "   Describe your background",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:describe your background": "Background"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "   Describe your background",
+     "rule": "open_answers",
+     "value": "Background"
+    }
+   },
+   []
+  ],
+  "spec_quote": "starts (after leading spaces) with the word \"describe\", \"tell us\", \"share\", \"explain\" or \"walk us through\";"
+ },
+ {
+  "name": "tell us starter triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Tell us about a challenge",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:tell us about a challenge": "Challenge"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Tell us about a challenge",
+     "rule": "open_answers",
+     "value": "Challenge"
+    }
+   },
+   []
+  ],
+  "spec_quote": "starts (after leading spaces) with the word \"describe\", \"tell us\", \"share\", \"explain\" or \"walk us through\";"
+ },
+ {
+  "name": "explain starter triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Explain a failure",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:explain a failure": "Failure"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Explain a failure",
+     "rule": "open_answers",
+     "value": "Failure"
+    }
+   },
+   []
+  ],
+  "spec_quote": "starts (after leading spaces) with the word \"describe\", \"tell us\", \"share\", \"explain\" or \"walk us through\";"
+ },
+ {
+  "name": "walk us through starter triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Walk us through a project",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:walk us through a project": "Project"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Walk us through a project",
+     "rule": "open_answers",
+     "value": "Project"
+    }
+   },
+   []
+  ],
+  "spec_quote": "starts (after leading spaces) with the word \"describe\", \"tell us\", \"share\", \"explain\" or \"walk us through\";"
+ },
+ {
+  "name": "how did you followed by fix triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "How did you fix the bug?",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:how did you fix the bug?": "Fixed"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "How did you fix the bug?",
+     "rule": "open_answers",
+     "value": "Fixed"
+    }
+   },
+   []
+  ],
+  "spec_quote": "contains \"how did you\" / \"how do you\" / \"how would you\" followed within 80 characters by one of the words check, decide, approach, solve, fix, handle, \"find the\", know, verify."
+ },
+ {
+  "name": "how would you followed by approach triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "How would you approach this problem?",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:how would you approach this problem?": "Approach"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "How would you approach this problem?",
+     "rule": "open_answers",
+     "value": "Approach"
+    }
+   },
+   []
+  ],
+  "spec_quote": "contains \"how did you\" / \"how do you\" / \"how would you\" followed within 80 characters by one of the words check, decide, approach, solve, fix, handle, \"find the\", know, verify."
+ },
+ {
+  "name": "how did you with no listed follow-up word is not an essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "How did you learn to code?",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "ID(How did you learn to code?)": "Draft"
+   }
+  ],
+  "expect": [
+   {},
+   []
+  ],
+  "spec_quote": "contains \"how did you\" / \"how do you\" / \"how would you\" followed within 80 characters by one of the words check, decide, approach, solve, fix, handle, \"find the\", know, verify."
+ },
+ {
+  "name": "label longer than 100 characters triggers essay box",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "This is a very long label that does not contain any essay trigger words but is longer than one hundred characters in total so it should be an essay box.",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:this is a very long label that does not contain any essay trigger words but is longer than one hundred characters in total so it should be an essay box.": "Long draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "This is a very long label that does not contain any essay trigger words but is longer than one hundred characters in total so it should be an essay box.",
+     "rule": "open_answers",
+     "value": "Long draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "the label (as given) either is longer than 100 characters, or matches (case-insensitive) any of:"
+ },
+ {
+  "name": "empty-string draft counts as absent",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 400
+    }
+   ],
+   {},
+   {
+    "ID(Why do you want this job?)": ""
+   }
+  ],
+  "expect": [
+   {},
+   [
+    {
+     "id": "ID(Why do you want this job?)",
+     "label": "Why do you want this job?",
+     "limit": 400
+    }
+   ]
+  ],
+  "spec_quote": "A draft that is an empty string counts as absent."
+ },
+ {
+  "name": "several fields mixed in order",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": 500
+    },
+    {
+     "key": "2",
+     "label": "Describe your experience",
+     "kind": "textarea",
+     "maxlength": null
+    },
+    {
+     "key": "3",
+     "label": "Your name",
+     "kind": "text",
+     "maxlength": 100
+    },
+    {
+     "key": "4",
+     "label": "Tell us about yourself",
+     "kind": "textarea",
+     "maxlength": 0
+    },
+    {
+     "key": "5",
+     "label": "Share your story",
+     "kind": "textarea",
+     "maxlength": 300
+    }
+   ],
+   {
+    "1": {
+     "status": "ok",
+     "value": "Rule",
+     "rule": "x"
+    },
+    "4": {
+     "status": "unknown"
+    }
+   },
+   {
+    "ID(Why do you want this job?)": "Draft1",
+    "label:describe your experience": "Draft2"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "value": "Rule",
+     "rule": "x"
+    },
+    "4": {
+     "status": "unknown"
+    },
+    "2": {
+     "status": "ok",
+     "label": "Describe your experience",
+     "rule": "open_answers",
+     "value": "Draft2"
+    }
+   },
+   [
+    {
+     "id": "ID(Tell us about yourself)",
+     "label": "Tell us about yourself",
+     "limit": 1500
+    },
+    {
+     "id": "ID(Share your story)",
+     "label": "Share your story",
+     "limit": 300
+    }
+   ]
+  ],
+  "spec_quote": "found: answers[key] = {\"status\": \"ok\", \"label\": <label as given>, \"rule\": \"open_answers\", \"value\": <draft>} / not found: append to missing {\"id\": \"ID(<label> as given)\", \"label\": <cleaned label, original case>, \"limit\": maxlength if it is a positive number else 1500}; ans unchanged for that key."
+ },
+ {
+  "name": "keys not in fields are kept in the answer copy",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {
+    "99": {
+     "status": "ok",
+     "value": "Keep",
+     "rule": "y"
+    },
+    "1": {
+     "status": "unknown"
+    }
+   },
+   {
+    "ID(Why do you want this job?)": "Draft"
+   }
+  ],
+  "expect": [
+   {
+    "99": {
+     "status": "ok",
+     "value": "Keep",
+     "rule": "y"
+    },
+    "1": {
+     "status": "ok",
+     "label": "Why do you want this job?",
+     "rule": "open_answers",
+     "value": "Draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "answers = a copy of ans with those changes (keys not in fields are kept as they are). Input is not mutated."
+ },
+ {
+  "name": "optional suffix is removed for label key lookup",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job? (OPTIONAL)",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "label:why do you want this job?": "Optional draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Why do you want this job? (OPTIONAL)",
+     "rule": "open_answers",
+     "value": "Optional draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "a trailing \"(required)\" or \"(optional)\" (any case)"
+ },
+ {
+  "name": "required word with dot is removed for label key lookup",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Tell us about yourself required.",
+     "kind": "textarea",
+     "maxlength": 250
+    }
+   ],
+   {},
+   {
+    "label:tell us about yourself": "Required draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Tell us about yourself required.",
+     "rule": "open_answers",
+     "value": "Required draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "a trailing word \"required\" (optionally followed by \".\")"
+ },
+ {
+  "name": "ID draft key is preferred over label draft key",
+  "fn": "open_drafts",
+  "args": [
+   [
+    {
+     "key": "1",
+     "label": "Why do you want this job?",
+     "kind": "textarea",
+     "maxlength": null
+    }
+   ],
+   {},
+   {
+    "ID(Why do you want this job?)": "ID draft",
+    "label:why do you want this job?": "Label draft"
+   }
+  ],
+  "expect": [
+   {
+    "1": {
+     "status": "ok",
+     "label": "Why do you want this job?",
+     "rule": "open_answers",
+     "value": "ID draft"
+    }
+   },
+   []
+  ],
+  "spec_quote": "drafts[\"ID(<label>)\"] first, else drafts[\"label:\" + cleaned lower-case label]."
+ }
+]

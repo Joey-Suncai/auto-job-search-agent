@@ -46,7 +46,7 @@ Never retry a refused password in a loop: one try per stored password, then stop
 ## 3. Flow
 1. **Pick** 可投 rows whose `ats_url` / `url` is iCIMS or Jibe (`run_icims.login_url`), internship tier C/D for tests.
 2. **Run** (Mac, live data from the main folder):
-   `CX_DATA=~/Projects/job-search-agent/data/runner ~/.job-agent-venv/bin/python skills/auto-apply/runner/run_icims.py --url <posting> --resume resume/2026-10/Alex_Rivera_Resume_<Track>_A-Classic.pdf --wait-captcha 15 [--keep-tab]`
+   `CX_DATA=~/Projects/job-search-agent/data/runner ~/.job-agent-venv/bin/python skills/auto-apply/runner/run_icims.py --url <posting> --resume resume/2026-10/<First>_<Last>_Resume_<Track>_A-Classic.pdf --wait-captcha 15 [--keep-tab]`
    - Jibe / `?icims=1` page → the runner reads its Apply link (`a#link-apply`) into `<tenant>.icims.com/jobs/<id>/login`.
    - E-mail step: e-mail + the required privacy box (`#accept_gdpr`, its text saved as `consent_text` in `form_check.json`) → Next → hCaptcha → the candidate.
    - `--attach <url text>` continues a tab that is already on a step (after a hand-off); `--no-advance` fills and reads back the current step only.
@@ -86,6 +86,7 @@ spec `scripts/test_cases/icims_submit_spec.md`) · `skills/auto-apply/runner/tes
 flows with a fake tab: no click in a dry run, middle-step Submit, refused, unconfirmed, receipt e-mail).
 
 ## 4. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. iCIMS: `after_submit(…, before_text)` needs the step bar to move / vanish or the sentence to be new since the click.
 
 **A. hCaptcha before the form.** iCIMS protects the e-mail step (and "Submit Profile") with hCaptcha; in the CDP-driven
 job Chrome it always shows an image challenge. Rule: `hold_for_captcha` — visible `hcaptcha … frame=challenge` iframe
@@ -103,8 +104,8 @@ is detached by the time it is clicked (30 s timeout). Rules: `pick_dropdown` typ
 without a leading "(+n)"), waits until two reads of the list agree, clicks the exact title; read back from
 `<id>_fakeSelected_icimsDropdown`.
 
-**D. Street address is a geolocation type-ahead.** `TypeToSearchTextFieldDropDown` suggests "1210 South Indiana Avenue,
-Chicago, IL 62701" etc.; a suggestion could rewrite city / ZIP. Rule: `enter_manually` picks "— Enter Manually —" (the
+**D. Street address is a geolocation type-ahead.** `TypeToSearchTextFieldDropDown` suggests "<street long form>,
+<City>, <ST> <ZIP>" etc.; a suggestion could rewrite city / ZIP. Rule: `enter_manually` picks "— Enter Manually —" (the
 field becomes a text box) and types the profile address.
 
 **E. The resume upload posts the form.** The file input's `onchange` submits the page (`uploadResume=1`) and parses the
@@ -131,7 +132,7 @@ approved snippet (`config/profile.json → consents_approved[].contains`) is in 
 this address anyway? Yes" — a checkbox `name=override` (`id=address_-1`) inside the error. Rule: the runner ticks it (the
 address is the profile's own) as `address_override`. Open: on one tenant the profile still did not go through after the
 tick + a solved hCaptcha (the button stayed disabled) — next run: pick the geolocation suggestion that is the same
-address ("1210 South Indiana Avenue, Chicago, IL 62701") instead of Enter Manually, and compare S/South, Ave/Avenue.
+address ("<street>, <City>, <ST> <ZIP>") instead of Enter Manually, and compare S/South, Ave/Avenue.
 
 **J. A submit already in flight.** After a click (or a solved hCaptcha) the button carries
 `iCIMS_loadingButtonOverlayImage` and stays `disabled`; a page reused from an earlier attempt keeps it disabled forever

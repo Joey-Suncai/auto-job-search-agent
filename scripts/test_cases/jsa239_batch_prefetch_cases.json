@@ -1,0 +1,355 @@
+[
+ {
+  "name": "fresh closed exactly 5 days old skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "2026-11-12",
+   "needs": 3
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: closed (prefetch 2026-11-12)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh restricted exactly 5 days old skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "restricted",
+   "read_at": "2026-11-12",
+   "needs": 2
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: restricted (prefetch 2026-11-12)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "stale closed 6 days old prepares",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "2026-11-11",
+   "needs": 3
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "stale restricted 6 days old prepares",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "restricted",
+   "read_at": "2026-11-11",
+   "needs": 0
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "fresh closed today skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "2026-11-17",
+   "needs": 0
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: closed (prefetch 2026-11-17)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh restricted yesterday skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "restricted",
+   "read_at": "2026-11-16",
+   "needs": 5
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: restricted (prefetch 2026-11-16)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh ok with needs shows prefetch_left",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-16",
+   "needs": 3
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": 3
+  },
+  "spec_quote": "A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "fresh ok with zero needs shows zero",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-15",
+   "needs": 0
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": 0
+  },
+  "spec_quote": "A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "fresh ok missing needs shows nothing",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-16"
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "fresh ok at 5-day boundary prepares with needs",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-12",
+   "needs": 7
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": 7
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false. A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "stale ok 6 days old prepares without prefetch_left",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-11",
+   "needs": 4
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "fresh error prepares without prefetch_left",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "error",
+   "read_at": "2026-11-16",
+   "needs": 9
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "stale error prepares without prefetch_left",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "error",
+   "read_at": "2026-11-11",
+   "needs": 9
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "no record prepares",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": null,
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ },
+ {
+  "name": "missing read_at closed is stale",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "needs": 3
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A record whose read_at is missing or not a date is treated as stale."
+ },
+ {
+  "name": "invalid read_at closed is stale",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "not-a-date",
+   "needs": 3
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A record whose read_at is missing or not a date is treated as stale."
+ },
+ {
+  "name": "missing read_at ok is stale",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "needs": 2
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A record whose read_at is missing or not a date is treated as stale."
+ },
+ {
+  "name": "invalid read_at ok is stale",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-13-40",
+   "needs": 2
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A record whose read_at is missing or not a date is treated as stale."
+ },
+ {
+  "name": "fresh restricted ignores needs and skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "restricted",
+   "read_at": "2026-11-14",
+   "needs": 0
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: restricted (prefetch 2026-11-14)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh closed with needs does not set prefetch_left",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "2026-11-15",
+   "needs": 8
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: closed (prefetch 2026-11-15)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh restricted today skips",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "restricted",
+   "read_at": "2026-11-17",
+   "needs": 1
+  },
+  "expect": {
+   "action": "skip",
+   "status": "skipped: restricted (prefetch 2026-11-17)"
+  },
+  "spec_quote": "A record that is FRESH (read_at at most 5 days before today, inclusive: read 5 days ago is fresh, 6 days ago is stale) and has status \"closed\" or \"restricted\" → the job is SKIPPED before any preparation work: its row gets the status \"skipped: closed (prefetch YYYY-MM-DD)\" or \"skipped: restricted (prefetch YYYY-MM-DD)\" with that read_at date, ready false."
+ },
+ {
+  "name": "fresh ok today with needs 1",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-17",
+   "needs": 1
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": 1
+  },
+  "spec_quote": "A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "fresh ok with large needs",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "ok",
+   "read_at": "2026-11-14",
+   "needs": 12
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": 12
+  },
+  "spec_quote": "A fresh \"ok\" record → the job is prepared as before; its row additionally shows `prefetch_left` = the record's `needs` (a number; a missing `needs` shows nothing) so the report says how many questions are still open."
+ },
+ {
+  "name": "stale closed 7 days old prepares",
+  "kind": "gate",
+  "today": "2026-11-17",
+  "record": {
+   "status": "closed",
+   "read_at": "2026-11-10",
+   "needs": 0
+  },
+  "expect": {
+   "action": "prepare",
+   "prefetch_left": null
+  },
+  "spec_quote": "A STALE record of any status, an \"error\" record, or no record → no change: the job is prepared as before, no extra fields."
+ }
+]

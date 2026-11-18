@@ -1,0 +1,378 @@
+[
+ {
+  "name": "gh_any_employer_yn",
+  "label": "Are you legally authorized to work in the United States for any employer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Stripe",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including \"Are you legally authorized to work for any U.S. employer?\"",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_all_employers_yn",
+  "label": "Are you authorized to work for all employers in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Kelnevbra",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"authorized to work for all employers\"",
+  "ambiguous": false
+ },
+ {
+  "name": "lever_without_restriction_yn",
+  "label": "Are you legally authorized to work in the U.S. without restriction?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Ramp",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"authorized to work without restriction / unrestricted\"",
+  "ambiguous": false
+ },
+ {
+  "name": "ashby_as_of_today_yn",
+  "label": "Are you legally authorized to work in the United States as of today?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Notion",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"authorized to work as of today / effective as of the date you complete this application\"",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_effective_date_yn",
+  "label": "Are you authorized to work in the U.S. effective as of the date you complete this application?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Cigna",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"authorized to work as of today / effective as of the date you complete this application\"",
+  "ambiguous": false
+ },
+ {
+  "name": "eligible_yn",
+  "label": "Are you legally eligible to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Osttalnev",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"legally entitled / eligible / permitted to work in the U.S.\"",
+  "ambiguous": false
+ },
+ {
+  "name": "permitted_yn",
+  "label": "Are you permitted to work in the U.S.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Airbnb",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"legally entitled / eligible / permitted to work in the U.S.\"",
+  "ambiguous": false
+ },
+ {
+  "name": "unrestricted_authorization_yn",
+  "label": "Do you have unrestricted work authorization in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Snowflake",
+  "expect": "Yes",
+  "spec_quote": "Every work-AUTHORIZATION question is answered Yes — including ... \"authorized to work without restriction / unrestricted\"",
+  "ambiguous": false
+ },
+ {
+  "name": "ashby_statement_pick_any_employer",
+  "label": "Which of the following best describes your work authorization status?",
+  "options": [
+   "Yes, I am authorized to work for my present employer only",
+   "Yes, I am authorized to work in this country for any employer",
+   "I require sponsorship to work in the United States",
+   "No, I am not authorized to work in this country"
+  ],
+  "company": "Linear",
+  "expect": "Yes, I am authorized to work in this country for any employer",
+  "spec_quote": "the engine picks the unrestricted authorized statement, e.g. \"Yes, I am authorized to work in this country for any employer\"",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_statement_pick_any_employer",
+  "label": "Please select the statement that applies to you:",
+  "options": [
+   "I am legally authorized to work for any employer in the United States",
+   "I am authorized to work for a specific employer only",
+   "I will require sponsorship to work in the United States",
+   "I am not authorized to work in the United States"
+  ],
+  "company": "Verwynbra",
+  "expect": "I am legally authorized to work for any employer in the United States",
+  "spec_quote": "the engine picks the unrestricted authorized statement, e.g. ... \"I am legally authorized to work for any employer in the United States\"",
+  "ambiguous": false
+ },
+ {
+  "name": "lever_yes_without_restrictions",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes, without restrictions",
+   "Yes, with restrictions",
+   "No"
+  ],
+  "company": "Vercel",
+  "expect": "Yes, without restrictions",
+  "spec_quote": "the engine picks the unrestricted authorized statement, e.g. ... \"Yes, without restrictions\". A \"Yes, with restrictions\" ... statement is picked only when no plain or unrestricted Yes statement is offered.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_restricted_only_when_no_plain_yes",
+  "label": "Do you have the legal right to work in the United States?",
+  "options": [
+   "Yes, I am authorized to work with restrictions",
+   "No"
+  ],
+  "company": "Humana",
+  "expect": "Yes, I am authorized to work with restrictions",
+  "spec_quote": "A \"Yes, with restrictions\" / \"authorized for my present employer only\" / \"I require sponsorship\" statement is picked only when no plain or unrestricted Yes statement is offered. A statement that he is NOT authorized is never picked.",
+  "ambiguous": false
+ },
+ {
+  "name": "restricted_vs_sponsorship_only_options",
+  "label": "Which statement best describes your work authorization?",
+  "options": [
+   "Yes, I am authorized to work for my present employer only",
+   "I require sponsorship now or in the future",
+   "No, I am not authorized to work in the United States"
+  ],
+  "company": "Twilio",
+  "expect": "unknown",
+  "spec_quote": "A \"Yes, with restrictions\" / \"authorized for my present employer only\" / \"I require sponsorship\" statement is picked only when no plain or unrestricted Yes statement is offered.",
+  "ambiguous": true,
+  "why": "The spec says the restricted/sponsorship statements are picked when no plain or unrestricted Yes is offered, but does not say which of these two non-preferred statements (present-employer-only vs. require-sponsorship) wins when both are present."
+ },
+ {
+  "name": "near_miss_no_sponsorship_claim_in_yes",
+  "label": "Please select the statement that applies to you:",
+  "options": [
+   "Yes, I am authorized to work for any employer in the United States and will not now or in the future require sponsorship",
+   "Yes, I am authorized to work for any employer in the United States",
+   "No, I am not authorized to work in the United States"
+  ],
+  "company": "Airtable",
+  "expect": "Yes, I am authorized to work for any employer in the United States",
+  "spec_quote": "A Yes option that claims U.S. citizenship, permanent residence, a green card, permanent authorization, or that he does not need / will not need sponsorship is never picked.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_permanent_yes_only",
+  "label": "Do you have the legal right to work in the United States?",
+  "options": [
+   "Yes, I am permanently authorized to work for any employer in the U.S.",
+   "No, I am not authorized to work in the United States"
+  ],
+  "company": "Zendesk",
+  "expect": "unknown",
+  "spec_quote": "A Yes option that claims ... permanent authorization ... is never picked. / A statement that he is NOT authorized is never picked.",
+  "ambiguous": true,
+  "why": "Every offered option is forbidden: the only Yes claims permanent authorization (rule 3) and the other option says he is not authorized (rule 2). The spec gives no fallback for this situation."
+ },
+ {
+  "name": "permanently_authorized_yn",
+  "label": "Are you permanently authorized to work for any employer in the U.S.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Square",
+  "expect": "No",
+  "spec_quote": "\"Are you PERMANENTLY authorized to work (for any employer) in the U.S.?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "permanently_authorized_longform_yn",
+  "label": "Are you authorized to work permanently in the United States for any employer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Adobe",
+  "expect": "No",
+  "spec_quote": "\"Are you PERMANENTLY authorized to work (for any employer) in the U.S.?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "citizen_or_permanent_resident_yn",
+  "label": "Are you a U.S. citizen or permanent resident?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Coinbase",
+  "expect": "No",
+  "spec_quote": "\"Are you a U.S. citizen or permanent resident?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "citizen_pr_greencard_yn",
+  "label": "Are you a U.S. citizen, U.S. permanent resident, or green card holder?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Okta",
+  "expect": "No",
+  "spec_quote": "\"Are you a U.S. citizen or permanent resident?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "status_list_icims_f1",
+  "label": "What is your current immigration / visa status?",
+  "options": [
+   "U.S. Citizen",
+   "U.S. Permanent Resident (Green Card)",
+   "F-1",
+   "H-1B",
+   "Other"
+  ],
+  "company": "PwC",
+  "expect": "F-1",
+  "spec_quote": "\"What is your current immigration / visa status?\" → F-1 (the option \"F-1\" when offered).",
+  "ambiguous": false
+ },
+ {
+  "name": "status_list_workday_f1_student_visa",
+  "label": "Please select your current work authorization / immigration status:",
+  "options": [
+   "U.S. Citizen",
+   "U.S. Permanent Resident",
+   "F-1 Student Visa",
+   "H-1B Visa",
+   "Other"
+  ],
+  "company": "Lumrosdel",
+  "expect": "F-1 Student Visa",
+  "spec_quote": "\"What is your current immigration / visa status?\" → F-1 (the option \"F-1\" when offered).",
+  "ambiguous": true,
+  "why": "The spec only names the exact option text \"F-1\"; it does not say whether a longer variant such as \"F-1 Student Visa\" is treated as the same offered option."
+ },
+ {
+  "name": "sponsorship_now_or_future_yn",
+  "label": "Will you now or in the future require sponsorship for employment visa status (e.g., H-1B)?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Amazon",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions do not change: \"Will you now or in the future require sponsorship?\" → Yes",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_require_yn_short",
+  "label": "Do you require sponsorship for employment visa status?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Uber",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions do not change: \"Will you now or in the future require sponsorship?\" → Yes",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_statements_ashby",
+  "label": "Will you now or in the future require sponsorship to work in the United States?",
+  "options": [
+   "No, I do not now or in the future require sponsorship",
+   "Yes, I will require sponsorship now or in the future"
+  ],
+  "company": "Airtable",
+  "expect": "Yes, I will require sponsorship now or in the future",
+  "spec_quote": "Sponsorship questions do not change: ... statement options → the one saying he will require sponsorship.",
+  "ambiguous": false
+ },
+ {
+  "name": "sponsorship_statement_workday",
+  "label": "Which statement best describes your sponsorship needs?",
+  "options": [
+   "I do not now or in the future require sponsorship for employment visa status",
+   "I require sponsorship for employment visa status now or in the future"
+  ],
+  "company": "IBM",
+  "expect": "I require sponsorship for employment visa status now or in the future",
+  "spec_quote": "Sponsorship questions do not change: ... statement options → the one saying he will require sponsorship.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_sponsored_immigration_yn",
+  "label": "Will you require company-sponsored immigration now or in the future?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Ostrosros",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions do not change: \"Will you now or in the future require sponsorship?\" → Yes",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized_without_sponsorship_open_ended_yn",
+  "label": "Are you authorized to work in the United States without current or future sponsorship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Meta",
+  "expect": "No",
+  "spec_quote": "\"Are you authorized to work … WITHOUT (current or future) sponsorship?\" with no limit to the internship → No",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized_without_sponsorship_this_internship_yn",
+  "label": "Are you authorized to work in the U.S. without sponsorship for this internship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Rosostbra",
+  "expect": "Yes",
+  "spec_quote": "the same limited to \"this internship / now / currently\" → Yes",
+  "ambiguous": false
+ },
+ {
+  "name": "authorized_without_sponsorship_currently_yn",
+  "label": "Are you currently authorized to work in the United States without sponsorship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Google",
+  "expect": "Yes",
+  "spec_quote": "the same limited to \"this internship / now / currently\" → Yes",
+  "ambiguous": false
+ },
+ {
+  "name": "compound_any_employer_without_future_sponsorship_yn",
+  "label": "Are you legally authorized to work in the United States for any employer without the current or future need for sponsorship?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Apple",
+  "expect": "No",
+  "spec_quote": "\"…for any employer without the current or future need for sponsorship?\" is a sponsorship question → No.",
+  "ambiguous": false
+ }
+]

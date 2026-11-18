@@ -1,0 +1,538 @@
+[
+ {
+  "name": "readback_present_ok_true",
+  "input": {
+   "label": "First Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "John",
+   "value": "Johnny",
+   "status": "ok",
+   "source": "resume",
+   "readback": "John",
+   "readback_ok": true
+  },
+  "expect": {
+   "label": "First Name",
+   "section": "Personal",
+   "type": "text",
+   "required": true,
+   "answer": "John",
+   "status": "ok",
+   "source": "resume",
+   "before": "Johnny",
+   "page": "John",
+   "value": "John",
+   "ok": true
+  },
+  "spec": "page: readback when the input HAS a readback key; value: same as page; ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "no_readback_keep",
+  "input": {
+   "label": "Email",
+   "section": "Contact",
+   "type": "email",
+   "required": false,
+   "answer": "a@b.com",
+   "value": "old@b.com",
+   "status": "keep",
+   "source": "page"
+  },
+  "expect": {
+   "label": "Email",
+   "section": "Contact",
+   "type": "email",
+   "required": false,
+   "answer": "a@b.com",
+   "status": "keep",
+   "source": "page",
+   "before": "old@b.com",
+   "page": "old@b.com",
+   "value": "old@b.com"
+  },
+  "spec": "page: readback when the input HAS a readback key; otherwise the input's value; value: same as page; ok: only present when the input has readback_ok."
+ },
+ {
+  "name": "readback_empty_string",
+  "input": {
+   "label": "Middle",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "",
+   "value": "X",
+   "status": "ok",
+   "source": "resume",
+   "readback": ""
+  },
+  "expect": {
+   "label": "Middle",
+   "section": "Personal",
+   "type": "text",
+   "required": false,
+   "answer": "",
+   "status": "ok",
+   "source": "resume",
+   "before": "X",
+   "page": "",
+   "value": ""
+  },
+  "spec": "page: readback when the input HAS a readback key (even if it is '' or 'MISSING'); value: same as page."
+ },
+ {
+  "name": "readback_missing_string",
+  "input": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "tel",
+   "required": true,
+   "answer": "123",
+   "value": "456",
+   "status": "ok",
+   "source": "resume",
+   "readback": "MISSING"
+  },
+  "expect": {
+   "label": "Phone",
+   "section": "Contact",
+   "type": "tel",
+   "required": true,
+   "answer": "123",
+   "status": "ok",
+   "source": "resume",
+   "before": "456",
+   "page": "MISSING",
+   "value": "MISSING"
+  },
+  "spec": "page: readback when the input HAS a readback key (even if it is '' or 'MISSING'); value: same as page."
+ },
+ {
+  "name": "readback_ok_false_with_readback",
+  "input": {
+   "label": "City",
+   "section": "Address",
+   "type": "text",
+   "required": true,
+   "answer": "Boston",
+   "value": "NY",
+   "status": "ok",
+   "source": "resume",
+   "readback": "New York",
+   "readback_ok": false
+  },
+  "expect": {
+   "label": "City",
+   "section": "Address",
+   "type": "text",
+   "required": true,
+   "answer": "Boston",
+   "status": "ok",
+   "source": "resume",
+   "before": "NY",
+   "page": "New York",
+   "value": "New York",
+   "ok": false
+  },
+  "spec": "ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "readback_absent_ok_true",
+  "input": {
+   "label": "State",
+   "section": "Address",
+   "type": "select",
+   "required": true,
+   "answer": "MA",
+   "value": "MA",
+   "status": "ok",
+   "source": "resume",
+   "readback_ok": true
+  },
+  "expect": {
+   "label": "State",
+   "section": "Address",
+   "type": "select",
+   "required": true,
+   "answer": "MA",
+   "status": "ok",
+   "source": "resume",
+   "before": "MA",
+   "page": "MA",
+   "value": "MA",
+   "ok": true
+  },
+  "spec": "page: readback when the input HAS a readback key; otherwise the input's value; ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "readback_absent_ok_false",
+  "input": {
+   "label": "Zip",
+   "section": "Address",
+   "type": "text",
+   "required": true,
+   "answer": "02139",
+   "value": "02138",
+   "status": "ok",
+   "source": "resume",
+   "readback_ok": false
+  },
+  "expect": {
+   "label": "Zip",
+   "section": "Address",
+   "type": "text",
+   "required": true,
+   "answer": "02139",
+   "status": "ok",
+   "source": "resume",
+   "before": "02138",
+   "page": "02138",
+   "value": "02138",
+   "ok": false
+  },
+  "spec": "page: readback when the input HAS a readback key; otherwise the input's value; ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "readback_ok_null_booleanizes_false",
+  "input": {
+   "label": "Country",
+   "section": "Address",
+   "type": "select",
+   "required": false,
+   "answer": "US",
+   "value": "USA",
+   "status": "ok",
+   "source": "resume",
+   "readback": "US",
+   "readback_ok": null
+  },
+  "expect": {
+   "label": "Country",
+   "section": "Address",
+   "type": "select",
+   "required": false,
+   "answer": "US",
+   "status": "ok",
+   "source": "resume",
+   "before": "USA",
+   "page": "US",
+   "value": "US",
+   "ok": false
+  },
+  "spec": "ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "missing_value_with_readback",
+  "input": {
+   "label": "Degree",
+   "section": "Education",
+   "type": "text",
+   "required": false,
+   "answer": "BS",
+   "status": "ok",
+   "source": "resume",
+   "readback": "BS",
+   "readback_ok": true
+  },
+  "expect": {
+   "label": "Degree",
+   "section": "Education",
+   "type": "text",
+   "required": false,
+   "answer": "BS",
+   "status": "ok",
+   "source": "resume",
+   "before": null,
+   "page": "BS",
+   "value": "BS",
+   "ok": true
+  },
+  "spec": "before: the input's value (None when missing); page: readback when the input HAS a readback key."
+ },
+ {
+  "name": "missing_most_keys_only_value",
+  "input": {
+   "value": "preset"
+  },
+  "expect": {
+   "label": null,
+   "section": null,
+   "type": null,
+   "required": null,
+   "answer": null,
+   "status": null,
+   "source": null,
+   "before": "preset",
+   "page": "preset",
+   "value": "preset"
+  },
+  "spec": "label, section, type, required, answer, status, source: copied unchanged (None when missing); before: the input's value; page: otherwise the input's value."
+ },
+ {
+  "name": "required_false_source_null_skip",
+  "input": {
+   "label": "M",
+   "section": "S",
+   "type": "T",
+   "required": false,
+   "answer": "A",
+   "value": "V",
+   "status": "skip",
+   "source": null
+  },
+  "expect": {
+   "label": "M",
+   "section": "S",
+   "type": "T",
+   "required": false,
+   "answer": "A",
+   "status": "skip",
+   "source": null,
+   "before": "V",
+   "page": "V",
+   "value": "V"
+  },
+  "spec": "label, section, type, required, answer, status, source: copied unchanged (None when missing)."
+ },
+ {
+  "name": "required_null_needs_user",
+  "input": {
+   "label": "M",
+   "section": "S",
+   "type": "T",
+   "required": null,
+   "answer": "A",
+   "value": "V",
+   "status": "needs_user",
+   "source": "manual"
+  },
+  "expect": {
+   "label": "M",
+   "section": "S",
+   "type": "T",
+   "required": null,
+   "answer": "A",
+   "status": "needs_user",
+   "source": "manual",
+   "before": "V",
+   "page": "V",
+   "value": "V"
+  },
+  "spec": "label, section, type, required, answer, status, source: copied unchanged (None when missing)."
+ },
+ {
+  "name": "status_skip_readback_missing_no_ok",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "value": "V",
+   "status": "skip",
+   "source": "resume",
+   "readback": "MISSING"
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "status": "skip",
+   "source": "resume",
+   "before": "V",
+   "page": "MISSING",
+   "value": "MISSING"
+  },
+  "spec": "page: readback when the input HAS a readback key (even if it is '' or 'MISSING'); ok: only present when the input has readback_ok."
+ },
+ {
+  "name": "answer_null_no_readback",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": null,
+   "value": "V",
+   "status": "keep",
+   "source": "page"
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": null,
+   "status": "keep",
+   "source": "page",
+   "before": "V",
+   "page": "V",
+   "value": "V"
+  },
+  "spec": "answer: copied unchanged (None when missing); page: otherwise the input's value."
+ },
+ {
+  "name": "readback_empty_ok_false",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "value": "V",
+   "status": "ok",
+   "source": "resume",
+   "readback": "",
+   "readback_ok": false
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "status": "ok",
+   "source": "resume",
+   "before": "V",
+   "page": "",
+   "value": "",
+   "ok": false
+  },
+  "spec": "page: readback when the input HAS a readback key (even if it is '' or 'MISSING'); ok: then bool(readback_ok)."
+ },
+ {
+  "name": "readback_missing_ok_true",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "value": "V",
+   "status": "ok",
+   "source": "resume",
+   "readback": "MISSING",
+   "readback_ok": true
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "status": "ok",
+   "source": "resume",
+   "before": "V",
+   "page": "MISSING",
+   "value": "MISSING",
+   "ok": true
+  },
+  "spec": "page: readback when the input HAS a readback key (even if it is '' or 'MISSING'); ok: then bool(readback_ok)."
+ },
+ {
+  "name": "readback_ok_zero_booleanizes_false",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "value": "V",
+   "status": "ok",
+   "source": "resume",
+   "readback_ok": 0
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "status": "ok",
+   "source": "resume",
+   "before": "V",
+   "page": "V",
+   "value": "V",
+   "ok": false
+  },
+  "spec": "ok: only present when the input has readback_ok; then bool(readback_ok)."
+ },
+ {
+  "name": "readback_present_needs_user_no_ok",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "value": "V",
+   "status": "needs_user",
+   "source": "manual",
+   "readback": "R"
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": true,
+   "answer": "A",
+   "status": "needs_user",
+   "source": "manual",
+   "before": "V",
+   "page": "R",
+   "value": "R"
+  },
+  "spec": "page: readback when the input HAS a readback key; otherwise the input's value; ok: only present when the input has readback_ok."
+ },
+ {
+  "name": "label_only_missing_others",
+  "input": {
+   "label": "OnlyLabel",
+   "value": "V"
+  },
+  "expect": {
+   "label": "OnlyLabel",
+   "section": null,
+   "type": null,
+   "required": null,
+   "answer": null,
+   "status": null,
+   "source": null,
+   "before": "V",
+   "page": "V",
+   "value": "V"
+  },
+  "spec": "label, section, type, required, answer, status, source: copied unchanged (None when missing)."
+ },
+ {
+  "name": "missing_value_readback_ok_false",
+  "input": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": false,
+   "answer": "A",
+   "status": "ok",
+   "source": "resume",
+   "readback": "R",
+   "readback_ok": false
+  },
+  "expect": {
+   "label": "L",
+   "section": "S",
+   "type": "T",
+   "required": false,
+   "answer": "A",
+   "status": "ok",
+   "source": "resume",
+   "before": null,
+   "page": "R",
+   "value": "R",
+   "ok": false
+  },
+  "spec": "before: the input's value (None when missing); page: readback when the input HAS a readback key; ok: then bool(readback_ok)."
+ }
+]

@@ -11,16 +11,16 @@ Upload file
 Your form needs corrections
 Missing entry for required field: School
 Legal Name*
-Alex Rivera
+Alex Doe
 Preferred First Name
 Alex
 Email*
-alex.rivera@example.com
+alex.doe@example.com
 Phone*
 555-010-0123
 Check Yes or No to indicate your agreement to receive text message updates via SMS and/or WhatsApp.
 Resume*
-Alex_Rivera_Resume.pdf
+Alex_Doe_Resume.pdf
 Replace
 or drag and drop here
 LinkedIn Profile*

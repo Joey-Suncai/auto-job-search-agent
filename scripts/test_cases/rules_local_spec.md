@@ -13,6 +13,6 @@ accepts on-site and hybrid work. He is NOT local to any other city or region.
 2. A text box asking for a website / portfolio PASSWORD ("Portfolio, Video, or Website Password", "Website password (if
    protected)") is never filled with the candidate's website URL → expect "none" (left for a human / left blank).
 3. A plain website / portfolio LINK box ("Portfolio, Video, or Website Link", "Personal website", "Portfolio URL") still
-   gets the candidate's website: https://github.com/example
+   gets the candidate's website: https://github.com/alex-doe-example
 4. Questions that ask about willingness only, with no "local to" wording ("Are you able to work on-site in NYC 3 days a
    week?", "Are you willing to relocate?") → "Yes".

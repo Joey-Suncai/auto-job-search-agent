@@ -1,0 +1,340 @@
+[
+ {
+  "name": "generic_workday_hedged_alert_is_wrong_password",
+  "fn": "message_kind",
+  "text": "You may have entered the wrong email address or password or your account might be locked.",
+  "expect": "wrong_password",
+  "spec": "AND any hedged or conditional lock mention from rule 1 (alone or with other words), e.g. \"You may have entered the wrong email address or password or your account might be locked.\" and \"Your account might be locked.\" are both wrong_password."
+ },
+ {
+  "name": "definite_has_been_locked",
+  "fn": "message_kind",
+  "text": "Your account has been locked",
+  "expect": "locked",
+  "spec": "\"locked\": the text says definitely that the account IS locked, disabled or suspended ... (\"Your account has been locked\", \"Account locked\", ...)"
+ },
+ {
+  "name": "hedged_might_be_locked_alone",
+  "fn": "message_kind",
+  "text": "Your account might be locked.",
+  "expect": "wrong_password",
+  "spec": "A hedged or conditional mention is NOT a lock: \"might be locked\", \"may be locked\", \"could be locked\" ... \"Your account might be locked.\" are both wrong_password."
+ },
+ {
+  "name": "account_locked_short",
+  "fn": "message_kind",
+  "text": "Account locked",
+  "expect": "locked",
+  "spec": "\"locked\": the text says definitely that the account IS locked ... (\"Your account has been locked\", \"Account locked\", ...)"
+ },
+ {
+  "name": "temporarily_disabled_is_locked",
+  "fn": "message_kind",
+  "text": "Your account is temporarily disabled",
+  "expect": "locked",
+  "spec": "\"locked\": the text says definitely that the account IS locked, disabled or suspended ... (\"Your account is temporarily disabled\", ...)"
+ },
+ {
+  "name": "too_many_failed_attempts_is_locked",
+  "fn": "message_kind",
+  "text": "Too many failed attempts. Try again in 30 minutes",
+  "expect": "locked",
+  "spec": "\"locked\": the text says definitely ... that there WERE too many (failed) sign-in attempts (\"Too many failed attempts. Try again in 30 minutes\", ...)"
+ },
+ {
+  "name": "locked_out_is_locked",
+  "fn": "message_kind",
+  "text": "You have been locked out",
+  "expect": "locked",
+  "spec": "\"locked\": the text says definitely that the account IS locked, disabled or suspended ... (\"You have been locked out\")"
+ },
+ {
+  "name": "conditional_if_locked_contact_support",
+  "fn": "message_kind",
+  "text": "If your account is locked, contact support",
+  "expect": "wrong_password",
+  "spec": "A hedged or conditional mention is NOT a lock: ... \"if your account is locked, contact support\" ... are both wrong_password."
+ },
+ {
+  "name": "future_warning_will_be_locked",
+  "fn": "message_kind",
+  "text": "After 5 failed attempts your account will be locked",
+  "expect": "wrong_password",
+  "spec": "A hedged or conditional mention is NOT a lock: ... \"after 5 failed attempts your account will be locked\" (a warning about the future)."
+ },
+ {
+  "name": "email_already_exists",
+  "fn": "message_kind",
+  "text": "An account with this email address already exists",
+  "expect": "exists",
+  "spec": "\"exists\": an account with this e-mail already exists (\"already exists\", \"already in use\", \"already registered\", \"An account with this email address already exists\")."
+ },
+ {
+  "name": "already_in_use_is_exists",
+  "fn": "message_kind",
+  "text": "This email is already in use",
+  "expect": "exists",
+  "spec": "\"exists\": an account with this e-mail already exists (\"already exists\", \"already in use\", \"already registered\", ...)."
+ },
+ {
+  "name": "please_verify_account",
+  "fn": "message_kind",
+  "text": "Please verify your account before you sign in",
+  "expect": "verify",
+  "spec": "\"verify\": the tenant asks to verify / activate the account or e-mail (\"Please verify your account before you sign in\", ...)."
+ },
+ {
+  "name": "empty_text_none",
+  "fn": "message_kind",
+  "text": "",
+  "expect": "none",
+  "spec": "\"none\": empty text or anything else (\"Sign In\", \"Loading\", \"Required\", \"Something went wrong\")."
+ },
+ {
+  "name": "loading_text_none",
+  "fn": "message_kind",
+  "text": "Loading",
+  "expect": "none",
+  "spec": "\"none\": empty text or anything else (\"Sign In\", \"Loading\", \"Required\", \"Something went wrong\")."
+ },
+ {
+  "name": "uppercase_account_locked_is_locked",
+  "fn": "message_kind",
+  "text": "YOUR ACCOUNT HAS BEEN LOCKED",
+  "expect": "locked",
+  "spec": "text = the error / alert messages the tenant shows (may be empty). Case-insensitive."
+ },
+ {
+  "name": "hedged_plus_definite_lock_is_locked",
+  "fn": "message_kind",
+  "text": "Your account might be locked. Your account has been locked.",
+  "expect": "locked",
+  "spec": "When a text contains both a definite lock and a hedged one, it is \"locked\"."
+ },
+ {
+  "name": "long_password_first_retry",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": false,
+   "created": false,
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "retry_long",
+  "spec": "\"retry_long\" — has_long is true and tried_long is false: sign in again with the long password first."
+ },
+ {
+  "name": "retry_long_beats_give_up",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": false,
+   "created": true,
+   "mails": [
+    {
+     "date": "2025-10-21",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "retry_long",
+  "spec": "Rules, in order; the first that holds wins: 1. \"retry_long\" — has_long is true and tried_long is false: sign in again with the long password first."
+ },
+ {
+  "name": "created_true_gives_up",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": true,
+   "created": true,
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "give_up",
+  "spec": "\"give_up\" — created is true (the account form was already tried once in this run; never a second time)."
+ },
+ {
+  "name": "created_true_no_long_password_gives_up",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": false,
+   "created": true,
+   "mails": [
+    {
+     "date": "2025-10-21",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "give_up",
+  "spec": "\"give_up\" — created is true (the account form was already tried once in this run; never a second time)."
+ },
+ {
+  "name": "old_account_other_mail_before_agent_since",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": true,
+   "created": false,
+   "mails": [
+    {
+     "date": "2025-10-21",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "\"old_account\" — there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since: the candidate's own old account, which the Keychain passwords do not open → hand to the candidate, do NOT create an account."
+ },
+ {
+  "name": "other_mail_equal_to_agent_since_is_not_before",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": false,
+   "created": false,
+   "mails": [
+    {
+     "date": "2026-10-28",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "a mail dated before it is the candidate's own earlier activity; a date equal to agent_since counts as on/after it. / \"create\" — otherwise: there is probably no account on this tenant → open Create Account."
+ },
+ {
+  "name": "verify_mail_equal_to_agent_since_blocks_old_account",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": true,
+   "created": false,
+   "mails": [
+    {
+     "date": "2025-10-21",
+     "kind": "other"
+    },
+    {
+     "date": "2026-10-28",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"old_account\" — there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since ... / a date equal to agent_since counts as on/after it."
+ },
+ {
+  "name": "verify_mail_after_agent_since_blocks_old_account",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": false,
+   "created": false,
+   "mails": [
+    {
+     "date": "2025-01-05",
+     "kind": "other"
+    },
+    {
+     "date": "2026-11-02",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"old_account\" — there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since ... 4. \"create\" — otherwise: there is probably no account on this tenant → open Create Account."
+ },
+ {
+  "name": "verify_mail_before_agent_since_still_old_account",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": true,
+   "created": false,
+   "mails": [
+    {
+     "date": "2025-10-21",
+     "kind": "other"
+    },
+    {
+     "date": "2025-11-01",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "old_account",
+  "spec": "\"old_account\" — there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since: the candidate's own old account ... do NOT create an account."
+ },
+ {
+  "name": "no_mails_creates_account",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": false,
+   "created": false,
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"create\" — otherwise: there is probably no account on this tenant → open Create Account."
+ },
+ {
+  "name": "only_verify_mail_on_agent_since_creates",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": true,
+   "created": false,
+   "mails": [
+    {
+     "date": "2026-10-28",
+     "kind": "verify"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"create\" — otherwise: there is probably no account on this tenant → open Create Account. / a date equal to agent_since counts as on/after it."
+ },
+ {
+  "name": "other_mail_after_agent_since_only_creates",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": false,
+   "tried_long": false,
+   "created": false,
+   "mails": [
+    {
+     "date": "2026-11-05",
+     "kind": "other"
+    }
+   ],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"old_account\" — there is an \"other\" mail dated before agent_since and no \"verify\" mail dated on or after agent_since ... 4. \"create\" — otherwise: there is probably no account on this tenant → open Create Account."
+ },
+ {
+  "name": "long_password_already_tried_no_mails_creates",
+  "fn": "after_wrong",
+  "s": {
+   "has_long": true,
+   "tried_long": true,
+   "created": false,
+   "mails": [],
+   "agent_since": "2026-10-28"
+  },
+  "expect": "create",
+  "spec": "\"create\" — otherwise: there is probably no account on this tenant → open Create Account."
+ }
+]

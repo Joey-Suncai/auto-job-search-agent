@@ -1,0 +1,6 @@
+{
+ "waiter_returns_whitespace": {
+  "verdict": "case",
+  "why": "A whitespace-only subject is no evidence of a receipt: counting it would mark an application submitted on nothing. The spec's 'non-empty string' means non-blank; the code returns None (status unconfirmed, Joey checks Gmail). Source: JSA-299 rule — a submit is confirmed only by real evidence."
+ }
+}

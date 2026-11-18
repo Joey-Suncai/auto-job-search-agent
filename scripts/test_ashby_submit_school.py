@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Harness for run_form.date_same / date_value / pick_school / submit_errors (rule 13, JSA-208 + JSA-209): DeepSeek cases
 from test_cases/ashby_submit_school_spec.md, Claude's verdicts in test_cases/ashby_submit_school_verdicts.json.
-Plus the regression check of JSA-208: a plan written before the prep-time date check (sanitised Creatify fixture,
+Plus the regression check of JSA-208: a plan written before the prep-time date check (sanitised Sevgalkel fixture,
 fictional person) is still typed and read back as MM/DD/YYYY by the runner."""
 import json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))

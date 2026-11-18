@@ -1,0 +1,635 @@
+[
+ {
+  "name": "select: critical work_auth sponsorship question with custom rule is read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "spon",
+     "label": "Will you require sponsorship?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "type": "radio",
+     "value": "Yes",
+     "rule": "custom_q"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [
+   "spon"
+  ],
+  "spec_quote": "An item is read only when the question's class is critical AND its group is one of: work_auth, education, record, experience. … work_auth: any label about sponsorship, visa, work authorization, citizenship, immigration (\"Will you require sponsorship?\").",
+  "ambiguous": false
+ },
+ {
+  "name": "select: education and record kept in input order, contact and eeo dropped",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "em",
+     "label": "Email",
+     "options": [],
+     "type": "text",
+     "value": "a@b.com",
+     "rule": "custom_q"
+    },
+    {
+     "key": "gpa",
+     "label": "What is your GPA?",
+     "options": [],
+     "type": "text",
+     "value": "3.8",
+     "rule": "custom_q"
+    },
+    {
+     "key": "fel",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "type": "radio",
+     "value": "No",
+     "rule": "custom_q"
+    },
+    {
+     "key": "gen",
+     "label": "Gender",
+     "options": [
+      "Male",
+      "Female"
+     ],
+     "type": "select",
+     "value": "Female",
+     "rule": "custom_q"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [
+   "gpa",
+   "fel"
+  ],
+  "spec_quote": "contact (NOT read): name, e-mail, phone, address (\"Email\", \"First Name\", \"Phone\"). … eeo (NOT read): gender, race, veteran, disability (\"Gender\", \"Are you a protected veteran?\"). … each item copied with a `group` field added … in input order",
+  "ambiguous": false
+ },
+ {
+  "name": "select: rule qa:1 whose human question normalises to the item label is not read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "gpa",
+     "label": "What is your GPA?",
+     "options": [],
+     "type": "text",
+     "value": "3.8",
+     "rule": "qa:1"
+    }
+   ],
+   "qa": [
+    {
+     "q": "What is your GPA? *required"
+    }
+   ]
+  },
+  "expect": [],
+  "spec_quote": "rule \"qa:N\" (a saved answer, entry N of the qa list, 1-based): NOT read when that entry's question `q`, normalised (lower case, the word \"required\" and \"*\" removed, every run of non-letters/digits/apostrophes → one space, trimmed), is equal to the item's label normalised the same way — that is the human's own answer for exactly this question.",
+  "ambiguous": false
+ },
+ {
+  "name": "select: rule qa:1 with a different question text is read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "gpa",
+     "label": "What is your GPA?",
+     "options": [],
+     "type": "text",
+     "value": "3.8",
+     "rule": "qa:1"
+    }
+   ],
+   "qa": [
+    {
+     "q": "Do you have a bachelor's degree?"
+    }
+   ]
+  },
+  "expect": [
+   "gpa"
+  ],
+  "spec_quote": "Read otherwise (entry missing, or a different question text that the entry's pattern happened to match).",
+  "ambiguous": false
+ },
+ {
+  "name": "select: rule qa:3 with only two qa entries is read (entry missing)",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "fel",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "type": "radio",
+     "value": "No",
+     "rule": "qa:3"
+    }
+   ],
+   "qa": [
+    {
+     "q": "Will you require sponsorship?"
+    },
+    {
+     "q": "What is your GPA?"
+    }
+   ]
+  },
+  "expect": [
+   "fel"
+  ],
+  "spec_quote": "Read otherwise (entry missing, or a different question text that the entry's pattern happened to match).",
+  "ambiguous": false
+ },
+ {
+  "name": "select: leave=true and excluded rule (linkedin) are not read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "school1",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "MIT",
+     "rule": "custom_q",
+     "leave": true
+    },
+    {
+     "key": "school2",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "MIT",
+     "rule": "linkedin"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: no rule (rule empty or missing); value empty string, null or empty list; item has leave = true; type file, hidden or password; rule is one of linkedin, website, full_name, first_name, last_name, email, phone, address, city, state, zip, sms, or starts with how_heard.",
+  "ambiguous": false
+ },
+ {
+  "name": "select: file, hidden and password types are not read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "f",
+     "label": "Discipline",
+     "options": [],
+     "type": "file",
+     "value": "cv.pdf",
+     "rule": "custom_q"
+    },
+    {
+     "key": "h",
+     "label": "School",
+     "options": [],
+     "type": "hidden",
+     "value": "MIT",
+     "rule": "custom_q"
+    },
+    {
+     "key": "p",
+     "label": "GPA",
+     "options": [],
+     "type": "password",
+     "value": "3.8",
+     "rule": "custom_q"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: … type file, hidden or password",
+  "ambiguous": false
+ },
+ {
+  "name": "select: null value, empty string, empty list and missing rule are not read",
+  "fn": "select",
+  "args": {
+   "items": [
+    {
+     "key": "n",
+     "label": "What is your GPA?",
+     "options": [],
+     "type": "text",
+     "value": null,
+     "rule": "custom_q"
+    },
+    {
+     "key": "e",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "",
+     "rule": "custom_q"
+    },
+    {
+     "key": "l",
+     "label": "Discipline",
+     "options": [],
+     "type": "text",
+     "value": [],
+     "rule": "custom_q"
+    },
+    {
+     "key": "r",
+     "label": "School",
+     "options": [],
+     "type": "text",
+     "value": "MIT"
+    }
+   ],
+   "qa": []
+  },
+  "expect": [],
+  "spec_quote": "Never read: no rule (rule empty or missing); value empty string, null or empty list",
+  "ambiguous": false
+ },
+ {
+  "name": "same: null model value is never the same",
+  "fn": "same",
+  "args": {
+   "rule": "Yes",
+   "model": null,
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "model_value null → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "same: empty rule value is not the same",
+  "fn": "same",
+  "args": {
+   "rule": "",
+   "model": "Yes",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "Either side empty → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "same: multi-pick values with the same picks in different order agree",
+  "fn": "same",
+  "args": {
+   "rule": "Yes | No",
+   "model": "No | Yes",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Values may hold several picks separated by \" | \" (or be lists): same only when both have the same number of picks and every rule pick is the same as some model pick.",
+  "ambiguous": false
+ },
+ {
+  "name": "same: multi-pick with fewer model picks is different",
+  "fn": "same",
+  "args": {
+   "rule": "Yes | No",
+   "model": "No",
+   "options": []
+  },
+  "expect": false,
+  "spec_quote": "same only when both have the same number of picks and every rule pick is the same as some model pick.",
+  "ambiguous": false
+ },
+ {
+  "name": "same: trailing bracketed note is ignored",
+  "fn": "same",
+  "args": {
+   "rule": "F-1 (CPT)",
+   "model": "F-1",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Case, punctuation and spaces do not matter; a trailing bracketed note on either side does not matter (\"F-1 (CPT)\" = \"F-1\").",
+  "ambiguous": false
+ },
+ {
+  "name": "same: with options, a prefix match names the same option",
+  "fn": "same",
+  "args": {
+   "rule": "Bachelor's Degree",
+   "model": "Bachelor's",
+   "options": [
+    "Bachelor's Degree",
+    "Master's Degree"
+   ]
+  },
+  "expect": true,
+  "spec_quote": "With options: the same when both values name the same option (an exact or prefix match of the option).",
+  "ambiguous": false
+ },
+ {
+  "name": "same: with options, two different options are not the same",
+  "fn": "same",
+  "args": {
+   "rule": "Bachelor's Degree",
+   "model": "Master's Degree",
+   "options": [
+    "Bachelor's Degree",
+    "Master's Degree"
+   ]
+  },
+  "expect": false,
+  "spec_quote": "Otherwise different (\"Bachelor\" vs \"Master's\", \"Yes\" vs \"No\", \"University of Chicago\" vs \"Hyde Park\").",
+  "ambiguous": false
+ },
+ {
+  "name": "same: bare month name equals its number",
+  "fn": "same",
+  "args": {
+   "rule": "September",
+   "model": "09",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "A bare month: names and numbers are the same (\"September\" = \"Sep\" = \"09\" = \"9\").",
+  "ambiguous": false
+ },
+ {
+  "name": "same: numbers with trailing zeros are the same value",
+  "fn": "same",
+  "args": {
+   "rule": "3.60",
+   "model": "3.790",
+   "options": []
+  },
+  "expect": true,
+  "spec_quote": "Numbers: same value (\"3.60\" = \"3.60/4.0\" = \"3.790\").",
+  "ambiguous": false
+ },
+ {
+  "name": "month: abbreviated month with punctuation",
+  "fn": "month",
+  "args": {
+   "s": "sep."
+  },
+  "expect": 9,
+  "spec_quote": "month: \"September\" → 9, \"sep.\" → 9, \"09\" → 9, \"12\" → 12, \"13\" → null, \"2027\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "month: out-of-range number is null",
+  "fn": "month",
+  "args": {
+   "s": "13"
+  },
+  "expect": null,
+  "spec_quote": "month: … \"13\" → null, \"2027\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "ym: month-name date with day and year",
+  "fn": "ym",
+  "args": {
+   "s": "June 14, 2027"
+  },
+  "expect": [
+   2027,
+   6
+  ],
+  "spec_quote": "ym: … \"June 14, 2027\" → [2027, 6];",
+  "ambiguous": false
+ },
+ {
+  "name": "ym: bare year has a null month",
+  "fn": "ym",
+  "args": {
+   "s": "2027"
+  },
+  "expect": [
+   2027,
+   null
+  ],
+  "spec_quote": "ym: … \"2027\" → [2027, null]; \"soon\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "enabled: nothing set means disabled",
+  "fn": "enabled",
+  "args": {
+   "env": {}
+  },
+  "expect": false,
+  "spec_quote": "otherwise true when CX_WHOLE_READ = \"1\" or CX_SECOND_OPINION = \"1\"; else false.",
+  "ambiguous": false
+ },
+ {
+  "name": "enabled: CX_WHOLE_READ=0 disables",
+  "fn": "enabled",
+  "args": {
+   "env": {
+    "CX_WHOLE_READ": "0"
+   }
+  },
+  "expect": false,
+  "spec_quote": "false when env CX_WHOLE_READ = \"0\", or JSA_NO_PUSH is set (non-empty), or CX_DATA is set (non-empty).",
+  "ambiguous": false
+ },
+ {
+  "name": "enabled: second-opinion flag turns it on",
+  "fn": "enabled",
+  "args": {
+   "env": {
+    "CX_SECOND_OPINION": "1"
+   }
+  },
+  "expect": true,
+  "spec_quote": "otherwise true when CX_WHOLE_READ = \"1\" or CX_SECOND_OPINION = \"1\"; else false.",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: model answer meaning the same as the rule value (case-insensitive)",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k1",
+     "label": "Will you require sponsorship?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "value": "Yes"
+    }
+   ],
+   "answers": {
+    "k1": "yes"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "k1": {
+    "agree": true,
+    "how": "same"
+   }
+  },
+  "spec_quote": "same(rule value, model answer) → agree true, how \"same\".",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: UNSURE from the model stops the question",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k2",
+     "label": "What is your GPA?",
+     "options": [],
+     "value": "3.8"
+    }
+   ],
+   "answers": {
+    "k2": "UNSURE"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "k2": {
+    "agree": false,
+    "how": "unsure"
+   }
+  },
+  "spec_quote": "\"UNSURE\" or an empty answer = no answer. … no answer → agree false, how \"unsure\".",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: failing model call yields error",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k3",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "value": "No"
+    }
+   ],
+   "answers": {
+    "k3": "ERROR"
+   },
+   "meaning": {}
+  },
+  "expect": {
+   "k3": {
+    "agree": false,
+    "how": "error"
+   }
+  },
+  "spec_quote": "The call raised an error → agree false, how \"error\".",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: disagreeing item WITH options gets no meaning call even if meaning is supplied",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k4",
+     "label": "Will you require sponsorship?",
+     "options": [
+      "Yes",
+      "No"
+     ],
+     "value": "Yes"
+    }
+   ],
+   "answers": {
+    "k4": "No"
+   },
+   "meaning": {
+    "k4": "SAME"
+   }
+  },
+  "expect": {
+   "k4": {
+    "agree": false,
+    "how": "disagree"
+   }
+  },
+  "spec_quote": "Only for a \"disagree\" item WITHOUT options: a second model call judges whether the two answers mean the same thing … Items with options never get the second call.",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: disagreeing free-text item rescued by meaning SAME",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k5",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "answers": {
+    "k5": "Never"
+   },
+   "meaning": {
+    "k5": "SAME"
+   }
+  },
+  "expect": {
+   "k5": {
+    "agree": true,
+    "how": "meaning"
+   }
+  },
+  "spec_quote": "SAME → agree true, how \"meaning\".",
+  "ambiguous": false
+ },
+ {
+  "name": "read_items: disagreeing free-text item with meaning DIFFERENT stays disagree",
+  "fn": "read_items",
+  "args": {
+   "items": [
+    {
+     "key": "k6",
+     "label": "Have you ever been convicted of a felony?",
+     "options": [],
+     "value": "No"
+    }
+   ],
+   "answers": {
+    "k6": "Yes"
+   },
+   "meaning": {
+    "k6": "DIFFERENT"
+   }
+  },
+  "expect": {
+   "k6": {
+    "agree": false,
+    "how": "disagree"
+   }
+  },
+  "spec_quote": "DIFFERENT → stays \"disagree\".",
+  "ambiguous": false
+ }
+]

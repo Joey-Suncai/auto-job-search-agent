@@ -1,0 +1,260 @@
+[
+ {
+  "name": "equal after normalization ignores punctuation and case",
+  "rule_value": "F-1",
+  "model_value": "f 1",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Equal after normalising → same."
+ },
+ {
+  "name": "equal after dropping one trailing bracketed note",
+  "rule_value": "F-1 (CPT)",
+  "model_value": "F-1",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Compare lower-case with every character other than a-z and 0-9 removed, after dropping ONE trailing bracketed note (\"F-1 (CPT)\" = \"F-1\")."
+ },
+ {
+  "name": "equal after normalization for degree abbreviations",
+  "rule_value": "M.S.",
+  "model_value": "MS",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Equal after normalising → same."
+ },
+ {
+  "name": "equal after normalization for n/a",
+  "rule_value": "N/A",
+  "model_value": "n/a",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Equal after normalising → same."
+ },
+ {
+  "name": "null model answer is never same",
+  "rule_value": "Yes",
+  "model_value": null,
+  "options": [],
+  "expect": false,
+  "spec_quote": "An empty side, or a model answer of null, is never the same."
+ },
+ {
+  "name": "empty rule side is never same",
+  "rule_value": "",
+  "model_value": "Yes",
+  "options": [],
+  "expect": false,
+  "spec_quote": "An empty side, or a model answer of null, is never the same."
+ },
+ {
+  "name": "empty model side is never same",
+  "rule_value": "Yes",
+  "model_value": "",
+  "options": [],
+  "expect": false,
+  "spec_quote": "An empty side, or a model answer of null, is never the same."
+ },
+ {
+  "name": "both sides empty still not same",
+  "rule_value": "",
+  "model_value": "",
+  "options": [],
+  "expect": false,
+  "spec_quote": "An empty side, or a model answer of null, is never the same."
+ },
+ {
+  "name": "yes longer with comma separator",
+  "rule_value": "Yes",
+  "model_value": "Yes, I am authorized",
+  "options": [],
+  "expect": true,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "no longer with dash separator",
+  "rule_value": "No",
+  "model_value": "No - I would need sponsorship",
+  "options": [],
+  "expect": true,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "F-1 longer with colon separator",
+  "rule_value": "F-1",
+  "model_value": "F-1: student visa",
+  "options": [],
+  "expect": true,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "yes exact exception allows no separator",
+  "rule_value": "Yes",
+  "model_value": "Yes I am authorized",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Or when the shorter answer is exactly \"yes\", \"no\" or \"n/a\" (any case), whatever follows."
+ },
+ {
+  "name": "no exact exception allows no separator",
+  "rule_value": "No",
+  "model_value": "No I would need sponsorship",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Or when the shorter answer is exactly \"yes\", \"no\" or \"n/a\" (any case), whatever follows."
+ },
+ {
+  "name": "n/a exact exception allows no separator",
+  "rule_value": "n/a",
+  "model_value": "N/A not applicable",
+  "options": [],
+  "expect": true,
+  "spec_quote": "Or when the shorter answer is exactly \"yes\", \"no\" or \"n/a\" (any case), whatever follows."
+ },
+ {
+  "name": "Hyde Park added words is different",
+  "rule_value": "Hyde Park",
+  "model_value": "Hyde Park Investment Services",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "Computer Science added words is different",
+  "rule_value": "Computer Science",
+  "model_value": "Computer Science and Economics",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "Master of Science added words is different",
+  "rule_value": "Master of Science",
+  "model_value": "Master of Science in Data Science",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "University of Chicago added words is different",
+  "rule_value": "University of Chicago",
+  "model_value": "University of Chicago Booth School of Business",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "Talkelsev added words is different",
+  "rule_value": "Talkelsev",
+  "model_value": "Talkelsev Capital",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "F-1 longer with only added words is different",
+  "rule_value": "F-1",
+  "model_value": "F-1 student visa",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "name longer with comma separator is same",
+  "rule_value": "Hyde Park",
+  "model_value": "Hyde Park, Investment Services",
+  "options": [],
+  "expect": true,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "major longer with colon separator is same",
+  "rule_value": "Computer Science",
+  "model_value": "Computer Science: and Economics",
+  "options": [],
+  "expect": true,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "single-letter longer without separator is different",
+  "rule_value": "Y",
+  "model_value": "Y I am authorized",
+  "options": [],
+  "expect": false,
+  "spec_quote": "When the normalised shorter answer is a PREFIX of the normalised longer one, they are the same ONLY when the longer one continues the shorter one with a separator, i.e. in the original text what follows the shorter answer's words starts with a comma, semicolon, colon, dash (-, –, —) or an opening bracket: \"Yes\" = \"Yes, I am authorized\", \"No\" = \"No - I would need sponsorship\", \"F-1\" = \"F-1: student visa\"."
+ },
+ {
+  "name": "with options longer answer names same option",
+  "rule_value": "Computer Science",
+  "model_value": "Computer Science and Economics",
+  "options": [
+   "Computer Science",
+   "Economics"
+  ],
+  "expect": true,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ },
+ {
+  "name": "with options answers name different options",
+  "rule_value": "Computer Science",
+  "model_value": "Economics",
+  "options": [
+   "Computer Science",
+   "Economics"
+  ],
+  "expect": false,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ },
+ {
+  "name": "with options one answer names no option",
+  "rule_value": "Maybe",
+  "model_value": "Yes",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": false,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ },
+ {
+  "name": "with options equal answers but neither names an option",
+  "rule_value": "Maybe",
+  "model_value": "Maybe",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": false,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ },
+ {
+  "name": "empty options uses no-options longest-different rule",
+  "rule_value": "Computer Science",
+  "model_value": "Computer Science and Economics",
+  "options": [],
+  "expect": false,
+  "spec_quote": "A longer version that just adds more words is a DIFFERENT answer: \"Hyde Park\" ≠ \"Hyde Park Investment Services\", \"Computer Science\" ≠ \"Computer Science and Economics\", \"Master of Science\" ≠ \"Master of Science in Data Science\", \"University of Chicago\" ≠ \"University of Chicago Booth School of Business\", \"Talkelsev\" ≠ \"Talkelsev Capital\"."
+ },
+ {
+  "name": "with options answer is prefix of option",
+  "rule_value": "F-1",
+  "model_value": "F",
+  "options": [
+   "F-1",
+   "J-1"
+  ],
+  "expect": true,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ },
+ {
+  "name": "with options option is prefix of answer",
+  "rule_value": "F-1",
+  "model_value": "F-1 CPT",
+  "options": [
+   "F-1",
+   "J-1"
+  ],
+  "expect": true,
+  "spec_quote": "Unchanged: both answers must name the same option, where an answer names the first option equal to it, or one that is a prefix of it or that it is a prefix of (normalised); same only when both name the same non-empty set of options."
+ }
+]

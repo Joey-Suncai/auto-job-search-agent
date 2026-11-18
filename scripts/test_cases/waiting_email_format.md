@@ -1,0 +1,2 @@
+One JSON object per case: {"name": str, "apps": [tracker rows: {"job_id","company","status","action_needed", optional "last_email","last_email_date","email_url" (may be null)}], "today": "2026-11-17", "expect": {"<job_id>": {"last_email": str, "last_email_date": str, "email_url": str}} for every job_id that becomes a to-do row, "expect_absent": [job_ids that must NOT become to-do rows], "spec_quote": str}
+Rows used as to-do rows must have status Applied / Assessment / Interview and an action_needed such as "Take the Coderbyte assessment". Write about 14 cases.

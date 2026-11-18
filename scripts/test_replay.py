@@ -35,7 +35,7 @@ def run(c):
         for r in c.get('reasons') or []:
             nw = (c.get('now') or {}).get(r['question']) or {}
             st = nw.get('status', 'ok') if RP.norm_value(nw.get('value') if nw.get('status') == 'ok' else '') == RP.norm_value(r.get('value')) else 'ok'
-            o.write(json.dumps({'key': key(r['question']), 'status': st, 'value': r.get('value'), 'reason': 't',
+            o.write(json.dumps({'key': key(r['question']), 'status': st, 'value': r.get('value'), 'reason': 'Joey 2026-11-05 (test)' if r.get('kind') != 'known_issue' else 'JSA-999 (open, test)',
                                 **({'kind': 'canon'} if r.get('kind') == 'known_issue' else {})}) + '\n')
     mp = os.path.join(d, 'fake_map.json'); json.dump(c.get('now') or {}, open(mp, 'w'))
     rules = os.path.join(d, 'fake_rules.js'); open(rules, 'w').write(FAKE)

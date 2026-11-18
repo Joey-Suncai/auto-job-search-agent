@@ -64,6 +64,9 @@ MODAL_PROFILE = re.compile(r'cannot apply to this job because your profile is mi
 WRAP_KEYS = ('url', 'u', 'q', 'target', 'redirect', 'redirect_url', 'redirecturl', 'dest', 'destination', 'to', 'link', 'goto', 'out')
 TRACKING = re.compile(r'^(?:utm_[a-z_]+|gh_src|source|src|ref|referrer|ref_src|fbclid|gclid|msclkid|mc_cid|mc_eid|iisn|iis|trk|'
                       r'lever-source|lever-via|_hs[a-z]+)$', re.I)
+# iCIMS page-mode parameters (JSA-284): mode=apply opens the application form instead of the posting, in_iframe / mobile /
+# needsRedirect / width / height / bga / jan1offset / jun1offset / hub only size the embed — none names the posting
+ICIMS_DROP = re.compile(r'^(?:mode|in_iframe|mobile|needsredirect|width|height|bga|jan1offset|jun1offset|hub|hashed)$', re.I)
 UUID = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', re.I)
 SLEEP = (8, 14)
 
@@ -100,7 +103,8 @@ def clean_url(url):
     """Pure (tested). An apply link as read from the page → the link itself: redirect wrappers unwrapped (a query
     parameter in WRAP_KEYS holding an absolute http(s) URL, on a host that is not a known ATS; up to 3 levels, also
     percent-encoded), tracking parameters dropped (utm_*, gh_src, source, src, ref, …; gh_jid and every other one kept),
-    an empty query removed, surrounding spaces trimmed. '' for anything that is not an http(s) URL."""
+    an empty query removed, surrounding spaces trimmed. On *.icims.com the page-mode parameters (ICIMS_DROP: mode=apply,
+    in_iframe, mobile, needsRedirect, sizes) are dropped too, so the link opens the posting (JSA-284). '' for anything that is not an http(s) URL."""
     u = H.unescape(str(url or '')).strip().replace('\\/', '/').replace('\\u002F', '/').replace('\\u0026', '&')
     for _ in range(4):
         if not re.match(r'https?://', u, re.I):
@@ -125,6 +129,8 @@ def clean_url(url):
         return ''
     # kept parameters stay byte for byte as the page wrote them (no re-encoding: an ATS may care about + vs %20)
     q = [x for x in p.query.split('&') if x and not TRACKING.match(unquote(x.split('=', 1)[0]))]
+    if (p.hostname or '').lower().endswith('.icims.com'):
+        q = [x for x in q if not ICIMS_DROP.match(unquote(x.split('=', 1)[0]))]
     return urlunsplit((p.scheme.lower(), p.netloc, p.path, '&'.join(q), p.fragment))
 
 

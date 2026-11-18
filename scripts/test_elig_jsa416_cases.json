@@ -1,0 +1,275 @@
+[
+ {
+  "name": "title_states_summer_2026_term",
+  "title": "Software Engineering Intern — Summer 2026",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "We are hiring software engineering interns for our Chicago office. Interns work alongside senior engineers on backend services, write and review code, and present their work at the end of the program. We encourage applications from candidates who may be a master's student in computer science or a related discipline, as well as from undergraduate students. This posting is for our Summer 2026 cohort, which begins in June and runs for twelve weeks through the end of August.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): for an internship, if the title or description states the internship's term / cohort / dates and every such date or term is earlier than Summer 2027 (e.g. \"Summer 2026\", \"Fall 2026\" ...), the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "description_duration_june_august_2026",
+  "title": "Data Science Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The analytics team is looking for an intern to help build reporting dashboards, clean product datasets, and shadow analysts during customer review meetings. You will learn SQL and experiment design on the job. Candidates who may be a master's student in statistics, economics, or a related field are encouraged to apply, and we also welcome undergraduates. Duration: June – August 2026. The internship is full-time and based in our Chicago office.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): ... every such date or term is earlier than Summer 2027 (e.g. ... \"Duration: June – August 2026\" ...), the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "cohort_listing_summer_and_fall_2026",
+  "title": "Product Management Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "You will partner with designers and engineers to scope features, run user interviews, and write product specs. We accept candidates who may be a master's student in business, computer science, or another field, and we also consider undergraduates. We run two cohorts each year: Summer 2026 (June start) / Fall 2026 (September start). Interns receive mentorship and deliver a final presentation to leadership. This role is onsite in Chicago and lasts twelve weeks.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): ... every such date or term is earlier than Summer 2027 (e.g. ... cohorts \"Summer 2026 (June start) / Fall 2026 (September start)\"), the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "spring_2027_term_is_still_earlier_than_summer_2027",
+  "title": "Marketing Analytics Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The marketing analytics team is hiring an intern to help measure campaign performance and build weekly reports. You will work with our CRM data, run A/B tests, and summarize findings for the growth team. We welcome candidates who may be a master's student in marketing, analytics, or a related field. This internship is for the Spring 2027 term, running from January through April 2027. The role is full-time for the duration of the term and sits in our Chicago office.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): for an internship, if the title or description states the internship's term / cohort / dates and every such date or term is earlier than Summer 2027 ... the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "fall_2026_program_only_in_description",
+  "title": "Research Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "Our research group studies how people learn from interactive tools. As an intern you will help design studies, clean and analyze data, and write up findings with a mentor. We encourage applications from candidates who may be a master's student in education, psychology, or a related field. We are recruiting for our Fall 2026 Internship Program, a twelve-week full-time placement that starts in September and ends in December. The position is based in our Chicago office.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): for an internship, if the title or description states the internship's term / cohort / dates and every such date or term is earlier than Summer 2027 (e.g. ... \"Fall 2026\" ...), the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "title_summer_analyst_2026",
+  "title": "2026 Summer Analyst – Investment Banking",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "Our investment banking team advises mid-market clients on mergers and acquisitions. Summer analysts build financial models, prepare client materials, and support live deal teams. Candidates who may be a master's student in finance, economics, or a related field are welcome to apply. The 2026 Summer Analyst program runs for ten weeks and is based in Chicago. Analysts receive training, mentorship, and a final performance review at the close of the program.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): for an internship, if the title ... states the internship's term / cohort / dates and every such date or term is earlier than Summer 2027 ... the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "explicit_date_range_june_to_august_2026",
+  "title": "Mechanical Engineering Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The mechanical engineering team designs components for industrial equipment. The intern will support tolerance analysis, run test fixtures, and document results in our PLM system. We welcome applications from candidates who may be a master's student in mechanical engineering or a related discipline. The internship runs from June 15, 2026 to August 21, 2026 and is full-time in our Chicago office, with a mentor assigned for the whole placement.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): ... every such date or term is earlier than Summer 2027 (e.g. ... \"Duration: June – August 2026\" ...), the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "winter_2026_term_is_earlier_than_summer_2027",
+  "title": "Operations Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The operations team coordinates inventory and logistics across three warehouses. The intern will build forecasting spreadsheets, audit shipment records, and present recommendations to the operations manager. We accept applications from candidates who may be a master's student in supply chain or business analytics. This is a Winter 2026 internship (January–March 2026), full-time and based in Chicago, with a structured onboarding week at the start.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule A (past cycle): for an internship, if the title or description states the internship's term / cohort / dates and every such date or term is earlier than Summer 2027 ... the job is Ineligible (past cycle)."
+ },
+ {
+  "name": "postdoctoral_scientist_title_blocks_even_as_internship",
+  "title": "Postdoctoral Scientist",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The lab studies protein folding using cryo-electron microscopy. We are recruiting a Postdoctoral Scientist to lead an independent project, publish results, and mentor graduate students. The appointment includes an independent research budget and travel support. Candidates who may be a master's student are also welcome to apply, and our team includes several graduate interns. The position is full-time and based in our Chicago research center.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B (already holds a doctorate): a role whose title is a postdoc (\"Postdoctoral Scientist\", \"Postdoc Fellow\") ... is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "postdoc_fellow_title",
+  "title": "Postdoc Fellow",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The center runs longitudinal studies on adolescent health. We are hiring a Postdoc Fellow to design survey instruments, run statistical models, and co-author manuscripts with faculty. The fellow will also help supervise data collection staff. Applications are welcome from candidates who may be a master's student, though the role is structured for recent doctoral graduates. This is a full-time position based in Chicago with a two-year funding horizon.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B (already holds a doctorate): a role whose title is a postdoc (\"Postdoctoral Scientist\", \"Postdoc Fellow\") ... is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "postdoctoral_researcher_title",
+  "title": "Postdoctoral Researcher",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "Our materials science group develops coatings for aerospace applications. We are looking for a Postdoctoral Researcher to run deposition experiments, analyze thin films, and write grant reports. The role offers mentorship in proposal writing. Candidates who may be a master's student in materials science are welcome to apply and will be considered for our internship track. The position is full-time in Chicago.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B (already holds a doctorate): a role whose title is a postdoc ... or whose description requires an already completed PhD / doctorate ... is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "phd_must_be_completed_prior_to_start",
+  "title": "AI Research Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The AI research team builds models for document understanding. Interns implement experiments, run ablations, and present at group meetings. We welcome applications from candidates who may be a master's student in computer science or a related field. Please note: a PhD must be completed prior to the start date for this position. The role is full-time and based in our Chicago office, with access to our research compute cluster.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B ... whose description requires an already completed PhD / doctorate (\"PhD must be completed prior to the start\" ...) is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "must_hold_a_phd",
+  "title": "Quantitative Research Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The quantitative research team builds pricing and risk models for fixed income products. Interns write research code in Python, backtest signals, and present findings to the desk. Candidates who may be a master's student in mathematics, statistics, or economics are welcome to apply. Candidates must hold a PhD in economics or a closely related field at the time of application. This is a full-time role in Chicago with a dedicated desk mentor.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B ... whose description requires an already completed PhD / doctorate (\"PhD must be completed prior to the start\", \"must hold a PhD\", \"PhD required\" ...) is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "phd_required_wording",
+  "title": "Computational Biology Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The computational biology group analyzes single-cell sequencing data. Interns build pipelines, run differential expression analyses, and meet weekly with a mentor. Applications are welcome from candidates who may be a master's student in bioinformatics or a related field. A PhD is required for this position, and candidates should have completed their doctoral training before joining. The role is full-time and based in Chicago.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B ... whose description requires an already completed PhD / doctorate (\"PhD must be completed prior to the start\", \"must hold a PhD\", \"PhD required\" ...) is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "twelve_to_twenty_four_month_postdoctoral_appointment",
+  "title": "Neuroscience Research Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "Our neuroscience group studies memory formation in rodent models. The researcher will design behavioral experiments, perform histology, and analyze imaging data. Candidates who may be a master's student are welcome to apply and will be considered for our summer training track. This is a 12-24 month postdoctoral appointment with an expectation of first-author publications and independent funding applications. The position is full-time and based in our Chicago campus.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B ... whose description requires an already completed PhD / doctorate (\"PhD must be completed prior to the start\", \"must hold a PhD\", \"PhD required\", 12-24 month postdoctoral appointment), is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "new_grad_role_with_phd_requirement",
+  "title": "Research Scientist, Cell Biology",
+  "level": "New grad",
+  "loc": "Chicago, IL",
+  "text": "The cell biology group develops assays for target validation. As a new graduate research scientist you will design experiments, analyze data, and present at team meetings. Candidates who may be a master's student are welcome to apply and will be considered for our associate track. Applicants must hold a PhD in cell biology, molecular biology, or a related field. The role is full-time in Chicago with a structured first-year onboarding plan.",
+  "expect": "Ineligible",
+  "spec_sentence": "Rule B (already holds a doctorate): a role whose title is a postdoc ... or whose description requires an already completed PhD / doctorate (\"PhD must be completed prior to the start\", \"must hold a PhD\", \"PhD required\" ...) is Ineligible even if its level says Internship."
+ },
+ {
+  "name": "phd_preferred_not_required",
+  "title": "Machine Learning Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The recommendations team is hiring an intern to build ranking features and evaluate models offline. You will work with terabytes of interaction logs and ship experiments with a mentor. We welcome candidates who may be a master's student in computer science or a related field. A PhD in a quantitative field is preferred but not required; strong master's candidates are actively encouraged to apply. The internship is full-time in Chicago.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule B ... A PhD that is only preferred / a plus, or a role open to master's or PhD students, is NOT blocked by this rule."
+ },
+ {
+  "name": "open_to_masters_and_phd_students",
+  "title": "Research Intern, NLP",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The NLP group works on summarization and evaluation. Interns run experiments, annotate data, and write up results for internal review. This internship is open to master's and PhD students in computer science, linguistics, or a related field. You will have weekly check-ins with a research mentor and access to our compute cluster. The role is full-time and based in our Chicago office, and the candidate may be a master's student at any stage of the program.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule B ... A PhD that is only preferred / a plus, or a role open to master's or PhD students, is NOT blocked by this rule."
+ },
+ {
+  "name": "ms_or_phd_degree_listing",
+  "title": "Software Engineer Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The platform team builds internal services for payments. Interns write Go and Python services, add tests, and participate in code review. We are looking for candidates pursuing an MS or PhD in computer science or a related field, and the candidate may be a master's student in their first or second year. You will ship a real feature to production and present it at the end of the program. The internship is full-time and based in our Chicago office.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule B ... A PhD that is only preferred / a plus, or a role open to master's or PhD students, is NOT blocked by this rule."
+ },
+ {
+  "name": "phd_is_a_plus_only",
+  "title": "Data Engineer Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The data platform team maintains batch and streaming pipelines feeding our analytics warehouse. Interns build new ingestion jobs, write dbt models, and monitor data quality alerts. Candidates who may be a master's student in computer science, information systems, or a related field are encouraged to apply. A PhD is a plus but not necessary for this role. The position is full-time and based in Chicago, with a mentor from the platform team.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule B ... A PhD that is only preferred / a plus, or a role open to master's or PhD students, is NOT blocked by this rule."
+ },
+ {
+  "name": "no_term_stated_at_all",
+  "title": "Product Design Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The product design team is hiring an intern to support user research and prototyping. You will recruit participants, run usability sessions, and turn findings into design recommendations. We welcome applications from candidates who may be a master's student in human-computer interaction, design, or a related field. Full-time and based in our Chicago office, the internship pairs you with a senior designer for the duration of the program and includes a portfolio review at the end.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... A posting that states no term at all is not blocked by this rule."
+ },
+ {
+  "name": "posted_date_2026_but_term_is_summer_2027",
+  "title": "Backend Infrastructure Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The backend infrastructure team is hiring an intern for our Summer 2027 program. Interns build services in Go, write integration tests, and take part in on-call shadowing. We welcome candidates who may be a master's student in computer science or a related field. This posting was published on June 3, 2026 for early planning purposes. The internship is full-time and based in our Chicago office, and it is designed for students returning to school after the summer.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... Dates that are not the internship term (posted date, application deadline, \"class of 2026\" graduation wording, copyright years) never count. / If any stated term is Summer 2027 or later ... it is NOT blocked by this rule."
+ },
+ {
+  "name": "application_deadline_2026_term_summer_2027",
+  "title": "Growth Engineering Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The growth engineering team is hiring an intern for Summer 2027 to run experiments on onboarding and activation. You will design A/B tests, analyze results, and present recommendations to the growth team. Candidates who may be a master's student in computer science, statistics, or a related field are encouraged to apply. The application deadline is October 15, 2026. The internship is full-time and based in Chicago, with a mentor assigned for the whole program.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... Dates that are not the internship term (posted date, application deadline, \"class of 2026\" graduation wording, copyright years) never count."
+ },
+ {
+  "name": "class_of_2026_graduation_wording_does_not_count",
+  "title": "Strategy Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The strategy team is hiring an intern for Summer 2027 to support market sizing and competitive research. Interns build models, interview customers, and present to the leadership team. We welcome candidates who may be a master's student in business, economics, or a related field. Several members of the class of 2026 from local universities joined us full-time after graduation, and we continue that pipeline. The internship is full-time in Chicago for the summer of 2027.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... Dates that are not the internship term (posted date, application deadline, \"class of 2026\" graduation wording, copyright years) never count.",
+  "skip": "class-of-2026 wording is judged by the existing graduation rules (GRAD_WINDOW), not this rule"
+ },
+ {
+  "name": "copyright_and_posted_year_2026_no_term",
+  "title": "Firmware Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The firmware team is hiring an intern to develop embedded drivers and test harnesses for our sensor products. You will debug hardware on the bench, write C code, and document your work. Candidates who may be a master's student in electrical or computer engineering are encouraged to apply. Copyright © 2026 Northside Instruments. This posting was released in November 2026. The role is full-time and based in our Chicago office, with a bench and mentor provided.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... Dates that are not the internship term (posted date, application deadline, \"class of 2026\" graduation wording, copyright years) never count."
+ },
+ {
+  "name": "mentions_2026_and_summer_2027",
+  "title": "Developer Tools Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The developer tools team is hiring an intern for Summer 2027. You will build CLI features, write documentation, and triage community issues. Our Summer 2026 interns shipped the first version of our plugin system, and this cohort will extend it. We welcome candidates who may be a master's student in computer science or a related field. The internship is full-time and based in our Chicago office, and it includes a public demo at the end of the summer.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... If any stated term is Summer 2027 or later (e.g. the posting mentions both 2026 and \"Summer 2027\"), it is NOT blocked by this rule."
+ },
+ {
+  "name": "explicit_summer_2027_date_range",
+  "title": "Security Engineering Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The security team is hiring an intern to help with threat modeling and detection engineering. You will write detection rules, review alerts, and document findings for the team. Candidates who may be a master's student in cybersecurity, computer science, or a related field are welcome to apply. This internship runs from June 2027 to August 2027 and is full-time in our Chicago office, with a mentor from the detection engineering group.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... If any stated term is Summer 2027 or later ... it is NOT blocked by this rule."
+ },
+ {
+  "name": "fall_2027_term_is_later_than_summer_2027",
+  "title": "Supply Chain Intern",
+  "level": "Internship",
+  "loc": "Chicago, IL",
+  "text": "The supply chain team is hiring an intern to model freight costs and improve our routing rules. You will build spreadsheets, run scenario analyses, and present recommendations to the logistics manager. We welcome candidates who may be a master's student in operations research, industrial engineering, or a related field. This internship is for the Fall 2027 term, September through December 2027. The role is full-time and based in Chicago.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... If any stated term is Summer 2027 or later ... it is NOT blocked by this rule.",
+  "skip": "a Fall term is off-cycle (OFF_CYCLE) — correct, case wrong"
+ },
+ {
+  "name": "new_grad_role_no_term_no_doctorate",
+  "title": "New Graduate Software Engineer",
+  "level": "New grad",
+  "loc": "Chicago, IL",
+  "text": "We are hiring new graduate software engineers to join our Chicago office. You will build backend services, review code, and rotate through two product teams in your first year. Candidates who may be a master's student graduating in 2027 or 2028 are encouraged to apply; start dates are flexible and can be arranged around your program. The role is full-time with mentorship, a learning budget, and a structured onboarding program.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A (past cycle): for an internship ... / A posting that states no term at all is not blocked by this rule."
+ },
+ {
+  "name": "new_grad_role_with_class_of_2026_wording",
+  "title": "New Graduate Data Analyst",
+  "level": "New grad",
+  "loc": "Chicago, IL",
+  "text": "We are hiring new graduate data analysts for our Chicago office. Analysts build dashboards, write SQL, and support client reporting in their first year. Candidates who may be a master's student graduating in 2027 or 2028 are welcome to apply, and start dates can be arranged around your program. Members of the class of 2026 joined us last year and now lead two of our reporting workstreams. The role is full-time with a structured onboarding and mentoring plan.",
+  "expect": "Eligible",
+  "spec_sentence": "Rule A ... Dates that are not the internship term (posted date, application deadline, \"class of 2026\" graduation wording, copyright years) never count.",
+  "skip": "existing graduation rules (GRAD_MIXED), not this rule"
+ }
+]

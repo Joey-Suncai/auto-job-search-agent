@@ -1,0 +1,391 @@
+[
+ {
+  "name": "work_auth_sponsorship_now_yes",
+  "args": {
+   "label": "Will you now or in the future require sponsorship for employment visa status (e.g., H-1B, TN, E-3)?",
+   "value": "Yes",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "work_auth",
+  "spec_quote": "[work_auth] work authorization, sponsorship now / in future, visa type / status / expiry, citizen / permanent resident, work permit.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_sponsorship_future_yes",
+  "args": {
+   "label": "Will you require sponsorship by Wynverlum now or at any point in the future to work in the United States?",
+   "value": "Yes",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "work_auth",
+  "spec_quote": "[work_auth] work authorization, sponsorship now / in future, visa type / status / expiry, citizen / permanent resident, work permit.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_authorized_any_employer_yes",
+  "args": {
+   "label": "Are you legally authorized to work in the United States for any employer without the need for sponsorship?",
+   "value": "Yes",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "work_auth",
+  "spec_quote": "[work_auth] work authorization, sponsorship now / in future, visa type / status / expiry, citizen / permanent resident, work permit.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_visa_type_f1_opt",
+  "args": {
+   "label": "Please indicate your current visa type / work authorization status.",
+   "value": "F-1 OPT (STEM eligible)",
+   "type": "select",
+   "options": [
+    "U.S. Citizen",
+    "Permanent Resident",
+    "H-1B",
+    "F-1 OPT (STEM eligible)",
+    "TN",
+    "Other"
+   ]
+  },
+  "expect": "key",
+  "group": "work_auth",
+  "spec_quote": "[work_auth] work authorization, sponsorship now / in future, visa type / status / expiry, citizen / permanent resident, work permit.",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_citizen_or_pr_no",
+  "args": {
+   "label": "Are you a U.S. citizen or lawful permanent resident (Green Card holder)?",
+   "value": "No",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "work_auth",
+  "spec_quote": "[work_auth] work authorization, sponsorship now / in future, visa type / status / expiry, citizen / permanent resident, work permit.",
+  "ambiguous": false
+ },
+ {
+  "name": "education_highest_degree_masters",
+  "args": {
+   "label": "What is the highest level of education you have completed?",
+   "value": "Master's Degree",
+   "type": "select",
+   "options": [
+    "High School Diploma",
+    "Associate's Degree",
+    "Bachelor's Degree",
+    "Master's Degree",
+    "PhD",
+    "Other"
+   ]
+  },
+  "expect": "key",
+  "group": "education",
+  "spec_quote": "[education] degree level, school, major / discipline, graduation date, GPA, enrolment.",
+  "ambiguous": false
+ },
+ {
+  "name": "education_undergrad_discipline",
+  "args": {
+   "label": "Undergrad Discipline(s)",
+   "value": "Data Science",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "education",
+  "spec_quote": "[education] degree level, school, major / discipline, graduation date, GPA, enrolment.",
+  "ambiguous": false
+ },
+ {
+  "name": "education_expected_graduation_mm_yyyy",
+  "args": {
+   "label": "When are you expected to graduate? Note: Specify the month and year (MM/YYYY)",
+   "value": "05/2027",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "education",
+  "spec_quote": "[education] degree level, school, major / discipline, graduation date, GPA, enrolment.",
+  "ambiguous": true
+ },
+ {
+  "name": "record_felony_conviction_yes",
+  "args": {
+   "label": "Have you ever been convicted of a felony?",
+   "value": "Yes",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "record",
+  "spec_quote": "[record] criminal conviction / felony / background questions.",
+  "ambiguous": false
+ },
+ {
+  "name": "record_pending_charges_background_no",
+  "args": {
+   "label": "Do you have any pending criminal charges or convictions that have not been expunged? (A background check will be conducted.)",
+   "value": "No",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "record",
+  "spec_quote": "[record] criminal conviction / felony / background questions.",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_job_title",
+  "args": {
+   "label": "What was your job title at your most recent employer?",
+   "value": "Senior Data Engineer",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "experience",
+  "spec_quote": "[experience] employers, job title, work history, years of experience, references, referrer, reason for leaving a job.",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_years_of_experience",
+  "args": {
+   "label": "How many years of professional experience do you have in software engineering?",
+   "value": "6",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "experience",
+  "spec_quote": "[experience] employers, job title, work history, years of experience, references, referrer, reason for leaving a job.",
+  "ambiguous": false
+ },
+ {
+  "name": "experience_reason_for_leaving",
+  "args": {
+   "label": "Reason for leaving your most recent position",
+   "value": "Company-wide layoff",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "experience",
+  "spec_quote": "[experience] employers, job title, work history, years of experience, references, referrer, reason for leaving a job.",
+  "ambiguous": false
+ },
+ {
+  "name": "defense_military_support_no_reasons",
+  "args": {
+   "label": "Harcorgal provides technology in support of the United States military and export-controlled programs. Are there any reasons why you would not be able to fully contribute to this mission?",
+   "value": "No",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "defense",
+  "spec_quote": "[defense] questions about supporting the U.S. military / defense / export control.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_recruiting_campaign_checkbox",
+  "args": {
+   "label": "I agree to receive recruiting campaign communications.",
+   "value": "Yes",
+   "type": "checkbox",
+   "options": [
+    "Yes"
+   ]
+  },
+  "expect": "key",
+  "group": "consent",
+  "spec_quote": "[consent] a consent / agreement / subscription check box or Yes-No: \"I agree to receive recruiting campaign communications\", \"retain my application and indicate your consent\", data processing consent, text-message opt-in, marketing / newsletter.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_data_processing_yes",
+  "args": {
+   "label": "Do you consent to our processing of your personal data for recruitment purposes?",
+   "value": "Yes",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "consent",
+  "spec_quote": "[consent] a consent / agreement / subscription check box or Yes-No: \"I agree to receive recruiting campaign communications\", \"retain my application and indicate your consent\", data processing consent, text-message opt-in, marketing / newsletter.",
+  "ambiguous": false
+ },
+ {
+  "name": "consent_text_message_optin_yes",
+  "args": {
+   "label": "Would you like to receive text message updates about your application status?",
+   "value": "Yes",
+   "type": "radio",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "key",
+  "group": "consent",
+  "spec_quote": "[consent] a consent / agreement / subscription check box or Yes-No: \"I agree to receive recruiting campaign communications\", \"retain my application and indicate your consent\", data processing consent, text-message opt-in, marketing / newsletter.",
+  "ambiguous": false
+ },
+ {
+  "name": "shape_if_yes_please_explain_bare_yes",
+  "args": {
+   "label": "If yes, please explain.",
+   "value": "Yes",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": "key",
+  "group": "shape",
+  "spec_quote": "[shape] the value's FORM must fit the control: a describe / explain / \"any other context\" / \"if yes, please provide\" box holding a bare Yes / No; a name-pronunciation box; a box whose label states a format (MM/YYYY, MM/DD/YYYY); an address question that also asks city / state / zip; a \"full name of your referrer\" box.",
+  "ambiguous": false
+ },
+ {
+  "name": "shape_street_address_with_city_state_zip",
+  "args": {
+   "label": "What is your street address? Please also include your city, state, and zip",
+   "value": "1200 S Sample Ave",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "shape",
+  "spec_quote": "[shape] the value's FORM must fit the control: a describe / explain / \"any other context\" / \"if yes, please provide\" box holding a bare Yes / No; a name-pronunciation box; a box whose label states a format (MM/YYYY, MM/DD/YYYY); an address question that also asks city / state / zip; a \"full name of your referrer\" box.",
+  "ambiguous": false
+ },
+ {
+  "name": "shape_city_state_province_country_partial",
+  "args": {
+   "label": "Please indicate the City/State/Province and Country where you are currently located",
+   "value": "Illinois",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "shape",
+  "spec_quote": "[shape] the value's FORM must fit the control: a describe / explain / \"any other context\" / \"if yes, please provide\" box holding a bare Yes / No; a name-pronunciation box; a box whose label states a format (MM/YYYY, MM/DD/YYYY); an address question that also asks city / state / zip; a \"full name of your referrer\" box.",
+  "ambiguous": false
+ },
+ {
+  "name": "identity_legal_last_name",
+  "args": {
+   "label": "Legal Last Name (if different from preferred name)",
+   "value": "Lex",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "identity",
+  "spec_quote": "[identity] legal name, \"current / most recent employer\", name pronunciation, expected graduation date, cumulative GPA.",
+  "ambiguous": false
+ },
+ {
+  "name": "identity_name_pronunciation",
+  "args": {
+   "label": "Name pronunciation",
+   "value": "Alex Doe",
+   "type": "text",
+   "options": []
+  },
+  "expect": "key",
+  "group": "identity",
+  "spec_quote": "[identity] legal name, \"current / most recent employer\", name pronunciation, expected graduation date, cumulative GPA.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip_email",
+  "args": {
+   "label": "Email",
+   "value": "jdoe@example.com",
+   "type": "text",
+   "options": []
+  },
+  "expect": "skip",
+  "group": "",
+  "spec_quote": "NOT key: email, phone, LinkedIn / GitHub / website links, EEO self-identification (gender, race, veteran, disability: judged in code, never sent to a model), \"How did you hear about us\", cover letter / essay boxes (value longer than 300 characters), file uploads, hidden / password fields, and any cell with an empty value.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip_eeo_gender",
+  "args": {
+   "label": "Gender (EEO self-identification — voluntary)",
+   "value": "Male",
+   "type": "select",
+   "options": [
+    "Male",
+    "Female",
+    "Non-binary",
+    "Prefer not to say"
+   ]
+  },
+  "expect": "skip",
+  "group": "",
+  "spec_quote": "NOT key: email, phone, LinkedIn / GitHub / website links, EEO self-identification (gender, race, veteran, disability: judged in code, never sent to a model), \"How did you hear about us\", cover letter / essay boxes (value longer than 300 characters), file uploads, hidden / password fields, and any cell with an empty value.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip_essay_over_300_chars",
+  "args": {
+   "label": "Why do you want to work here? (600 character limit)",
+   "value": "I have spent the last five years building data platforms for healthcare companies, and the chance to do that work at a company that treats infrastructure as a product is exactly what I am looking for. I am also drawn to the team's public engineering blog and the emphasis on mentoring junior engineers, which matches how I like to work. I would love to help scale the platform team and take on ownership of the ingestion pipeline over the next year.",
+   "type": "textarea",
+   "options": []
+  },
+  "expect": "skip",
+  "group": "",
+  "spec_quote": "NOT key: email, phone, LinkedIn / GitHub / website links, EEO self-identification (gender, race, veteran, disability: judged in code, never sent to a model), \"How did you hear about us\", cover letter / essay boxes (value longer than 300 characters), file uploads, hidden / password fields, and any cell with an empty value.",
+  "ambiguous": false
+ },
+ {
+  "name": "skip_sponsorship_question_but_empty_value",
+  "args": {
+   "label": "Will you now or in the future require sponsorship?",
+   "value": "",
+   "type": "select",
+   "options": [
+    "Yes",
+    "No"
+   ]
+  },
+  "expect": "skip",
+  "group": "",
+  "spec_quote": "A cell is selected only when it has a value: empty / null / [] values are never selected. (Also: \"Will you now or in the future require sponsorship?\" with an empty value is listed under questions that must NOT be key.)",
+  "ambiguous": false
+ }
+]

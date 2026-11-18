@@ -50,6 +50,7 @@ needs-user | code | captcha | consent | limited | closed | blocked).
 4. Stop before "Submit". The tab closes after a finished dry run and stays open after a stop.
 
 ## 4. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Oracle: `oracle_moved` — a done / applied page counts only when the URL changed, the final button went away, or the sentence is new.
 
 **A. The one-time code mail was not found.** Three causes, all fixed in the shared reader or the runner: (1) IMAP `SINCE`
 takes a bare date and Gmail compares it in its own zone — from 18:00 Chicago the UTC date is tomorrow and the fresh mail
@@ -175,6 +176,41 @@ for `fix_tiles` / `refusal_issues`.
   shown at all. Verify on the code step is clicked by script when a cookie bar covers it. an employer dry run 41/41.
   Tests: `oracle_blank_cases.json` (DeepSeek 12) + a headless delete under a popup, in `scripts/test_oracle_1106.py`.
 
+**Open prose questions no rule answers (JSA-298, an employer 11-11).**
+- Symptom: a required textarea such as "Would you please share some details about your future career aspirations?
+  Anything you'd like the hiring review team to know …" read back empty → needs-user, although the folder's
+  `open_answers.md` already held a draft. Cause: `run_oracle.py` had none of the SR / Workable flow; it never read drafts.
+- Rule (`open_drafts`, `read_drafts`, `open_id`): after the shared rules, every essay box (`run_workable.essay_like`: a
+  textarea with a label > 100 characters or Describe / Tell us / Share / Explain / Why / "how did you … check") whose
+  answer is not ok gets its `open_answers.md` draft — by the stable id `oq_<8 hex of the cleaned label>`, else by the
+  heading's label (so a draft written under another id still counts). A rule answer is never replaced. No draft →
+  `questions.json` (`run_workable.write_questions`, limit = the box's maxlength, else 1500), the row stays unknown and the
+  run ends needs-user: run `scripts/ds_materials.py` on the folder, then rerun — the runner never drafts. A draft longer
+  than the box's maxlength → the candidate (`box_fit` too_long). The draft is typed and read back like any text box.
+- Tests: `scripts/test_oracle_open.py` ← `test_cases/oracle_open_cases.json` (DeepSeek 26) + an offline mock of
+  `fill_section` (no draft → questions.json; draft by id; draft under another id; ASK; a rule answer untouched).
+
+**The page's own limits: a 51/51 read-back that Submit still refuses (JSA-312, an employer 11-11).**
+- Symptom: the dry run read back 51/51; Submit then said "You have 4 issues that need to be fixed": a minor "None" (the
+  box needs at least 5 characters), a 1086-character career answer (the box allows 200; `questions.json` had guessed
+  1500), Link 1 / Link 2 "linkedin.com/…" / "github.com/…" ("Enter Link 1 in the format: http://example.com").
+- Cause: the read-back compares only what was typed. Oracle's textareas carry no `maxlength`; the limits live in the
+  page's own question data, and the page checks them only at Submit.
+- Rule (`field_limits.py`, shared with Workday / SF): the runner listens to the page's REST answers
+  (`recruitingCEQuestions`: Prompt + MinimumLength / MaximumLength; `recruitingCECandidateProfileBlocksMetadata`:
+  MaximumLength; the name block: Length) and joins them with each box's attributes, hint text ("4 out of 50
+  characters", "at least 5 characters", "format: http://example.com") and a bare link label (Link 1, Website, LinkedIn
+  Profile …) — the tightest wins (`box_limits`). Before typing: a bare address in a url box gets `https://` (same
+  address, `fix_url`); a rule answer that is still too long / too short / not a url → required: the candidate is asked
+  (unknown), optional: left empty (`box_fit` → too_long / too_short / not_url). A draft that breaks the limit (or the
+  1500 fallback) is not typed: `questions.json` gets the page's limit and min (`limit_from` says where it came from; a
+  guess never replaces a known limit) with a `redraft` note, and `ds_materials` writes to that limit (min enforced
+  too). After the fill and blur, any row the page marks invalid, or whose value breaks its limits, fails the section
+  (`page_verdict`) — the run stops there instead of at Submit. `JSA_DUMP_REST=<dir>` saves the REST answers for a look.
+- Tests: `scripts/test_field_limits.py` ← `field_limits_cases.json` (DeepSeek 26, through the Oracle / Workday / SF
+  readers; 7 verdicts), `scripts/test_oracle_limits.py` ← `oracle_limits_cases.json` (DeepSeek 24, the an employer replay
+  + REST shapes seen live), `scripts/test_fix_url.py` ← `fix_url_cases.json` (DeepSeek 18).
+
 ## 5. Answers that are easy to get wrong on Oracle
 
 - Salary range list → the lowest range (shared `comp` rule); EEO → the profile's answers; "Use for communication" /
@@ -194,3 +230,23 @@ profile) and presses SAVE, then Submit once more. Tests `scripts/test_oracle_car
 logged "unconfirmed" though the application was in. Rules: `classify` → 'done' for `/my-profile` with "Applied on <date>";
 `submit_final` accepts it only when `profile_lists` finds this job's number (whole number) or title. Tests
 `scripts/test_oracle_cards.py` (+12 DeepSeek, 1 verdict). Seen: Ricoh 11-04
+
+**A school / enrollment question caught by the yes/no "enrolled" rule (JSA-296).** "What university are you currently
+enrolled with?" (a text box) matched `enrolled` ("currently enrolled") and came back "yes/no rule on a text box". Rule: a
+wh-question is never `enrolled`. "What / which / name of the school … you are currently enrolled / attending / studying"
+= the `school` rule ("University of Chicago"). "Please indicate your current enrollment status:" with Fulltime / Parttime
+Schedule = `enrollment_status` → the full-time option (answers.enrollment_status pick). "What year are you currently at in
+your studies:" = `college_year_current` ("(5) Masters Program"). Tests `scripts/test_rules_edu_text_jsa296.py`. Seen: an employer
+11-10 (qa 216 / 220 / 221, retired 11-11; minor "Not applicable" stays a saved answer, Oracle needs ≥ 5 characters).
+
+**A required profile list with no item (JSA-328, Dell 11-11).** Symptom: dry run all read back ("ready"), `--submit`
+refused: "You need to add at least 1 Education item." Cause: the tenant shows an "Education *" block
+(`.apply-flow-block--tile-profile-items`, title `apply-flow-block__title--required`) with no card, only ADD EDUCATION;
+the runner fixed imported cards but never added one, and the dry run did not look at required lists. Rule (Joey
+2026-11-11 「自动添加 + dry-run 检查」): on every section, a required, empty Education list gets one item per config
+`education` entry — Degree button (`degree_pill`: "Masters" / "Bachelors", never Postdoctorate), Major (`major_pick`:
+the major, else wd_profile Field_prefs, else "Other - Field of Study Not Listed"), School (`school_pick`: exact or the
+one option holding all the school's words — "University of Illinois at Urbana-Champaign" — else "Other - School Not
+Listed"), Start Date, Graduated (+ Date Acquired when graduated); saved and checked as a card. A required list still
+empty (any section, also hidden ones) keeps the run from "ready" (`empty_required_lists`). Tests:
+`scripts/test_oracle_add_edu.py` (DeepSeek 32 + the Dell lists); live: Dell dry run 55/55 with both cards saved.

@@ -157,7 +157,7 @@
    "options": []
   },
   "expect": {
-   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+   "value": "AL-ex DOH (I go by Lex)"
   },
   "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
   "ambiguous": false
@@ -171,7 +171,7 @@
    "options": []
   },
   "expect": {
-   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+   "value": "AL-ex DOH (I go by Lex)"
   },
   "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
   "ambiguous": false
@@ -185,7 +185,7 @@
    "options": []
   },
   "expect": {
-   "value": "TSIGH-jwin-ee SOON (I go by Joey)"
+   "value": "AL-ex DOH (I go by Lex)"
   },
   "spec_quote": "A text box asking how to pronounce his name (\"Please write out how your name is pronounced phonetically\", \"Name pronunciation\", \"How do you pronounce your name?\") → exactly the saved pronunciation; never the phone number.",
   "ambiguous": false
@@ -202,15 +202,15 @@
    "not_contains": [
     "TSIGH-jwin-ee",
     "SOON",
-    "Joey",
+    "Lex",
     "pronounced"
    ]
   },
-  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Lex), \"Legal name\".",
   "ambiguous": false
  },
  {
-  "name": "Preferred name field must get Joey, not pronunciation",
+  "name": "Preferred name field must get Lex, not pronunciation",
   "rule": 5,
   "args": {
    "label": "Preferred name",
@@ -218,9 +218,9 @@
    "options": []
   },
   "expect": {
-   "value": "Joey"
+   "value": "Lex"
   },
-  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Lex), \"Legal name\".",
   "ambiguous": false
  },
  {
@@ -239,7 +239,7 @@
     "555-010-2030"
    ]
   },
-  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Joey), \"Legal name\".",
+  "spec_quote": "Near misses that must NOT get the pronunciation: \"Phone\", \"Preferred name\" (→ Lex), \"Legal name\".",
   "ambiguous": false
  }
 ]

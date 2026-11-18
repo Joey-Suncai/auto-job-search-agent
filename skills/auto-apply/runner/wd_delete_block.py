@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Delete one repeat block (e.g. "Work Experience 1") in an open Workday tab.  wd_delete_block.py <url text> "<block heading>" """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import sys, time
 from playwright.sync_api import sync_playwright
 key, heading = sys.argv[1], sys.argv[2]
 with sync_playwright() as pw:
-    pg = [p for p in pw.chromium.connect_over_cdp('http://127.0.0.1:9222').contexts[0].pages if key in p.url][-1]
+    pg = [p for p in cdp_connect.connect(pw, 'http://127.0.0.1:9222').contexts[0].pages if key in p.url][-1]
     pid = pg.evaluate('''(h) => { const g = [...document.querySelectorAll('[role="group"][aria-labelledby$="-panel"]')]
         .find(g => { const e = document.getElementById(g.getAttribute('aria-labelledby').split(' ')[0]); return e && e.textContent.trim() === h; });
         return g ? g.getAttribute('aria-labelledby') : null; }''', heading)

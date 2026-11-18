@@ -6,11 +6,14 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>{{REPO}}/skills/auto-apply/runner/start_chrome.sh</string>
+    <string>{{REPO}}/skills/auto-apply/runner/run_chrome.sh</string>
   </array>
   <key>RunAtLoad</key><true/>
-  <!-- 如果 Chrome 中途被你退出，60 秒后自动再起一次；只在你登录期间有效 -->
-  <key>StartInterval</key><integer>60</integer>
+  <!-- launchd runs Chrome itself (run_chrome.sh execs it). A crash restarts it after 30 s; a Chrome you quit
+       on purpose (exit 0) stays closed until the next login. Never StartInterval: each tick killed the Chrome (JSA-378). -->
+  <key>KeepAlive</key>
+  <dict><key>SuccessfulExit</key><false/></dict>
+  <key>ThrottleInterval</key><integer>30</integer>
   <key>StandardOutPath</key><string>/tmp/jobagent_chrome.log</string>
   <key>StandardErrorPath</key><string>/tmp/jobagent_chrome.err</string>
 </dict>

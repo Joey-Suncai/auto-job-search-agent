@@ -14,6 +14,7 @@ Slot guard (JSA-097): before Chrome is touched, the tracker is counted (skills/a
 role whose program has used its 2 slots in this half-year is refused (status no-slot), so the form is never put in front of
 the candidate. The form's own banner is compared with the tracker afterwards (fewer left on the page = a missing tracker row).
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -23,6 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 COMPANY = ''                                                   # the hiring company (job.json / store row): referral questions check it against the referrer pool (JSA-195)
@@ -475,6 +477,14 @@ def run(page, url, resume, log, wait_captcha=0):
     bad = [r for r in res if not r['ok']]
     if bad:
         problems.append('fields not confirmed: ' + '; '.join(f"{r['label'][:40]} ({r['page']!r})" for r in bad[:6]))
+    try:                                                        # JSA-294: every education / internship block against its entry, by code
+        import block_check as BC
+        names = [{'key': f"{e['idx']}.school", 'label': f"{e['idx']}.school", 'page': e['school']} for e in edu] + \
+                [{'key': f"{j['idx']}.company", 'label': f"{j['idx']}.company", 'page': j['company']} for j in jobs]
+        rows = sorted([r for r in res + names if BC.TT_KEY.match(str(r.get('label') or ''))], key=lambda r: (str(r['label']).split('.')[0], str(r['label']).split('.')[1] not in ('school', 'company')))
+        problems += ['block check: ' + p for p in BC.problems(rows)]
+    except Exception as e:
+        problems.append(f'block check failed: {type(e).__name__}: {str(e)[:80]}')
     return {'status': 'dry-run', 'problems': problems, 'fields': res, 'slots': slots, 'review': review}
 
 
@@ -514,7 +524,7 @@ def main():
     global COMPANY
     COMPANY = job.get('company') or ('ByteDance' if 'bytedance' in url else 'TikTok')   # referral questions (JSA-195)
     track = a.track or TRACKS.get(job.get('track'), 'Product_Manager')
-    resume = a.resume or jpaths.resume('2026-10', f'Alex_Rivera_Resume_{track}_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file(f'{track}_A-Classic.pdf'))
     out = os.path.abspath(a.out or os.path.join(DATA, 'tiktok', a.job or url.split('/')[-2]))
     os.makedirs(out, exist_ok=True)
     t0 = time.time()
@@ -533,7 +543,7 @@ def main():
     import chrome_guard                                       # JSA-227: no autofill / password extension in the job Chrome
     if chrome_guard.stop(out, url, log, None, DATA, 'tiktok'): return
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = ctx.new_page()
         try:
             r = run(page, url, resume if os.path.exists(resume) else None, log, a.wait_captcha)

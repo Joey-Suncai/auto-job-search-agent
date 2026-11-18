@@ -1,0 +1,264 @@
+[
+ {
+  "name": "vanguard_basic_verify_from_workday_otp",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:00:45Z",
+    "from": "Workday <donotreply@otp.workday.com>",
+    "subject": "Verify your email",
+    "body": "Hi Joey, verify your new candidate account: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/9f2c1a7b"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/9f2c1a7b",
+  "rule": "A **tenant link** is a verification link on this tenant: on the tenant host (for myworkdaysite.com: also under `/recruiting/<tenant name>/`), or on any `*.myworkday.com` host with `/<tenant name>/` in its path. / The link returned from an accepted mail: its tenant link, if it has one.",
+  "ambiguous": false
+ },
+ {
+  "name": "vanguard_odd_sender_domain_crewcentral",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:02:10Z",
+    "from": "Vanguard Crew Central <CrewCentral_noreply@vanguardhr.com>",
+    "subject": "Verify your candidate account",
+    "body": "Welcome to Vanguard. Verify your candidate account here: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/tok-4471"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/tok-4471",
+  "rule": "A mail is accepted when any one of these holds: (a) its subject reads as an account-verification request (\"Verify your candidate account\", \"Verify your email\", \"Please verify your e-mail address\", \"Activate your account\", \"Confirm your email address\", and similar); (b) its body has a tenant link; (c) the sender's e-mail domain contains the tenant name or the company name (letters and digits only, case-insensitive; e.g. `vanguardhr.com` contains `vanguard`).",
+  "ambiguous": false
+ },
+ {
+  "name": "vanguard_no_tenant_link_but_subject_and_sender_domain",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:03:30Z",
+    "from": "Vanguard Talent Acquisition <talent@vanguardhr.com>",
+    "subject": "Please verify your e-mail address",
+    "body": "Please verify your e-mail address with this link: https://wd5.myworkday.com/verify/8ac21"
+   }
+  ],
+  "expect": "https://wd5.myworkday.com/verify/8ac21",
+  "rule": "A mail without a tenant link gives a link only if BOTH (a) and (c) hold — then its first verification link on a Workday host (`myworkdayjobs.com`, `myworkdaysite.com`, `myworkday.com`) or on the sender's own domain.",
+  "ambiguous": false
+ },
+ {
+  "name": "ostdelsev_marketing_job_alert_ignored",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://ostdelsev.wd1.myworkdayjobs.com/ostdelsev_careers",
+  "company": "Ostdelsev",
+  "mails": [
+   {
+    "date": "2024-06-10T14:05:00Z",
+    "from": "Ostdelsev Careers <jobs@ostdelsev.com>",
+    "subject": "New jobs for you: 12 matches this week",
+    "body": "See your matches: https://ostdelsev.wd1.myworkdayjobs.com/ostdelsev_careers/job/Atlanta/Engineer_R123 and sign in at https://ostdelsev.wd1.myworkdayjobs.com/ostdelsev_careers/login"
+   }
+  ],
+  "expect": null,
+  "rule": "Otherwise the mail gives nothing (another tenant's verify mail, a marketing mail). If nothing found → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_tenant_verify_mail_on_vanguard_page",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:04:00Z",
+    "from": "Workday <donotreply@myworkday.com>",
+    "subject": "Verify your candidate account",
+    "body": "Verify your candidate account: https://ostdelsev.wd1.myworkdayjobs.com/ostdelsev_external/activate/zz991"
+   }
+  ],
+  "expect": null,
+  "rule": "A mail without a tenant link gives a link only if BOTH (a) and (c) hold ... Otherwise the mail gives nothing (another tenant's verify mail, a marketing mail).",
+  "ambiguous": false
+ },
+ {
+  "name": "old_verify_mail_before_since_ignored",
+  "since": "2024-06-10T10:00:00-04:00",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T09:50:00-04:00",
+    "from": "Vanguard Crew Central <CrewCentral_noreply@vanguardhr.com>",
+    "subject": "Verify your candidate account",
+    "body": "Verify your candidate account: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/old-11111"
+   },
+   {
+    "date": "2024-06-10T10:03:00-04:00",
+    "from": "Vanguard Crew Central <CrewCentral_noreply@vanguardhr.com>",
+    "subject": "Welcome to Vanguard",
+    "body": "Thanks for applying. Your candidate profile: https://vanguard.wd5.myworkdayjobs.com/vanguard_external"
+   }
+  ],
+  "expect": null,
+  "rule": "Only mails dated at or after `since` minus 2 minutes count (clock margin). Older mails are ignored entirely.",
+  "ambiguous": false
+ },
+ {
+  "name": "clock_margin_one_minute_before_since",
+  "since": "2024-06-10T10:00:00-04:00",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T09:59:00-04:00",
+    "from": "Workday <donotreply@otp.workday.com>",
+    "subject": "Verify your email",
+    "body": "Verify your email: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/margin99"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/margin99",
+  "rule": "Only mails dated at or after `since` minus 2 minutes count (clock margin). Older mails are ignored entirely.",
+  "ambiguous": false
+ },
+ {
+  "name": "prefer_tenant_link_over_newer_non_tenant_link",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:06:00Z",
+    "from": "Vanguard Talent <talent@vanguardhr.com>",
+    "subject": "Please verify your e-mail address",
+    "body": "Verify here: https://wd5.myworkday.com/verify/8ac22"
+   },
+   {
+    "date": "2024-06-10T14:02:00Z",
+    "from": "Workday <donotreply@otp.workday.com>",
+    "subject": "Verify your email",
+    "body": "Verify your email: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/aaa111"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/aaa111",
+  "rule": "If several mails give a link: prefer a tenant link over any other link; among equals prefer a mail whose subject reads as a verification request; then the newest.",
+  "ambiguous": false
+ },
+ {
+  "name": "prefer_verification_subject_over_newer_plain_subject",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:06:00Z",
+    "from": "Vanguard <donotreply@myworkday.com>",
+    "subject": "Your Vanguard candidate account",
+    "body": "Your account is ready: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/bbb222"
+   },
+   {
+    "date": "2024-06-10T14:02:00Z",
+    "from": "Vanguard Crew Central <CrewCentral_noreply@vanguardhr.com>",
+    "subject": "Verify your candidate account",
+    "body": "Verify: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/ccc333"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/ccc333",
+  "rule": "If several mails give a link: prefer a tenant link over any other link; among equals prefer a mail whose subject reads as a verification request; then the newest.",
+  "ambiguous": false
+ },
+ {
+  "name": "newest_wins_among_equal_tenant_verify_mails",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:07:00Z",
+    "from": "Workday <donotreply@myworkday.com>",
+    "subject": "Activate your account",
+    "body": "Activate: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/eee555"
+   },
+   {
+    "date": "2024-06-10T14:03:00Z",
+    "from": "Vanguard Crew Central <CrewCentral_noreply@vanguardhr.com>",
+    "subject": "Verify your email",
+    "body": "Verify: https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/ddd444"
+   }
+  ],
+  "expect": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external/activate/eee555",
+  "rule": "If several mails give a link: prefer a tenant link over any other link; among equals prefer a mail whose subject reads as a verification request; then the newest.",
+  "ambiguous": false
+ },
+ {
+  "name": "subject_and_sender_ok_but_only_non_workday_verify_link",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:04:00Z",
+    "from": "Vanguard Recruiting <recruiting@vanguardhr.com>",
+    "subject": "Verify your candidate account",
+    "body": "Please verify your documents here: https://verify.e-sign.example.com/session/771"
+   }
+  ],
+  "expect": null,
+  "rule": "A mail without a tenant link gives a link only if BOTH (a) and (c) hold — then its first verification link on a Workday host (`myworkdayjobs.com`, `myworkdaysite.com`, `myworkday.com`) or on the sender's own domain. Otherwise the mail gives nothing (another tenant's verify mail, a marketing mail).",
+  "ambiguous": false
+ },
+ {
+  "name": "myworkdaysite_kelkeltal_tenant_link",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/kelkeltal/kelkeltal_careers",
+  "company": "Kelkeltal",
+  "mails": [
+   {
+    "date": "2024-06-10T14:04:30Z",
+    "from": "Workday <donotreply@myworkday.com>",
+    "subject": "Verify your email",
+    "body": "Verify your email: https://wd3.myworkdaysite.com/recruiting/kelkeltal/activate/tk-88x2"
+   }
+  ],
+  "expect": "https://wd3.myworkdaysite.com/recruiting/kelkeltal/activate/tk-88x2",
+  "rule": "A **tenant link** is a verification link on this tenant: on the tenant host (for myworkdaysite.com: also under `/recruiting/<tenant name>/`), or on any `*.myworkday.com` host with `/<tenant name>/` in its path.",
+  "ambiguous": false
+ },
+ {
+  "name": "myworkdaysite_wrong_recruiting_path_ignored",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://wd3.myworkdaysite.com/recruiting/kelkeltal/kelkeltal_careers",
+  "company": "Kelkeltal",
+  "mails": [
+   {
+    "date": "2024-06-10T14:04:30Z",
+    "from": "Workday <donotreply@myworkdaysite.com>",
+    "subject": "Verify your candidate account",
+    "body": "Verify your candidate account: https://wd3.myworkdaysite.com/recruiting/ostdelsev/activate/tk-11q"
+   }
+  ],
+  "expect": null,
+  "rule": "A **tenant link** is a verification link on this tenant: on the tenant host (for myworkdaysite.com: also under `/recruiting/<tenant name>/`) ... Otherwise the mail gives nothing (another tenant's verify mail, a marketing mail).",
+  "ambiguous": false
+ },
+ {
+  "name": "myworkday_com_host_with_tenant_path_is_tenant_link",
+  "since": "2024-06-10T14:00:00Z",
+  "page_url": "https://vanguard.wd5.myworkdayjobs.com/vanguard_external",
+  "company": "Vanguard",
+  "mails": [
+   {
+    "date": "2024-06-10T14:05:15Z",
+    "from": "Workday <donotreply@myworkday.com>",
+    "subject": "Action required: activate your account",
+    "body": "Activate your account: https://wd1.myworkday.com/vanguard/activate/tok-5512"
+   }
+  ],
+  "expect": "https://wd1.myworkday.com/vanguard/activate/tok-5512",
+  "rule": "A **tenant link** is a verification link on this tenant: on the tenant host (for myworkdaysite.com: also under `/recruiting/<tenant name>/`), or on any `*.myworkday.com` host with `/<tenant name>/` in its path.",
+  "ambiguous": false
+ }
+]

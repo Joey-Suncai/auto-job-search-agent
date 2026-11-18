@@ -1,0 +1,278 @@
+[
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender",
+  "expect": true,
+  "why": "True: text is the whole label ('True only when `text` IS the whole label')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "gender",
+  "expect": true,
+  "why": "True: comparison is case-insensitive ('case-insensitive')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "  gender  ",
+  "expect": true,
+  "why": "True: leading/trailing whitespace is ignored and NBSP is whitespace ('leading / trailing whitespace ignored')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender *",
+  "expect": true,
+  "why": "True: one trailing required marker with a space before it is allowed ('one trailing required marker \"*\" ... is allowed')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender*",
+  "expect": true,
+  "why": "True: one trailing required marker without a space is allowed ('with or without a space before it')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender\t*\n",
+  "expect": true,
+  "why": "True: tab/newline whitespace runs equal one space and the trailing marker is allowed ('any run of whitespace ... equals one space')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "What is your gender identity?",
+  "text": "what is\tyour\n gender identity?",
+  "expect": true,
+  "why": "True: case and whitespace are normalized ('case-insensitive'; 'any run of whitespace ... equals one space')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "What is your gender identity?",
+  "text": "What is your gender identity? *",
+  "expect": true,
+  "why": "True: whole label plus one trailing required marker is allowed ('one trailing required marker \"*\" ... is allowed')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "What is your gender identity?",
+  "expect": false,
+  "why": "False: text only contains the label; it is not the whole label ('Anything else is False')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "What is your gender identity?",
+  "text": "Gender",
+  "expect": false,
+  "why": "False: the label only contains text; text is not the whole label ('Anything else is False')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender identity",
+  "expect": false,
+  "why": "False: an extra word means text is not the whole label ('an extra word')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender.",
+  "expect": false,
+  "why": "False: a different punctuation mark is not allowed ('a different punctuation mark')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "What is your gender identity?",
+  "text": "What is your gender?",
+  "expect": false,
+  "why": "False: a missing word means text is not the whole label ('a missing word')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "Gender **",
+  "expect": false,
+  "why": "False: only one trailing required marker is allowed ('one trailing required marker \"*\" ... is allowed')."
+ },
+ {
+  "fn": "whole_label",
+  "label": "Gender",
+  "text": "gender * ",
+  "expect": true,
+  "why": "True: trailing whitespace is ignored and one trailing marker with a space is allowed ('leading / trailing whitespace ignored')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "Male",
+  "expect": "ok",
+  "why": "Ok: answer equals one option exactly ('select / radio: \"ok\" only when the answer equals one of the options')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "female",
+  "expect": "ok",
+  "why": "Ok: comparison is case-insensitive ('case-insensitive')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": " Man ",
+  "expect": "stop",
+  "why": "Stop: a synonym is not the same option ('A synonym is NOT the same option (\"Man\" is not \"Male\")')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "M",
+  "expect": "stop",
+  "why": "Stop: a partial option is not the option ('a partial option is not the option')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [],
+  "answer": "anything",
+  "expect": "ok",
+  "why": "Ok: an empty option list has nothing to check against ('An empty option list -> \"ok\"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "text",
+  "options": [
+   "Male",
+   "Female"
+  ],
+  "answer": "nonsense",
+  "expect": "ok",
+  "why": "Ok: types other than select / radio / multi are not checked ('Types other than select / radio / multi -> \"ok\"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "radio",
+  "options": [
+   "Man",
+   "Woman",
+   "Non-Binary"
+  ],
+  "answer": "non-binary",
+  "expect": "ok",
+  "why": "Ok: answer equals one option case-insensitively ('case-insensitive')."
+ },
+ {
+  "fn": "value_check",
+  "type": "radio",
+  "options": [
+   "Man",
+   "Woman",
+   "Non-Binary"
+  ],
+  "answer": "Non Binary",
+  "expect": "stop",
+  "why": "Stop: it does not equal the option 'Non-Binary' under the required comparison ('Otherwise \"stop\"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "multi",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "Male | Female",
+  "expect": "ok",
+  "why": "Ok: every multi part is one of the options ('EVERY part ... is one of the options')."
+ },
+ {
+  "fn": "value_check",
+  "type": "multi",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "male |  female ",
+  "expect": "ok",
+  "why": "Ok: each part trimmed is an option under case-insensitive/whitespace-normalized comparison ('same comparison')."
+ },
+ {
+  "fn": "value_check",
+  "type": "multi",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "Male | Man",
+  "expect": "stop",
+  "why": "Stop: one part is missing from the options ('one part missing -> \"stop\"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "multi",
+  "options": [
+   "Male",
+   "Female",
+   "Decline to self-identify"
+  ],
+  "answer": "Male|Female",
+  "expect": "stop",
+  "why": "Stop: the answer is several options joined by ' | ', so 'Male|Female' is not a valid option part ('joined by \" | \"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "answer": "Yes, I am",
+  "expect": "stop",
+  "why": "Stop: a synonym is not the same option ('\"Yes\" is not \"Yes, I am\"')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "New York",
+   "Los Angeles"
+  ],
+  "answer": "new york",
+  "expect": "ok",
+  "why": "Ok: NBSP is whitespace and whitespace runs equal one space ('whitespace runs equal one space')."
+ },
+ {
+  "fn": "value_check",
+  "type": "select",
+  "options": [
+   "A  B"
+  ],
+  "answer": "A\tB",
+  "expect": "ok",
+  "why": "Ok: any whitespace run equals one space for comparison ('whitespace runs equal one space')."
+ }
+]

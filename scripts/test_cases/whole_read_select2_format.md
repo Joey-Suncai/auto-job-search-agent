@@ -1,0 +1,2 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "select", "args": {"items": [{"key","label","options","type","value","rule"}], "qa": []}, "expect": [keys selected, in input order], "spec_quote": str, "ambiguous": false}.
+Write 6 cases about the link / essay exclusion (a LinkedIn URL value, an http GitHub link, a 301-character essay answer, a 300-character answer that IS read, a short sponsorship explanation that is read) — use critical work_auth or education labels so only the value decides.

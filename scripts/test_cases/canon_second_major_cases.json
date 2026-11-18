@@ -1,0 +1,336 @@
+[
+ {
+  "name": "audit_secondary_major_section_empty",
+  "fn": "audit",
+  "label": "Education (UIUC): Secondary Major",
+  "value": "",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label may be \"Section (entry): Field\", e.g. \"Education (UIUC): Secondary Major\" — only the part after the colon is the question. A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_minor_none",
+  "fn": "audit",
+  "label": "Minor",
+  "value": "None",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_double_major_na",
+  "fn": "audit",
+  "label": "Double Major",
+  "value": "N/A",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_major_2_empty",
+  "fn": "audit",
+  "label": "Major 2",
+  "value": "",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_additional_field_not_applicable",
+  "fn": "audit",
+  "label": "Additional Field of Study",
+  "value": "Not applicable",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_secondary_discipline_dash",
+  "fn": "audit",
+  "label": "Secondary Discipline",
+  "value": "-",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_other_concentration_no_second_major",
+  "fn": "audit",
+  "label": "Other Concentration",
+  "value": "No second major",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_minor_optional_empty",
+  "fn": "audit",
+  "label": "Minor (optional)",
+  "value": "",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "A label is a SECOND-major question when it contains (case-insensitive) \"second\", \"secondary\", \"double\", \"additional\", \"2nd\" or \"other\" directly followed by \"major\", \"discipline\", \"field\", \"field of study\" or \"concentration\"; or the word \"minor\"; or \"major 2\" / \"major #2\" / \"major two\". Second-major question, value empty or none-like (\"None\", \"N/A\", \"n/a\", \"NA\", \"Not applicable\", \"No minor\", \"No second major\", \"-\") → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_major_and_minor_empty",
+  "fn": "audit",
+  "label": "What is your major and minor?",
+  "value": "",
+  "expect_mismatch": true,
+  "expect_reason": "empty",
+  "spec_quote": "BUT a label that asks \"major and minor\" / \"major(s) & minor\" / \"major / any minor\" or contains \"in addition to\" asks the MAIN major, not a second one. Main-major question (e.g. \"Major\", \"Field of Study\", \"What is your major and minor?\") with an EMPTY value → an education_field mismatch with reason \"empty\".",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_major_s_and_minor_empty",
+  "fn": "audit",
+  "label": "Major(s) & minor",
+  "value": "",
+  "expect_mismatch": true,
+  "expect_reason": "empty",
+  "spec_quote": "BUT a label that asks \"major and minor\" / \"major(s) & minor\" / \"major / any minor\" or contains \"in addition to\" asks the MAIN major, not a second one. Main-major question (e.g. \"Major\", \"Field of Study\", \"What is your major and minor?\") with an EMPTY value → an education_field mismatch with reason \"empty\".",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_main_major_empty",
+  "fn": "audit",
+  "label": "Major",
+  "value": "",
+  "expect_mismatch": true,
+  "expect_reason": "empty",
+  "spec_quote": "Main-major question (e.g. \"Major\", \"Field of Study\", \"What is your major and minor?\") with an EMPTY value → an education_field mismatch with reason \"empty\".",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_field_of_study_empty",
+  "fn": "audit",
+  "label": "Field of Study",
+  "value": "",
+  "expect_mismatch": true,
+  "expect_reason": "empty",
+  "spec_quote": "Main-major question (e.g. \"Major\", \"Field of Study\", \"What is your major and minor?\") with an EMPTY value → an education_field mismatch with reason \"empty\".",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_what_is_your_major_empty",
+  "fn": "audit",
+  "label": "What is your major?",
+  "value": "",
+  "expect_mismatch": true,
+  "expect_reason": "empty",
+  "spec_quote": "Main-major question (e.g. \"Major\", \"Field of Study\", \"What is your major and minor?\") with an EMPTY value → an education_field mismatch with reason \"empty\".",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_main_major_data_science",
+  "fn": "audit",
+  "label": "Major",
+  "value": "Data Science",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "Main-major question with \"Data Science\" or \"Applied Data Science\" → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_field_of_study_applied_data_science",
+  "fn": "audit",
+  "label": "Field of Study",
+  "value": "Applied Data Science",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "Main-major question with \"Data Science\" or \"Applied Data Science\" → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "audit_what_is_your_major_data_science",
+  "fn": "audit",
+  "label": "What is your major?",
+  "value": "Data Science",
+  "expect_mismatch": false,
+  "expect_reason": null,
+  "spec_quote": "Main-major question with \"Data Science\" or \"Applied Data Science\" → no education_field mismatch.",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_plain_same_status_value",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"plain reason\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "none",
+   "reason": "plain reason",
+   "kind": "canon"
+  },
+  "spec_quote": "when an earlier line for the same key has kind \"canon\" and a later line WITHOUT kind \"canon\" has the same status AND value, the returned record is the later line with kind \"canon\" added (a plain reason must not erase an accepted canon mismatch for the same answer).",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_plain_different_status_and_value",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"ok\",\"value\":\"data\",\"reason\":\"plain reason\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "ok",
+   "value": "data",
+   "reason": "plain reason",
+   "kind": null
+  },
+  "spec_quote": "If the later line has a different status or value, it wins as is (no kind \"canon\").",
+  "ambiguous": false
+ },
+ {
+  "name": "load_plain_then_canon",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"plain reason\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"ok\",\"value\":\"data\",\"reason\":\"canon reason\",\"kind\":\"canon\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "ok",
+   "value": "data",
+   "reason": "canon reason",
+   "kind": "canon"
+  },
+  "spec_quote": "A later line with kind \"canon\" always wins as is.",
+  "ambiguous": false
+ },
+ {
+  "name": "load_two_plains_latest_wins",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"A\",\"reason\":\"first\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"B\",\"reason\":\"second\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "B",
+   "reason": "second",
+   "kind": null
+  },
+  "spec_quote": "The function returns {key: record}, the LATEST line per key wins",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_canon_later_wins",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"A\",\"reason\":\"first canon\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"B\",\"reason\":\"second canon\",\"kind\":\"canon\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "B",
+   "reason": "second canon",
+   "kind": "canon"
+  },
+  "spec_quote": "A later line with kind \"canon\" always wins as is.",
+  "ambiguous": false
+ },
+ {
+  "name": "load_malformed_between_canon_and_plain_same",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "not-json",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"plain reason\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "none",
+   "reason": "plain reason",
+   "kind": "canon"
+  },
+  "spec_quote": "Malformed lines are skipped. when an earlier line for the same key has kind \"canon\" and a later line WITHOUT kind \"canon\" has the same status AND value, the returned record is the later line with kind \"canon\" added.",
+  "ambiguous": false
+ },
+ {
+  "name": "load_other_keys_interleaved",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"other.key\",\"status\":\"ok\",\"value\":\"x\",\"reason\":\"other\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"first\"}",
+   "{\"key\":\"another.key\",\"status\":\"bad\",\"value\":\"y\",\"reason\":\"another\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"second\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "none",
+   "reason": "second",
+   "kind": null
+  },
+  "spec_quote": "The function returns {key: record}, the LATEST line per key wins",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_plain_same_value_different_status",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"ok\",\"value\":\"none\",\"reason\":\"plain reason\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "ok",
+   "value": "none",
+   "reason": "plain reason",
+   "kind": null
+  },
+  "spec_quote": "when an earlier line for the same key has kind \"canon\" and a later line WITHOUT kind \"canon\" has the same status AND value... If the later line has a different status or value, it wins as is (no kind \"canon\").",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_plain_same_status_different_value",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none2\",\"reason\":\"plain reason\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "none2",
+   "reason": "plain reason",
+   "kind": null
+  },
+  "spec_quote": "when an earlier line for the same key has kind \"canon\" and a later line WITHOUT kind \"canon\" has the same status AND value... If the later line has a different status or value, it wins as is (no kind \"canon\").",
+  "ambiguous": false
+ },
+ {
+  "name": "load_canon_then_two_plains_same_status_value_latest_plain_keeps_canon",
+  "fn": "load_reasons",
+  "lines": [
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"canon reason\",\"kind\":\"canon\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"first plain\"}",
+   "{\"key\":\"edu.second_major\",\"status\":\"mismatch\",\"value\":\"none\",\"reason\":\"second plain\"}"
+  ],
+  "key": "edu.second_major",
+  "expect": {
+   "status": "mismatch",
+   "value": "none",
+   "reason": "second plain",
+   "kind": "canon"
+  },
+  "spec_quote": "when an earlier line for the same key has kind \"canon\" and a later line WITHOUT kind \"canon\" has the same status AND value, the returned record is the later line with kind \"canon\" added (a plain reason must not erase an accepted canon mismatch for the same answer).",
+  "ambiguous": false
+ }
+]

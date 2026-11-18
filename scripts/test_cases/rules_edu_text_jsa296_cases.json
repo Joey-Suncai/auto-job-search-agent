@@ -1,0 +1,279 @@
+[
+ {
+  "name": "rule1_current_university_text",
+  "label": "What university are you currently enrolled with?",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec_quote": "A question asking which school / university / college he is CURRENTLY enrolled at / attending / studying at, asked in a free-text box (no options) → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_current_college_text",
+  "label": "Which college are you currently attending?",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec_quote": "A question asking which school / university / college he is CURRENTLY enrolled at / attending / studying at, asked in a free-text box (no options) → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_school_enrolled_textarea",
+  "label": "Name of the school you are currently enrolled in",
+  "type": "textarea",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec_quote": "A question asking which school / university / college he is CURRENTLY enrolled at / attending / studying at, asked in a free-text box (no options) → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_institution_studying_text",
+  "label": "Please enter the institution where you are currently studying.",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec_quote": "A question asking which school / university / college he is CURRENTLY enrolled at / attending / studying at, asked in a free-text box (no options) → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule1_current_college_attending_text",
+  "label": "Current university or college attending:",
+  "type": "text",
+  "options": [],
+  "expect": "University of Chicago",
+  "spec_quote": "A question asking which school / university / college he is CURRENTLY enrolled at / attending / studying at, asked in a free-text box (no options) → \"University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_currently_enrolled_academic_radio",
+  "label": "Are you currently enrolled in an academic program?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A yes/no question \"Are you currently enrolled …?\" (options Yes / No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule2_currently_enrolled_student_select",
+  "label": "Are you currently enrolled as a student?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes",
+  "spec_quote": "A yes/no question \"Are you currently enrolled …?\" (options Yes / No) → \"Yes\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_current_degree_pursuing_text",
+  "label": "Which degree are you currently pursuing?",
+  "type": "text",
+  "options": [],
+  "expect": "Master of Science in Applied Data Science, University of Chicago",
+  "spec_quote": "A question asking which degree he is currently pursuing / obtaining / working towards, or asking him to confirm his current degree, in a free-text box (no options) → \"Master of Science in Applied Data Science, University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_confirm_current_degree_textarea",
+  "label": "Can you please confirm the current degree that you are obtaining?",
+  "type": "textarea",
+  "options": [],
+  "expect": "Master of Science in Applied Data Science, University of Chicago",
+  "spec_quote": "\"Can you please confirm the current degree that you are obtaining?\" is a request for the degree, not a yes/no question.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_degree_working_towards_text",
+  "label": "What degree are you currently working towards?",
+  "type": "text",
+  "options": [],
+  "expect": "Master of Science in Applied Data Science, University of Chicago",
+  "spec_quote": "A question asking which degree he is currently pursuing / obtaining / working towards, or asking him to confirm his current degree, in a free-text box (no options) → \"Master of Science in Applied Data Science, University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_degree_obtaining_text",
+  "label": "Please provide the degree you are currently obtaining.",
+  "type": "text",
+  "options": [],
+  "expect": "Master of Science in Applied Data Science, University of Chicago",
+  "spec_quote": "A question asking which degree he is currently pursuing / obtaining / working towards, or asking him to confirm his current degree, in a free-text box (no options) → \"Master of Science in Applied Data Science, University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule3_current_degree_program_textarea",
+  "label": "Current degree program you are pursuing:",
+  "type": "textarea",
+  "options": [],
+  "expect": "Master of Science in Applied Data Science, University of Chicago",
+  "spec_quote": "A question asking which degree he is currently pursuing / obtaining / working towards, or asking him to confirm his current degree, in a free-text box (no options) → \"Master of Science in Applied Data Science, University of Chicago\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_enrollment_status_fulltime_select",
+  "label": "What is your current enrollment status?",
+  "type": "select",
+  "options": [
+   "Part-time",
+   "Full-time",
+   "Not currently enrolled"
+  ],
+  "expect": "Full-time",
+  "spec_quote": "A question about his enrollment STATUS with options → the full-time option (\"Fulltime Schedule\", \"Full-time\", \"Full Time Student\", \"Full-time graduate student\"), never part-time, never an undergraduate option; when a \"Master's\" option exists, the Master's option.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_enrollment_status_full_time_student_radio",
+  "label": "Enrollment Status",
+  "type": "radio",
+  "options": [
+   "Full Time Student",
+   "Part Time Student",
+   "Not Enrolled"
+  ],
+  "expect": "Full Time Student",
+  "spec_quote": "A question about his enrollment STATUS with options → the full-time option (\"Fulltime Schedule\", \"Full-time\", \"Full Time Student\", \"Full-time graduate student\"), never part-time, never an undergraduate option; when a \"Master's\" option exists, the Master's option.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_student_status_fulltime_schedule_select",
+  "label": "Please select your current student status:",
+  "type": "select",
+  "options": [
+   "Fulltime Schedule",
+   "Part-time Schedule",
+   "Leave of Absence"
+  ],
+  "expect": "Fulltime Schedule",
+  "spec_quote": "A question about his enrollment STATUS with options → the full-time option (\"Fulltime Schedule\", \"Full-time\", \"Full Time Student\", \"Full-time graduate student\"), never part-time, never an undergraduate option; when a \"Master's\" option exists, the Master's option.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule4_enrollment_status_masters_radio",
+  "label": "Current enrollment status",
+  "type": "radio",
+  "options": [
+   "Undergraduate",
+   "Master's",
+   "Doctorate"
+  ],
+  "expect": "Master's",
+  "spec_quote": "A question about his enrollment STATUS with options → the full-time option (\"Fulltime Schedule\", \"Full-time\", \"Full Time Student\", \"Full-time graduate student\"), never part-time, never an undergraduate option; when a \"Master's\" option exists, the Master's option.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_language_preference_radio",
+  "label": "Language Preference",
+  "type": "radio",
+  "options": [
+   "English",
+   "Spanish",
+   "French Canadian"
+  ],
+  "expect": "English",
+  "spec_quote": "\"Language Preference\" / \"Preferred language\" / \"Preferred language of communication\" with options such as English / Spanish / French Canadian → \"English\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_preferred_language_select",
+  "label": "Preferred language",
+  "type": "select",
+  "options": [
+   "Spanish",
+   "English",
+   "French Canadian"
+  ],
+  "expect": "English",
+  "spec_quote": "\"Language Preference\" / \"Preferred language\" / \"Preferred language of communication\" with options such as English / Spanish / French Canadian → \"English\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule5_preferred_language_communication_select",
+  "label": "Preferred language of communication",
+  "type": "select",
+  "options": [
+   "French Canadian",
+   "Spanish",
+   "English"
+  ],
+  "expect": "English",
+  "spec_quote": "\"Language Preference\" / \"Preferred language\" / \"Preferred language of communication\" with options such as English / Spanish / French Canadian → \"English\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule6_attestation_checkbox_standard",
+  "label": "I certify that I have read, understand, accept and agree with the above statements and that the information on my profile and on this application is complete and correct.",
+  "type": "checkbox",
+  "options": [],
+  "expect": "Yes",
+  "spec_quote": "A checkbox whose text is a plain attestation — \"… certifies that I have read, understand, accept and agree with the above statements and that the information on my profile and on this application is complete and correct.\" (options: none; type checkbox) → \"Yes\" (ticked).",
+  "ambiguous": false
+ },
+ {
+  "name": "rule6_attestation_checkbox_signature",
+  "label": "I certify that I have read, understand, accept and agree with the above statements, and that the information on my profile and on this application is complete and correct, and I agree that my electronic signature below has the same effect as a handwritten signature.",
+  "type": "checkbox",
+  "options": [],
+  "expect": "Yes",
+  "spec_quote": "Wording varies slightly; the text may mention \"my electronic signature below\".",
+  "ambiguous": false
+ },
+ {
+  "name": "rule6_attestation_checkbox_by_checking",
+  "label": "By checking this box, I certify that I have read, understand, accept and agree with the above statements and that the information on my profile and on this application is complete and correct.",
+  "type": "checkbox",
+  "options": [],
+  "expect": "Yes",
+  "spec_quote": "A checkbox whose text is a plain attestation — \"… certifies that I have read, understand, accept and agree with the above statements and that the information on my profile and on this application is complete and correct.\" (options: none; type checkbox) → \"Yes\" (ticked).",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_local_chicago_radio",
+  "label": "Are you local and able to work in-person in our Chicago, IL office?",
+  "type": "radio",
+  "options": [
+   "Yes, I am",
+   "No, I am not"
+  ],
+  "expect": "Yes, I am",
+  "spec_quote": "\"Are you local and able to work in-person in our <City>, <State> office?\" with options like \"Yes, I am\" / \"No, I am not\" → when the city is not Chicago, the \"No\" option (he is not local there); when the city is Chicago → the \"Yes\" option.",
+  "ambiguous": false
+ },
+ {
+  "name": "rule7_local_new_york_radio",
+  "label": "Are you local and able to work in-person in our New York, NY office?",
+  "type": "radio",
+  "options": [
+   "Yes, I am",
+   "No, I am not"
+  ],
+  "expect": "No, I am not",
+  "spec_quote": "\"Are you local and able to work in-person in our <City>, <State> office?\" with options like \"Yes, I am\" / \"No, I am not\" → when the city is not Chicago, the \"No\" option (he is not local there); when the city is Chicago → the \"Yes\" option.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_high_school_text",
+  "label": "Which high school did you attend?",
+  "type": "text",
+  "options": [],
+  "expect": "none",
+  "spec_quote": "\"Which high school did you attend?\" must not answer \"University of Chicago\" (expect \"none\").",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_business_degree_radio",
+  "label": "Are you currently enrolled in a business degree program or related field?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none",
+  "spec_quote": "\"Are you currently enrolled in a business degree program or related field?\" must not be \"Yes\" (he is not in business).",
+  "ambiguous": false
+ }
+]

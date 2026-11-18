@@ -1,0 +1,10 @@
+{
+ "zoneless_mail_equal_to_zoned_since": {
+  "verdict": "case",
+  "why": "Superseded by JSA-390 (2026-11-17, row Acceptance written by the dev lead): a subject that only says 'thank you for your interest' is no receipt unless the body says the application was received; this case has no body. The old spec listed it as a receipt."
+ },
+ "phrase_thanks_for_your_interest": {
+  "verdict": "case",
+  "why": "Superseded by JSA-390 (2026-11-17, row Acceptance written by the dev lead): a subject that only says 'thank you for your interest' is no receipt unless the body says the application was received; this case has no body. The old spec listed it as a receipt."
+ }
+}

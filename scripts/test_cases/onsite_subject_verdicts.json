@@ -1,0 +1,4 @@
+{
+ "4": "Claude 2026-11-11: case right in spirit, but the result is 'unknown' (asked), not a wrong answer. Pre-existing: the on-site rule excludes 'comfortable' (someone else's consent wordings, Hitachi 10-30). JSA-324 only narrows the rule; widening it is out of scope.",
+ "9": "Claude 2026-11-11: 'come in 3 days a week' has no office / on-site word, so the on-site rule never matched it (pre-existing) and the question is asked, not answered wrong. Out of scope for JSA-324."
+}

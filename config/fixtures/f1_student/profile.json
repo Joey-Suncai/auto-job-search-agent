@@ -2,22 +2,22 @@
  "_doc": "TEST FIXTURE: a fictional F-1 master's student (identity of the example person) for the F-1 / CPT tests. Used only when config/profile.json is missing (jsa_profile.use_fixture_if_no_user).",
  "name": {
   "first": "Alex",
-  "last": "Sun",
-  "preferred": "Joey",
-  "full": "Alex Rivera",
-  "signature": "Alex Rivera",
-  "file_prefix": "Alex_Rivera"
+  "last": "Doe",
+  "preferred": "Lex",
+  "full": "Alex Doe",
+  "signature": "Alex Doe",
+  "file_prefix": "Alex_Doe"
  },
  "contact": {
-  "email": "alex.rivera@example.com",
+  "email": "alex.doe@example.com",
   "phone": "555-010-2030",
   "city_state": "Chicago, IL",
   "linkedin": "linkedin.com/in/example",
   "website": "github.com/example"
  },
  "accounts": {
-  "gmail": "alex.rivera@example.com",
-  "workday_email": "alex.rivera@example.com"
+  "gmail": "alex.doe@example.com",
+  "workday_email": "alex.doe@example.com"
  },
  "education": [
   {
@@ -55,14 +55,14 @@
  },
  "transcript": {
   "path": "",
-  "file_name": "Alex_Rivera_Transcript.pdf",
+  "file_name": "Alex_Doe_Transcript.pdf",
   "label": "official transcript"
  },
  "resume_template": "resume/TEMPLATE.docx",
- "high_school": {"name": "Springtown No.2 High School", "city": "Huzhou", "region": "Zhejiang", "country": "China", "end": "2022"},
+ "high_school": {"name": "Springtown No.2 High School", "city": "Springtown", "region": "Zhejiang", "country": "China", "end": "2022"},
  "answers": {
   "location_rank": {"open": true, "first": "/\\bchicago\\b/i"},
-  "name_pronunciation": {"text": "TSIGH-jwin-ee SOON (I go by Joey)"},
+  "name_pronunciation": {"text": "AL-ex DOH (I go by Lex)"},
   "visa_expiry": {"text": "F-1 student visa; program end date December 2027 (Summer 2027 internship on CPT)"},
   "ft_start": {"after": "2028-01", "text": "January 2028"},
   "has_preferred": {
@@ -89,19 +89,19 @@
    ]
   },
   "preferred_name": {
-   "text": "Joey"
+   "text": "Lex"
   },
   "first_name": {
    "text": "Alex"
   },
   "last_name": {
-   "text": "Sun"
+   "text": "Doe"
   },
   "full_name": {
-   "text": "Alex Rivera"
+   "text": "Alex Doe"
   },
   "email": {
-   "text": "alex.rivera@example.com"
+   "text": "alex.doe@example.com"
   },
   "phone_device": {
    "text": "Mobile",
@@ -220,8 +220,18 @@
   "contact_employer": {
    "yes": true
   },
+  "contact_employer_cond": {
+   "text": "N/A",
+   "pick": [
+    "/^(n\\/a|na)\\b|^not applicable|^does not apply|^not (currently )?(employed|working)|^i am not (currently )?(employed|working)|^unemployed/i"
+   ]
+  },
   "interview_travel": {
    "yes": false
+  },
+  "recent_employer": {
+   "text": "Hyde Park Investment Services, Inc.",
+   "source": "Joey 2026-11-10 (JSA-288): most recent employer = Hyde Park; current company stays University of Chicago"
   },
   "employer": {
    "text": "University of Chicago"
@@ -351,11 +361,11 @@
      "/^n\\/?a\\b/i",
      "/^other\\b/i"
     ],
-    "note": "the current graduate program has no GPA yet (fictional fixture)"
+    "note": "the current graduate program has no GPA yet (fictional fixture) · Joey 2026-11-10: cumulative / current GPA = 3.60 or none / N/A, either is right; no 3.60 option → Other / none is fine"
    },
   "gpa": {
    "text": "3.70",
-   "note": "fixture GPA"
+   "note": "fixture GPA · Joey 2026-11-10: cumulative / current GPA = 3.60 or none / N/A, either is right; no 3.60 option → Other / none is fine"
   },
   "gpa_threshold": {
    "by": {"cumulative": 3.7, "major": 3.8},
@@ -392,6 +402,34 @@
   "spons_now": {
    "yes": false
   },
+  "accommodation_need": {
+   "yes": false
+  },
+  "course_done": {
+   "pick": [
+    "/^not yet/i",
+    "/^no\\b/i"
+   ]
+  },
+  "visitor_visa": {
+   "yes": false
+  },
+  "eeo_furnish": {
+   "yes": true
+  },
+  "reloc_other": {
+   "countries": [
+    "United States",
+    "China"
+   ]
+  },
+  "education_level_now": {
+   "text": "Master's",
+   "pick": [
+    "/^master/i",
+    "/^graduate\\b/i"
+   ]
+  },
   "spons_future": {
    "yes": true
   },
@@ -422,6 +460,10 @@
   },
   "background_drug": {
    "yes": true
+  },
+  "conviction": {
+   "yes": false,
+   "source": "fixture"
   },
   "license_state_class": {
    "pick": [
@@ -774,7 +816,7 @@
    "text": "0"
   },
   "signature": {
-   "text": "Alex Rivera"
+   "text": "Alex Doe"
   },
   "sponsorship_type": {
    "text": "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time"

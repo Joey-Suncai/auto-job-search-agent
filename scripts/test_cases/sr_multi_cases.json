@@ -1,0 +1,202 @@
+[
+ {
+  "name": "exact_tag_match",
+  "fn": "multi_has",
+  "args": [
+   "Online job board, LinkedIn",
+   "LinkedIn"
+  ],
+  "expect": true,
+  "spec": "multi_has(got, want) is True when want is exactly one of the tags: compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "case_insensitive_match",
+  "fn": "multi_has",
+  "args": [
+   "LinkedIn",
+   "linkedin"
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "whitespace_collapse_in_got",
+  "fn": "multi_has",
+  "args": [
+   "Online   job\nboard, LinkedIn",
+   "Online job board"
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "trimmed_tag_ends",
+  "fn": "multi_has",
+  "args": [
+   " LinkedIn , Online job board",
+   "LinkedIn"
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "substring_other_not_match",
+  "fn": "multi_has",
+  "args": [
+   "Online job board - other",
+   "Online job board"
+  ],
+  "expect": false,
+  "spec": "A tag that only contains the wanted text does not count (\"Online job board - other\" is not \"Online job board\"; \"LinkedIn Jobs\" is not \"LinkedIn\")."
+ },
+ {
+  "name": "substring_jobs_not_match",
+  "fn": "multi_has",
+  "args": [
+   "LinkedIn Jobs",
+   "LinkedIn"
+  ],
+  "expect": false,
+  "spec": "A tag that only contains the wanted text does not count (\"Online job board - other\" is not \"Online job board\"; \"LinkedIn Jobs\" is not \"LinkedIn\")."
+ },
+ {
+  "name": "exact_tag_among_many",
+  "fn": "multi_has",
+  "args": [
+   "Indeed, LinkedIn, Glassdoor",
+   "Glassdoor"
+  ],
+  "expect": true,
+  "spec": "multi_has(got, want) is True when want is exactly one of the tags: compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "absent_tag_not_match",
+  "fn": "multi_has",
+  "args": [
+   "Indeed, Glassdoor",
+   "LinkedIn"
+  ],
+  "expect": false,
+  "spec": "multi_has(got, want) is True when want is exactly one of the tags: compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "empty_got_false",
+  "fn": "multi_has",
+  "args": [
+   "",
+   "LinkedIn"
+  ],
+  "expect": false,
+  "spec": "Empty or missing got → False; empty or missing want → False (an empty want equals no tag, even if got has an empty piece such as \"A, , B\" — judge it False)."
+ },
+ {
+  "name": "null_got_false",
+  "fn": "multi_has",
+  "args": [
+   null,
+   "LinkedIn"
+  ],
+  "expect": false,
+  "spec": "Empty or missing got → False; empty or missing want → False (an empty want equals no tag, even if got has an empty piece such as \"A, , B\" — judge it False)."
+ },
+ {
+  "name": "empty_want_false",
+  "fn": "multi_has",
+  "args": [
+   "LinkedIn",
+   ""
+  ],
+  "expect": false,
+  "spec": "Empty or missing got → False; empty or missing want → False (an empty want equals no tag, even if got has an empty piece such as \"A, , B\" — judge it False)."
+ },
+ {
+  "name": "null_want_false",
+  "fn": "multi_has",
+  "args": [
+   "LinkedIn",
+   null
+  ],
+  "expect": false,
+  "spec": "Empty or missing got → False; empty or missing want → False (an empty want equals no tag, even if got has an empty piece such as \"A, , B\" — judge it False)."
+ },
+ {
+  "name": "empty_want_with_empty_piece_false",
+  "fn": "multi_has",
+  "args": [
+   "A, , B",
+   ""
+  ],
+  "expect": false,
+  "spec": "Empty or missing got → False; empty or missing want → False (an empty want equals no tag, even if got has an empty piece such as \"A, , B\" — judge it False)."
+ },
+ {
+  "name": "want_with_comma_never_matches_joined_got",
+  "fn": "multi_has",
+  "args": [
+   "Online job board, LinkedIn",
+   "Online job board, LinkedIn"
+  ],
+  "expect": false,
+  "spec": "A wanted text that itself contains a comma never matches (it is split in got)."
+ },
+ {
+  "name": "want_with_comma_never_matches_simple",
+  "fn": "multi_has",
+  "args": [
+   "A, B",
+   "A, B"
+  ],
+  "expect": false,
+  "spec": "A wanted text that itself contains a comma never matches (it is split in got)."
+ },
+ {
+  "name": "whitespace_collapse_in_want",
+  "fn": "multi_has",
+  "args": [
+   "Online job board",
+   "Online   job board"
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "newline_in_want_collapses",
+  "fn": "multi_has",
+  "args": [
+   "Online job board",
+   "Online\njob board"
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "case_and_trim_and_collapse",
+  "fn": "multi_has",
+  "args": [
+   "Online JOB board, LinkedIn",
+   " online job board "
+  ],
+  "expect": true,
+  "spec": "compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ },
+ {
+  "name": "empty_piece_does_not_block_other_tag",
+  "fn": "multi_has",
+  "args": [
+   "A, , B",
+   "A"
+  ],
+  "expect": true,
+  "spec": "Tags are split at commas only."
+ },
+ {
+  "name": "exact_suffix_tag_matches_when_wanted",
+  "fn": "multi_has",
+  "args": [
+   "Online job board - other, LinkedIn",
+   "Online job board - other"
+  ],
+  "expect": true,
+  "spec": "multi_has(got, want) is True when want is exactly one of the tags: compare case-insensitively with whitespace collapsed (runs of spaces / newlines = one space, ends trimmed)."
+ }
+]

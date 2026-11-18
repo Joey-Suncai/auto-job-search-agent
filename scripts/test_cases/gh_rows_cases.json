@@ -1,0 +1,579 @@
+[
+ {
+  "name": "single_ok_field_all_attributes",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "company_name",
+     "label": "Company name",
+     "answer": "Acme",
+     "type": "text",
+     "required": true,
+     "source": "profile"
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "company_name",
+    "label": "Company name",
+    "want": "Acme",
+    "page": "Acme",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "profile"
+   }
+  ],
+  "spec": "Each row: {\"key\", \"label\" (the plan field's label, else its key), \"want\" (the plan field's answer, as it is), \"page\", \"type\", \"required\" (bool), \"ok\", \"source\"}. `page` is the read-back: when the field's key is in `bad` (a list of {\"key\", \"page\", …}) it is that entry's `page` (an empty string when it has none) and `ok` is false; otherwise the page matched the plan, so `page` equals `want` and `ok` is true."
+ },
+ {
+  "name": "bad_entry_with_page_sets_readback_and_not_ok",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "company_name",
+     "label": "Company name",
+     "answer": "Acme",
+     "type": "text",
+     "required": true,
+     "source": "profile"
+    }
+   ],
+   [
+    {
+     "key": "company_name",
+     "page": "12"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "company_name",
+    "label": "Company name",
+    "want": "Acme",
+    "page": "12",
+    "type": "text",
+    "required": true,
+    "ok": false,
+    "source": "profile"
+   }
+  ],
+  "spec": "`page` is the read-back: when the field's key is in `bad` (a list of {\"key\", \"page\", …}) it is that entry's `page` (an empty string when it has none) and `ok` is false; otherwise the page matched the plan, so `page` equals `want` and `ok` is true."
+ },
+ {
+  "name": "bad_entry_without_page_gives_empty_page",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "X",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   [
+    {
+     "key": "a"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "X",
+    "page": "",
+    "type": "text",
+    "required": true,
+    "ok": false,
+    "source": "s"
+   }
+  ],
+  "spec": "`page` is the read-back: when the field's key is in `bad` (a list of {\"key\", \"page\", …}) it is that entry's `page` (an empty string when it has none) and `ok` is false; otherwise the page matched the plan, so `page` equals `want` and `ok` is true."
+ },
+ {
+  "name": "bad_null_all_rows_ok",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "X",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   null
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "X",
+    "page": "X",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "`bad` may be missing/null/empty (all rows ok)."
+ },
+ {
+  "name": "bad_empty_list_all_rows_ok",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "X",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "X",
+    "page": "X",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "`bad` may be missing/null/empty (all rows ok)."
+ },
+ {
+  "name": "skip_optional_gives_no_row",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "skip_optional",
+     "key": "opt",
+     "label": "Optional",
+     "answer": "",
+     "type": "text",
+     "required": false,
+     "source": "profile"
+    }
+   ],
+   []
+  ],
+  "expect": [],
+  "spec": "one row per plan field whose `status` is \"ok\" (a planned answer that was filled); fields with any other status (skip_optional, needs_user, absent, file …) give no row."
+ },
+ {
+  "name": "multiple_non_ok_statuses_give_no_rows",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "absent",
+     "key": "a",
+     "label": "A",
+     "answer": "",
+     "type": "text",
+     "required": false,
+     "source": "s"
+    },
+    {
+     "status": "needs_user",
+     "key": "b",
+     "label": "B",
+     "answer": "",
+     "type": "text",
+     "required": false,
+     "source": "s"
+    },
+    {
+     "status": "file",
+     "key": "c",
+     "label": "C",
+     "answer": "",
+     "type": "file",
+     "required": false,
+     "source": "s"
+    },
+    {
+     "status": "skip_optional",
+     "key": "d",
+     "label": "D",
+     "answer": "",
+     "type": "text",
+     "required": false,
+     "source": "s"
+    }
+   ],
+   []
+  ],
+  "expect": [],
+  "spec": "one row per plan field whose `status` is \"ok\" (a planned answer that was filled); fields with any other status (skip_optional, needs_user, absent, file …) give no row."
+ },
+ {
+  "name": "missing_label_falls_back_to_key",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "foo",
+     "answer": "bar",
+     "type": "text",
+     "required": true,
+     "source": "src"
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "foo",
+    "label": "foo",
+    "want": "bar",
+    "page": "bar",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "src"
+   }
+  ],
+  "spec": "Each row: {\"key\", \"label\" (the plan field's label, else its key), \"want\" (the plan field's answer, as it is), \"page\", \"type\", \"required\" (bool), \"ok\", \"source\"}."
+ },
+ {
+  "name": "missing_type_and_source_become_empty_strings",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "foo",
+     "label": "Foo",
+     "answer": "bar",
+     "required": true
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "foo",
+    "label": "Foo",
+    "want": "bar",
+    "page": "bar",
+    "type": "",
+    "required": true,
+    "ok": true,
+    "source": ""
+   }
+  ],
+  "spec": "`type` is the plan field's type ('' when missing); `source` is the plan field's source ('' when missing)."
+ },
+ {
+  "name": "row_order_follows_plan_order",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "b",
+     "label": "B",
+     "answer": "B",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    },
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "A",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    },
+    {
+     "status": "ok",
+     "key": "c",
+     "label": "C",
+     "answer": "C",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   null
+  ],
+  "expect": [
+   {
+    "key": "b",
+    "label": "B",
+    "want": "B",
+    "page": "B",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   },
+   {
+    "key": "a",
+    "label": "A",
+    "want": "A",
+    "page": "A",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   },
+   {
+    "key": "c",
+    "label": "C",
+    "want": "C",
+    "page": "C",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "Row order = plan order."
+ },
+ {
+  "name": "bad_key_for_skipped_field_makes_no_row_and_does_not_affect_ok_field",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "X",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    },
+    {
+     "status": "skip_optional",
+     "key": "b",
+     "label": "B",
+     "answer": "",
+     "type": "text",
+     "required": false,
+     "source": "s"
+    }
+   ],
+   [
+    {
+     "key": "b",
+     "page": "9"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "X",
+    "page": "X",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "A key in `bad` that is not an \"ok\" plan field makes no row."
+ },
+ {
+  "name": "bad_key_not_in_plan_makes_no_extra_row",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "X",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   [
+    {
+     "key": "zzz",
+     "page": "9"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "X",
+    "page": "X",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "A key in `bad` that is not an \"ok\" plan field makes no row."
+ },
+ {
+  "name": "mixed_ok_fields_one_bad_one_ok",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "a",
+     "label": "A",
+     "answer": "A",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    },
+    {
+     "status": "ok",
+     "key": "b",
+     "label": "B",
+     "answer": "B",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   [
+    {
+     "key": "b",
+     "page": "P2"
+    }
+   ]
+  ],
+  "expect": [
+   {
+    "key": "a",
+    "label": "A",
+    "want": "A",
+    "page": "A",
+    "type": "text",
+    "required": true,
+    "ok": true,
+    "source": "s"
+   },
+   {
+    "key": "b",
+    "label": "B",
+    "want": "B",
+    "page": "P2",
+    "type": "text",
+    "required": true,
+    "ok": false,
+    "source": "s"
+   }
+  ],
+  "spec": "`page` is the read-back: when the field's key is in `bad` (a list of {\"key\", \"page\", …}) it is that entry's `page` (an empty string when it has none) and `ok` is false; otherwise the page matched the plan, so `page` equals `want` and `ok` is true. Row order = plan order."
+ },
+ {
+  "name": "want_is_preserved_as_is_for_non_string_answer",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "num",
+     "label": "Number",
+     "answer": 42,
+     "type": "number",
+     "required": false,
+     "source": "profile"
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "num",
+    "label": "Number",
+    "want": 42,
+    "page": 42,
+    "type": "number",
+    "required": false,
+    "ok": true,
+    "source": "profile"
+   }
+  ],
+  "spec": "Each row: {\"key\", \"label\" (the plan field's label, else its key), \"want\" (the plan field's answer, as it is), \"page\", \"type\", \"required\" (bool), \"ok\", \"source\"}. `page` is the read-back: when the field's key is in `bad` (a list of {\"key\", \"page\", …}) it is that entry's `page` (an empty string when it has none) and `ok` is false; otherwise the page matched the plan, so `page` equals `want` and `ok` is true."
+ },
+ {
+  "name": "required_false_is_preserved",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "ok",
+     "key": "opt",
+     "label": "Optional",
+     "answer": "x",
+     "type": "text",
+     "required": false,
+     "source": "s"
+    }
+   ],
+   []
+  ],
+  "expect": [
+   {
+    "key": "opt",
+    "label": "Optional",
+    "want": "x",
+    "page": "x",
+    "type": "text",
+    "required": false,
+    "ok": true,
+    "source": "s"
+   }
+  ],
+  "spec": "Each row: {\"key\", \"label\" (the plan field's label, else its key), \"want\" (the plan field's answer, as it is), \"page\", \"type\", \"required\" (bool), \"ok\", \"source\"}."
+ },
+ {
+  "name": "uppercase_OK_status_is_not_ok",
+  "fn": "gh_rows",
+  "args": [
+   [
+    {
+     "status": "OK",
+     "key": "a",
+     "label": "A",
+     "answer": "x",
+     "type": "text",
+     "required": true,
+     "source": "s"
+    }
+   ],
+   []
+  ],
+  "expect": [],
+  "spec": "one row per plan field whose `status` is \"ok\" (a planned answer that was filled); fields with any other status (skip_optional, needs_user, absent, file …) give no row."
+ }
+]

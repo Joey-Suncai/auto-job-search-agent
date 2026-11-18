@@ -1,0 +1,6 @@
+{
+ "health new outage after good read may alert again": {
+  "verdict": "case",
+  "why": "The state is ok (a good read ended the last outage), so this failure STARTS a new outage: since = now, 0 h elapsed. The spec alerts only after MORE than 2 hours; 'may alert again' means once the new outage passes 2 h, not at its first failure."
+ }
+}

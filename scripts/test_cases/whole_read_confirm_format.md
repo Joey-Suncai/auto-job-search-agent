@@ -1,0 +1,3 @@
+Return {"cases": [...]}. Each case: {"name": str, "fn": "read_items", "args": {...}, "expect": ..., "spec_quote": str, "ambiguous": false}.
+read_items: args {"items": [{"key","label","options","value"}], "fast": {"<key>": "<answer>" | "UNSURE" | "ERROR"}, "strong": {"<key>": "<answer>" | "UNSURE" | "ERROR"}, "meaning": {"<key>": "SAME" | "DIFFERENT"}} — the injected model returns fast[key] for step 1, strong[key] for step 2, meaning[key] for step 3; a missing key = "UNSURE" (step 1/2) or "DIFFERENT" (step 3) → expect {"<key>": {"agree": bool, "how": str}}.
+Write 10 cases, several with two or three items each, covering every `how` value and the rule that items with options never get step 3.

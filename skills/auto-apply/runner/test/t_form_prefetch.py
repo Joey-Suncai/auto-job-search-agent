@@ -33,11 +33,22 @@ cases = []
 for p in sorted(glob.glob(os.path.join(CASES, 'form_prefetch_cases*.json'))):
     for c in json.load(open(p)):
         c['_file'] = os.path.basename(p); cases.append(c)
-FACTS = {'answers.last_name': 'Sun', 'name.last': 'Sun', 'answers.city': 'Chicago'}
+FACTS = {'answers.last_name': 'Doe', 'name.last': 'Doe', 'answers.city': 'Chicago'}
 
 
 def rule_of(i):
     return {'confident': 'confident', 'uncertain': 'uncertain', 'none': 'none'}.get(i.get('rule'), i.get('rule'))
+
+
+def opts_from_counts(last):
+    if not isinstance(last, dict):
+        return last
+    out = dict(last)
+    for k in ('fields', 'questions', 'needs'):
+        if isinstance(out.get(k), list):
+            out[k] = [dict({x: y for x, y in f.items() if x != 'n_options'}, options=[f'opt {j}' for j in range(f['n_options'])])
+                      if isinstance(f, dict) and 'n_options' in f else f for f in out[k]]
+    return out
 
 
 def run_case(c, long_tail=FP.LONG_TAIL):
@@ -54,7 +65,8 @@ def run_case(c, long_tail=FP.LONG_TAIL):
         sheet, ready, left = FP.rank(jobs, i.get('max_questions', 25), long_tail, tiers)
         return {'sheet': sheet, 'ready_after': ready, 'left_out': left}
     if k == 'stale':
-        return {'read': FP.due(i.get('last'), i['today'], i.get('recheck_days', 5), i.get('only_new', False))}
+        last = opts_from_counts(i.get('last'))           # JSA-276 cases write a dropdown as n_options: N
+        return {'read': FP.due(last, i['today'], i.get('recheck_days', 5), i.get('only_new', False)), 'cut': FP.cut_options(last)}
     if k == 'cache':
         def key(x):
             return FP.cache_key(FP.SUGGEST_SYSTEM.format(facts='v=' + str(x.get('facts_version'))),
@@ -108,7 +120,7 @@ check('uncertain + agree used', FP.route('uncertain', 'agree')['route'] == 'used
 for so in ('disagree', 'error', None):
     check(f'uncertain + {so} → Joey', FP.route('uncertain', so)['route'] == 'joey')
 check('per-job ask → Joey', FP.route('per_job')['route'] == 'joey')
-s_ok = {'answer': 'Sun', 'fact': 'answers.last_name'}
+s_ok = {'answer': 'Doe', 'fact': 'answers.last_name'}
 check('no rule → sheet, never used', FP.route('none', None, None, s_ok, FACTS) == {'route': 'sheet', 'derived_block': True})
 check('no rule + high risk → Joey, no block', FP.route('none', None, 'GPA', s_ok, FACTS) == {'route': 'joey', 'derived_block': False})
 check('ASK → not derived', FP.route('none', None, None, {'answer': 'ASK', 'fact': None}, FACTS)['derived_block'] is False)
@@ -124,6 +136,9 @@ check('fresh → skip', not FP.due({'read_at': '2026-11-04', 'status': 'ok'}, '2
 check('5 days → re-read', FP.due({'read_at': '2026-11-01', 'status': 'ok'}, '2026-11-06', 5))
 check('closed → never again', not FP.due({'read_at': '2026-10-01', 'status': 'closed'}, '2026-11-06', 5))
 check('error → retried', FP.due({'read_at': '2026-11-06', 'status': 'error'}, '2026-11-06', 5))
+check('cut list (60, before 11-09) → re-read at once', FP.due({'read_at': '2026-11-06', 'status': 'ok', 'questions': [{'options': ['x'] * 60}]}, '2026-11-07', 5))
+check('60 options read after the fix → normal age', not FP.due({'read_at': '2026-11-09', 'status': 'ok', 'questions': [{'options': ['x'] * 60}]}, '2026-11-10', 5))
+check('closed stays closed even when cut', not FP.due({'read_at': '2026-11-01', 'status': 'closed', 'questions': [{'options': ['x'] * 60}]}, '2026-11-10', 5))
 check('only-new skips an old one', not FP.due({'read_at': '2026-10-01', 'status': 'ok'}, '2026-11-06', 5, only_new=True))
 rows = [{'id': 'A', 'elig': '可投', 'score': 50, 'url': 'https://job-boards.greenhouse.io/x/jobs/1'},
         {'id': 'B', 'elig': '可投', 'score': 90, 'url': 'https://jobs.lever.co/x/0'},
@@ -159,7 +174,7 @@ check('qa_add accepts it', bool(re.fullmatch(r'/.+/[a-z]*', rx)))
 check('slot yes/no', FP.slot('Yes', ['Yes', 'No']) == {'yes': True} and FP.slot('no', ['Yes', 'No']) == {'no': True})
 check('slot pick', FP.slot('chicago', ['Chicago', 'NYC']) == {'pick': 'Chicago'})
 check('slot: not an option → none', FP.slot('Boston', ['Chicago', 'NYC']) is None)
-check('slot: ASK → none', FP.slot('ASK') is None and FP.slot('Sun') == {'text': 'Sun'})
+check('slot: ASK → none', FP.slot('ASK') is None and FP.slot('Doe') == {'text': 'Doe'})
 
 # ----------------------------------------------------------------------------- DeepSeek cache, cap, errors
 calls = []
@@ -179,7 +194,7 @@ def stub(system, msg):
     if 'principle' in system:
         return {'answer': 'Chicago first, else No preference', 'keywords': ['Chicago', 'No preference'], 'fact': 'answers.city', 'why': 'lives in Chicago'}
     if 'last name' in msg.lower() or 'surname' in msg.lower():
-        return {'answer': 'Sun', 'fact': 'answers.last_name', 'why': 'last name'}
+        return {'answer': 'Doe', 'fact': 'answers.last_name', 'why': 'last name'}
     if 'invented' in msg:
         return {'answer': 'Blue', 'fact': 'answers.favorite_color', 'why': 'made up'}
     return {'answer': 'ASK', 'fact': None, 'why': 'no fact'}
@@ -193,7 +208,7 @@ with tempfile.TemporaryDirectory() as d:
     check('cache: same answer, one call', a1 == a2 and len(calls) == 1, calls)
     FP.suggest(FP.DS(cp, budget=10, ask=stub), dict(FACTS, **{'answers.last_name': 'Sun2'}), 'Preferred Last Name')
     check('cache: a facts change asks again', len(calls) == 2)
-    FP.suggest(FP.DS(cp, budget=10, ask=stub), FACTS, 'Preferred Last Name', ['Sun', 'Other'])
+    FP.suggest(FP.DS(cp, budget=10, ask=stub), FACTS, 'Preferred Last Name', ['Doe', 'Other'])
     check('cache: other options ask again', len(calls) == 3)
     check('suggestion naming an unknown fact → ASK', FP.suggest(ds, FACTS, 'invented question')['answer'] == 'ASK')
     check('suggestion not an option → ASK', FP.suggest(FP.DS(None, 5, ask=stub), FACTS, 'Preferred Last Name', ['Smith', 'Jones'])['answer'] == 'ASK')
@@ -223,7 +238,7 @@ def boom(body): raise OSError('down')
 check('so: API error → error (Joey)', FP.so_review(items, FakeDS(), 'facts', post=boom)['k']['so'] == 'error')
 rw = FP.Rules(FakeDS(), 'facts', use_so=False)
 out = rw.review({'k': {'status': 'ok', 'value': 'No', 'rule': 'x', 'uncertain': 'inverted', 'label': items[0]['label']},
-                 'm': {'status': 'ok', 'value': 'Sun', 'rule': 'last_name'}}, [dict(items[0], type='radio'), {'key': 'm', 'label': 'Last', 'options': []}])
+                 'm': {'status': 'ok', 'value': 'Doe', 'rule': 'last_name'}}, [dict(items[0], type='radio'), {'key': 'm', 'label': 'Last', 'options': []}])
 check('rules wrapper: no second opinion → unknown, confident one kept', out['k']['status'] == 'unknown' and out['m']['status'] == 'ok' and rw.last['k']['so'] == 'error')
 
 # ----------------------------------------------------------------------------- one Greenhouse job offline (fixture), restriction
@@ -285,7 +300,7 @@ names = [e['question'] for e in sheet['questions']]
 check('sheet: same-meaning wordings merged (DeepSeek grouping)', sum(1 for x in names if 'urname' in x or 'Last Name' in x) == 1, names)
 ln = next(e for e in sheet['questions'] if 'urname' in e['question'] or 'Last Name' in e['question'])
 check('sheet: merged entry has a match regex + 5 jobs', ln.get('match') and ln['n_jobs'] == 5, ln)
-check('sheet: derived block on top, one click', sheet['questions'][0] is ln and ln['block'] == 'derived' and ln['suggested'] == {'text': 'Sun'})
+check('sheet: derived block on top, one click', sheet['questions'][0] is ln and ln['block'] == 'derived' and ln['suggested'] == {'text': 'Doe'})
 gpa = E.get('What is your cumulative GPA?')
 check('sheet: high-risk one by one, no suggestion, not derived', gpa and gpa['kind'] == 'high_risk' and not gpa.get('suggestion') and gpa.get('block') is None)
 off = E.get('Which office do you prefer?')
@@ -305,7 +320,7 @@ check('apply: empty slot → skipped', args is None)
 sheet['accept_derived'] = True
 e = CB.sheet_answer(sheet, ln)
 args = CB.qa_args(dict(ln, answer=e), 'Joey test')
-check('apply: accept_derived fills the block from its suggestion + --match', args and '--text' in args and 'Sun' in args and '--match' in args, args)
+check('apply: accept_derived fills the block from its suggestion + --match', args and '--text' in args and 'Doe' in args and '--match' in args, args)
 check('apply: accept_derived never fills a high-risk entry', CB.sheet_answer(sheet, gpa) is None)
 args = CB.qa_args(dict(off, answer=off['suggested']), 'Joey test')
 check('apply: a pattern principle → repeated --pick regexes', args and args.count('--pick') == 2 and '/Chicago/i' in args, args)
@@ -316,6 +331,15 @@ qe = qa_add.entry('Which office do you prefer?', pick=['/Chicago/i', '/No prefer
 check('qa_add: a /regex/ pick is kept as written (pattern principle)', qe['pick'] == ['/Chicago/i', '/No preference/i'] and qe['text'] == 'Chicago', qe)
 qe = qa_add.entry('Shift', pick=['Day shift'], source='t', today='2026-11-06')
 check('qa_add: a plain pick is still exact', qe['pick'] == ['/^Day\\ shift$/i'] and qe['text'] == 'Day shift', qe)
+
+# 2026-11-09: a long dropdown keeps every option in the sheet (the 60-option cut hid "University of Chicago" → "Other")
+unis = ['Select a university'] + [f'Uni {i:03d}' for i in range(120)] + ['University of Chicago', 'Other']
+recs_u = [{'id': f'U{n}', 'status': 'ok', 'tier': 'C', 'files': [], 'joey_tasks': [],
+           'questions': [q('Which university did you most recently attend?', options=unis)]} for n in range(3)]
+with tempfile.TemporaryDirectory() as d:
+    su, _ = FP.build_sheet(recs_u, FP.DS(os.path.join(d, 'u.jsonl'), 50, ask=stub), FACTS, 25, use_ds=False)
+ou = next((e['options'] for e in su['questions'] if 'university' in e['question'].lower()), [])
+check('sheet: a 123-option dropdown keeps every option', len(ou) == len(unis) and 'University of Chicago' in ou, len(ou))
 
 import shutil  # noqa: E402
 shutil.rmtree(TMP, ignore_errors=True)

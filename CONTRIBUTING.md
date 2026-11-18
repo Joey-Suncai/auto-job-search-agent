@@ -6,8 +6,9 @@ runner, a check, a script.
 ## Where to work
 - Work on a branch or a git worktree, never in the checkout the daily routines (LaunchAgents) run from.
 - Facts never go into code: a new fact is a value in `config/` (see `config/README.md`); code only reads it.
-- `scripts/test_all.sh` must pass (offline, ~2 min; CI runs the same on macOS). `.githooks/pre-commit`
-  (`scripts/check_updates.py`) checks that the companion files of a change were updated too.
+- `scripts/test_all.sh` must pass (offline, ~2 min; CI runs the same on macOS). Each commit subject starts
+  with its backlog item (`JSA-NNN: …`) and changed code comes with a changed or added test — the maintainers' landing
+  check blocks a branch otherwise.
 
 ## How tests are written
 A rule's author is the worst judge of its tests. So for any new check, rule set or script:

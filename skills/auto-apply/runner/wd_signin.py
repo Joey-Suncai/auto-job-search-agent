@@ -41,17 +41,42 @@ LOCKED = re.compile(r'\b(account|user)\b[^.|]{0,40}\b(locked|disabled|suspended)
                     r'too many (failed |unsuccessful |invalid )?(sign[- ]?in |login |log-in )?(attempts|tries)|temporarily (disabled|locked|suspended)', re.I)
 WRONG = re.compile(r"\b(wrong|invalid|incorrect|not recogni[sz]ed|not valid)\b|could not sign you in|sign[- ]?in (failed|unsuccessful)|"
                    r"\bno account\b|account (does not|doesn't|doesn\u2019t) exist", re.I)
+# JSA-334: Workday's generic alert "You may have entered the wrong email address or password or your account might be
+# locked." is NOT a lock — a hedged / conditional / future mention counts as wrong_password (Joey 2026-11-12, fix B)
+_LK = r'(locked|disabled|suspended)( out)?'
+HEDGED = re.compile(r'\b(might|may|could)\s+(also\s+)?(be|have been|get|become)\s+(\w+\s+)?' + _LK + r'|'
+                    r'\bif\b[^.|]{0,40}?\b(is|are|was|has been|gets|becomes)\s+(\w+\s+)?' + _LK + r'|'
+                    r'\b(will|would|can|may|might|could)\s+(be\s+)?(\w+\s+)?(locked|disabled|suspended|lock|disable|suspend)\b[^.|]*', re.I)
+WARN = re.compile(r'\b(after|if|once|when)\b[^.|]{0,30}\b(too many|\d+|several|multiple)\b[^.|]{0,30}\b(attempts|tries)\b[^.|]*', re.I)
 AGENT_SINCE = '2026-10-28'   # the agent's first Workday account creations; a tenant mail from before = Joey's own old account
 
 
 def message_kind(text):
-    """Pure (tested). The tenant's alert text → locked | exists | wrong_password | verify | none (first rule wins)."""
+    """Pure (tested). The tenant's alert text → locked | exists | wrong_password | verify | none (first rule wins).
+    Only a definite lock is 'locked'; hedged / conditional / future lock words are removed first and mean wrong_password."""
     t = str(text or '')
-    if LOCKED.search(t): return 'locked'
+    hedged = bool(HEDGED.search(t) or WARN.search(t))
+    plain = WARN.sub(' ', HEDGED.sub(' ', t))
+    if LOCKED.search(plain): return 'locked'
     if EXISTS.search(t): return 'exists'
-    if WRONG.search(t): return 'wrong_password'
+    if WRONG.search(plain) or hedged: return 'wrong_password'
     if VERIFY.search(t): return 'verify'
     return 'none'
+
+
+def old_account_mail(mails, since=AGENT_SINCE):
+    """Pure. A tenant mail from before the agent's time and no agent verify mail = Joey's own old account."""
+    mails = mails or []
+    return (any(m.get('kind') == 'other' and str(m.get('date', '')) < since for m in mails)
+            and not any(m.get('kind') == 'verify' and str(m.get('date', '')) >= since for m in mails))
+
+
+def after_wrong(s):
+    """Pure (tested, JSA-334). After a wrong_password answer: retry_long | give_up | old_account | create (first rule wins)."""
+    if s.get('has_long') and not s.get('tried_long'): return 'retry_long'
+    if s.get('created'): return 'give_up'
+    if old_account_mail(s.get('mails'), s.get('agent_since') or AGENT_SINCE): return 'old_account'
+    return 'create'
 
 
 def failure_code(t):
@@ -60,10 +85,10 @@ def failure_code(t):
     since = t.get('agent_since') or AGENT_SINCE
     mails = t.get('mails') or []
     agent_verify = any(m.get('kind') == 'verify' and str(m.get('date', '')) >= since for m in mails)
-    old_mail = any(m.get('kind') == 'other' and str(m.get('date', '')) < since for m in mails)
+    old_mail = old_account_mail(mails, since)
     err = t.get('error')
     if err == 'locked': return 'locked'
-    if t.get('exists_msg') or (old_mail and not agent_verify): return 'old_account'
+    if t.get('exists_msg') or old_mail: return 'old_account'
     if agent_verify and err == 'wrong_password': return 'agent_account_password'
     if t.get('created') and not agent_verify and (err in ('wrong_password', 'none') or t.get('verify_banner')): return 'no_verify_mail'
     if err == 'none': return 'no_answer'
@@ -116,7 +141,7 @@ def tenant_mails(page_url, days=500):
             _, d = M.fetch(i, '(BODY.PEEK[HEADER.FIELDS (DATE FROM SUBJECT)])')
             h = email.message_from_bytes(d[0][1])
             frm = str(make_header(decode_header(h.get('From', '')))).lower()
-            if 'workday' not in frm:
+            if 'workday' not in frm and key not in _sender_domain(frm):   # own HR domain counts too (vanguardhr.com, JSA-274)
                 continue
             subj = str(make_header(decode_header(h.get('Subject', ''))))
             try:
@@ -275,7 +300,7 @@ def choose_password(page_text, pw, long_pw):
 
 def verify_pattern(page_url=None):
     """Pure (tested). Regex for THIS tenant's verify/activate link: with 4 runs creating accounts at once, the newest
-    Workday mail can belong to another company (Invesco / Arch got another tenant's link, 2026-11-01).
+    Workday mail can belong to another company (a Workday employer / Arch got another tenant's link, 2026-11-01).
     https://invesco.wd1.myworkdayjobs.com/... → the host must be invesco.wd1.myworkdayjobs.com;
     https://wd3.myworkdaysite.com/recruiting/brevanhoward/... → host + /recruiting/brevanhoward. No URL → any Workday link."""
     from urllib.parse import urlsplit
@@ -291,10 +316,90 @@ def verify_pattern(page_url=None):
     return r'https://' + re.escape(host) + r'/' + tail
 
 
-def verification_link(since, find_link=None, timeout=180, log=None, page_url=None):
-    """Newest verify/activate link for this tenant in Gmail since `since` (read-only)."""
+VERIFY_SUBJ = re.compile(r'\b(verify|verification|activate|activation|confirm)\b[^|]{0,40}\b(account|e-?mail|address)\b|'
+                         r'\b(account|e-?mail)\b[^|]{0,30}\b(verification|activation|confirmation)\b', re.I)
+VLINK = re.compile(r'https://[^\s"\'<>()]*(verify|activat|confirm)[^\s"\'<>()]*', re.I)
+WD_HOST = re.compile(r'^https://[^/]*\b(myworkdayjobs|myworkdaysite|myworkday)\.com(/|$)', re.I)
+CLOCK_MARGIN = timedelta(minutes=2)
+
+
+def _when(s):
+    d = datetime.fromisoformat(str(s).replace('Z', '+00:00'))
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+
+
+def _sender_domain(frm):
+    m = re.search(r'@([A-Za-z0-9.-]+)', frm or '')
+    return re.sub(r'[^a-z0-9]', '', m.group(1).lower()) if m else ''
+
+
+def _is_tenant_link(link, page_url):
+    """Pure (tested). A verification link on THIS tenant: verify_pattern (tenant host), or any *.myworkday.com host
+    with /<tenant>/ in the path."""
+    if re.match(verify_pattern(page_url), link, re.I):
+        return bool(tenant_key(page_url)) or not page_url
+    key = tenant_key(page_url)
+    return bool(key) and bool(re.match(r'https://[^/]*\.myworkday\.com/' + re.escape(key) + r'/', link, re.I))
+
+
+def choose_verify_link(mails, since, page_url, company=None):
+    """Pure (tested, JSA-274). mails = [{date, from, subject, body}] → the link that verifies THIS tenant's account, or
+    None. Senders vary (Vanguard: CrewCentral_noreply@vanguardhr.com), so the sender is one signal, not a filter.
+    Spec: scripts/test_cases/verify_mail_spec.md. Only mails at or after since − 2 min; a tenant link counts on its own;
+    a mail without one gives a link only with a verify subject AND a sender domain naming the tenant / company.
+    Preference: tenant link > verify subject > newest."""
+    since = _when(since) - CLOCK_MARGIN
+    key = tenant_key(page_url)
+    names = [n for n in {key, re.sub(r'[^a-z0-9]', '', (company or '').lower()),
+                         re.sub(r'[^a-z0-9]', '', (re.findall(r'[A-Za-z0-9]+', company or '') or [''])[0].lower())} if len(n) >= 3]
+    best = None
+    for m in mails or []:
+        try:
+            when = _when(m.get('date'))
+        except Exception:
+            continue
+        if when < since:
+            continue
+        links = [x.group(0).rstrip('.,;:)>"\'') for x in VLINK.finditer(m.get('body') or '')]
+        subj_ok = bool(VERIFY_SUBJ.search(m.get('subject') or ''))
+        dom = _sender_domain(m.get('from'))
+        sender_ok = any(n in dom for n in names)
+        tl = [x for x in links if _is_tenant_link(x, page_url)]
+        if tl:
+            link, rank = tl[0], 2
+        elif subj_ok and sender_ok:
+            am = re.search(r'@([A-Za-z0-9.-]+)', m.get('from') or '')
+            raw_dom = am.group(1).lower().rstrip('.') if am else ''
+            host = lambda x: re.match(r'https://([^/:?#]+)', x).group(1).lower()
+            own = [x for x in links if WD_HOST.match(x) or (raw_dom and (host(x) == raw_dom or host(x).endswith('.' + raw_dom)))]
+            if not own:
+                continue
+            link, rank = own[0], 1
+        else:
+            continue
+        score = (rank, subj_ok, when)
+        if best is None or score > best[0]:
+            best = (score, link)
+    return best[1] if best else None
+
+
+def wait_verify_link(since, page_url, company=None, timeout=180, read=None):
+    """Live: poll Gmail (read-only, every sender) until choose_verify_link finds this tenant's link, or `timeout` s."""
+    if read is None:
+        from gmail_code import recent_mails as read
+    t0 = time.time()
+    while True:
+        link = choose_verify_link(read(since - CLOCK_MARGIN), since, page_url, company)
+        if link or time.time() - t0 >= timeout:
+            return link
+        time.sleep(8)
+
+
+def verification_link(since, find_link=None, timeout=180, log=None, page_url=None, company=None):
+    """Newest verify/activate link for this tenant in Gmail since `since` (read-only). find_link = a test double
+    (old keyword interface); live runs use wait_verify_link (any sender, JSA-274)."""
     if find_link is None:
-        from gmail_code import wait_for_link as find_link
+        return wait_verify_link(since, page_url, company, timeout)
     return find_link(sender='workday', since=since, timeout=timeout, pattern=verify_pattern(page_url))
 
 
@@ -308,7 +413,7 @@ def _open_link(page, link):
 
 
 def auto_signin(page, log=None, folder=None, password=None, find_link=None, verify_timeout=180, is_auth=None,
-                mail_history=None, settle=12):
+                mail_history=None, settle=12, long_password=None):
     """mail_history(page_url) → [{date, kind}] of this tenant's Workday mails (default: read-only Gmail in a live run, i.e.
     when the password comes from the Keychain; tests inject it). settle = seconds to wait for the tenant's answer."""
     global _IS_AUTH
@@ -318,22 +423,32 @@ def auto_signin(page, log=None, folder=None, password=None, find_link=None, veri
     pw = password if password is not None else keychain_password()
     if not pw:
         return False, 'no Workday password in the Keychain (service jobagent-workday)'
-    long_pw = keychain_password(LONG_SERVICE) if live else ''
+    long_pw = long_password if long_password is not None else (keychain_password(LONG_SERVICE) if live else '')
     if mail_history is None and live:
         mail_history = tenant_mails
     late_find = find_link if (find_link is not None or live) else False   # tests without find_link never reach Gmail
     tried_long = False
+    fm = re.match(r'\d{4}-\d{2}-\d{2}_([^_]+)', os.path.basename(str(folder or '').rstrip('/')))
+    company = fm.group(1) if fm else None                     # folder 2026-11-10_Vanguard_… → 'Vanguard' (sender-domain signal, JSA-274)
     created = verified = waited_blank = late_tried = False
     T = {'created': False, 'exists_msg': False, 'verify_banner': False, 'verified': False, 'error': 'none',
          'tried_long': False, 'create_msg': '', 'signin_msg': ''}   # the trace failure_code() reads (JSA-207)
 
+    mail_cache = []
+
+    def _mails():                                           # this tenant's Gmail mails, read once per run (read-only)
+        if not mail_cache:
+            got = []
+            if mail_history:
+                try:
+                    got = mail_history(page.url) or []
+                except Exception as e:
+                    log(f'auto sign-in: Gmail look-up failed ({type(e).__name__})')
+            mail_cache.append(got)
+        return mail_cache[0]
+
     def _fail(base):
-        mails = []
-        if mail_history:
-            try:
-                mails = mail_history(page.url) or []
-            except Exception as e:
-                log(f'auto sign-in: Gmail look-up failed ({type(e).__name__})')
+        mails = _mails()
         T.update(created=created, verified=verified, tried_long=tried_long)
         code = failure_code(dict(T, mails=mails, agent_since=AGENT_SINCE))
         old = sorted(m['date'] for m in mails if m.get('kind') == 'other' and m.get('date', '') < AGENT_SINCE)
@@ -399,7 +514,7 @@ def auto_signin(page, log=None, folder=None, password=None, find_link=None, veri
                 if verified:
                     return _fail('tenant asks for e-mail verification again')
                 log('auto sign-in: waiting for the verification e-mail')
-                link = verification_link(t0, find_link, verify_timeout, log, page_url=page.url)
+                link = verification_link(t0, find_link, verify_timeout, log, page_url=page.url, company=company)
                 if not link:
                     return _fail('no verification e-mail arrived')
                 _open_link(page, link)
@@ -422,13 +537,14 @@ def auto_signin(page, log=None, folder=None, password=None, find_link=None, veri
             if kind == 'verify' and not verified:
                 T['verify_banner'] = True
                 t0 = datetime.now(timezone.utc) - timedelta(hours=24)   # tenant-matched link (verify_pattern), so an earlier attempt's mail is safe (an employer 2026-11-01)
-                link = verification_link(t0, find_link, verify_timeout, log, page_url=page.url)
+                link = verification_link(t0, find_link, verify_timeout, log, page_url=page.url, company=company)
                 if link:
                     _open_link(page, link)
                     verified = True; log('auto sign-in: e-mail verified')
                     continue
                 return _fail('tenant asks for e-mail verification and no link arrived')
-            if kind == 'wrong_password' and long_pw and not tried_long and _visible(page, 'input[type="password"]'):
+            if kind == 'wrong_password' and after_wrong({'has_long': bool(long_pw), 'tried_long': tried_long}) == 'retry_long' \
+                    and _visible(page, 'input[type="password"]'):
                 tried_long = True                                   # the account may have been created with the long password
                 _fill_email(page); _fill_passwords(page, long_pw, 1)
                 _click(page, SUBMIT_SIGNIN) or _click(page, 'button:has-text("Sign In")')
@@ -442,13 +558,19 @@ def auto_signin(page, log=None, folder=None, password=None, find_link=None, veri
             T['error'] = kind if kind in ('wrong_password', 'locked', 'none') else 'other'
             if kind == 'locked':
                 return _fail('the tenant locked the account')
-            if kind == 'wrong_password' and not created and _click(page, CREATE_LINK):
-                log('auto sign-in: no account here (or a different password) — trying Create Account')
-                _wait(page, lambda: _create_form(page), 8)
-                continue
+            if kind == 'wrong_password' and not created:      # JSA-334: Gmail first — Joey's own old account is never re-created
+                step = after_wrong({'has_long': bool(long_pw), 'tried_long': True, 'created': created,
+                                    'mails': _mails(), 'agent_since': AGENT_SINCE})
+                if step == 'old_account':
+                    log("auto sign-in: Gmail shows Joey's own older account on this tenant — not creating one")
+                    return _fail('sign-in failed (an older account of Joey\'s exists)')
+                if step == 'create' and _click(page, CREATE_LINK):
+                    log('auto sign-in: no account here (or a different password) — trying Create Account')
+                    _wait(page, lambda: _create_form(page), 8)
+                    continue
             if created and not verified and not late_tried and late_find is not False and kind in ('wrong_password', 'none'):
                 late_tried = True                                   # JSA-207: an account made on an earlier run may still be unverified —
-                link = verification_link(datetime.now(timezone.utc) - timedelta(days=14), late_find, 1, log, page_url=page.url)
+                link = verification_link(datetime.now(timezone.utc) - timedelta(days=14), late_find, 1, log, page_url=page.url, company=company)
                 if link:                                            # its link is in Gmail (this tenant's host only, verify_pattern)
                     _open_link(page, link)
                     verified = True; log("auto sign-in: opened this tenant's earlier verification link — signing in again")

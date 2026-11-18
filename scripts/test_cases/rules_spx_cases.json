@@ -64,8 +64,8 @@
   "label": "Typed Signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -73,8 +73,8 @@
   "label": "Electronic Signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -82,8 +82,8 @@
   "label": "E-signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -91,8 +91,8 @@
   "label": "Digital signature",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Doe\".",
   "ambiguous": false
  },
  {
@@ -100,8 +100,8 @@
   "label": "Please sign with your full legal name",
   "type": "text",
   "options": [],
-  "expect": "Alex Rivera",
-  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Rivera\".",
+  "expect": "Alex Doe",
+  "spec_quote": "A text box \"Typed Signature\", \"Electronic Signature\", \"E-signature\", \"Digital signature\", \"Please sign with your full legal name\" → \"Alex Doe\".",
   "ambiguous": false
  },
  {

@@ -1,0 +1,575 @@
+[
+ {
+  "name": "applied_basic_yes_recent_application",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 17
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "yes",
+  "spec_quote": "the rule answers Yes when the tracker holds an application to that company dated before today and inside the window the question names"
+ },
+ {
+  "name": "applied_no_tracker_entries",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "otherwise No."
+ },
+ {
+  "name": "applied_other_company_only",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "Optiver",
+    "days_ago": 5
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "the rule answers Yes when the tracker holds an application to that company dated before today"
+ },
+ {
+  "name": "applied_outside_12_month_window",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 400
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "A tracker application older than the window (e.g. 20 months ago for \"last 12-18 months\") → No."
+ },
+ {
+  "name": "applied_range_uses_longer_bound_inside_18mo",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12-18 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 500
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "yes",
+  "spec_quote": "A window written as a range (\"within the last 12-18 months\") means the LONGER bound (18 months): the question asks whether any application falls inside the range's span."
+ },
+ {
+  "name": "applied_range_older_than_18mo",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12-18 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 700
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "A tracker application older than the window (e.g. 20 months ago for \"last 12-18 months\") → No."
+ },
+ {
+  "name": "applied_spec_example_reminder_with_or_another_role",
+  "kind": "applied",
+  "label": "Have you applied to this role or another role @GALLUMPELL within the last 12-18 months? As a reminder, if you have already applied for this position during the current recruitment season and were not selected, you may reapply when the next recruitment season begins in 2027.",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 17
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "yes",
+  "spec_quote": "A trailing reminder / note sentence that mentions \"this position\" or \"the current recruitment season\" ... must NOT turn a question that also says \"or another role\" into a one-role question."
+ },
+ {
+  "name": "applied_this_position_only_ask",
+  "kind": "applied",
+  "label": "Have you applied for this position?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 17
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "ask",
+  "spec_quote": "\"Have you applied for this position?\" (no \"or another\") with a hit → ask."
+ },
+ {
+  "name": "applied_single_season_question_ask",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL during this recruiting season?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 17
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "ask",
+  "spec_quote": "A question about ONE role or ONE season (\"Have you applied for THIS position?\", \"during this recruiting season\") is not a state the tracker can answer: the rule asks the user instead (\"ask\")."
+ },
+ {
+  "name": "applied_past_2_years_far_back_hit",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL in the past 2 years?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 600
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "yes",
+  "spec_quote": "the rule answers Yes when the tracker holds an application to that company dated before today and inside the window the question names (\"within the last 12 months\", \"in the past 2 years\")"
+ },
+ {
+  "name": "applied_future_dated_application_not_counted",
+  "kind": "applied",
+  "label": "Have you applied to GALLUMPELL within the last 12 months?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": -10
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "the rule answers Yes when the tracker holds an application to that company dated before today and inside the window"
+ },
+ {
+  "name": "applied_reminder_does_not_rescue_stale_application",
+  "kind": "applied",
+  "label": "Have you applied to this role or another role @GALLUMPELL within the last 12-18 months? As a reminder, if you have already applied for this position during the current recruitment season and were not selected, you may reapply when the next recruitment season begins in 2027.",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "GALLUMPELL",
+  "tracker": [
+   {
+    "company": "GALLUMPELL",
+    "days_ago": 700
+   }
+  ],
+  "today": "2026-11-17",
+  "expect": "no",
+  "spec_quote": "A tracker application older than the window (e.g. 20 months ago for \"last 12-18 months\") → No."
+ },
+ {
+  "name": "ack_standard_lever_stay_connected",
+  "kind": "ack",
+  "label": "Stay Connected | To ensure you receive our emails, please add no-reply@hire.lever.co to your safe sender list and check your spam folder.",
+  "options": [
+   "I understand that next steps will be sent via email and I have marked the sender addresses above as safe."
+  ],
+  "expect": "I understand that next steps will be sent via email and I have marked the sender addresses above as safe.",
+  "spec_quote": "The candidate always ticks it (it is an acknowledgement, no fact about him): the answer is that single option, whatever company domain the notice names."
+ },
+ {
+  "name": "ack_company_domain_mentioned_still_same_option",
+  "kind": "ack",
+  "label": "Stay Connected | Add no-reply@hire.lever.co and acme.com to your safe sender list, and check your spam folder so our messages reach you.",
+  "options": [
+   "I understand that next steps will be sent via email and I have marked the sender addresses above as safe."
+  ],
+  "expect": "I understand that next steps will be sent via email and I have marked the sender addresses above as safe.",
+  "spec_quote": "the answer is that single option, whatever company domain the notice names."
+ },
+ {
+  "name": "ack_multiple_options_not_this_rule",
+  "kind": "ack",
+  "label": "Stay Connected | Please add no-reply@hire.lever.co to your safe sender list and check your spam folder.",
+  "options": [
+   "I understand that next steps will be sent via email and I have marked the sender addresses above as safe.",
+   "I do not wish to receive email updates."
+  ],
+  "expect": null,
+  "spec_quote": "A label that merely mentions \"safe sender list\" inside another question, a field with several options, or a box that asks for a fact is NOT this rule (no answer from it)."
+ },
+ {
+  "name": "ack_safe_sender_mention_inside_other_question",
+  "kind": "ack",
+  "label": "Have you added our sending domain to your safe sender list and checked your spam folder?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": null,
+  "spec_quote": "A label that merely mentions \"safe sender list\" inside another question ... is NOT this rule (no answer from it)."
+ },
+ {
+  "name": "ack_single_option_but_asks_fact",
+  "kind": "ack",
+  "label": "Stay Connected | Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes"
+  ],
+  "expect": null,
+  "spec_quote": "a box that asks for a fact is NOT this rule (no answer from it)."
+ },
+ {
+  "name": "ack_label_does_not_start_with_stay_connected",
+  "kind": "ack",
+  "label": "Deliverability notice: please add no-reply@hire.lever.co to your safe sender list and check your spam folder.",
+  "options": [
+   "I understand that next steps will be sent via email and I have marked the sender addresses above as safe."
+  ],
+  "expect": null,
+  "spec_quote": "its label starts \"Stay Connected |\" and asks the applicant to add the sender ... to the safe sender list and check spam."
+ },
+ {
+  "name": "overlap_old_list_picks_match_no_option",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^June 2026$/",
+     "/^July 2026$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "Immediately"
+  },
+  "options": [
+   "Immediately",
+   "Within 3 months"
+  ],
+  "expect": {
+   "blocked": false
+  },
+  "spec_quote": "an older entry that catches the question but gives NO answer on that shape (it is a list-answer entry whose picks match none of the options ...) does not block the save: the new entry answers that shape (newest first) and the older entry keeps answering the shapes it can."
+ },
+ {
+  "name": "overlap_old_list_pick_matches_option_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^Immediately$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "Within 3 months"
+  },
+  "options": [
+   "Immediately",
+   "Within 3 months"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "An older entry that DOES answer on that shape still blocks (two answers for one field = the user decides)."
+ },
+ {
+  "name": "overlap_old_list_pick_on_text_box_does_not_block",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^June 2026$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "ASAP"
+  },
+  "options": [],
+  "expect": {
+   "blocked": false
+  },
+  "spec_quote": "an older entry that catches the question but gives NO answer on that shape (it is a list-answer entry ... on a text box) does not block the save"
+ },
+ {
+  "name": "overlap_old_text_answer_on_text_box_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "text": "June 2026"
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "ASAP"
+  },
+  "options": [],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "An older entry that DOES answer on that shape still blocks (two answers for one field = the user decides)."
+ },
+ {
+  "name": "overlap_new_entry_catches_old_always_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "Why do you want to join Acme?",
+    "text": "Because of the mission."
+   }
+  ],
+  "new": {
+   "q": "Tell us why you want to join Acme and what excites you.",
+   "match": [
+    "/want to join Acme/"
+   ]
+  },
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "The \"new entry catches an old entry's q\" direction always blocks."
+ },
+ {
+  "name": "overlap_no_shape_given_old_behaviour_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^June 2026$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "Immediately"
+  },
+  "options": null,
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "When no shape is given the old behaviour holds: every catching entry blocks."
+ },
+ {
+  "name": "overlap_two_old_entries_one_answers_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^June 2026$/"
+    ]
+   },
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^Immediately$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start?",
+   "text": "Within 3 months"
+  },
+  "options": [
+   "Immediately",
+   "Within 3 months"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "An older entry that DOES answer on that shape still blocks (two answers for one field = the user decides)."
+ },
+ {
+  "name": "overlap_old_pick_no_match_but_new_match_catches_old",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "When can you start?",
+    "pick": [
+     "/^June 2026$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "When can you start? (US office)",
+   "match": [
+    "/When can you start\\?/"
+   ]
+  },
+  "options": [
+   "Immediately",
+   "Within 3 months"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "The \"new entry catches an old entry's q\" direction always blocks."
+ },
+ {
+  "name": "overlap_old_pick_matches_one_of_many_options_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "Which office do you prefer?",
+    "pick": [
+     "/^London$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "Which office do you prefer?",
+   "text": "New York"
+  },
+  "options": [
+   "New York",
+   "London",
+   "Berlin",
+   "Remote"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "An older entry that DOES answer on that shape still blocks (two answers for one field = the user decides)."
+ },
+ {
+  "name": "overlap_old_text_answer_matches_an_option_blocks",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "Are you willing to relocate?",
+    "text": "Yes"
+   }
+  ],
+  "new": {
+   "q": "Are you willing to relocate?",
+   "text": "No"
+  },
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "blocked": true
+  },
+  "spec_quote": "An older entry that DOES answer on that shape still blocks (two answers for one field = the user decides)."
+ },
+ {
+  "name": "overlap_old_text_answer_not_an_option_ambiguous",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "Are you willing to relocate?",
+    "text": "Maybe"
+   }
+  ],
+  "new": {
+   "q": "Are you willing to relocate?",
+   "text": "Yes"
+  },
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": {
+   "blocked": false
+  },
+  "ambiguous": true,
+  "spec_quote": "an older entry that catches the question but gives NO answer on that shape (it is a list-answer entry whose picks match none of the options, or a list-answer entry on a text box) does not block the save — the spec only enumerates list-answer entries as giving no answer; it does not say how a plain-text entry whose text matches none of the field's options behaves."
+ },
+ {
+  "name": "overlap_old_match_regex_catches_new_but_pick_matches_no_option",
+  "kind": "overlap_shape",
+  "table": [
+   {
+    "q": "Which office do you prefer?",
+    "match": [
+     "/office.*prefer/i"
+    ],
+    "pick": [
+     "/^Berlin$/"
+    ]
+   }
+  ],
+  "new": {
+   "q": "Which office do you prefer?",
+   "text": "New York"
+  },
+  "options": [
+   "New York",
+   "London"
+  ],
+  "expect": {
+   "blocked": false
+  },
+  "spec_quote": "an older entry that catches the question but gives NO answer on that shape (it is a list-answer entry whose picks match none of the options ...) does not block the save: the new entry answers that shape (newest first) and the older entry keeps answering the shapes it can."
+ }
+]

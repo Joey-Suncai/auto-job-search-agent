@@ -14,9 +14,9 @@
      "value": "123 Main St"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
-  "expect_address_value": "123 Main St, Chicago, IL 62701",
+  "expect_address_value": "123 Main St, Chicago, IL 60601",
   "spec_quote": "It becomes \"<street>, <city_state_zip>\" when ALL hold: ans[\"address\"].status is \"ok\"; city_state_zip is non-empty; ...; the street value is non-empty; and the street does not already contain the city",
   "ambiguous": false
  },
@@ -68,7 +68,7 @@
      "value": "789 Pine Rd"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "789 Pine Rd",
   "spec_quote": "no OTHER field (key other than \"address\") has a label with the word city, zip, postal or state",
@@ -93,7 +93,7 @@
      "value": "12 Elm St"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "12 Elm St",
   "spec_quote": "no OTHER field (key other than \"address\") has a label with the word city, zip, postal or state",
@@ -118,7 +118,7 @@
      "value": "88 Lake View"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "88 Lake View",
   "spec_quote": "no OTHER field (key other than \"address\") has a label with the word city, zip, postal or state",
@@ -139,7 +139,7 @@
      "value": "123 Main St"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "123 Main St",
   "spec_quote": "ans[\"address\"].status is \"ok\"",
@@ -160,7 +160,7 @@
      "value": ""
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "",
   "spec_quote": "the street value is non-empty",
@@ -181,7 +181,7 @@
      "value": "123 Chicago Ave"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "123 Chicago Ave",
   "spec_quote": "the street does not already contain the city (the part of city_state_zip before the first comma, case-insensitive)",
@@ -227,7 +227,7 @@
      "value": "Jane Doe"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": null,
   "spec_quote": "Only the `address` answer can change.",
@@ -248,7 +248,7 @@
      "value": "123 CHICAGO Ave"
     }
    },
-   "city_state_zip": "chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "123 CHICAGO Ave",
   "spec_quote": "the street does not already contain the city (the part of city_state_zip before the first comma, case-insensitive)",
@@ -273,7 +273,7 @@
      "value": "55 River St"
     }
    },
-   "city_state_zip": "Chicago, IL 62701"
+   "city_state_zip": "Chicago, IL 60601"
   },
   "expect_address_value": "55 River St",
   "spec_quote": "or a key \"city\", \"zip\" or \"state\"",

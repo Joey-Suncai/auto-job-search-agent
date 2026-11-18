@@ -1,0 +1,374 @@
+[
+ {
+  "name": "text box gets box value",
+  "entry": {
+   "q": "Years of experience",
+   "box": "7"
+  },
+  "label": "Years of experience",
+  "type": "text",
+  "options": [],
+  "expect": "7",
+  "spec_quote": "A text box (no options) gets the entry's box value when it has one."
+ },
+ {
+  "name": "text box prefers box over pick regex text",
+  "entry": {
+   "q": "Current job title",
+   "box": "Senior Engineer",
+   "pick": [
+    "/engineer/i"
+   ]
+  },
+  "label": "Current job title",
+  "type": "text",
+  "options": [],
+  "expect": "Senior Engineer",
+  "spec_quote": "A text box never gets the regex text of a pick."
+ },
+ {
+  "name": "text box with only a pick gets no answer",
+  "entry": {
+   "q": "Notice period",
+   "pick": [
+    "/weeks/i"
+   ]
+  },
+  "label": "Notice period",
+  "type": "text",
+  "options": [],
+  "expect": null,
+  "spec_quote": "A text box never gets the regex text of a pick."
+ },
+ {
+  "name": "select picks matching option",
+  "entry": {
+   "q": "Preferred work location",
+   "pick": [
+    "/^Berlin$/i"
+   ]
+  },
+  "label": "Preferred work location",
+  "type": "select",
+  "options": [
+   "London",
+   "Berlin",
+   "Remote"
+  ],
+  "expect": "Berlin",
+  "spec_quote": "A list field (select / radio / multi) gets the first option that the entry's picks match (picks tried in order, each against every option)."
+ },
+ {
+  "name": "pick order beats option order",
+  "entry": {
+   "q": "Work arrangement",
+   "pick": [
+    "/remote/i",
+    "/hybrid/i"
+   ]
+  },
+  "label": "Work arrangement",
+  "type": "select",
+  "options": [
+   "Hybrid",
+   "Remote"
+  ],
+  "expect": "Remote",
+  "spec_quote": "the first option that the entry's picks match (picks tried in order, each against every option)"
+ },
+ {
+  "name": "no pick matches any option",
+  "entry": {
+   "q": "Team",
+   "pick": [
+    "/marketing/i"
+   ]
+  },
+  "label": "Team",
+  "type": "select",
+  "options": [
+   "Engineering",
+   "Sales"
+  ],
+  "expect": null,
+  "spec_quote": "No pick matches any option → no answer (the user is asked)."
+ },
+ {
+  "name": "case-insensitive unanchored regex matches option",
+  "entry": {
+   "q": "Area of interest",
+   "pick": [
+    "/data/i"
+   ]
+  },
+  "label": "Area of interest",
+  "type": "select",
+  "options": [
+   "Software Engineering",
+   "Data Science",
+   "Product"
+  ],
+  "expect": "Data Science",
+  "spec_quote": "pick (list of case-insensitive regexes for the OPTIONS of a list field)"
+ },
+ {
+  "name": "anchored regex near miss gets no answer",
+  "entry": {
+   "q": "Discipline",
+   "pick": [
+    "/^Data$/i"
+   ]
+  },
+  "label": "Discipline",
+  "type": "select",
+  "options": [
+   "Data Science",
+   "Data Engineering"
+  ],
+  "expect": null,
+  "spec_quote": "No pick matches any option → no answer (the user is asked)."
+ },
+ {
+  "name": "single-option consent ticked by Yes entry",
+  "entry": {
+   "q": "I agree to the privacy policy",
+   "yes": true
+  },
+  "label": "I agree to the privacy policy",
+  "type": "checkbox",
+  "options": [
+   "I agree to the privacy policy"
+  ],
+  "expect": "I agree to the privacy policy",
+  "spec_quote": "A field with exactly ONE option (a consent / acknowledgement tick box, any field type) is ticked by a Yes entry (yes = true) — the option text is returned."
+ },
+ {
+  "name": "single-option consent not ticked by No entry",
+  "entry": {
+   "q": "I agree to the privacy policy",
+   "yes": false
+  },
+  "label": "I agree to the privacy policy",
+  "type": "checkbox",
+  "options": [
+   "I agree to the privacy policy"
+  ],
+  "expect": null,
+  "spec_quote": "A No entry (yes = false) never ticks it."
+ },
+ {
+  "name": "single-option negative consent not ticked by Yes entry",
+  "entry": {
+   "q": "Terms and conditions",
+   "yes": true
+  },
+  "label": "Terms and conditions",
+  "type": "checkbox",
+  "options": [
+   "I do not agree to the terms and conditions"
+  ],
+  "expect": null,
+  "spec_quote": "A Yes entry never ticks a one-option field whose option says no (\"I do not agree\", \"I decline\", \"No\")."
+ },
+ {
+  "name": "single-option decline not ticked by Yes entry",
+  "entry": {
+   "q": "Diversity monitoring",
+   "yes": true
+  },
+  "label": "Diversity monitoring",
+  "type": "select",
+  "options": [
+   "I decline to answer"
+  ],
+  "expect": null,
+  "spec_quote": "A Yes entry never ticks a one-option field whose option says no (\"I do not agree\", \"I decline\", \"No\")."
+ },
+ {
+  "name": "single-option radio acknowledgement ticked by Yes entry",
+  "entry": {
+   "q": "I confirm the information provided is accurate",
+   "yes": true
+  },
+  "label": "I confirm the information provided is accurate",
+  "type": "radio",
+  "options": [
+   "I confirm the information provided is accurate"
+  ],
+  "expect": "I confirm the information provided is accurate",
+  "spec_quote": "A field with exactly ONE option (a consent / acknowledgement tick box, any field type) is ticked by a Yes entry (yes = true) — the option text is returned."
+ },
+ {
+  "name": "two-option Yes/No picks Yes",
+  "entry": {
+   "q": "Do you have a driving licence",
+   "yes": true
+  },
+  "label": "Do you have a driving licence",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Two or more options: a yes = true entry picks the option that starts with Yes"
+ },
+ {
+  "name": "two-option no-entry picks No-prefixed option",
+  "entry": {
+   "q": "Are you authorised to work in the UK",
+   "yes": false
+  },
+  "label": "Are you authorised to work in the UK",
+  "type": "select",
+  "options": [
+   "Yes, I am authorised to work in the UK",
+   "No, I am not"
+  ],
+  "expect": "No, I am not",
+  "spec_quote": "yes = false picks the one that starts with No"
+ },
+ {
+  "name": "two-option agree/disagree with Yes entry gets no answer",
+  "entry": {
+   "q": "Do you agree with the relocation policy",
+   "yes": true
+  },
+  "label": "Do you agree with the relocation policy",
+  "type": "radio",
+  "options": [
+   "I agree",
+   "I disagree"
+  ],
+  "expect": null,
+  "spec_quote": "otherwise (options like \"I agree\" / \"I disagree\") no answer"
+ },
+ {
+  "name": "two-option agree/disagree with No entry gets no answer",
+  "entry": {
+   "q": "Do you agree with the relocation policy",
+   "yes": false
+  },
+  "label": "Do you agree with the relocation policy",
+  "type": "radio",
+  "options": [
+   "I agree",
+   "I disagree"
+  ],
+  "expect": null,
+  "spec_quote": "otherwise (options like \"I agree\" / \"I disagree\") no answer"
+ },
+ {
+  "name": "different question wording gets no answer",
+  "entry": {
+   "q": "Do you require visa sponsorship",
+   "yes": true
+  },
+  "label": "Do you have a driving licence?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": null,
+  "spec_quote": "A question wording that matches no entry gets no answer."
+ },
+ {
+  "name": "matching ignores case, punctuation and required",
+  "entry": {
+   "q": "do you have the right to work in the uk",
+   "yes": true
+  },
+  "label": "Do you have the right to work in the UK? (required)",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec_quote": "Entries match a question when its wording equals q (case, punctuation and \"required\" ignored)."
+ },
+ {
+  "name": "multi checkbox picks first option matching regex",
+  "entry": {
+   "q": "Which team would you join",
+   "pick": [
+    "/platform/i"
+   ]
+  },
+  "label": "Which team would you join",
+  "type": "checkbox",
+  "options": [
+   "Web Platform",
+   "Mobile",
+   "Platform Infrastructure"
+  ],
+  "expect": "Web Platform",
+  "spec_quote": "A list field (select / radio / multi) gets the first option that the entry's picks match (picks tried in order, each against every option)."
+ },
+ {
+  "name": "select uses pick not box value",
+  "entry": {
+   "q": "Office",
+   "pick": [
+    "/dublin/i"
+   ],
+   "box": "Cork"
+  },
+  "label": "Office",
+  "type": "select",
+  "options": [
+   "Dublin",
+   "Cork"
+  ],
+  "expect": "Dublin",
+  "spec_quote": "A list field (select / radio / multi) gets the first option that the entry's picks match (picks tried in order, each against every option)."
+ },
+ {
+  "name": "single-option field with pick but no yes",
+  "entry": {
+   "q": "I consent to a background check",
+   "pick": [
+    "/consent/i"
+   ]
+  },
+  "label": "I consent to a background check",
+  "type": "checkbox",
+  "options": [
+   "I consent to a background check"
+  ],
+  "expect": null,
+  "ambiguous": true,
+  "spec_quote": "A field with exactly ONE option (a consent / acknowledgement tick box, any field type) is ticked by a Yes entry (yes = true) — the option text is returned.",
+  "ambiguity_note": "Rule 3 only describes Yes entries for one-option fields, but rule 2 says a list field gets the first option the entry's picks match; a one-option tick box could arguably satisfy both, so the expected outcome is unclear."
+ },
+ {
+  "name": "Yes entry does not pick a non-Yes-prefixed option",
+  "entry": {
+   "q": "Work pattern",
+   "yes": true
+  },
+  "label": "Work pattern",
+  "type": "select",
+  "options": [
+   "Remote",
+   "Hybrid"
+  ],
+  "expect": null,
+  "spec_quote": "An entry never picks an option that no pick / yes matches."
+ },
+ {
+  "name": "single-option No is never ticked by Yes entry",
+  "entry": {
+   "q": "Opt out of talent pool",
+   "yes": true
+  },
+  "label": "Opt out of talent pool",
+  "type": "checkbox",
+  "options": [
+   "No"
+  ],
+  "expect": null,
+  "spec_quote": "A Yes entry never ticks a one-option field whose option says no (\"I do not agree\", \"I decline\", \"No\")."
+ }
+]

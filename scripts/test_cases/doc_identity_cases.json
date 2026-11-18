@@ -1,0 +1,321 @@
+[
+ {
+  "name": "root_markdown_is_doc",
+  "fn": "is_doc_file",
+  "path": "README.md",
+  "expect": true
+ },
+ {
+  "name": "ops_claude_md_is_doc",
+  "fn": "is_doc_file",
+  "path": "ops/CLAUDE.md",
+  "expect": true
+ },
+ {
+  "name": "skill_md_at_root_is_doc",
+  "fn": "is_doc_file",
+  "path": "SKILL.md",
+  "expect": true
+ },
+ {
+  "name": "nested_skill_md_is_doc",
+  "fn": "is_doc_file",
+  "path": "tools/lint/SKILL.md",
+  "expect": true
+ },
+ {
+  "name": "markdown_under_docs_agent_is_doc",
+  "fn": "is_doc_file",
+  "path": "docs/agent/onboarding.md",
+  "expect": true
+ },
+ {
+  "name": "python_under_docs_agent_is_doc",
+  "fn": "is_doc_file",
+  "path": "docs/agent/helper.py",
+  "expect": true
+ },
+ {
+  "name": "json_under_docs_agent_is_doc",
+  "fn": "is_doc_file",
+  "path": "docs/agent/identity.json",
+  "expect": true
+ },
+ {
+  "name": "json_under_plural_docs_agents_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "docs/agents/config.json",
+  "expect": false
+ },
+ {
+  "name": "md_under_test_segment_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "test/readme.md",
+  "expect": false
+ },
+ {
+  "name": "md_under_test_cases_segment_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "docs/test_cases/alpha.md",
+  "expect": false
+ },
+ {
+  "name": "md_under_fixtures_segment_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "fixtures/sample.md",
+  "expect": false
+ },
+ {
+  "name": "test_prefixed_basename_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "test_widget.md",
+  "expect": false
+ },
+ {
+  "name": "md_under_config_fixtures_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "config/fixtures/identity.md",
+  "expect": false
+ },
+ {
+  "name": "python_source_file_is_not_doc",
+  "fn": "is_doc_file",
+  "path": "scripts/test_doc_identity.py",
+  "expect": false
+ },
+ {
+  "name": "first_name_whole_word",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Zed reviewed the diff before merge.",
+  "expect": [
+   "first"
+  ]
+ },
+ {
+  "name": "first_name_not_matched_inside_word",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Zeddan and Zedward joined the call.",
+  "expect": []
+ },
+ {
+  "name": "first_name_case_insensitive",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "ZED approved the change.",
+  "expect": [
+   "first"
+  ]
+ },
+ {
+  "name": "first_name_before_apostrophe",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Zed's review is pending.",
+  "expect": [
+   "first"
+  ]
+ },
+ {
+  "name": "last_name_five_letters_matches_as_substring",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Quillson filed the report.",
+  "expect": [
+   "last"
+  ]
+ },
+ {
+  "name": "full_name_matches_all_component_names",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Signed off by ZED QUILL.",
+  "expect": [
+   "first",
+   "full",
+   "last"
+  ]
+ },
+ {
+  "name": "hyphenated_names_near_miss_full_name",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "The Zed-Quill handoff is done.",
+  "expect": [
+   "first",
+   "last"
+  ]
+ },
+ {
+  "name": "email_hit_also_covers_name_parts",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Write to zed.quill@example.org for access.",
+  "expect": [
+   "email",
+   "first",
+   "last"
+  ]
+ },
+ {
+  "name": "email_uppercase_hit",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "WRITE TO ZED.QUILL@EXAMPLE.ORG",
+  "expect": [
+   "email",
+   "first",
+   "last"
+  ]
+ },
+ {
+  "name": "phone_with_dashes_matches",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Call 555-010-9999 now.",
+  "expect": [
+   "phone"
+  ]
+ },
+ {
+  "name": "phone_without_dashes_no_match",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Call 5550109999 now.",
+  "expect": []
+ },
+ {
+  "name": "no_identity_hits",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "The build passed cleanly.",
+  "expect": []
+ },
+ {
+  "name": "empty_value_ignored",
+  "fn": "identity_hits",
+  "values": {
+   "first": "",
+   "last": "Quill"
+  },
+  "text": "Zed was here.",
+  "expect": []
+ },
+ {
+  "name": "empty_value_ignored_while_other_value_hits",
+  "fn": "identity_hits",
+  "values": {
+   "first": "",
+   "last": "Quill"
+  },
+  "text": "Quill was here.",
+  "expect": [
+   "last"
+  ]
+ },
+ {
+  "name": "multiple_hits_returned_sorted",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Quill and Zed talked.",
+  "expect": [
+   "first",
+   "last"
+  ]
+ },
+ {
+  "name": "extra_space_breaks_full_name_match",
+  "fn": "identity_hits",
+  "values": {
+   "first": "Zed",
+   "last": "Quill",
+   "email": "zed.quill@example.org",
+   "phone": "555-010-9999",
+   "full": "Zed Quill"
+  },
+  "text": "Signed off by Zed  Quill.",
+  "expect": [
+   "first",
+   "last"
+  ]
+ }
+]

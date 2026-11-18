@@ -1,0 +1,291 @@
+[
+ {
+  "name": "basic first three sentences",
+  "label": "Message to the Hiring Manager:",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI am excited to apply. I have five years of experience. My skills match the role. I would love to talk.\n\nThank you,\nJane",
+  "expect": {
+   "value": "I am excited to apply. I have five years of experience. My skills match the role."
+  },
+  "spec_quote": "Take the BODY: drop the salutation line (a first line starting with \"Dear\", \"Hello\", \"Hi\", \"To whom\") and everything from the sign-off on (a line starting \"Sincerely\", \"Best regards\", \"Regards\", \"Thank you,\", \"Kind regards\", \"Best,\") — the sign-off line and the lines after it."
+ },
+ {
+  "name": "label case spaces and optional decoration",
+  "label": "  MESSAGE   TO THE HIRING MANAGER (Optional)  ",
+  "type": "text",
+  "options": [],
+  "cover": "Hi team,\n\nWe built a thing. It worked well. We shipped it. We will improve it.\n\nBest regards,\nSam",
+  "expect": {
+   "value": "We built a thing. It worked well. We shipped it."
+  },
+  "spec_quote": "A text box (no options; type text / textarea) whose label, ignoring case, spaces and a trailing \":\" / \"(optional)\" / \"(Optional)\" / \"*\", is one of: \"message to the hiring manager\", \"message to the hiring team\", \"message to the recruiter\", \"message for the hiring manager\", \"note to the hiring manager\", \"add a message for the hiring manager\", \"personal message to the hiring manager\"."
+ },
+ {
+  "name": "note to the hiring manager label",
+  "label": "Note to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Hello,\n\nI led the migration. It reduced costs. The team adopted it quickly. We measured the results.\n\nKind regards,\nAlex",
+  "expect": {
+   "value": "I led the migration. It reduced costs. The team adopted it quickly."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "personal message label with To whom salutation",
+  "label": "Personal Message to the Hiring Manager",
+  "type": "text",
+  "options": [],
+  "cover": "To whom it may concern:\n\nMy background fits this role. I have shipped mobile apps. I enjoy mentoring. I am available soon.\n\nSincerely,\nTaylor",
+  "expect": {
+   "value": "My background fits this role. I have shipped mobile apps. I enjoy mentoring."
+  },
+  "spec_quote": "Take the BODY: drop the salutation line (a first line starting with \"Dear\", \"Hello\", \"Hi\", \"To whom\") and everything from the sign-off on (a line starting \"Sincerely\", \"Best regards\", \"Regards\", \"Thank you,\", \"Kind regards\", \"Best,\") — the sign-off line and the lines after it."
+ },
+ {
+  "name": "add a message label",
+  "label": "Add a Message for the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Team,\n\nI improved checkout conversion. I partnered with design. I analyzed user feedback. I documented the rollout.\n\nBest,\nJordan",
+  "expect": {
+   "value": "I improved checkout conversion. I partnered with design. I analyzed user feedback."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "message to the hiring team label",
+  "label": "Message to the Hiring Team",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Team,\n\nI build accessible interfaces. I test with real users. I fix issues quickly. I share what I learn.\n\nRegards,\nCasey",
+  "expect": {
+   "value": "I build accessible interfaces. I test with real users. I fix issues quickly."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "message to the recruiter label",
+  "label": "Message to the Recruiter",
+  "type": "text",
+  "options": [],
+  "cover": "Dear Recruiter,\n\nI am interested in this position. My experience aligns with the requirements. I can start next month. I have attached details.\n\nBest regards,\nMorgan",
+  "expect": {
+   "value": "I am interested in this position. My experience aligns with the requirements. I can start next month."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "message for the hiring manager label",
+  "label": "Message for the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Hi,\n\nI delivered the analytics platform. It served many teams. We cut reporting time in half. The launch went smoothly.\n\nThank you,\nRiley",
+  "expect": {
+   "value": "I delivered the analytics platform. It served many teams. We cut reporting time in half."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "plain Message label is not the rule",
+  "label": "Message",
+  "type": "text",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "Additional information label is not the rule",
+  "label": "Additional information",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "Why do you want to work here label is not the rule",
+  "label": "Why do you want to work here?",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "select with options is not the rule",
+  "label": "Message to the Hiring Manager",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "checkbox is not the rule",
+  "label": "Message to the Hiring Manager",
+  "type": "checkbox",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "cover letter upload is not the rule",
+  "label": "Cover Letter",
+  "type": "file",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have relevant experience. I can start soon. I am eager to contribute.",
+  "expect": {
+   "rule_not": "hiring_manager_note"
+  },
+  "spec_quote": "A field with options, a checkbox, an upload (\"cover letter\"), or any other label (e.g. \"Why do you want to work here?\", \"Additional information\", \"Message\") is NOT this rule: no answer from it."
+ },
+ {
+  "name": "empty cover leaves box empty",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "",
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "No cover text (empty / missing) or a body with no sentence → the box is LEFT EMPTY: status \"ok\", value \"\", leave true (the box is optional; nothing is typed, nobody is asked)."
+ },
+ {
+  "name": "salutation and signoff only leaves box empty",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nSincerely,\nJane",
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "No cover text (empty / missing) or a body with no sentence → the box is LEFT EMPTY: status \"ok\", value \"\", leave true (the box is optional; nothing is typed, nobody is asked)."
+ },
+ {
+  "name": "no body after salutation and signoff leaves box empty",
+  "label": "Message to the Hiring Team",
+  "type": "textarea",
+  "options": [],
+  "cover": "Hello team,\n\nBest regards,\nSam",
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "No cover text (empty / missing) or a body with no sentence → the box is LEFT EMPTY: status \"ok\", value \"\", leave true (the box is optional; nothing is typed, nobody is asked)."
+ },
+ {
+  "name": "required marked with star still gets answer",
+  "label": "Message to the Hiring Manager *",
+  "type": "text",
+  "options": [],
+  "cover": "Dear,\n\nI can do this work. I have relevant experience. I am eager to contribute. I will follow up.\n\nBest,\nLee",
+  "expect": {
+   "value": "I can do this work. I have relevant experience. I am eager to contribute."
+  },
+  "spec_quote": "A box that is marked required is treated the same way (cover → answer, none → leave empty)."
+ },
+ {
+  "name": "required box with no cover leaves empty",
+  "label": "Message to the Hiring Team *",
+  "type": "textarea",
+  "options": [],
+  "cover": "",
+  "expect": {
+   "leave": true
+  },
+  "spec_quote": "A box that is marked required is treated the same way (cover → answer, none → leave empty)."
+ },
+ {
+  "name": "decimals and abbreviations do not split sentences",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Hello,\n\nI improved latency by 2.169 seconds. I used M.S. and U.S. tools. I also used e.g. caching. We shipped the change.\n\nBest regards,\nDana",
+  "expect": {
+   "value": "I improved latency by 2.169 seconds. I used M.S. and U.S. tools. I also used e.g. caching."
+  },
+  "spec_quote": "decimals like 2.169 and abbreviations like \"M.S.\" / \"U.S.\" / \"e.g.\" do not end a sentence"
+ },
+ {
+  "name": "paragraph break inside sentence becomes one space",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI led a project\n\nthat shipped on time. We celebrated. It was fun. We repeated it.\n\nBest,\nChris",
+  "expect": {
+   "value": "I led a project that shipped on time. We celebrated. It was fun."
+  },
+  "spec_quote": "Paragraph breaks inside the taken sentences become a single space."
+ },
+ {
+  "name": "three sentences over 500 characters takes first two",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have led cross functional teams to deliver reliable software products on schedule while improving quality and reducing operational costs across multiple regions and business units worldwide. I partner closely with product and engineering leaders to turn ambiguous requirements into clear plans and measurable outcomes for customers and stakeholders across the organization. I communicate clearly and document decisions so teams can move quickly with confidence and maintain high standards over time while sharing context broadly.\n\nBest regards,\nPat",
+  "expect": {
+   "value": "I have led cross functional teams to deliver reliable software products on schedule while improving quality and reducing operational costs across multiple regions and business units worldwide. I partner closely with product and engineering leaders to turn ambiguous requirements into clear plans and measurable outcomes for customers and stakeholders across the organization."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "first two sentences over 500 characters takes only first sentence",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nI have more than a decade of experience designing and building distributed systems that support high traffic customer facing products and internal workflows across many teams and regions while keeping reliability security and cost efficiency at the center of every important architectural and operational decision. I also mentor engineers and partner with product leaders to turn long term strategy into practical roadmaps that deliver measurable business value and maintain strong engineering standards across the entire organization while improving delivery predictability and quality.\n\nSincerely,\nRobin",
+  "expect": {
+   "value": "I have more than a decade of experience designing and building distributed systems that support high traffic customer facing products and internal workflows across many teams and regions while keeping reliability security and cost efficiency at the center of every important architectural and operational decision."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ },
+ {
+  "name": "question and exclamation sentence endings",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Dear Hiring Manager,\n\nDid I ship it? Yes! It worked. We learned. We improved.\n\nBest regards,\nQuinn",
+  "expect": {
+   "value": "Did I ship it? Yes! It worked."
+  },
+  "spec_quote": "Split the body into sentences (a sentence ends with \". \", \"! \" or \"? \" followed by a capital letter, or at the end of a paragraph; decimals like 2.169 and abbreviations like \"M.S.\" / \"U.S.\" / \"e.g.\" do not end a sentence)."
+ },
+ {
+  "name": "signoff line and following lines are dropped",
+  "label": "Message to the Hiring Manager",
+  "type": "textarea",
+  "options": [],
+  "cover": "Hello team,\n\nI write clear documentation. I test edge cases. I fix regressions. I mentor peers.\n\nBest regards,\nDr. Smith\n555-1234",
+  "expect": {
+   "value": "I write clear documentation. I test edge cases. I fix regressions."
+  },
+  "spec_quote": "Take the BODY: drop the salutation line (a first line starting with \"Dear\", \"Hello\", \"Hi\", \"To whom\") and everything from the sign-off on (a line starting \"Sincerely\", \"Best regards\", \"Regards\", \"Thank you,\", \"Kind regards\", \"Best,\") — the sign-off line and the lines after it."
+ },
+ {
+  "name": "message to hiring team with Dear and Regards",
+  "label": "Message to the Hiring Team",
+  "type": "text",
+  "options": [],
+  "cover": "Dear Hiring Team,\n\nI ship features. I measure impact. I learn fast. I share results.\n\nRegards,\nAvery",
+  "expect": {
+   "value": "I ship features. I measure impact. I learn fast."
+  },
+  "spec_quote": "Take the first 3 sentences, joined by one space; when those 3 are longer than 500 characters take the first 2; when even the first 2 are longer than 500 characters take only the first sentence."
+ }
+]

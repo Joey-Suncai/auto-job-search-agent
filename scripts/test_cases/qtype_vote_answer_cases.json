@@ -1,0 +1,422 @@
+[
+ {
+  "name": "same_key_yes_same_answer",
+  "ds": {
+   "fact_key": "spons_future",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "spons_future",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "spons_future": {
+    "yes": true
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "different_keys_same_yes",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "b",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   },
+   "b": {
+    "yes": true
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "different_keys_opposite_yes",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "b",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   },
+   "b": {
+    "yes": false
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "negation_makes_equal",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "b",
+   "shape": "yes_no",
+   "negated": true,
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   },
+   "b": {
+    "yes": false
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "negation_makes_differ",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "b",
+   "shape": "yes_no",
+   "negated": true,
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   },
+   "b": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "same_text_different_keys",
+  "ds": {
+   "fact_key": "gpa",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "gpa_current",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "gpa": {
+    "text": "3.5"
+   },
+   "gpa_current": {
+    "text": "3.5"
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "different_text",
+  "ds": {
+   "fact_key": "gpa",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "gpa_current",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "gpa": {
+    "text": "3.5"
+   },
+   "gpa_current": {
+    "text": "N/A"
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "pick_lists_equal",
+  "ds": {
+   "fact_key": "avail",
+   "shape": "multi_choice",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "availability",
+   "shape": "multi_choice",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "avail": {
+    "pick": [
+     "mon",
+     "tue"
+    ]
+   },
+   "availability": {
+    "pick": [
+     "mon",
+     "tue"
+    ]
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "pick_lists_different",
+  "ds": {
+   "fact_key": "avail",
+   "shape": "multi_choice",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "availability",
+   "shape": "multi_choice",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "avail": {
+    "pick": [
+     "mon",
+     "tue"
+    ]
+   },
+   "availability": {
+    "pick": [
+     "mon",
+     "wed"
+    ]
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "missing_key_same_key",
+  "ds": {
+   "fact_key": "ghost",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "ghost",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "other": {
+    "yes": true
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "missing_key_different_key",
+  "ds": {
+   "fact_key": "ghost_a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "ghost_b",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "other": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "yes_fact_fill_vs_yes_no",
+  "ds": {
+   "fact_key": "a",
+   "shape": "fill",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "ds_asks",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "low"
+  },
+  "hk": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "hk_asks",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "a",
+   "shape": "unclear",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "hk_error",
+  "ds": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "a",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high",
+   "error": true
+  },
+  "facts": {
+   "a": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "other_person_allowed_key",
+  "ds": {
+   "fact_key": "referral",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "referral",
+   "shape": "yes_no",
+   "subject": "other_person",
+   "confidence": "high"
+  },
+  "facts": {
+   "referral": {
+    "yes": true
+   }
+  },
+  "expect_asks": false
+ },
+ {
+  "name": "other_person_disallowed_key",
+  "ds": {
+   "fact_key": "email",
+   "shape": "yes_no",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "email",
+   "shape": "yes_no",
+   "subject": "other_person",
+   "confidence": "high"
+  },
+  "facts": {
+   "email": {
+    "yes": true
+   }
+  },
+  "expect_asks": true
+ },
+ {
+  "name": "text_case_and_spaces_ignored",
+  "ds": {
+   "fact_key": "email",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "hk": {
+   "fact_key": "secondary_email",
+   "shape": "text",
+   "subject": "candidate",
+   "confidence": "high"
+  },
+  "facts": {
+   "email": {
+    "text": "Test@Example.com"
+   },
+   "secondary_email": {
+    "text": "  test@example.com  "
+   }
+  },
+  "expect_asks": false
+ }
+]

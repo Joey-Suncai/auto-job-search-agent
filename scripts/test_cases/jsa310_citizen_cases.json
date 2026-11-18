@@ -1,0 +1,194 @@
+[
+ {
+  "name": "workday_general_authorization",
+  "label": "Are you legally authorized to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "answer Yes (\"Are you legally authorized to work in the U.S.?\" → Yes)",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_any_employer",
+  "label": "Are you legally authorized to work in the United States for any employer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "answer Yes (\"Are you legally authorized to work in the U.S.?\", \"for any employer\" → Yes)",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse_without_restriction",
+  "label": "Are you legally authorized to work in the United States without restriction?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "answer Yes (… \"without restriction\" → Yes)",
+  "ambiguous": false
+ },
+ {
+  "name": "successfactors_as_of_today",
+  "label": "As of today, are you legally authorized to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "answer Yes (… \"as of today\" → Yes)",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_citizen_or_national_status",
+  "label": "Are you a U.S. citizen or national?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Exception: when the question asks whether he is authorized AS a U.S. citizen / national / (lawful) permanent resident / green-card holder — i.e. it asks for that status — the answer is No.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_lawful_permanent_resident",
+  "label": "Are you a lawful permanent resident (green card holder)?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Exception: when the question asks whether he is authorized AS a U.S. citizen / national / (lawful) permanent resident / green-card holder — i.e. it asks for that status — the answer is No.",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_status_list_citizen_national_lpr_asylee_refugee",
+  "label": "Are you a U.S. citizen, national, lawful permanent resident, asylee or refugee?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Exception: when the question asks whether he is authorized AS a U.S. citizen / national / (lawful) permanent resident / green-card holder — i.e. it asks for that status — the answer is No.",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse_example_in_parentheses",
+  "label": "Are you legally authorized to work in the United States? (e.g., U.S. citizen, permanent resident, F-1 OPT)",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Citizen / permanent resident named only as an EXAMPLE of authorization (\"(e.g., U.S. citizen, permanent resident, F-1 OPT)\" …) does not make it a status question → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_such_as_example",
+  "label": "Are you authorized to work in the U.S., such as a U.S. citizen or permanent resident?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Citizen / permanent resident named only as an EXAMPLE of authorization (… \"such as a U.S. citizen or …\") does not make it a status question → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_sponsorship_now_or_future",
+  "label": "Will you now or in the future require sponsorship for employment visa status?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions: \"Will you now or in the future require sponsorship?\" → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse_sponsorship_example_h1b",
+  "label": "Do you now or in the future require sponsorship (e.g., H-1B, O-1)?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions: \"Will you now or in the future require sponsorship?\" → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "successfactors_citizen_or_permanent_resident_direct",
+  "label": "Are you a U.S. citizen or permanent resident?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "\"Are you a U.S. citizen or permanent resident?\" → No.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims_numbered_status_list",
+  "label": "(i) Are you a U.S. citizen or national? (ii) Are you a lawful permanent resident?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Exception: when the question asks whether he is authorized AS a U.S. citizen / national / (lawful) permanent resident / green-card holder — i.e. it asks for that status — the answer is No.",
+  "ambiguous": false
+ },
+ {
+  "name": "workday_any_employer_without_restrictions",
+  "label": "Are you legally authorized to work in the United States for any employer without restrictions?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "answer Yes (\"Are you legally authorized to work in the U.S.?\", \"for any employer\", \"without restriction\" → Yes)",
+  "ambiguous": false
+ },
+ {
+  "name": "greenhouse_require_sponsorship",
+  "label": "Do you require sponsorship to work in the United States?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "Sponsorship questions: \"Will you now or in the future require sponsorship?\" → Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "near_miss_authorized_as_us_citizen",
+  "label": "Are you authorized to work in the U.S. as a U.S. citizen?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "Exception: when the question asks whether he is authorized AS a U.S. citizen / national / (lawful) permanent resident / green-card holder — i.e. it asks for that status — the answer is No.",
+  "ambiguous": false
+ }
+]

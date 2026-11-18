@@ -1,4 +1,4 @@
-# EXAMPLE resume content of a fictional candidate (Alex Rivera) — copy to config/resume_content.py and replace every
+# EXAMPLE resume content of a fictional candidate (Alex Doe) — copy to config/resume_content.py and replace every
 # entry with your own, approved wording (JSA-077). One dict per target role in ROLES; the builders
 # (skills/resume-updater/scripts/build_a.py, ds_materials.py) read it through skills/resume-updater/scripts/content.py.
 import os as _os, sys as _sys

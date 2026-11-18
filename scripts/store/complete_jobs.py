@@ -145,7 +145,9 @@ def load_companies(store_dir):
 
 if __name__ == "__main__":
     here = os.path.dirname(os.path.abspath(__file__))
-    store = os.path.join(os.path.dirname(os.path.dirname(here)), "data", "store")
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(here)), "config"))
+    import paths                                   # the data home (JSA-375: not the code checkout)
+    store = paths.data("store")
     rows = [json.loads(l) for l in open(os.path.join(store, "jobs.jsonl"), encoding="utf-8")]
     done = complete(rows, load_companies(store))
     print("jobs %d · incomplete %d" % (len(rows), sum(a != b for a, b in zip(rows, done))))

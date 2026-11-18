@@ -17,9 +17,9 @@ ok(rb.best_match('Data Engineer Intern, 2027 Summer U.S.', [('Software Engineer 
 ok(rb.best_match('Data Analyst Intern', [('Data Analyst Intern', 'a'), ('Data Analyst Intern', 'b')]) is None, 'two equal postings (cities) → None, not a guess')
 jobs = [{'company': 'KelLumkel Inc.', 'url': 'https://job-boards.greenhouse.io/kellumkel/jobs/1'},
         {'company': 'Ostbraros', 'url': 'https://jobs.ashbyhq.com/ostbraros/ae4a6f7d-a240-4fa2-8c8e-04cc906e4ef9/application'},
-        {'company': 'Zoox', 'url': 'https://jobs.lever.co/zoox/7206fd97-14e4-43a0-b903-ba65dfeee53e/apply'}]
+        {'company': 'Kelostkel', 'url': 'https://jobs.lever.co/kelostkel/7206fd97-14e4-43a0-b903-ba65dfeee53e/apply'}]
 kb = rb.known_boards(jobs)
-ok(kb.get('kellumkel') == [('greenhouse', 'kellumkel')] and kb.get('ostbraros') == [('ashby', 'ostbraros')] and kb.get('zoox') == [('lever', 'zoox')], 'board tokens from known URLs (suffixes dropped)')
+ok(kb.get('kellumkel') == [('greenhouse', 'kellumkel')] and kb.get('ostbraros') == [('ashby', 'ostbraros')] and kb.get('kelostkel') == [('lever', 'kelostkel')], 'board tokens from known URLs (suffixes dropped)')
 ok(('lever', 'southernfarmbureau') in rb.guesses('Southern Farm Bureau'), 'slug guesses for unknown companies')
 r = rb.resolve('x', {}, page='<html><script type="application/ld+json">{"@type":"JobPosting","title":"X"}</script> "applyUrl":"https://jobs.lever.co/acme/1"</html>')
 ok(r.get('ats_url') == 'https://jobs.lever.co/acme/1' and r['how'] == 'applyUrl on the page', 'a public applyUrl is used as is')

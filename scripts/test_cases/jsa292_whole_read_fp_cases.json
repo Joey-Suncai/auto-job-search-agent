@@ -1,0 +1,329 @@
+[
+ {
+  "name": "School label clears context",
+  "kind": "context",
+  "label": "School",
+  "context": [
+   "High School Name",
+   "Graduation year",
+   "Do you have a degree?"
+  ],
+  "expect": [],
+  "spec_quote": "When the field's own label is a block starter, the previous fields belong to the PREVIOUS block → context = []."
+ },
+ {
+  "name": "Degree label takes context from last block starter",
+  "kind": "context",
+  "label": "Degree",
+  "context": [
+   "Company",
+   "School",
+   "Start date"
+  ],
+  "expect": [
+   "School",
+   "Start date"
+  ],
+  "spec_quote": "Otherwise, when the context holds a block starter, context = the context from the LAST block starter in it (that starter included) to the end; context without a block starter is unchanged."
+ },
+ {
+  "name": "No block starter keeps context unchanged",
+  "kind": "context",
+  "label": "GPA",
+  "context": [
+   "Phone",
+   "Email"
+  ],
+  "expect": [
+   "Phone",
+   "Email"
+  ],
+  "spec_quote": "context without a block starter is unchanged."
+ },
+ {
+  "name": "Lower-case and trailing colon still block starter",
+  "kind": "context",
+  "label": " school: ",
+  "context": [
+   "Company",
+   "Title",
+   "Location"
+  ],
+  "expect": [],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "Upper-case with trailing star still block starter",
+  "kind": "context",
+  "label": "SCHOOL NAME*",
+  "context": [
+   "A",
+   "B"
+  ],
+  "expect": [],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "Employer is block starter",
+  "kind": "context",
+  "label": "Employer",
+  "context": [
+   "Company",
+   "Job title"
+  ],
+  "expect": [],
+  "spec_quote": "When the field's own label is a block starter, the previous fields belong to the PREVIOUS block → context = []."
+ },
+ {
+  "name": "Name of employer is block starter",
+  "kind": "context",
+  "label": "Name of employer",
+  "context": [
+   "x",
+   "y"
+  ],
+  "expect": [],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "University is block starter",
+  "kind": "context",
+  "label": "University",
+  "context": [
+   "Name",
+   "GPA"
+  ],
+  "expect": [],
+  "spec_quote": "When the field's own label is a block starter, the previous fields belong to the PREVIOUS block → context = []."
+ },
+ {
+  "name": "Institution is block starter",
+  "kind": "context",
+  "label": "Institution",
+  "context": [
+   "a"
+  ],
+  "expect": [],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "College with colon is block starter",
+  "kind": "context",
+  "label": "College:",
+  "context": [
+   "b",
+   "c"
+  ],
+  "expect": [],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "Last block starter is Company name",
+  "kind": "context",
+  "label": "Start date",
+  "context": [
+   "Employer",
+   "Company name",
+   "Location"
+  ],
+  "expect": [
+   "Company name",
+   "Location"
+  ],
+  "spec_quote": "Otherwise, when the context holds a block starter, context = the context from the LAST block starter in it (that starter included) to the end; context without a block starter is unchanged."
+ },
+ {
+  "name": "Last block starter is Company among several",
+  "kind": "context",
+  "label": "End date",
+  "context": [
+   "School",
+   "Degree",
+   "GPA",
+   "Company",
+   "Title"
+  ],
+  "expect": [
+   "Company",
+   "Title"
+  ],
+  "spec_quote": "Otherwise, when the context holds a block starter, context = the context from the LAST block starter in it (that starter included) to the end; context without a block starter is unchanged."
+ },
+ {
+  "name": "Empty strings dropped before block search",
+  "kind": "context",
+  "label": "GPA",
+  "context": [
+   "",
+   "School",
+   "",
+   "Degree"
+  ],
+  "expect": [
+   "School",
+   "Degree"
+  ],
+  "spec_quote": "Empty strings in the context are dropped first; the order of the labels never changes."
+ },
+ {
+  "name": "All-empty context becomes empty",
+  "kind": "context",
+  "label": "GPA",
+  "context": [
+   "",
+   ""
+  ],
+  "expect": [],
+  "spec_quote": "Empty strings in the context are dropped first; the order of the labels never changes."
+ },
+ {
+  "name": "University of Chicago is not exact block starter",
+  "kind": "context",
+  "label": "Job title",
+  "context": [
+   "University of Chicago",
+   "Computer Science"
+  ],
+  "expect": [
+   "University of Chicago",
+   "Computer Science"
+  ],
+  "spec_quote": "context without a block starter is unchanged."
+ },
+ {
+  "name": "Company culture is not exact block starter",
+  "kind": "context",
+  "label": "Company culture",
+  "context": [
+   "Company",
+   "Location"
+  ],
+  "expect": [
+   "Company",
+   "Location"
+  ],
+  "spec_quote": "context without a block starter is unchanged."
+ },
+ {
+  "name": "Schools is not exact block starter",
+  "kind": "context",
+  "label": "Schools",
+  "context": [
+   "School",
+   "GPA"
+  ],
+  "expect": [
+   "School",
+   "GPA"
+  ],
+  "spec_quote": "A BLOCK STARTER label is, ignoring case, surrounding spaces and a trailing \":\" or \"*\": \"School\", \"School name\", \"University\", \"College\", \"Institution\", \"Company\", \"Company name\", \"Employer\", \"Employer name\", \"Name of school\", \"Name of employer\"."
+ },
+ {
+  "name": "Company name colon clears context",
+  "kind": "context",
+  "label": "Company name:",
+  "context": [
+   "School",
+   "GPA",
+   "Start"
+  ],
+  "expect": [],
+  "spec_quote": "When the field's own label is a block starter, the previous fields belong to the PREVIOUS block → context = []."
+ },
+ {
+  "name": "Data Science subset of Applied Data Science",
+  "kind": "same",
+  "a": "Data Science",
+  "b": "Applied Data Science",
+  "expect": true,
+  "spec_quote": "Two answers match when, after lower-casing and dropping punctuation, one is a contiguous run of whole words of the other and the shorter has at least two words (\"Data Science\" matches \"Applied Data Science\"; \"Science\" does not match \"Data Science\"; \"Economics\" does not match \"Applied Economics\" because the shorter has only one word)."
+ },
+ {
+  "name": "Science one word does not match Data Science",
+  "kind": "same",
+  "a": "Science",
+  "b": "Data Science",
+  "expect": false,
+  "spec_quote": "\"Science\" does not match \"Data Science\""
+ },
+ {
+  "name": "Economics one word does not match Applied Economics",
+  "kind": "same",
+  "a": "Economics",
+  "b": "Applied Economics",
+  "expect": false,
+  "spec_quote": "\"Economics\" does not match \"Applied Economics\" because the shorter has only one word"
+ },
+ {
+  "name": "None-like part ignored on longer side",
+  "kind": "same",
+  "a": "Applied Data Science | None",
+  "b": "Data Science",
+  "expect": true,
+  "spec_quote": "Parts that are \"none\", \"n/a\" or \"no minor\" (a none-like part) on the side that has MORE parts are ignored when the other side has no none-like part, so \"Applied Data Science | None\" matches \"Data Science\"."
+ },
+ {
+  "name": "None-like part ignored regardless of side",
+  "kind": "same",
+  "a": "Data Science",
+  "b": "Applied Data Science | None",
+  "expect": true,
+  "spec_quote": "Parts that are \"none\", \"n/a\" or \"no minor\" (a none-like part) on the side that has MORE parts are ignored when the other side has no none-like part, so \"Applied Data Science | None\" matches \"Data Science\"."
+ },
+ {
+  "name": "Different content does not match",
+  "kind": "same",
+  "a": "Data Science",
+  "b": "Economics",
+  "expect": false,
+  "spec_quote": "answers that differ in content (\"Data Science\" vs \"Economics\", \"University of Chicago\" vs \"Springtown No.2 High School\") still do not match."
+ },
+ {
+  "name": "Different schools do not match",
+  "kind": "same",
+  "a": "University of Chicago",
+  "b": "Springtown No.2 High School",
+  "expect": false,
+  "spec_quote": "answers that differ in content (\"Data Science\" vs \"Economics\", \"University of Chicago\" vs \"Springtown No.2 High School\") still do not match."
+ },
+ {
+  "name": "Single-word part does not match multi-part answer",
+  "kind": "same",
+  "a": "Computer Science | Mathematics",
+  "b": "Mathematics",
+  "expect": false,
+  "spec_quote": "the shorter has at least two words (\"Data Science\" matches \"Applied Data Science\"; \"Science\" does not match \"Data Science\"; \"Economics\" does not match \"Applied Economics\" because the shorter has only one word)."
+ },
+ {
+  "name": "Punctuation dropped for degree abbreviation",
+  "kind": "same",
+  "a": "B.A. in Economics",
+  "b": "BA in Economics",
+  "expect": true,
+  "spec_quote": "Two answers match when, after lower-casing and dropping punctuation, one is a contiguous run of whole words of the other and the shorter has at least two words"
+ },
+ {
+  "name": "No minor none-like part ignored",
+  "kind": "same",
+  "a": "Data Science | No minor",
+  "b": "Applied Data Science",
+  "expect": true,
+  "spec_quote": "Parts that are \"none\", \"n/a\" or \"no minor\" (a none-like part) on the side that has MORE parts are ignored when the other side has no none-like part, so \"Applied Data Science | None\" matches \"Data Science\"."
+ },
+ {
+  "name": "Identical multi-word answers match",
+  "kind": "same",
+  "a": "Computer Science",
+  "b": "Computer Science",
+  "expect": true,
+  "spec_quote": "Two answers match when, after lower-casing and dropping punctuation, one is a contiguous run of whole words of the other and the shorter has at least two words"
+ },
+ {
+  "name": "None-like part ignored on longer right side",
+  "kind": "same",
+  "a": "Applied Data Science",
+  "b": "Data Science | None",
+  "expect": true,
+  "spec_quote": "Parts that are \"none\", \"n/a\" or \"no minor\" (a none-like part) on the side that has MORE parts are ignored when the other side has no none-like part, so \"Applied Data Science | None\" matches \"Data Science\"."
+ }
+]

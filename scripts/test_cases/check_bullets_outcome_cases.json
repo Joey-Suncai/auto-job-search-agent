@@ -1,0 +1,244 @@
+[
+ {
+  "name": "first_no_digit_later_digit_fires",
+  "why": "Entry has 2 bullets; the first bullet has no digit and a later bullet contains '3', so the spec requires one outcome_first problem: 'if the FIRST bullet's text contains no digit (0-9) and at least one LATER bullet of that entry contains a digit, report one problem for that entry.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Added 3 retry counts to reduce failures."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ },
+ {
+  "name": "single_bullet_entry_never_reported",
+  "why": "The single-bullet entry is never reported: 'An entry with 0 or 1 bullet is never reported.' The two-bullet entry has no digit in either bullet, so 'An entry where no bullet has a digit is not reported.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "clean_no_digits",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Documented the manual approval step; captured the gap."
+      }
+     ]
+    },
+    {
+     "name": "single_bullet",
+     "bullets": [
+      {
+       "text": "Updated 3 metrics to clarify variance."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "no_digits_anywhere_not_reported",
+  "why": "No bullet contains a digit, so 'An entry where no bullet has a digit is not reported.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Removed the duplicate retry, simplifying the flow."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "digit_first_none_later_not_reported",
+  "why": "The first bullet contains digit '3', so 'An entry whose first bullet has a digit is not reported, whatever the later bullets hold.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Updated 3 metrics to clarify variance."
+      },
+      {
+       "text": "Fixed the slow import path."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "two_entries_only_one_fires",
+  "why": "Entry A fires because its first bullet has no digit and its later bullet has '3'; Entry B does not fire because 'five' is not a digit: 'Each entry is judged on its own bullets only.' and 'Number words (\"five\", \"zero\") are not digits.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "fires",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Added 3 retry counts to reduce failures."
+      }
+     ]
+    },
+    {
+     "name": "does_not_fire",
+     "bullets": [
+      {
+       "text": "Documented the manual approval step."
+      },
+      {
+       "text": "Removed five duplicate checks; simplified the flow."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ },
+ {
+  "name": "number_words_only_not_reported",
+  "why": "The later bullet contains 'five', but 'Number words (\"five\", \"zero\") are not digits.' Therefore no bullet has a digit and 'An entry where no bullet has a digit is not reported.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Documented five manual steps, capturing the gap."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "later_sp500_digit_fires",
+  "why": "The later bullet contains 'S&P 500', which contains a digit (0-9), while the first bullet has no digit; the spec says 'if the FIRST bullet's text contains no digit (0-9) and at least one LATER bullet of that entry contains a digit, report one problem for that entry.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Tracked S&P 500 exposure to guide hedging."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ },
+ {
+  "name": "later_q3_digit_fires",
+  "why": "The later bullet contains 'Q3', which contains digit '3', while the first bullet has no digit; this matches 'if the FIRST bullet's text contains no digit (0-9) and at least one LATER bullet of that entry contains a digit, report one problem for that entry.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the manual gap in the report."
+      },
+      {
+       "text": "Updated Q3 metrics to clarify variance."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ },
+ {
+  "name": "first_q3_digit_not_reported",
+  "why": "The first bullet contains 'Q3', which contains digit '3', so 'An entry whose first bullet has a digit is not reported, whatever the later bullets hold.' Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Updated Q3 metrics to clarify variance."
+      },
+      {
+       "text": "Fixed the slow import path."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "three_bullets_multiple_later_digits_one_problem",
+  "why": "The first bullet has no digit and two later bullets contain digits, but the spec says to 'report one problem for that entry'; therefore exactly one outcome_first problem is expected. Other page rules are clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "entry",
+     "bullets": [
+      {
+       "text": "Fixed the slow import path."
+      },
+      {
+       "text": "Added 3 retry counts to reduce failures."
+      },
+      {
+       "text": "Updated 2 metrics to clarify variance; removed the manual gap."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ }
+]

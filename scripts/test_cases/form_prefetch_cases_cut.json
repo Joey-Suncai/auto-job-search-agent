@@ -1,0 +1,562 @@
+[
+ {
+  "name": "null_last_only_new_true_is_read",
+  "kind": "stale",
+  "input": {
+   "last": null,
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": true
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "1. No previous record (`last` is None/empty) → read. 2. `only_new` is true → not read (only never-read jobs are read)."
+ },
+ {
+  "name": "empty_last_only_new_true_is_read",
+  "kind": "stale",
+  "input": {
+   "last": {},
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": true
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "1. No previous record (`last` is None/empty) → read. 2. `only_new` is true → not read (only never-read jobs are read)."
+ },
+ {
+  "name": "only_new_blocks_error_retry_with_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-06",
+    "status": "error",
+    "questions": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": true
+  },
+  "expect": {
+   "read": false,
+   "cut": true
+  },
+  "spec_quote": "2. `only_new` is true → not read (only never-read jobs are read). 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "closed_with_cut_never_read",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-06",
+    "status": "closed",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": true
+  },
+  "spec_quote": "3. `status` == `closed` → never read again. 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "error_retry_with_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-06",
+    "status": "error",
+    "questions": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": true
+  },
+  "spec_quote": "4. `status` == `error` → read (retry). 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "cut_before_date_age_below_recheck",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "needs": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ],
+    "fields": 39
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": true
+  },
+  "spec_quote": "5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "on_date_60_not_cut_age_below",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-09",
+    "status": "ok",
+    "questions": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "59 or 61 options, or a record read on/after 2026-11-09, do not trigger this. 6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "on_date_60_cut_false_but_old_due",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-09",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-20",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "59 or 61 options, or a record read on/after 2026-11-09, do not trigger this. 6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "59_options_no_cut_age_below",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 59
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "59 or 61 options, or a record read on/after 2026-11-09, do not trigger this. 6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "61_options_no_cut_age_below",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 61
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "59 or 61 options, or a record read on/after 2026-11-09, do not trigger this. 6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "60_in_questions_with_other_lists_counts",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": 39,
+    "questions": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ],
+    "needs": 7
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": true
+  },
+  "spec_quote": "5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "60_in_needs_with_missing_fields_questions",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "needs": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": true
+  },
+  "spec_quote": "Any of the three keys may be missing, may be a number instead of a list (a count), and list items may be something other than an object (ignored). 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "string_item_ignored_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": [
+     "School"
+    ],
+    "questions": [
+     {
+      "label": "No options"
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "list items may be something other than an object (ignored). 6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "number_list_count_60_not_item",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": 60
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "Any of the three keys may be missing, may be a number instead of a list (a count), and list items may be something other than an object (ignored). 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "exactly_recheck_days_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-05",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "one_day_short_recheck_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-06",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "unreadable_read_at_reads_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "not-a-date",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read. `cut_options(last)` is rule 5 alone: true or false.",
+  "ambiguous": true,
+  "ambiguous_reason": "due() is explicit for an unreadable read_at, but the spec does not explicitly define whether cut_options treats an unreadable read_at as failing the 'read before 2026-11-09' condition; expected cut=false is the natural reading because the before-date condition cannot be established."
+ },
+ {
+  "name": "closed_old_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-10-01",
+    "status": "closed",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "3. `status` == `closed` → never read again."
+ },
+ {
+  "name": "error_fresh_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-09",
+    "status": "error",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "4. `status` == `error` → read (retry)."
+ },
+ {
+  "name": "custom_recheck_days_3_age3",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-07",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 3,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "custom_recheck_days_10_age5",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-05",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 10,
+   "only_new": false
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ },
+ {
+  "name": "only_new_true_ok_old_no_cut",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-10-01",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": true
+  },
+  "expect": {
+   "read": false,
+   "cut": false
+  },
+  "spec_quote": "2. `only_new` is true → not read (only never-read jobs are read)."
+ },
+ {
+  "name": "before_date_with_60_but_only_new_true",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-08",
+    "status": "ok",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 60
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": true
+  },
+  "expect": {
+   "read": false,
+   "cut": true
+  },
+  "spec_quote": "2. `only_new` is true → not read (only never-read jobs are read). 5. NEW: the record was read before 2026-11-09 AND at least one item in `fields`, `questions` or `needs` has exactly 60 options → read now, whatever its age."
+ },
+ {
+  "name": "restricted_old_status_reads_by_age",
+  "kind": "stale",
+  "input": {
+   "last": {
+    "read_at": "2026-11-01",
+    "status": "restricted",
+    "fields": [
+     {
+      "label": "School",
+      "n_options": 10
+     }
+    ]
+   },
+   "today": "2026-11-10",
+   "recheck_days": 5,
+   "only_new": false
+  },
+  "expect": {
+   "read": true,
+   "cut": false
+  },
+  "spec_quote": "6. Otherwise read when the record is at least `recheck_days` days old (today − read_at ≥ recheck_days); an unreadable `read_at` → read."
+ }
+]

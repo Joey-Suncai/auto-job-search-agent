@@ -1,0 +1,734 @@
+[
+ {
+  "name": "adp_basic_with_ccId",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=ABC123&jobId=JOB_456&ccId=CC-789&lang=en"
+  },
+  "expect": [
+   "adp:abc123:job_456",
+   "https://workforcenow.adp.com/mascsr/default/careercenter/public/events/staffing/v1/job-requisitions/JOB_456?cid=ABC123&lang=en_US&ccId=CC-789"
+  ],
+  "spec_quote": "key = \"adp:\" + cid lower-cased + \":\" + jobId lower-cased. api_url = \"https://\" + host lower-cased + \"/mascsr/default/careercenter/public/events/staffing/v1/job-requisitions/\" + jobId + \"?cid=\" + cid + \"&lang=en_US\", and, only when the link has a non-empty ccId, \"&ccId=\" + ccId appended.",
+  "ambiguous": false
+ },
+ {
+  "name": "adp_case_insensitive_params_shared_cloud_host",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.cloud.adp.com/mascsr/default/mdf/recruitment/recruitment.html?CID=MiXed&JOBID=AbC&CCID=Zz"
+  },
+  "expect": [
+   "adp:mixed:abc",
+   "https://workforcenow.cloud.adp.com/mascsr/default/careercenter/public/events/staffing/v1/job-requisitions/AbC?cid=MiXed&lang=en_US&ccId=Zz"
+  ],
+  "spec_quote": "The query parameters cid and jobId are read case-insensitively (cid / CID, jobId / jobid / JOBID; ccId / ccid too). Values keep their original case and are URL-quoted (plain letters, digits, \"-\", \"_\" stay as they are).",
+  "ambiguous": false
+ },
+ {
+  "name": "adp_missing_jobId_is_null",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=abc"
+  },
+  "expect": null,
+  "spec_quote": "When cid or jobId is missing or empty → null (such a link is a job list, not one posting).",
+  "ambiguous": false
+ },
+ {
+  "name": "adp_empty_cid_is_null",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=&jobId=123"
+  },
+  "expect": null,
+  "spec_quote": "When cid or jobId is missing or empty → null (such a link is a job list, not one posting).",
+  "ambiguous": false
+ },
+ {
+  "name": "adp_wrong_path_is_null",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/other.html?cid=a&jobId=b"
+  },
+  "expect": null,
+  "spec_quote": "Only links to an ADP Workforce Now career center: host workforcenow.adp.com or workforcenow.cloud.adp.com, path /mascsr/default/mdf/recruitment/recruitment.html, followed by a query string. Anything else → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "adp_ccId_url_quoted",
+  "fn": "adp_wfn_api",
+  "args": {
+   "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=ABC&jobId=JOB_1&ccId=CC/9"
+  },
+  "expect": [
+   "adp:abc:job_1",
+   "https://workforcenow.adp.com/mascsr/default/careercenter/public/events/staffing/v1/job-requisitions/JOB_1?cid=ABC&lang=en_US&ccId=CC%2F9"
+  ],
+  "spec_quote": "only when the link has a non-empty ccId, \"&ccId=\" + ccId appended. Values keep their original case and are URL-quoted (plain letters, digits, \"-\", \"_\" stay as they are).",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_simple_order_and_lowercase",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": "See https://boards.greenhouse.io/acme and https://job-boards.greenhouse.io/Beta_Co for jobs."
+  },
+  "expect": [
+   "acme",
+   "beta_co"
+  ],
+  "spec_quote": "gh_boards_in_page(page_html) → list of Greenhouse board names the page names, lower-cased, in order of first appearance, each once.",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_duplicates_are_removed_after_lowercase",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": "boards.greenhouse.io/embed/job_board?for=Acme then job-boards.greenhouse.io/acme then boards.greenhouse.io/Other"
+  },
+  "expect": [
+   "acme",
+   "other"
+  ],
+  "spec_quote": "list of Greenhouse board names the page names, lower-cased, in order of first appearance, each once.",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_reserved_words_are_not_boards",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": "boards.greenhouse.io/embed/job_board?for=embed boards-api.greenhouse.io/v1/boards/v1 job-boards.greenhouse.io/jobs"
+  },
+  "expect": [],
+  "spec_quote": "The words embed, v1, jobs, job_app, job_board are never boards.",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_empty_page",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": ""
+  },
+  "expect": [],
+  "spec_quote": "Empty / None page → [].",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_embed_js_and_eu_job_boards",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": "boards.greenhouse.io/embed/job_board/js?for=Gamma ... job-boards.eu.greenhouse.io/Delta"
+  },
+  "expect": [
+   "gamma",
+   "delta"
+  ],
+  "spec_quote": "A board name is the word ([A-Za-z0-9_-]+) right after any of: ... \"boards.greenhouse.io/embed/job_board/js?for=\", ... \"job-boards.eu.greenhouse.io/\", ...",
+  "ambiguous": false
+ },
+ {
+  "name": "gh_boards_api_eu_and_boards_eu",
+  "fn": "gh_boards_in_page",
+  "args": {
+   "page": "boards-api.eu.greenhouse.io/v1/boards/Epsilon ... boards.eu.greenhouse.io/Zeta"
+  },
+  "expect": [
+   "epsilon",
+   "zeta"
+  ],
+  "spec_quote": "A board name is the word ([A-Za-z0-9_-]+) right after any of: ... \"boards.eu.greenhouse.io/\", \"boards-api.greenhouse.io/v1/boards/\", \"boards-api.eu.greenhouse.io/v1/boards/\".",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_myworkdaysite_no_locale",
+  "fn": "job_url",
+  "args": {
+   "host": "wd3.myworkdaysite.com",
+   "tenant": "sevtalcor",
+   "site": "Sevtalcor_External_",
+   "path": "/job/x/Engineer_R123"
+  },
+  "expect": "https://wd3.myworkdaysite.com/recruiting/sevtalcor/Sevtalcor_External_/job/x/Engineer_R123",
+  "spec_quote": "host ending in \"myworkdaysite.com\" (shared host, e.g. wd3.myworkdaysite.com): \"https://\" + host + \"/recruiting/\" + tenant + \"/\" + site + path  (no locale).",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_myworkdayjobs_en_us",
+  "fn": "job_url",
+  "args": {
+   "host": "acme.wd5.myworkdayjobs.com",
+   "tenant": "acme",
+   "site": "Acme_Careers",
+   "path": "/job/Austin/Dev_R1"
+  },
+  "expect": "https://acme.wd5.myworkdayjobs.com/en-US/Acme_Careers/job/Austin/Dev_R1",
+  "spec_quote": "any other host (e.g. acme.wd5.myworkdayjobs.com): \"https://\" + host + \"/en-US/\" + site + path.",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_myworkdaysite_adds_missing_leading_slash",
+  "fn": "job_url",
+  "args": {
+   "host": "wd1.myworkdaysite.com",
+   "tenant": "t",
+   "site": "S",
+   "path": "job/Loc/Slug_1"
+  },
+  "expect": "https://wd1.myworkdaysite.com/recruiting/t/S/job/Loc/Slug_1",
+  "spec_quote": "path is the posting path \"/job/<location>/<slug>_<id>\" (a missing leading \"/\" is added).",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_myworkdayjobs_adds_missing_leading_slash",
+  "fn": "job_url",
+  "args": {
+   "host": "x.wd1.myworkdayjobs.com",
+   "tenant": "x",
+   "site": "Site",
+   "path": "job/L/S_2"
+  },
+  "expect": "https://x.wd1.myworkdayjobs.com/en-US/Site/job/L/S_2",
+  "spec_quote": "path is the posting path \"/job/<location>/<slug>_<id>\" (a missing leading \"/\" is added). any other host (e.g. acme.wd5.myworkdayjobs.com): \"https://\" + host + \"/en-US/\" + site + path.",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_exact_myworkdaysite_host_uses_shared_form",
+  "fn": "job_url",
+  "args": {
+   "host": "myworkdaysite.com",
+   "tenant": "t",
+   "site": "s",
+   "path": "/job/a/b"
+  },
+  "expect": "https://myworkdaysite.com/recruiting/t/s/job/a/b",
+  "spec_quote": "host ending in \"myworkdaysite.com\" (shared host, e.g. wd3.myworkdaysite.com): \"https://\" + host + \"/recruiting/\" + tenant + \"/\" + site + path  (no locale).",
+  "ambiguous": false
+ },
+ {
+  "name": "job_url_host_not_ending_myworkdaysite_is_other",
+  "fn": "job_url",
+  "args": {
+   "host": "foo.myworkdaysite.com.evil.com",
+   "tenant": "t",
+   "site": "s",
+   "path": "/job/a/b"
+  },
+  "expect": "https://foo.myworkdaysite.com.evil.com/en-US/s/job/a/b",
+  "spec_quote": "host ending in \"myworkdaysite.com\" ... any other host (e.g. acme.wd5.myworkdayjobs.com): \"https://\" + host + \"/en-US/\" + site + path.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdaysite_with_locale_example",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://wd5.myworkdaysite.com/en-US/recruiting/sevtalcor/Sevtalcor_External_/job/x"
+  },
+  "expect": [
+   "wd5.myworkdaysite.com",
+   "sevtalcor",
+   "Sevtalcor_External_"
+  ],
+  "spec_quote": "on wdN.myworkdaysite.com it accepts an optional locale segment such as \"en-US\" before \"recruiting\": https://wd5.myworkdaysite.com/en-US/recruiting/sevtalcor/Sevtalcor_External_/job/x → [\"wd5.myworkdaysite.com\", \"sevtalcor\", \"Sevtalcor_External_\"].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdaysite_without_locale",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://wd3.myworkdaysite.com/recruiting/acme/External/job/a/b"
+  },
+  "expect": [
+   "wd3.myworkdaysite.com",
+   "acme",
+   "External"
+  ],
+  "spec_quote": "on wdN.myworkdaysite.com it accepts an optional locale segment such as \"en-US\" before \"recruiting\" ... = [host, tenant, site].",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdaysite_without_recruiting_is_null",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://wd5.myworkdaysite.com/sevtalcor/External/job/x"
+  },
+  "expect": null,
+  "spec_quote": "A myworkdaysite link without \"recruiting/<tenant>/\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdayjobs_with_locale",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://acme.wd5.myworkdayjobs.com/en-US/Acme_Careers/job/Austin/Dev_R1"
+  },
+  "expect": [
+   "acme.wd5.myworkdayjobs.com",
+   "acme",
+   "Acme_Careers"
+  ],
+  "spec_quote": "myworkdayjobs links: host lower-cased, tenant = first host label, site = first path segment after an optional locale; first segment \"wday\" or \"job\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdayjobs_without_locale_lowercases_host",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://ACME.wd5.myworkdayjobs.com/Acme_Careers/job/x"
+  },
+  "expect": [
+   "acme.wd5.myworkdayjobs.com",
+   "acme",
+   "Acme_Careers"
+  ],
+  "spec_quote": "myworkdayjobs links: host lower-cased, tenant = first host label, site = first path segment after an optional locale.",
+  "ambiguous": false
+ },
+ {
+  "name": "parse_tenant_myworkdayjobs_wday_first_segment_is_null",
+  "fn": "parse_tenant",
+  "args": {
+   "url": "https://acme.wd5.myworkdayjobs.com/en-US/wday/Acme_Careers/job/x"
+  },
+  "expect": null,
+  "spec_quote": "myworkdayjobs links: ... site = first path segment after an optional locale; first segment \"wday\" or \"job\" → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_closed_notice_example",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/1",
+   "final_url": "https://example.com/job/1",
+   "title": "Job",
+   "text": "Search Jobs\nYou can't view this job because it's not available at this time.\nAbout Seagate",
+   "http": 200
+  },
+  "expect": {
+   "status": "closed"
+  },
+  "spec_quote": "Closed notice: the page text (first 2500 characters) contains \"can't view this job because\" / \"cannot view this job because\" (also position / posting / requisition), and the page has little job text ... → status \"closed\".",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_closed_notice_position_variant",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/2",
+   "final_url": "https://example.com/job/2",
+   "title": "Job",
+   "text": "Cannot view this position because it is no longer open.",
+   "http": 200
+  },
+  "expect": {
+   "status": "closed"
+  },
+  "spec_quote": "Closed notice: the page text (first 2500 characters) contains \"can't view this job because\" / \"cannot view this job because\" (also position / posting / requisition) ... → status \"closed\".",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_closed_notice_wins_over_site_error",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/3",
+   "final_url": "https://example.com/job/3",
+   "title": "Job",
+   "text": "You can't view this job because it's not available.\nSomething went wrong. Please try again later.",
+   "http": 200
+  },
+  "expect": {
+   "status": "closed"
+  },
+  "spec_quote": "This test comes after the security-check test ... after the closed tests ... a closed notice wins over a site error ... before the sign-in test.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_site_error_beats_sign_in",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/4",
+   "final_url": "https://example.com/job/4",
+   "title": "Job",
+   "text": "Sign in\nSomething went wrong. Please try again later.",
+   "http": 200
+  },
+  "expect": {
+   "status": "unreadable"
+  },
+  "spec_quote": "Site error: a short page (under 1500 characters) whose first 2500 characters say the site itself failed — ... \"something went wrong\" ... → status \"unreadable\" (not \"login\"), even when a line \"Sign in\" is at the top of the page.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_short_sign_in_without_site_error_is_login",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/5",
+   "final_url": "https://example.com/job/5",
+   "title": "Sign in",
+   "text": "Sign in\nWelcome back. Please enter your credentials.",
+   "http": 200
+  },
+  "expect": {
+   "status": "login"
+  },
+  "spec_quote": "Unchanged: a short page whose first line is \"Sign in\" and that has no site-error words → \"login\".",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict_plenty_job_text_is_ok",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://example.com/job/6",
+   "final_url": "https://example.com/job/6",
+   "title": "Engineer",
+   "text_repeat": {
+    "chunk": "Responsibilities: build reliable systems. Qualifications: experience with testing and degree. Skills: communication.",
+    "times": 20
+   },
+   "http": 200
+  },
+  "expect": {
+   "status": "ok"
+  },
+  "spec_quote": "Unchanged: ... a page with plenty of job text (over 600 characters and at least 2 job words) and no closed notice → \"ok\".",
+  "ambiguous": false
+ },
+ {
+  "name": "route valid subdomain with trailing apply path",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://acme.clearcompany.com/careers/jobs/12345678-1234-1234-1234-123456789abc/apply?source=x"
+  },
+  "expect": [
+   "acme",
+   "12345678-1234-1234-1234-123456789abc"
+  ],
+  "spec_quote": "https://<co>.clearcompany.com/careers/jobs/<guid>  (anything may follow, e.g. \"/apply?source=x\"); <co> must not be apply, app, www, careers-api or careers-content.",
+  "ambiguous": false
+ },
+ {
+  "name": "route lower-cases valid subdomain guid",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://acme.clearcompany.com/careers/jobs/ABCDEF12-3456-7890-ABCD-EF1234567890"
+  },
+  "expect": [
+   "acme",
+   "abcdef12-3456-7890-abcd-ef1234567890"
+  ],
+  "spec_quote": "clearcompany_route(link) → [company, job_id] or null (both lower-cased).",
+  "ambiguous": false
+ },
+ {
+  "name": "route apply form with mixed-case jobId after other params",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://apply.clearcompany.com/Acme?source=x&JoBiD=12345678-1234-1234-1234-123456789abc"
+  },
+  "expect": [
+   "acme",
+   "12345678-1234-1234-1234-123456789abc"
+  ],
+  "spec_quote": "https://apply.clearcompany.com/<co>?jobId=<guid>  (the parameter name in any case: jobId / jobid / JOBID; it may come after other parameters).",
+  "ambiguous": false
+ },
+ {
+  "name": "route rejects reserved www subdomain",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://www.clearcompany.com/careers/jobs/12345678-1234-1234-1234-123456789abc"
+  },
+  "expect": null,
+  "spec_quote": "<co> must not be apply, app, www, careers-api or careers-content.",
+  "ambiguous": false
+ },
+ {
+  "name": "route rejects job list without id",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://acme.clearcompany.com/careers/jobs"
+  },
+  "expect": null,
+  "spec_quote": "Any other link (the job list /careers/jobs without an id, a non-guid id, another site) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "route rejects non-guid id",
+  "fn": "clearcompany_route",
+  "args": {
+   "link": "https://acme.clearcompany.com/careers/jobs/1234"
+  },
+  "expect": null,
+  "spec_quote": "Any other link (the job list /careers/jobs without an id, a non-guid id, another site) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id double quotes",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div data-site-id=\"12345678-90ab-cdef-1234-567890abcdef\"></div>"
+  },
+  "expect": "12345678-90ab-cdef-1234-567890abcdef",
+  "spec_quote": "clearcompany_site_id(page_html) → the guid in data-site-id=\"<guid>\" (single or double quotes, spaces around \"=\" allowed), lower-cased; no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id single quotes",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div data-site-id='abcdef12-3456-7890-abcd-ef1234567890'></div>"
+  },
+  "expect": "abcdef12-3456-7890-abcd-ef1234567890",
+  "spec_quote": "clearcompany_site_id(page_html) → the guid in data-site-id=\"<guid>\" (single or double quotes, spaces around \"=\" allowed), lower-cased; no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id spaces around equals",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div data-site-id = \"abcdef12-3456-7890-abcd-ef1234567890\"></div>"
+  },
+  "expect": "abcdef12-3456-7890-abcd-ef1234567890",
+  "spec_quote": "clearcompany_site_id(page_html) → the guid in data-site-id=\"<guid>\" (single or double quotes, spaces around \"=\" allowed), lower-cased; no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id lower-cases uppercase guid",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div data-site-id=\"ABCDEF12-3456-7890-ABCD-EF1234567890\"></div>"
+  },
+  "expect": "abcdef12-3456-7890-abcd-ef1234567890",
+  "spec_quote": "clearcompany_site_id(page_html) → the guid in data-site-id=\"<guid>\" (single or double quotes, spaces around \"=\" allowed), lower-cased; no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id missing attribute returns null",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": "<div>No site id here</div>"
+  },
+  "expect": null,
+  "spec_quote": "no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "site id empty page returns null",
+  "fn": "clearcompany_site_id",
+  "args": {
+   "page": ""
+  },
+  "expect": null,
+  "spec_quote": "no such attribute or empty page → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_splits_on_whitespace_and_commas",
+  "fn": "read_ids",
+  "args": {
+   "text": "a b,c\n  d , e\n"
+  },
+  "expect": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e"
+  ],
+  "spec_quote": "the rest is split on whitespace and commas, empty parts dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_hash_starts_comment_to_end_of_line",
+  "fn": "read_ids",
+  "args": {
+   "text": "alpha beta # gamma delta\nepsilon"
+  },
+  "expect": [
+   "alpha",
+   "beta",
+   "epsilon"
+  ],
+  "spec_quote": "\"#\" starts a comment to the end of its line",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_none_is_empty_set",
+  "fn": "read_ids",
+  "args": {
+   "text": null
+  },
+  "expect": [],
+  "spec_quote": "None / \"\" → empty set.",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_empty_string_is_empty_set",
+  "fn": "read_ids",
+  "args": {
+   "text": ""
+  },
+  "expect": [],
+  "spec_quote": "None / \"\" → empty set.",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_comment_only_lines_and_empty_parts_dropped",
+  "fn": "read_ids",
+  "args": {
+   "text": ", ,\n#only comment\n foo,,bar \n#x"
+  },
+  "expect": [
+   "bar",
+   "foo"
+  ],
+  "spec_quote": "the rest is split on whitespace and commas, empty parts dropped",
+  "ambiguous": false
+ },
+ {
+  "name": "read_ids_hash_attached_to_token_still_truncates_line",
+  "fn": "read_ids",
+  "args": {
+   "text": "a#b c\nd"
+  },
+  "expect": [
+   "a",
+   "d"
+  ],
+  "spec_quote": "the text is split into lines, \"#\" starts a comment to the end of its line, the rest is split on whitespace and commas",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_ids_set_overrides_due",
+  "fn": "pick",
+  "args": {
+   "jobs": [
+    {
+     "id": "a"
+    },
+    {
+     "id": "b"
+    },
+    {
+     "id": "c"
+    }
+   ],
+   "due_ids": [
+    "a",
+    "c"
+   ],
+   "ids": [
+    "c"
+   ]
+  },
+  "expect": [
+   "c"
+  ],
+  "spec_quote": "when ids is a set (even an empty one) exactly the rows whose id is in it, whatever due says",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_empty_ids_set_yields_empty_list",
+  "fn": "pick",
+  "args": {
+   "jobs": [
+    {
+     "id": "a"
+    },
+    {
+     "id": "b"
+    },
+    {
+     "id": "c"
+    }
+   ],
+   "due_ids": [
+    "a",
+    "b",
+    "c"
+   ],
+   "ids": []
+  },
+  "expect": [],
+  "spec_quote": "when ids is a set (even an empty one) exactly the rows whose id is in it, whatever due says (empty set → [])",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_ids_none_uses_due_in_original_order",
+  "fn": "pick",
+  "args": {
+   "jobs": [
+    {
+     "id": 3
+    },
+    {
+     "id": 1
+    },
+    {
+     "id": 2
+    }
+   ],
+   "due_ids": [
+    2,
+    3
+   ],
+   "ids": null
+  },
+  "expect": [
+   3,
+   2
+  ],
+  "spec_quote": "when ids is None, the rows for which due(row) is true",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_ids_none_due_empty_yields_empty_list",
+  "fn": "pick",
+  "args": {
+   "jobs": [
+    {
+     "id": "a"
+    },
+    {
+     "id": "b"
+    }
+   ],
+   "due_ids": [],
+   "ids": null
+  },
+  "expect": [],
+  "spec_quote": "when ids is None, the rows for which due(row) is true",
+  "ambiguous": false
+ },
+ {
+  "name": "pick_ids_set_unknown_ids_ignored_and_original_order_kept",
+  "fn": "pick",
+  "args": {
+   "jobs": [
+    {
+     "id": "x"
+    },
+    {
+     "id": "y"
+    },
+    {
+     "id": "z"
+    }
+   ],
+   "due_ids": [
+    "y"
+   ],
+   "ids": [
+    "z",
+    "q",
+    "x"
+   ]
+  },
+  "expect": [
+   "x",
+   "z"
+  ],
+  "spec_quote": "when ids is a set (even an empty one) exactly the rows whose id is in it, whatever due says",
+  "ambiguous": false
+ }
+]

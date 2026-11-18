@@ -84,6 +84,23 @@ with sync_playwright() as pw:
     ok, why = wd_signin.auto_signin(p, logs.append, password='pw-right', is_auth=auth(p), settle=3)
     T('"account locked" → locked, no Create Account try', (not ok) and '[locked]' in why and not p.locator('[data-automation-id=verifyPassword]').count(), why)
 
+    # JSA-334: Workday's generic "…or your account might be locked." is a wrong password, not a lock
+    p = fresh('generic')
+    ok, why = wd_signin.auto_signin(p, logs.append, password='pw-right', long_password='pw-long', is_auth=auth(p),
+                                    mail_history=lambda url: [], settle=3)
+    T('generic "might be locked", no account → long password, Gmail, Create Account → signed in (Corlumnev / U Miami)', ok, why)
+    p = fresh('longacct')
+    ok, why = wd_signin.auto_signin(p, logs.append, password='pw-right', long_password='pw-long', is_auth=auth(p),
+                                    mail_history=lambda url: [], settle=3)
+    T('generic "might be locked", account made with the long password → retried long → signed in', ok, why)
+    p = fresh('generic')
+    ok, why = wd_signin.auto_signin(p, logs.append, folder=TMP, password='pw-right', long_password='pw-long', is_auth=auth(p),
+                                    mail_history=old_mail, settle=3)
+    rec = json.load(open(os.path.join(TMP, 'signin.json')))
+    T('generic "might be locked" + a 2025 tenant mail → old_account, long tried, no Create Account form',
+      (not ok) and '[old_account]' in why and rec.get('tried_long') and rec.get('error') == 'wrong_password'
+      and not p.locator('[data-automation-id=verifyPassword]').count(), (why, rec))
+
     p = fresh('account')
     ok, why = wd_signin.auto_signin(p, logs.append, password='pw-wrong', is_auth=auth(p), settle=3)
     T('wrong password, tenant says the account exists → old_account', (not ok) and '[old_account]' in why, why)
@@ -93,6 +110,6 @@ with sync_playwright() as pw:
     T('no Keychain password → hand to Joey', (not ok) and 'Keychain' in why, why)
     br.close()
 
-T('the password never appears in the log', not any('pw-right' in l or 'pw-wrong' in l for l in logs), logs)
+T('the password never appears in the log', not any('pw-right' in l or 'pw-wrong' in l or 'pw-long' in l for l in logs), logs)
 print(f'fails {fails}')
 sys.exit(1 if fails else 0)

@@ -1,0 +1,3 @@
+{
+  "score_uncovered_critical_in_recert_window_recert_wrong_ambiguous": {"verdict": "case", "why": "DeepSeek marked it ambiguous. An uncovered critical wrong answer on a folder submitted in the re-cert window counts as recert_wrong by the existing re-cert rule (test_cases/platform_recert_spec.md, JSA-188); JSA-260 only adds that covered lines are skipped outside that window. Code right, case wrong."}
+}

@@ -1,0 +1,152 @@
+[
+ {
+  "question": "Are you able to work onsite 3 days a week?",
+  "expect": true,
+  "why": "Directly asks whether the applicant can work on site: 'true when the question asks whether the applicant can / will / is willing / is able to work on site'."
+ },
+ {
+  "question": "Willing to work on-site?",
+  "expect": true,
+  "why": "Willingness phrase without 'you': spec explicitly includes 'as a willingness phrase without \"you\" (\"Willing to work on-site?\")'."
+ },
+ {
+  "question": "This role is hybrid in NYC. Can you commit to that?",
+  "expect": true,
+  "why": "Role statement followed by question to applicant: spec includes 'after a statement about the role (\"This role is hybrid in NYC. Can you commit to that?\")'."
+ },
+ {
+  "question": "Our engineers work on site in Austin; will you be able to join them on site?",
+  "expect": true,
+  "why": "Other people mentioned but applicant asked: spec includes 'including when other people are mentioned too'."
+ },
+ {
+  "question": "Are you comfortable coming into the office two days a week?",
+  "expect": true,
+  "why": "Asks applicant about coming in N days a week: 'come in N days a week'."
+ },
+ {
+  "question": "Can you commute to our downtown office daily?",
+  "expect": true,
+  "why": "Asks applicant about commuting: 'commute'."
+ },
+ {
+  "question": "Are you open to working in person with the team?",
+  "expect": true,
+  "why": "Asks applicant about working in person: 'in person'."
+ },
+ {
+  "question": "Will you be able to work hybrid from our Chicago office?",
+  "expect": true,
+  "why": "Asks applicant about hybrid work: 'hybrid'."
+ },
+ {
+  "question": "Do you have the ability to be on site at our client location as needed?",
+  "expect": true,
+  "why": "Asks applicant's ability to be on site: 'can / will / is willing / is able to work on site'."
+ },
+ {
+  "question": "Are you willing to come in 3 days a week?",
+  "expect": true,
+  "why": "Willingness phrase asking applicant to come in N days: 'is willing ... come in N days a week'."
+ },
+ {
+  "question": "The team is in the office Monday through Thursday; can you be there in person?",
+  "expect": true,
+  "why": "Statement about role/team then question to applicant: 'after a statement about the role'."
+ },
+ {
+  "question": "Would you be able to join our staff on site in Denver?",
+  "expect": true,
+  "why": "Other staff mentioned but applicant asked to join on site: 'including when other people are mentioned too'."
+ },
+ {
+  "question": "Are you available to work in-office full-time?",
+  "expect": true,
+  "why": "Asks applicant about in-office work: 'in the office'."
+ },
+ {
+  "question": "Can you commit to being onsite at least two days per week?",
+  "expect": true,
+  "why": "Asks applicant to commit to onsite days: 'can / will ... work on site'."
+ },
+ {
+  "question": "Our contractors meet clients in person; are you able to do the same?",
+  "expect": true,
+  "why": "Contractors mentioned, but applicant asked to do the same: 'including when other people are mentioned too'."
+ },
+ {
+  "question": "Are Dell personnel on site at your employer's facilities?",
+  "expect": false,
+  "why": "Spec example of false: 'Are Dell personnel on site at your employer's facilities?' - people on site are someone else."
+ },
+ {
+  "question": "Do our technicians work on site at your current company?",
+  "expect": false,
+  "why": "Spec example: 'Do our technicians work on site at your current company?' - applicant not asked."
+ },
+ {
+  "question": "Are any of the vendor's staff in the office at your workplace on a regular basis?",
+  "expect": false,
+  "why": "Spec example: vendor's staff are the subject; applicant not asked."
+ },
+ {
+  "question": "Do your employer's contractors work onsite at your facility?",
+  "expect": false,
+  "why": "Contractors are someone else; 'your employer' / 'your facilities' alone does not make applicant the subject."
+ },
+ {
+  "question": "Are representatives from the vendor in the office at your company?",
+  "expect": false,
+  "why": "Vendor representatives are someone else; applicant is not asked to be on site."
+ },
+ {
+  "question": "Do consultants visit your workplace in person?",
+  "expect": false,
+  "why": "Consultants are the people in person, not the applicant."
+ },
+ {
+  "question": "Are team members from the supplier on site at your facilities?",
+  "expect": false,
+  "why": "Supplier team members are the subject; applicant not asked."
+ },
+ {
+  "question": "Do the client's employees commute to your office?",
+  "expect": false,
+  "why": "Client's employees commute, not the applicant."
+ },
+ {
+  "question": "Are engineers from the partner company working on site at your location?",
+  "expect": false,
+  "why": "Partner company engineers are on site; applicant not asked."
+ },
+ {
+  "question": "Does your company have staff in the office on weekends?",
+  "expect": false,
+  "why": "Company staff are in the office, not the applicant; 'your company' alone does not make applicant subject."
+ },
+ {
+  "question": "Are contractors required to be onsite at your employer's building?",
+  "expect": false,
+  "why": "Contractors are required to be onsite, not the applicant."
+ },
+ {
+  "question": "Do vendor technicians come in person to your facilities?",
+  "expect": false,
+  "why": "Vendor technicians come in person, not the applicant."
+ },
+ {
+  "question": "Are any external consultants working in the office at your workplace?",
+  "expect": false,
+  "why": "External consultants work in the office, not the applicant."
+ },
+ {
+  "question": "Do our representatives work on site at your current employer?",
+  "expect": false,
+  "why": "Our representatives are on site; applicant not asked."
+ },
+ {
+  "question": "Are third-party staff commuting to your office regularly?",
+  "expect": false,
+  "why": "Third-party staff commute, not the applicant."
+ }
+]

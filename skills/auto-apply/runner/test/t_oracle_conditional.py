@@ -54,8 +54,8 @@ TABLE = {AUTH: {'status': 'ok', 'value': 'No', 'rule': 'authorized'},
          MONTHS: {'status': 'ok', 'value': 'F-1', 'rule': 'immigration_status'},       # what the shared rules gave on 11-05
          HEARD: {'status': 'ok', 'value': 'Other', 'rule': 'how_heard'},
          'How did you hear about this job?': {'status': 'ok', 'value': 'Online job board', 'rule': 'how_heard'},
-         SECOND: {'status': 'ok', 'value': 'alex.rivera@example.com', 'rule': 'email'},
-         ALT: {'status': 'ok', 'value': 'alex.rivera@example.com', 'rule': 'email'}}
+         SECOND: {'status': 'ok', 'value': 'alex.doe@example.com', 'rule': 'email'},
+         ALT: {'status': 'ok', 'value': 'alex.doe@example.com', 'rule': 'email'}}
 R.answer = lambda qs: {q['key']: dict(TABLE.get(q['label'], {'status': 'unknown'}), label=q['label']) for q in qs}
 R.SECONDARY_EMAIL = None
 R.JOB = {}

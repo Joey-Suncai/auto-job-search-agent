@@ -1,0 +1,4 @@
+{
+ "answer_pipe_partial_no_match": "Claude 2026-11-17 (JSA-241), rule 13: the case is wrong \u2014 qa_add's own matching (answer_rules qaOne, JSA-164) also accepts an option whose normalised text equals the entry's text; 'Yes (full-time) | \u306f\u3044\u2026' normalises (non-ASCII dropped) to 'yes full time' = the saved text, so the answer is found. Unchanged by this row.",
+ "answer_all_empty_no_match": "Claude 2026-11-17 (JSA-241), rule 13: the case is wrong \u2014 all lists empty means a text box; a plain text answer is accepted there (qaOne: text \u2192 ok); the spec's refusal sentence is about forms that show options."
+}

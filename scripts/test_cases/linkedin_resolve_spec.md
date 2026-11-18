@@ -16,15 +16,19 @@ the page text)}.
 0. No controls and head contains (any case) "Job id provided may not be valid", "job posting has been removed" or
    "This job is no longer available" or "Not currently accepting applications" → li_apply "closed".
 1. closed true → li_apply "closed", apply_url "" and ats_url "".
-2. Else look at visible controls first (in order), then all controls: a control whose text — or, if the text says
-   neither, whose aria-label — contains "Easy Apply" → li_apply "easy" (apply_url "", ats_url ""); a control that says
-   "Apply" as a word (and not "applied" / "no longer accepting") → li_apply "external", apply_url = company_link(href),
-   ats_url = apply_url when it is ONE posting on a known applicant-tracking system, else "". The first control that is
-   easy or external decides.
+2. Else look at the VISIBLE controls (in order): a control whose text — or, if the text says neither, whose aria-label
+   — contains "Easy Apply" → li_apply "easy" (apply_url "", ats_url ""); a control that says "Apply" as a word (and not
+   "applied" / "no longer accepting") → li_apply "external", apply_url = company_link(href), ats_url = apply_url when it
+   is ONE posting on a known applicant-tracking system, else "". The first control that is easy or external decides.
    Known systems (host): greenhouse.io, myworkdayjobs.com, lever.co, ashbyhq.com, icims.com, oraclecloud.com,
    smartrecruiters.com, workable.com, successfactors.com, jibeapply.com (subdomains count). "One posting": Workday path
    contains /job/ or /details/; Greenhouse /jobs/<digits> or gh_jid=<digits>; otherwise a UUID or 5+ digits in a row in
    the path or a query value. A careers home page (https://acme.wd5.myworkdayjobs.com/External) is not one posting.
+2b. (JSA-313, 2026-11-11) No visible easy / external control, and head contains (any case) "Not currently accepting
+   applications" or "No longer accepting applications" → li_apply "closed" (apply_url "", ats_url ""), even when the
+   page has other controls that are not apply controls (e.g. "Tailor my resume", "Show match details", "Save") or only
+   hidden apply controls. A visible apply control decides before this rule.
+2c. Else the same as rule 2 over the hidden controls (visible false).
 3. No such control → li_apply "unknown".
 Only li_apply, apply_url and ats_url are checked by the cases (reason is free text).
 

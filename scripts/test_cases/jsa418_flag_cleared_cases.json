@@ -1,0 +1,601 @@
+[
+ {
+  "id": "fc-01",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "id": "j1",
+    "company": "Acme",
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "looks fine, pre-screen false positive"
+    }
+   }
+  },
+  "expect": true,
+  "spec": "A flag is cleared only when `flag_cleared` is a dict whose by, at and note are all non-blank strings (whitespace-only is blank)."
+ },
+ {
+  "id": "fc-02",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "id": "j1",
+    "company": "Acme"
+   }
+  },
+  "expect": false,
+  "spec": "false otherwise (missing key, not a dict, any of the three missing / not a string / blank)."
+ },
+ {
+  "id": "fc-03",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "id": "j1",
+    "flag_cleared": null
+   }
+  },
+  "expect": false,
+  "spec": "false otherwise (missing key, not a dict, any of the three missing / not a string / blank)."
+ },
+ {
+  "id": "fc-04",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "id": "j1",
+    "flag_cleared": "Joey cleared it"
+   }
+  },
+  "expect": false,
+  "spec": "false otherwise (missing key, not a dict, any of the three missing / not a string / blank)."
+ },
+ {
+  "id": "fc-05",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "flag_cleared": {
+     "by": "   ",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "ok"
+    }
+   }
+  },
+  "expect": false,
+  "spec": "A flag is cleared only when `flag_cleared` is a dict whose by, at and note are all non-blank strings (whitespace-only is blank)."
+ },
+ {
+  "id": "fc-06",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z"
+    }
+   }
+  },
+  "expect": false,
+  "spec": "false otherwise (missing key, not a dict, any of the three missing / not a string / blank)."
+ },
+ {
+  "id": "fc-07",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": 1714557600,
+     "note": "ok"
+    }
+   }
+  },
+  "expect": false,
+  "spec": "A flag is cleared only when `flag_cleared` is a dict whose by, at and note are all non-blank strings (whitespace-only is blank)."
+ },
+ {
+  "id": "fc-08",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": ""
+    }
+   }
+  },
+  "expect": false,
+  "spec": "A flag is cleared only when `flag_cleared` is a dict whose by, at and note are all non-blank strings (whitespace-only is blank)."
+ },
+ {
+  "id": "fc-09",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "flag_cleared": [
+     "Joey",
+     "2024-05-01T10:00:00Z",
+     "ok"
+    ]
+   }
+  },
+  "expect": false,
+  "spec": "false otherwise (missing key, not a dict, any of the three missing / not a string / blank)."
+ },
+ {
+  "id": "fc-10",
+  "fn": "flag_cleared",
+  "input": {
+   "job": {
+    "id": "j1",
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "screened",
+     "source": "chat"
+    }
+   }
+  },
+  "expect": true,
+  "spec": "A flag is cleared only when `flag_cleared` is a dict whose by, at and note are all non-blank strings (whitespace-only is blank)."
+ },
+ {
+  "id": "ep-01",
+  "fn": "effective_prep",
+  "input": {
+   "status": "flagged",
+   "job": {
+    "id": "j1",
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "fine"
+    }
+   }
+  },
+  "expect": "ok",
+  "spec": "A prep status \"flagged\" becomes \"ok\" when `flag_cleared(job)` is true"
+ },
+ {
+  "id": "ep-02",
+  "fn": "effective_prep",
+  "input": {
+   "status": "flagged",
+   "job": {
+    "id": "j1"
+   }
+  },
+  "expect": "flagged",
+  "spec": "\"flagged\" stays \"flagged\" otherwise."
+ },
+ {
+  "id": "ep-03",
+  "fn": "effective_prep",
+  "input": {
+   "status": "flagged",
+   "job": null
+  },
+  "expect": "flagged",
+  "spec": "`job` may be None -> unchanged."
+ },
+ {
+  "id": "ep-04",
+  "fn": "effective_prep",
+  "input": {
+   "status": "ok",
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "fine"
+    }
+   }
+  },
+  "expect": "ok",
+  "spec": "Every other status (ok, closed, skipped, ...) is returned unchanged, even when flag_cleared is set."
+ },
+ {
+  "id": "ep-05",
+  "fn": "effective_prep",
+  "input": {
+   "status": "closed",
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "fine"
+    }
+   }
+  },
+  "expect": "closed",
+  "spec": "Every other status (ok, closed, skipped, ...) is returned unchanged, even when flag_cleared is set."
+ },
+ {
+  "id": "ep-06",
+  "fn": "effective_prep",
+  "input": {
+   "status": "skipped",
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": "   "
+    }
+   }
+  },
+  "expect": "skipped",
+  "spec": "Every other status (ok, closed, skipped, ...) is returned unchanged, even when flag_cleared is set."
+ },
+ {
+  "id": "ep-07",
+  "fn": "effective_prep",
+  "input": {
+   "status": "flagged",
+   "job": {
+    "flag_cleared": {
+     "by": "Joey",
+     "at": "2024-05-01T10:00:00Z",
+     "note": ""
+    }
+   }
+  },
+  "expect": "flagged",
+  "spec": "\"flagged\" stays \"flagged\" otherwise."
+ },
+ {
+  "id": "cf-01",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     },
+     {
+      "id": "j2",
+      "company": "Beta"
+     }
+    ]
+   },
+   "ident": "j1",
+   "by": "Joey",
+   "note": "checked, fine",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "j1",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "checked, fine"
+   }
+  },
+  "spec": "The matched job gets flag_cleared {\"by\": by.strip(), \"at\": at, \"note\": note.strip()}"
+ },
+ {
+  "id": "cf-02",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     },
+     {
+      "id": "j2",
+      "company": "Beta"
+     }
+    ]
+   },
+   "ident": "  aCme  ",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "j1",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "ok"
+   }
+  },
+  "spec": "`ident` selects one job: it equals the job's id (as string) or, if no id matches, the job's company (case-insensitive, surrounding spaces ignored)."
+ },
+ {
+  "id": "cf-03",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     }
+    ]
+   },
+   "ident": "j1",
+   "by": "   ",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "error": "ValueError"
+  },
+  "spec": "Raises ValueError when by or note is blank"
+ },
+ {
+  "id": "cf-04",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     }
+    ]
+   },
+   "ident": "j1",
+   "by": "Joey",
+   "note": "  ",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "error": "ValueError"
+  },
+  "spec": "Raises ValueError when by or note is blank"
+ },
+ {
+  "id": "cf-05",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     }
+    ]
+   },
+   "ident": "nope",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "error": "ValueError"
+  },
+  "spec": "Raises ValueError when ... ident matches no job"
+ },
+ {
+  "id": "cf-06",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": []
+   },
+   "ident": "j1",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "error": "ValueError"
+  },
+  "spec": "Raises ValueError when ... ident matches no job"
+ },
+ {
+  "id": "cf-07",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     },
+     {
+      "id": "j2",
+      "company": "acme"
+     }
+    ]
+   },
+   "ident": "ACME",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "error": "ValueError"
+  },
+  "spec": "Raises ValueError when ... a company name matches more than one job"
+ },
+ {
+  "id": "cf-08",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "acme",
+      "company": "Alpha"
+     },
+     {
+      "id": "2",
+      "company": "acme"
+     },
+     {
+      "id": "3",
+      "company": "ACME"
+     }
+    ]
+   },
+   "ident": "acme",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "acme",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "ok"
+   }
+  },
+  "spec": "(an id match is unique and wins)."
+ },
+ {
+  "id": "cf-09",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme",
+      "flag_cleared": {
+       "by": "Sam",
+       "at": "2024-01-01T00:00:00Z",
+       "note": "old note"
+      }
+     }
+    ]
+   },
+   "ident": "j1",
+   "by": "Joey",
+   "note": "second look, fine",
+   "at": "2024-06-01T09:30:00Z"
+  },
+  "expect": {
+   "job_id": "j1",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-06-01T09:30:00Z",
+    "note": "second look, fine"
+   }
+  },
+  "spec": "Clearing again overwrites the earlier value."
+ },
+ {
+  "id": "cf-10",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     }
+    ]
+   },
+   "ident": "j1",
+   "by": "  Joey  ",
+   "note": "  looked  good  ",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "j1",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "looked  good"
+   }
+  },
+  "spec": "The matched job gets flag_cleared {\"by\": by.strip(), \"at\": at, \"note\": note.strip()}"
+ },
+ {
+  "id": "cf-11",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": 42,
+      "company": "Acme"
+     }
+    ]
+   },
+   "ident": "42",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "42",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "ok"
+   }
+  },
+  "spec": "`ident` selects one job: it equals the job's id (as string) or, if no id matches, the job's company (case-insensitive, surrounding spaces ignored)."
+ },
+ {
+  "id": "cf-12",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "id": "j1",
+      "company": "Acme"
+     },
+     {
+      "id": "j2",
+      "company": "Gamma"
+     }
+    ],
+    "batch_id": "b-7"
+   },
+   "ident": "GAMMA",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": "j2",
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "ok"
+   }
+  },
+  "spec": "`ident` selects one job: it equals the job's id (as string) or, if no id matches, the job's company (case-insensitive, surrounding spaces ignored)."
+ },
+ {
+  "id": "cf-13",
+  "fn": "clear_flag",
+  "input": {
+   "batch": {
+    "jobs": [
+     {
+      "company": "Delta"
+     }
+    ]
+   },
+   "ident": "delta",
+   "by": "Joey",
+   "note": "ok",
+   "at": "2024-05-01T10:00:00Z"
+  },
+  "expect": {
+   "job_id": null,
+   "flag_cleared": {
+    "by": "Joey",
+    "at": "2024-05-01T10:00:00Z",
+    "note": "ok"
+   }
+  },
+  "ambiguous": true,
+  "spec": "`ident` selects one job: it equals the job's id (as string) or, if no id matches, the job's company (case-insensitive, surrounding spaces ignored).",
+  "why_ambiguous": "The spec says clear_flag returns (new_batch, job_id) but does not define what job_id is when the matched job has no id key; only the flag_cleared content is determined by the spec."
+ }
+]

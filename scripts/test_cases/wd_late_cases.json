@@ -1,0 +1,376 @@
+[
+ {
+  "name": "no_plan_returns_empty",
+  "spec_quote": "planned_keys None → [] (no plan known).",
+  "args": {
+   "planned_keys": null,
+   "fields": [
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "empty_plan_returns_all_qualifying",
+  "spec_quote": "An empty planned_keys set means nothing was planned, so every qualifying field is returned.",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "email"
+    }
+   ]
+  },
+  "expect": [
+   "Alpha",
+   "Beta"
+  ]
+ },
+ {
+  "name": "fields_none_returns_empty",
+  "spec_quote": "fields None or [] → [].",
+  "args": {
+   "planned_keys": [
+    "a"
+   ],
+   "fields": null
+  },
+  "expect": []
+ },
+ {
+  "name": "fields_empty_returns_empty",
+  "spec_quote": "fields None or [] → [].",
+  "args": {
+   "planned_keys": [],
+   "fields": []
+  },
+  "expect": []
+ },
+ {
+  "name": "filters_out_planned_keys",
+  "spec_quote": "Return the labels of fields whose key is NOT in planned_keys, in the order of `fields`",
+  "args": {
+   "planned_keys": [
+    "a"
+   ],
+   "fields": [
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "text"
+    },
+    {
+     "key": "c",
+     "label": "Gamma",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Beta",
+   "Gamma"
+  ]
+ },
+ {
+  "name": "preserves_order_of_fields",
+  "spec_quote": "Return the labels of fields whose key is NOT in planned_keys, in the order of `fields`",
+  "args": {
+   "planned_keys": [
+    "b"
+   ],
+   "fields": [
+    {
+     "key": "c",
+     "label": "Gamma",
+     "type": "text"
+    },
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Gamma",
+   "Alpha"
+  ]
+ },
+ {
+  "name": "skips_file_type_fields",
+  "spec_quote": "skipping fields of type \"file\" and fields whose label is empty or only whitespace",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "f",
+     "label": "Attachment",
+     "type": "file"
+    },
+    {
+     "key": "t",
+     "label": "Title",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Title"
+  ]
+ },
+ {
+  "name": "skips_empty_label",
+  "spec_quote": "skipping fields of type \"file\" and fields whose label is empty or only whitespace",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "a",
+     "label": "",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Beta"
+  ]
+ },
+ {
+  "name": "skips_whitespace_only_labels",
+  "spec_quote": "skipping fields of type \"file\" and fields whose label is empty or only whitespace",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "a",
+     "label": "   ",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "\t",
+     "type": "text"
+    },
+    {
+     "key": "c",
+     "label": " \n ",
+     "type": "text"
+    },
+    {
+     "key": "d",
+     "label": "Delta",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Delta"
+  ]
+ },
+ {
+  "name": "labels_not_trimmed",
+  "spec_quote": "Labels are returned as given (not trimmed).",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "a",
+     "label": "  Alpha  ",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "\tBeta ",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "  Alpha  ",
+   "\tBeta "
+  ]
+ },
+ {
+  "name": "duplicate_labels_different_keys_each_returned",
+  "spec_quote": "Duplicate labels with different keys are each returned.",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "a",
+     "label": "Same",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Same",
+     "type": "text"
+    },
+    {
+     "key": "c",
+     "label": "Same",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Same",
+   "Same",
+   "Same"
+  ]
+ },
+ {
+  "name": "duplicate_labels_one_key_planned",
+  "spec_quote": "Return the labels of fields whose key is NOT in planned_keys, in the order of `fields`",
+  "args": {
+   "planned_keys": [
+    "a"
+   ],
+   "fields": [
+    {
+     "key": "a",
+     "label": "Same",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Same",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Same"
+  ]
+ },
+ {
+  "name": "file_type_with_nonempty_label_skipped_even_if_unplanned",
+  "spec_quote": "skipping fields of type \"file\" and fields whose label is empty or only whitespace",
+  "args": {
+   "planned_keys": [
+    "x"
+   ],
+   "fields": [
+    {
+     "key": "y",
+     "label": "Upload",
+     "type": "file"
+    },
+    {
+     "key": "z",
+     "label": "Zed",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Zed"
+  ]
+ },
+ {
+  "name": "empty_plan_with_file_field_skips_file",
+  "spec_quote": "An empty planned_keys set means nothing was planned, so every qualifying field is returned.",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "f",
+     "label": "Doc",
+     "type": "file"
+    },
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "e",
+     "label": "  ",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": [
+   "Alpha"
+  ]
+ },
+ {
+  "name": "all_fields_planned_returns_empty",
+  "spec_quote": "Return the labels of fields whose key is NOT in planned_keys, in the order of `fields`",
+  "args": {
+   "planned_keys": [
+    "a",
+    "b",
+    "c"
+   ],
+   "fields": [
+    {
+     "key": "a",
+     "label": "Alpha",
+     "type": "text"
+    },
+    {
+     "key": "b",
+     "label": "Beta",
+     "type": "text"
+    },
+    {
+     "key": "c",
+     "label": "Gamma",
+     "type": "text"
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "name": "file_type_uppercase_FIELD_not_treated_as_file",
+  "spec_quote": "skipping fields of type \"file\" and fields whose label is empty or only whitespace",
+  "args": {
+   "planned_keys": [],
+   "fields": [
+    {
+     "key": "f",
+     "label": "Case",
+     "type": "FILE"
+    }
+   ]
+  },
+  "expect": [
+   "Case"
+  ],
+  "ambiguous": true,
+  "ambiguous_reason": "The spec names the excluded type exactly as \"file\" but does not state whether the type comparison is case-sensitive; this case assumes a literal case-sensitive match so \"FILE\" is not skipped."
+ }
+]

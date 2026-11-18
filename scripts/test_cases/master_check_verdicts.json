@@ -1,0 +1,30 @@
+{
+ "too_many_stock_three_bullets": {
+  "verdict": "case",
+  "why": "'Logged 8 shelves; saved 2 hours.' holds a number but gives no reason (no context phrase, no ' to ' / 'so ' / 'because' / ' for ' marker), so the spec's why rule reports it; the case treated the bullet as clean."
+ },
+ "no_fact_ids_empty_list": {
+  "verdict": "code",
+  "why": "A bullet with no fact ids now also reports star_missing (S, T, A, R all missing): with no cited fact nothing supplies any STAR part."
+ },
+ "too_many_hp_bullets": {
+  "verdict": "case",
+  "why": "4 bullets → cap ceil(0.4×4)=2, and 3 are verb_plain ('Cut costs by 5% for 4 stores.', 'Automated slow reports because…', 'Fixed mismatch found…'), so the spec's shape_dominant fires too; the case listed only too_many."
+ },
+ "no_fact_ids": {
+  "verdict": "case",
+  "why": "Same as no_fact_ids_empty_list (judged code 2026-11-08): with no cited fact nothing supplies S, T, A or R, so star_missing is reported with no_fact_ids — the case itself names that reading."
+ },
+ "wrong_entry_cite": {
+  "verdict": "case",
+  "why": "2 bullets, both verb_purpose ('Built 3 dashboards to speed up reporting.', 'Built 3 services to speed up delivery.'): cap ceil(0.4×2)=1, so shape_dominant fires too."
+ },
+ "never_phrase_bullet": {
+  "verdict": "case",
+  "why": "'synergy' is in the spec's banned list (rule 5) as well as the entry's never list, so banned fires with never — same as the 2026-11-08 judged case."
+ },
+ "summary_never_phrase": {
+  "verdict": "case",
+  "why": "'synergy' is in the spec's banned list (rule 5) as well as the entry's never list, so banned fires with never — same as the 2026-11-08 judged case. The summary text is also checked against the banned words."
+ }
+}

@@ -1,0 +1,871 @@
+[
+ {
+  "name": "bullet_cites_fact_with_bullet_ok_false",
+  "why": "Spec: 'not_bullet: a cited id that ... has bullet_ok false.' Entry e1 is a resume entry because f1 has resume_ok true and no bullet_ok, so the only problem is the second bullet citing f2 (bullet_ok false). Everything else (STAR union, numbers 3 and 4 in f2's numbers, ' to ' why-marker, distinct verbs/shapes) is clean.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Data Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Weekly reporting was done by hand",
+     "T": "Automate recurring reports",
+     "A": "Built Python scripts",
+     "R": "Cut reporting effort sharply",
+     "numbers": [
+      "5",
+      "3",
+      "2"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Support tickets piled up",
+     "T": "Reduce the triage backlog",
+     "A": "Wrote a triage tool",
+     "R": "Raised throughput per agent",
+     "numbers": [
+      "3",
+      "4"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data Engineer",
+   "summary": "Engineer who turns manual reporting into automated pipelines.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Cut costs by 5% for 3 stores; ran 2 audits.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Automated 3 reports to save 4 hours weekly.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_bullet"
+  ]
+ },
+ {
+  "name": "entry_with_only_bullet_ok_false_facts_is_not_resume_entry",
+  "why": "Spec: 'Resume entries = entries with on_resume true, kind not \"education\", and at least one fact whose resume_ok is not false and whose \"bullet_ok\" is not false' and 'not_resume_entry: a master entry_id that is not a resume entry.' e1's only fact f1 has bullet_ok false, so e1 is not a resume entry and having a master entry for it (with no bullets, so no other kind fires) is not_resume_entry. e2 qualifies via f2 and must be present.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Beta Corp",
+     "role": "Analyst",
+     "dates": "2018-2020",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Reports were assembled by hand",
+     "T": "Speed up weekly reporting",
+     "A": "Wrote spreadsheet scripts",
+     "R": "Cut turnaround",
+     "numbers": [
+      "4"
+     ],
+     "skills": [
+      "Spreadsheets"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "Dashboards loaded slowly",
+     "T": "Speed up reporting",
+     "A": "Rebuilt queries",
+     "R": "Cut load times",
+     "numbers": [
+      "3",
+      "5",
+      "2"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Spreadsheets"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Analyst who turns slow dashboards into fast, reliable reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": []
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Cut costs by 5% for 2 stores; ran 3 audits.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_resume_entry"
+  ]
+ },
+ {
+  "name": "master_entry_for_on_resume_false_entry",
+  "why": "Spec: 'Resume entries = entries with on_resume true ...' and 'not_resume_entry: a master entry_id that is not a resume entry.' e1 has on_resume false so it is not a resume entry; its master entry (empty bullets) is the only problem. e2 is a resume entry and is present, so there is no entries_missing.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "OldCo",
+     "role": "Intern",
+     "dates": "2016",
+     "on_resume": false,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Backend Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Legacy scripts failed often",
+     "T": "Stabilize nightly jobs",
+     "A": "Patched cron jobs",
+     "R": "Fewer failures",
+     "numbers": [
+      "2"
+     ],
+     "skills": [
+      "Java"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "Services responded slowly",
+     "T": "Cut latency",
+     "A": "Rebuilt core services",
+     "R": "Faster responses",
+     "numbers": [
+      "6",
+      "4",
+      "2"
+     ],
+     "skills": [
+      "Go"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Go",
+      "Java"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Backend Engineer",
+   "summary": "Backend engineer focused on fast, dependable services.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": []
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Rebuilt 6 services to cut latency.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Trimmed 4 slow jobs for the data team, saving 2 hours a week.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_resume_entry"
+  ]
+ },
+ {
+  "name": "missing_bullet_ok_key_is_allowed_pass",
+  "why": "Spec: a resume entry needs 'at least one fact whose resume_ok is not false and whose \"bullet_ok\" is not false' — an absent bullet_ok is not false, so citing such facts produces no kind at all. Numbers match each cited fact's numbers, each bullet carries a why-marker, and the two bullets use different shapes (verb_purpose vs verb_semicolon).",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Beta",
+     "role": "Analyst",
+     "dates": "2018-2020",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Reports took hours to build",
+     "T": "Automate reporting",
+     "A": "Wrote Python jobs",
+     "R": "Cut hours of effort",
+     "numbers": [
+      "3",
+      "4"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "Too many manual checks",
+     "T": "Reduce manual work",
+     "A": "Standardized checks",
+     "R": "Saved effort per team",
+     "numbers": [
+      "5",
+      "2"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python",
+      "SQL"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Engineer",
+   "summary": "Engineer who turns messy data into clean, trusted dashboards.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Automated 3 reports to save 4 hours weekly.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Cut costs by 5% for 2 teams; ran weekly audits.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "only_bullet_ok_false_entry_left_out_is_fine_pass",
+  "why": "Spec: 'Resume entries = entries with on_resume true ... and at least one fact whose resume_ok is not false and whose \"bullet_ok\" is not false' — e1 has only f1 (bullet_ok false), so it is not a resume entry and omitting it must NOT produce entries_missing ('entries_missing: a resume entry with no master entry'). e2 is the only resume entry and it is present with clean bullets.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Ghost Co",
+     "role": "Contract Analyst",
+     "dates": "2017-2018",
+     "on_resume": true,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Ops Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Old reports were stale",
+     "T": "Refresh reports",
+     "A": "Reran old queries",
+     "R": "Slightly fresher data",
+     "numbers": [
+      "1"
+     ],
+     "skills": [
+      "Excel"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "Ops reviews were slow",
+     "T": "Speed up reviews",
+     "A": "Built dashboards",
+     "R": "Cut review time",
+     "numbers": [
+      "3",
+      "4",
+      "2"
+     ],
+     "skills": [
+      "SQL"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "SQL",
+      "Excel"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Ops Engineer",
+   "summary": "Ops engineer who removes slow manual steps from weekly reporting.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Cut 4 slow reports for the ops team, saving 2 hours.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "bullet_citing_two_facts_one_bullet_ok_false",
+  "why": "Spec: 'not_bullet: a cited id that ... has bullet_ok false.' The first bullet cites f1 (fine) and f2 (bullet_ok false); numbers 4 and 2 are in the union of the cited facts' current numbers, STAR union is complete, so not_bullet is the only kind. Second bullet cites only f1 and is clean.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme",
+     "role": "QA Engineer",
+     "dates": "2019-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Regression runs were manual",
+     "T": "Automate checks",
+     "A": "Wrote test scripts",
+     "R": "Faster runs",
+     "numbers": [
+      "4",
+      "2"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Bugs slipped to release",
+     "T": "Catch regressions early",
+     "A": "Added smoke tests",
+     "R": "Fewer escapes",
+     "numbers": [
+      "4"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "QA Engineer",
+   "summary": "QA engineer who catches regressions before they reach release.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Automated 4 checks to save 2 hours weekly.",
+       "fact_ids": [
+        "f1",
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Cut manual reviews by 2 hours; ran 4 audits for the ops team.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_bullet"
+  ]
+ },
+ {
+  "name": "uncited_bullet_ok_false_fact_stays_clean_pass",
+  "why": "Spec: bullet_ok false only matters for 'a cited id that ... has bullet_ok false'; f2 is never cited, and f1 carries no bullet_ok so it is citable ('whose \"bullet_ok\" is not false'). e1 remains a resume entry and is present, so nothing should fire.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Data Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Reporting was slow",
+     "T": "Speed up reporting",
+     "A": "Built dashboards",
+     "R": "Faster answers",
+     "numbers": [
+      "3"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e1",
+     "S": "Queries were unindexed",
+     "T": "Tune queries",
+     "A": "Rewrote SQL",
+     "R": "Lower cost",
+     "numbers": [
+      "7"
+     ],
+     "skills": [
+      "Python"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Python"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Data Engineer",
+   "summary": "Data engineer who makes reporting fast and repeatable.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Trimmed 3 slow queries for the data team, saving a review cycle.",
+       "fact_ids": [
+        "f1"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": []
+ },
+ {
+  "name": "on_resume_false_entry_and_bullet_ok_false_citation",
+  "why": "Spec: 'not_resume_entry: a master entry_id that is not a resume entry' (e1 has on_resume false) plus 'not_bullet: a cited id that ... has bullet_ok false' (second e2 bullet cites f3). e2 is still a resume entry via f2, and the first bullet is clean.",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "kind": "job",
+     "org": "OldCo",
+     "role": "Intern",
+     "dates": "2016",
+     "on_resume": false,
+     "never": []
+    },
+    {
+     "id": "e2",
+     "kind": "job",
+     "org": "Acme",
+     "role": "Platform Engineer",
+     "dates": "2020-2022",
+     "on_resume": true,
+     "never": []
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "S": "Builds were manual",
+     "T": "Automate builds",
+     "A": "Wrote shell scripts",
+     "R": "Fewer mistakes",
+     "numbers": [
+      "2"
+     ],
+     "skills": [
+      "Java"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "S": "Reporting was slow",
+     "T": "Speed up reporting",
+     "A": "Built dashboards",
+     "R": "Faster answers",
+     "numbers": [
+      "3",
+      "4"
+     ],
+     "skills": [
+      "Go"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "history": []
+    },
+    {
+     "id": "f3",
+     "entry": "e2",
+     "S": "Tickets repeated often",
+     "T": "Cut repeats",
+     "A": "Wrote a triage script",
+     "R": "Fewer repeats",
+     "numbers": [
+      "3",
+      "4"
+     ],
+     "skills": [
+      "Go"
+     ],
+     "never": [],
+     "pairs": [],
+     "resume_ok": true,
+     "bullet_ok": false,
+     "history": []
+    }
+   ],
+   "skills": {
+    "true": {
+     "Tools": [
+      "Go",
+      "Java"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "master": {
+   "headline": "Platform Engineer",
+   "summary": "Platform engineer who keeps services fast and dependable.",
+   "skills": [],
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": []
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Built 3 dashboards to speed up reporting.",
+       "fact_ids": [
+        "f2"
+       ],
+       "competencies": [],
+       "bold": []
+      },
+      {
+       "text": "Cut 4 repeat tickets; wrote a triage script for 3 stalled queues.",
+       "fact_ids": [
+        "f3"
+       ],
+       "competencies": [],
+       "bold": []
+      }
+     ]
+    }
+   ],
+   "reserve": [],
+   "notes": ""
+  },
+  "expect_kinds": [
+   "not_resume_entry",
+   "not_bullet"
+  ]
+ }
+]

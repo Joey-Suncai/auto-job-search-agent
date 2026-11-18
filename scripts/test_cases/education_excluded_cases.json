@@ -1,0 +1,356 @@
+[
+ {
+  "name": "edu_same exact school degree major match",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"degree\":\"BS\",\"major\":\"CS\"}]",
+   "{\"school\":\"MIT\",\"degree\":\"BS\",\"major\":\"CS\"}"
+  ],
+  "expect": true,
+  "spec": "Read-back (`edu_same(want, got)`): `want` is the plan's JSON list (first entry used), `got` the page's JSON object with keys `school`, and `degree` / `major` **only when the page has that box**."
+ },
+ {
+  "name": "edu_same school case-insensitive whitespace-collapsed containment",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"  mass   institute \"}]",
+   "{\"school\":\"Mass Institute of Technology\"}"
+  ],
+  "expect": true,
+  "spec": "The school check is unchanged: the page's school must contain the wanted school (case-insensitive, whitespace collapsed)."
+ },
+ {
+  "name": "edu_same school mismatch",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\"}]",
+   "{\"school\":\"Stanford\"}"
+  ],
+  "expect": false,
+  "spec": "The school check is unchanged: the page's school must contain the wanted school (case-insensitive, whitespace collapsed)."
+ },
+ {
+  "name": "edu_same degree key absent is not checked",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"degree\":\"BS\"}]",
+   "{\"school\":\"MIT\"}"
+  ],
+  "expect": true,
+  "spec": "A wanted part whose key is ABSENT from `got` is not checked (the page cannot show it)."
+ },
+ {
+  "name": "edu_same major key absent is not checked",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"major\":\"CS\"}]",
+   "{\"school\":\"MIT\"}"
+  ],
+  "expect": true,
+  "spec": "A wanted part whose key is ABSENT from `got` is not checked (the page cannot show it)."
+ },
+ {
+  "name": "edu_same degree present empty fails",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"degree\":\"BS\"}]",
+   "{\"school\":\"MIT\",\"degree\":\"\"}"
+  ],
+  "expect": false,
+  "spec": "A key that is present but empty (\"\") while the wanted part is non-empty still fails."
+ },
+ {
+  "name": "edu_same major present empty fails",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"major\":\"CS\"}]",
+   "{\"school\":\"MIT\",\"major\":\"\"}"
+  ],
+  "expect": false,
+  "spec": "A key that is present but empty (\"\") while the wanted part is non-empty still fails."
+ },
+ {
+  "name": "edu_same empty wanted parts never checked",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"degree\":\"\",\"major\":\"\"}]",
+   "{\"school\":\"MIT\",\"degree\":\"PhD\",\"major\":\"Physics\"}"
+  ],
+  "expect": true,
+  "spec": "An empty wanted part is never checked."
+ },
+ {
+  "name": "edu_same unreadable want JSON false",
+  "fn": "edu_same",
+  "args": [
+   "{not valid json",
+   "{\"school\":\"MIT\"}"
+  ],
+  "expect": false,
+  "spec": "Unreadable JSON → false."
+ },
+ {
+  "name": "edu_same unreadable got JSON false",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\"}]",
+   "{not valid json"
+  ],
+  "expect": false,
+  "spec": "Unreadable JSON → false."
+ },
+ {
+  "name": "edu_same first entry used and second ignored",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"MIT\",\"degree\":\"BS\"},{\"school\":\"Stanford\",\"degree\":\"PhD\"}]",
+   "{\"school\":\"MIT\",\"degree\":\"BS\"}"
+  ],
+  "expect": true,
+  "spec": "`want` is the plan's JSON list (first entry used)."
+ },
+ {
+  "name": "edu_same first entry used so second match cannot rescue",
+  "fn": "edu_same",
+  "args": [
+   "[{\"school\":\"Stanford\",\"degree\":\"PhD\"},{\"school\":\"MIT\",\"degree\":\"BS\"}]",
+   "{\"school\":\"MIT\",\"degree\":\"BS\"}"
+  ],
+  "expect": false,
+  "spec": "`want` is the plan's JSON list (first entry used)."
+ },
+ {
+  "name": "edu_select_values four selects returns start and end",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   4,
+   []
+  ],
+  "expect": [
+   "01",
+   "2020",
+   "05",
+   "2024"
+  ],
+  "spec": "4 selects → [start_month, start_year, end_month, end_year]."
+ },
+ {
+  "name": "edu_select_values two selects startDate excluded returns end pair",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   [
+    "startDate"
+   ]
+  ],
+  "expect": [
+   "05",
+   "2024"
+  ],
+  "spec": "2 selects and \"startDate\" excluded → [end_month, end_year]."
+ },
+ {
+  "name": "edu_select_values two selects endDate excluded returns start pair",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   [
+    "endDate"
+   ]
+  ],
+  "expect": [
+   "01",
+   "2020"
+  ],
+  "spec": "2 selects and \"endDate\" excluded → [start_month, start_year]."
+ },
+ {
+  "name": "edu_select_values two selects neither excluded returns empty list",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   []
+  ],
+  "expect": [],
+  "spec": "2 selects and neither excluded (unknown which pair) → [] (nothing is guessed)."
+ },
+ {
+  "name": "edu_select_values two selects degree excluded still neither start nor end excluded",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   [
+    "degree"
+   ]
+  ],
+  "expect": [],
+  "spec": "2 selects and neither excluded (unknown which pair) → [] (nothing is guessed)."
+ },
+ {
+  "name": "edu_select_values two selects startDate excluded with extra degree excluded",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   [
+    "startDate",
+    "degree"
+   ]
+  ],
+  "expect": [
+   "05",
+   "2024"
+  ],
+  "spec": "2 selects and \"startDate\" excluded → [end_month, end_year]."
+ },
+ {
+  "name": "edu_select_values two selects endDate excluded with extra major excluded",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   2,
+   [
+    "endDate",
+    "major"
+   ]
+  ],
+  "expect": [
+   "01",
+   "2020"
+  ],
+  "spec": "2 selects and \"endDate\" excluded → [start_month, start_year]."
+ },
+ {
+  "name": "edu_select_values four selects with degree excluded still all four",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   4,
+   [
+    "degree"
+   ]
+  ],
+  "expect": [
+   "01",
+   "2020",
+   "05",
+   "2024"
+  ],
+  "spec": "4 selects → [start_month, start_year, end_month, end_year]."
+ },
+ {
+  "name": "edu_select_values zero selects returns empty list",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   0,
+   []
+  ],
+  "expect": [],
+  "spec": "any other count (0, 1, 3 …) → []."
+ },
+ {
+  "name": "edu_select_values three selects returns empty list",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_month": "05",
+    "end_year": "2024"
+   },
+   3,
+   []
+  ],
+  "expect": [],
+  "spec": "any other count (0, 1, 3 …) → []."
+ },
+ {
+  "name": "edu_select_values missing value becomes empty string in four-select list",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "start_month": "01",
+    "start_year": "2020",
+    "end_year": "2024"
+   },
+   4,
+   []
+  ],
+  "expect": [
+   "01",
+   "2020",
+   "",
+   "2024"
+  ],
+  "spec": "A value that is missing in `ent` is \"\" in the list."
+ },
+ {
+  "name": "edu_select_values missing value becomes empty string in two-select end pair",
+  "fn": "edu_select_values",
+  "args": [
+   {
+    "end_month": "12"
+   },
+   2,
+   [
+    "startDate"
+   ]
+  ],
+  "expect": [
+   "12",
+   ""
+  ],
+  "spec": "A value that is missing in `ent` is \"\" in the list."
+ }
+]

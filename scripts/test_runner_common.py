@@ -74,7 +74,7 @@ WRONG = 'No' if str(want_future).lower().startswith('y') else 'Yes'
 def make_folder(name, ats, c):
     d = os.path.join(HOME, 'applications', name); os.makedirs(d)
     json.dump({'company': 'Acme', 'title': 'Data Intern', 'url': URLS[ats], 'track': 'Data_Analyst'}, open(os.path.join(d, 'job.json'), 'w'))
-    res = 'Alex_Rivera_Resume_Acme_Data_Intern_A-Classic.pdf'
+    res = 'Alex_Doe_Resume_Acme_Data_Intern_A-Classic.pdf'
     open(os.path.join(d, res), 'wb').write(b'%PDF tailored')
     if c.get('materials_ok', True):
         json.dump({'resume': {'file': res, 'sha256': sha256(os.path.join(d, res)), 'check': 'pass'},

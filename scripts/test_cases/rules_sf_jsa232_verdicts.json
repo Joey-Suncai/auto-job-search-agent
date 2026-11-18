@@ -1,0 +1,3 @@
+{
+  "relatives_nearmiss_08_referral": {"verdict": "case", "why": "The referral rule needs the hiring company (it checks Joey's referrer pool) and this harness passes none, so 'none' (ask) is the designed answer; with a company the runner answers No (an employer dry run 2026-11-10, referral → No). The spec's point — not answered as a relatives question — holds: rule = referral, not relatives."}
+}

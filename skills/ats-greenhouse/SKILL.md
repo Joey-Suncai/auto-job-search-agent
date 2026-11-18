@@ -39,6 +39,7 @@ Part of the job-search agent. Read with `skills/auto-apply/SKILL.md` (general ru
 - Confirmation = `/confirmation` URL or thank-you text that was **not** on the page before the click (JD text often contains "Thank you for your interest").
 
 ## 4. Problem types and the rules that keep them fixed
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Greenhouse: the /confirmation URL, or a new thank-you sentence on a changed page.
 
 **A. A wrong plan looks right.** `verify.js` compares the page with our own plan, so a wrong answer in the plan (degree,
 veteran wording, source, "authorized as of today") shows green. Rule: the **canonical audit** (`canon.py`) reads the
@@ -51,6 +52,14 @@ Hispanic answer, transcript upload slots. Rules: `plan_build` reads `demographic
 processing / demographic = consent, retention = future roles; `test_gdpr_fields.py`); a second fill pass for conditional
 fields; optional generic fields not on the page are skipped (`runtime.json`); a transcript slot gets the profile's official
 transcript (materials gate registers it; `run.py` uploads it).
+The newer form's **Employment section** (API `employment: employment_required | employment_optional`; ids `company-name-N`,
+`title-N`, `start-date-month-N` / `end-date-month-N` (react-select), `start-date-year-N` / `end-date-year-N`, checkbox
+`current-role-N`) is planned by `plan_build.employment_fields()` / `employment_answer()` from the data home's
+`config/wd_profile.json` `work` (newest first, `employment_entries()`): block N takes work entry N, only block 0 is on the
+page (no "Add another" click), a missing entry is never invented (required → needs-user); a current job ticks the box and
+leaves both end fields empty; a past job leaves the box unticked. A month that is a native `<select>` takes the name, the
+3-letter name or the number (alts); a plain text box gets `plan_build.month_text_answer()` (number input → "8", maxlength ≤ 2 / "MM"
+→ "08", else the name). verify.js reads every one back. Tests `test_employment.py` (DeepSeek cases).
 
 **C. Widgets that hold a different value than they show.** react-select shows text while React holds nothing; multi-selects
 are a `<fieldset>` of checkboxes; phone (intl-tel-input) and textareas are uncontrolled; help text ("select all that
@@ -67,7 +76,11 @@ characters, else 1200 (`answer_limit`, `test_answer_limit.py`).
 **E. Post-submit e-mail security codes.** The code boxes are 8 one-character inputs `security-input-0..7` (never a ZIP /
 postal / promo / phone box); the right mail is one that names this company, sent after submit − 30 s, with a code not
 already used (`gmail_code.choose_code`, `data/runner/used_codes.json`); any read error → logged, status unconfirmed — never a
-crash without a results line. Tests `test_code_boxes.py`, `test_choose_code.py` (private).
+crash without a results line. The code is read from the mail's code block first ("…security code field on your
+application:" then the code alone on the next line); codes are sometimes **letters only** ("FTyAUMIB") — accepted only there
+or right after "code:", with length = the number of `security-input-*` boxes (run.py passes it as `n`) and in mixed case, so
+no English word is typed (JSA-304; the subject "…application to a Greenhouse employer" once gave "a Greenhouse employer"). Tests `test_code_boxes.py`,
+`test_choose_code.py`, `test_extract_code.py` (private).
 
 **F. Board URLs.** Some board URLs redirect into a company iframe → use the embed URL
 `job-boards.greenhouse.io/embed/job_app?for=<board>&token=<id>`; EU boards (`job-boards.eu.greenhouse.io`) use the same flow.
@@ -76,8 +89,8 @@ crash without a results line. Tests `test_code_boxes.py`, `test_choose_code.py` 
 queue for Joey. Extensions in the job Chrome (Simplify popups) block clicks → only Claude in Chrome is installed there.
 Every stop — including a materials-gate stop — writes a `results.jsonl` line (`blocked`, mode `gate`) so the scorecard sees it.
 
-**H. Authorization and EEO answers** follow the shared rules (ats-workday types I and J): "for any employer" wins over
-sponsorship wording; anchored veteran picks; Hispanic and race answered by their own rules.
+**H. Authorization and EEO answers** follow the shared rules (ats-workday types I and J): every authorization question = Yes
+(JSA-310, Joey 2026-11-11), sponsorship unchanged, "…any employer without sponsorship" = the sponsorship question; anchored veteran picks; Hispanic and race answered by their own rules.
 
 ## 5. Answers that are easy to get wrong on Greenhouse
 EEO, sponsorship and authorization answers come from `config/profile.json` (JSA-077) — the traps: veteran lists that start with "I identify as a veteran…" when the answer is "not a protected veteran"; a Hispanic question followed by a race list (answer each from its own rule); "authorized for any employer" differs from "authorized" for a restricted status (e.g. F-1 / CPT) · how did you hear: the real source if listed · middle initial N/A only where an initial is asked · cover letter only if the form has a slot.
@@ -159,3 +172,23 @@ authorization + expire → the profile text; a yes/no "is it temporary or subjec
 open_answers.md draft), legal-name boxes go to first / last name, `pronouns` skips self-describe boxes, how-heard and
 `canon.pick` never take a person (recruiter / employee / friend), `plan_build.degree_equiv` adds the level's spellings to
 `accept`. Tests: `scripts/test_rules_1105g.py` (DeepSeek 30), `t_rules.js` (one case each, as seen); replay reasons logged.
+
+**P. Critical answers taken from the wrong part of the question (JSA-281, audit 11-10).** A rule or a saved qa entry matched the wrong part of a critical question, or one merged entry covered two different
+questions; the page matched the plan, so nothing stopped it. Rules: the **fact gate** (`runner/fact_gate.py`, called by
+`canon.audit` before every submit, on the page records and the plan's full-label records) checks conviction,
+any-employer authorization, degree level (completed vs once graduated / pursuing), major (undergrad = Economics, a
+second major / minor = none), the internship start date, a value that is a regex (`^agree$`) and the user's saved
+answer for the exact question (when answers.json wrote the value) against config/profile.json — a mismatch blocks the
+submit and goes to Joey (an exception he confirms: `canon.py --learn <tenant> fact:<key> "<value>"`). In the rules:
+`conviction` (answers.conviction; the asking sentence decides, not a "criminal background check" notice), `any_employer`
+also for "any U.S Employer", `majorWhich` (undergrad / second major / minor), `name_pronunciation` also misspelled,
+`comp` also "(salary and bonus)", `applied_before` from the tracker (never a saved fixed answer; Joey 2026-11-10). The
+prefetch keeps wordings with different marks apart (`form_prefetch.sense`). Tests: `scripts/test_fact_gate.py`
+(DeepSeek 45 + the audit's 9), `scripts/test_jsa281_rules.js` (DeepSeek 40), `scripts/test_prefetch_sense.py` (25).
+
+**Q. A blank confirmation screenshot (JSA-223, all runners).** Symptom: the page was at `/confirmation` and the thank-you text
+read from the DOM, yet `submitted_confirmation.png` was white except for a link underline — the text was not painted yet.
+Rule: `confirm_page.confirmation_shot` settles the page, waits (≤ 8 s) for a success sentence in the page text, takes the
+shot, and when `shot_blank` says it shows (almost) nothing (< 0.1 % of pixels differ from the background) waits and retakes
+(last try as a viewport shot); a shot that stays blank is logged. Used by run.py, run_form.py, run_oracle.py, run_icims.py
+and the common closing step (run_wd.py has its own). Tests: `scripts/test_shot_blank.py` (DeepSeek 22 + a headless page that paints late).

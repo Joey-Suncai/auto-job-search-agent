@@ -1,0 +1,142 @@
+[
+ {
+  "name": "conditional text employer",
+  "label": "If you are currently employed, may we contact your employer?",
+  "type": "text",
+  "options": [],
+  "expect": "N/A"
+ },
+ {
+  "name": "conditional select with N/A option",
+  "label": "If you are currently employed, may we contact your employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "N/A"
+  ],
+  "expect": "N/A"
+ },
+ {
+  "name": "conditional select with Not applicable option",
+  "label": "If currently employed, may we contact your current supervisor?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No",
+   "Not applicable"
+  ],
+  "expect": "Not applicable"
+ },
+ {
+  "name": "conditional select with Does not apply option",
+  "label": "If you are currently employed, may we contact your employer?",
+  "type": "select",
+  "options": [
+   "Does not apply",
+   "Yes",
+   "No"
+  ],
+  "expect": "Does not apply"
+ },
+ {
+  "name": "conditional select only Yes No",
+  "label": "If you are currently employed, may we contact your employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "conditional select only Yes No reversed",
+  "label": "If currently employed, may we contact your current supervisor?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "ask"
+ },
+ {
+  "name": "plain current employer Yes No",
+  "label": "May we contact your current employer?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "plain current employer reversed",
+  "label": "May we contact your current employer?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "previous employers Yes No",
+  "label": "May we contact your previous employers?",
+  "type": "select",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "previous employers reversed",
+  "label": "May we contact your previous employers?",
+  "type": "select",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "conditional N/A first",
+  "label": "If you are currently employed, may we contact your employer?",
+  "type": "select",
+  "options": [
+   "N/A",
+   "Yes",
+   "No"
+  ],
+  "expect": "N/A"
+ },
+ {
+  "name": "conditional text supervisor",
+  "label": "If currently employed, may we contact your current supervisor?",
+  "type": "text",
+  "options": [],
+  "expect": "N/A"
+ },
+ {
+  "name": "plain current employer with N/A option",
+  "label": "May we contact your current employer?",
+  "type": "select",
+  "options": [
+   "N/A",
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ },
+ {
+  "name": "previous employers with N/A option",
+  "label": "May we contact your previous employers?",
+  "type": "select",
+  "options": [
+   "N/A",
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes"
+ }
+]

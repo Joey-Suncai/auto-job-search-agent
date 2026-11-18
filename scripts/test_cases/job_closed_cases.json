@@ -1,0 +1,584 @@
+[
+ {
+  "name": "gh_single_200_is_open",
+  "fn": "gh_verdict",
+  "statuses": [
+   200
+  ],
+  "expect": "open",
+  "spec_quote": "Any status 200 → \"open\"."
+ },
+ {
+  "name": "gh_200_after_404_is_open",
+  "fn": "gh_verdict",
+  "statuses": [
+   404,
+   200
+  ],
+  "expect": "open",
+  "spec_quote": "Any status 200 → \"open\"."
+ },
+ {
+  "name": "gh_200_with_5xx_on_other_host_is_open",
+  "fn": "gh_verdict",
+  "statuses": [
+   200,
+   500
+  ],
+  "expect": "open",
+  "spec_quote": "Any status 200 → \"open\"."
+ },
+ {
+  "name": "gh_single_404_is_closed",
+  "fn": "gh_verdict",
+  "statuses": [
+   404
+  ],
+  "expect": "closed",
+  "spec_quote": "Otherwise every status is 404 or 410 (and the list is not empty) → \"closed\"."
+ },
+ {
+  "name": "gh_single_410_is_closed",
+  "fn": "gh_verdict",
+  "statuses": [
+   410
+  ],
+  "expect": "closed",
+  "spec_quote": "Otherwise every status is 404 or 410 (and the list is not empty) → \"closed\"."
+ },
+ {
+  "name": "gh_404_and_410_both_hosts_is_closed",
+  "fn": "gh_verdict",
+  "statuses": [
+   404,
+   410
+  ],
+  "expect": "closed",
+  "spec_quote": "Otherwise every status is 404 or 410 (and the list is not empty) → \"closed\"."
+ },
+ {
+  "name": "gh_empty_status_list_is_unknown",
+  "fn": "gh_verdict",
+  "statuses": [],
+  "expect": "unknown",
+  "spec_quote": "Otherwise every status is 404 or 410 (and the list is not empty) → \"closed\"."
+ },
+ {
+  "name": "gh_403_is_unknown",
+  "fn": "gh_verdict",
+  "statuses": [
+   403
+  ],
+  "expect": "unknown",
+  "spec_quote": "Anything else — 403, 429, 5xx, 0 (network error / timeout), or a mix of 404 and an error — → \"unknown\". An error is never \"closed\"."
+ },
+ {
+  "name": "gh_404_mixed_with_429_is_unknown",
+  "fn": "gh_verdict",
+  "statuses": [
+   429,
+   404
+  ],
+  "expect": "unknown",
+  "spec_quote": "Anything else — 403, 429, 5xx, 0 (network error / timeout), or a mix of 404 and an error — → \"unknown\". An error is never \"closed\"."
+ },
+ {
+  "name": "gh_network_error_zero_is_unknown",
+  "fn": "gh_verdict",
+  "statuses": [
+   0
+  ],
+  "expect": "unknown",
+  "spec_quote": "Anything else — 403, 429, 5xx, 0 (network error / timeout), or a mix of 404 and an error — → \"unknown\". An error is never \"closed\"."
+ },
+ {
+  "name": "lever_id_present_is_open",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "[{\"id\":\"abc123\",\"text\":\"Engineer\"}]",
+  "job_id": "abc123",
+  "expect": "open",
+  "spec_quote": "status 200, the list contains a posting whose `id` equals job_id → \"open\"."
+ },
+ {
+  "name": "lever_id_case_differs_is_closed",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "[{\"id\":\"ABC123\"}]",
+  "job_id": "abc123",
+  "expect": "closed",
+  "spec_quote": "ids compare as exact strings."
+ },
+ {
+  "name": "lever_empty_list_is_unknown",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "[]",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status 200, a valid but EMPTY list → \"unknown\" (an empty board is more likely an outage than every job closing)."
+ },
+ {
+  "name": "lever_nonempty_list_without_id_is_closed",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "[{\"id\":\"x1\"},{\"id\":\"x2\"}]",
+  "job_id": "x3",
+  "expect": "closed",
+  "spec_quote": "status 200, a valid non-empty list without that id → \"closed\"."
+ },
+ {
+  "name": "lever_invalid_json_is_unknown",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "<html>not json</html>",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status 200 and the body is not valid JSON, or not the expected shape (Lever: not a list; Ashby: no `jobs` list) → \"unknown\"."
+ },
+ {
+  "name": "lever_object_body_is_wrong_shape",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 200,
+  "body": "{\"jobs\":[{\"id\":\"abc123\"}]}",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status 200 and the body is not valid JSON, or not the expected shape (Lever: not a list; Ashby: no `jobs` list) → \"unknown\"."
+ },
+ {
+  "name": "lever_board_404_is_unknown",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 404,
+  "body": "",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status not 200 (403, 404, 429, 5xx, 0 …) → \"unknown\": a board that cannot be read says nothing about the job. (A 404 on the whole board is a wrong slug, not a closed job.)"
+ },
+ {
+  "name": "lever_board_429_is_unknown",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 429,
+  "body": "[{\"id\":\"x1\"}]",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status not 200 (403, 404, 429, 5xx, 0 …) → \"unknown\": a board that cannot be read says nothing about the job."
+ },
+ {
+  "name": "lever_network_error_is_unknown",
+  "fn": "board_verdict",
+  "platform": "lever",
+  "status": 0,
+  "body": "",
+  "job_id": "abc123",
+  "expect": "unknown",
+  "spec_quote": "status not 200 (403, 404, 429, 5xx, 0 …) → \"unknown\": a board that cannot be read says nothing about the job."
+ },
+ {
+  "name": "ashby_id_present_is_open",
+  "fn": "board_verdict",
+  "platform": "ashby",
+  "status": 200,
+  "body": "{\"jobs\":[{\"id\":\"j1\",\"title\":\"PM\"},{\"id\":\"j2\"}]}",
+  "job_id": "j1",
+  "expect": "open",
+  "spec_quote": "status 200, the list contains a posting whose `id` equals job_id → \"open\"."
+ },
+ {
+  "name": "ashby_nonempty_list_without_id_is_closed",
+  "fn": "board_verdict",
+  "platform": "ashby",
+  "status": 200,
+  "body": "{\"jobs\":[{\"id\":\"j1\"}]}",
+  "job_id": "j2",
+  "expect": "closed",
+  "spec_quote": "status 200, a valid non-empty list without that id → \"closed\"."
+ },
+ {
+  "name": "ashby_empty_jobs_is_unknown",
+  "fn": "board_verdict",
+  "platform": "ashby",
+  "status": 200,
+  "body": "{\"jobs\":[]}",
+  "job_id": "j1",
+  "expect": "unknown",
+  "spec_quote": "status 200, a valid but EMPTY list → \"unknown\" (an empty board is more likely an outage than every job closing)."
+ },
+ {
+  "name": "ashby_missing_jobs_key_is_unknown",
+  "fn": "board_verdict",
+  "platform": "ashby",
+  "status": 200,
+  "body": "{\"ok\":true,\"data\":[]}",
+  "job_id": "j1",
+  "expect": "unknown",
+  "spec_quote": "status 200 and the body is not valid JSON, or not the expected shape (Lever: not a list; Ashby: no `jobs` list) → \"unknown\"."
+ },
+ {
+  "name": "ashby_invalid_json_is_unknown",
+  "fn": "board_verdict",
+  "platform": "ashby",
+  "status": 200,
+  "body": "{jobs: [",
+  "job_id": "j1",
+  "expect": "unknown",
+  "spec_quote": "status 200 and the body is not valid JSON, or not the expected shape (Lever: not a list; Ashby: no `jobs` list) → \"unknown\"."
+ },
+ {
+  "name": "mark_open_elig_is_closed",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 1,
+   "elig": "可投",
+   "tier": "A"
+  },
+  "why": "greenhouse 404 on both hosts",
+  "source": "greenhouse",
+  "today": "2025-03-04",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-03-04",
+    "why": "greenhouse 404 on both hosts",
+    "source": "greenhouse"
+   },
+   "tier_orig": "A"
+  },
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; elig_base \"已关闭\"; elig_checked today; elig_reason is a Chinese text that contains today's date, the source and why; elig_closed = {\"at\": today, \"why\": why, \"source\": source}; tier_orig is set to the old tier when the row has none yet; tier \"Blocked\". Returns True."
+ },
+ {
+  "name": "mark_pending_check_elig_is_closed",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 2,
+   "elig": "待核实",
+   "tier": "B"
+  },
+  "why": "lever board list without id",
+  "source": "lever",
+  "today": "2025-03-04",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-03-04",
+    "why": "lever board list without id",
+    "source": "lever"
+   },
+   "tier_orig": "B"
+  },
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; … tier \"Blocked\". Returns True."
+ },
+ {
+  "name": "mark_missing_elig_key_is_closed",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 3,
+   "tier": "C"
+  },
+  "why": "ashby jobs list without id",
+  "source": "ashby",
+  "today": "2025-01-15",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-01-15",
+    "why": "ashby jobs list without id",
+    "source": "ashby"
+   },
+   "tier_orig": "C"
+  },
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; … Returns True."
+ },
+ {
+  "name": "mark_empty_elig_string_is_closed",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 4,
+   "elig": "",
+   "tier": "A"
+  },
+  "why": "job gone",
+  "source": "greenhouse",
+  "today": "2025-02-02",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-02-02",
+    "why": "job gone",
+    "source": "greenhouse"
+   },
+   "tier_orig": "A"
+  },
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; … Returns True."
+ },
+ {
+  "name": "mark_already_closed_is_noop",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 5,
+   "elig": "已关闭",
+   "tier": "Blocked"
+  },
+  "why": "second detection",
+  "source": "lever",
+  "today": "2025-06-01",
+  "expect": {
+   "changed": false,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": null,
+   "tier_orig": null
+  },
+  "spec_quote": "row elig already \"已关闭\" → nothing changes (the first date and reason stay), returns False."
+ },
+ {
+  "name": "mark_not_applicable_elig_stays",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 6,
+   "elig": "不可投",
+   "tier": "Blocked"
+  },
+  "why": "posting 404",
+  "source": "greenhouse",
+  "today": "2025-06-01",
+  "expect": {
+   "changed": false,
+   "elig": "不可投",
+   "tier": "Blocked",
+   "elig_closed": null,
+   "tier_orig": null
+  },
+  "spec_quote": "row elig \"不可投\" or \"重复\" → nothing changes, returns False (a stronger verdict stays)."
+ },
+ {
+  "name": "mark_duplicate_elig_stays",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 7,
+   "elig": "重复",
+   "tier": "A"
+  },
+  "why": "posting closed",
+  "source": "lever",
+  "today": "2025-06-01",
+  "expect": {
+   "changed": false,
+   "elig": "重复",
+   "tier": "A",
+   "elig_closed": null,
+   "tier_orig": null
+  },
+  "spec_quote": "row elig \"不可投\" or \"重复\" → nothing changes, returns False (a stronger verdict stays)."
+ },
+ {
+  "name": "mark_existing_tier_orig_is_kept",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 8,
+   "elig": "可投",
+   "tier": "A",
+   "tier_orig": "B"
+  },
+  "why": "closed on both GH hosts",
+  "source": "greenhouse",
+  "today": "2025-04-09",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-04-09",
+    "why": "closed on both GH hosts",
+    "source": "greenhouse"
+   },
+   "tier_orig": "B"
+  },
+  "spec_quote": "tier_orig is set to the old tier when the row has none yet; tier \"Blocked\"."
+ },
+ {
+  "name": "mark_why_truncated_to_200_chars",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 9,
+   "elig": "可投",
+   "tier": "A"
+  },
+  "why": "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij",
+  "source": "lever",
+  "today": "2025-05-05",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-05-05",
+    "why": "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij",
+    "source": "lever"
+   },
+   "tier_orig": "A"
+  },
+  "spec_quote": "why is cut to 200 characters."
+ },
+ {
+  "name": "mark_empty_why_still_marks",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 10,
+   "elig": "待核实",
+   "tier": "A"
+  },
+  "why": "",
+  "source": "ashby",
+  "today": "2025-07-07",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-07-07",
+    "why": "",
+    "source": "ashby"
+   },
+   "tier_orig": "A"
+  },
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; … Returns True."
+ },
+ {
+  "name": "mark_row_without_tier_key",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 11,
+   "elig": "可投"
+  },
+  "why": "job closed",
+  "source": "lever",
+  "today": "2025-08-08",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-08-08",
+    "why": "job closed",
+    "source": "lever"
+   },
+   "tier_orig": null
+  },
+  "ambiguous": true,
+  "spec_quote": "tier_orig is set to the old tier when the row has none yet; tier \"Blocked\"."
+ },
+ {
+  "name": "mark_existing_tier_orig_with_pending_check",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 12,
+   "elig": "待核实",
+   "tier": "S",
+   "tier_orig": "S"
+  },
+  "why": "board list non-empty without id",
+  "source": "ashby",
+  "today": "2025-09-09",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-09-09",
+    "why": "board list non-empty without id",
+    "source": "ashby"
+   },
+   "tier_orig": "S"
+  },
+  "spec_quote": "tier_orig is set to the old tier when the row has none yet; tier \"Blocked\"."
+ },
+ {
+  "name": "mark_today_recorded_in_elig_closed",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 13,
+   "elig": "可投",
+   "tier": "A"
+  },
+  "why": "岗位已下线",
+  "source": "greenhouse",
+  "today": "2024-12-31",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2024-12-31",
+    "why": "岗位已下线",
+    "source": "greenhouse"
+   },
+   "tier_orig": "A"
+  },
+  "spec_quote": "elig_checked today; elig_reason is a Chinese text that contains today's date, the source and why; elig_closed = {\"at\": today, \"why\": why, \"source\": source}."
+ },
+ {
+  "name": "mark_row_not_deleted_and_id_kept",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": "job-42",
+   "elig": "可投",
+   "tier": "B"
+  },
+  "why": "gone",
+  "source": "lever",
+  "today": "2025-10-10",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-10-10",
+    "why": "gone",
+    "source": "lever"
+   },
+   "tier_orig": "B"
+  },
+  "spec_quote": "Mutates the store row dict and returns True when it changed anything, else False. The row is never deleted."
+ },
+ {
+  "name": "mark_whitespace_elig_unclear",
+  "fn": "mark_closed_row",
+  "row": {
+   "id": 15,
+   "elig": " ",
+   "tier": "A"
+  },
+  "why": "posting closed",
+  "source": "lever",
+  "today": "2025-11-11",
+  "expect": {
+   "changed": true,
+   "elig": "已关闭",
+   "tier": "Blocked",
+   "elig_closed": {
+    "at": "2025-11-11",
+    "why": "posting closed",
+    "source": "lever"
+   },
+   "tier_orig": "A"
+  },
+  "ambiguous": true,
+  "spec_quote": "row elig is \"可投\", \"待核实\", empty or missing → elig \"已关闭\"; … — the spec lists \"empty or missing\" but does not say whether a whitespace-only string counts as empty."
+ }
+]

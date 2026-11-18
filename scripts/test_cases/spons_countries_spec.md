@@ -1,0 +1,11 @@
+SPEC — answering sponsorship questions on job application forms for one candidate.
+Candidate facts: F-1 student; does NOT need visa sponsorship now (internship on CPT); WILL need sponsorship in the future (H-1B for full-time). Explanation text on file: "F-1 student; summer internship on CPT, would need H-1B sponsorship for full-time".
+
+Rules:
+1. spons_countries: a free-text / textbox question that asks the candidate to LIST, INDICATE, SPECIFY or NAME the countries or locations for which they (now or in the future) require sponsorship (e.g. "indicate all locations or countries for which you now, or in the future, require sponsorship … separate each with a comma … if this does not apply indicate N/A", "Please list the countries where you would need visa sponsorship", "In which countries will you require sponsorship?"). Answer: "United States" when the candidate needs sponsorship now or in the future; "N/A" only if they need it neither now nor later. For this candidate → "United States". The answer is never "Yes" or "No".
+2. spons_future: a Yes/No question asking whether the candidate requires sponsorship now or in the future ("Will you now or in the future require sponsorship?", "Do you require sponsorship to work in the country where this job is located?", "Will you require sponsorship in any country?"). A question that starts with "Do/Will/Are/Would you …" stays a Yes/No question even if it mentions countries or locations. Answer for this candidate: "Yes".
+3. spons_now: a question only about sponsorship NOW / for this internship / at this time, with no "future" → "No".
+4. sponsorship_type: "What type of sponsorship will you require?" / "If yes, what type of sponsorship?" → the explanation text (rule id sponsorship_type), never "Yes", never "United States".
+5. "Without sponsorship" questions ("Are you authorized to work in the U.S. without sponsorship now or in the future?") → "No" (inverted; not spons_countries).
+6. Questions about a list of countries of CITIZENSHIP / passport (export-control lists such as "For any of the countries listed below: are you a citizen or have a passport …") are NOT sponsorship questions and must not get rule spons_countries.
+7. Questions about sponsoring relocation or housing are not visa sponsorship.

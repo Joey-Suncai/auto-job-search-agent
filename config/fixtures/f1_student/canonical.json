@@ -57,10 +57,10 @@
     "\\bnever\\b"
    ],
    "evidence": "candidate-profile: 'Require sponsorship now or in the future = Yes'; statement options 'I require sponsorship to work in this country' (Central Hudson 2026-11-01)",
-   "label_not": "check all that apply|which office|relocation support|select (all|both)|(type|kind|category) of (visa |immigration )?sponsorship|sponsorship (type|category)|arbitrat|plans?.? sponsors|benefit plan|(event|executive|plan|corporate|title) sponsors?\\b|by checking this box"
+   "label_not": "check all that apply|which office|relocation support|select (all|both)|(type|kind|category) of (visa |immigration )?sponsorship|sponsorship (type|category)|arbitrat|plans?.? sponsors|benefit plan|(event|executive|plan|corporate|title) sponsors?\\b|by checking this box|sponsor\\w* (relocation|housing|travel)|\\bwhat kind\\b|\\bif you answered\\b|extension options"
   },
   "sponsorship_now": {
-   "label_re": "^(?!.*future)(?!.*(after graduat|at any time|any time after|later|eventually|going forward|upon graduation|full[- ]time))(?=.*(\\bnow\\b|\\bcurrently\\b|at this time|to (begin|start) (the|this) internship)).*sponsor",
+   "label_re": "^(?!.*(future|\\bever\\b))(?!.*(after graduat|at any time|any time after|later|eventually|going forward|upon graduation|full[- ]time))(?=.*(\\bnow\\b|\\bimmediately\\b|\\bcurrently\\b|at this time|to (begin|start) (the|this) internship|(for|during) (this|the) internship|to (begin|start) (working|work|employment))).*sponsor",
    "want": "No",
    "accept_exact": [
     "no"
@@ -68,12 +68,12 @@
    "accept": [
     "^no\\b"
    ],
-   "evidence": "candidate-profile: 'Sponsorship asked separately: now = No (internship on CPT)'",
-   "label_not": "check all that apply|which office|relocation support|select (all|both)"
+   "evidence": "candidate-profile: 'Sponsorship asked separately: now = No (internship on CPT)'; 'sponsor a visa for this internship' / 'sponsorship to begin working' = now (an Ashby employer, a Greenhouse employer; audit 11-08, JSA-246)",
+   "label_not": "check all that apply|which office|relocation support|select (all|both)|sponsor\\w* (relocation|housing|travel)|\\bwhat kind\\b|\\bif you answered\\b|extension options"
   },
   "immigration_status": {
    "label_re": "immigration status|work authori[sz]ation (type|category|status)|visa (type|status|category)|type of visa|current status",
-   "label_not": "provide details|details (on|of|about)|please (describe|explain)|^\\s*(are|will|do|does|have|can|would|is) (you|your)\\b|legally (qualified|authori[sz]ed|eligible)|sponsorship|expir(e|es|ed|ation|y)\\b",
+   "label_not": "provide details|details (on|of|about)|please (describe|explain)|^\\s*(are|will|do|does|have|can|would|is) (you|your)\\b|legally (qualified|authori[sz]ed|eligible)|sponsorship|expir(e|es|ed|ation|y)\\b|extension options",
    "want": "F-1",
    "accept_exact": [
     "f-1",
@@ -170,7 +170,7 @@
    "label_not": "\\bwhat (school|university|college)\\b|\\b(school|university|college|institution) (are|do|did) you\\b|\\bgpa\\b|grade point"
   },
   "school": {
-   "label_re": "\\bschool\\b|university|institution",
+   "label_re": "^(?:current |your |name of (?:your )?|the )?(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*(?: name| attended| attending)?\\W*$|\\b(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+name\\b|\\bname of (?:the |your )?(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\b|\\b(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+(?:that |which |where )?you\\s+(?:are\\s+)?(?:currently\\s+|previously\\s+)?(?:attend|attended|attending|enrolled)|\\b(?:enter|select|list|provide|specify|confirm|re-confirm|type|write|choose|pick|indicate)\\s+(?:your|the)\\s+(?:current\\s+|most recent\\s+)?(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\b|\\b(?:which|what)\\s+(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+(?:do|did|are|were|will)\\s+you\\b|\\b(?:which|what)\\s+(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+(?:are you|is)\\b|\\byour\\s+(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+is\\s+not\\s+listed\\b|\\b(?:school|college|university|institution)(?:\\s*(?:/|or|and)\\s*(?:school|college|university|institution))*\\s+where\\s+you\\s+are\\s+(?:currently\\s+)?enrolled",
    "want": "University of Chicago / University of Illinois",
    "accept": [
     "chicago",
@@ -182,7 +182,8 @@
     "high school"
    ],
    "evidence": "candidate-profile Education; rule 8: XJTLU never on an application",
-   "label_not": "employ|government|public (sector|institution)|work experience|\\?|enrolled|return to school|date|graduat|result scale|gpa|grade|country|location|located|city|state|address|high school|tell us|describe|accomplish|example|explain|share|walk us|from school or|when (will |do )?you (will )?(complete|finish)"
+   "label_not": "high school|employ|\\bgpa\\b|e-?mail|address|\\bcity\\b|\\bstate\\b|country|location|grad(?:e|es|ing|uation|uate)\\b|scale",
+   "label_why": "JSA-321 (Joey 2026-11-11 「选B」): a positive match — the label must ask for the school itself (a bare 'School' / 'School or University' / 'School name', 'enter / select / list your university', 'the university you attend', 'which school do you attend', 'your school is not listed'). A label that only mentions a school while asking something else (a Greenhouse employer: 'the grading scale used by your current school') is not the school question. label_not keeps only other things a school label can name: high school, its e-mail / address / location, GPA, grades."
   },
   "veteran_status": {
    "label_re": "veteran",

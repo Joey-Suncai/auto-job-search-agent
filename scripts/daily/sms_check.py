@@ -6,6 +6,7 @@ A text is kept only when BOTH hold — it names the company of an applied row AN
 interview, recruiter, assessment, offer, …) — so personal texts are never written anywhere. Kept texts go through the
 same rules as e-mail (email_check.classify / apply_mail): appended to data/store/emails.jsonl with channel "sms",
 the row's last-message fields updated, a rejection closes the row, an assessment invite moves Applied → Assessment.
+When Claude cannot read a text it is stored as Pending and changes nothing until a later run reads it (JSA-281).
 A job-sounding text that names no applied company is listed in the local log (git-ignored) for a session — never guessed.
 Verification / security codes are skipped. Never sends, never replies, never marks anything read.
 
@@ -49,14 +50,31 @@ def decode_body(blob):
     return b[start:start + n].decode("utf-8", "replace")
 
 
+SELECT = """select m.guid, m.date, m.text, m.attributedBody, coalesce(h.id, ''), coalesce(m.service, '')
+            from message m left join handle h on m.handle_id = h.ROWID where m.is_from_me = 0 and """
+
+
 def fetch(days, db=DB):
     since = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=days)
     ns = int((since - APPLE_EPOCH).total_seconds() * 1e9)
     con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
-    rows = con.execute("""select m.guid, m.date, m.text, m.attributedBody, coalesce(h.id, ''), coalesce(m.service, '')
-                          from message m left join handle h on m.handle_id = h.ROWID
-                          where m.is_from_me = 0 and m.date > ? order by m.date""", (ns,)).fetchall()
+    rows = con.execute(SELECT + "m.date > ? order by m.date", (ns,)).fetchall()
     con.close()
+    return _texts(rows)
+
+
+def fetch_ids(ids, db=DB):
+    """Stored texts by id ("sms-<guid>") — Pending rows that left the window (JSA-281)."""
+    guids = [i[4:] for i in ids if i.startswith("sms-")]
+    if not guids:
+        return []
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    rows = con.execute(SELECT + f"m.guid in ({','.join('?' * len(guids))}) order by m.date", guids).fetchall()
+    con.close()
+    return _texts(rows)
+
+
+def _texts(rows):
     out = []
     for guid, d, text, attr, handle, service in rows:
         body = " ".join((text or decode_body(attr) or "").split())
@@ -108,13 +126,18 @@ def main(a):
         if "--no-notify" not in a:
             notify(f"短信核对失败 {ec.TODAY}", f"{why}\n申请台账未改动。")
         return 1
+    if "--dry-run" not in a:
+        ec.sync_tracker(log)
     apps, emails = store.load("applications"), store.load("emails")
     reader, notes, own = ec.make_reader(apps, log, a), {}, own_numbers()
-    rd = None if isinstance(reader, dict) else reader
+    rd = ec.tracked(reader)
+    if rd is not None and rd.reader is not None:
+        texts += ec.older_pending(emails, texts, "sms", lambda ids: fetch_ids(ids, db), log)
     sp = ec.seen_path("sms")
     seen = ec.load_seen(sp)
     new, push, handled = ec.run_new(texts, lambda t: apply_text(apps, emails, t, rd, notes, own), seen, notes, len(apps),
                                     "--reread" in a)
+    ec.health(rd, log, "--no-notify" not in a and "--dry-run" not in a, "--dry-run" in a)
     unmatched = [r for r in new if r.get("unmatched")]
     rows = [r for r in new if not r.get("unmatched")]
     if "--dry-run" not in a:

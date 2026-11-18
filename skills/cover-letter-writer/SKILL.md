@@ -1,6 +1,6 @@
 ---
 name: cover-letter-writer
-description: Writes Alex Rivera's cover letter for one specific job — reads the job description, maps its must-haves to his verified profile and pre-approved story bank, drafts a one-page letter, and produces .txt, .docx and .pdf in the application folder. Use whenever a cover letter is needed, including from auto-apply.
+description: Writes the candidate's cover letter for one specific job — reads the job description, maps its must-haves to his verified profile and pre-approved story bank, drafts a one-page letter, and produces .txt, .docx and .pdf in the application folder. Use whenever a cover letter is needed, including from auto-apply.
 ---
 
 # Cover-letter writer (agent)
@@ -13,7 +13,7 @@ description: Writes Alex Rivera's cover letter for one specific job — reads th
 - output folder `applications/<YYYY-MM-DD>_<Company>/`;
 - optionally, where the letter will go (a file upload, or a text box with a character limit).
 
-**Outputs:** `fit_map.md`, `cover.txt`, `Alex_Rivera_Cover_Letter_<Company>.docx` and `.pdf`.
+**Outputs:** `fit_map.md`, `cover.txt`, `<First>_<Last>_Cover_Letter_<Company>.docx` and `.pdf`.
 
 **Sources of facts:** `skills/_shared/candidate-profile.md` and `skills/_shared/story-bank.md`. Nothing else.
 
@@ -23,7 +23,7 @@ description: Writes Alex Rivera's cover letter for one specific job — reads th
 3. **Show, don't claim.** No trait adjective ("detail-oriented", "passionate", "strong communicator") unless the same sentence or the next one proves it with a concrete example.
 4. **Warm, plain tone** — like writing to a colleague he respects but doesn't know well. No template phrases: "I am writing to express my interest", "I believe I would be a great fit", "fast-paced", "dynamic", "leverage", "passionate about", "I am confident that".
 5. **Specificity test.** If another applicant could send the letter with only the name changed, rewrite it.
-6. **Never write what he hasn't done** (Joey 2026-11-05: 「不写我还没做过 X」). No "I have not / haven't (yet) used X", no list of missing tools or domains — in the letter or in open answers. A JD tool he lacks is a gap in `fit_map.md`, never a sentence. When his background will make the reader wonder (economics degree for an engineering role), answer with what he *has* done that fits, with evidence — no apology, no gap list. Enforced by `ds_materials.py` from JSA-190; until then check `cover.txt` for such sentences.
+6. **Never write what he hasn't done** (Joey 2026-11-05: 「不写我还没做过 X」). No "I have not / haven't (yet) used X", no list of missing tools or domains — in the letter or in open answers. A JD tool he lacks is a gap in `fit_map.md`, never a sentence. When his background will make the reader wonder (economics degree for an engineering role), answer with what he *has* done that fits, with evidence — no apology, no gap list. Enforced by `ds_materials.py` since JSA-190 (2026-11-10): every sentence of the letter and open answers is checked — (c) "I have not / haven't / no experience in / X rather than Y" sentences, (d) a boilerplate opener ("I'm applying for …", "I am excited to apply …", "… draws me to …"), plus JSA-242 (a) the M.S. in the future tense (he is enrolled since Sep 2026), (b) a skill or a project tied to the M.S. that `config/facts.json` does not tie to it (Tableau, the team-of-3 capstone), and ownership slips ("That workflow cut … 70%" → "part of a workflow that cut"; team-of-3 project: "led the code", which is correct). A flagged sentence is rewritten by DeepSeek (≤ 2 tries, or dropped when it only says what he has not done); still failing → `ds_materials` fails with "blocked: … needs Joey" and the folder waits for him. Tests: `scripts/test_letter_sentences.py`.
 7. Keep team work as team work (the stock project is a team of 3). Don't mention visa status unless he asks.
 
 ## Steps
@@ -43,7 +43,7 @@ description: Writes Alex Rivera's cover letter for one specific job — reads th
    - **(b) The story** — situation → what he did and how → result with numbers. Make clear which must-have it proves.
    - **(c) Fit and context** — 1–2 more must-haves with brief proof; answer any question the reader will have (Rule 6); logistics if they matter.
    - **(d) Close** — one line restating the fit, interest in talking, thanks.
-   - Greeting: the hiring manager's name if known, otherwise "Dear Hiring Manager" or "Dear <Company> team". Sign as "Alex Rivera".
+   - Greeting: the hiring manager's name if known, otherwise "Dear Hiring Manager" or "Dear <Company> team". Sign as the candidate's name from `config/profile.json` / `facts/candidate-profile.md`.
 5. **Check:**
    - every fact and number appears in the profile or a Confirmed story;
    - the company and role names are spelled exactly; job ID included if given;
@@ -51,8 +51,8 @@ description: Writes Alex Rivera's cover letter for one specific job — reads th
    - no banned phrases; the resume-summary test (Rule 2) and specificity test (Rule 5) pass.
 6. **Build the files.**
    - Save the text as `cover.txt`: paragraphs separated by blank lines, ending with the sign-off and a contact line.
-   - Run `node scripts/cover.js` in a folder holding `cover.txt`, with the `docx` package available. It reads `cover.txt` and writes the `.docx`: maroon name header, contact line, date and role line, Calibri 11.
-   - Edit the role line and the output filename in `cover.js` for each job.
+   - Run `node scripts/cover.js "<Company — Role>"` with the `docx` package available. It reads `$COVER_TXT` (default `<data home>/data/work/cover/cover.txt`) and writes the `.docx` next to it (never into the code dir, JSA-377): maroon name header, contact line, date and role line, Calibri 11.
+   - The role line is the first argument; the output filename comes from it.
    - Run `soffice --headless --convert-to pdf`, then `pdfinfo` to confirm it is 1 page.
 7. **Return:**
    - the file paths;

@@ -1,0 +1,561 @@
+[
+ {
+  "name": "icims: standard /job path, query params dropped",
+  "fn": "icims_read_url",
+  "args": {
+   "link": "https://careers-acme.icims.com/jobs/12345/job?mode=apply&mobile=true"
+  },
+  "expect": "https://careers-acme.icims.com/jobs/12345/job?in_iframe=1",
+  "spec_quote": "Return `https://<host lowercased>/jobs/<digits><slug part>/job?in_iframe=1`, where the slug part is `/<slug>` when the path segment after the digits exists and is not exactly `job`, `login` or `candidate` (case-insensitive) — otherwise it is empty. Every query parameter of the input (mode=apply, mobile, …) and everything after the slug is dropped.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims: http accepted, real slug kept",
+  "fn": "icims_read_url",
+  "args": {
+   "link": "http://acme.icims.com/jobs/9876/senior-engineer-ii?mobile=1"
+  },
+  "expect": "https://acme.icims.com/jobs/9876/senior-engineer-ii/job?in_iframe=1",
+  "spec_quote": "http and https inputs are both accepted. ... the slug part is `/<slug>` when the path segment after the digits exists and is not exactly `job`, `login` or `candidate` (case-insensitive)",
+  "ambiguous": false
+ },
+ {
+  "name": "icims: slug 'Login' is case-insensitively excluded, host lowercased",
+  "fn": "icims_read_url",
+  "args": {
+   "link": "https://AcmeCorp.iCIMS.com/jobs/42/Login?x=1"
+  },
+  "expect": "https://acmecorp.icims.com/jobs/42/job?in_iframe=1",
+  "spec_quote": "Return `https://<host lowercased>/jobs/<digits><slug part>/job?in_iframe=1`, where the slug part is ... not exactly `job`, `login` or `candidate` (case-insensitive) — otherwise it is empty.",
+  "ambiguous": false
+ },
+ {
+  "name": "icims: non-iCIMS host -> null",
+  "fn": "icims_read_url",
+  "args": {
+   "link": "https://boards.greenhouse.io/acme/jobs/12345"
+  },
+  "expect": null,
+  "spec_quote": "A link that is not an iCIMS posting (other host, no /jobs/<digits>) → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "wd: og:title with empty content -> gone",
+  "fn": "wd_page_gone",
+  "args": {
+   "html": "<html><head><meta property=\"og:title\" content=\"\"><title>x</title></head></html>"
+  },
+  "expect": true,
+  "spec_quote": "True only when the HTML has a `<meta ... property=\"og:title\" ...>` tag AND that tag has no non-empty `content=\"...\"` attribute (missing or `content=\"\"`).",
+  "ambiguous": false
+ },
+ {
+  "name": "wd: og:title without content attribute at all -> gone",
+  "fn": "wd_page_gone",
+  "args": {
+   "html": "<html><head><meta property=\"og:title\"></head><body>hi</body></html>"
+  },
+  "expect": true,
+  "spec_quote": "True only when the HTML has a `<meta ... property=\"og:title\" ...>` tag AND that tag has no non-empty `content=\"...\"` attribute (missing or `content=\"\"`).",
+  "ambiguous": false
+ },
+ {
+  "name": "wd: og:title with non-empty content -> not gone",
+  "fn": "wd_page_gone",
+  "args": {
+   "html": "<meta content=\"Senior Engineer\" property=\"og:title\">"
+  },
+  "expect": false,
+  "spec_quote": "A tag with a non-empty content → false. Attribute order inside the tag does not matter",
+  "ambiguous": false
+ },
+ {
+  "name": "wd: no og:title tag at all -> false even though a meta has empty content",
+  "fn": "wd_page_gone",
+  "args": {
+   "html": "<html><head><meta property=\"og:description\" content=\"\"></head></html>"
+  },
+  "expect": false,
+  "spec_quote": "No og:title tag at all → false.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean: iCIMS junk params removed, ? dropped when nothing remains",
+  "fn": "clean_url",
+  "args": {
+   "link": "https://acme.icims.com/jobs/123/job?mode=apply&in_iframe=1&mobile=1"
+  },
+  "expect": "https://acme.icims.com/jobs/123/job",
+  "spec_quote": "On hosts ending in `.icims.com`, these query parameters are removed (name match case-insensitive): mode, in_iframe, mobile, ... Every other parameter is kept, byte for byte, in its order; when no parameter is left the `?` goes too.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean: iCIMS keeps untracked params in original order",
+  "fn": "clean_url",
+  "args": {
+   "link": "https://acme.icims.com/jobs/123/job?foo=1&MODE=apply&bar=2&width=640"
+  },
+  "expect": "https://acme.icims.com/jobs/123/job?foo=1&bar=2",
+  "spec_quote": "these query parameters are removed (name match case-insensitive): mode, in_iframe, mobile, needsRedirect, width, height, ... Every other parameter is kept, byte for byte, in its order",
+  "ambiguous": false
+ },
+ {
+  "name": "clean: non-iCIMS host keeps mode/width but drops tracking params",
+  "fn": "clean_url",
+  "args": {
+   "link": "https://jobs.example.com/post/1?mode=apply&width=100&utm_source=news&ref=abc&keep=1"
+  },
+  "expect": "https://jobs.example.com/post/1?mode=apply&width=100&keep=1",
+  "spec_quote": "Tracking parameters (utm_*, source, src, ref, gh_src, …) are removed on every host. ... On hosts that are NOT *.icims.com, mode / width / height / mobile / in_iframe etc. are kept.",
+  "ambiguous": false
+ },
+ {
+  "name": "clean: non-http(s) input -> empty string",
+  "fn": "clean_url",
+  "args": {
+   "link": "ftp://acme.icims.com/jobs/1/job?mode=apply"
+  },
+  "expect": "",
+  "spec_quote": "A non-http(s) input → \"\".",
+  "ambiguous": false
+ },
+ {
+  "name": "closed_on: label + 'on' + abbreviated month with period, past date",
+  "fn": "closed_on",
+  "args": {
+   "text": "Application deadline: on Nov. 5 2026",
+   "today": "2026-11-06"
+  },
+  "expect": "2026-11-05",
+  "spec_quote": "then an optional `:` or `：`, optional \"on \", then a date in one of: `November 5, 2026` / `Nov 5, 2026` / `Nov. 5 2026` (month name, day, year; comma optional)",
+  "ambiguous": false
+ },
+ {
+  "name": "closed_on: first label parses to a future date -> null (later past date ignored)",
+  "fn": "closed_on",
+  "args": {
+   "text": "Closed: 2026-12-01\nApply by: 2026-01-15",
+   "today": "2026-11-06"
+  },
+  "expect": null,
+  "spec_quote": "Only the FIRST label+date that parses is used: if that date is before `today` return it as YYYY-MM-DD, otherwise null (a later past date does not count).",
+  "ambiguous": false
+ },
+ {
+  "name": "closed_on: label after a '|' separator, US m/d/y format",
+  "fn": "closed_on",
+  "args": {
+   "text": "Status | Closed: 11/05/2026",
+   "today": "2026-11-06"
+  },
+  "expect": "2026-11-05",
+  "spec_quote": "Labels (case-insensitive) at the start of a line (after a newline, or after a `|` separator, or at the very start): `Closed`, ... `11/05/2026` (US month/day/year)",
+  "ambiguous": false
+ },
+ {
+  "name": "closed_on: label not at line start (mid-sentence) -> null",
+  "fn": "closed_on",
+  "args": {
+   "text": "This position is Closed: 2026-01-01",
+   "today": "2026-11-06"
+  },
+  "expect": null,
+  "spec_quote": "Labels (case-insensitive) at the start of a line (after a newline, or after a `|` separator, or at the very start)",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: security phrase in title -> stop",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/post/1",
+   "title": "Just a moment...",
+   "text": "Checking your browser before accessing.",
+   "http": 200,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "stop"
+  },
+  "spec_quote": "\"stop\": the title matches a security check / CAPTCHA phrase (verify you are human, ... checking your browser, \"just a moment...\", ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: redirect to a sign-in page -> login",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/signin?next=/post/1",
+   "title": "Acme Careers",
+   "text": "Welcome back.",
+   "http": 200,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "login"
+  },
+  "spec_quote": "\"login\": final_url looks like a sign-in page (a path segment login / signin / sign-in / sso / auth / oauth / oauth2 / saml, ...) while the original url did not.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: http 404 -> closed",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/post/1",
+   "title": "Acme Careers",
+   "text": "The page could not be served.",
+   "http": 404,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "closed"
+  },
+  "spec_quote": "3. \"closed\": http is 404 or 410.",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: short page with closed notice -> closed (not unreadable)",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/post/1",
+   "title": "Acme Careers",
+   "text": "This job is no longer available.",
+   "http": 200,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "closed"
+  },
+  "spec_quote": "4. \"closed\": the head has a closed-posting notice (e.g. \"no longer available\", ...) AND (the text is shorter than 3000 characters OR fewer than 3 job words ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: notice present but long text with many job words -> ok",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/post/1",
+   "title": "Acme Careers",
+   "text_repeat": {
+    "chunk": "This position is no longer available in the archive. Responsibilities, qualifications, requirements, skills and experience: you will own duties.",
+    "times": 30
+   },
+   "http": 200,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "ok"
+  },
+  "spec_quote": "4. \"closed\": the head has a closed-posting notice ... AND (the text is shorter than 3000 characters OR fewer than 3 job words ... occur in the first 20000 characters). ... 9. otherwise \"ok\"",
+  "ambiguous": false
+ },
+ {
+  "name": "page_verdict: very short page -> unreadable",
+  "fn": "page_verdict",
+  "args": {
+   "url": "https://jobs.example.com/post/1",
+   "final_url": "https://jobs.example.com/post/1",
+   "title": "Acme",
+   "text": "Loading...",
+   "http": 200,
+   "today": "2026-11-06"
+  },
+  "expect": {
+   "status": "unreadable"
+  },
+  "spec_quote": "8. \"unreadable\": the text is shorter than 600 characters, or fewer than 2 job-word occurrences.",
+  "ambiguous": false
+ },
+ {
+  "name": "render_pick: picks unreadable with http ats_url, drops login-mention, orders by score",
+  "fn": "render_pick",
+  "args": {
+   "lines": [
+    {
+     "id": "a",
+     "status": "unreadable",
+     "why": "timeout"
+    },
+    {
+     "id": "b",
+     "status": "ok",
+     "why": ""
+    },
+    {
+     "id": "c",
+     "status": "unreadable",
+     "why": "needs a login"
+    }
+   ],
+   "rows": {
+    "a": {
+     "ats_url": "https://jobs.example.com/a",
+     "score": 1
+    },
+    "b": {
+     "ats_url": "https://jobs.example.com/b",
+     "score": 9
+    },
+    "c": {
+     "ats_url": "https://jobs.example.com/c",
+     "score": 5
+    }
+   },
+   "cap": 10
+  },
+  "expect": [
+   {
+    "id": "a",
+    "url": "https://jobs.example.com/a"
+   }
+  ],
+  "spec_quote": "A line is picked when: status is \"unreadable\"; its job has an ats_url starting with \"http\"; that ats_url is not on linkedin.com, joinhandshake.com, jobright.ai, zapply.jobs or vansh.nyc; and its \"why\" does not mention \"needs a login\", \"security check\" or \"captcha\" (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "render_pick: blocked host, non-http ats_url, security/captcha why -> empty",
+  "fn": "render_pick",
+  "args": {
+   "lines": [
+    {
+     "id": "d",
+     "status": "unreadable",
+     "why": "Security Check failed"
+    },
+    {
+     "id": "e",
+     "status": "unreadable",
+     "why": "timeout"
+    },
+    {
+     "id": "f",
+     "status": "unreadable",
+     "why": "CAPTCHA"
+    }
+   ],
+   "rows": {
+    "d": {
+     "ats_url": "https://www.linkedin.com/jobs/view/1",
+     "score": 3
+    },
+    "e": {
+     "ats_url": "ftp://jobs.example.com/e",
+     "score": 2
+    },
+    "f": {
+     "ats_url": "https://www.zapply.jobs/f",
+     "score": 9
+    }
+   },
+   "cap": 5
+  },
+  "expect": [],
+  "spec_quote": "its job has an ats_url starting with \"http\"; that ats_url is not on linkedin.com, joinhandshake.com, jobright.ai, zapply.jobs or vansh.nyc; and its \"why\" does not mention \"needs a login\", \"security check\" or \"captcha\" (case-insensitive).",
+  "ambiguous": false
+ },
+ {
+  "name": "render_pick: missing score counts as 0, ties by id ascending",
+  "fn": "render_pick",
+  "args": {
+   "lines": [
+    {
+     "id": "z",
+     "status": "unreadable",
+     "why": "timeout"
+    },
+    {
+     "id": "y",
+     "status": "unreadable",
+     "why": "timeout"
+    },
+    {
+     "id": "x",
+     "status": "unreadable",
+     "why": "timeout"
+    }
+   ],
+   "rows": {
+    "z": {
+     "ats_url": "https://h.example/z"
+    },
+    "y": {
+     "ats_url": "https://h.example/y",
+     "score": 0
+    },
+    "x": {
+     "ats_url": "https://h.example/x",
+     "score": 3
+    }
+   },
+   "cap": 10
+  },
+  "expect": [
+   {
+    "id": "x",
+    "url": "https://h.example/x"
+   },
+   {
+    "id": "y",
+    "url": "https://h.example/y"
+   },
+   {
+    "id": "z",
+    "url": "https://h.example/z"
+   }
+  ],
+  "spec_quote": "Order: higher score first (missing score = 0), ties by id ascending.",
+  "ambiguous": false
+ },
+ {
+  "name": "render_pick: cap truncates the ordered list",
+  "fn": "render_pick",
+  "args": {
+   "lines": [
+    {
+     "id": "p",
+     "status": "unreadable",
+     "why": "x"
+    },
+    {
+     "id": "q",
+     "status": "unreadable",
+     "why": "x"
+    },
+    {
+     "id": "r",
+     "status": "unreadable",
+     "why": "x"
+    }
+   ],
+   "rows": {
+    "p": {
+     "ats_url": "https://h.example/p",
+     "score": 1
+    },
+    "q": {
+     "ats_url": "https://h.example/q",
+     "score": 30
+    },
+    "r": {
+     "ats_url": "https://h.example/r",
+     "score": 20
+    }
+   },
+   "cap": 2
+  },
+  "expect": [
+   {
+    "id": "q",
+    "url": "https://h.example/q"
+   },
+   {
+    "id": "r",
+    "url": "https://h.example/r"
+   }
+  ],
+  "spec_quote": "Order: higher score first (missing score = 0), ties by id ascending. At most `cap` items; cap 0 or negative → none.",
+  "ambiguous": false
+ },
+ {
+  "name": "render_merge: missing v leaves x unchanged",
+  "fn": "render_merge",
+  "args": {
+   "x": {
+    "id": "7",
+    "key": "k1",
+    "level": "L2",
+    "status": "unreadable",
+    "why": "timeout",
+    "title": "Old title",
+    "text": "old text",
+    "loc": "NY"
+   },
+   "v": null
+  },
+  "expect": {
+   "id": "7",
+   "key": "k1",
+   "level": "L2",
+   "status": "unreadable",
+   "why": "timeout",
+   "title": "Old title",
+   "text": "old text",
+   "loc": "NY"
+  },
+  "spec_quote": "Missing v → x unchanged.",
+  "ambiguous": false
+ },
+ {
+  "name": "render_merge: v ok, title falls back to x.title, loc from x",
+  "fn": "render_merge",
+  "args": {
+   "x": {
+    "id": "7",
+    "status": "unreadable",
+    "why": "timeout",
+    "title": "Old title",
+    "loc": "NY"
+   },
+   "v": {
+    "status": "ok",
+    "text": "rendered body"
+   }
+  },
+  "expect": {
+   "id": "7",
+   "status": "ok",
+   "text": "rendered body",
+   "title": "Old title",
+   "loc": "NY",
+   "why": "rendered in the job Chrome"
+  },
+  "spec_quote": "v.status \"ok\" → x with status \"ok\", text = v.text, title = v.title (or x.title, or \"\"), loc = x.loc (or \"\"), why \"rendered in the job Chrome\"",
+  "ambiguous": false
+ },
+ {
+  "name": "render_merge: v closed prefixes why",
+  "fn": "render_merge",
+  "args": {
+   "x": {
+    "id": "8",
+    "status": "unreadable",
+    "why": "short page"
+   },
+   "v": {
+    "status": "closed",
+    "why": "posting removed"
+   }
+  },
+  "expect": {
+   "id": "8",
+   "status": "closed",
+   "why": "rendered: posting removed"
+  },
+  "spec_quote": "v.status \"closed\" → status \"closed\", why = \"rendered: \" + v.why; ... Other fields of x (id, key, level) are kept.",
+  "ambiguous": false
+ },
+ {
+  "name": "render_merge: other v status -> unreadable with both whys",
+  "fn": "render_merge",
+  "args": {
+   "x": {
+    "id": "9",
+    "status": "unreadable",
+    "why": "short page"
+   },
+   "v": {
+    "status": "unreadable",
+    "why": "http 500"
+   }
+  },
+  "expect": {
+   "id": "9",
+   "status": "unreadable",
+   "why": "rendered: http 500 | short page"
+  },
+  "spec_quote": "any other v.status → status \"unreadable\", why = \"rendered: \" + v.why + \" | \" + x.why.",
+  "ambiguous": false
+ }
+]

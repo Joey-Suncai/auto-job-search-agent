@@ -1,0 +1,184 @@
+[
+ {
+  "name": "immigration_status_current",
+  "label": "What is your current immigration status?",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "immigration_status_if_no_us",
+  "label": "If no, please provide your immigration status in the U.S.",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "state_immigration_status",
+  "label": "Please state your immigration status",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "bare_immigration_status",
+  "label": "Immigration status",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "visa_classification_provide",
+  "label": "Provide your visa classification",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "list_immigration_status",
+  "label": "List your immigration status",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "current_us_immigration_status",
+  "label": "Enter your current U.S. immigration status",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "specify_visa_type",
+  "label": "Specify your visa type",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "visa_status_question",
+  "label": "What is your visa status?",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "provide_immigration_status_us",
+  "label": "Please provide your immigration status in the U.S.",
+  "expect": "immigration_status",
+  "rule": "any question that asks for his immigration status or visa type / status / classification",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_type_question",
+  "label": "What type of work authorization do you have?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "auth_kind_if_yes",
+  "label": "If yes, what kind of authorization?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "kind_of_work_auth",
+  "label": "What kind of work authorization do you have?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "category_work_auth",
+  "label": "Please specify the category of your work authorization",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "if_yes_type_work_auth",
+  "label": "If yes, what type of work authorization?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "work_auth_category_applies",
+  "label": "Which work authorization category applies to you?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "type_work_auth_current",
+  "label": "What type of work authorization do you currently have?",
+  "expect": "auth_kind",
+  "rule": "a question that asks what kind / type / category of WORK AUTHORIZATION he has, or \"if yes, what type\" after a work-authorization question",
+  "ambiguous": false
+ },
+ {
+  "name": "yes_no_immigration_status_allows_work",
+  "label": "Do you have an immigration status that allows you to work?",
+  "expect": "neither",
+  "rule": "a yes/no question that starts with \"Are / Do / Does / Will / Would / Is / Have / Has / Can / Could you …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "are_authorized_yes_no",
+  "label": "Are you authorized to work in the U.S.?",
+  "expect": "neither",
+  "rule": "a yes/no question that starts with \"Are / Do / Does / Will / Would / Is / Have / Has / Can / Could you …\"",
+  "ambiguous": false
+ },
+ {
+  "name": "will_require_sponsorship",
+  "label": "Will you require sponsorship to maintain your immigration status?",
+  "expect": "neither",
+  "rule": "a question about sponsorship (\"… require sponsorship to maintain your immigration status?\") — other rules handle it",
+  "ambiguous": false
+ },
+ {
+  "name": "do_require_sponsorship_immigration",
+  "label": "Do you require sponsorship to maintain your immigration status?",
+  "expect": "neither",
+  "rule": "a question about sponsorship (\"… require sponsorship to maintain your immigration status?\") — other rules handle it",
+  "ambiguous": false
+ },
+ {
+  "name": "months_work_auth_valid",
+  "label": "For how many months is your work authorization valid?",
+  "expect": "neither",
+  "rule": "a question about petitions, a number of months / years, or \"how long\"",
+  "ambiguous": false
+ },
+ {
+  "name": "how_long_immigration_status",
+  "label": "How long have you held your immigration status?",
+  "expect": "neither",
+  "rule": "a question about petitions, a number of months / years, or \"how long\"",
+  "ambiguous": false
+ },
+ {
+  "name": "years_work_auth_remaining",
+  "label": "How many years of work authorization do you have remaining?",
+  "expect": "neither",
+  "rule": "a question about petitions, a number of months / years, or \"how long\"",
+  "ambiguous": false
+ },
+ {
+  "name": "petition_immigration_status",
+  "label": "Have you filed a petition for immigration status?",
+  "expect": "neither",
+  "rule": "a question about petitions, a number of months / years, or \"how long\"",
+  "ambiguous": false
+ },
+ {
+  "name": "would_require_sponsorship_visa",
+  "label": "Would you require sponsorship for your visa status?",
+  "expect": "neither",
+  "rule": "a question about sponsorship (\"… require sponsorship to maintain your immigration status?\") — other rules handle it",
+  "ambiguous": false
+ }
+]

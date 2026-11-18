@@ -1,0 +1,257 @@
+[
+ {
+  "name": "phone_label_exact",
+  "label": "Phone",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "The phone rule puts this number into a field ONLY when the field asks for his phone number: labels such as \"Phone\", \"Phone Number\"...",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_number_label",
+  "label": "Phone Number",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "mobile_phone_label",
+  "label": "Mobile Phone",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "cell_label",
+  "label": "Cell",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "home_phone_label",
+  "label": "Home Phone",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "primary_phone_label",
+  "label": "Primary phone",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "what_is_your_phone_number",
+  "label": "What is your phone number?",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as ... \"What is your phone number?\", \"Please provide your phone number\", \"Best phone number to reach you\".",
+  "ambiguous": false
+ },
+ {
+  "name": "please_provide_your_phone_number",
+  "label": "Please provide your phone number",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as ... \"What is your phone number?\", \"Please provide your phone number\", \"Best phone number to reach you\".",
+  "ambiguous": false
+ },
+ {
+  "name": "best_phone_number_to_reach_you",
+  "label": "Best phone number to reach you",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "labels such as ... \"What is your phone number?\", \"Please provide your phone number\", \"Best phone number to reach you\".",
+  "ambiguous": false
+ },
+ {
+  "name": "do_you_have_phone_number_textbox",
+  "label": "Do you have a phone number where we can reach you?",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "A question that asks whether he HAS a number (\"Do you have a phone number where we can reach you?\") in a text box also gets the number.",
+  "ambiguous": false
+ },
+ {
+  "name": "wfh_capability_with_phone_line",
+  "label": "Do you have the capability to successfully Work From Home if required (i.e. internet access, dedicated phone line, secured working area, etc.)",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: yes / no questions about capability, equipment or access that merely mention a phone, phone line or telephone ... — even when the field is a free-text box",
+  "ambiguous": false
+ },
+ {
+  "name": "reliable_access_phone_and_internet",
+  "label": "Do you have reliable access to a phone and internet?",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: yes / no questions about capability, equipment or access that merely mention a phone, phone line or telephone (\"...\", \"Do you have reliable access to a phone and internet?\", ...) — even when the field is a free-text box",
+  "ambiguous": false
+ },
+ {
+  "name": "telephone_line_available_at_home",
+  "label": "Telephone line available at home?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: ... (\"...\", \"Telephone line available at home?\", ...)",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_line_dedicated_to_work",
+  "label": "Will you have a phone line dedicated to work?",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: ... \"Will you have a phone line dedicated to work?\" — even when the field is a free-text box",
+  "ambiguous": false
+ },
+ {
+  "name": "do_you_have_a_telephone_yes_no",
+  "label": "Do you have a telephone available for work use?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: yes / no questions about capability, equipment or access that merely mention a phone, phone line or telephone",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_interview_availability",
+  "label": "Are you available for a phone interview next week?",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: phone interview / phone screen questions ... For those the expected result is \"NOT_PHONE\"",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_screen_question_radio",
+  "label": "Can you complete a phone screen within 48 hours?",
+  "type": "radio",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: phone interview / phone screen questions ... For those the expected result is \"NOT_PHONE\"",
+  "ambiguous": false
+ },
+ {
+  "name": "phonetic_name_pronunciation",
+  "label": "Phonetic spelling of your name",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: ... name pronunciation (\"phonetic\") questions ... For those the expected result is \"NOT_PHONE\"",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_extension_box",
+  "label": "Phone extension",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "It must NOT put the number into: phone interview / phone screen questions, name pronunciation (\"phonetic\") questions, phone extension boxes.",
+  "ambiguous": false
+ },
+ {
+  "name": "phone_type_select",
+  "label": "Phone type",
+  "type": "select",
+  "options": [
+   "Home",
+   "Work",
+   "Mobile"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "Phone type / device type and country phone code fields are other rules: \"NOT_PHONE\" as well.",
+  "ambiguous": false
+ },
+ {
+  "name": "device_type_select",
+  "label": "Device type",
+  "type": "select",
+  "options": [
+   "Smartphone",
+   "Tablet",
+   "Landline"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "Phone type / device type and country phone code fields are other rules: \"NOT_PHONE\" as well.",
+  "ambiguous": false
+ },
+ {
+  "name": "country_phone_code_select",
+  "label": "Country phone code",
+  "type": "select",
+  "options": [
+   "+1",
+   "+44",
+   "+61"
+  ],
+  "expect": "NOT_PHONE",
+  "spec_quote": "Phone type / device type and country phone code fields are other rules: \"NOT_PHONE\" as well.",
+  "ambiguous": false
+ },
+ {
+  "name": "cell_phone_number_label",
+  "label": "Cell phone number",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "The phone rule puts this number into a field ONLY when the field asks for his phone number: labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "mobile_number_label",
+  "label": "Mobile number",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "The phone rule puts this number into a field ONLY when the field asks for his phone number: labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\"",
+  "ambiguous": false
+ },
+ {
+  "name": "contact_phone_number_label",
+  "label": "Contact phone number",
+  "type": "text",
+  "options": [],
+  "expect": "555-010-2030",
+  "spec_quote": "The phone rule puts this number into a field ONLY when the field asks for his phone number: labels such as \"Phone\", \"Phone Number\", \"Mobile Phone\", \"Cell\", \"Home Phone\", \"Primary phone\", \"What is your phone number?\", \"Please provide your phone number\", \"Best phone number to reach you\".",
+  "ambiguous": false
+ },
+ {
+  "name": "generic_number_field",
+  "label": "Number",
+  "type": "text",
+  "options": [],
+  "expect": "NOT_PHONE",
+  "spec_quote": "The phone rule puts this number into a field ONLY when the field asks for his phone number",
+  "ambiguous": true
+ }
+]

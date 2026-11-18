@@ -1,0 +1,4 @@
+{
+ "why inside whyte is not a whole-word match": "JSA-318 (Joey 11-11, fix 2): every textarea no rule answers is a prose box now, not only W.essay_like ones (an employer 'What interests you most about Machine Learning?' is not essay_like). A box with an approved draft is filled — the case's expectation encodes the old essay_like filter; judged by Claude: the new behaviour is the intended one.",
+ "how did you with no listed follow-up word is not an essay box": "JSA-318 (Joey 11-11, fix 2): every textarea no rule answers is a prose box now, not only W.essay_like ones (an employer 'What interests you most about Machine Learning?' is not essay_like). A box with an approved draft is filled — the case's expectation encodes the old essay_like filter; judged by Claude: the new behaviour is the intended one."
+}

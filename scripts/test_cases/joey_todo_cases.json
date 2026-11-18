@@ -322,7 +322,7 @@
   "ambiguous": false
  },
  {
-  "name": "tracker_interview_status_closes_folder",
+  "name": "tracker_withdrawn_status_closes_folder",
   "queue": [
    "- [ ] 2026-11-01T10:00:00 **2026-11-01_Nile_Fin_Intern** — Submit your transcript — https://x"
   ],
@@ -330,7 +330,7 @@
   "apply_requests": [],
   "submitted": [],
   "tracker": {
-   "J00005": "Interview"
+   "J00005": "Withdrawn"
   },
   "jobs": {},
   "job_of": {

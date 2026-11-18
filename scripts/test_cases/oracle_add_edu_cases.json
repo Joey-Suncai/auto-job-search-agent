@@ -1,0 +1,454 @@
+[
+ {
+  "fn": "school_pick",
+  "want": "university  of illinois urbana-champaign",
+  "options": [
+   "University of Illinois Urbana-Champaign",
+   "University of Illinois at Chicago",
+   "Other - School Not Listed"
+  ],
+  "alts": [],
+  "expect": "University of Illinois Urbana-Champaign",
+  "spec": "an option equal to `want` or to one of `alts` (case and runs of spaces ignored) wins;"
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois at Urbana-Champaign",
+  "options": [
+   "University of Chicago",
+   "Other - School Not Listed"
+  ],
+  "alts": [
+   "university  of chicago"
+  ],
+  "expect": "University of Chicago",
+  "spec": "an option equal to `want` or to one of `alts` (case and runs of spaces ignored) wins;"
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois at Urbana-Champaign",
+  "options": [
+   "University of Illinois Urbana-Champaign",
+   "University of Illinois at Chicago"
+  ],
+  "alts": [],
+  "expect": "University of Illinois Urbana-Champaign",
+  "spec": "else the ONE option whose words include all of the school's words (words split on anything not a letter/digit; \"of\", \"the\", \"at\", \"and\", \"in\" ignored)."
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois Urbana-Champaign",
+  "options": [
+   "University of Illinois at Urbana-Champaign",
+   "Illinois University Urbana Champaign",
+   "Other - School Not Listed"
+  ],
+  "alts": [],
+  "expect": "Other - School Not Listed",
+  "spec": "When two or more options contain all the words, or none, this step gives nothing; else an option like \"Other - School Not Listed\" (starts with \"Other\", contains \"School\" and \"not listed\");"
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois Urbana-Champaign",
+  "options": [
+   "University of Illinois at Urbana-Champaign",
+   "Illinois University Urbana Champaign"
+  ],
+  "alts": [],
+  "expect": null,
+  "spec": "When two or more options contain all the words, or none, this step gives nothing; else null."
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois Urbana-Champaign",
+  "options": [
+   "University of Illinois at Chicago",
+   "Chicago State University"
+  ],
+  "alts": [],
+  "expect": null,
+  "spec": "else null. A different campus (\"University of Illinois at Chicago\" for Urbana-Champaign) is never picked."
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois Urbana-Champaign",
+  "options": [
+   "University of Illinois at Chicago",
+   "Other - School Not Listed"
+  ],
+  "alts": [],
+  "expect": "Other - School Not Listed",
+  "spec": "else an option like \"Other - School Not Listed\" (starts with \"Other\", contains \"School\" and \"not listed\");"
+ },
+ {
+  "fn": "school_pick",
+  "want": "University of Illinois Urbana-Champaign",
+  "options": [
+   "Other - School Not Listed",
+   "University of Illinois at Urbana-Champaign"
+  ],
+  "alts": [],
+  "expect": "University of Illinois at Urbana-Champaign",
+  "spec": "else the ONE option whose words include all of the school's words (words split on anything not a letter/digit; \"of\", \"the\", \"at\", \"and\", \"in\" ignored)."
+ },
+ {
+  "fn": "major_pick",
+  "major": "data science",
+  "prefs": [],
+  "options": [
+   "Data Science",
+   "Data Analytics",
+   "Other - Field of Study Not Listed"
+  ],
+  "expect": "Data Science",
+  "spec": "the first of [major, ...prefs] that equals an option (case ignored) → that option;"
+ },
+ {
+  "fn": "major_pick",
+  "major": "Computer Science",
+  "prefs": [
+   "Data Science",
+   "Data Analytics"
+  ],
+  "options": [
+   "Data Analytics",
+   "Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "the first of [major, ...prefs] that equals an option (case ignored) → that option;"
+ },
+ {
+  "fn": "major_pick",
+  "major": "Data Analytics",
+  "prefs": [
+   "Data Science"
+  ],
+  "options": [
+   "Data Science",
+   "Data Analytics"
+  ],
+  "expect": "Data Analytics",
+  "spec": "the first of [major, ...prefs] that equals an option (case ignored) → that option;"
+ },
+ {
+  "fn": "major_pick",
+  "major": "Economics",
+  "prefs": [],
+  "options": [
+   "Agricultural Economics",
+   "Data Science"
+  ],
+  "expect": null,
+  "spec": "Partial matches don't count (\"Agricultural Economics\" is not \"Economics\")."
+ },
+ {
+  "fn": "major_pick",
+  "major": "Economics",
+  "prefs": [],
+  "options": [
+   "Agricultural Economics",
+   "Other - Field of Study Not Listed"
+  ],
+  "expect": "Other - Field of Study Not Listed",
+  "spec": "Partial matches don't count (\"Agricultural Economics\" is not \"Economics\"). else an option starting with \"Other\" that contains \"not listed\"; else null."
+ },
+ {
+  "fn": "major_pick",
+  "major": "Data Science",
+  "prefs": [
+   "Data Analytics"
+  ],
+  "options": [
+   "Other - Field of Study Not Listed",
+   "Computer Science"
+  ],
+  "expect": "Other - Field of Study Not Listed",
+  "spec": "else an option starting with \"Other\" that contains \"not listed\"; else null."
+ },
+ {
+  "fn": "major_pick",
+  "major": "Data Science",
+  "prefs": [],
+  "options": [
+   "Other - Field of Study",
+   "Data Analytics"
+  ],
+  "expect": null,
+  "spec": "else an option starting with \"Other\" that contains \"not listed\"; else null."
+ },
+ {
+  "fn": "major_pick",
+  "major": "Data Science",
+  "prefs": [],
+  "options": [
+   "Other - Field of Study Not Listed",
+   "Data Science"
+  ],
+  "expect": "Data Science",
+  "spec": "the first of [major, ...prefs] that equals an option (case ignored) → that option;"
+ },
+ {
+  "fn": "degree_pill",
+  "level": "master",
+  "pills": [
+   "Associates",
+   "Bachelors",
+   "Masters",
+   "Master's Degree",
+   "Doctorate",
+   "Postdoctorate",
+   "Graduate Diploma"
+  ],
+  "expect": "Masters",
+  "spec": "level \"master\" → the first pill starting with \"Master\" (\"Masters\", \"Master's Degree\");"
+ },
+ {
+  "fn": "degree_pill",
+  "level": "master",
+  "pills": [
+   "Master's Degree",
+   "Masters"
+  ],
+  "expect": "Master's Degree",
+  "spec": "level \"master\" → the first pill starting with \"Master\" (\"Masters\", \"Master's Degree\");"
+ },
+ {
+  "fn": "degree_pill",
+  "level": "bachelor",
+  "pills": [
+   "Associates",
+   "Bachelors",
+   "Masters"
+  ],
+  "expect": "Bachelors",
+  "spec": "level \"bachelor\" → starting with \"Bachelor\";"
+ },
+ {
+  "fn": "degree_pill",
+  "level": "bachelor",
+  "pills": [
+   "Associates",
+   "Masters",
+   "Graduate Diploma"
+  ],
+  "expect": null,
+  "spec": "never \"Postdoctorate\", \"Graduate Diploma\", \"Associates\"; unknown level or no fit → null."
+ },
+ {
+  "fn": "degree_pill",
+  "level": "phd",
+  "pills": [
+   "Postdoctorate",
+   "Doctorate",
+   "Ph.D"
+  ],
+  "expect": "Doctorate",
+  "spec": "level \"phd\" or \"doctorate\" → starting with \"Doctor\" or \"Ph.D\"/\"PhD\"; never \"Postdoctorate\""
+ },
+ {
+  "fn": "degree_pill",
+  "level": "doctorate",
+  "pills": [
+   "Postdoctorate",
+   "PhD",
+   "Doctorate"
+  ],
+  "expect": "PhD",
+  "spec": "level \"phd\" or \"doctorate\" → starting with \"Doctor\" or \"Ph.D\"/\"PhD\";"
+ },
+ {
+  "fn": "degree_pill",
+  "level": "phd",
+  "pills": [
+   "Postdoctorate",
+   "Graduate Diploma"
+  ],
+  "expect": null,
+  "spec": "never \"Postdoctorate\", \"Graduate Diploma\", \"Associates\"; unknown level or no fit → null."
+ },
+ {
+  "fn": "degree_pill",
+  "level": "other",
+  "pills": [
+   "Bachelors",
+   "Masters",
+   "Doctorate"
+  ],
+  "expect": null,
+  "spec": "unknown level or no fit → null."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Education",
+    "required": true,
+    "items": 0,
+    "add": "ADD EDUCATION"
+   },
+   {
+    "title": "Experience",
+    "required": true,
+    "items": 0,
+    "add": "ADD EXPERIENCE"
+   },
+   {
+    "title": "Skills",
+    "required": false,
+    "items": 0,
+    "add": "ADD SKILLS"
+   },
+   {
+    "title": "Licenses",
+    "required": true,
+    "items": 2,
+    "add": "ADD LICENSES"
+   }
+  ],
+  "expect": [
+   "Education",
+   "Experience"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "",
+    "required": true,
+    "items": 0,
+    "add": "ADD EDUCATION"
+   }
+  ],
+  "expect": [
+   "ADD EDUCATION"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Education",
+    "required": true,
+    "items": 1,
+    "add": "ADD EDUCATION"
+   },
+   {
+    "title": "Skills",
+    "required": false,
+    "items": 0,
+    "add": "ADD SKILLS"
+   }
+  ],
+  "expect": [],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Skills",
+    "required": false,
+    "items": 0,
+    "add": "ADD SKILLS"
+   }
+  ],
+  "expect": [],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Education",
+    "required": true,
+    "items": 0,
+    "add": "ADD EDUCATION"
+   }
+  ],
+  "expect": [
+   "Education"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Education",
+    "required": true,
+    "items": 0,
+    "add": "ADD EDUCATION"
+   },
+   {
+    "title": "",
+    "required": true,
+    "items": 0,
+    "add": "ADD EXPERIENCE"
+   },
+   {
+    "title": "Skills",
+    "required": true,
+    "items": 0,
+    "add": "ADD SKILLS"
+   }
+  ],
+  "expect": [
+   "Education",
+   "ADD EXPERIENCE",
+   "Skills"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "Education",
+    "required": true,
+    "items": 1,
+    "add": "ADD EDUCATION"
+   },
+   {
+    "title": "Experience",
+    "required": true,
+    "items": 0,
+    "add": "ADD EXPERIENCE"
+   }
+  ],
+  "expect": [
+   "Experience"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ },
+ {
+  "fn": "empty_required_lists",
+  "blocks": [
+   {
+    "title": "A",
+    "required": true,
+    "items": 0,
+    "add": "ADD A"
+   },
+   {
+    "title": "B",
+    "required": false,
+    "items": 0,
+    "add": "ADD B"
+   },
+   {
+    "title": "C",
+    "required": true,
+    "items": 0,
+    "add": "ADD C"
+   }
+  ],
+  "expect": [
+   "A",
+   "C"
+  ],
+  "spec": "return the title (else the add text) of each block that is required and has 0 items, in order."
+ }
+]

@@ -31,7 +31,7 @@ def main(a):
         if not e and v["type"] != "NotJob":
             issues.append("missed: not in the tracker's mail list")
         want = {"Rejection": "Rejected", "Assessment": "Assessment"}.get(v["type"])
-        if app and want and app.get("status") not in (want, "Rejected", "Offer", "Withdrawn"):
+        if app and want and app.get("status") not in (want, "Rejected", "Offer", "Withdrawn", "Declined by Joey"):
             issues.append(f"stage {app.get('status')} → {want}?")
         if issues:
             out.append({"id": m["id"], "date": m["date"], "from": m["sender"][:60], "subject": m["subject"][:90], "issues": issues,

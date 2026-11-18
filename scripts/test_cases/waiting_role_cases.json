@@ -1,0 +1,453 @@
+[
+ {
+  "name": "basic match returns stored title",
+  "rows": [
+   {
+    "job_id": "J-100",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-100",
+    "title": "Senior Engineer"
+   }
+  ],
+  "expect": [
+   "Senior Engineer"
+  ],
+  "spec_quote": "A row's role is the `title` of the application whose `job_id` equals the row's `job_id` (the same field as the Tracker's Role).",
+  "ambiguous": false
+ },
+ {
+  "name": "surrounding spaces trimmed",
+  "rows": [
+   {
+    "job_id": "J-1",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-1",
+    "title": "   Product Manager   "
+   }
+  ],
+  "expect": [
+   "Product Manager"
+  ],
+  "spec_quote": "The title is returned as stored, except that surrounding whitespace is trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "surrounding tabs and newlines trimmed",
+  "rows": [
+   {
+    "job_id": "J-2",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-2",
+    "title": "\t\nQA Lead\n\t"
+   }
+  ],
+  "expect": [
+   "QA Lead"
+  ],
+  "spec_quote": "The title is returned as stored, except that surrounding whitespace is trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "internal whitespace preserved",
+  "rows": [
+   {
+    "job_id": "J-3",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-3",
+    "title": "Senior  Data   Engineer"
+   }
+  ],
+  "expect": [
+   "Senior  Data   Engineer"
+  ],
+  "spec_quote": "The title is returned as stored, except that surrounding whitespace is trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "missing job_id key gives dash",
+  "rows": [
+   {
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-1",
+    "title": "Designer"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing) ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty job_id string gives dash",
+  "rows": [
+   {
+    "job_id": "",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "",
+    "title": "Designer"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has no job_id (empty / missing) ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "no application with that job_id gives dash",
+  "rows": [
+   {
+    "job_id": "J-999",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-1",
+    "title": "Designer"
+   },
+   {
+    "job_id": "J-2",
+    "title": "Engineer"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If the row has ... no application has that job_id ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "application title key missing gives dash",
+  "rows": [
+   {
+    "job_id": "J-5",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-5"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If ... the title is missing / empty / only whitespace ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "null title gives dash",
+  "rows": [
+   {
+    "job_id": "J-6",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-6",
+    "title": null
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If ... the title is missing / empty / only whitespace ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "empty title string gives dash",
+  "rows": [
+   {
+    "job_id": "J-7",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-7",
+    "title": ""
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If ... the title is missing / empty / only whitespace ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "whitespace-only title gives dash",
+  "rows": [
+   {
+    "job_id": "J-8",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-8",
+    "title": "  \t \n "
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If ... the title is missing / empty / only whitespace ... the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "literal unknown role placeholder gives dash",
+  "rows": [
+   {
+    "job_id": "J-9",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-9",
+    "title": "(unknown role)"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "or the title is `(unknown role)` (any letter case): the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown role placeholder uppercase gives dash",
+  "rows": [
+   {
+    "job_id": "J-10",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-10",
+    "title": "(UNKNOWN ROLE)"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "or the title is `(unknown role)` (any letter case): the role is `—` (an em dash).",
+  "ambiguous": false
+ },
+ {
+  "name": "unknown role placeholder with surrounding whitespace gives dash",
+  "rows": [
+   {
+    "job_id": "J-11",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-11",
+    "title": "  (unknown role)\t"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "The title is returned as stored, except that surrounding whitespace is trimmed. / or the title is `(unknown role)` (any letter case): the role is `—`",
+  "ambiguous": true
+ },
+ {
+  "name": "near miss unknown role without parentheses is not special",
+  "rows": [
+   {
+    "job_id": "J-12",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-12",
+    "title": "unknown role"
+   }
+  ],
+  "expect": [
+   "unknown role"
+  ],
+  "spec_quote": "The title is returned as stored, except that surrounding whitespace is trimmed.",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate job_id first application wins",
+  "rows": [
+   {
+    "job_id": "J-20",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-20",
+    "title": "First Title"
+   },
+   {
+    "job_id": "J-20",
+    "title": "Second Title"
+   }
+  ],
+  "expect": [
+   "First Title"
+  ],
+  "spec_quote": "If several applications share a job_id the first one wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "duplicate job_id first wins even when its title is empty",
+  "rows": [
+   {
+    "job_id": "J-21",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-21",
+    "title": ""
+   },
+   {
+    "job_id": "J-21",
+    "title": "Backup Title"
+   }
+  ],
+  "expect": [
+   "—"
+  ],
+  "spec_quote": "If several applications share a job_id the first one wins.",
+  "ambiguous": false
+ },
+ {
+  "name": "multiple rows keep order and resolve independently",
+  "rows": [
+   {
+    "job_id": "J-31",
+    "folder": "Inbox",
+    "kind": "review"
+   },
+   {
+    "job_id": "J-32",
+    "folder": "Done",
+    "kind": "apply"
+   },
+   {
+    "job_id": "J-33",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [
+   {
+    "job_id": "J-33",
+    "title": "  Analyst "
+   },
+   {
+    "job_id": "J-31",
+    "title": "Recruiter"
+   },
+   {
+    "job_id": "J-30",
+    "title": "Other"
+   }
+  ],
+  "expect": [
+   "Recruiter",
+   "—",
+   "Analyst"
+  ],
+  "spec_quote": "It returns the same rows in the same order, each with a `role` field added.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty applications list gives dash for every row",
+  "rows": [
+   {
+    "job_id": "J-40",
+    "folder": "Inbox",
+    "kind": "review"
+   },
+   {
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": [],
+  "expect": [
+   "—",
+   "—"
+  ],
+  "spec_quote": "`applications` may be empty or None: every row gets `—`.",
+  "ambiguous": false
+ },
+ {
+  "name": "null applications gives dash for every row",
+  "rows": [
+   {
+    "job_id": "J-50",
+    "folder": "Inbox",
+    "kind": "review"
+   },
+   {
+    "job_id": "J-51",
+    "folder": "Inbox",
+    "kind": "review"
+   }
+  ],
+  "applications": null,
+  "expect": [
+   "—",
+   "—"
+  ],
+  "spec_quote": "`applications` may be empty or None: every row gets `—`.",
+  "ambiguous": false
+ }
+]

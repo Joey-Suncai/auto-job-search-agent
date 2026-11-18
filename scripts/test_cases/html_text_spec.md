@@ -9,7 +9,7 @@ extract_code(text): find the first trigger — the whole word "code", "passcode"
 "one time password" or "OTP" (case-insensitive; added 2026-11-05: an employer writes "one-time passcode: 710027") —;
 in the 200 characters right after it, take the
 first token of 6–10 letters/digits that is not part of a longer letter/digit run, contains at least one digit, and is
-not a year-like number (19xx / 20xx followed only by digits). Try the next trigger when none is found; return None
+not an 8-digit YYYYMMDD calendar date — except that the token right after the trigger word ("code: …", "code is …") is the code whatever it looks like (JSA-297, spec of extract_code: scripts/test_cases/extract_code_spec.md). Try the next trigger when none is found; return None
 when no code is found anywhere.
 
 The test runs extract_code(html_text(h)) on a whole HTML mail and compares with the expected code (or null).

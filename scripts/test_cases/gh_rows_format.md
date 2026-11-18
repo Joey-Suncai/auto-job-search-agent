@@ -1,0 +1,1 @@
+JSON list of cases: {"name": str, "fn": "gh_rows", "args": [plan_fields (list of dict), bad (list|null)], "expect": [rows], "spec": "<spec sentence>"}. Row keys exactly: key, label, want, page, type, required, ok, source.

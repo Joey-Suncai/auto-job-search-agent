@@ -10,7 +10,8 @@ const FACTS = ['discipline', 'degree', 'grad_date', 'preferred_name'];
 let bad = 0;
 for (const c of cases) {
   const a = answerFor({ l: c.label, t: 'textarea' });
-  const got = a.status === 'ok' && FACTS.includes(a.rule) ? a.rule : null;
+  const rule = a.rule === 'degree_full' ? 'degree' : a.rule;   // degree_full = the degree rule's full name for a typed "which degree are you pursuing" (JSA-296)
+  const got = a.status === 'ok' && FACTS.includes(rule) ? rule : null;
   if (got !== c.expect && !(c.name in verdicts)) { bad++; console.log('DISAGREE', c.name, '| got', got, `(${a.rule || a.status})`, '| expect', c.expect, '|', c.label); }
 }
 console.log(`${cases.length} cases · disagreements without a verdict: ${bad}`);

@@ -1,0 +1,687 @@
+[
+ {
+  "name": "merge_basic_two_lists",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   [
+    "B",
+    "C"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ],
+   "option_sets": [
+    [
+     "A",
+     "B"
+    ],
+    [
+     "B",
+     "C"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_empty_between_nonempty",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   [],
+   [
+    "B",
+    "C"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ],
+   "option_sets": [
+    [
+     "A",
+     "B"
+    ],
+    [
+     "B",
+     "C"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_single_nonempty_plus_empty",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   []
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B"
+   ],
+   "option_sets": null
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_all_empty",
+  "kind": "merge",
+  "lists": [
+   [],
+   []
+  ],
+  "expect": {
+   "options": [],
+   "option_sets": null
+  },
+  "spec_quote": "An entry whose forms show no options (a text box) has options []."
+ },
+ {
+  "name": "merge_single_list",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B"
+   ],
+   "option_sets": null
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_identical_lists",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   [
+    "A",
+    "B"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B"
+   ],
+   "option_sets": null
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_identical_plus_distinct",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   [
+    "A",
+    "B"
+   ],
+   [
+    "C",
+    "D"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "option_sets": [
+    [
+     "A",
+     "B"
+    ],
+    [
+     "C",
+     "D"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_three_distinct_first_seen",
+  "kind": "merge",
+  "lists": [
+   [
+    "Z",
+    "Y"
+   ],
+   [
+    "X",
+    "Y"
+   ],
+   [
+    "X",
+    "W"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "Z",
+    "Y",
+    "X",
+    "W"
+   ],
+   "option_sets": [
+    [
+     "Z",
+     "Y"
+    ],
+    [
+     "X",
+     "Y"
+    ],
+    [
+     "X",
+     "W"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_preserves_pipe",
+  "kind": "merge",
+  "lists": [
+   [
+    "Yes (full-time) | はい（フルタイム）",
+    "No"
+   ],
+   [
+    "No",
+    "Maybe"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "Yes (full-time) | はい（フルタイム）",
+    "No",
+    "Maybe"
+   ],
+   "option_sets": [
+    [
+     "Yes (full-time) | はい（フルタイム）",
+     "No"
+    ],
+    [
+     "No",
+     "Maybe"
+    ]
+   ]
+  },
+  "spec_quote": "Option texts may contain the character \"|\" (e.g. a bilingual option \"Yes (full-time) | はい（フルタイム）\"); lists therefore travel as JSON, never split on \"|\"."
+ },
+ {
+  "name": "merge_not_cut_at_12",
+  "kind": "merge",
+  "lists": [
+   [
+    "o1",
+    "o2",
+    "o3",
+    "o4",
+    "o5",
+    "o6",
+    "o7",
+    "o8",
+    "o9",
+    "o10",
+    "o11",
+    "o12",
+    "o13"
+   ],
+   [
+    "o13",
+    "o14"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "o1",
+    "o2",
+    "o3",
+    "o4",
+    "o5",
+    "o6",
+    "o7",
+    "o8",
+    "o9",
+    "o10",
+    "o11",
+    "o12",
+    "o13",
+    "o14"
+   ],
+   "option_sets": [
+    [
+     "o1",
+     "o2",
+     "o3",
+     "o4",
+     "o5",
+     "o6",
+     "o7",
+     "o8",
+     "o9",
+     "o10",
+     "o11",
+     "o12",
+     "o13"
+    ],
+    [
+     "o13",
+     "o14"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_not_cut_at_60",
+  "kind": "merge",
+  "lists": [
+   [
+    "opt1",
+    "opt2",
+    "opt3",
+    "opt4",
+    "opt5",
+    "opt6",
+    "opt7",
+    "opt8",
+    "opt9",
+    "opt10",
+    "opt11",
+    "opt12",
+    "opt13",
+    "opt14",
+    "opt15",
+    "opt16",
+    "opt17",
+    "opt18",
+    "opt19",
+    "opt20",
+    "opt21",
+    "opt22",
+    "opt23",
+    "opt24",
+    "opt25",
+    "opt26",
+    "opt27",
+    "opt28",
+    "opt29",
+    "opt30",
+    "opt31",
+    "opt32",
+    "opt33",
+    "opt34",
+    "opt35",
+    "opt36",
+    "opt37",
+    "opt38",
+    "opt39",
+    "opt40",
+    "opt41",
+    "opt42",
+    "opt43",
+    "opt44",
+    "opt45",
+    "opt46",
+    "opt47",
+    "opt48",
+    "opt49",
+    "opt50",
+    "opt51",
+    "opt52",
+    "opt53",
+    "opt54",
+    "opt55",
+    "opt56",
+    "opt57",
+    "opt58",
+    "opt59",
+    "opt60",
+    "opt61"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "opt1",
+    "opt2",
+    "opt3",
+    "opt4",
+    "opt5",
+    "opt6",
+    "opt7",
+    "opt8",
+    "opt9",
+    "opt10",
+    "opt11",
+    "opt12",
+    "opt13",
+    "opt14",
+    "opt15",
+    "opt16",
+    "opt17",
+    "opt18",
+    "opt19",
+    "opt20",
+    "opt21",
+    "opt22",
+    "opt23",
+    "opt24",
+    "opt25",
+    "opt26",
+    "opt27",
+    "opt28",
+    "opt29",
+    "opt30",
+    "opt31",
+    "opt32",
+    "opt33",
+    "opt34",
+    "opt35",
+    "opt36",
+    "opt37",
+    "opt38",
+    "opt39",
+    "opt40",
+    "opt41",
+    "opt42",
+    "opt43",
+    "opt44",
+    "opt45",
+    "opt46",
+    "opt47",
+    "opt48",
+    "opt49",
+    "opt50",
+    "opt51",
+    "opt52",
+    "opt53",
+    "opt54",
+    "opt55",
+    "opt56",
+    "opt57",
+    "opt58",
+    "opt59",
+    "opt60",
+    "opt61"
+   ],
+   "option_sets": null
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_duplicate_nonempty_with_empties",
+  "kind": "merge",
+  "lists": [
+   [],
+   [
+    "A"
+   ],
+   [
+    "A"
+   ],
+   []
+  ],
+  "expect": {
+   "options": [
+    "A"
+   ],
+   "option_sets": null
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_subset_lists",
+  "kind": "merge",
+  "lists": [
+   [
+    "A"
+   ],
+   [
+    "A",
+    "B"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B"
+   ],
+   "option_sets": [
+    [
+     "A"
+    ],
+    [
+     "A",
+     "B"
+    ]
+   ]
+  },
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "merge_duplicate_option_within_list",
+  "kind": "merge",
+  "lists": [
+   [
+    "A",
+    "A",
+    "B"
+   ],
+   [
+    "B",
+    "C"
+   ]
+  ],
+  "expect": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ],
+   "option_sets": [
+    [
+     "A",
+     "A",
+     "B"
+    ],
+    [
+     "B",
+     "C"
+    ]
+   ]
+  },
+  "ambiguous": true,
+  "ambiguous_reason": "Spec says option_sets are distinct per-form lists each in the form's own order, but it does not explicitly say whether duplicate option texts within a single form's list should be preserved in option_sets.",
+  "spec_quote": "The entry keeps `options` = every distinct option of all the lists (first-seen order, no duplicates, never cut, never limited to 12 / 60 / 400) and `option_sets` = the distinct per-form lists (each in the form's own order), only when the merged forms have MORE than one distinct non-empty list; with one list (or none) `option_sets` is absent."
+ },
+ {
+  "name": "answer_second_list_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "Berlin",
+    "Chicago"
+   ],
+   [
+    "United States",
+    "Finland"
+   ]
+  ],
+  "pick": "United States",
+  "expect": true,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_no_list_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "Berlin",
+    "Chicago"
+   ],
+   [
+    "United States",
+    "Finland"
+   ]
+  ],
+  "pick": "Paris",
+  "expect": false,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_pipe_full_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "Yes (full-time) | はい（フルタイム）",
+    "No"
+   ],
+   [
+    "Full-time",
+    "Part-time"
+   ]
+  ],
+  "pick": "Yes (full-time) | はい（フルタイム）",
+  "expect": true,
+  "spec_quote": "Option texts may contain the character \"|\" (e.g. a bilingual option \"Yes (full-time) | はい（フルタイム）\"); lists therefore travel as JSON, never split on \"|\"."
+ },
+ {
+  "name": "answer_pipe_partial_no_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "Yes (full-time) | はい（フルタイム）",
+    "No"
+   ],
+   [
+    "Full-time",
+    "Part-time"
+   ]
+  ],
+  "pick": "Yes (full-time)",
+  "expect": false,
+  "spec_quote": "Option texts may contain the character \"|\" (e.g. a bilingual option \"Yes (full-time) | はい（フルタイム）\"); lists therefore travel as JSON, never split on \"|\"."
+ },
+ {
+  "name": "answer_duplicate_option_across_lists",
+  "kind": "answerable",
+  "lists": [
+   [
+    "A",
+    "B"
+   ],
+   [
+    "A",
+    "C"
+   ]
+  ],
+  "pick": "A",
+  "expect": true,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_empty_plus_nonempty_match",
+  "kind": "answerable",
+  "lists": [
+   [],
+   [
+    "A"
+   ]
+  ],
+  "pick": "A",
+  "expect": true,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_all_empty_no_match",
+  "kind": "answerable",
+  "lists": [
+   [],
+   []
+  ],
+  "pick": "A",
+  "expect": false,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_substring_no_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "United States of America"
+   ]
+  ],
+  "pick": "United States",
+  "expect": false,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_third_list_match",
+  "kind": "answerable",
+  "lists": [
+   [
+    "A"
+   ],
+   [
+    "B"
+   ],
+   [
+    "C"
+   ]
+  ],
+  "pick": "B",
+  "expect": true,
+  "spec_quote": "When the user's answer is saved (qa_add.py), the answer is checked against the form's options: it must be answerable on at least ONE of the option lists the question was seen with (a pick that matches an option of any list is fine; an answer that matches no option of any list is refused, nothing saved)."
+ },
+ {
+  "name": "answer_pipe_exact_single_option",
+  "kind": "answerable",
+  "lists": [
+   [
+    "A|B"
+   ]
+  ],
+  "pick": "A|B",
+  "expect": true,
+  "spec_quote": "Option texts may contain the character \"|\" (e.g. a bilingual option \"Yes (full-time) | はい（フルタイム）\"); lists therefore travel as JSON, never split on \"|\"."
+ }
+]

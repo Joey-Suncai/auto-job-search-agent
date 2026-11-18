@@ -1,0 +1,323 @@
+[
+ {
+  "name": "current_or_former_government_employee",
+  "label": "Are you a current or former government employee?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "local_state_federal_including_us_military",
+  "label": "Have you ever been employed by a local, state, or federal government entity, including the U.S. military?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "hold_or_seek_government_position",
+  "label": "Do you hold or are you seeking an elected or appointed government position?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "served_in_us_armed_forces",
+  "label": "Have you ever served in the U.S. Armed Forces?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "family_member_government_agency",
+  "label": "Is any family member employed by a government agency?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "civil_service_text_box",
+  "label": "Have you ever been in the civil service?",
+  "options": [],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "foreign_government_employment",
+  "label": "Have you ever been employed by a foreign government?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "family_member_public_office",
+  "label": "Does any family member hold or have they held public office?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "family_member_military_service",
+  "label": "Has any family member served in the military?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "public_official_with_reordered_yes_no",
+  "label": "Are you a public official?",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "seeking_appointed_government_position",
+  "label": "Are you seeking an appointed government position?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "government_employment_text_box",
+  "label": "Have you ever been employed by a government entity?",
+  "options": [],
+  "company": "",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_mentions_military_but_question_is_government_employment",
+  "label": "Are you a current or former government employee?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Boeing, a defense contractor that supports the U.S. military",
+  "expect": "No",
+  "spec_quote": "A company description that mentions the military before a question about his own government employment does not change rule 1 when the question itself is only about his employment.",
+  "ambiguous": false
+ },
+ {
+  "name": "company_mentions_military_but_question_is_military_employment",
+  "label": "Have you ever been employed by the U.S. military?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Lockheed Martin, a U.S. military contractor",
+  "expect": "No",
+  "spec_quote": "A question about the candidate's own (or his family's) government, civil-service or military employment, service, office or official position (\"Are you a current or former government employee?\", \"Have you ever been employed by a local, state, or federal government entity, including the U.S. military?\", \"Do you hold or are you seeking an elected or appointed government position?\", \"Have you served in the military?\", \"Is any family member employed by a government agency?\") is answered No.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_exact_question",
+  "label": "Are there any reasons why you would not be able to fully contribute in support of the U.S. military and allied forces?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_exact_question_reordered_options",
+  "label": "Are there any reasons why you would not be able to fully contribute in support of the U.S. military and allied forces?",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_military_only",
+  "label": "Are there any reasons why you would not be able to fully contribute in support of the U.S. military?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_allied_forces",
+  "label": "Is there any reason you could not fully support allied forces missions?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_defense_missions_text_box",
+  "label": "Do you have any reason why you could not contribute to defense missions?",
+  "options": [],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_armed_forces_unable",
+  "label": "Is there any reason you would be unable to work for the armed forces?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_dod_willingness",
+  "label": "Are you willing to work on projects that support the Department of Defense?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_military_applications_comfort",
+  "label": "Are you comfortable working on military applications?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_willing_to_support_us_military_allied",
+  "label": "Are you willing to support the U.S. military and allied forces?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_ability_to_contribute",
+  "label": "Would you be able to fully contribute to defense missions?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_defense_contractor_ability",
+  "label": "Are you able to work for a defense contractor?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "company_mentions_defense_but_other_defense_question_is_unknown",
+  "label": "Are you willing to work on projects that support the Department of Defense?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "company": "Raytheon, a defense contractor",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "other_defense_question_text_box_military_applications",
+  "label": "Are you comfortable working on military applications?",
+  "options": [],
+  "company": "",
+  "expect": "unknown",
+  "spec_quote": "Every other such question (e.g. \"Are you willing to work on projects that support the Department of Defense?\", \"Are you comfortable working on military applications?\") is \"unknown\" (the candidate is asked).",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_defense_answer_text_box",
+  "label": "Are there any reasons why you would not be able to fully contribute in support of the U.S. military and allied forces?",
+  "options": [],
+  "company": "",
+  "expect": "Yes",
+  "spec_quote": "If it is the saved kind (any reason he would/could not contribute to / support the military / defense / armed forces / allied forces) the answer is the saved one: Yes.",
+  "ambiguous": false
+ }
+]

@@ -1,0 +1,6 @@
+{
+ "tailor_acronym_swap_kubernetes_to_k8s": {
+  "verdict": "case",
+  "why": "Spec \u00a71 of truth_check (is_bullet_variant): an acronym is 2\u20136 CAPITAL letters; 'k8s' is not one and 'Kubernetes' / 'k8s' are not the same words, so no swap. 'k8s' is a skill of resume_ok fact f1 \u2192 a true skill, so 'skill added: k8s' (spec \u00a73); the bullet stays 'Managed Kubernetes clusters\u2026'. The headline SRE \u00b7 k8s matches."
+ }
+}

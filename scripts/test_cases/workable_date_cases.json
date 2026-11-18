@@ -1,0 +1,293 @@
+[
+ {
+  "name": "parse_ymd_dash_with_whitespace",
+  "fn": "parse_date",
+  "args": {
+   "s": "  2027-06-14  "
+  },
+  "expect": [
+   2027,
+   6,
+   14
+  ],
+  "ambiguous": false,
+  "spec": "Accepts YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD (1- or 2-digit month / day). Surrounding / repeated whitespace is ignored."
+ },
+ {
+  "name": "parse_ymd_dot_single_digits",
+  "fn": "parse_date",
+  "args": {
+   "s": "2027.6.4"
+  },
+  "expect": [
+   2027,
+   6,
+   4
+  ],
+  "ambiguous": false,
+  "spec": "Accepts YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD (1- or 2-digit month / day)."
+ },
+ {
+  "name": "parse_us_slash_year_last_month_first",
+  "fn": "parse_date",
+  "args": {
+   "s": "06/14/2027"
+  },
+  "expect": [
+   2027,
+   6,
+   14
+  ],
+  "ambiguous": false,
+  "spec": "Accepts US MM/DD/YYYY with \"/\" \"-\" or \".\" (1- or 2-digit month / day). A slash date with the year last is always read month first, never day first."
+ },
+ {
+  "name": "parse_us_dash_single_digits",
+  "fn": "parse_date",
+  "args": {
+   "s": "6-14-2027"
+  },
+  "expect": [
+   2027,
+   6,
+   14
+  ],
+  "ambiguous": false,
+  "spec": "Accepts US MM/DD/YYYY with \"/\" \"-\" or \".\" (1- or 2-digit month / day)."
+ },
+ {
+  "name": "parse_month_name_day_first",
+  "fn": "parse_date",
+  "args": {
+   "s": "14 June 2027"
+  },
+  "expect": [
+   2027,
+   6,
+   14
+  ],
+  "ambiguous": false,
+  "spec": "Accepts \"June 14, 2027\", \"Jun 14 2027\", \"Jun. 14, 2027\" and \"14 June 2027\" (month names, any case, first 3 letters count)."
+ },
+ {
+  "name": "parse_month_name_abbrev_with_dot",
+  "fn": "parse_date",
+  "args": {
+   "s": "Jun. 14, 2027"
+  },
+  "expect": [
+   2027,
+   6,
+   14
+  ],
+  "ambiguous": false,
+  "spec": "Accepts \"June 14, 2027\", \"Jun 14 2027\", \"Jun. 14, 2027\" and \"14 June 2027\" (month names, any case, first 3 letters count)."
+ },
+ {
+  "name": "parse_impossible_day_returns_none",
+  "fn": "parse_date",
+  "args": {
+   "s": "02/30/2027"
+  },
+  "expect": null,
+  "ambiguous": false,
+  "spec": "Anything else (empty, \"ASAP\", \"Summer 2027\", 2-digit years, impossible dates such as 02/30/2027 or 13/01/2027) → None."
+ },
+ {
+  "name": "parse_season_text_returns_none",
+  "fn": "parse_date",
+  "args": {
+   "s": "Summer 2027"
+  },
+  "expect": null,
+  "ambiguous": false,
+  "spec": "Anything else (empty, \"ASAP\", \"Summer 2027\", 2-digit years, impossible dates such as 02/30/2027 or 13/01/2027) → None."
+ },
+ {
+  "name": "to_mask_syntiant_year_first",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "YYYY/MM/DD"
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "YYYY → 4-digit year, YY → last 2 digits, MM / DD → zero-padded 2 digits, M / D → no padding. The output keeps the mask's token order and separator exactly, and nothing else."
+ },
+ {
+  "name": "to_mask_month_name_value_dmy_mask",
+  "fn": "to_mask",
+  "args": {
+   "value": "June 14, 2027",
+   "placeholder": "DD/MM/YYYY"
+  },
+  "expect": "14/06/2027",
+  "ambiguous": false,
+  "spec": "to_mask(value, placeholder) → the value written in the box's own format, or None when value is not a date (parse_date None). The output keeps the mask's token order and separator exactly, and nothing else."
+ },
+ {
+  "name": "to_mask_unpadded_month_day",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "M/D/YYYY"
+  },
+  "expect": "6/14/2027",
+  "ambiguous": false,
+  "spec": "YYYY → 4-digit year, YY → last 2 digits, MM / DD → zero-padded 2 digits, M / D → no padding."
+ },
+ {
+  "name": "to_mask_two_digit_year_dot_mask",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "DD.MM.YY"
+  },
+  "expect": "14.06.27",
+  "ambiguous": false,
+  "spec": "YYYY → 4-digit year, YY → last 2 digits, MM / DD → zero-padded 2 digits, M / D → no padding. The output keeps the mask's token order and separator exactly, and nothing else."
+ },
+ {
+  "name": "to_mask_placeholder_with_surrounding_text",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "Date (YYYY-MM-DD)"
+  },
+  "expect": "2027-06-14",
+  "ambiguous": false,
+  "spec": "Text around the mask in the placeholder is ignored (\"Date (YYYY-MM-DD)\" → mask \"YYYY-MM-DD\")."
+ },
+ {
+  "name": "to_mask_spaced_separator_preserved",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "YYYY / MM / DD"
+  },
+  "expect": "2027 / 06 / 14",
+  "ambiguous": false,
+  "spec": "The mask is the first part of the placeholder made of three tokens, one each of year (YYYY or YY), month (MM or M) and day (DD or D), any letter case, joined by the same separator (any non-alphanumeric run, e.g. \"/\", \"-\", \".\", \" / \"). The output keeps the mask's token order and separator exactly, and nothing else."
+ },
+ {
+  "name": "to_mask_no_placeholder_falls_back",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": null
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "No placeholder, an empty one, or one with no such mask (e.g. \"Select a date\", or two different separators, or a token repeated such as \"MM/MM/YYYY\") → Workable's own \"YYYY/MM/DD\"."
+ },
+ {
+  "name": "to_mask_placeholder_without_mask_falls_back",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "Select a date"
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "No placeholder, an empty one, or one with no such mask (e.g. \"Select a date\", or two different separators, or a token repeated such as \"MM/MM/YYYY\") → Workable's own \"YYYY/MM/DD\"."
+ },
+ {
+  "name": "to_mask_empty_placeholder_falls_back",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": ""
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "No placeholder, an empty one, or one with no such mask (e.g. \"Select a date\", or two different separators, or a token repeated such as \"MM/MM/YYYY\") → Workable's own \"YYYY/MM/DD\"."
+ },
+ {
+  "name": "to_mask_two_different_separators_falls_back",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "YYYY/MM-DD"
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "No placeholder, an empty one, or one with no such mask (e.g. \"Select a date\", or two different separators, or a token repeated such as \"MM/MM/YYYY\") → Workable's own \"YYYY/MM/DD\"."
+ },
+ {
+  "name": "to_mask_repeated_token_falls_back",
+  "fn": "to_mask",
+  "args": {
+   "value": "06/14/2027",
+   "placeholder": "MM/MM/YYYY"
+  },
+  "expect": "2027/06/14",
+  "ambiguous": false,
+  "spec": "No placeholder, an empty one, or one with no such mask (e.g. \"Select a date\", or two different separators, or a token repeated such as \"MM/MM/YYYY\") → Workable's own \"YYYY/MM/DD\"."
+ },
+ {
+  "name": "to_mask_non_date_value_returns_none",
+  "fn": "to_mask",
+  "args": {
+   "value": "ASAP",
+   "placeholder": "YYYY/MM/DD"
+  },
+  "expect": null,
+  "ambiguous": false,
+  "spec": "to_mask(value, placeholder) → the value written in the box's own format, or None when value is not a date (parse_date None)."
+ },
+ {
+  "name": "same_date_equal_across_formats",
+  "fn": "same_date",
+  "args": {
+   "want": "06/14/2027",
+   "got": "2027-06-14"
+  },
+  "expect": true,
+  "ambiguous": false,
+  "spec": "same_date(want, got) → True only when both parse (parse_date) to the same (year, month, day); False if either is None."
+ },
+ {
+  "name": "same_date_different_day_false",
+  "fn": "same_date",
+  "args": {
+   "want": "06/14/2027",
+   "got": "06/15/2027"
+  },
+  "expect": false,
+  "ambiguous": false,
+  "spec": "same_date(want, got) → True only when both parse (parse_date) to the same (year, month, day); False if either is None."
+ },
+ {
+  "name": "same_date_got_unparseable_false",
+  "fn": "same_date",
+  "args": {
+   "want": "06/14/2027",
+   "got": "ASAP"
+  },
+  "expect": false,
+  "ambiguous": false,
+  "spec": "same_date(want, got) → True only when both parse (parse_date) to the same (year, month, day); False if either is None."
+ },
+ {
+  "name": "same_date_day_last_slash_read_month_first_false",
+  "fn": "same_date",
+  "args": {
+   "want": "06/14/2027",
+   "got": "14/06/2027"
+  },
+  "expect": false,
+  "ambiguous": false,
+  "spec": "A slash date with the year last is always read month first, never day first. same_date(want, got) → True only when both parse (parse_date) to the same (year, month, day); False if either is None."
+ },
+ {
+  "name": "same_date_both_month_names_true",
+  "fn": "same_date",
+  "args": {
+   "want": "June 14, 2027",
+   "got": "14 Jun 2027"
+  },
+  "expect": true,
+  "ambiguous": false,
+  "spec": "Accepts \"June 14, 2027\", \"Jun 14 2027\", \"Jun. 14, 2027\" and \"14 June 2027\" (month names, any case, first 3 letters count). same_date(want, got) → True only when both parse (parse_date) to the same (year, month, day)."
+ }
+]

@@ -1,0 +1,4 @@
+{
+ "right_set_value_answer_same_text_different_key": "case misreads the spec: subject other_person with fact_key referrer_name (not in the about-others list referral / references / relatives / relative_names / know_employee / contact_employer) means ask — spec 'When a reading means ask', last bullet (qtype_eval_spec.md, JSA-361 2026-11-16)",
+ "right_set_value_answer_different_text_and_key": "case misreads the spec: subject other_person with fact_key referral_email (not in the about-others list) means ask — spec 'When a reading means ask', last bullet (qtype_eval_spec.md, JSA-361 2026-11-16)"
+}

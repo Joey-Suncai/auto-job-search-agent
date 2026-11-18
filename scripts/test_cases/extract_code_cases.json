@@ -1,0 +1,212 @@
+[
+ {
+  "name": "direct six-digit code starting with 20",
+  "text": "Subject: Verify\nYour code: 201734",
+  "expect": "201734",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in either position.",
+  "ambiguous": false
+ },
+ {
+  "name": "passcode dash six-digit starting with 19",
+  "text": "Subject: Login\npasscode - 198822",
+  "expect": "198822",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in either position.",
+  "ambiguous": false
+ },
+ {
+  "name": "OTP is seven-digit starting with 20",
+  "text": "Subject: Sign in\nOTP is 2017345",
+  "expect": "2017345",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "one-time password colon eight-digit starting with 19",
+  "text": "Subject: Access\none-time password: 19882234",
+  "expect": "19882234",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "six-digit starting with 20 further after trigger",
+  "text": "Subject: Account\nYour code has been generated. The verification value is 201734.",
+  "expect": "201734",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "eight-digit starting with 20 further after OTP",
+  "text": "Subject: Login\nUse the OTP below when prompted. Reference 20173456.",
+  "expect": "20173456",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "real date directly after trigger is still code",
+  "text": "Subject: Verify\ncode: 20261110",
+  "expect": "20261110",
+  "spec_quote": "That token is the code even when it looks like a year or a date.",
+  "ambiguous": false
+ },
+ {
+  "name": "real date skipped in fallback before code",
+  "text": "Subject: Verify\nYour code was sent. Date 20261110. Use 482913 to continue.",
+  "expect": "482913",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid month date used as code",
+  "text": "Subject: Verify\nYour code was sent. Reference 20261301.",
+  "expect": "20261301",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid day date used as code",
+  "text": "Subject: Verify\ncode has reference 20260132",
+  "expect": "20260132",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "code is form",
+  "text": "Subject: Verify\nYour code is 552134.",
+  "expect": "552134",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "code colon form",
+  "text": "Subject: Verify\nVerification code: 552134",
+  "expect": "552134",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "passcode dash letters and digits",
+  "text": "Subject: Login\npasscode - 1987AB",
+  "expect": "1987AB",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "pass code phrase",
+  "text": "Subject: Login\npass code: 77K92L",
+  "expect": "77K92L",
+  "spec_quote": "The code follows a trigger word: \"code\", \"passcode\", \"pass code\", \"one-time password\" or \"OTP\" (case-insensitive, whole word).",
+  "ambiguous": false
+ },
+ {
+  "name": "one-time password is letters and digits",
+  "text": "Subject: Access\none-time password is A1B2C3",
+  "expect": "A1B2C3",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "lowercase otp case-insensitive",
+  "text": "Subject: Access\notp: 909090",
+  "expect": "909090",
+  "spec_quote": "The code follows a trigger word: \"code\", \"passcode\", \"pass code\", \"one-time password\" or \"OTP\" (case-insensitive, whole word).",
+  "ambiguous": false
+ },
+ {
+  "name": "earlier trigger occurrence wins",
+  "text": "Subject: Verify\ncode: 111222. Later code: 333444",
+  "expect": "111222",
+  "spec_quote": "The trigger words may appear several times; earlier occurrences are tried first.",
+  "ambiguous": false
+ },
+ {
+  "name": "code of conduct noise before later trigger",
+  "text": "Subject: Application\nOur code of conduct is available online. Please read the policy carefully before you continue with the application process. The company expects every candidate to follow these rules and to treat all people with respect at all times. This document contains important information about how we work and what we value in our teams. Your verification code: 735190.",
+  "expect": "735190",
+  "spec_quote": "The trigger words may appear several times; earlier occurrences are tried first.",
+  "ambiguous": false
+ },
+ {
+  "name": "postal code only five digits",
+  "text": "Subject: Address\nPostal Code: 94105",
+  "expect": null,
+  "spec_quote": "A code is a whole token of 6 to 10 letters/digits (no other characters inside it) that contains at least one digit.",
+  "ambiguous": false
+ },
+ {
+  "name": "code of conduct noise only",
+  "text": "Subject: Policy\nPlease review our code of conduct before applying.",
+  "expect": null,
+  "spec_quote": "Nothing qualifies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "postal code noise then real code",
+  "text": "Subject: Account\nPostal Code: 94105\nYour verification code: 482913",
+  "expect": "482913",
+  "spec_quote": "Otherwise: the first qualifying token within 200 characters after the trigger word — but a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped.",
+  "ambiguous": false
+ },
+ {
+  "name": "five-character token too short",
+  "text": "Subject: Verify\ncode: 12345",
+  "expect": null,
+  "spec_quote": "A code is a whole token of 6 to 10 letters/digits (no other characters inside it) that contains at least one digit.",
+  "ambiguous": false
+ },
+ {
+  "name": "eleven-character token too long",
+  "text": "Subject: Verify\ncode: 12345678901",
+  "expect": null,
+  "spec_quote": "A code is a whole token of 6 to 10 letters/digits (no other characters inside it) that contains at least one digit.",
+  "ambiguous": false
+ },
+ {
+  "name": "all-letter token no digit",
+  "text": "Subject: Verify\ncode: ABCDEF",
+  "expect": null,
+  "spec_quote": "A code is a whole token of 6 to 10 letters/digits (no other characters inside it) that contains at least one digit.",
+  "ambiguous": false
+ },
+ {
+  "name": "punctuation inside token",
+  "text": "Subject: Verify\ncode: 12-34-56",
+  "expect": null,
+  "spec_quote": "A code is a whole token of 6 to 10 letters/digits (no other characters inside it) that contains at least one digit.",
+  "ambiguous": false
+ },
+ {
+  "name": "no trigger and no code",
+  "text": "Subject: Welcome\nHello, your application has been received.",
+  "expect": null,
+  "spec_quote": "Nothing qualifies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "Oracle verification mail with 2026 footer",
+  "text": "Subject: Oracle Verification Code\nHello,\nYour Oracle account verification code is 748392. This code expires in 10 minutes.\n© 2026 Oracle Corporation",
+  "expect": "748392",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Workday security mail with 2027 job title",
+  "text": "Subject: Workday Account Security Code\nUse one-time password 8K4M2Q to sign in. Do not share this code. Job title: Software Engineer 2027.\n© 2026 Workday.",
+  "expect": "8K4M2Q",
+  "spec_quote": "First choice: the token right after the trigger word, separated from it only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse verification mail with 2026 footer",
+  "text": "Subject: Your Greenhouse verification code\nHi,\nYour code is 201734. This code will expire in 15 minutes.\nGreenhouse 2026",
+  "expect": "201734",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in either position.",
+  "ambiguous": false
+ },
+ {
+  "name": "SmartRecruiters login mail with 2027 footer",
+  "text": "Subject: SmartRecruiters login code\nYour one-time password: 198822. It expires in 10 minutes. SmartRecruiters 2027.",
+  "expect": "198822",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in either position.",
+  "ambiguous": false
+ }
+]

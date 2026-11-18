@@ -191,11 +191,13 @@ For each question return either an answer that follows DIRECTLY from one saved f
 Rules: never invent or guess a personal fact, number, date, name, motivation or opinion. Essay / "why" / describe questions
 → UNKNOWN. If options are given, the answer must be one option copied exactly. If two facts conflict or the question asks
 something slightly different from the fact (other time frame, other employer, other country), → UNKNOWN.
-Work-authorization questions: F-1 student; CPT for the internship is not yet effective → "authorized as of today / effective
-now / for any employer" = No; generic "legally authorized to work in the US" = Yes; sponsorship now No (internship) only if
-asked separately from future, future Yes; asked together → Yes."""
+Work-authorization questions (Joey 2026-11-11, JSA-310): every authorization question = Yes — generic, "for any employer",
+"all employers", "without restriction", "as of today" — but "permanently authorized" = No and a Yes option claiming
+citizenship / permanent residence / no sponsorship is never his; "authorized … WITHOUT sponsorship (now or in the future)"
+= No; sponsorship now No (internship) only if asked separately from future, future Yes; asked together → Yes."""
 
-PROFILE_MD = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '_shared', 'candidate-profile.md')
+import paths as _jp  # noqa: E402  (config/ is on sys.path above)
+PROFILE_MD = _jp.fact('candidate-profile.md')   # the data home's fact file, else the repo's old place (JSA-339)
 FACT_SECTIONS = ('Identity & contact', 'Standard application-form answers', 'Additional answers', 'Education')
 
 

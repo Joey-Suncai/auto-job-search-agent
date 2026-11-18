@@ -1,0 +1,271 @@
+[
+ {
+  "name": "rbc_retain_application_real",
+  "label": "If you would like us to retain your application and personal information including name, contact information and information submitted as a part of your application and reach out should we identify future opportunities that align to your skillset, please indicate your consent below.",
+  "options": [
+   "I consent",
+   "I do not consent"
+  ],
+  "expect": "I consent"
+ },
+ {
+  "name": "consent_contact_future_opportunities",
+  "label": "Do you consent to be contacted about future job opportunities?",
+  "options": [
+   "I do not consent",
+   "I consent"
+  ],
+  "expect": "I consent",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "retain_application_on_file",
+  "label": "May we retain your application and personal information on file for future roles?",
+  "options": [
+   "Yes, retain my application",
+   "No, do not retain my application"
+  ],
+  "expect": "Yes, retain my application",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "agree_keep_application_future",
+  "label": "I agree to the company keeping my application on file for future opportunities.",
+  "options": [
+   "I agree",
+   "I do not agree"
+  ],
+  "expect": "I agree",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "contact_later_yes_no",
+  "label": "Do you agree to be contacted later about future job openings?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "may_contact_future_opportunities",
+  "label": "Please indicate whether we may contact you about future opportunities.",
+  "options": [
+   "Yes, you may contact me",
+   "No, you may not contact me"
+  ],
+  "expect": "Yes, you may contact me",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "application_retention_consent_decline",
+  "label": "Application retention: do you consent to your application being kept on file?",
+  "options": [
+   "I consent",
+   "I decline"
+  ],
+  "expect": "I consent",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "future_roles_retain_info",
+  "label": "Would you like to be considered for future roles and have your information retained?",
+  "options": [
+   "No, do not retain my information",
+   "Yes, retain my information"
+  ],
+  "expect": "Yes, retain my information",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "consent_future_contact_agree",
+  "label": "Consent to future contact: I agree that the company may contact me about future job opportunities.",
+  "options": [
+   "I agree",
+   "I do not agree"
+  ],
+  "expect": "I agree",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "personal_info_retention_yes_no_decline",
+  "label": "Do you consent to the retention of your personal information for future roles?",
+  "options": [
+   "Yes",
+   "No",
+   "Decline to answer"
+  ],
+  "expect": "Yes",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "keep_application_contact_later",
+  "label": "May we keep your application on file and contact you later?",
+  "options": [
+   "I consent",
+   "I do not consent",
+   "I prefer not to say"
+  ],
+  "expect": "I consent",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "future_opportunities_contact_consent",
+  "label": "Do you consent to being contacted later about future job opportunities?",
+  "options": [
+   "Yes, I consent",
+   "No, I do not consent"
+  ],
+  "expect": "Yes, I consent",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "retain_application_personal_info",
+  "label": "Do you agree to the company retaining your application and personal information on file for future roles?",
+  "options": [
+   "I agree",
+   "I do not agree"
+  ],
+  "expect": "I agree",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'."
+ },
+ {
+  "name": "housing_austin_yes_no",
+  "label": "Do you have housing accommodations in the Austin area?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "Questions asking whether he already has housing / a place to live / accommodation in some area (other than Chicago) → No."
+ },
+ {
+  "name": "place_to_live_new_york",
+  "label": "Do you have a place to live in New York?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "Questions asking whether he already has housing / a place to live / accommodation in some area (other than Chicago) → No."
+ },
+ {
+  "name": "currently_housed_houston",
+  "label": "Are you currently housed in Houston?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "No",
+  "spec": "Questions asking whether he already has housing / a place to live / accommodation in some area (other than Chicago) → No."
+ },
+ {
+  "name": "housing_chicago_yes_no",
+  "label": "Do you have housing accommodations in the Chicago area?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "A question asking whether he has housing in Chicago → Yes."
+ },
+ {
+  "name": "place_to_live_chicago",
+  "label": "Do you have a place to live in Chicago?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "A question asking whether he has housing in Chicago → Yes."
+ },
+ {
+  "name": "arrange_own_housing_austin",
+  "label": "Will you arrange your own housing for this position in Austin?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "Questions asking whether he would arrange his own housing, or can find housing, are a different question: Yes."
+ },
+ {
+  "name": "can_find_housing_new_york",
+  "label": "Can you find housing in the New York area if offered the job?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "Questions asking whether he would arrange his own housing, or can find housing, are a different question: Yes."
+ },
+ {
+  "name": "housing_accommodations_houston_no_options",
+  "label": "Do you have housing accommodations in the Houston area?",
+  "options": [],
+  "expect": "No",
+  "spec": "Questions asking whether he already has housing / a place to live / accommodation in some area (other than Chicago) → No. Also: output 'Yes' / 'No' when there are no options."
+ },
+ {
+  "name": "housing_chicago_no_options",
+  "label": "Do you have housing in Chicago?",
+  "options": [],
+  "expect": "Yes",
+  "spec": "A question asking whether he has housing in Chicago → Yes. Also: output 'Yes' / 'No' when there are no options."
+ },
+ {
+  "name": "secure_own_housing_houston",
+  "label": "Are you able to secure your own housing in the Houston area?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "Yes",
+  "spec": "Questions asking whether he would arrange his own housing, or can find housing, are a different question: Yes."
+ },
+ {
+  "name": "consent_retain_application_no_options",
+  "label": "Do you consent to the company keeping your application on file for future roles?",
+  "options": [],
+  "expect": "Yes",
+  "spec": "He agrees to be contacted later about future job opportunities, and to a company keeping his application and personal information on file for future roles. So: 'I consent' / 'Yes, retain my application' → the consenting option; never an option that says 'I do not consent', 'No', 'Decline'. Also: output 'Yes' / 'No' when there are no options."
+ },
+ {
+  "name": "housing_or_place_to_live_new_york",
+  "label": "Do you have housing or a place to live in the New York area?",
+  "options": [
+   "Yes, I have housing",
+   "No, I do not have housing"
+  ],
+  "expect": "No, I do not have housing",
+  "spec": "Questions asking whether he already has housing / a place to live / accommodation in some area (other than Chicago) → No."
+ },
+ {
+  "name": "marketing_retain_data_later",
+  "label": "Do you agree to retain my data for later use in marketing?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none"
+ },
+ {
+  "name": "housing_no_place_named",
+  "label": "Do you have your own housing arrangements for the summer?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "none"
+ },
+ {
+  "name": "no_preference_option",
+  "label": "May we retain your application for future roles?",
+  "options": [
+   "I consent",
+   "No preference"
+  ],
+  "expect": "I consent"
+ }
+]

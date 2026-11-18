@@ -20,10 +20,11 @@ no CAPTCHA on the page · no unknown/new required field on the live page. Any fa
 JSA-209: a required extra file slot with no file on hand → STATUS needs-user before filling (slot label queued); after
 the click, the form's own validation errors → STATUS failed with the field names (nothing was submitted), not unconfirmed.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, sys, time
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
-import ladder, canon, materials_gate, decide, human_check
+import ladder, canon, materials_gate, decide, human_check, plan_build
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from datetime import datetime, timedelta
 
@@ -33,8 +34,9 @@ sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 VERIFY_SRC = open(os.path.join(HERE, 'verify.js'), encoding='utf-8').read()
-CONFIRM_RE = re.compile(r"(thank you for (applying|your application|your interest)|application (has been |was )?(submitted|received)|"
+CONFIRM_RE = re.compile(r"(thank you for (applying|your application)|application (has been |was )?(submitted|received)|"
                         r"we('| ha)ve received your application|successfully submitted|application submitted)", re.I)
+# JSA-299: no "thank you for your interest" (a form greeting); a confirmation also needs the page to change (confirm_page)
 CODE_RE = re.compile(r'(security|verification|confirmation) code', re.I)
 CAPTCHA_SEL = 'iframe[src*="hcaptcha"], iframe[src*="recaptcha"][src*="bframe"], iframe[title*="challenge" i], div.h-captcha:not(:empty)'
 
@@ -148,6 +150,24 @@ def grad_transcript_stop(folder, plan, url, log):
                               'problems': [f"graduate transcript slot: {f['key']}: {f.get('label', '')[:200]}" for f in hits],
                               'mode': 'gate'}) + '\n')
     return hits
+
+
+def gh_rows(plan_fields, bad, field_problems=None):
+    """Pure (tested, JSA-196). The plan's filled fields as read-back rows for the common closing books (runner_common):
+    one per plan field with status 'ok'; `page` = the page value verify.js reported for a bad key, else the planned answer
+    (verify.js found them equal). Order = plan order."""
+    badmap = {b.get('key'): b for b in bad or [] if isinstance(b, dict)}
+    for k in (field_problems or {}):                # a fill failure verify.js did not list is not a confirmed field either
+        badmap.setdefault(k, {})
+    rows = []
+    for f in plan_fields or []:
+        if f.get('status') != 'ok':
+            continue
+        b = badmap.get(f.get('key'))
+        rows.append({'key': f.get('key'), 'label': f.get('label') or f.get('key'), 'want': f.get('answer'),
+                     'page': (b.get('page') or '') if b is not None else f.get('answer'), 'type': f.get('type') or '',
+                     'required': bool(f.get('required')), 'ok': b is None, 'source': f.get('source') or ''})
+    return rows
 
 
 NEEDS_USER_RX = re.compile(r'^plan not ready\b|required fields? not in (the )?plan', re.I)
@@ -293,8 +313,19 @@ class Run:
         return True
 
     def native_select(self, f):
-        self.page.locator(f['sel']).first.select_option(label=str(f['answer']))
+        loc = self.page.locator(f['sel']).first
+        texts = [t.strip() for t in loc.evaluate('e => [...e.options].map(o => o.text)')]
+        pick = next((w for w in [str(f['answer'])] + [str(x) for x in f.get('alts') or []] if w in texts), str(f['answer']))   # "Aug" / "08" lists (JSA-228)
+        loc.select_option(label=pick)
         return True
+
+    def month_text(self, f):
+        """An Employment month that is a plain input, not a list (JSA-228): type what the box expects; the plan's answer
+        follows, so the read-back checks that value."""
+        a = self.page.locator(f['sel']).first.evaluate('e => [e.type, e.getAttribute("maxlength"), e.getAttribute("placeholder") || ""]')
+        f['answer'] = plan_build.month_text_answer(f['answer'], f['month_num'], *a)
+        f['type'], f['accept'] = 'text', [f['answer']]
+        return self.text(f)
 
     def radio(self, f):
         name = f['key']
@@ -369,7 +400,9 @@ class Run:
 
     # ---------- steps ----------
     def fill_one(self, f, el_tag):
-        if el_tag.endswith('|checkbox') and (f['type'] == 'multi' or f['key'].endswith('[]')):
+        if f.get('month_num') and not el_tag.startswith(('COMBO', 'SELECT')):
+            self.month_text(f)
+        elif el_tag.endswith('|checkbox') and (f['type'] == 'multi' or f['key'].endswith('[]')):
             self.checkbox_group(f)
         elif el_tag.startswith('COMBO') or (f['type'] in ('combo', 'multi') and not el_tag.startswith('SELECT')):
             if not self.combo(f): self.field_problems[f['key']] = self.problems.pop()
@@ -517,7 +550,7 @@ def main():
         if a.launch:
             br = launch_browser(pw); ctx = br.new_context(); page = ctx.new_page()
         else:
-            br = pw.chromium.connect_over_cdp(a.cdp); ctx = br.contexts[0]
+            br = cdp_connect.connect(pw, a.cdp); ctx = br.contexts[0]
             plan_url = json.load(open(os.path.join(folder, 'plan.json'), encoding='utf-8'))['url']
             if a.attach or a.resume:
                 cands = [p for p in ctx.pages if (a.attach and a.attach in p.url)] or [p for p in ctx.pages if p.url.split('#')[0] == plan_url]
@@ -529,6 +562,10 @@ def main():
         page.set_default_timeout(8000)          # a blocked click (overlay, hidden widget) fails fast → ladder, not a 30 s hang
         r = Run(folder, page, log)
         url = a.url or r.plan['url']
+        import runner_common as RC                                   # JSA-196: the closing books are the common ones
+        R = RC.Run('greenhouse', url, folder, folder, submit=a.submit, log=log, label='Greenhouse')
+        R.queued = True                                              # this runner queues its own stops (queue() below): never twice
+        R.mark('page')
         rt_path = os.path.join(folder, 'runtime.json')
         usage = {'calls': 0, 'prompt': 0, 'out': 0}
         log(f'start {"SUBMIT" if a.submit else "dry-run"}{" RESUME" if a.resume else ""} {url}')
@@ -565,11 +602,16 @@ def main():
         cap = r.captcha()
         # canonical audit: the page against Joey's facts, independent of the plan (canon.py).
         # verify.js compares page vs plan; this catches a plan that is itself wrong.
+        recs = []
         try:
-            cbad = canon.audit(page.evaluate(canon.probe_src() + '; __cxCanonProbe()'), canon.tenant_of(url))
+            import fact_gate                                         # + the plan's full labels (the probe cuts them at 140), JSA-281
+            recs = page.evaluate(canon.probe_src() + '; __cxCanonProbe()') + [dict(x, type='') for x in fact_gate.plan_records(r.plan)]
+            cbad = canon.audit(recs, canon.tenant_of(url))
         except Exception as e:
             cbad = []
             r.problems.append(f'canonical audit unavailable: {type(e).__name__}: {str(e)[:80]}')
+        import final_review                                          # JSA-355: a second model re-reads the key cells on the page
+        r.problems.extend(final_review.problems(recs, log, tag=folder))
         json.dump(cbad, open(os.path.join(folder, 'canon.json'), 'w'), indent=1, ensure_ascii=False)
         if cbad:
             r.problems.extend(canon.block(cbad))
@@ -593,15 +635,22 @@ def main():
             human_check.park(folder, 'greenhouse', page.url, [{}])    # JSA-106: push + open-check list, the batch moves on
         else:
             btn = page.get_by_role('button', name=re.compile(r'^\s*submit( application)?\s*$', re.I)).first
-            pre_txt = page.inner_text('body')[:20000]; pre_hit = bool(CONFIRM_RE.search(pre_txt)); pre_url = page.url
+            import confirm_page as CP
+            def snap():                                  # JSA-299: the page before / after the click
+                try: form = btn.is_visible()
+                except Exception: form = None
+                return {'url': page.url, 'text': page.inner_text('body')[:20000], 'form': form}
+            R.mark('submit')
+            pre = snap(); pre_url = pre['url']
             pre_errs = r.submit_errors()                 # JSA-209: errors after the click count only when they are new
             btn.click(); log('submit clicked')
-            ok, t_submit, code_done, err_polls, txt = False, datetime.now().astimezone(), False, 0, ''
+            ok, t_submit, code_done, err_polls, txt, why = False, datetime.now().astimezone(), False, 0, '', ''
             for _ in range(80):
                 time.sleep(0.5)
-                txt = page.inner_text('body')[:20000]
-                if 'confirmation' in page.url.lower() and page.url != pre_url: ok = True; break     # Greenhouse /confirmation page
-                if CONFIRM_RE.search(txt) and not pre_hit: ok = True; break                         # thank-you text that was not there before
+                cur = snap(); txt = cur['text']
+                if 'confirmation' in page.url.lower() and page.url != pre_url: ok, why = True, 'Greenhouse /confirmation URL'; break
+                ok, why = CP.judge(pre, cur, done_re=CONFIRM_RE)   # a new thank-you sentence AND a changed page
+                if ok: break
                 if r.captcha(): break
                 if not code_done and not CODE_RE.search(txt):   # the form refused it (Viking 10-31: "This field is required")
                     err_polls = err_polls + 1 if after_submit(False, False, pre_errs, r.submit_errors())['fields'] else 0
@@ -612,8 +661,12 @@ def main():
                     try:
                         from gmail_code import wait_for_code
                         used = used_codes()
+                        try:                                       # n code boxes → the length a letters-only code must have (JSA-304)
+                            nbox = page.evaluate("() => document.querySelectorAll('input[id^=\"security-input-\"]').length") or None
+                        except Exception:
+                            nbox = None
                         code = wait_for_code(sender=None, since=t_submit - timedelta(seconds=30), timeout=150,
-                                             hint=company_hint(folder), exclude=used)
+                                             hint=company_hint(folder), exclude=used, n=nbox)
                         if code: remember_code(code)
                     except BaseException as e:                     # SystemExit or an IMAP error: never crash without a result line
                         code = None; log(f'code read failed: {type(e).__name__} {str(e)[:120]}')
@@ -633,8 +686,8 @@ def main():
                     except Exception as e:
                         log(f'submit after code not clickable: {str(e)[:80]}')
             if ok:
-                page.screenshot(path=os.path.join(folder, 'submitted_confirmation.png'), full_page=True)
-                m = CONFIRM_RE.search(txt); log('CONFIRMED: ' + (m.group(0) if m else '') + ' | ' + page.url); status = 'submitted'
+                CP.confirmation_shot(page, os.path.join(folder, 'submitted_confirmation.png'), log)   # settled, text painted, never blank (JSA-299 / JSA-223)
+                m = CONFIRM_RE.search(txt); log('CONFIRMED: ' + (m.group(0) if m else '') + ' | ' + page.url + f' ({why})'); status = 'submitted'
                 with open(os.path.join(folder, 'application_record.md'), 'a', encoding='utf-8') as rec:
                     rec.write(f"\n## Submitted by runner {now()}\n- URL: {url}\n- verify.json: pass (nonce {r.plan.get('nonce')})\n- Confirmation: submitted_confirmation.png\n")
             else:
@@ -653,21 +706,17 @@ def main():
                 else:
                     queue(folder, 'clicked Submit but no confirmation seen (CAPTCHA / email code / error?) — see after_submit.png', url)
                     log('no confirmation seen')
-        os.makedirs(DATA, exist_ok=True)
-        with open(os.path.join(DATA, 'results.jsonl'), 'a') as out:
-            out.write(json.dumps({'at': now(), 'folder': os.path.basename(folder), 'url': url, 'status': status,
-                                  'verify_pass': res.get('pass'), 'problems': r.problems[:8],
-                                  'field_problems': r.field_problems, 'deepseek': usage,
-                                  'secs': round(time.time() - t0, 1), 'mode': 'resume' if a.resume else 'full'}) + '\n')
-        if status == 'submitted':        # JSA-014: Applied row in data/store + queue lines ticked, no hand edit
-            sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'scripts', 'store'))
-            import sync_results; sync_results.sync_folder(folder, log)
+        # closing books (JSA-196): one results line (+ phases, stopped_at, tenant) and one fields.jsonl line per field, the tracker
+        # row for a submit (sync_results). The tab handling below stays here: --attach / --resume / --keep-open / hand-off keep it.
+        R.stopped_at = None if status in ('submitted', 'dry-run', 'filled', 'unconfirmed') else (RC.COMMON if status == 'blocked' else RC.PAGE)
+        R.finish({'status': status, 'problems': r.problems[:8], 'fields': gh_rows(r.plan['fields'], res.get('bad'), r.field_problems), 'canon': cbad},
+                 ctx=None, page=None, told=True,     # the old run.py queued unconfirmed itself and never pushed: unchanged
+                 extra={'verify_pass': res.get('pass'), 'field_problems': r.field_problems, 'deepseek': usage,
+                        'resume': bool(a.resume)})
         if status != 'captcha': human_check.resolve(folder, status)
-        print('STATUS', status)
         if a.attach and a.attach.startswith('cx=') and status != 'handoff':
             try: page.goto('https://example.com/?' + a.attach)        # hand the Claude tab back for the next job of the batch
             except Exception: pass
-        print(f'TIME {round(time.time() - t0, 1)}s')
         import tab_policy                                     # Joey 2026-11-05: close the tab when the run ends; a CAPTCHA hand-off / --keep-open / attach stays
         if not (a.keep_open or a.attach or a.resume or handoff or tab_policy.keep_open(status)) and not page.is_closed(): page.close()
         if a.launch: br.close()

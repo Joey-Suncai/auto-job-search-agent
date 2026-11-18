@@ -1,0 +1,327 @@
+[
+ {
+  "name": "Greenhouse code block with letters+digits code, n not given",
+  "text": "Subject: Security code for your application to Bratalbra\n\nHi Alex,\n\nCopy and paste this code into the security code field on your application:\n\nA7F2K9\n\nThanks,\nThe Bratalbra Team",
+  "n": null,
+  "expect": "A7F2K9",
+  "spec_quote": "a line that contains a trigger word and ends with a colon, followed (after optional blank lines) by a line that holds only one token (spaces around it allowed). That token is the code",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse code block with letters-only mixed-case code, n=8",
+  "text": "Subject: Security code for your application to Acme Corp\n\nCopy and paste this code into the security code field on your application:\n\nFTyAUMIB\n",
+  "n": 8,
+  "expect": "FTyAUMIB",
+  "spec_quote": "A token with NO digit counts only if ALL of: its length is exactly n (8 when n is not given); it has an upper-case letter somewhere after its first character; and it has a lower-case letter (e.g. \"FTyAUMIB\", \"jbeRmAeA\", \"UBqOtnKi\").",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse code block with letters-only mixed-case code, n not given (default 8)",
+  "text": "Subject: Security code for your application to Northwind\n\nCopy and paste this code into the security code field on your application:\n\njbeRmAeA\n",
+  "n": null,
+  "expect": "jbeRmAeA",
+  "spec_quote": "its length is exactly n (8 when n is not given)",
+  "ambiguous": false
+ },
+ {
+  "name": "Greenhouse mail for company with digit (C3 AI) must not return company token, returns body code block",
+  "text": "Subject: Security code for your application to C3 AI\n\nCopy and paste this code into the security code field on your application:\n\n482913\n",
+  "n": null,
+  "expect": "482913",
+  "spec_quote": "That token is the code — this wins over any token earlier in the mail",
+  "ambiguous": false
+ },
+ {
+  "name": "Subject contains company name with digit and a year line 2027; body code block wins",
+  "text": "Subject: Security code for your application to Bratalbra - 2027\n\nCopy and paste this code into the security code field on your application:\n\n937481\n",
+  "n": null,
+  "expect": "937481",
+  "spec_quote": "this wins over any token earlier in the mail, including one in the subject",
+  "ambiguous": false
+ },
+ {
+  "name": "Code block letters-only token of wrong length for n=6",
+  "text": "Subject: Security code for your application to Acme\n\nCopy and paste this code into the security code field on your application:\n\nFTyAUMIB\n",
+  "n": 6,
+  "expect": null,
+  "spec_quote": "A letters-only token of the wrong length is not a code.",
+  "ambiguous": false
+ },
+ {
+  "name": "Code block letters-only token of wrong length (7 chars) for n=8",
+  "text": "Subject: Security code for your application to Acme\n\nCopy and paste this code into the security code field on your application:\n\nUBqOtnK\n",
+  "n": 8,
+  "expect": null,
+  "spec_quote": "A letters-only token of the wrong length is not a code.",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters-only mixed-case code right after trigger with colon",
+  "text": "Subject: Your Acme login\n\nYour verification code: FTyAUMIB\n",
+  "n": null,
+  "expect": "FTyAUMIB",
+  "spec_quote": "the token separated from the trigger only by spaces, a colon, a dash, or the word \"is\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters-only mixed-case code after 'one-time password is'",
+  "text": "Subject: Sign in\n\nYour one-time password is jbeRmAeA\n",
+  "n": null,
+  "expect": "jbeRmAeA",
+  "spec_quote": "the token separated from the trigger only by spaces, a colon, a dash, or the word \"is\" (e.g. \"code: 204518\", \"code is 204518\", \"passcode - 1987AB\")",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters+digits code after 'passcode -'",
+  "text": "Subject: Sign in\n\nYour passcode - 1987AB\n",
+  "n": null,
+  "expect": "1987AB",
+  "spec_quote": "a token with digits always counts",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters-only token right after 'code is' but 9 chars with n=8",
+  "text": "Subject: Sign in\n\nYour code is UBqOtnKiX\n",
+  "n": 8,
+  "expect": null,
+  "spec_quote": "A letters-only token of the wrong length is not a code.",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters-only 8-char mixed-case token right after 'code:' but n=6",
+  "text": "Subject: Sign in\n\nYour code: UBqOtnKi\n",
+  "n": 6,
+  "expect": null,
+  "spec_quote": "its length is exactly n (8 when n is not given)",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS REQUIRED (exactly 8 chars) after trigger is not a code",
+  "text": "Subject: Action needed\n\nSecurity code: REQUIRED\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word (\"REQUIRED\", \"IMPORTANT\"), an all-lower-case word (\"password\") or a Capitalized word (\"Required\", \"Alex\") is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS IMPORTANT after 'code is' is not a code",
+  "text": "Subject: Notice\n\nYour code is IMPORTANT\n",
+  "n": 8,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word (\"REQUIRED\", \"IMPORTANT\") is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS EXPIRED after 'passcode:' is not a code",
+  "text": "Subject: Notice\n\nYour passcode: EXPIRED\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS ATTENTION after 'OTP:' is not a code",
+  "text": "Subject: Notice\n\nYour OTP: ATTENTION\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS CONFIRMED after 'pass code:' is not a code",
+  "text": "Subject: Notice\n\nYour pass code: CONFIRMED\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "ALL-CAPS PASSWORD after 'one-time password:' is not a code",
+  "text": "Subject: Notice\n\nYour one-time password: PASSWORD\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "So an ALL-CAPS word is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "All-lower-case word after 'code:' is not a code",
+  "text": "Subject: Notice\n\nYour code: password\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "an all-lower-case word (\"password\") ... is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "Capitalized word Required after 'code is' is not a code",
+  "text": "Subject: Notice\n\nYour code is Required\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "a Capitalized word (\"Required\", \"Alex\") is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "Capitalized name Alex after 'code:' is not a code",
+  "text": "Subject: Notice\n\nYour code: Alex\n",
+  "n": null,
+  "expect": null,
+  "spec_quote": "a Capitalized word (\"Required\", \"Alex\") is never a code, even in a code position.",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters-only token far from trigger is ignored; digit code right after trigger wins",
+  "text": "Subject: Your application\n\nHello Alex,\n\nYour verification code: 739204\n\nReference FTyAUMIB for your records.",
+  "n": null,
+  "expect": "739204",
+  "spec_quote": "Letters-only tokens are never taken in this fallback.",
+  "ambiguous": false
+ },
+ {
+  "name": "Only letters-only tokens away from any code position, no digits: null",
+  "text": "Subject: Welcome\n\nHello, your access code is in a separate email. Please look for FTyAUMIB in your inbox.",
+  "n": null,
+  "expect": null,
+  "spec_quote": "Letters-only tokens are never taken in this fallback. Nothing qualifies → null.",
+  "ambiguous": false
+ },
+ {
+  "name": "6-digit code starting with 19 right after 'code:'",
+  "text": "Subject: Sign in\n\nYour code: 198822\n",
+  "n": null,
+  "expect": "198822",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in any position.",
+  "ambiguous": false
+ },
+ {
+  "name": "6-digit code starting with 20 after 'verification code is'",
+  "text": "Subject: Sign in\n\nYour verification code is 201734\n",
+  "n": null,
+  "expect": "201734",
+  "spec_quote": "A 6-digit code that starts with 19 or 20 (e.g. 201734, 198822) IS a code — it must be returned, in any position.",
+  "ambiguous": false
+ },
+ {
+  "name": "Fallback: first digit-containing token after trigger, not in a code position",
+  "text": "Subject: Sign in\n\nYour verification code is shown below. It is 448291 and expires in ten minutes.",
+  "n": null,
+  "expect": "448291",
+  "spec_quote": "the first token that contains at least one digit within 200 characters after the trigger word",
+  "ambiguous": false
+ },
+ {
+  "name": "Fallback skips an 8-digit calendar date and takes the next digit token",
+  "text": "Subject: Reminder\n\nYour code is ready. Order placed on 20261110 will ship soon. Reference 558214 for details.",
+  "n": null,
+  "expect": "558214",
+  "spec_quote": "a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped",
+  "ambiguous": false
+ },
+ {
+  "name": "Only an 8-digit calendar date present: null",
+  "text": "Subject: Reminder\n\nYour code is ready. Delivery is scheduled for 20261110.",
+  "n": null,
+  "expect": null,
+  "spec_quote": "a token that is a real calendar date written as 8 digits YYYYMMDD (year 1900–2099, month 01–12, day 01–31, e.g. 20261110) is not a code and is skipped",
+  "ambiguous": false
+ },
+ {
+  "name": "Digit code in code block counts even when n=10 is given",
+  "text": "Subject: Security code for your application to Bratalbra\n\nCopy and paste this code into the security code field on your application:\n\n204518\n",
+  "n": 10,
+  "expect": "204518",
+  "spec_quote": "In those two code positions (code block, right after the trigger) a token with digits always counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "Code block token line with blank lines and surrounding spaces",
+  "text": "Subject: Security code for your application to Acme\n\nCopy and paste this code into the security code field on your application:\n\n\n  UBqOtnKi  \n",
+  "n": null,
+  "expect": "UBqOtnKi",
+  "spec_quote": "followed (after optional blank lines) by a line that holds only one token (spaces around it allowed)",
+  "ambiguous": false
+ },
+ {
+  "name": "Earlier trigger occurrence is tried first (OTP before backup code)",
+  "text": "Subject: Sign in\n\nYour OTP is 630411 and the backup code is 990022\n",
+  "n": null,
+  "expect": "630411",
+  "spec_quote": "The trigger words may appear several times; earlier occurrences are tried first.",
+  "ambiguous": false
+ },
+ {
+  "name": "Digit code after 'pass code -' (dash connector)",
+  "text": "Subject: Sign in\n\nYour pass code - 771903\n",
+  "n": null,
+  "expect": "771903",
+  "spec_quote": "the token separated from the trigger only by spaces, a colon, a dash, or the word \"is\"",
+  "ambiguous": false
+ },
+ {
+  "name": "Letters+digits token right after 'code:' counts even with mismatching n",
+  "text": "Subject: Sign in\n\nYour code: A7F2K9\n",
+  "n": 8,
+  "expect": "A7F2K9",
+  "spec_quote": "In those two code positions (code block, right after the trigger) a token with digits always counts.",
+  "ambiguous": false
+ },
+ {
+  "name": "Code block token with upper-case only as first character is not a code",
+  "text": "Subject: Security code for your application to Acme\n\nCopy and paste this code into the security code field on your application:\n\nAbcdefgh\n",
+  "n": 8,
+  "expect": null,
+  "spec_quote": "it has an upper-case letter somewhere after its first character",
+  "ambiguous": false
+ },
+ {
+  "name": "Code block wins over an earlier digit token in the body",
+  "text": "Subject: Security code for your application to Bratalbra\n\nOrder 2027 confirmed.\n\nCopy and paste this code into the security code field on your application:\n\n559013\n",
+  "n": null,
+  "expect": "559013",
+  "spec_quote": "That token is the code — this wins over any token earlier in the mail",
+  "ambiguous": false
+ },
+ {
+  "name": "real Greenhouse mail 2026 (Lumvergal), name redacted",
+  "text": "Security code for your application to Lumvergal\n \r\n \r\n   \r\n     \r\n     \r\n     \r\n   \r\n   \r\n     \r\n       \r\n         \r\n       \r\n       \r\n         \r\n  Hi Alex,\r\n    \r\n  Copy and paste this code into the security code field on your application:\r\n \r\n UBqOtnKi \r\n \r\n  After you enter the code, resubmit your application.\r\n \r\n\r\n       \r\n       \r\n         \r\n           \r\n            © 2026 Greenhouse\r\n           \r\n           \r\n            18 West 18th Street, 11th Floor, New York, NY 10011, USA\r\n           \r\n         \r\n       \r\n     \r\n   \r\n \r\n",
+  "n": 8,
+  "expect": "UBqOtnKi",
+  "spec_quote": "Code block (tried first, anywhere in the mail)",
+  "ambiguous": false,
+  "source": "Gmail replay JSA-304 2026-11-11"
+ },
+ {
+  "name": "real Greenhouse mail 2026 (Bratalbra), name redacted",
+  "text": "Security code for your application to Bratalbra\n \r\n \r\n   \r\n     \r\n     \r\n     \r\n   \r\n   \r\n     \r\n       \r\n         \r\n       \r\n       \r\n         \r\n  Copy and paste this code into the security code field on your application:\r\n \r\n k842krX1 \r\n \r\n  After you enter the code, resubmit your application.\r\n \r\n\r\n       \r\n       \r\n         \r\n           \r\n            © 2026 Greenhouse\r\n           \r\n           \r\n            18 West 18th Street, 11th Floor, New York, NY 10011, USA\r\n           \r\n         \r\n       \r\n     \r\n   \r\n \r\n",
+  "n": 8,
+  "expect": "k842krX1",
+  "spec_quote": "Code block (tried first, anywhere in the mail)",
+  "ambiguous": false,
+  "source": "Gmail replay JSA-304 2026-11-11"
+ },
+ {
+  "name": "real Greenhouse mail 2026 (Talfenquin Labs Early Care), name redacted",
+  "text": "Security code for your application to Talfenquin Labs Early Career - North America\r\n 2027\n \r\n \r\n   \r\n     \r\n     \r\n     \r\n   \r\n   \r\n     \r\n       \r\n         \r\n       \r\n       \r\n         \r\n  Copy and paste this code into the security code field on your application:\r\n \r\n mJP95kyW \r\n \r\n  After you enter the code, resubmit your application.\r\n \r\n\r\n       \r\n       \r\n         \r\n           \r\n            © 2026 Greenhouse\r\n           \r\n           \r\n            18 West 18th Street, 11th Floor, New York, NY 10011, USA\r\n           \r\n         \r\n       \r\n     \r\n   \r\n \r\n",
+  "n": 8,
+  "expect": "mJP95kyW",
+  "spec_quote": "Code block (tried first, anywhere in the mail)",
+  "ambiguous": false,
+  "source": "Gmail replay JSA-304 2026-11-11"
+ },
+ {
+  "name": "real Greenhouse mail 2026 (Corpellsev), name redacted",
+  "text": "Security code for your application to Corpellsev\n \r\n \r\n   \r\n     \r\n     \r\n     \r\n   \r\n   \r\n     \r\n       \r\n         \r\n       \r\n       \r\n         \r\n  Copy and paste this code into the security code field on your application:\r\n \r\n FTyAUMIB \r\n \r\n  After you enter the code, resubmit your application.\r\n \r\n\r\n       \r\n       \r\n         \r\n           \r\n            © 2026 Greenhouse\r\n           \r\n           \r\n            18 West 18th Street, 11th Floor, New York, NY 10011, USA\r\n           \r\n         \r\n       \r\n     \r\n   \r\n \r\n",
+  "n": 8,
+  "expect": "FTyAUMIB",
+  "spec_quote": "Code block (tried first, anywhere in the mail)",
+  "ambiguous": false,
+  "source": "Gmail replay JSA-304 2026-11-11"
+ },
+ {
+  "name": "real Greenhouse mail 2026 (Galtalnev), name redacted",
+  "text": "Security code for your application to Galtalnev\n \r\n \r\n   \r\n     \r\n     \r\n     \r\n   \r\n   \r\n     \r\n       \r\n         \r\n       \r\n       \r\n         \r\n  Copy and paste this code into the security code field on your application:\r\n \r\n jbeRmAeA \r\n \r\n  After you enter the code, resubmit your application.\r\n \r\n\r\n       \r\n       \r\n         \r\n           \r\n            © 2026 Greenhouse\r\n           \r\n           \r\n            18 West 18th Street, 11th Floor, New York, NY 10011, USA\r\n           \r\n         \r\n       \r\n     \r\n   \r\n \r\n",
+  "n": 8,
+  "expect": "jbeRmAeA",
+  "spec_quote": "Code block (tried first, anywhere in the mail)",
+  "ambiguous": false,
+  "source": "Gmail replay JSA-304 2026-11-11"
+ }
+]

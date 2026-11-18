@@ -1,0 +1,347 @@
+[
+ {
+  "name": "bullet_causal_because",
+  "why": "Rule 3b: the text contains the whole word 'because' (\"no because-style clauses\"), so a 'causal' problem is required. No digit, so rule 2 (why) is not checked; lower(text) contains none of the rule-3 substrings ('duplicate' etc. are absent), 'Rewrote' ends in 'ed' (>3 letters, not in the exclusion list) so rule 1 passes; the words before the first comma ('Rewrote the onboarding docs so that new hires could ship') start with 'Rewrote', not a context word, so rule 0 does not fire.",
+  "fn": "bullet",
+  "text": "Rewrote the onboarding docs so that new hires could ship, because the old drafts confused everyone.",
+  "expect_kinds": [
+   "causal"
+  ]
+ },
+ {
+  "name": "bullet_causal_since",
+  "why": "Rule 3b bans 'since' as a because-style word; here 'since' is a whole word followed by 'the' (not a digit), so 'causal' fires. No digit → rule 3 (problem) applies but none of its substrings appear; 'Tested' ends in 'ed' so rule 1 passes; the pre-comma words 'Tested the checkout flow' do not start with a context word, so no opener.",
+  "fn": "bullet",
+  "text": "Tested the checkout flow, since the release candidate kept failing on refunds.",
+  "expect_kinds": [
+   "causal"
+  ]
+ },
+ {
+  "name": "bullet_since_2024_exempt",
+  "why": "Rule 3b: 'since (unless the next word starts with a digit, e.g. \"since 2024\")' — here the next word is '2024', so no causal problem. Rule 2: the digit '2024' is present and ' to ' appears ('2024 to cut'), so why is satisfied. Rule 1: 'Ran' is in the action-verb list. There is no comma or colon, so no context phrase (rule 0) and no rule-3 check (text has a digit).",
+  "fn": "bullet",
+  "text": "Ran the analytics rebuild since 2024 to cut report latency in half.",
+  "expect_kinds": []
+ },
+ {
+  "name": "bullet_causal_due_to",
+  "why": "Rule 3b lists 'due to' as a banned because-style clause, so 'causal' fires. No digit → rule 3 applies but none of its substrings occur ('manual', 'when', 'found'… are absent); 'Automated' ends in 'ed' so rule 1 passes; no comma or colon, so no opener (rule 0).",
+  "fn": "bullet",
+  "text": "Automated invoice reconciliation due to a backlog of late payments.",
+  "expect_kinds": [
+   "causal"
+  ]
+ },
+ {
+  "name": "bullet_opener_suppresses_verb_check",
+  "why": "Rule 0: the words before the first comma ('With the deadline approaching') are 4 words, within 2–16, and the first word is 'with', one of the listed context words → 'opener' fires. Because it fires, 'rule 1 (verb) is NOT checked', even though 'With' is not an action verb — so no 'verb' problem may appear. No digit → rule 3 applies; none of its substrings occur. No banned word, length is fine.",
+  "fn": "bullet",
+  "text": "With the deadline approaching, the team shipped the redesigned checkout.",
+  "expect_kinds": [
+   "opener"
+  ]
+ },
+ {
+  "name": "bullet_verb_not_action_verb",
+  "why": "Rule 1: the first word 'The' is not in the action-verb list and does not end in 'ed'/'ing', so 'verb' fires. There is no comma or colon so 'the words before the FIRST comma or colon' is undefined → no context phrase, so rule 0 does not fire and rule 1 is checked. The digit '40' with ' to ' satisfies rule 2; rule 3 is skipped because the text contains a digit.",
+  "fn": "bullet",
+  "text": "The dashboard was rebuilt last quarter to cut load time by 40%.",
+  "expect_kinds": [
+   "verb"
+  ]
+ },
+ {
+  "name": "bullet_why_missing_despite_digit",
+  "why": "Rule 2: the text contains the digit '12', so one of ' to ', 'so that', 'so ', 'enabling', 'allowing', 'to meet', ' for ', 'when ', 'after ' must appear in ' '+lower(text)+' '; the text contains none of them → 'why' fires. 'Shipped' ends in 'ed' so rule 1 passes; no comma/colon so no opener; rule 3 is skipped because a digit is present.",
+  "fn": "bullet",
+  "text": "Shipped 12 dashboards covering every team's weekly reporting needs.",
+  "expect_kinds": [
+   "why"
+  ]
+ },
+ {
+  "name": "bullet_problem_missing_when_no_digit",
+  "why": "Rule 3: the text has NO digit, so one of 'when','found','mismatch','disagree','inconsistent','scattered','slow','wrong','invent','without','gap','error','duplicate','unclear','manual' must appear in lower(text); none does → 'problem' fires. 'Wrote' is in the action-verb list (rule 1 passes); no comma or colon → no opener; rule 2 is skipped because there is no digit.",
+  "fn": "bullet",
+  "text": "Wrote the onboarding guide and interviewed new hires about their first week.",
+  "expect_kinds": [
+   "problem"
+  ]
+ },
+ {
+  "name": "bullet_problem_rule_skipped_when_digit_present",
+  "why": "Rule 3 applies 'only when the text contains NO digit'; this text contains '300', so the presence of 'manual' must NOT produce a 'problem'. Rule 2 is satisfied by ' to ' (…'invoices to close'…). 'Automated' ends in 'ed' so rule 1 passes; no comma/colon → no opener; no causal word; no banned word.",
+  "fn": "bullet",
+  "text": "Automated the manual reconciliation of 300 invoices to close the books faster.",
+  "expect_kinds": []
+ },
+ {
+  "name": "bullet_length_exactly_230_ok",
+  "why": "Rule 4 fires only when the text is 'more than 230 characters'; this text is exactly 230 chars (192 letters + 37 spaces + 1 period), so no 'length'. It is otherwise clean: 'Led' is an action verb; ' to ' satisfies rule 2 with the digit '40'; rule 3 is skipped (digit present); the words before the first comma ('Led the billing platform rewrite to cut deploy time by 40%', 12 words) begin with 'Led', which is not a context word, so no opener; no banned word and no causal word.",
+  "fn": "bullet",
+  "text": "Led the billing platform rewrite to cut deploy time by 40%, mentoring four engineers and documenting the rollout plan for three downstream teams while the vendor migration ran in parallel and shipped a second dashboard set to ops.",
+  "expect_kinds": []
+ },
+ {
+  "name": "bullet_length_231_fails",
+  "why": "Identical to the 230-char text except 'and documenting' → 'plus documenting', which adds one character: 192+1 letters + 37 spaces + 1 period = 231. Rule 4 fires because the text is 'more than 230 characters' → 'length'. All other rules still pass exactly as in the 230 case ('Led' verb, ' to ' for the digit '40', no opener because the pre-comma words start with 'Led', no banned/causal word).",
+  "fn": "bullet",
+  "text": "Led the billing platform rewrite to cut deploy time by 40%, mentoring four engineers plus documenting the rollout plan for three downstream teams while the vendor migration ran in parallel and shipped a second dashboard set to ops.",
+  "expect_kinds": [
+   "length"
+  ]
+ },
+ {
+  "name": "bullet_banned_whole_word",
+  "why": "Rule 5 bans the whole word 'orchestrations'? No — the banned list includes 'orchestrate, orchestrated'; 'Orchestrated' here is a whole word match (case-insensitive) → 'banned'. 'Orchestrated' also ends in 'ed' so rule 1 passes; the digit '12' with ' to ' satisfies rule 2; rule 3 is skipped; there is no comma or colon, so no opener.",
+  "fn": "bullet",
+  "text": "Orchestrated the migration of 12 services to the new cluster.",
+  "expect_kinds": [
+   "banned"
+  ]
+ },
+ {
+  "name": "bullet_banned_substring_is_not_a_whole_word",
+  "why": "Rule 5 bans whole words only; 'dynamics' is not the whole word 'dynamic', so no 'banned' may fire. 'Led' is an action verb; ' to ' with the digit '30' satisfies rule 2; rule 3 is skipped because a digit is present (so 'error' in the text is irrelevant); no comma/colon → no opener; no causal word.",
+  "fn": "bullet",
+  "text": "Led the rebuild of the dynamics model to cut forecast error by 30%.",
+  "expect_kinds": []
+ },
+ {
+  "name": "shape_context_first",
+  "why": "shape(): 'context_first' is checked first and applies — the words before the first comma ('With the deadline approaching', 4 words, first word 'with' ∈ the context-word list) form a context phrase.",
+  "fn": "shape",
+  "text": "With the deadline approaching, the team shipped the redesigned checkout.",
+  "expect_shape": "context_first"
+ },
+ {
+  "name": "shape_context_first_beats_semicolon",
+  "why": "shape() is 'first that applies': the text opens with the context phrase 'When the vendor API broke' (5 words, first word 'when'), so 'context_first' wins even though the text also contains ';' (which would otherwise give 'verb_semicolon').",
+  "fn": "shape",
+  "text": "When the vendor API broke, I rebuilt the alerting pipeline; alerts recovered within a day.",
+  "expect_shape": "context_first"
+ },
+ {
+  "name": "shape_semicolon_beats_participle",
+  "why": "No context phrase (the words before the first comma are 'Led the billing API migration; mentored two engineers', first word 'Led' is not a context word). 'verb_semicolon' is listed before 'verb_participle', so the ';' decides the shape even though ', cutting' also matches the participle pattern.",
+  "fn": "shape",
+  "text": "Led the billing API migration; mentored two engineers, cutting ramp time in half.",
+  "expect_shape": "verb_semicolon"
+ },
+ {
+  "name": "shape_participle",
+  "why": "'verb_participle (contains \", \" followed by a word ending in \"ing\")': ', cutting' matches. No context phrase (first word 'Rebuilt' is not a context word) and no ';'.",
+  "fn": "shape",
+  "text": "Rebuilt the ingest pipeline, cutting latency from 900ms to 120ms.",
+  "expect_shape": "verb_participle"
+ },
+ {
+  "name": "shape_purpose",
+  "why": "No context phrase and no ';'; there is no ', ' + '-ing' word (there is no comma at all), so 'verb_purpose' applies: 'after the first word, the word \"to\" followed by a word' — 'to cut' after 'Rebuilt'.",
+  "fn": "shape",
+  "text": "Rebuilt the ingest pipeline to cut latency from 900ms to 120ms.",
+  "expect_shape": "verb_purpose"
+ },
+ {
+  "name": "shape_plain",
+  "why": "None of context_first / semicolon / participle / purpose apply: no comma or colon, no ';', no ', ' + '-ing', and no 'to' after the first word — so the shape is 'verb_plain'.",
+  "fn": "shape",
+  "text": "Owns the billing service and its 12 downstream consumers.",
+  "expect_shape": "verb_plain"
+ },
+ {
+  "name": "master_too_many_bullets",
+  "why": "'too_many_bullets: an entry with more than 5 bullets' — this entry has 6. Nothing else fires: verbs are all distinct (Built, Led, Wrote, Tested, Automated, Mentored); the first bullet has the digit '60%' so 'outcome_first' does not apply; shapes are purpose×3, participle×1, plain×2 and ceil(0.4 × 6) = ceil(2.4) = 3, so no shape exceeds 3 → no 'shape_dominant'; 3 distinct shapes ≥ 3 → no 'few_shapes'. Every bullet is itself clean (all digit-bearing bullets contain ' to ' or ' for '; the one digit-free bullet contains 'when').",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Platform",
+     "bullets": [
+      {
+       "text": "Built the ingest pipeline to cut latency by 60%."
+      },
+      {
+       "text": "Led the migration of 12 services to Kubernetes."
+      },
+      {
+       "text": "Wrote the on-call runbook for 3 teams, cutting escalations in half."
+      },
+      {
+       "text": "Tested the failover path to cut recovery time by 50%."
+      },
+      {
+       "text": "Automated the deploy script for 20 releases."
+      },
+      {
+       "text": "Mentored two engineers through their first on-call rotation when the pager system was unclear."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "too_many_bullets"
+  ]
+ },
+ {
+  "name": "master_outcome_first",
+  "why": "'outcome_first: an entry with 2+ bullets whose first bullet has no digit while a later bullet of that entry has one' — bullet 1 ('Rewrote the pricing page copy when the signup form tested as unclear') has no digit, bullet 2 contains '300' → fires. Both bullets are individually clean (bullet 1 satisfies rule 3 via 'when'; bullet 2 satisfies rule 2 via ' to '). No shape_dominant: n=2, ceil(0.4 × 2) = 1, and each shape appears once (max 1 is not > 1). few_shapes needs 6+ bullets, so it cannot fire.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Growth",
+     "bullets": [
+      {
+       "text": "Rewrote the pricing page copy when the signup form tested as unclear."
+      },
+      {
+       "text": "Launched the referral program to add 300 signups per month."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "outcome_first"
+  ]
+ },
+ {
+  "name": "master_repeated_verb",
+  "why": "'repeated_verb: an action verb (lower-cased, found as in rule 1) opening more than 2 bullets on the page' — 'led' opens bullets 1, 2 and 3 (3 > 2) → fires. No other master problem: 4 bullets ≤ 5; first bullet has the digit '40%' so no outcome_first; shapes are purpose×1, semicolon×1, participle×1, plain×1, and ceil(0.4 × 4) = ceil(1.6) = 2, so no shape exceeds 2 → no shape_dominant; 4 distinct shapes ≥ 3 and n<6 → no few_shapes. All four bullets are individually clean (b1 ' to ', b2 ' for ', b3 'when', b4 ' for ').",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Billing",
+     "bullets": [
+      {
+       "text": "Led the billing migration to cut invoice errors by 40%."
+      },
+      {
+       "text": "Led the vendor consolidation; cut errors by 30% for the finance team."
+      },
+      {
+       "text": "Led the on-call redesign, cutting pages per night from 40 to 8."
+      },
+      {
+       "text": "Wrote the incident review template for 5 teams."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "repeated_verb"
+  ]
+ },
+ {
+  "name": "master_shape_dominant",
+  "why": "'shape_dominant: a shape used by more than ceil(0.4 × number of bullets) bullets' — 5 bullets, ceil(0.4 × 5) = ceil(2.0) = 2; verb_purpose is used by 3 bullets (b1,b2,b3), and 3 > 2 → fires. Nothing else: 5 bullets is not 'more than 5'; verbs are all distinct; the first bullet contains '60%' so no outcome_first; 3 distinct shapes (purpose, plain, participle) and n=5 < 6 → no few_shapes. All bullets are individually clean.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Core",
+     "bullets": [
+      {
+       "text": "Built the ingest pipeline to cut latency by 60%."
+      },
+      {
+       "text": "Automated the nightly reconciliation to save 10 hours weekly."
+      },
+      {
+       "text": "Shipped the billing rewrite to reduce invoice errors by 25%."
+      },
+      {
+       "text": "Owns the on-call rotation for 4 services."
+      },
+      {
+       "text": "Wrote the runbook, cutting onboarding time to 2 days."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "shape_dominant"
+  ]
+ },
+ {
+  "name": "master_few_shapes",
+  "why": "'few_shapes: 6 or more bullets but fewer than 3 different shapes' — the page has 6 bullets and only 2 shapes (verb_purpose ×3 in entry Platform; verb_plain ×3 in entry Reliability) → fires. shape_dominant must NOT fire: ceil(0.4 × 6) = ceil(2.4) = 3, and no shape is used by more than 3 bullets (both are used by exactly 3). Neither entry exceeds 5 bullets; all six verbs are distinct; each entry's first bullet contains a digit ('60%', '4') so no outcome_first; every bullet satisfies rule 2 via ' to ' or ' for '.",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Platform",
+     "bullets": [
+      {
+       "text": "Built the ingest pipeline to cut latency by 60%."
+      },
+      {
+       "text": "Automated the nightly reconciliation to save 10 hours weekly."
+      },
+      {
+       "text": "Shipped the billing rewrite to reduce invoice errors by 25%"
+      }
+     ]
+    },
+    {
+     "name": "Reliability",
+     "bullets": [
+      {
+       "text": "Owns the on-call rotation for 4 services."
+      },
+      {
+       "text": "Wrote the incident template for 5 teams."
+      },
+      {
+       "text": "Tested the failover path for 3 regions."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": [
+   "few_shapes"
+  ]
+ },
+ {
+  "name": "master_clean_varied_page",
+  "why": "No problem of any kind should be reported. 5 bullets across two entries (3 and 2, neither 'more than 5'); verbs Built/Led/Wrote/Owns/Launched are all distinct so no repeated_verb; shapes are purpose×2, semicolon×1, participle×1, plain×1 and ceil(0.4 × 5) = ceil(2.0) = 2, so max usage 2 is not > 2 → no shape_dominant; 4 distinct shapes → no few_shapes (and n=5 < 6 anyway); each entry's first bullet contains a digit ('60%', '4') → no outcome_first. Every bullet individually passes: 'Led'/'Wrote'/'Owns'/'Built'/'Launched' are action verbs; digit-bearing bullets satisfy rule 2 with ' to ' or ' for '; the digit-free bullet contains 'when'; no banned or causal words; all under 230 characters; no bullet opens with a context phrase (the pre-comma words begin with 'Wrote', not a context word).",
+  "fn": "master",
+  "master": {
+   "entries": [
+    {
+     "name": "Platform",
+     "bullets": [
+      {
+       "text": "Built the ingest pipeline to cut latency by 60%."
+      },
+      {
+       "text": "Led the migration of 12 services; mentored two engineers through the cutover for the payments group."
+      },
+      {
+       "text": "Wrote the on-call runbook when escalations doubled, cutting pages by half."
+      }
+     ]
+    },
+    {
+     "name": "Growth",
+     "bullets": [
+      {
+       "text": "Owns the referral program for 4 regions."
+      },
+      {
+       "text": "Launched the pricing test to add 300 signups per month."
+      }
+     ]
+    }
+   ]
+  },
+  "expect_kinds": []
+ }
+]

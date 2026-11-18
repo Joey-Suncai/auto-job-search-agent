@@ -46,7 +46,7 @@
    "rule": "none",
    "second_opinion": null,
    "suggestion": {
-    "answer": "Sun",
+    "answer": "Doe",
     "fact": "last_name"
    }
   },
@@ -55,7 +55,7 @@
    "high_risk": false,
    "derived_block": true
   },
-  "spec_quote": "it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Sun, from last_name) are listed together with their fact"
+  "spec_quote": "it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Doe, from last_name) are listed together with their fact"
  },
  {
   "name": "no_rule_ask_suggestion_on_sheet_but_not_derived_block",

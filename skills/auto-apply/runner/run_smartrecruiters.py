@@ -20,6 +20,7 @@ already submitted. Clicks Submit; an e-mailed authentication code (OTP) is read 
 (sync_results), the posting's tabs closed. Writes <out>/run_log.md, form_check.json, page1.png / page2.png; one line in
 data/runner/results.jsonl. Default out (no --folder): data/runner/dryrun/smartrecruiters/<company>_<id>.
 """
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import argparse, json, os, re, subprocess, sys, time, urllib.request
 if __name__ == '__main__':   # live runs only (a test that imports this module never turns it on)
     os.environ.setdefault('CX_SECOND_OPINION', '1')   # uncertain rule answers get a second opinion (JSA-202)
@@ -29,6 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'config'))
 import paths as jpaths  # noqa: E402  (data home: $JSA_HOME, else this repo — ADR-0008)
+import jsa_profile  # noqa: E402  (JSA-403: the user's own values come from the profile)
 DATA = os.environ.get('CX_DATA') or jpaths.data('runner')
 RULES = os.path.join(HERE, '..', 'scripts', 'answer_rules.js')
 COMPANY = ''                                                   # the hiring company (job.json / store row): referral questions check it against the referrer pool (JSA-195)
@@ -111,7 +113,7 @@ READ_Q = r"""() => {
   return all.filter(e=>/^sr-question-field-/.test(e.tagName.toLowerCase())).map((e,i)=>{
     const type=e.tagName.toLowerCase().replace('sr-question-field-','');
     const slot=e.querySelector('[slot=label-content]');
-    const ctl=e.querySelector('spl-radio-group,spl-autocomplete,spl-input,spl-textarea,spl-checkbox,spl-checkbox-group,spl-select');
+    const ctl=e.querySelector('spl-radio-group,spl-autocomplete,spl-multiselect-autocomplete,spl-input,spl-textarea,spl-checkbox,spl-checkbox-group,spl-select');
     const radios=[...e.querySelectorAll('spl-radio')].map(x=>x.getAttribute('label')||deep(x));
     const boxes=[...e.querySelectorAll('spl-checkbox')].map(x=>x.getAttribute('label')||deep(x));
     return {idx:i, type, label: slot?deep(slot):deep(e), text: deep(e).slice(0,600), id: ctl?ctl.id:'', tag: ctl?ctl.tagName.toLowerCase():'',
@@ -119,6 +121,17 @@ READ_Q = r"""() => {
             subs: [...e.querySelectorAll('spl-autocomplete')].map(x=>x.id).filter(Boolean)};
   });
 }"""
+
+# The markup of the idx-th question wrapper (shadow roots serialised inline, trimmed) — kept in the row when a control cannot be
+# found, so the next fix reads the real structure instead of guessing (JSA-387).
+DUMP_Q = r"""(idx) => {
+  const all=[]; const walk=(r)=>{ r.querySelectorAll('*').forEach(e=>{ all.push(e); if(e.shadowRoot) walk(e.shadowRoot); }); }; walk(document);
+  const q=all.filter(e=>/^sr-question-field-/.test(e.tagName.toLowerCase()))[idx]; if(!q) return '';
+  const ser=(n)=>{ if(n.nodeType===3) return n.textContent.replace(/\s+/g,' '); if(n.nodeType!==1) return '';
+    const a=[...n.attributes].filter(x=>/^(id|class|name|label|role|type|aria-label|multiple|required)$/.test(x.name)).map(x=>x.name+'="'+x.value.slice(0,60)+'"').join(' ');
+    let inner=''; if(n.shadowRoot) inner+='#shadow{'+[...n.shadowRoot.childNodes].map(ser).join('')+'}'; inner+=[...n.childNodes].map(ser).join('');
+    return '<'+n.tagName.toLowerCase()+(a?' '+a:'')+'>'+inner+'</'+n.tagName.toLowerCase()+'>'; };
+  return ser(q).slice(0,6000); }"""
 
 # The privacy / consent checkbox outside the question wrappers (page 2 footer).
 READ_CONSENT = r"""() => {
@@ -156,6 +169,41 @@ def plan_questions(raw):
     return out
 
 
+DECLARATIONS = (   # (rule, pattern) — Joey agreed to tick these three (JSA-326 acceptance, Arista 11-11)
+    ('background_release', re.compile(r'\bgrant permission to any person, firm or corporation to release\b[^.]{0,200}\b(information|employment)\b', re.I)),
+    ('at_will', re.compile(r'\bi understand\b[^.]{0,120}\b(application|interview)\b[^.]{0,200}\bemployment contract\b.{0,600}\bat-will\b', re.I | re.S)),
+    ('i9_verify', re.compile(r'\bi understand that all persons hired (will be required to|must|are required to|need to) verify identity and eligibility to work in the united states\b', re.I)),
+)
+NEGATED = re.compile(r"\b(do not|don't|cannot|can't|never|not) (grant|understand|agree)\b", re.I)
+
+
+def declaration_rule(label):
+    """Pure (tested, JSA-326). The employment declaration a required checkbox asks for — background_release / at_will /
+    i9_verify — or None. These are acknowledgements of the hiring process, not facts about the user; Joey agreed to tick the
+    three (Arista 11-11). Anything else (marketing, certify, convictions, a negated sentence) stays with the rules."""
+    t = re.sub(r'\s+', ' ', re.sub(r'^\*\s*', '', str(label or ''))).strip()
+    if NEGATED.search(t):
+        return None
+    for rule, pat in DECLARATIONS:
+        if pat.search(t):
+            return rule
+    return None
+
+
+def apply_declarations(fields, ans):
+    """Pure (tested, JSA-326). Adds an 'ok' answer for a required single-option checkbox the rules left unanswered when it is
+    one of the three declarations; returns the answers dict (a new one)."""
+    out = dict(ans)
+    for f in fields:
+        opts = f.get('options') or []
+        if f.get('type') != 'checkbox' or not f.get('required') or len(opts) != 1 or (out.get(f['key']) or {}).get('status') == 'ok':
+            continue
+        rule = declaration_rule(f.get('label')) or declaration_rule(opts[0])
+        if rule:
+            out[f['key']] = {'status': 'ok', 'label': f['label'], 'rule': 'declaration:' + rule, 'value': opts[0]}
+    return out
+
+
 def answer(fields, jd='', company=None):
     qs = [{'key': f['key'], 'label': f['label'], 'type': f['type'], 'options': f['options']} for f in fields]
     q = {'fields': qs, 'jd': jd, 'company': COMPANY if company is None else company}   # company: referrer pool (JSA-195)
@@ -165,7 +213,7 @@ def answer(fields, jd='', company=None):
 
 
 OPTS_JS = r"""([key, want]) => { const all=[]; const walk=(r)=>{ r.querySelectorAll('*').forEach(e=>{ all.push(e); if(e.shadowRoot) walk(e.shadowRoot); }); }; walk(document);
-  const ac=all.find(e=>e.tagName.toLowerCase()==='spl-autocomplete' && e.id===key); if(!ac) return {err:'no autocomplete'};
+  const ac=all.find(e=>/^spl-(multiselect-)?autocomplete$/.test(e.tagName.toLowerCase()) && e.id===key); if(!ac) return {err:'no autocomplete'};
   const opts=[]; const w2=(r)=>{ r.querySelectorAll('*').forEach(e=>{ if(e.tagName.toLowerCase()==='spl-select-option') opts.push(e); if(e.shadowRoot) w2(e.shadowRoot); }); }; w2(ac); if(ac.shadowRoot) w2(ac.shadowRoot);
   const n=s=>(s||'').replace(/\s+/g,' ').trim();
   if(want===null) return {opts: opts.map(e=>n(e.textContent)).filter(Boolean)};
@@ -175,11 +223,26 @@ OPTS_JS = r"""([key, want]) => { const all=[]; const walk=(r)=>{ r.querySelector
 
 def select_options(page, key):
     """Opens an autocomplete and returns its option texts (the list lives in the autocomplete's shadow root)."""
-    inp = page.locator(f'spl-autocomplete#{css_id(key)} input').first
+    inp = page.locator(f'{AC}#{css_id(key)} input').first
     inp.scroll_into_view_if_needed(); inp.click(); time.sleep(1.2)
     opts = (page.evaluate(OPTS_JS, [key, None]) or {}).get('opts') or []
     page.keyboard.press('Escape'); time.sleep(0.3)
     return opts
+
+
+AC = ':is(spl-autocomplete, spl-multiselect-autocomplete)'   # "select all that apply" lists are spl-multiselect-autocomplete (Arista 11-11, JSA-387)
+TAGS_JS = r"""(id) => { const all=[]; const walk=(r)=>{ r.querySelectorAll('*').forEach(e=>{ all.push(e); if(e.shadowRoot) walk(e.shadowRoot); }); }; walk(document);
+  const h=all.find(e=>e.tagName.toLowerCase()==='spl-multiselect-autocomplete' && e.id===id); if(!h) return '';
+  const t=[]; const txt=(n)=>{ if(n.nodeType===3){ const x=n.textContent.replace(/\s+/g,' ').trim(); if(x) t.push(x); } else if(n.nodeType===1){ if(n.shadowRoot) txt(n.shadowRoot); n.childNodes.forEach(txt);} else if(n.nodeType===11) n.childNodes.forEach(txt); };
+  const find=(n)=>{ if(n.nodeType===1 && n.tagName.toLowerCase()==='spl-tags-list') { txt(n); return; } if(n.nodeType===1 && n.shadowRoot) find(n.shadowRoot); n.childNodes.forEach(find); };
+  find(h); return t.join(', '); }"""
+
+
+def multi_has(got, want):
+    """Pure (tested). A multi-select's read-back (its tags joined by ', ') holds the wanted option as one whole tag."""
+    tags = [re.sub(r'\s+', ' ', x).strip().lower() for x in str(got or '').split(',')]
+    w = re.sub(r'\s+', ' ', str(want or '')).strip().lower()
+    return bool(w) and w in tags
 
 
 def css_id(k):
@@ -189,7 +252,9 @@ def css_id(k):
 def fill_select(page, key, want):
     """Open the list, find the option whose whole text is `want` (case-insensitive) and click it with the mouse; a long
     list that shows only the first options gets the answer typed first."""
-    inp = page.locator(f'spl-autocomplete#{css_id(key)} input').first
+    if multi_has(page.evaluate(TAGS_JS, key), want):
+        return                                               # already picked: a second click could toggle it off
+    inp = page.locator(f'{AC}#{css_id(key)} input').first
     inp.scroll_into_view_if_needed(); inp.click(); time.sleep(1.0)
     r = page.evaluate(OPTS_JS, [key, want]) or {}
     if not r.get('xy'):
@@ -198,6 +263,8 @@ def fill_select(page, key, want):
     if not r.get('xy'):
         raise ValueError(f'no option {want!r}')
     page.mouse.click(*r['xy']); time.sleep(0.6)
+    if page.locator(f'spl-multiselect-autocomplete#{css_id(key)}').count():
+        page.keyboard.press('Escape'); time.sleep(0.3)   # a multi-select stays open after a pick
 
 
 BTN_JS = r"""(want) => { const all=[]; const walk=(r)=>{ r.querySelectorAll('*').forEach(e=>{ all.push(e); if(e.shadowRoot) walk(e.shadowRoot); }); }; walk(document);
@@ -225,42 +292,107 @@ ARIA_SCROLL_JS = r"""(lab) => { let hit=null; const w=(r)=>{ r.querySelectorAll(
 MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 
+MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+               'November', 'December']
+
+
 def month_value(ym):
-    """Pure (tested). '2026-09' → '09/2026' (the value the month picker shows); None for anything else."""
+    """Pure (tested). '2026-09' → '09/2026' (the old way of writing the month); None for anything else."""
     m = re.fullmatch(r'(\d{4})-(\d{1,2})', str(ym or '').strip())
     return f'{int(m.group(2)):02d}/{m.group(1)}' if m and 1 <= int(m.group(2)) <= 12 else None
 
 
-def pick_month(page, label, ym):
-    """The education From / To month picker: open it, click the month, then step the year with Previous / Next year until
-    the box shows MM/YYYY."""
-    want = month_value(ym)
-    box = page.locator(f'input[aria-label="{label}"]').first
-    for _ in range(6):
-        box.click(); time.sleep(0.8)
-        xy = page.evaluate(VIS_JS, MONTHS[int(ym[5:7]) - 1])
-        if not xy:
-            return False
-        page.mouse.click(*xy[0]); time.sleep(0.6)
-        got = box.input_value()
-        if got == want:
-            return True
-        m = re.match(r'(\d{2})/(\d{4})', got or '')
+def picker_ym(value):
+    """Pure (tested). What a month picker box holds → 'YYYY-MM'; None when it holds no month. The box holds an ISO date
+    ('2026-09-01', SyngentaGroup 2026-11-10 — the reason "From month not set" was logged on every run: the runner only
+    knew '09/2026'); 'MM/YYYY' and 'YYYY-MM' are read too."""
+    v = str(value or '').strip()
+    m = re.fullmatch(r'(\d{4})-(\d{1,2})(?:-\d{1,2})?', v) or None
+    if m:
+        y, mo = int(m.group(1)), int(m.group(2))
+    else:
+        m = re.fullmatch(r'(\d{1,2})/(\d{4})', v)
         if not m:
-            return False
-        step = 'Previous year' if int(m.group(2)) > int(ym[:4]) else 'Next year'
-        box.click(); time.sleep(0.6)
-        for _ in range(abs(int(m.group(2)) - int(ym[:4]))):
-            b = page.evaluate(ARIA_JS, step)
+            return None
+        y, mo = int(m.group(2)), int(m.group(1))
+    return f'{y:04d}-{mo:02d}' if 1 <= mo <= 12 else None
+
+
+def ym_of(v):
+    """Pure (tested). A profile date ('2025-08', '08/2025', '2025-08-01') → 'YYYY-MM'; None otherwise."""
+    return picker_ym(v)
+
+
+# The open picker's month cells carry aria-label "<Month> 1, <year>"; the year it shows = the year in those labels.
+PICKER_YEAR_JS = r"""() => { let y=null; const w=(r)=>{ r.querySelectorAll('[aria-label]').forEach(e=>{ const m=/^[A-Z][a-z]+ 1, (\d{4})$/.exec(e.getAttribute('aria-label')||''); if(!y && m && e.getBoundingClientRect().width>0) y=+m[1]; }); r.querySelectorAll('*').forEach(e=>{ if(e.shadowRoot) w(e.shadowRoot); }); }; w(document); return y; }"""
+
+
+def pick_month(page, label, ym):
+    """A From / To month picker (education and experience entries): open the visible box with that aria-label, step the
+    year with Previous / Next year until the cell "<Month> 1, <year>" is there, click it; True when the box then holds
+    that month (read with picker_ym)."""
+    want = ym_of(ym)
+    if not want:
+        return False
+    y, mo = int(want[:4]), int(want[5:7])
+    box = page.locator(f'input[aria-label="{label}"]:visible').first
+    for _ in range(3):
+        box.click(); time.sleep(0.8)
+        for _ in range(15):
+            cell = page.evaluate(ARIA_JS, f'{MONTHS_FULL[mo - 1]} 1, {y}')
+            if cell:
+                page.mouse.click(*cell[0]); time.sleep(0.6)
+                break
+            shown = page.evaluate(PICKER_YEAR_JS)
+            b = page.evaluate(ARIA_JS, 'Previous year' if (shown or 0) > y else 'Next year') if shown else None
             if not b:
-                return False
+                break
             page.mouse.click(*b[0]); time.sleep(0.3)
-        xy = page.evaluate(VIS_JS, MONTHS[int(ym[5:7]) - 1])
-        if xy:
-            page.mouse.click(*xy[0]); time.sleep(0.6)
-        if box.input_value() == want:
+        if picker_ym(box.input_value()) == want:
             return True
-    return box.input_value() == want
+    return picker_ym(box.input_value()) == want
+
+
+def experience_required(cfg):
+    """Pure (tested). The form config (GET …/publication/<uuid>/config) → True when its Experience section is visible and
+    required (SyngentaGroup: "Please provide at least one work experience entry" blocked Next, JSA-233)."""
+    e = ((cfg or {}).get('fieldSets') or {}).get('experience') or {}
+    return bool(e.get('required')) and e.get('visible') is not False
+
+
+def exp_entries(work):
+    """Pure (tested). config/wd_profile.json `work` (the entries Workday already uses: Job Title, Company, Location
+    "City, State", From / To "MM/YYYY", current, Description) → the experience entries to add, most recent first:
+    {'title', 'company', 'city', 'description', 'start', 'end', 'current'}. An entry without a title, a company or a
+    start month is left out (never guessed)."""
+    out = []
+    for w in work or []:
+        t, c, st = N((w or {}).get('Job Title')), N((w or {}).get('Company')), ym_of((w or {}).get('From'))
+        if not (t and c and st):
+            continue
+        cur = bool(w.get('current'))
+        out.append({'title': t, 'company': c, 'city': N(str(w.get('Location') or '').split(',')[0]),
+                    'description': str(w.get('Description') or '').strip(), 'start': st,
+                    'end': None if cur else ym_of(w.get('To')), 'current': cur})
+    return sorted(out, key=lambda e: e['start'], reverse=True)
+
+
+def location_option(city, options):
+    """Pure (tested). The Office location / School location option for a city: the first option whose text starts with
+    "<city>," (case and spaces ignored) — never the "Cannot find your city?" entry; None when none matches."""
+    c = N(city).lower()
+    if not c:
+        return None
+    for o in options or []:
+        t = N(o)
+        if t.lower().startswith(c + ',') and not t.lower().startswith('cannot find'):
+            return t
+    return None
+
+
+def validation_text(page):
+    """The page's own validation messages (error elements and the validation summary list, through the shadow roots)."""
+    return page.evaluate("() => { let t=''; const w=(r)=>{ r.querySelectorAll('*').forEach(e=>{ if(e.shadowRoot) w(e.shadowRoot); }); r.querySelectorAll('[class*=error],[class*=validation-summary-entry],[role=alert]').forEach(e=>{ if(e.getBoundingClientRect().width>0) t+=' '+(e.textContent||''); }); }; w(document); return t.replace(/\\s+/g,' ').trim().slice(0,300); }")
 
 
 def pick_option_text(page, want):
@@ -323,6 +455,82 @@ def add_education(page, edu, log):
     return t[i:i + 200] if edu['school'] in t[i:i + 300] else ''
 
 
+OPTS_TEXT_JS = r"""() => { const all=[]; const w=(r)=>{ r.querySelectorAll('*').forEach(e=>{ if(e.tagName.toLowerCase()==='spl-select-option' && e.getBoundingClientRect().width>0) all.push((e.textContent||'').replace(/\s+/g,' ').trim()); if(e.shadowRoot) w(e.shadowRoot); }); }; w(document); return all; }"""
+
+
+def type_pick(page, label, text, choose=None):
+    """An entry autocomplete (Title / Company / Office location): type `text`, then click the option `choose(options)`
+    picks (default: the option that is the typed text itself — the box empties again when no option is clicked).
+    Returns the option clicked or None."""
+    box = page.locator(f'spl-autocomplete[label="{label}"] input:visible').first
+    box.click(); box.fill(''); box.press_sequentially(text, delay=50); time.sleep(2.5)
+    opts = page.evaluate(OPTS_TEXT_JS)
+    want = choose(opts) if choose else next((o for o in opts if N(o).lower() == N(text).lower()), None)
+    if want and pick_option_text(page, want):
+        return want
+    box.press('Escape')
+    return None
+
+
+def add_experience(page, e, log):
+    """Page 1 "Experience → Add" (only where the form requires it, JSA-233): title, company, office location, description,
+    From / To months (or "I currently work here"), Save. Returns the problems ([] = saved and both title and company are
+    on the page in the saved entry)."""
+    title = page.locator('spl-autocomplete[label="Title"] input').first
+    if not open_entry(page, 'Add experience entry', title):
+        return ['the experience entry form did not open after "Add"']
+    probs = []
+    if not type_pick(page, 'Title', e['title']):
+        probs.append(f"no Title option {e['title']!r}")
+    if not type_pick(page, 'Company', e['company']):
+        probs.append(f"no Company option {e['company']!r}")
+    if e.get('city') and not type_pick(page, 'Office location', e['city'], lambda o: location_option(e['city'], o)):
+        probs.append(f"no Office location option for {e['city']!r}")
+    d = page.locator('textarea[id^="exp-desc-"]:visible')
+    if e.get('description') and d.count():
+        d.first.fill(message_text(e['description']))
+    if not pick_month(page, 'From', e['start']):
+        probs.append(f"From month {e['start']} not set")
+    if e.get('current'):
+        xy = page.evaluate(VIS_JS, 'I currently work here')
+        if xy: page.mouse.click(*xy[0]); time.sleep(0.6)
+    elif e.get('end') and not pick_month(page, 'To', e['end']):
+        probs.append(f"To month {e['end']} not set")
+    if probs:                                                   # never save a half-filled entry: cancel it
+        xy = page.evaluate(ARIA_SCROLL_JS, 'Cancel adding experience entry')
+        if xy: time.sleep(0.4); page.mouse.click(*(page.evaluate(ARIA_SCROLL_JS, 'Cancel adding experience entry') or xy)); time.sleep(1)
+        return probs
+    sv = page.evaluate(ARIA_SCROLL_JS, 'Save experience entry')
+    if not sv:
+        return ['no "Save experience entry" button']
+    time.sleep(0.4); page.mouse.click(*(page.evaluate(ARIA_SCROLL_JS, 'Save experience entry') or sv)); time.sleep(2)
+    if page.locator('spl-autocomplete[label="Title"] input:visible').count():
+        return [f"not saved — page says: {validation_text(page) or '(nothing)'}"]
+    t = deep_text(page)
+    i, j = t.find('Experience'), t.find('Education')
+    seg = t[i:j if j > i else i + 2000]
+    return [] if (N(e['title']).lower() in seg.lower() and N(e['company']).lower() in seg.lower()) else ['saved entry not found on the page']
+
+
+def add_experiences(page, log, rows, res):
+    """Every wd_profile.json work entry; one read-back row per entry. Added oldest first: the page lists the entry added
+    last on top, so the most recent job ends up first (entry 1 = the most recent)."""
+    import jsa_profile
+    work = json.load(open(jsa_profile.data_file('wd_profile.json', 'JSA_WD_PROFILE'), encoding='utf-8')).get('work') or []
+    entries = exp_entries(work)
+    if not entries:
+        res['problems'].append('Experience is required here but config/wd_profile.json has no work entry'); return
+    for n, e in reversed(list(enumerate(entries, 1))):
+        want = f"{e['title']} · {e['company']} · {e['start']}–{'now' if e['current'] else e['end']}"
+        probs = add_experience(page, e, log)
+        for pr in probs:
+            log(f'experience {n}: {pr}')
+        rows.append({'key': f'experience-{n}', 'label': f'Experience entry {n}', 'type': 'text', 'required': n == 1,
+                     'want': want, 'page': '' if probs else want, 'ok': not probs, 'step': 1})
+        if probs:
+            res['problems'].append(f"Experience entry {n} ({e['company']}): {probs[0]}")
+
+
 def fill_radio(page, key, want):
     page.locator(f'spl-radio-group#{css_id(key)} spl-radio[label="{want}"]').first.click(); time.sleep(0.4)
 
@@ -335,8 +543,9 @@ def read_value(page, f):
           const r=[...g.querySelectorAll('spl-radio')].find(x=>x.hasAttribute('checked') || (x.shadowRoot && x.shadowRoot.querySelector('input:checked')));
           return r ? (r.getAttribute('label')||'') : ''; }""", f['key'])
     if f['type'] == 'select':
-        loc = page.locator(f'spl-autocomplete#{k} input')
-        return loc.first.input_value() if loc.count() else ''
+        loc = page.locator(f'{AC}#{k} input')
+        tags = page.evaluate(TAGS_JS, f['key'])               # a multi-select shows its picks as tags (JSA-387); typed filter text is not a pick
+        return tags or (loc.first.input_value() if loc.count() and not f.get('tag') == 'spl-multiselect-autocomplete' else '')
     if f['type'] == 'checkbox':
         return 'checked' if page.locator(f'spl-checkbox#{k} input').first.is_checked() else ''
     loc = page.locator(f'spl-input#{k} input, spl-textarea#{k} textarea, input#{k}, textarea#{k}')
@@ -351,6 +560,12 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
     res = {'status': 'blocked', 'problems': [], 'fields': [], 'unknown': []}
     sys.path.insert(0, os.path.join(ROOT, 'config'))
     import jsa_profile
+    cfg = {}
+    def on_resp(r):                                             # the form config: which page-1 sections are required (JSA-233)
+        if not cfg and re.search(r'/oneclick-ui/api/company/[^/]+/publication/[^/]+/config', r.url) and r.status == 200:
+            try: cfg.update(r.json() or {})
+            except Exception: pass
+    page.on('response', on_resp)
     page.goto(form_url, wait_until='domcontentloaded', timeout=60000)
     time.sleep(8)
     body = page.inner_text('body') + ' ' + deep_text(page)
@@ -395,6 +610,9 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
                          'page': edus[0]['school'] if saved else '', 'ok': bool(saved), 'step': 1})
             if not saved:
                 res['problems'].append('Education entry: not saved')
+    exp_done = False
+    if experience_required(cfg) and page.evaluate(ARIA_JS, 'Add experience entry'):   # "Please provide at least one work
+        add_experiences(page, log, rows, res); exp_done = True                       # experience entry" (SyngentaGroup 11-10)
     cover = None
     if folder and os.path.exists(os.path.join(folder, 'cover.txt')):
         cover = open(os.path.join(folder, 'cover.txt'), encoding='utf-8').read().strip() or None
@@ -433,12 +651,21 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
             single = True
         else:
             res['problems'].append('no Next button on page 1'); res['fields'] = rows; return res
-    for _ in range(0 if single else 15):                          # page 2 must really be there: never call an empty page clean
-        time.sleep(1)
-        if page.locator('sr-screening-questions-form').count() or re.search(r'thank you|application (was )?(sent|submitted)', page.inner_text('body'), re.I):
-            break
+    def page2_wait():
+        for _ in range(0 if single else 15):                      # page 2 must really be there: never call an empty page clean
+            time.sleep(1)
+            if page.locator('sr-screening-questions-form').count() or re.search(r'thank you|application (was )?(sent|submitted)', page.inner_text('body'), re.I):
+                break
+    page2_wait()
+    if not single and not page.locator('sr-screening-questions-form').count() and not exp_done \
+            and re.search(r'work experience entry', validation_text(page), re.I) and page.evaluate(ARIA_JS, 'Add experience entry'):
+        log('experience: required by the page (config not read) — adding the entries, then Next again')   # JSA-233 fallback
+        n0 = len(res['problems']); add_experiences(page, log, rows, res); exp_done = True
+        if len(res['problems']) > n0:
+            res['fields'] = rows; res['status'] = 'needs-user'; return res
+        click_button(page, '^next$'); page2_wait()
     if not single and not page.locator('sr-screening-questions-form').count():
-        err = page.evaluate("() => { let t=''; const w=(r)=>{ r.querySelectorAll('*').forEach(e=>{ if(e.shadowRoot) w(e.shadowRoot); }); r.querySelectorAll('[class*=error],[role=alert]').forEach(e=>{ t+=' '+(e.textContent||''); }); }; w(document); return t.replace(/\\s+/g,' ').trim().slice(0,300); }")
+        err = validation_text(page)
         res['problems'].append('page 2 (Preliminary questions) did not open after Next' + (f' — page says: {err}' if err else ''))
         res['fields'] = rows; return res
     # ---- page 2
@@ -453,7 +680,7 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
             if f['type'] == 'select':
                 try: f['options'] = select_options(page, f['key'])
                 except Exception as e: f['options'] = []; f['error'] = f'options: {type(e).__name__}'
-        ans = answer(fields, jd)
+        ans = apply_declarations(fields, answer(fields, jd))
         for f in fields:                                              # "If you selected Other …, enter it below": only for "Other"
             if not f['required'] and IF_OTHER.search(f['label']):
                 ans[f['key']] = {'status': 'ok', 'label': f['label'], 'rule': 'if_followup', 'value': '', 'leave': True}   # 'ok' keeps it out of the drafts
@@ -499,6 +726,9 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
                     page.locator(f'spl-input#{css_id(f["key"])} input, spl-textarea#{css_id(f["key"])} textarea').first.fill(str(want))
             except Exception as e:
                 row['error'] = f'{type(e).__name__}: {str(e)[:120]}'
+                if re.fullmatch(r'q\d+', str(f['key'])):             # no control id was found: keep the wrapper's markup (JSA-387)
+                    try: row['dom'] = page.evaluate(DUMP_Q, int(str(f['key'])[1:]))
+                    except Exception: pass
             rows.append(row)
         done |= {f['key'] for f in fields}
         time.sleep(1.5)
@@ -520,7 +750,7 @@ def run(page, form_url, resume, log, out, folder=None, jd=''):
         got = read_value(page, row) if row['type'] != 'file' else ''
         row['page'] = got
         w = row.get('want')
-        row['ok'] = (w is None and not row['required']) or (w is not None and bool(N(got)) and (N(got).lower() == N(w).lower() or (row['type'] == 'checkbox' and got == 'checked')))
+        row['ok'] = (w is None and not row['required']) or (w is not None and bool(N(got)) and (N(got).lower() == N(w).lower() or (row['type'] == 'checkbox' and got == 'checked') or (row.get('tag') == 'spl-multiselect-autocomplete' and multi_has(got, w))))
         if not row['ok'] and w is not None:
             res['problems'].append(f"{row['label'][:80]}: want {str(w)[:40]!r}, page {str(got)[:40]!r}" + (f" ({row['error']})" if row.get('error') else ''))
     said = ' '.join(res['problems'] + res['unknown'])
@@ -554,16 +784,19 @@ def submit(page, company, wait_captcha, log, push):
     """Click Submit and confirm. An e-mailed authentication code is typed from Gmail (read-only). Returns (status, by)."""
     from datetime import timedelta
     import gmail_code
+    import confirm_page as CP
     since = datetime.now(timezone.utc) - timedelta(minutes=1)
+    before = sr_snap(page)
     if not click_button(page, '^submit$'):
         log('no Submit button'); return 'blocked', None
     log('submit clicked')
     t_end = time.time() + 30
-    otp_done = False
+    otp_done, why = False, ''
     while time.time() < t_end:
         time.sleep(2)
-        txt = ' '.join(page.locator('body').all_inner_texts())
-        if W.confirmed_page(page.url, txt) or W.confirmed_page(page.url, deep_text(page)):
+        ok, why = W.page_done(before, sr_snap(page))              # JSA-299: the page must have changed, not just thank him
+        if ok:
+            log(f'confirmation page: {why}'); CP.settle(page)
             return 'submitted', 'page'
         errs = page.evaluate(FIELD_ERRORS)
         if errs:                                                  # the site refused the form: nothing went in
@@ -583,11 +816,25 @@ def submit(page, company, wait_captcha, log, push):
             log('CAPTCHA after submit → Joey (never answered by the runner)')
             push('求职 runner：人机验证', f'{company} SmartRecruiters — job Chrome 里的页面等你过验证')
             t_end = time.time() + wait_captcha * 60
-    log('no thank-you page — waiting up to 180 s for the receipt e-mail (Gmail read-only)')
+    log(f'no thank-you page ({why}) — waiting up to 180 s for the receipt e-mail (Gmail read-only)')
     subj = gmail_code.wait_for_mail(since, company, timeout=180)
     if subj:
         log(f'company e-mail: {subj[:100]}'); return 'submitted', 'email'
     return 'unconfirmed', None
+
+
+def sr_snap(page):
+    """{'url', 'text', 'form'} for confirm_page.judge: the text includes the shadow roots; form = a visible Submit
+    button (spl-button, found through the shadow roots)."""
+    try:
+        form = bool(page.evaluate(BTN_JS, '^submit$'))
+    except Exception:
+        form = None
+    try:
+        text = ' '.join(page.locator('body').all_inner_texts()) + ' ' + deep_text(page)
+    except Exception:
+        text = ''
+    return {'url': page.url, 'text': text[:40000], 'form': form}
 
 
 def write_form_check(r, out, posting, form_url, a):
@@ -630,7 +877,7 @@ def main():
     global COMPANY
     COMPANY = (fj.get('company') if folder else '') or job.get('company') or ''   # referral questions (JSA-195)
     form_url = apply_url(p)
-    resume = a.resume or jpaths.resume('2026-10', 'Alex_Rivera_Resume_Data_Analyst_A-Classic.pdf')
+    resume = a.resume or jpaths.resume('2026-10', jsa_profile.resume_file('Data_Analyst_A-Classic.pdf'))
     out = os.path.abspath(a.out or os.path.join(DATA, 'dryrun', 'smartrecruiters', f"{p['company']}_{p.get('id') or p.get('uuid')[:8]}"))
     os.makedirs(out, exist_ok=True)
     logf = open(os.path.join(out, 'run_log.md'), 'a')
@@ -649,7 +896,7 @@ def main():
     if not R.opening(resume):                                    # submit + materials problem: stopped before filling
         return
     with sync_playwright() as pw:
-        ctx = pw.chromium.connect_over_cdp(a.cdp).contexts[0]
+        ctx = cdp_connect.connect(pw, a.cdp).contexts[0]
         page = ctx.new_page(); page.set_viewport_size({'width': 1300, 'height': 900})
         R.mark('page')
         try:

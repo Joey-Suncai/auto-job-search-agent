@@ -2,6 +2,7 @@
 """Read-only: show what a handoff.json asks for, and what the live page holds right now.
    ~/.job-agent-venv/bin/python handoff_show.py "<app folder>" [--cdp URL]
    Writes nothing, clicks nothing. Safe for both DSH (CDP) and Claude Code."""
+import cdp_connect  # JSA-386: opens a tab when the job Chrome has none
 import json, os, sys, argparse
 from playwright.sync_api import sync_playwright
 
@@ -21,7 +22,7 @@ for f in h.get('fields') or []:
     if f.get('errors'):
         print('      errors:', f['errors'][:3])
 with sync_playwright() as pw:
-    b = pw.chromium.connect_over_cdp(a.cdp)
+    b = cdp_connect.connect(pw, a.cdp)
     ctx = b.contexts[0]
     pages = [p for p in ctx.pages if h.get('page_url', '')[:80] in p.url] or [p for p in ctx.pages if 'myworkday' in p.url or 'greenhouse' in p.url]
     if not pages:

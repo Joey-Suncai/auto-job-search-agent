@@ -18,11 +18,13 @@ sys.dont_write_bytecode = True
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("JSA_ROOT") or os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-SHARED = os.path.join(ROOT, "skills", "_shared")
 RS = os.path.join(ROOT, "skills", "resume-updater", "scripts")
 sys.path.insert(0, os.path.join(ROOT, "config"))
 import jsa_profile  # noqa: E402  (JSA-077)
-TEMPLATE = os.path.join(ROOT, jsa_profile.get("resume_template") or "resume/TEMPLATE.docx")
+import paths as _jp  # noqa: E402  (the data home, ADR-0008; fact files JSA-339)
+# the user's resume template is data: profile resume_template is relative to the data home, never to this code checkout
+# (JSA-375: joined with ROOT it pointed into the read-only release ~/JobAgent/app after the two-repo cut-over)
+TEMPLATE = jsa_profile.repo_path("resume_template") or _jp.resume("TEMPLATE.docx")
 FILE_PREFIX = jsa_profile.get("name.file_prefix") or "Candidate"
 SIGNATURE = jsa_profile.get("name.signature") or jsa_profile.get("name.full")
 sys.path.insert(0, RS)
@@ -102,7 +104,7 @@ def assert_payload_clean(payload):
 # ----------------------------------------------------------------------------- bank / stories
 def parse_bank():
     sec, cur, items, cnt = None, None, [], {}
-    for ln in rd(os.path.join(SHARED, "bullet-bank.md")).splitlines():
+    for ln in rd(_jp.fact("bullet-bank.md")).splitlines():
         if ln.startswith("## "):
             sec = BANK_SECTIONS.get(ln[3:].strip()); cur = None; continue
         if sec and ln.startswith("- "):
@@ -114,7 +116,7 @@ def parse_bank():
     return items
 
 def parse_stories():
-    t = rd(os.path.join(SHARED, "story-bank.md"))
+    t = rd(_jp.fact("story-bank.md"))
     t = t[:t.index("## Archive")]
     stories, cur = {}, None
     for ln in t.splitlines():
@@ -145,7 +147,7 @@ def parse_stories():
     return out
 
 def profile_facts():
-    t = rd(os.path.join(SHARED, "candidate-profile.md"))
+    t = rd(_jp.fact("candidate-profile.md"))
     keep = re.compile(r"^(Available for employment|Willing to travel|Relocation / on-site|GPA|Target compensation|"
                       r"Internship housing needed|English proficiency|Education entry|Current location|How did you hear|"
                       r"Previous engineering internship)", re.I)
@@ -224,10 +226,10 @@ HARD RULES (every one is checked by a program; violations are sent back to you):
 6. Never write internal job IDs (like J0xxxx) or requisition numbers that look like tracker IDs. Never write phone, email, address, links, URLs, domain names (anything like x.com / x.io) or the @ sign anywhere in the letter or answers.
 7. Every number, percent or count you write in the letter or answers must appear in a story/bullet you list in that paragraph's 'uses' (or in PROFILE/NOTES, list those as 'PROFILE'/'NOTES'; skill-line IDs SKn may also be listed). Do not round or convert numbers.
 8. Plain, warm, specific words. Banned: leverage, spearhead, orchestrate, synergy, dynamic, passionate, results-driven, cutting-edge, detail-oriented, team player, utilize, seamlessly, robust, 'I am writing to express', 'great fit', 'fast-paced', 'passionate about', 'I am confident that'. No trait adjectives without a concrete example in the same or next sentence.
-COVER LETTER (3-5 paragraphs, body 300-380 words, greeting separate, NO sign-off): (a) opening: the role, why this company specifically (one concrete company fact from the JD, tied to a motivation M1-M3), preview of what he brings; (b) the main story = Confirmed story whose tags best match the JD's #1 must-have: situation -> what he did and how -> result with numbers; (c) fit and context: 1-2 more must-haves with brief proof from other stories, answer the question the reader will have (e.g. economics degree for a technical role) once, no apology; logistics only if NOTES give them; (d) close: one line of fit, interest in talking, thanks. Do not summarize the resume; each paragraph adds how/why. Specificity test: another applicant could not send it with only the name changed. Greeting: 'Dear <Company> team,' unless a hiring manager's name is in the JD.
+COVER LETTER (3-5 paragraphs, body 300-380 words, greeting separate, NO sign-off): (a) opening: start with the concrete company fact or the work he wants to do there (never 'I'm applying for …' / 'I am excited to apply …'), name the role, why this company specifically (one concrete company fact from the JD, tied to a motivation M1-M3), preview of what he brings; (b) the main story = Confirmed story whose tags best match the JD's #1 must-have: situation -> what he did and how -> result with numbers; (c) fit and context: 1-2 more must-haves with brief proof from other stories, answer the question the reader will have (e.g. economics degree for a technical role) once, no apology; logistics only if NOTES give them; (d) close: one line of fit, interest in talking, thanks. Do not summarize the resume; each paragraph adds how/why. Specificity test: another applicant could not send it with only the name changed. Greeting: 'Dear <Company> team,' unless a hiring manager's name is in the JD.
 KEYWORD MAP: the JD's skills/tools/methods/verbs, must-haves first in JD order. true_for_him = yes | partly | no. For yes, resume_term = the exact word/phrase (<=4 words) that appears in your selected resume text (skills line or bullet).
 FIT MAP: one row per must-have, strongest first: strong | partial | none, with evidence IDs. List real gaps (what the JD wants that the stories do not cover) in gaps.
-ANSWERS: one per question in questions, in the first person, within the limit (count characters, or words if unit says so; stay at or below target_max, which is 85% of the limit; the limit is a hard cutoff), built from stories, listing story IDs in uses."""
+ANSWERS: one per question in questions, in the first person, within the limit (count characters, or words if unit says so; stay at or below target_max, which is 85% of the limit; the limit is a hard cutoff; when a question has min, the answer has at least that many), built from stories, listing story IDs in uses."""
 
 SCHEMA = """Return JSON with exactly these keys:
 {
@@ -264,6 +266,12 @@ assert len(_RL) == 14, len(_RL)
 _R = lambda *ns: [_RL[1 + n] for n in ns]
 RULES_A = "\n".join(_RL[:2] + _R(1, 2, 3, 4) + [_RL[11], _RL[12]]) + "\nYou are doing STEP A of 2: resume selection, keyword map and fit map only. Do not write the letter or answers yet. Be concise: keyword_map at most 14 terms (must-haves first), fit_map at most 7 rows, no commentary. story_summaries are short excerpts for choosing evidence IDs only."
 RULES_B = "\n".join(_RL[:2] + _R(1, 4, 5, 6, 7, 8) + [_RL[10], _RL[13]]) + "\nYou are doing STEP B of 2: the cover letter and open answers only. STEP A (resume selection and fit map) is given and fixed; cite its bullet IDs / skill IDs / stories in 'uses' when you refer to them. LENGTH: the letter body must be about 330 words (hard limits 280-390); four paragraphs of roughly 80 words. Count before answering; shorter is safer than longer."
+RULES_B += ("\nSENTENCE RULES (every sentence is checked; a failing one is rewritten, and one that still fails blocks the application): "
+            "(1) open the letter with the concrete company fact or the work he wants to do there, never 'I'm applying for …', 'I am excited to apply …', 'I am writing to …', '… draws me to …'; "
+            "(2) never say what he has not done or lacks ('I have not …', 'I haven't …', 'no experience in …', 'I used X rather than Y'): a gap stays in fit_map only; "
+            "(3) the M.S. is current (see PROFILE dates): 'I am pursuing an M.S. …', never 'starts' / 'will start' / 'incoming'; "
+            "(4) tie a skill to the M.S. only when PROFILE ties it to the M.S. coursework; "
+            "(5) the team-of-3 project: he 'led the code' (not 'led the project / benchmark'); the 70% result: 'part of a workflow that cut … by 70%'.")
 SCHEMA_A = """Return JSON with exactly these keys:
 {
  "job": {"company": "...", "job_title": "title exactly as posted in the JD", "greeting": "Dear X team,"},
@@ -308,6 +316,36 @@ def select_stories(stories, jd, notes, n=10):
     pick += [k for k in stories if k.startswith("M")]
     return {k: stories[k] for k in pick}
 
+def never_phrases():
+    """the NAMES among config/facts.json never-phrases (every word capitalised: "XJTLU", "Xi'an Jiaotong-Liverpool") —
+    a name can be cut from a story without changing what it says; wording rules ("independently", "I cut review
+    time") are never cut, the overclaim check still catches them."""
+    try:
+        import paths as jsa_paths
+        fb = json.load(open(jsa_paths.config("facts.json"), encoding="utf-8"))
+    except Exception:
+        return []
+    out = []
+    for sec in fb.values():
+        for e in sec if isinstance(sec, list) else []:
+            out += [w for w in (e.get("never") or []) if isinstance(w, str) and w.split()
+                    and all(x[:1].isupper() for x in w.split())] if isinstance(e, dict) else []
+    return sorted(set(out), key=len, reverse=True)
+
+def strip_never(text, phrases=None):
+    """JSA-264: a Confirmed story may name a never-phrase (story-bank "Voice in XJTLU", "U-stage Voice Club, XJTLU");
+    the writer copied it and the overclaim check then failed the whole letter. Take it out of what the writer sees:
+    ' in X' / ', X' / '(X)' / 'X' go, so "the "Voice in XJTLU" flagship" → "the "Voice" flagship"."""
+    if not isinstance(text, str):
+        return text
+    for w in (never_phrases() if phrases is None else phrases):
+        q = re.escape(w)
+        text = re.sub(r"\s+(in|at|of)\s+(the\s+)?" + q + r"\b", "", text, flags=re.I)
+        text = re.sub(r",\s*" + q + r"\b", "", text, flags=re.I)
+        text = re.sub(r"\s*\(\s*" + q + r"\s*\)", "", text, flags=re.I)
+        text = re.sub(r"\b" + q + r"\b\s*", "", text, flags=re.I)
+    return text
+
 def build_context(track, bank, stories, jd, notes, questions):
     role, pool, _, base_skills = base_structure(track)
     by_text = {b["text"]: b for b in bank}
@@ -333,8 +371,9 @@ def build_context(track, bank, stories, jd, notes, questions):
     others = sorted([(len(toks(v["text"]) & jt), k) for k, v in pool.items() if k not in base_skills and track not in v["tracks"]], reverse=True)
     keep_sk = list(base_skills) + [k for s, k in others[:3] if s > 0]
     pool_payload = {k: dict(label=pool[k]["label"], text=pool[k]["text"]) for k in keep_sk}
-    sel_stories = select_stories(stories, jd, notes)
+    sel_stories = {k: strip_never(v) for k, v in select_stories(stories, jd, notes).items()}
     qs = [dict(id=q["id"], label=scrub(q["label"]), limit=q.get("limit"), target_max=(int(int(q["limit"]) * 0.85) if q.get("limit") else None), unit=q.get("unit", "characters"),
+               **({"min": int(q["min"])} if q.get("min") else {}),       # JSA-312: the page's minimum, read from the live form
                **({"description": scrub(q["description"])} if q.get("description") else {})) for q in questions]
     ctx = dict(task="Tailor for this job", jd=scrub(jd), notes=scrub(notes), base_resume=base, skill_pool=pool_payload,
                bullet_bank=bank_payload, confirmed_stories=sel_stories, profile_facts=profile_facts(), questions=qs)
@@ -429,6 +468,277 @@ def verify_a(d, V):
     if fm.get("motivation") not in V["stories"]: E.append("fit_map.motivation must be M1/M2/M3")
     return E, W
 
+_FACTS = []
+
+
+def overclaims(label, text, V):
+    """JSA-242 / JSA-251: never-phrases and fact pairs from config/facts.json (truth_check.check_text) — e.g. "led the
+    code" for the team-of-3 project (he led MOST of the code), "70%" without "workflow" (part of a workflow that cut
+    review time). Numbers are checked by check_text above; only these two kinds are added here."""
+    try:
+        import truth_check as TC
+    except Exception:
+        return []
+    if _facts_book() is None:
+        return []
+    out = []
+    for e in TC.check_text(text, _FACTS[0], V.get("jd") or ""):
+        if e.startswith("never-phrase") or e.startswith("pair:"):
+            out.append(f"{label}: overclaim — {e} (write it as the fact says)")
+    return out
+
+
+# ----------------------------------------------------------------------------- sentence checks (JSA-242 / JSA-190)
+# Four kinds of sentence that passed every check and needed a hand edit (gh10 2026-11-06, decisions-log 2026-11-05):
+# (a) the M.S. in the wrong tense ("starts in 2026" while he is enrolled), (b) a skill tied to the M.S. that the facts do
+# not tie to it ("my M.S. is where the Tableau comes from"), (c) "I haven't done X / no experience in X", (d) a boilerplate
+# opener ("I'm applying for …", "I am excited to apply …"); plus two ownership slips the facts' `ownership` field rules
+# out ("That workflow cut review time by 70%" — he contributed to the workflow; "a benchmark I led" — he led the code).
+# A flagged sentence is rewritten by DeepSeek (≤ 2 tries); still failing → the folder is blocked for Joey.
+_ABBR = ("m.s.", "b.a.", "b.s.", "m.a.", "u.s.", "e.g.", "i.e.", "dr.", "mr.", "ms.", "mrs.", "st.", "no.", "vs.", "inc.", "jr.")
+_OPEN_START = [r"(?:i am|i'm)\s+(?:so\s+|very\s+|truly\s+|really\s+)?(?:excited|thrilled|delighted|eager|pleased|happy|honou?red)\s+to\b",
+               r"(?:i am|i'm)\s+(?:writing\s+to\s+)?apply(?:ing)?\b", r"i\s+am\s+writing\s+(?:to|in|because)\b",
+               r"i\s+(?:would|'d)\s+like\s+to\s+(?:apply|express|submit)\b", r"please\s+accept\b",
+               r"(?:i\s+)?was\s+(?:so\s+)?(?:excited|thrilled|delighted)\s+to\s+(?:see|find|learn|come across)\b",
+               r"(?:it\s+is\s+)?with\s+great\s+(?:interest|enthusiasm|excitement)\b", r"as\s+an?\s+(?:aspiring|enthusiastic|motivated)\b"]
+_OPEN_ANY = [r"\bexcited\s+to\s+apply\b", r"\bthrilled\s+to\s+apply\b", r"\bwriting\s+to\s+apply\b", r"\bplease\s+accept\s+my\s+application\b",
+             r"\bdraws?\s+me\s+to\b", r"\bcaught\s+my\s+(?:eye|attention)\b"]
+_NEG = [r"\bi(?:\s+have|'ve)\s+(?:not|never)\b(?!\s+only\b)", r"\bi\s+haven'?t\b", r"\bi(?:\s+have|'ve)\s+yet\s+to\b",
+        r"\bi\s+(?:do\s+not|don'?t)\s+(?:yet\s+)?have\s+(?:any\s+|much\s+|direct\s+|hands-on\s+|professional\s+|formal\s+|prior\s+)*(?:experience|exposure|background)\b",
+        r"\b(?:no|little|limited|minimal)\s+(?:prior\s+|direct\s+|hands-on\s+|professional\s+|formal\s+|industry\s+)*(?:experience|exposure|background)\s+(?:in|with)\b",
+        r"\bmy\s+(?:experience|exposure)\s+(?:with|in)\s+[^.;]{1,40}\bis\s+(?:limited|minimal)\b", r"\bnot\s+yet\s+(?:used|worked|built|had)\b",
+        r"\bi\s+lack\b", r"\bi(?:\s+am|'m)\s+(?:still\s+)?new\s+to\b", r"\bi(?:\s+have|'ve)\s+(?:only\s+)?used\s+[\w .+-]{1,30}?\s+rather\s+than\b",
+        r"\bi\s+(?:did\s+not|didn'?t)\s+(?:get\s+to\s+)?(?:use|work|build)\b", r"\bwhile\s+i\s+have\s+not\b"]
+_MS = r"\bM\.\s?S\.?(?![a-z])|\bMS\b|\bmaster'?s\b|\bapplied\s+data\s+science\b|\buniversity\s+of\s+chicago\b|\buchicago\b|\bgraduate\s+(?:program|studies|degree)\b"
+_FUTURE = (r"\b(?:starts?|starting|begins?|beginning|commencing|incoming|upcoming|admitted|accepted\s+(?:to|into)|"
+           r"will\s+(?:soon\s+)?(?:start|begin|join|enter|enroll|pursue|attend|be\s+(?:starting|beginning|joining|entering|pursuing|attending|enrolled|starting))|"
+           r"(?:am|'m)\s+(?:about|set|going)\s+to\s+(?:start|begin|join|enter|pursue)|plan(?:ning)?\s+to\s+(?:start|begin|attend|pursue|join|enroll))\b")
+_CAUSE = (r"\b(?:is|was)\s+where\b|\bcomes?\s+from\b|\bcame\s+from\b|(?<![\w-])(?:learn(?:ed|t)?|picked\s+up|gained|honed|sharpened|acquired|"
+          r"mastered)\b|\b(?:taught|gave|trained|grounded|equipped)\s+me\b|\bthanks\s+to\s+my\b|\bthrough\s+my\b")
+_TOOLS_EXTRA = ["Power BI", "Looker", "Spark", "PySpark", "Hadoop", "AWS", "Azure", "GCP", "dbt", "Airflow", "Kafka", "PyTorch",
+                "TensorFlow", "Java", "Scala", "C++", "JavaScript", "TypeScript", "MATLAB", "SAS", "Stata", "SPSS", "Alteryx",
+                "Qlik", "BigQuery", "Redshift", "Docker", "Kubernetes", "LangChain", "RAG", "A/B testing", "deep learning", "NLP"]
+
+
+def sentences(text):
+    """Pure (tested). Split prose into sentences at . ! ? + space + a capital / digit / quote, never after an
+    abbreviation such as "M.S." or "U.S." ("my M.S. in Applied Data Science" stays one sentence)."""
+    t = str(text or "").strip()
+    out, start = [], 0
+    for m in re.finditer(r"[.!?][\"'”’)]?\s+(?=[A-Z0-9\"“(])", t):
+        word = t[:m.start() + 1].split()[-1].lower() if t[:m.start() + 1].split() else ""
+        if word.lstrip("(\"“") in _ABBR: continue
+        out.append(t[start:m.end()].strip()); start = m.end()
+    if t[start:].strip(): out.append(t[start:].strip())
+    return out
+
+
+def _facts_book():
+    if not _FACTS:
+        try:
+            import paths as jsa_paths
+            _FACTS.append(json.load(open(jsa_paths.config("facts.json"), encoding="utf-8")))
+        except Exception:
+            return None
+    return _FACTS[0]
+
+
+_MON = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
+
+
+def sentence_rules(fb, today=None):
+    """Pure (tested). The data the sentence checks need, from config/facts.json: whether the M.S. has started (its
+    entry's first 'Mon YYYY' ≤ today), the skills the facts tie to the M.S., the skill vocabulary, and the ownership
+    rules ("he led the code" → a 'led' near the entry's anchors must say 'led the code'; "contributed to the workflow" →
+    the pair head (70%) must come with 'part of' / 'contributed')."""
+    today = today or datetime.date.today()
+    fb = fb or {}
+    ms = next((e for e in fb.get("entries") or [] if e.get("kind") == "education" and re.search(r"\bM\.\s?S\.|master", e.get("role") or "", re.I)), None)
+    started = False
+    if ms:
+        m = re.search(r"([A-Za-z]{3})[a-z]*\.?\s+(\d{4})", ms.get("dates") or "")
+        if m and m.group(1).lower() in _MON: started = today >= datetime.date(int(m.group(2)), _MON[m.group(1).lower()], 1)
+    ms_skills = set()
+    for f in fb.get("facts") or []:
+        if ms and f.get("entry") == ms.get("id"): ms_skills |= {s.lower() for s in (f.get("skills") or []) + (f.get("anchors") or [])}
+    vocab = set(_TOOLS_EXTRA)
+    sk = fb.get("skills") or {}
+    for v in (sk.get("true") or {}).values(): vocab |= set(v)
+    vocab |= set(sk.get("not_true") or [])
+    for f in fb.get("facts") or []: vocab |= set(f.get("skills") or [])
+    vocab = {re.sub(r"\s*\(.*\)$", "", v).strip() for v in vocab if isinstance(v, str) and v.strip()}
+    vocab -= {"economics"}   # his B.A. subject: "my M.S. follows an economics background" ties nothing to the M.S.
+    led, part = [], []
+    for f in fb.get("facts") or []:
+        own = f.get("ownership") or ""
+        m = re.search(r"\bhe led (the [a-z]+)", own)
+        if m:
+            anchors = list(f.get("anchors") or [])
+            t3 = re.search(r"\bteam of \d+", own)
+            if t3: anchors.append(t3.group(0))
+            led.append(dict(id=f["id"], need=m.group(1), anchors=anchors))
+        m = re.search(r"\bcontributed to the ([a-z]+)", own)
+        if m:
+            for a, b in f.get("pairs") or []:
+                if b.lower() == m.group(1): part.append(dict(id=f["id"], head=a, noun=b))
+    edu = {e.get("id") for e in fb.get("entries") or [] if e.get("kind") == "education"}
+    other = {}
+    for f in fb.get("facts") or []:
+        if f.get("entry") in edu: continue
+        for a in (f.get("anchors") or []) + ([re.search(r"\bteam of \d+", f.get("ownership") or "").group(0)] if re.search(r"\bteam of \d+", f.get("ownership") or "") else []):
+            if len(a) >= 4: other.setdefault(a, f.get("entry") or f["id"])
+    return dict(other_anchors=sorted(other.items(), key=lambda x: -len(x[0])), ms_started=started, ms_name=(ms or {}).get("role") or "the M.S.", ms_dates=(ms or {}).get("dates") or "",
+                ms_skills=ms_skills, vocab=sorted(vocab, key=len, reverse=True), led=led, part=part)
+
+
+def _clauses(s):
+    return [c for c in re.split(r";|:|\s+[—–]\s+|\s+-\s+|,\s+(?=(?:and|but|which|while|so|whereas)\b)", s) if c.strip()]
+
+
+def _named(s, vocab):
+    out = []
+    for v in vocab:
+        rx = rf"(?<![\w+#]){re.escape(v)}(?![\w+#])"
+        if re.search(rx, s) if len(v) <= 3 else re.search(rx, s, re.I):
+            if not any(v.lower() in o.lower() for o in out): out.append(v)
+    return out
+
+
+def sentence_flags(s, R, first=False, negation=True):
+    """Pure (tested). The problems of ONE sentence → list of short reasons ([] = clean). first = the letter's opening
+    sentence (opener rules); negation=False for an answer to a yes/no question ("Have you worked at X?")."""
+    out, low = [], s.lower().replace("’", "'")
+    if first:
+        lead = re.sub(r"^[\"“(\s]+", "", low)
+        for rx in _OPEN_START:
+            if re.match(rx, lead): out.append("opener: boilerplate opening — open with the concrete company fact or the work he wants to do"); break
+    for rx in _OPEN_ANY:
+        if re.search(rx, low): out.append(f"opener: boilerplate phrase '{re.search(rx, low).group(0)}'"); break
+    if negation:
+        for rx in _NEG:
+            m = re.search(rx, low)
+            if m: out.append(f"negation: '{m.group(0)}' — never say what he has not done (a gap stays in fit_map)"); break
+    if re.search(_MS, s, re.I):
+        if R.get("ms_started"):
+            m = re.search(_FUTURE, low)
+            if m: out.append(f"ms_tense: '{m.group(0)}' — he is enrolled now ({R.get('ms_name')}, {R.get('ms_dates')}); write 'I am pursuing' / 'I'm in'")
+        for cl in _clauses(s):   # the M.S., the causal tie and the skill in ONE clause ("…, which is where" ties to what precedes)
+            if re.search(_MS, cl, re.I) and re.search(_CAUSE, cl.lower()):
+                bad = [v for v in _named(cl, R.get("vocab") or []) if v.lower() not in R.get("ms_skills", set())]
+                if bad: out.append(f"ms_cause: {', '.join(bad[:4])} tied to the M.S., but the facts do not tie it to the M.S."); break
+        for cl in _clauses(s):   # a project / job from another entry placed inside the M.S. ("In my M.S. coursework I led the code for a team of 3")
+            if re.search(_MS, cl, re.I):
+                hit = next((a for a, e in R.get("other_anchors") or [] if re.search(rf"(?<![\w-]){re.escape(a)}(?![\w-])", cl, re.I)), None)
+                if hit: out.append(f"ms_cause: '{hit}' is from {dict(R['other_anchors'])[hit]}, not from the M.S."); break
+    for r in R.get("led") or []:
+        if re.search(r"\bled\b", low) and any(a.lower() in low for a in r["anchors"]):
+            if re.search(rf"\bled\b(?!\s+{re.escape(r['need'])}\b)", low):
+                out.append(f"ownership: say 'led {r['need']}' (fact {r['id']}), not led the whole project"); break
+    for r in R.get("part") or []:
+        if r["head"].lower() in low and not re.search(r"\bpart of\b|\bcontribut", low):
+            out.append(f"ownership: '{r['head']}' was the result of a {r['noun']} he contributed to — write 'part of a {r['noun']} that …' (fact {r['id']})")
+    return out
+
+
+def _yes_no_question(label):
+    return bool(re.match(r"\s*(?:have|has|did|do|are|were|is)\s+you\b", str(label or ""), re.I))
+
+
+def text_flags(text, R, letter_first=False, negation=True):
+    """[(sentence index, sentence, [reasons])] for every flagged sentence of a paragraph / answer."""
+    ss = sentences(text)
+    return [(i, s, f) for i, s in enumerate(ss) for f in [sentence_flags(s, R, first=letter_first and i == 0, negation=negation)] if f]
+
+
+def sentence_errors(d, V, R=None):
+    """Error strings for verify_b: every flagged sentence still in the letter / answers."""
+    R = R if R is not None else V.get("_srules") or sentence_rules(_facts_book())
+    E = []
+    for n, p in enumerate((d.get("cover_letter") or {}).get("paragraphs") or [], 1):
+        for i, s, fl in text_flags(p.get("text", ""), R, letter_first=(n == 1)):
+            E += [f"letter p{n}: {x} — '{s[:80]}'" for x in fl]
+    qs = {q["id"]: q for q in V.get("questions") or []}
+    for a in d.get("answers") or []:
+        if (a.get("text") or "").strip() == "ASK": continue
+        neg = not _yes_no_question((qs.get(a.get("id")) or {}).get("label"))
+        for i, s, fl in text_flags(a.get("text", ""), R, negation=neg):
+            E += [f"answer '{a.get('id')}': {x} — '{s[:80]}'" for x in fl]
+    return E
+
+
+REWRITE_SYS = """You fix ONE sentence of a job-application cover letter or answer. Reply with JSON {"sentence": "..."} only.
+Keep the sentence's place in the paragraph and its true content; remove only the problem named. Use only facts in SOURCE
+(never a new fact, number, tool, feeling or motivation). Rules: the M.S. is current (he is enrolled now: "I am pursuing",
+"I'm in"), never "starts" / "will start"; tie a skill to the M.S. only when SOURCE ties it to the M.S. coursework; never
+say what he has not done or lacks ("I haven't", "no experience in", "rather than X") — write what he has done, or return
+"" to drop the sentence; never open with "I'm applying for", "I am excited to apply", "I am writing to" — open with the
+concrete company fact or the work he wants to do; the team-of-3 project: he "led the code"; the 70% result: "part of a
+workflow that cut … by 70%". No visa or work-authorization words, no banned words (leverage, passionate, dynamic, robust,
+utilize, seamlessly, spearhead, orchestrate)."""
+
+
+def rewrite_text(text, R, ctx, label, uses, V, known, letter_first=False, negation=True, tries=2, step="B-fix"):
+    """JSA-242 / 190: every flagged sentence of `text` → DeepSeek rewrite (≤ `tries` each), accepted only when the new
+    sentence has no flag, no check_text error and no overclaim. Returns (new text, notes). Raises Failed('blocked: …')
+    when a sentence still fails after `tries` rewrites — the folder waits for Joey."""
+    notes = []
+    for _ in range(12):   # one fix per pass; the indices move when a sentence is dropped
+        ss = sentences(text)
+        fl = text_flags(text, R, letter_first, negation)
+        if not fl: return text, notes
+        i, s, reasons = fl[0]
+        last, base = reasons, set(check_text("x", text, uses, V, known))   # only NEW errors count against a rewrite
+        for t in range(tries):
+            msg = dict(sentence=s, problems=reasons if t == 0 else last, paragraph=text, position=("opening sentence of the letter" if letter_first and i == 0 else f"sentence {i + 1}"),
+                       source=ctx, where=label)
+            d, _raw = ds_call([{"role": "system", "content": REWRITE_SYS}, {"role": "user", "content": json.dumps(msg, ensure_ascii=False)}], 400, step=step)
+            new = str((d or {}).get("sentence") or "").strip()
+            if not new:
+                if len(ss) > 1 and not (letter_first and i == 0):
+                    last = []; break
+                last = ["the sentence cannot be dropped here; rewrite it"]; continue
+            cand = " ".join(ss[:i] + [new] + ss[i + 1:])   # paragraph-level checks (team of 3, numbers vs. uses) on the whole paragraph
+            last = sentence_flags(new, R, first=letter_first and i == 0, negation=negation) \
+                + [e for e in check_text("x", cand, uses, V, known) if e not in base] + overclaims("x", new, V)
+            if not last: break
+        if last:
+            raise Failed([f"blocked: {label}: sentence still fails after {tries} rewrites ({'; '.join(last)[:160]}) — '{s[:90]}' — needs Joey"], step)
+        ss = ss[:i] + ([new] if new else []) + ss[i + 1:]
+        notes.append(f"{label}: rewrote ({'; '.join(r.split(':')[0] for r in reasons)}): '{s[:70]}' → '{(new or '(dropped)')[:70]}'")
+        text = " ".join(ss)
+    raise Failed([f"blocked: {label}: too many flagged sentences — needs Joey"], step)
+
+
+def fix_sentences(d, V):
+    """Rewrite the flagged sentences of step B (letter paragraphs, open answers) in place. → notes (warnings)."""
+    R = V.get("_srules")
+    if R is None:
+        R = V["_srules"] = sentence_rules(_facts_book())
+    known = set(V["bank_by_id"]) | set(V["stories"]) | set(V["skill_pool"]) | {"PROFILE", "NOTES"}
+    notes = []
+
+    def ctx_of(uses):
+        src = []
+        for u in uses or []:
+            if u in V["stories"]: src.append(V["stories"][u])
+            elif u in V["bank_by_id"]: src.append(V["bank_by_id"][u]["text"])
+            elif u in V["skill_pool"]: src.append(V["skill_pool"][u]["text"])
+        return "\n".join(src + list(V.get("profile") or []))[:6000]
+
+    for n, p in enumerate((d.get("cover_letter") or {}).get("paragraphs") or [], 1):
+        if text_flags(p.get("text", ""), R, letter_first=(n == 1)):
+            p["text"], nt = rewrite_text(p.get("text", ""), R, ctx_of(p.get("uses")), f"letter p{n}", p.get("uses") or [], V, known, letter_first=(n == 1))
+            notes += nt
+    qs = {q["id"]: q for q in V.get("questions") or []}
+    for a in d.get("answers") or []:
+        if (a.get("text") or "").strip() == "ASK": continue
+        neg = not _yes_no_question((qs.get(a.get("id")) or {}).get("label"))
+        if text_flags(a.get("text", ""), R, negation=neg):
+            a["text"], nt = rewrite_text(a.get("text", ""), R, ctx_of(a.get("uses")), f"answer '{a.get('id')}'", a.get("uses") or [], V, known, negation=neg)
+            notes += nt
+    return notes
+
+
 def verify_b(d, V):
     """letter + answers + global checks (d = step A merged with step B)"""
     E, W = [], []
@@ -456,6 +766,8 @@ def verify_b(d, V):
     if len([u for u in used_all if u in V["stories"] and not u.startswith("M")]) < 2: E.append("letter must cite at least 2 stories")
     if not (used_all & {"M1", "M2", "M3"}): E.append("letter must use a motivation (M1-M3) in the why-this-company part")
     warn_terms(body, V, W, "letter")
+    E += overclaims("letter", body, V)
+    E += sentence_errors(d, V)   # JSA-242 / 190: tense, M.S. cause, negation, opener, ownership (fix_sentences ran first)
     # --- answers
     qs = {q["id"]: q for q in V["questions"]}
     ans = {a.get("id"): a for a in d.get("answers") or []}
@@ -468,7 +780,11 @@ def verify_b(d, V):
         if lim:
             n = len(re.findall(r"\S+", t)) if q.get("unit") == "words" else len(t)
             if n > int(lim): E.append(f"answer '{qid}' is {n} {q.get('unit', 'characters')}, limit {lim}")
+        if q.get("min"):                                   # JSA-312: the page refuses a shorter answer (an employer 11-11: minimum 5)
+            n = len(re.findall(r"\S+", t)) if q.get("unit") == "words" else len(t.strip())
+            if n < int(q["min"]): E.append(f"answer '{qid}' is {n} {q.get('unit', 'characters')}, minimum {q['min']}")
         E += check_text(f"answer '{qid}'", t, a.get("uses") or [], V, known)
+        E += overclaims(f"answer '{qid}'", t, V)
         warn_terms(t, V, W, f"answer {qid}")
     for qid in ans:
         if qid not in qs: W.append(f"extra answer id '{qid}' ignored")
@@ -476,6 +792,13 @@ def verify_b(d, V):
     allgen = json.dumps(d, ensure_ascii=False)
     if re.search(r"\bJ0\d{4}\b", allgen): E.append("internal job ID (J0xxxx) present")
     return E, W
+
+def verify_b_fixed(A, d, V):
+    """Step B's verify: first the sentence rewrites (fix_sentences mutates d, so the checkpoint keeps the fixed text),
+    then verify_b. A 'blocked:' Failed from a rewrite propagates (the folder waits for Joey, no whole-letter re-ask)."""
+    notes = fix_sentences(d, V)
+    E, W = verify_b({**A, **d}, V)
+    return E, notes + W
 
 def leaked_ids(t, known):
     """Pure (tested). The story-bank IDs (S6, M2, JSA05, PROFILE, S8ctx …) that appear in prose as a whole token — case
@@ -497,8 +820,11 @@ def check_text(label, t, uses, V, known):
     for u in uses:
         if u not in known: E.append(f"{label}: unknown ID in uses: {u}")
     if not uses: E.append(f"{label}: 'uses' is empty")
+    bl = low
+    for nm in {str(V.get("company") or "").lower().strip(), str(V.get("company_low") or "").strip()} - {""}:
+        bl = bl.replace(nm, " ")   # the company's own name is no banned word ("a Lever employer" → 'dynamic', JSA-264)
     for w in BANNED_WORDS:
-        if re.search(rf"\b{re.escape(w)}\b", low): E.append(f"{label}: banned word '{w}'")
+        if re.search(rf"\b{re.escape(w)}\b", bl): E.append(f"{label}: banned word '{w}'")
     for ph in BANNED_PHRASES:
         if ph in low: E.append(f"{label}: banned phrase '{ph}'")
     for rx in VISA_WORDS:
@@ -548,6 +874,7 @@ def chosen_role(d, V, spacing):
     base = copy.deepcopy(C.ROLES[V["track"]])
     rs = d["resume"]; bank = V["bank_by_id"]; pool = V["skill_pool"]
     r = copy.deepcopy(base)
+    r.pop("summary", None)   # the bank-pick (legacy) resume never had a summary; build_docx prints one since JSA-250 → two pages (JSA-264)
     r["label"] = rs["headline_title"]
     r["skills"] = [(pool[s]["label"], pool[s]["text"]) for s in rs["skill_lines"]]
     r["skills_a"] = []
@@ -603,11 +930,38 @@ def fill(tpl, texts):
     out = re.sub(r"<w:t(?: [^>]*)?>[^<]*</w:t>", lambda m: '<w:t xml:space="preserve">' + esc(next(it)) + "</w:t>", tpl)
     return re.sub(r' w14:paraId="[^"]+"', "", out)
 
+def bullet_xml(T, b):
+    """One bullet paragraph. b = text, or {"text", "bold": [terms]} — each term (written exactly in the text, first
+    occurrence) becomes a bold run (direction masters, JSA-250); plain text keeps the template run."""
+    if isinstance(b, str) or not b.get("bold"):
+        return fill(T["bullet"], [b if isinstance(b, str) else b["text"]])
+    text, spans = b["text"], []
+    for t in b["bold"]:
+        i = text.find(t)
+        if i >= 0 and not any(i < e and i + len(t) > s0 for s0, e in spans):
+            spans.append((i, i + len(t)))
+    spans.sort()
+    runs, pos = [], 0
+    for s0, e in spans:
+        if s0 > pos:
+            runs.append('<w:r><w:t xml:space="preserve">%s</w:t></w:r>' % esc(text[pos:s0]))
+        runs.append('<w:r><w:rPr><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">%s</w:t></w:r>' % esc(text[s0:e]))
+        pos = e
+    if pos < len(text):
+        runs.append('<w:r><w:t xml:space="preserve">%s</w:t></w:r>' % esc(text[pos:]))
+    para = fill(T["bullet"], ["\x00"])
+    first = re.search(r"<w:r>.*?</w:r>", para, flags=re.S).group(0)
+    return para.replace(first, "".join(runs), 1)
+
+
 def build_docx(tp, r, head_text, order, path):
     T = dict(tp.T)
     if r.get("a_bullet_after"): T["bullet"] = T["bullet"].replace("</w:numPr>", '</w:numPr><w:spacing w:after="%d"/>' % r["a_bullet_after"], 1)
     if r.get("a_section_before"): T["section"] = T["section"].replace('w:before="80"', 'w:before="%d"' % r["a_section_before"])
-    out = [fill(T["name"], [C.NAME]), fill(T["contact"], [C.CONTACT]), fill(T["headline"], [head_text]), fill(T["section"], ["Education"])]
+    out = [fill(T["name"], [C.NAME]), fill(T["contact"], [C.CONTACT]), fill(T["headline"], [head_text])]
+    if r.get("summary"):   # optional 2-line summary (direction masters, JSA-250; asked per candidate and direction)
+        out += [fill(T["section"], ["Summary"]), fill(T["skill"], ["", r["summary"]])]
+    out.append(fill(T["section"], ["Education"]))
     for e in C.EDU:
         out += [fill(T["schoolLoc"], [e["school"], e["loc"]]), fill(T["degree"], [e["degree"], e["detail"], e["date"]]),
                 fill(T["courses"], ["Courses: ", e["courses"]])]
@@ -617,17 +971,32 @@ def build_docx(tp, r, head_text, order, path):
         out.append(fill(T["section"], ["Internship Experience"]))
         for j in r["exp"]:
             out.extend([fill(T["org"], [j["org"]]), fill(T["titleDate"], [j["title"], j["date"]])])
-            out.extend([fill(T["bullet"], [b]) for b in j["bullets"]])
+            out.extend([bullet_xml(T, b) for b in j["bullets"]])
+    links = []   # (rId, url) for project titles that link out (direction masters, JSA-250)
     def proj():
         out.append(fill(T["section"], ["Projects"]))
         for p in r["projects"]:
-            out.append(fill(T["project"], [p["title"], " (" + p["tag"] + ")", p["date"]]))
-            out.extend([fill(T["bullet"], [b]) for b in p["bullets"]])
+            para = fill(T["project"], [p["title"], " (" + p["tag"] + ")", p["date"]])
+            if p.get("url"):
+                rid = "rIdLink%d" % (len(links) + 1)
+                links.append((rid, p["url"]))
+                first = re.search(r"<w:r>.*?</w:r>", para, flags=re.S).group(0)   # the bold title run
+                run = first.replace("<w:b/><w:bCs/></w:rPr>", '<w:b/><w:bCs/><w:u w:val="single"/></w:rPr>', 1)
+                para = para.replace(first, '<w:hyperlink r:id="%s" w:history="1">%s</w:hyperlink>' % (rid, run), 1)
+            out.append(para)
+            out.extend([bullet_xml(T, b) for b in p["bullets"]])
     for f in ((proj, exp) if order == ["projects", "exp"] else (exp, proj)): f()
-    out += [fill(T["section"], ["Leadership Experience"]), fill(T["org"], [C.LEAD["org"]]), fill(T["titleDate"], [C.LEAD["title"], C.LEAD["date"]])]
-    out += [fill(T["bullet"], [b]) for b in (C.LEAD["bullets_short"] if r["lead_short"] else C.LEAD["bullets_full"])]
+    lead = (C.LEAD if C.LEAD_ON else False) if r.get("lead") is None else r["lead"]   # a direction master brings its own (False = no section, JSA-250); LEAD_ON false = off every resume (JSA-255)
+    if lead:
+        out += [fill(T["section"], ["Leadership Experience"]), fill(T["org"], [lead["org"]]), fill(T["titleDate"], [lead["title"], lead["date"]])]
+        out += [fill(T["bullet"], [b]) for b in (lead.get("bullets") or (C.LEAD["bullets_short"] if r["lead_short"] else C.LEAD["bullets_full"]))]
     doc = tp.head + "".join(out) + tp.tail
     z = dict(tp.zip); z["word/document.xml"] = doc.encode("utf8")
+    if links:
+        rels = z["word/_rels/document.xml.rels"].decode("utf8")
+        add = "".join('<Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" '
+                      'Target="%s" TargetMode="External"/>' % (rid, esc(u)) for rid, u in links)
+        z["word/_rels/document.xml.rels"] = rels.replace("</Relationships>", add + "</Relationships>").encode("utf8")
     if r.get("a_sz"):
         st = z["word/styles.xml"].decode("utf8")
         st = st.replace('<w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/></w:rPr></w:rPrDefault>',
@@ -658,103 +1027,6 @@ def fill_bottom(pdf):
     rows = np.where((im < 160).sum(1) > 0)[0]
     shutil.rmtree(d, ignore_errors=True)
     return int(rows.min()), int(rows.max())
-
-def fill_candidates(rs, base, bank, pool, jd):
-    """Page top-up (JSA-063): approved items that may be added back when the page is under-filled, best first.
-    Only the base track's own bullets / skill lines that step A dropped (they are known to fit together); never a new
-    sentence. Skipped: a base bullet whose tags equal a selected non-base bullet's in the same entry (that is a swapped-in
-    variant of the same fact), a base skill line whose label is already on the page. Limits as verify_a: per entry
-    ≤ base+1 bullets, total ≤ base total+1, skill lines ≤ base+1. Order: bullets (rule: a true bullet first), then skill
-    lines; within each by JD word overlap, ties in base order. Returns [("bullet", entry_key, id) | ("skill", None, id)]."""
-    jt = toks(jd)
-    items = base["experience"] + base["projects"]
-    sel = {i["key"]: (rs.get("exp") or {}).get(i["key"]) or (rs.get("projects") or {}).get(i["key"]) or [] for i in items}
-    tot0 = sum(len(i["base_bullets"]) for i in items)
-    tot = sum(len(v) for v in sel.values())
-    out = []
-    if tot < tot0 + 1:
-        bl, n = [], 0
-        for i in items:
-            ids = sel[i["key"]]
-            if len(ids) >= len(i["base_bullets"]) + 1: n += len(i["base_bullets"]); continue
-            vt = {bank[x]["tags"] for x in ids if x in bank and x not in i["base_bullets"]}
-            for b in i["base_bullets"]:
-                n += 1
-                if b in ids or b not in bank or bank[b]["tags"] in vt: continue
-                bl.append((-len(toks(bank[b]["text"]) & jt), n, i["key"], b))
-        out += [("bullet", k, b) for _, _, k, b in sorted(bl)]
-    sk, sb = rs.get("skill_lines") or [], base["base_skill_lines"]
-    if len(sk) < len(sb) + 1:
-        labels = {pool[s]["label"] for s in sk if s in pool}
-        cand = [(-len(toks(pool[s]["text"]) & jt), n, s) for n, s in enumerate(sb) if s in pool and s not in sk and pool[s]["label"] not in labels]
-        out += [("skill", None, s) for _, _, s in sorted(cand)]
-    return out
-
-def add_fill(rs, item):
-    """apply one fill_candidates item to a copy of rs: bullet → end of its entry; skill line → before the Languages line."""
-    rs = copy.deepcopy(rs); kind, k, x = item
-    if kind == "bullet":
-        sec = "exp" if k in (rs.get("exp") or {}) else "projects"
-        rs[sec][k] = list(rs[sec][k]) + [x]
-    else:
-        sk = list(rs["skill_lines"]); sk.insert(len(sk) - 1 if sk else 0, x); rs["skill_lines"] = sk
-    return rs
-
-def layout_fill(tp, d, V, tmp, key):
-    """layout_search; when the page is under-filled, add back one dropped approved item at a time (fill_candidates)
-    and search again. An item that pushes it past one page is undone and the next one is tried. Records d['fill_added']."""
-    d.setdefault("fill_added", [])
-    res, err = layout_search(tp, d, V, tmp, key)
-    tried = set()
-    while err and err.startswith("page under-filled"):
-        base = V["ctx"]["base_resume"]
-        cand = [c for c in fill_candidates(d["resume"], base, V["bank_by_id"], V["skill_pool"], V["jd"]) if c not in tried]
-        if not cand:
-            return None, err + " No approved base item is left to add back; a longer approved wording is needed in bullet-bank.md (Joey's approval)."
-        tried.add(cand[0]); keep = d["resume"]
-        d["resume"] = add_fill(keep, cand[0])
-        r2, e2 = layout_search(tp, d, V, tmp, key)
-        if e2 and e2.startswith("does not fit"):
-            d["resume"] = keep; continue              # too much: undo, try the next (smaller) item
-        d["fill_added"].append(cand[0]); res, err = r2, e2
-    return res, err
-
-def layout_search(tp, d, V, tmp, key):
-    """build with spacing from loosest to tightest until one page and bottom 730-756 and check_resume passes."""
-    r0 = V["base_role"]
-    # when a shorter (still truthful) bullet leaves the page slightly under-filled, widen the spacing a
-    # little before giving up — better than inventing a bullet (2026-10-28, XJTLU wording change)
-    loose = [(38, 175), (36, 160), (34, 145), (32, 130)]   # (38, 175) added 2026-10-30: a Workday employer sat at bottom=727 with (36, 160)
-    cfgs = sorted({(ba, sb) for ba in (30, 28, 26, 24, 22, 20) for sb in (120, 110, 100, 90, 80)}, key=lambda c: -(c[0] * 25 + c[1] * 5))
-    if (r0["a_bullet_after"], r0["a_section_before"]) in cfgs:
-        cfgs.remove((r0["a_bullet_after"], r0["a_section_before"]))
-    cfgs.insert(0, (r0["a_bullet_after"], r0["a_section_before"]))
-    cfgs = [c for c in cfgs if c[0] <= max(30, r0["a_bullet_after"]) and c[1] <= max(120, r0["a_section_before"])]
-    cfgs = loose + cfgs
-    order = d["resume"]["section_order"]
-    log = []
-    last_under = None   # was never initialised → UnboundLocalError on the first under-filled page (a Workday employer 2026-10-30)
-    for i, cfg in enumerate(cfgs):
-        if elapsed() > BUDGET: raise Pending("build: run time budget reached during layout search")
-        r = chosen_role(d, V, cfg)
-        docx = os.path.join(tmp, f"{FILE_PREFIX}_Resume_{key}_A-Classic.docx")
-        build_docx(tp, r, headline(d), order, docx)
-        pdf = to_pdf(docx, tmp)
-        n = pages_of(pdf)
-        top, bot = fill_bottom(pdf) if n == 1 else (0, 9999)
-        log.append((cfg, n, bot))
-        if n == 1 and bot < 730:                      # under-filled: tighter spacing only moves the bottom up → stop (JSA-063)
-            last_under = (cfg, bot)
-            break
-        if n == 1 and 730 <= bot <= 756:
-            cp = run([sys.executable, os.path.join(RS, "check_resume.py"), docx])
-            if cp.returncode == 0:
-                return dict(docx=docx, pdf=pdf, role=r, cfg=cfg, top=top, bottom=bot, check=cp.stdout), None
-            return None, "check_resume failed: " + " | ".join(l.strip() for l in cp.stdout.splitlines() if "✗" in l)
-    if last_under:
-        return None, (f"page under-filled even at loosest spacing {last_under[0]}: bottom={last_under[1]} (<730). "
-                      f"Add one more true bullet (within limits).")
-    return None, "does not fit on one page even at tightest spacing: " + "; ".join(f"{c}->pages={n},bottom={b}" for c, n, b in log[-3:])
 
 def resume_text(d, V, with_headline=True):
     rs = d["resume"]; bank = V["bank_by_id"]; pool = V["skill_pool"]
@@ -892,6 +1164,8 @@ def run_step(app, name, system, payload, verifyfn, ckpt, meta, fresh, maxtok, st
                 errs, warns = verifyfn(c["data"])
                 if not errs:
                     st["steps_s"][name] = "cached"; return c["data"], warns
+            except (Failed, Pending):
+                raise
             except Exception:
                 pass
     messages = [{"role": "system", "content": system}, {"role": "user", "content": "INPUT (json):\n" + payload}]
@@ -900,6 +1174,7 @@ def run_step(app, name, system, payload, verifyfn, ckpt, meta, fresh, maxtok, st
     for attempt in (0, 1):
         d, raw = ds_call(messages, maxtok, step=name)
         try: errs, warns = verifyfn(d)
+        except (Failed, Pending): raise   # a sentence that still fails after its rewrites blocks the folder (JSA-242)
         except Exception as e: errs, warns = [f"malformed JSON structure: {type(e).__name__} {e}"], []
         if not errs:
             json.dump(dict(meta=meta, data=d), open(cp, "w", encoding="utf8"), ensure_ascii=False, indent=1)
@@ -920,6 +1195,12 @@ def finish(app, st, code, status, step, errors=()):
     if USAGE["calls"]:
         with open(os.path.join(app, "ds_usage.md"), "a", encoding="utf8") as f:
             f.write(f"{datetime.date.today()} | {os.path.basename(app)} | {DS_MODEL} | {status}/{step} | calls={USAGE['calls']} | prompt={USAGE['prompt']} (cache-hit {USAGE['hit']}) | completion={USAGE['out']} | est. cost=${cost():.4f} | {st['elapsed_s']}s\n")
+    try:   # JSA-412: the build commits the folder it wrote (materials, ds_status, score …) on the spot; best effort
+        sys.path.insert(0, os.path.join(ROOT, "scripts", "store"))
+        import data_git
+        data_git.commit_application(app, f"data: materials {status}/{step} — {os.path.basename(app)}")
+    except Exception:
+        pass
     sys.exit(code)
 
 
@@ -954,6 +1235,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("app"); ap.add_argument("--track", choices=TRACKS); ap.add_argument("--save-payload", action="store_true")
     ap.add_argument("--fresh", action="store_true", help="ignore ds_step_a.json / ds_step_b.json checkpoints")
+    ap.add_argument("--tailor", choices=["auto", "master", "legacy"], default="auto",
+                    help="resume source (JSA-251, JSA-388): always the track's approved direction master — auto / master = tailored by tailor.py "
+                         "(a failed check → the master unchanged); legacy = the master unchanged, no tailoring. No master → the job fails, never a bank pick")
     a = ap.parse_args()
     app = os.path.abspath(a.app)
     st = dict(status="failed", step="init", steps_s={}, prompt_chars={}, retries=0)
@@ -972,6 +1256,48 @@ def main():
     except Exception as e:
         msg = f"{type(e).__name__}: {e}"; print("FAILED:", msg); finish(app, st, 1, "failed", st.get("step", "?"), [msg])
 
+def master_resume(jd, track, company, title, docx_name, tailoring=True):
+    """JSA-251: the approved direction master for this track, tailored to the JD by tailor.py and checked by
+    truth_check.py (+ layout, check_resume). → None (no approved master for the track) or dict(res=None | the
+    ds_materials-shaped result, note, keyword_map, tailored, swaps, terms, changes, direction, approved). When the
+    tailored version fails a check, the approved master itself is laid out (never a weaker resume silently)."""
+    sys.path.insert(0, os.path.join(ROOT, "skills", "resume-updater", "scripts"))
+    import tailor as TL, direction_master as DM
+    direction = TL.TRACK_DIRECTION.get(track)
+    if not direction:
+        return None
+    master, mpath = TL.approved_master(direction)
+    if not master:
+        return None
+    import paths as jsa_paths
+    fb = json.load(open(jsa_paths.config("facts.json"), encoding="utf-8"))
+    role = json.load(open(jsa_paths.role_file(f"{direction}.json"), encoding="utf-8"))   # the data home's rebuilt library first (JSA-278: the repo copy is a stale seed)
+    out_docx = os.path.join(tempfile.mkdtemp(prefix="tailor_"), os.path.basename(docx_name))
+    r = TL.run(jd, direction, fb, role, master, mpath, title, company, out_docx)
+    r.update(direction=direction, approved=mpath)
+    if not tailoring:   # JSA-388: the old --tailor legacy (bank pick of the four old role versions) = the approved master as it is
+        r.update(ok=False, errs=["tailoring switched off (--tailor legacy)"], changes=[], swaps=[], terms=[],
+                 keyword_map=f"# Keyword map — {company}, {title}\n\nNo tailoring (--tailor legacy): the approved {direction} master is used unchanged.\n")
+    lr, why = r["res"], ""
+    if not r["ok"]:
+        why = "; ".join(r["errs"][:3])
+        lr, lerr = DM.layout(master, fb, out_docx, TL.order_of(role), {c["id"]: c["weight"] for c in role["competencies"]})
+        if lerr:
+            r.update(res=None, note=f"resume: tailored {direction} master failed ({why}) and the master itself did not lay out "
+                                    f"({lerr}) — no resume built")
+            return r
+        r["tailored"], r["swaps"] = lr["master"], []
+    rd_ = DM.role_dict(lr["master"], fb, C, ["exp", "projects"], lr["cfg"], lr.get("extra") or [])
+    r["res"] = dict(docx=lr["docx"], pdf=lr["pdf"], cfg=lr["cfg"], top=lr.get("top", 0), bottom=lr["bottom"], role=rd_,
+                    check=lr.get("check") or "")   # write_resume_report reads check / top (JSA-264: KeyError on the first master run)
+    tb, ta = TL.coverage(r["terms"], "before"), TL.coverage(r["terms"], "after")
+    r["note"] = (f"resume: approved {direction} master tailored by tailor.py (top JD terms on the page {tb[1]}→{ta[1]}/{ta[2]}, "
+                 f"{len(r['changes'])} change(s), truth_check pass)" if r["ok"] else
+                 f"resume: tailored {direction} master failed ({why}) — the approved master used unchanged; queue for review" if tailoring else
+                 f"resume: approved {direction} master used unchanged (--tailor legacy: no tailoring)")
+    return r
+
+
 def run_all(app, a, st):
     jd = rd(os.path.join(app, "jd.md"))
     qpath, npath = os.path.join(app, "questions.json"), os.path.join(app, "notes.md")
@@ -988,6 +1314,14 @@ def run_all(app, a, st):
     track = a.track
     ca = None if a.fresh else jload(os.path.join(app, "ds_step_a.json"))
     if not track and ca and ca.get("meta", {}).get("inputs") == inputs: track = ca["meta"].get("track")
+    if not track:   # JSA-194: tested rules decide when the title / JD is clear; DeepSeek only breaks a tie
+        import pick_track as PT
+        jt = (jload(os.path.join(app, "job.json")) or {}).get("title") or ""
+        if not jt:   # no job.json title: the JD's first heading line
+            jt = next((l.lstrip("# ").strip() for l in jd.splitlines() if l.strip()), "")[:120]
+        pk = PT.pick_track(jt, jd)
+        st["track_by"] = ("rules: " if pk["confident"] else "deepseek (rules unsure): ") + pk["reason"]
+        if pk["confident"]: track = pk["track"]
     if not track:
         d0, _ = ds_call([{"role": "system", "content": "Pick the best base resume track for a job. Reply JSON {\"track\": one of Data_Engineer|Data_Analyst|Product_Manager|AI_Agentic_Engineer}. Data_Engineer=pipelines/ETL/cloud data; Data_Analyst=analytics/BI/data science/reporting/stats; Product_Manager=product/PM/product analytics/strategy; AI_Agentic_Engineer=LLM/agents/AI engineering."},
                          {"role": "user", "content": scrub(jd)[:4000]}], 200, timeout=40, step="track")
@@ -1008,6 +1342,7 @@ def run_all(app, a, st):
     metaA = dict(inputs=inputs, track=track)
     A, warnsA = run_step(app, "A", RULES_A + "\n\n" + SCHEMA_A, pa, lambda d: verify_a(d, V), "ds_step_a.json", metaA, a.fresh, 4500, st)
     V["company_low"] = norm((A.get("job") or {}).get("company", ""))
+    V["company"] = (A.get("job") or {}).get("company", "")
 
     # ---- step B
     st["step"] = "B"
@@ -1018,7 +1353,7 @@ def run_all(app, a, st):
         confirmed_stories=ctx["confirmed_stories"], profile_facts=ctx["profile_facts"], questions=ctx["questions"]), ensure_ascii=False)
     assert_payload_clean(pb)
     metaB = dict(inputs=inputs, a=hsh(json.dumps(A, sort_keys=True)))
-    B, warnsB = run_step(app, "B", RULES_B + "\n\n" + SCHEMA_B, pb, lambda d: verify_b({**A, **d}, V), "ds_step_b.json", metaB, a.fresh, 4000, st)
+    B, warnsB = run_step(app, "B", RULES_B + "\n\n" + SCHEMA_B, pb, lambda d: verify_b_fixed(A, d, V), "ds_step_b.json", metaB, a.fresh, 4000, st)
     d = {**A, **B}
     warns = warnsA + warnsB
     company, title = d["job"].get("company", "?"), d["job"].get("job_title", "?")
@@ -1029,33 +1364,53 @@ def run_all(app, a, st):
     tmp = tempfile.mkdtemp(prefix="dsmat_")
     t = time.time()
     errs = []
-    res, lerr = layout_fill(tp, d, V, tmp, key)
-    if lerr: errs.append("resume layout: " + lerr)
-    else:
-        lp = os.path.join(tmp, f"{FILE_PREFIX}_Cover_Letter_{slug(company)}.docx")
-        build_letter(lp, company, title, d["cover_letter"]["greeting"], [p["text"] for p in d["cover_letter"]["paragraphs"]], today.strftime("%B %-d, %Y"))
-        lpdf = to_pdf(lp, tmp)
-        if pages_of(lpdf) != 1: errs.append(f"cover letter is {pages_of(lpdf)} pages, must be 1: shorten it")
-        else:
-            bl = set(b["text"] for b in bank) | set(C.LEAD["bullets_full"]) | set(C.LEAD["bullets_short"])
-            bad = [b[:60] for b in docx_bullets(res["docx"]) if b not in bl]
-            if bad: errs.append("resume bullets not exact bank text: " + "; ".join(bad))
+    # JSA-388 (Joey 2026-11-17): the four old role versions are retired — the resume is always the approved direction master
+    # (tailored by tailor.py, or unchanged); no bank-pick layout, no added sentences, no font change. See master step below.
+    res = None
+    lp = os.path.join(tmp, f"{FILE_PREFIX}_Cover_Letter_{slug(company)}.docx")
+    build_letter(lp, company, title, d["cover_letter"]["greeting"], [p["text"] for p in d["cover_letter"]["paragraphs"]], today.strftime("%B %-d, %Y"))
+    lpdf = to_pdf(lp, tmp)
+    if pages_of(lpdf) != 1: errs.append(f"cover letter is {pages_of(lpdf)} pages, must be 1: shorten it")
     st["steps_s"]["build"] = round(time.time() - t, 1)
     if errs:
         write_resume_report(os.path.join(app, "resume_report.md"), d, V, None, company, title, key, fails=errs)
         json.dump(dict(step="build", errors=errs, response=d), open(os.path.join(app, "ds_failed_response.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
         raise Failed(errs, "build")
+    # ---- resume from the approved direction master (JSA-251): tailor.py replaces the bank pick when it passes
+    master_run = master_resume(jd, track, company, title, os.path.join(tmp, f"{FILE_PREFIX}_Resume_{key}_A-Classic.docx"),
+                               tailoring=getattr(a, "tailor", "auto") != "legacy")
+    if master_run and master_run.get("res"):
+        res = master_run["res"]
+        warns.append(master_run["note"])
+    else:   # no approved master for the track, or it does not lay out: never a bank pick — the job is queued with the reason
+        why = (master_run or {}).get("note") or f"no approved direction master for track {track}"
+        errs = [why]
+        write_resume_report(os.path.join(app, "resume_report.md"), d, V, None, company, title, key, fails=errs)
+        json.dump(dict(step="tailor", errors=errs, response=d), open(os.path.join(app, "ds_failed_response.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+        raise Failed(errs, "tailor")
     # ---- write outputs
     out = lambda n: os.path.join(app, n)
     shutil.copyfile(res["docx"], out(os.path.basename(res["docx"]))); shutil.copyfile(res["pdf"], out(os.path.basename(res["pdf"])))
     shutil.copyfile(lp, out(os.path.basename(lp))); shutil.copyfile(lpdf, out(os.path.basename(lpdf)))
     r = res["role"]; r["lead_short_b"] = True; r["drop_b"] = []
-    json.dump(dict(NAME=C.NAME, CONTACT=C.CONTACT, EDU=C.EDU, LEAD=C.LEAD, ROLES={key: r}), open(out("content.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+    if master_run and master_run.get("res"):
+        open(out("keyword_map.md"), "w", encoding="utf8").write(master_run["keyword_map"])
+        json.dump(dict(tailored=dict(master_run["tailored"], swaps=master_run["swaps"]), changes=master_run["changes"],
+                       terms=master_run["terms"], direction=master_run["direction"], approved=master_run["approved"]),
+                  open(out("tailored.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+    json.dump(dict(NAME=C.NAME, CONTACT=C.CONTACT, EDU=C.EDU, LEAD=C.LEAD, LEAD_ON=C.LEAD_ON, ROLES={key: r}), open(out("content.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
     cover = d["cover_letter"]["greeting"] + "\n\n" + "\n\n".join(p["text"] for p in d["cover_letter"]["paragraphs"]) + "\n\nSincerely,\n" + SIGNATURE + "\n" + C.CONTACT + "\n"
     open(out("cover.txt"), "w", encoding="utf8").write(cover)
-    write_keyword_map(out("keyword_map.md"), d, V, company, title)
+    write_keyword_map(out("keyword_map_legacy.md" if master_run and master_run.get("res") else "keyword_map.md"), d, V, company, title)
     write_fit_map(out("fit_map.md"), d, V, company, title)
     write_resume_report(out("resume_report.md"), d, V, res, company, title, key, warns=warns + ([f"{len(unmatched)} base bullet(s) not found in bullet-bank (kept as '?'): " + "; ".join(u[:50] for u in unmatched)] if unmatched else []))
+    if master_run and master_run.get("res"):   # the PDF is the tailored master: say so above the bank-pick report
+        rp = out("resume_report.md")
+        head = ["# Resume source (JSA-251)", "", master_run["note"], "",
+                "The PDF is the approved direction master with mechanical changes only (see keyword_map.md); the DeepSeek bank "
+                "selection below is not on the PDF (kept for comparison, keyword_map_legacy.md).", "", "## Tailoring changes", ""]
+        head += [f"- {c}" for c in master_run["changes"]] or ["- none"]
+        open(rp, "w", encoding="utf8").write("\n".join(head) + "\n\n" + open(rp, encoding="utf8").read())
     qa = ["# Open answers (DeepSeek draft; verified against the story bank)"]
     for q in questions:
         an = next(x for x in d["answers"] if x["id"] == q["id"])
@@ -1067,6 +1422,11 @@ def run_all(app, a, st):
     used = sorted({u for p in d["cover_letter"]["paragraphs"] for u in p.get("uses", [])} | {u for x in d["answers"] for u in x.get("uses", [])})
     ch = [l for l in open(out("resume_report.md"), encoding="utf8").read().splitlines() if re.match(r"^\d+\. ", l)]
     write_manifest(app, track, res, lpdf, wc, used, company, title)
+    try:   # JSA-194: one materials_score.json per folder (coverage, base, bullet IDs, letter checks); never blocks the build
+        sys.path.insert(0, os.path.join(ROOT, "scripts", "store"))
+        import materials_score as MS; MS.write_folder(app)
+    except Exception as e:
+        print("materials_score skipped:", e)
     print(f"OK {company} — {title}")
     print(f"base: {track}; headline: {headline(d)}")
     print(f"resume changes ({len(ch)}):"); [print("  " + c[:150]) for c in ch[:4]]

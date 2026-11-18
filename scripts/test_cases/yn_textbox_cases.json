@@ -1,0 +1,202 @@
+[
+ {
+  "name": "work_authorization_question",
+  "label": "Are you legally authorized to work in the United States?",
+  "expect": true
+ },
+ {
+  "name": "sponsorship_now_or_future",
+  "label": "Do you now or in the future require sponsorship for employment visa status?",
+  "expect": true
+ },
+ {
+  "name": "will_require_sponsorship",
+  "label": "Will you require sponsorship to work in this country?",
+  "expect": true
+ },
+ {
+  "name": "previously_worked_here",
+  "label": "Have you previously worked for this company?",
+  "expect": true
+ },
+ {
+  "name": "did_work_here",
+  "label": "Did you previously work for this company?",
+  "expect": true
+ },
+ {
+  "name": "current_employment_competitor",
+  "label": "Is your current employment with a competitor?",
+  "expect": true
+ },
+ {
+  "name": "can_provide_proof",
+  "label": "Can you provide proof of work authorization?",
+  "expect": true
+ },
+ {
+  "name": "relatives_currently_employed",
+  "label": "Do you have any relatives currently employed by us?",
+  "expect": true
+ },
+ {
+  "name": "related_to_employee",
+  "label": "Are you related to any current employee?",
+  "expect": true
+ },
+ {
+  "name": "referred_by_employee",
+  "label": "Were you referred by a current employee?",
+  "expect": true
+ },
+ {
+  "name": "relative_referred_you",
+  "label": "Has a relative referred you to this company?",
+  "expect": true
+ },
+ {
+  "name": "should_contact_previous_employer",
+  "label": "Should we contact your previous employer?",
+  "expect": true
+ },
+ {
+  "name": "may_contact_previous_employer",
+  "label": "May we contact your previous employer?",
+  "expect": true
+ },
+ {
+  "name": "must_give_notice",
+  "label": "Must you give notice to your current employer?",
+  "expect": true
+ },
+ {
+  "name": "sponsorship_with_after_question_text",
+  "label": "Do you need sponsorship? If so, please list visa type.",
+  "expect": true
+ },
+ {
+  "name": "worked_before_with_after_question_text",
+  "label": "Have you worked here before? If yes, list dates.",
+  "expect": true
+ },
+ {
+  "name": "authorized_with_yes_no_marker",
+  "label": "Are you authorized to work in the US? (Yes/No)",
+  "expect": true
+ },
+ {
+  "name": "sponsorship_required_y_n_marker",
+  "label": "Sponsorship required (Y/N)",
+  "expect": true
+ },
+ {
+  "name": "relatives_employed_yes_no_marker",
+  "label": "Relatives employed by company (Yes/No)",
+  "expect": true
+ },
+ {
+  "name": "previous_employment_answer_yes_or_no",
+  "label": "Previous employment at this company — answer Yes or No",
+  "expect": true
+ },
+ {
+  "name": "family_member_names_field",
+  "label": "Family member names",
+  "expect": false
+ },
+ {
+  "name": "visa_type_field",
+  "label": "Visa type",
+  "expect": false
+ },
+ {
+  "name": "comments_field",
+  "label": "Comments",
+  "expect": false
+ },
+ {
+  "name": "current_visa_status_wh_word",
+  "label": "What is your current visa status?",
+  "expect": false
+ },
+ {
+  "name": "which_visa_wh_word",
+  "label": "Which visa do you hold?",
+  "expect": false
+ },
+ {
+  "name": "why_work_here_wh_word",
+  "label": "Why do you want to work here?",
+  "expect": false
+ },
+ {
+  "name": "how_many_years_wh_word",
+  "label": "How many years of experience do you have?",
+  "expect": false
+ },
+ {
+  "name": "when_can_start_wh_word",
+  "label": "When can you start?",
+  "expect": false
+ },
+ {
+  "name": "where_did_you_hear_wh_word",
+  "label": "Where did you hear about this job?",
+  "expect": false
+ },
+ {
+  "name": "who_referred_you_wh_word",
+  "label": "Who referred you?",
+  "expect": false
+ },
+ {
+  "name": "please_describe_instruction",
+  "label": "Please describe your work authorization.",
+  "expect": false
+ },
+ {
+  "name": "list_previous_employers_instruction",
+  "label": "List previous employers.",
+  "expect": false
+ },
+ {
+  "name": "provide_details_instruction",
+  "label": "Provide details of any relatives employed by the company.",
+  "expect": false
+ },
+ {
+  "name": "explain_gaps_instruction",
+  "label": "Explain any gaps in employment.",
+  "expect": false
+ },
+ {
+  "name": "additional_information_share",
+  "label": "Do you have any additional information to share?",
+  "expect": false
+ },
+ {
+  "name": "anything_else_know",
+  "label": "Is there anything else you would like us to know?",
+  "expect": false
+ },
+ {
+  "name": "any_other_relatives",
+  "label": "Are there any other relatives employed by the company?",
+  "expect": false
+ },
+ {
+  "name": "any_further_comments",
+  "label": "Have you any further comments?",
+  "expect": false
+ },
+ {
+  "name": "additional_details_previous_employment",
+  "label": "Do you have additional details about your previous employment?",
+  "expect": false
+ },
+ {
+  "name": "context_share_relatives",
+  "label": "Do you have context to share about your relatives at the company?",
+  "expect": false
+ }
+]

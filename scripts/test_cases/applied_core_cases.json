@@ -1,0 +1,350 @@
+[
+ {
+  "name": "exact_same_after_legal_suffix",
+  "company": "Acme Inc",
+  "tracker": [
+   "Acme"
+  ],
+  "label": "Have you previously applied to Acme Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are the same after removing punctuation, case, and legal-form words such as Inc."
+ },
+ {
+  "name": "punctuation_and_legal_form_match",
+  "company": "ACME, Inc.",
+  "tracker": [
+   "Acme LLC"
+  ],
+  "label": "Did you previously apply to ACME, Inc.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: 'Acme Inc' = 'Acme' = 'ACME, Inc.' after removing punctuation, case, and legal-form words."
+ },
+ {
+  "name": "ampersand_vs_and_match",
+  "company": "Johnson & Johnson",
+  "tracker": [
+   "Johnson and Johnson"
+  ],
+  "label": "Have you applied before to Johnson & Johnson?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing '&'/'and'."
+ },
+ {
+  "name": "dotcom_removed_match",
+  "company": "Example.com",
+  "tracker": [
+   "Example"
+  ],
+  "label": "Have you previously applied to Example.com?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing '.com'."
+ },
+ {
+  "name": "the_prefix_removed_match",
+  "company": "The Home Depot",
+  "tracker": [
+   "Home Depot Inc"
+  ],
+  "label": "Have you ever applied to The Home Depot before?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing 'The' and legal-form words such as Inc."
+ },
+ {
+  "name": "corporation_vs_corp_match",
+  "company": "Global Widgets Corporation",
+  "tracker": [
+   "Global Widgets Corp"
+  ],
+  "label": "Have you previously applied to Global Widgets Corporation?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing legal-form words Corporation and Corp."
+ },
+ {
+  "name": "different_company_no_lookalike",
+  "company": "Acme Inc",
+  "tracker": [
+   "Beta LLC"
+  ],
+  "label": "Have you previously applied to Acme Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "no",
+  "spec": "Rule 4: no same-name row and no look-alike gives No."
+ },
+ {
+  "name": "lookalike_labs_vs_technologies",
+  "company": "Prior Labs",
+  "tracker": [
+   "Prior Technologies"
+  ],
+  "label": "Have you previously applied to Prior Labs?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ },
+ {
+  "name": "lookalike_group_vs_capital",
+  "company": "Nova Group",
+  "tracker": [
+   "Nova Capital"
+  ],
+  "label": "Did you apply to Nova Group before?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ },
+ {
+  "name": "lookalike_holdings_vs_plain_core",
+  "company": "Vertex Holdings",
+  "tracker": [
+   "Vertex"
+  ],
+  "label": "Have you previously applied to Vertex Holdings?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 3: when only the core name matches and the full names differ, the question is asked; never Yes."
+ },
+ {
+  "name": "lookalike_services_vs_plain_core",
+  "company": "Bright Services",
+  "tracker": [
+   "Bright"
+  ],
+  "label": "Have you applied to Bright Services before?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 3: when only the core name matches and the full names differ, the question is asked; never Yes."
+ },
+ {
+  "name": "lookalike_global_vs_international",
+  "company": "Orion Global",
+  "tracker": [
+   "Orion International"
+  ],
+  "label": "Have you previously applied to Orion Global?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ },
+ {
+  "name": "lookalike_tech_vs_plain_core",
+  "company": "Pulse Tech",
+  "tracker": [
+   "Pulse"
+  ],
+  "label": "Did you previously apply to Pulse Tech?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 3: when only the core name matches and the full names differ, the question is asked; never Yes."
+ },
+ {
+  "name": "no_lookalike_different_root",
+  "company": "Data Labs",
+  "tracker": [
+   "DataCore"
+  ],
+  "label": "Have you previously applied to Data Labs?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "no",
+  "spec": "Rule 4: no same-name row and no look-alike gives No."
+ },
+ {
+  "name": "same_descriptive_and_legal_suffix",
+  "company": "Nova Technologies Inc",
+  "tracker": [
+   "Nova Technologies LLC"
+  ],
+  "label": "Have you previously applied to Nova Technologies Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing legal-form words Inc and LLC."
+ },
+ {
+  "name": "case_and_punctuation_match_with_tech",
+  "company": "ACME Technologies, Inc.",
+  "tracker": [
+   "acme technologies"
+  ],
+  "label": "Did you apply before to ACME Technologies, Inc.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing punctuation, case, and legal-form words."
+ },
+ {
+  "name": "ampersand_dotcom_and_legal_match",
+  "company": "Smith & Wesson Co.",
+  "tracker": [
+   "Smith and Wesson"
+  ],
+  "label": "Have you previously applied to Smith & Wesson Co.?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing '&'/'and' and legal-form words such as Co."
+ },
+ {
+  "name": "empty_tracker_no",
+  "company": "Acme Inc",
+  "tracker": [],
+  "label": "Have you previously applied to Acme Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "no",
+  "spec": "Rule 4: no same-name row and no look-alike gives No."
+ },
+ {
+  "name": "lookalike_holdings_vs_group",
+  "company": "Summit Holdings",
+  "tracker": [
+   "Summit Group"
+  ],
+  "label": "Have you previously applied to Summit Holdings?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ },
+ {
+  "name": "lookalike_extra_descriptive_word",
+  "company": "Nova Group",
+  "tracker": [
+   "Nova Group Holdings"
+  ],
+  "label": "Did you previously apply to Nova Group?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 3: when only the core name matches and the full names differ, the question is asked; never Yes."
+ },
+ {
+  "name": "no_lookalike_similar_spelling",
+  "company": "Apex Inc",
+  "tracker": [
+   "Apexon Corp"
+  ],
+  "label": "Have you previously applied to Apex Inc?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "no",
+  "spec": "Rule 4: no same-name row and no look-alike gives No."
+ },
+ {
+  "name": "no_lookalike_different_core_words",
+  "company": "Blue Sky Holdings",
+  "tracker": [
+   "Green Sky Capital"
+  ],
+  "label": "Have you applied to Blue Sky Holdings before?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "no",
+  "spec": "Rule 4: no same-name row and no look-alike gives No."
+ },
+ {
+  "name": "llp_vs_limited_match",
+  "company": "Foster LLP",
+  "tracker": [
+   "Foster Limited"
+  ],
+  "label": "Have you previously applied to Foster LLP?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "yes",
+  "spec": "Rule 1: names are equal after removing legal-form words LLP and Limited."
+ },
+ {
+  "name": "lookalike_labs_vs_technologies_with_legal_suffix",
+  "company": "Northstar Labs",
+  "tracker": [
+   "Northstar Technologies Inc"
+  ],
+  "label": "Did you apply before to Northstar Labs?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ },
+ {
+  "name": "lookalike_systems_vs_services",
+  "company": "Metro Systems",
+  "tracker": [
+   "Metro Services"
+  ],
+  "label": "Have you previously applied to Metro Systems?",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "expect": "ask",
+  "spec": "Rule 5: a look-alike with same core but different full name, and no same-name row, is asked."
+ }
+]

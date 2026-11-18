@@ -1,11 +1,11 @@
 ---
 name: add-target-role
-description: Adds a new target role (e.g. Data Analyst) to Alex Rivera's job search end to end — new track in the job pipeline, role-specific sources, refreshed dashboard and tracker, and two tailored resumes. Use when he says "also add <role>" or "加上 <role> 这个方向".
+description: Adds a new target role (e.g. Data Analyst) to the candidate's job search end to end — new track in the job pipeline, role-specific sources, refreshed dashboard and tracker, and two tailored resumes. Use when he says "also add <role>" or "加上 <role> 这个方向".
 ---
 
 # Add a target role (proven 2026-10-23 with Data Analyst — he said 顺利)
 
-Inputs: the role name (e.g. "Data Analyst"). Outputs: new track in `build_jobs.py`, refreshed store `data/store/` and local dashboard `dashboard/index.html`, tracker rows for the role, `resume/<YYYY-MM>/Alex_Rivera_Resume_<Role>_{A-Classic,B-Modern}.{docx,pdf}`, updated skills/logs, all committed to `/Users/you/Projects/job-search-agent/`.
+Inputs: the role name (e.g. "Data Analyst"). Outputs: new track in `build_jobs.py`, refreshed store `data/store/` and local dashboard `dashboard/index.html`, tracker rows for the role, `resume/<YYYY-MM>/<First>_<Last>_Resume_<Role>_{A-Classic,B-Modern}.{docx,pdf}`, updated skills/logs, all committed to `/Users/you/Projects/job-search-agent/`.
 Details for every step live in `job-hunt-pipeline/SKILL.md` (§1–§4) and `resume-updater/SKILL.md`; this file is the order that worked.
 
 ## Steps

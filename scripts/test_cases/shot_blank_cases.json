@@ -1,0 +1,924 @@
+[
+ {
+  "name": "uniform_white_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 400,
+   "h": 300,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": []
+  },
+  "expect": true,
+  "spec": "A uniform image of any colour (white, black, grey) is blank."
+ },
+ {
+  "name": "uniform_black_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 640,
+   "h": 480,
+   "bg": [
+    0,
+    0,
+    0
+   ],
+   "marks": []
+  },
+  "expect": true,
+  "spec": "A uniform image of any colour (white, black, grey) is blank."
+ },
+ {
+  "name": "uniform_grey_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 500,
+   "h": 400,
+   "bg": [
+    128,
+    128,
+    128
+   ],
+   "marks": []
+  },
+  "expect": true,
+  "spec": "A uniform image of any colour (white, black, grey) is blank."
+ },
+ {
+  "name": "empty_bytes_are_blank",
+  "fn": "shot_blank",
+  "raw": "",
+  "expect": true,
+  "spec": "Unreadable / empty bytes → True (nothing usable)."
+ },
+ {
+  "name": "drw_single_blue_underline_on_large_page_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1600,
+   "h": 1000,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 735,
+     "y": 700,
+     "w": 130,
+     "h": 2,
+     "color": [
+      0,
+      0,
+      255
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "the PNG was white except for one blue link underline (130 × 2 px on a 2940 × 1602 image): the text had not been painted yet."
+ },
+ {
+  "name": "same_underline_on_small_image_exceeds_ink_threshold",
+  "fn": "shot_blank",
+  "image": {
+   "w": 400,
+   "h": 500,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 135,
+     "y": 300,
+     "w": 130,
+     "h": 2,
+     "color": [
+      0,
+      0,
+      255
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "the shot is blank when ink pixels are fewer than 0.1 % of all pixels (0.001 × width × height)."
+ },
+ {
+  "name": "three_lines_of_dark_text_on_white_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 800,
+   "h": 600,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 250,
+     "y": 200,
+     "w": 300,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 250,
+     "y": 220,
+     "w": 280,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 250,
+     "y": 240,
+     "w": 320,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "A real page with a few lines of text has far more ink than that."
+ },
+ {
+  "name": "white_text_on_dark_background_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 800,
+   "h": 600,
+   "bg": [
+    20,
+    20,
+    30
+   ],
+   "marks": [
+    {
+     "x": 100,
+     "y": 150,
+     "w": 250,
+     "h": 3,
+     "color": [
+      255,
+      255,
+      255
+     ]
+    },
+    {
+     "x": 100,
+     "y": 175,
+     "w": 250,
+     "h": 3,
+     "color": [
+      255,
+      255,
+      255
+     ]
+    },
+    {
+     "x": 100,
+     "y": 200,
+     "w": 250,
+     "h": 3,
+     "color": [
+      255,
+      255,
+      255
+     ]
+    },
+    {
+     "x": 100,
+     "y": 225,
+     "w": 250,
+     "h": 3,
+     "color": [
+      255,
+      255,
+      255
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "Ink of any colour counts (dark text on white, white text on a dark background)."
+ },
+ {
+  "name": "red_text_on_white_counts_as_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 800,
+   "h": 600,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 200,
+     "y": 300,
+     "w": 200,
+     "h": 20,
+     "color": [
+      255,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "Ink of any colour counts (dark text on white, white text on a dark background)."
+ },
+ {
+  "name": "mark_differing_by_exactly_16_is_not_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 400,
+   "h": 300,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 150,
+     "y": 100,
+     "w": 100,
+     "h": 100,
+     "color": [
+      239,
+      239,
+      239
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "a pixel is \"ink\" when any channel differs from the background by more than 16"
+ },
+ {
+  "name": "single_channel_difference_of_17_is_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 400,
+   "h": 300,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 180,
+     "y": 130,
+     "w": 30,
+     "h": 30,
+     "color": [
+      255,
+      255,
+      238
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "a pixel is \"ink\" when any channel differs from the background by more than 16"
+ },
+ {
+  "name": "grey_on_grey_difference_16_is_not_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 300,
+   "h": 200,
+   "bg": [
+    120,
+    120,
+    120
+   ],
+   "marks": [
+    {
+     "x": 100,
+     "y": 50,
+     "w": 100,
+     "h": 100,
+     "color": [
+      120,
+      136,
+      120
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "a pixel is \"ink\" when any channel differs from the background by more than 16"
+ },
+ {
+  "name": "grey_on_grey_difference_20_is_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 800,
+   "h": 600,
+   "bg": [
+    120,
+    120,
+    120
+   ],
+   "marks": [
+    {
+     "x": 350,
+     "y": 250,
+     "w": 100,
+     "h": 100,
+     "color": [
+      140,
+      140,
+      140
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "a pixel is \"ink\" when any channel differs from the background by more than 16"
+ },
+ {
+  "name": "mark_painted_in_background_colour_counts_no_ink",
+  "fn": "shot_blank",
+  "image": {
+   "w": 300,
+   "h": 200,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 100,
+     "y": 75,
+     "w": 100,
+     "h": 50,
+     "color": [
+      255,
+      255,
+      255
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "take the image's most common colour as the background; a pixel is \"ink\" when any channel differs from the background by more than 16"
+ },
+ {
+  "name": "small_ink_area_below_threshold_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1000,
+   "h": 800,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 500,
+     "y": 400,
+     "w": 20,
+     "h": 20,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "the shot is blank when ink pixels are fewer than 0.1 % of all pixels (0.001 × width × height)."
+ },
+ {
+  "name": "ink_area_above_threshold_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1000,
+   "h": 800,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 150,
+     "y": 400,
+     "w": 700,
+     "h": 2,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "the shot is blank when ink pixels are fewer than 0.1 % of all pixels (0.001 × width × height)."
+ },
+ {
+  "name": "several_tiny_marks_still_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 400,
+   "h": 300,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 50,
+     "y": 50,
+     "w": 3,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 120,
+     "y": 80,
+     "w": 3,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 190,
+     "y": 110,
+     "w": 3,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 260,
+     "y": 140,
+     "w": 3,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 330,
+     "y": 170,
+     "w": 3,
+     "h": 3,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "the shot is blank when ink pixels are fewer than 0.1 % of all pixels (0.001 × width × height)."
+ },
+ {
+  "name": "faint_grey_ink_on_black_below_threshold_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1600,
+   "h": 1000,
+   "bg": [
+    0,
+    0,
+    0
+   ],
+   "marks": [
+    {
+     "x": 200,
+     "y": 200,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 300,
+     "y": 300,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 400,
+     "y": 400,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 500,
+     "y": 500,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 600,
+     "y": 600,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 700,
+     "y": 700,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 800,
+     "y": 800,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    },
+    {
+     "x": 900,
+     "y": 900,
+     "w": 20,
+     "h": 6,
+     "color": [
+      30,
+      30,
+      30
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "Ink of any colour counts (dark text on white, white text on a dark background)."
+ },
+ {
+  "name": "faint_grey_text_on_black_above_threshold_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1600,
+   "h": 1000,
+   "bg": [
+    0,
+    0,
+    0
+   ],
+   "marks": [
+    {
+     "x": 200,
+     "y": 200,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 400,
+     "y": 250,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 600,
+     "y": 300,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 800,
+     "y": 350,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 1000,
+     "y": 400,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 200,
+     "y": 450,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 400,
+     "y": 500,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    },
+    {
+     "x": 600,
+     "y": 550,
+     "w": 20,
+     "h": 20,
+     "color": [
+      40,
+      40,
+      40
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "Ink of any colour counts (dark text on white, white text on a dark background)."
+ },
+ {
+  "name": "single_line_of_text_on_mid_size_page_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 1200,
+   "h": 900,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 200,
+     "y": 300,
+     "w": 40,
+     "h": 8,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 260,
+     "y": 300,
+     "w": 40,
+     "h": 8,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 320,
+     "y": 300,
+     "w": 40,
+     "h": 8,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 380,
+     "y": 300,
+     "w": 40,
+     "h": 8,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 440,
+     "y": 300,
+     "w": 40,
+     "h": 8,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "A real page with a few lines of text has far more ink than that."
+ },
+ {
+  "name": "two_tiny_marks_below_threshold_is_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 500,
+   "h": 400,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 100,
+     "y": 100,
+     "w": 8,
+     "h": 8,
+     "color": [
+      10,
+      10,
+      10
+     ]
+    },
+    {
+     "x": 300,
+     "y": 200,
+     "w": 8,
+     "h": 8,
+     "color": [
+      10,
+      10,
+      10
+     ]
+    }
+   ]
+  },
+  "expect": true,
+  "spec": "the shot is blank when ink pixels are fewer than 0.1 % of all pixels (0.001 × width × height)."
+ },
+ {
+  "name": "dense_paragraph_of_text_is_not_blank",
+  "fn": "shot_blank",
+  "image": {
+   "w": 900,
+   "h": 700,
+   "bg": [
+    255,
+    255,
+    255
+   ],
+   "marks": [
+    {
+     "x": 150,
+     "y": 100,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 150,
+     "y": 130,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 150,
+     "y": 160,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 150,
+     "y": 190,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 150,
+     "y": 220,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "x": 150,
+     "y": 250,
+     "w": 600,
+     "h": 4,
+     "color": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "expect": false,
+  "spec": "A real page with a few lines of text has far more ink than that."
+ }
+]

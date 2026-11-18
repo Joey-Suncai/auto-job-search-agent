@@ -19,7 +19,7 @@ companies go in `Seen:`).
   ran with `CX_DATA=<real data/runner>` (read as test mode) → `sync_results.test_data` only skips other folders
   (`scripts/test_sync_testdata.py`, DeepSeek 10). Dry runs 11-03: Raydar 12 / 12, an employer 9 / 9, Thorlabs 20 / 20
   (Raydar / Thorlabs / Best Friend Finance are full-time roles starting now — tests only, never submitted).
-- No account, no sign-in. No CAPTCHA seen on the page so far (the report expected Cloudflare Turnstile at submit — the
+- No account, no sign-in. No CAPTCHA seen on the page so far (the report expected a Greenhouse employer Turnstile at submit — the
   runner records it when the frame appears).
 - Supply (2026-11-03): 34 可投, 0 A/B (Raydar 11, CWILL 4, an employer 3 …). Tests: `scripts/test_workable.py` (DeepSeek 20).
 
@@ -27,7 +27,7 @@ companies go in `Seen:`).
 
 ## 2. Run
 **Fast path (JSA-230):** `runner/batch_apply.py prepare | approve | submit <batch.json>` runs this platform inside a (mixed) batch — never waits in place for Joey; a CAPTCHA / sign-in / unknown goes to his queue and the next job starts. ≤ 5 per batch with a sign-in platform.
-**Ask first, fill once (JSA-235):** the form schema is public, so `batch_apply.py prepare` lists the questions offline (`run_workable.offline_plan` / `offline_unknowns`, no job Chrome) and the form is opened only by `submit`; a problem met only on the page (e.g. a date box that does not read back, JSA-234) → not submitted, queued.
+**Ask first, fill once (JSA-235):** the form schema is public, so `batch_apply.py prepare` lists the questions offline (`run_workable.offline_plan` / `offline_unknowns`, no job Chrome) and the form is opened only by `submit`; a problem met only on the page → not submitted, queued.
 ```bash
 CX_DATA=~/Projects/job-search-agent/data/runner ~/.job-agent-venv/bin/python skills/auto-apply/runner/run_workable.py \
     --url https://apply.workable.com/<account>/j/<SHORTCODE>/ [--job J01234] [--resume <pdf>] [--keep-tab]
@@ -45,6 +45,7 @@ Output (git-ignored): `data/runner/dryrun/workable/<account>_<SHORTCODE>/` — r
 3. Read back every field; stop before "Submit application".
 
 ## 4. Problem types
+- **Confirmation from the form itself (JSA-299, all runners):** after Submit a page counts as the confirmation only when it changed (Submit button gone or URL changed, `confirm_page.judge`) and shows a success URL or a success sentence that is new since the click; "thank you for your interest" alone never counts (forms greet with it). No such page → the receipt e-mail. Workable: `page_done` (the apply button gone or the URL changed) — `confirmed_page` alone is a text check.
 **A. Styled Yes / No boxes.** `Locator.check` on the hidden radio does not change it → click `#wrapper_<radio id>`,
 then fall back to `check(force)`. Seen: Raydar 11-03
 
@@ -84,3 +85,12 @@ into) with a `[role=option]` listbox, text inputs carry only `name=<id>`. A `typ
 **G. Open questions for the candidate.** "Notice Period" → Available immediately and the self-assessment "Are you confident working in
 fast-moving, startup-like environments …?" → Yes (Joey 2026-11-03, rules `notice_period` / `startup_fit`). An essay ("Describe a time you used AI
 …") comes from `open_answers.md` (type D). Seen: Thorlabs · Best Friend Finance 11-03
+
+**H. Date boxes (fixed 2026-11-10, JSA-234).** Symptom: "Available start date" filled with 06/14/2027 read back empty.
+Cause, two layers: the runner had no fill step for `type: date` at all (`type date not handled yet`), and the box is a
+react-datepicker text input masked to its placeholder (`YYYY/MM/DD` on Syntiant) — the rules' US `06/14/2027` typed there
+becomes `0614/02/27` and is cleared on blur (probed live: fill or typing, US order → empty; `2027/06/14` → kept).
+Rule: `to_mask` rewrites the answer in the placeholder's own token order / separator (no usable mask → `YYYY/MM/DD`),
+fill, Escape + blur, then read back the same `input[name=<id>]` and compare as calendar days (`same_date`); the typed
+text is kept in the field row as `typed`. Tests `scripts/test_workable_date.py` (DeepSeek 25). Seen: Syntiant 11-10
+(dry run 9 / 9).

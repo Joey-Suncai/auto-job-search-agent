@@ -1,0 +1,2 @@
+Return each case as JSON: {"name": str, "fn": "rules", "field": {"label": str, "type": "text"|"textarea"|"multi"|"checkbox"|"combo"|"radio", "options": [str, ...] (empty list for a text box)}, "expect_status": "ok"|"unknown", "expect_value": str|null (exact answer text when status ok; null when not checked), "spec_quote": str}
+Use "expect_status": "ok" when the spec requires an answer from this rule; use "unknown" for every case the rule must NOT answer.

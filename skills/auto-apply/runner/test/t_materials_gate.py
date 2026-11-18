@@ -164,6 +164,25 @@ ok('page with the resume slot only -> nothing new',
 ok('page with one generic file slot -> nothing new (runner uploads the resume there)',
    materials_gate.page_check(f, Page([{'label': 'Upload a file or drag and drop here', 'id': 'x'}]), 'My Experience', quiet) is None)
 
+# 16b. JSA-368 (Brabrahar BI 11-12): the box already shows the uploaded résumé's file name (underscores, no \b) and only
+# boilerplate otherwise -> the résumé slot, never an other_file; a labelled extra document still stops
+SAM = 'Upload a file (5MB max)\nDrop files here\nor\nSelect files\nAlex_Doe_Resume_Brabrahar_Business_Intelligence_Data_Analytics_Int_A-Classic.pdf'
+f2 = folder(); complete(f2, [RESUME])
+ok('second generic box with the uploaded resume file name -> nothing new',
+   materials_gate.page_check(f2, Page([{'label': 'Resume/CV Upload a file', 'id': 'a'}, {'label': SAM, 'id': 'file-upload-input-ref'}]), 'My Experience', quiet) is None)
+ok('wd_slot_kind: boilerplate + file name = resume', materials_gate.wd_slot_kind(SAM) == 'resume')
+ok('wd_slot_kind: bare boilerplate, no file = other_file (first box exempted by page_check)', materials_gate.wd_slot_kind('Upload a file (5MB max)\nDrop files here\nor\nSelect files') == 'other_file')
+for lab, want in [('Select files\nTranscript_Official.pdf', 'transcript'), ('Upload a file\nWriting_Sample.pdf', 'other_file'),
+                  ('Upload a file\nLex_Doe_CoverLetter.pdf', 'other_file'), ('Select files\nCover_Letter.pdf', 'cover_letter'),
+                  ('Cover Letter\nAlex_Resume.pdf', 'cover_letter'), ('', 'other_file'), ('Browser extension', 'other_file')]:
+    ok('wd_slot_kind %r -> %s' % (lab, want), materials_gate.wd_slot_kind(lab) == want, materials_gate.wd_slot_kind(lab))
+ok('wd_slot_kind: writing sample stays other_file', materials_gate.wd_slot_kind('Writing Sample\nDrop files here\nor\nSelect files') == 'other_file')
+ok('wd_slot_kind: unnamed extra label stays other_file', materials_gate.wd_slot_kind('Lease agreement\nSelect files') == 'other_file')
+ok('wd_slot_kind: cover letter', materials_gate.wd_slot_kind('Cover Letter\nSelect files') == 'cover_letter')
+f3 = folder(); complete(f3, [RESUME])
+pg3 = materials_gate.page_check(f3, Page([{'label': 'Resume/CV Upload a file', 'id': 'a'}, {'label': 'Writing Sample\nDrop files here\nor\nSelect files', 'id': 'w'}]), 'My Experience', quiet)
+ok('genuine extra file box -> still added and blocked', pg3 is not None and not pg3['ok'], pg3)
+
 # 17. a cover-letter slot appears on a later page -> requirement added, decided, blocked
 pg = materials_gate.page_check(f, Page([{'label': 'Resume', 'id': 'a'}, {'label': 'Cover Letter (required)', 'id': 'b'}]), 'Application Questions', quiet)
 reqs = json.load(open(os.path.join(f, 'requirements.json')))['requirements']

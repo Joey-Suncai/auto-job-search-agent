@@ -1,0 +1,490 @@
+[
+ {
+  "name": "single_match_returns_tuple",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "If there is exactly ONE such pair in total, return a 2-element tuple: (the stripped option text, \"answers.<key>.pick (option content)\").",
+  "ambiguous": false
+ },
+ {
+  "name": "no_pattern_matches_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^everybody\\b.*\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_options_match_same_key_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Any recruiter worldwide can view your profile and contact you."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_keys_each_matching_one_option_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ],
+    "profile_scope": [
+     "/^only\\b.*\\bregion\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "two_keys_matching_the_same_single_option_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ],
+    "profile_scope": [
+     "/\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "blank_and_none_entries_ignored",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    null,
+    "   ",
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    ""
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "`options`: list of the group's option texts (strings; blank or None entries are ignored; surrounding whitespace is ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "surrounding_whitespace_stripped_before_match_and_return",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "   Only recruiters in my region can see my profile and contact me.   ",
+    "  Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.  "
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^only\\b.*\\bregion\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Only recruiters in my region can see my profile and contact me.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "A pattern is tested with a search (not a full match) against the stripped option text.",
+  "ambiguous": false
+ },
+ {
+  "name": "pattern_without_slash_delimiters_ignored",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "A pattern that is not in \"/.../flags\" form, or does not compile, is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "uncompilable_pattern_ignored",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any[/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "A pattern that is not in \"/.../flags\" form, or does not compile, is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "case_sensitive_without_i_flag_does_not_match_capitalized_option",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Flag \"i\" = case-insensitive.",
+  "ambiguous": false
+ },
+ {
+  "name": "saved_value_given_as_single_string_is_one_pattern_list",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "A single string instead of a list is treated as a one-pattern list.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_options_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_saved_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {}
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "all_blank_options_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    null,
+    "",
+    "   ",
+    "\t"
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "`options`: list of the group's option texts (strings; blank or None entries are ignored; surrounding whitespace is ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "two_patterns_same_key_same_option_still_one_pair",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i",
+     "/\\bArthrex\\b.*\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "Count every (saved key, option) pair where at least one of that key's patterns matches that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "one_key_matches_two_options_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/\\brecruiters?\\b/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_pattern_list_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": []
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "invalid_pattern_ignored_valid_pattern_still_matches",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "anywhere worldwide",
+     "/^only\\b.*\\bregion\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Only recruiters in my region can see my profile and contact me.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "A pattern that is not in \"/.../flags\" form, or does not compile, is ignored.",
+  "ambiguous": false
+ },
+ {
+  "name": "second_key_matches_only_one_option_returns_tuple",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^nonexistent\\b/i"
+    ],
+    "profile_scope": [
+     "/^only\\b.*\\bregion\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Only recruiters in my region can see my profile and contact me.",
+   "answers.profile_scope.pick (option content)"
+  ],
+  "spec_quote": "If there is exactly ONE such pair in total, return a 2-element tuple: (the stripped option text, \"answers.<key>.pick (option content)\").",
+  "ambiguous": false
+ },
+ {
+  "name": "search_semantics_match_mid_string",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/\\bregion\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Only recruiters in my region can see my profile and contact me.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "A pattern is tested with a search (not a full match) against the stripped option text.",
+  "ambiguous": false
+ },
+ {
+  "name": "global_flag_present_still_matches",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/gi"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "Each pattern is written as a JavaScript regex literal string \"/<regex>/<flags>\"",
+  "ambiguous": false
+ },
+ {
+  "name": "second_option_mentions_worldwide_but_does_not_anchor_any",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region, not recruiters worldwide, can see my profile."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.profile_visibility.pick (option content)"
+  ],
+  "spec_quote": "Count every (saved key, option) pair where at least one of that key's patterns matches that option.",
+  "ambiguous": false
+ },
+ {
+  "name": "catch_all_pattern_matches_all_options_returns_none",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/.*/i"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "Otherwise (no matching pair; two or more options matching; two or more saved keys matching; empty options; empty saved) return None — the group is then left for the human.",
+  "ambiguous": false
+ },
+ {
+  "name": "empty_regex_anchor_matches_only_blank_options_which_are_ignored",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "",
+    "   ",
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions."
+   ],
+   "saved": {
+    "profile_visibility": [
+     "/^$/"
+    ]
+   }
+  },
+  "expect": null,
+  "spec_quote": "`options`: list of the group's option texts (strings; blank or None entries are ignored; surrounding whitespace is ignored).",
+  "ambiguous": false
+ },
+ {
+  "name": "arbitrary_saved_key_name_appears_in_return_value",
+  "fn": "option_answer",
+  "args": {
+   "options": [
+    "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+    "Only recruiters in my region can see my profile and contact me."
+   ],
+   "saved": {
+    "visibility_q": [
+     "/^any\\b.{0,80}\\brecruiters?\\b.{0,30}\\bworldwide\\b/i"
+    ]
+   }
+  },
+  "expect": [
+   "Any Arthrex recruiter worldwide. All recruiters within Arthrex can potentially see your profile and approach you for other positions.",
+   "answers.visibility_q.pick (option content)"
+  ],
+  "spec_quote": "If there is exactly ONE such pair in total, return a 2-element tuple: (the stripped option text, \"answers.<key>.pick (option content)\").",
+  "ambiguous": false
+ }
+]

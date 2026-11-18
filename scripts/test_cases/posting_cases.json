@@ -1,0 +1,219 @@
+[
+ {
+  "name": "ats_url preferred and trimmed",
+  "fn": "posting_url",
+  "job": {
+   "url": "https://zapply.jobs/abc",
+   "ats_url": "  https://boards.greenhouse.io/acme/jobs/123  "
+  },
+  "expect": "https://boards.greenhouse.io/acme/jobs/123",
+  "spec": "Returns `ats_url` with surrounding whitespace removed when it is present and not blank"
+ },
+ {
+  "name": "blank ats_url falls back to url",
+  "fn": "posting_url",
+  "job": {
+   "url": "  https://wellfound.com/jobs/1  ",
+   "ats_url": " \t\n "
+  },
+  "expect": "https://wellfound.com/jobs/1",
+  "spec": "otherwise `url` with surrounding whitespace removed"
+ },
+ {
+  "name": "empty-string ats_url falls back to url",
+  "fn": "posting_url",
+  "job": {
+   "url": "https://simplify.jobs/p/xyz",
+   "ats_url": ""
+  },
+  "expect": "https://simplify.jobs/p/xyz",
+  "spec": "when it is present and not blank; otherwise `url` with surrounding whitespace removed"
+ },
+ {
+  "name": "None ats_url falls back to url",
+  "fn": "posting_url",
+  "job": {
+   "url": " https://www.linkedin.com/jobs/view/42 ",
+   "ats_url": null
+  },
+  "expect": "https://www.linkedin.com/jobs/view/42",
+  "spec": "otherwise `url` with surrounding whitespace removed; otherwise \"\" (missing keys, None values, None job)"
+ },
+ {
+  "name": "missing ats_url key uses url",
+  "fn": "posting_url",
+  "job": {
+   "url": "https://example.com/job/7"
+  },
+  "expect": "https://example.com/job/7",
+  "spec": "otherwise `url` with surrounding whitespace removed"
+ },
+ {
+  "name": "only ats_url present, url key missing",
+  "fn": "posting_url",
+  "job": {
+   "ats_url": " https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789012 "
+  },
+  "expect": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789012",
+  "spec": "Returns `ats_url` with surrounding whitespace removed when it is present and not blank"
+ },
+ {
+  "name": "None job returns empty string",
+  "fn": "posting_url",
+  "job": null,
+  "expect": "",
+  "spec": "otherwise \"\" (missing keys, None values, None job)"
+ },
+ {
+  "name": "empty job dict returns empty string",
+  "fn": "posting_url",
+  "job": {},
+  "expect": "",
+  "spec": "otherwise \"\" (missing keys, None values, None job)"
+ },
+ {
+  "name": "greenhouse.io case-insensitive",
+  "fn": "platform",
+  "url": "HTTPS://BOARDS.GREENHOUSE.IO/acme/jobs/123",
+  "expect": "greenhouse",
+  "spec": "Case-insensitive. Checked in this order; the first substring found wins: greenhouse.io → greenhouse"
+ },
+ {
+  "name": "gh_jid parameter on company domain",
+  "fn": "platform",
+  "url": "https://careers.acme.com/apply?gh_jid=4567",
+  "expect": "greenhouse",
+  "spec": "gh_jid= → greenhouse"
+ },
+ {
+  "name": "lever posting url",
+  "fn": "platform",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789012",
+  "expect": "lever",
+  "spec": "lever.co → lever"
+ },
+ {
+  "name": "ashby posting url",
+  "fn": "platform",
+  "url": "https://jobs.ashbyhq.com/acme/abc-123",
+  "expect": "ashby",
+  "spec": "ashbyhq.com → ashby"
+ },
+ {
+  "name": "myworkdayjobs host",
+  "fn": "platform",
+  "url": "https://acme.wd1.myworkdayjobs.com/en-US/careers/job/1",
+  "expect": "workday",
+  "spec": "myworkdayjobs.com → workday"
+ },
+ {
+  "name": "icims parameter on own domain",
+  "fn": "platform",
+  "url": "https://acme.com/careers?icims=1&job=9",
+  "expect": "icims",
+  "spec": "icims=1 → icims"
+ },
+ {
+  "name": "workable posting url",
+  "fn": "platform",
+  "url": "https://apply.workable.com/acme/j/ABCDEF/",
+  "expect": "workable",
+  "spec": "workable.com → workable"
+ },
+ {
+  "name": "SuccessFactors RMK page on company domain, trailing slash",
+  "fn": "platform",
+  "url": "https://careers.acme.com/job/engineering/12345678/",
+  "expect": "successfactors",
+  "spec": "a SuccessFactors RMK career page on a company's own domain → successfactors. Its shape is scheme://host/job/<slug>/<id>/"
+ },
+ {
+  "name": "SuccessFactors RMK with one locale segment",
+  "fn": "platform",
+  "url": "https://careers.acme.com/NorthAmerica/job/engineering/123456789012",
+  "expect": "successfactors",
+  "spec": "Between the host and \"job\" there may be at most ONE extra path segment (a locale or region, e.g. /NorthAmerica/job/...)"
+ },
+ {
+  "name": "SuccessFactors RMK followed by query",
+  "fn": "platform",
+  "url": "https://careers.acme.com/job/engineering/12345678?utm_source=board",
+  "expect": "successfactors",
+  "spec": "the URL may end there or continue with ?query or #fragment"
+ },
+ {
+  "name": "SuccessFactors shape with two extra segments does not count",
+  "fn": "platform",
+  "url": "https://careers.acme.com/en/us/job/engineering/12345678",
+  "expect": "",
+  "spec": "two or more extra segments do not count"
+ },
+ {
+  "name": "builtin.com never counts as SuccessFactors",
+  "fn": "platform",
+  "url": "https://builtin.com/job/engineering/12345678",
+  "expect": "",
+  "spec": "Hosts builtin.com and linkedin.com never count as SuccessFactors this way"
+ },
+ {
+  "name": "SuccessFactors shape with 7-digit id does not count",
+  "fn": "platform",
+  "url": "https://careers.acme.com/job/engineering/1234567",
+  "expect": "",
+  "spec": "where <id> is 8 to 12 digits"
+ },
+ {
+  "name": "lever_parse basic posting url",
+  "fn": "lever_parse",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-123456789012",
+  "expect": [
+   "acme",
+   "12345678-1234-1234-1234-123456789012"
+  ],
+  "spec": "A Lever posting URL is jobs.lever.co/<site>/<uuid>"
+ },
+ {
+  "name": "lever_parse lowercases uuid, keeps site case",
+  "fn": "lever_parse",
+  "url": "https://jobs.lever.co/Acme-Co/ABCDEF01-2345-6789-ABCD-EF0123456789",
+  "expect": [
+   "Acme-Co",
+   "abcdef01-2345-6789-abcd-ef0123456789"
+  ],
+  "spec": "it is returned in lower case. The site keeps its original case."
+ },
+ {
+  "name": "lever_parse eu host with /apply suffix",
+  "fn": "lever_parse",
+  "url": "https://jobs.eu.lever.co/Xpansiv/12345678-1234-1234-1234-123456789012/apply",
+  "expect": [
+   "Xpansiv",
+   "12345678-1234-1234-1234-123456789012"
+  ],
+  "spec": "jobs.lever.co/<site>/<uuid> or jobs.eu.lever.co/<site>/<uuid>, optionally followed by /apply or anything else"
+ },
+ {
+  "name": "lever_parse percent-decoded trailing space in site",
+  "fn": "lever_parse",
+  "url": "https://jobs.lever.co/Xpansiv%20/12345678-1234-1234-1234-123456789012",
+  "expect": [
+   "Xpansiv",
+   "12345678-1234-1234-1234-123456789012"
+  ],
+  "spec": "The URL is percent-decoded first, and spaces right before or after <site> are ignored (jobs.lever.co/Xpansiv%20/<uuid> → site \"Xpansiv\")"
+ },
+ {
+  "name": "lever_parse other host returns None",
+  "fn": "lever_parse",
+  "url": "https://jobs.greenhouse.io/acme/12345678-1234-1234-1234-123456789012",
+  "expect": null,
+  "spec": "Not a Lever posting (other host, no uuid, malformed uuid) → None"
+ },
+ {
+  "name": "lever_parse malformed uuid returns None",
+  "fn": "lever_parse",
+  "url": "https://jobs.lever.co/acme/12345678-1234-1234-1234-12345678901",
+  "expect": null,
+  "spec": "<uuid> is the standard 8-4-4-4-12 hex form ... Not a Lever posting (other host, no uuid, malformed uuid) → None"
+ }
+]

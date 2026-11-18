@@ -4,6 +4,8 @@ const path = require('path');
 const { Document, Packer, Paragraph, TextRun, TabStopType, BorderStyle, LevelFormat, ExternalHyperlink, AlignmentType } = require('docx');
 
 const C = JSON.parse(fs.readFileSync(path.join(__dirname, 'content.json'), 'utf8'));
+const WORK = require(path.join(__dirname, '..', '..', '..', 'config', 'paths.js')).work('resume');
+const OUT = path.join(WORK, 'out');   // data home, not the code (JSA-377)
 const PREFIX = require(path.join(__dirname, '..', '..', '..', 'config', 'profile.js')).name.file_prefix;   // JSA-077
 const MAROON = '800000', GRAY = '555555', FONT = 'Calibri';
 const RIGHT = 12240 - 2 * 820; // content width in DXA
@@ -67,9 +69,11 @@ function buildDoc(key, r) {
     kids.push(new Paragraph({ spacing: { after: 10 }, children: [run(e.degree + e.detail, { italics: true }), run('  —  Courses: ' + e.courses, { color: GRAY })] }));
   });
 
-  kids.push(section('Leadership'));
-  kids.push(lineRight([run(C.LEAD.title, { bold: true }), run('  ·  ' + C.LEAD.org, { bold: true, color: MAROON })], C.LEAD.date, { before: 30 }));
-  ((r.lead_short_b ?? r.lead_short) ? C.LEAD.bullets_short : C.LEAD.bullets_full).forEach(b => kids.push(bullet(b)));
+  if (C.LEAD_ON !== false) {   // off when the activity's fact says on_resume false (JSA-255)
+    kids.push(section('Leadership'));
+    kids.push(lineRight([run(C.LEAD.title, { bold: true }), run('  ·  ' + C.LEAD.org, { bold: true, color: MAROON })], C.LEAD.date, { before: 30 }));
+    ((r.lead_short_b ?? r.lead_short) ? C.LEAD.bullets_short : C.LEAD.bullets_full).forEach(b => kids.push(bullet(b)));
+  }
 
   return new Document({
     creator: C.NAME, title: `${C.NAME} — ${r.label} Resume`,
@@ -82,7 +86,8 @@ function buildDoc(key, r) {
 
 (async () => {
   for (const [key, r] of Object.entries(C.ROLES)) {
-    const fn = path.join(__dirname, 'out', `${PREFIX}_Resume_${key}_B-Modern.docx`);
+    fs.mkdirSync(OUT, { recursive: true });
+    const fn = path.join(OUT, `${PREFIX}_Resume_${key}_B-Modern.docx`);
     fs.writeFileSync(fn, await Packer.toBuffer(buildDoc(key, r)));
     console.log(fn);
   }

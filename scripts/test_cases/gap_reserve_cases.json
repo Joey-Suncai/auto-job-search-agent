@@ -1,0 +1,1480 @@
+[
+ {
+  "name": "tags: token match inside a skill, then skills.true appended",
+  "why": "Spec §1: \"A skill string s 'matches a cluster' ... when any spelling matches inside s as a whole token\". 'Stakeholder management' contains the whole token 'stakeholder' (case-insensitive), so f1 matches; the skills.true item is appended after all facts as [\"skills.true\", item].",
+  "fn": "tags",
+  "spellings": [
+   "stakeholder",
+   "stakeholders"
+  ],
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python",
+      "Stakeholder management"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {
+     "leadership": [
+      "Stakeholder engagement",
+      "Team leadership"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "expect": [
+   [
+    "f1",
+    "Stakeholder management"
+   ],
+   [
+    "skills.true",
+    "Stakeholder engagement"
+   ]
+  ]
+ },
+ {
+  "name": "tags: plural spelling does not match singular skill",
+  "why": "Spec §1 + matching rule: 'Stakeholders' equals the spelling ignoring case and surrounding spaces, so it matches; 'Stakeholder' is neither equal to 'stakeholders' nor contains it as a whole token (the trailing 's' breaks the match), so it does not match.",
+  "fn": "tags",
+  "spellings": [
+   "stakeholders"
+  ],
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Stakeholder",
+      "Stakeholders"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": [
+   [
+    "f1",
+    "Stakeholders"
+   ]
+  ]
+ },
+ {
+  "name": "tags: fact with resume_ok false is excluded, skills.true still included",
+  "why": "Spec §1: \"Every skill of a fact with resume_ok not false ... then every skills.true item ... that matches\". f1 has resume_ok false so its matching skill is skipped; the skills.true item still matches and is returned.",
+  "fn": "tags",
+  "spellings": [
+   "stakeholder"
+  ],
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Stakeholder management"
+     ],
+     "resume_ok": false
+    }
+   ],
+   "skills": {
+    "true": {
+     "lead": [
+      "Stakeholder engagement"
+     ]
+    },
+    "not_true": []
+   }
+  },
+  "expect": [
+   [
+    "skills.true",
+    "Stakeholder engagement"
+   ]
+  ]
+ },
+ {
+  "name": "tags: entry with on_resume false is excluded",
+  "why": "Spec §1: fact skills count only when \"whose entry has on_resume not false\". e1 has on_resume false, so 'Stakeholder management' is excluded and there are no skills.true matches.",
+  "fn": "tags",
+  "spellings": [
+   "stakeholder"
+  ],
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": false
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Stakeholder management"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "expect": []
+ },
+ {
+  "name": "tags: skills.true groups in group order, non-matching items skipped",
+  "why": "Spec §1: skills.true items come \"groups in their order\". Group 'lead' yields 'Stakeholder engagement' (skip 'Team leadership'), group 'ops' yields 'Stakeholder ops' (skip 'Budgeting'), group 'gov' yields 'Stakeholder governance'. skills.not_true is never used.",
+  "fn": "tags",
+  "spellings": [
+   "stakeholder"
+  ],
+  "facts": {
+   "entries": [],
+   "facts": [],
+   "skills": {
+    "true": {
+     "lead": [
+      "Team leadership",
+      "Stakeholder engagement"
+     ],
+     "ops": [
+      "Stakeholder ops",
+      "Budgeting"
+     ],
+     "gov": [
+      "Stakeholder governance"
+     ]
+    },
+    "not_true": [
+     "Stakeholder stuff"
+    ]
+   }
+  },
+  "expect": [
+   [
+    "skills.true",
+    "Stakeholder engagement"
+   ],
+   [
+    "skills.true",
+    "Stakeholder ops"
+   ],
+   [
+    "skills.true",
+    "Stakeholder governance"
+   ]
+  ]
+ },
+ {
+  "name": "gaps: term dropped when the page already contains its jd_spelling",
+  "why": "hits('python')=1 ('Python' token); in_title=false; score=3×min(1,3)×1=3; jd_spelling='python'; term is true (f1 skill 'Python' matches). Spec §2: keep only when \"(b) the page does not contain its jd_spelling\" — page has 'Python', so it is dropped.",
+  "fn": "gaps",
+  "jd": "We use Python daily.",
+  "title": "Backend Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "python",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Dev",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "Strong Python skills required",
+  "n": 12,
+  "expect": []
+ },
+ {
+  "name": "gaps: another spelling on the page gives state other_spelling",
+  "why": "Spec: 'stakeholder' does not match inside 'stakeholders' (adjacent letters break the match), so hits: stakeholder 0 + stakeholders 1 = 1. jd_spelling is the spelling with most matches = 'stakeholders'. score=2×min(1,3)×1=2. Term is true (f1 'Stakeholder management' has token 'stakeholder'). page contains 'stakeholder', a different spelling → state = \"other_spelling\".",
+  "fn": "gaps",
+  "jd": "Work with stakeholders closely.",
+  "title": "Product Manager",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "stakeholder",
+       "synonyms": [
+        "stakeholders"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Stakeholder management"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "Engage stakeholder groups",
+  "n": 12,
+  "expect": [
+   {
+    "term": "stakeholder",
+    "jd_spelling": "stakeholders",
+    "state": "other_spelling",
+    "score": 2,
+    "facts": [
+     "f1"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "gaps: term that is not \"true\" is dropped",
+  "why": "hits('python')=1, score=3×1×1=3, jd_spelling='python', page empty. But spec §2 keeps a term only when \"(a) it is 'true': a fact as in §1 has a matching skill, or a skills.true item matches\" — no fact skill or skills.true item matches 'python' (only 'Java' exists), so the term is dropped.",
+  "fn": "gaps",
+  "jd": "Python everywhere.",
+  "title": "Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "python",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Dev",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Java"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "",
+  "n": 12,
+  "expect": []
+ },
+ {
+  "name": "gaps: title match doubles the score",
+  "why": "hits('python')=2; in_title=true ('Python' is a token of the title) so multiplier 2; score=2×min(2,3)×2=8 (rounded 4dp → 8). page is empty → state 'missing'. facts lists all matching facts in fact order: f1 then f2.",
+  "fn": "gaps",
+  "jd": "Python Python services",
+  "title": "Python Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "python",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Dev",
+     "on_resume": true
+    },
+    {
+     "id": "e2",
+     "org": "Beta",
+     "role": "Dev",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "skills": [
+      "Python scripting"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "",
+  "n": 12,
+  "expect": [
+   {
+    "term": "python",
+    "jd_spelling": "python",
+    "state": "missing",
+    "score": 8,
+    "facts": [
+     "f1",
+     "f2"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "gaps: hits are capped at 3",
+  "why": "Spec: \"score = weight × min(hits, 3)\". hits('sql')=5, min(5,3)=3; in_title=false; score=1×3×1=3. jd_spelling='sql', page empty → state 'missing'.",
+  "fn": "gaps",
+  "jd": "SQL SQL SQL SQL SQL",
+  "title": "Data Analyst",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "sql",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Analyst",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "SQL"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "",
+  "n": 12,
+  "expect": [
+   {
+    "term": "sql",
+    "jd_spelling": "sql",
+    "state": "missing",
+    "score": 3,
+    "facts": [
+     "f1"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "gaps: LLMOps does not match the LLM spelling",
+  "why": "Spec matching rule: \"letters / digits / '&' / '+' next to it break the match: 'LLM' does not match 'LLMOps'\". hits('LLM')=0, so the cluster is \"skipped\" by jd_terms and produces no item even though a fact skill 'LLM' would make the term true.",
+  "fn": "gaps",
+  "jd": "We build LLMOps tooling.",
+  "title": "ML Engineer",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "MLE",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "LLM"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "",
+  "n": 12,
+  "expect": []
+ },
+ {
+  "name": "gaps: n cuts the sorted list",
+  "why": "Each term hits once, none in title: alpha=3×1×1=3, beta=2×1×1=2, gamma=1×1×1=1. Sorted score desc → alpha, beta, gamma; first n=2 keeps alpha and beta only. All are true (f1 has matching skills) and the page is empty.",
+  "fn": "gaps",
+  "jd": "alpha beta gamma",
+  "title": "Generalist",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "alpha",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "weight": 2,
+     "keywords": [
+      {
+       "term": "beta",
+       "synonyms": []
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "weight": 1,
+     "keywords": [
+      {
+       "term": "gamma",
+       "synonyms": []
+      }
+     ]
+    }
+   ]
+  },
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Gen",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "alpha",
+      "beta",
+      "gamma"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "page": "",
+  "n": 2,
+  "expect": [
+   {
+    "term": "alpha",
+    "jd_spelling": "alpha",
+    "state": "missing",
+    "score": 3,
+    "facts": [
+     "f1"
+    ]
+   },
+   {
+    "term": "beta",
+    "jd_spelling": "beta",
+    "state": "missing",
+    "score": 2,
+    "facts": [
+     "f1"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "aggregate: tie on score and jds broken by term asc",
+  "why": "Both terms appear in 1 of 1 JD: share=1/1=1.0, score 3 each (sum of a single score). Rows sorted \"score desc, then jds desc, then term asc\" → alpha before beta.",
+  "fn": "aggregate",
+  "per_jd": [
+   [
+    {
+     "term": "beta",
+     "jd_spelling": "beta",
+     "state": "missing",
+     "score": 3,
+     "facts": [
+      "f2"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "beta"
+     ]
+    },
+    {
+     "term": "alpha",
+     "jd_spelling": "alpha",
+     "state": "missing",
+     "score": 3,
+     "facts": [
+      "f1"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "alpha"
+     ]
+    }
+   ]
+  ],
+  "n_jds": 1,
+  "expect": [
+   {
+    "term": "alpha",
+    "jds": 1,
+    "share": 1.0,
+    "score": 3,
+    "spellings": {
+     "alpha": 1
+    },
+    "states": {
+     "missing": 1
+    },
+    "facts": [
+     "f1"
+    ]
+   },
+   {
+    "term": "beta",
+    "jds": 1,
+    "share": 1.0,
+    "score": 3,
+    "spellings": {
+     "beta": 1
+    },
+    "states": {
+     "missing": 1
+    },
+    "facts": [
+     "f2"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "aggregate: share rounding to 4 decimals",
+  "why": "python appears in 2 of 3 lists: share=2/3=0.666666… rounded 0.6667, score=2+2=4, spellings {python:2}, states missing 1 + other_spelling 1. go appears in 1 of 3: share=1/3=0.3333, score=1. Sorted score desc → python, go.",
+  "fn": "aggregate",
+  "per_jd": [
+   [
+    {
+     "term": "python",
+     "jd_spelling": "python",
+     "state": "missing",
+     "score": 2,
+     "facts": [
+      "f1"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "python"
+     ]
+    },
+    {
+     "term": "go",
+     "jd_spelling": "go",
+     "state": "missing",
+     "score": 1,
+     "facts": [
+      "f2"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "go"
+     ]
+    }
+   ],
+   [],
+   [
+    {
+     "term": "python",
+     "jd_spelling": "python",
+     "state": "other_spelling",
+     "score": 2,
+     "facts": [
+      "f1"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "python"
+     ]
+    }
+   ]
+  ],
+  "n_jds": 3,
+  "expect": [
+   {
+    "term": "python",
+    "jds": 2,
+    "share": 0.6667,
+    "score": 4,
+    "spellings": {
+     "python": 2
+    },
+    "states": {
+     "missing": 1,
+     "other_spelling": 1
+    },
+    "facts": [
+     "f1"
+    ]
+   },
+   {
+    "term": "go",
+    "jds": 1,
+    "share": 0.3333,
+    "score": 1,
+    "spellings": {
+     "go": 1
+    },
+    "states": {
+     "missing": 1
+    },
+    "facts": [
+     "f2"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "aggregate: n_jds 0 gives share 0",
+  "why": "Spec §3: \"share = jds / n_jds rounded to 4 decimals (0 when n_jds is 0)\". The term appears in 1 list, so jds=1, but n_jds=0 forces share=0; score stays 3 and counts stay as observed.",
+  "fn": "aggregate",
+  "per_jd": [
+   [
+    {
+     "term": "python",
+     "jd_spelling": "python",
+     "state": "missing",
+     "score": 3,
+     "facts": [
+      "f1"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "python"
+     ]
+    }
+   ]
+  ],
+  "n_jds": 0,
+  "expect": [
+   {
+    "term": "python",
+    "jds": 1,
+    "share": 0,
+    "score": 3,
+    "spellings": {
+     "python": 1
+    },
+    "states": {
+     "missing": 1
+    },
+    "facts": [
+     "f1"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "aggregate: spellings/states counts and sorted fact union",
+  "why": "Term appears in both lists: jds=2, share=2/2=1.0, score=2+2=4. spellings counts jd_spelling per list {'stakeholders':1,'stakeholder':1}; states {'missing':1,'other_spelling':1}; facts = sorted union of ['f2','f1'] and ['f1','f3'] = ['f1','f2','f3'].",
+  "fn": "aggregate",
+  "per_jd": [
+   [
+    {
+     "term": "stakeholder",
+     "jd_spelling": "stakeholders",
+     "state": "missing",
+     "score": 2,
+     "facts": [
+      "f2",
+      "f1"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "stakeholder",
+      "stakeholders"
+     ]
+    }
+   ],
+   [
+    {
+     "term": "stakeholder",
+     "jd_spelling": "stakeholder",
+     "state": "other_spelling",
+     "score": 2,
+     "facts": [
+      "f1",
+      "f3"
+     ],
+     "competency": "c1",
+     "spellings": [
+      "stakeholder",
+      "stakeholders"
+     ]
+    }
+   ]
+  ],
+  "n_jds": 2,
+  "expect": [
+   {
+    "term": "stakeholder",
+    "jds": 2,
+    "share": 1.0,
+    "score": 4,
+    "spellings": {
+     "stakeholders": 1,
+     "stakeholder": 1
+    },
+    "states": {
+     "missing": 1,
+     "other_spelling": 1
+    },
+    "facts": [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "deny: remove matching skills from one fact",
+  "why": "Spec §4: \"fact_id = a fact id: that fact's skills that match the cluster are removed (others kept, order kept); returns the removed ones in order\". 'Stakeholder management' matches; 'Python' and 'SQL' are kept in order.",
+  "fn": "deny",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python",
+      "Stakeholder management",
+      "SQL"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "spellings": [
+   "stakeholder",
+   "stakeholders"
+  ],
+  "fact_id": "f1",
+  "expect_removed": [
+   "Stakeholder management"
+  ],
+  "expect_skills": {
+   "f1": [
+    "Python",
+    "SQL"
+   ]
+  }
+ },
+ {
+  "name": "deny: skills.true removes from every group",
+  "why": "Spec §4: \"fact_id = 'skills.true': the same for every skills.true group\". Group a loses 'Stakeholder engagement' (keeps 'Python'), group b loses 'Team stakeholders' (empty left); removed returned in group order then item order.",
+  "fn": "deny",
+  "facts": {
+   "entries": [],
+   "facts": [],
+   "skills": {
+    "true": {
+     "a": [
+      "Stakeholder engagement",
+      "Python"
+     ],
+     "b": [
+      "Team stakeholders"
+     ]
+    },
+    "not_true": [
+     "Stakeholder stuff"
+    ]
+   }
+  },
+  "spellings": [
+   "stakeholder",
+   "stakeholders"
+  ],
+  "fact_id": "skills.true",
+  "expect_removed": [
+   "Stakeholder engagement",
+   "Team stakeholders"
+  ],
+  "expect_skills": {
+   "skills.true": {
+    "a": [
+     "Python"
+    ],
+    "b": []
+   }
+  }
+ },
+ {
+  "name": "deny: nothing matching leaves everything unchanged",
+  "why": "Spec §4: \"An unknown id or nothing matching → [] and nothing changes\". No skill of f1 contains a whole token 'stakeholder'/'stakeholders', so [] is returned and f1 keeps both skills.",
+  "fn": "deny",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "Dev",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Python",
+      "SQL"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "spellings": [
+   "stakeholder"
+  ],
+  "fact_id": "f1",
+  "expect_removed": [],
+  "expect_skills": {
+   "f1": [
+    "Python",
+    "SQL"
+   ]
+  }
+ },
+ {
+  "name": "deny: other facts are never touched",
+  "why": "Spec §4: \"Other facts are never touched\". Denying f1 removes only its 'Stakeholder management'; f2 keeps its matching skill 'Stakeholder engagement' untouched.",
+  "fn": "deny",
+  "facts": {
+   "entries": [
+    {
+     "id": "e1",
+     "org": "Acme",
+     "role": "PM",
+     "on_resume": true
+    },
+    {
+     "id": "e2",
+     "org": "Beta",
+     "role": "PM",
+     "on_resume": true
+    }
+   ],
+   "facts": [
+    {
+     "id": "f1",
+     "entry": "e1",
+     "skills": [
+      "Stakeholder management",
+      "Python"
+     ],
+     "resume_ok": true
+    },
+    {
+     "id": "f2",
+     "entry": "e2",
+     "skills": [
+      "Stakeholder engagement"
+     ],
+     "resume_ok": true
+    }
+   ],
+   "skills": {
+    "true": {},
+    "not_true": []
+   }
+  },
+  "spellings": [
+   "stakeholder"
+  ],
+  "fact_id": "f1",
+  "expect_removed": [
+   "Stakeholder management"
+  ],
+  "expect_skills": {
+   "f1": [
+    "Python"
+   ],
+   "f2": [
+    "Stakeholder engagement"
+   ]
+  }
+ },
+ {
+  "name": "candidates: valid candidate with gap resolved through a synonym",
+  "why": "Spec §5: gap 'LLMs' equals a synonym of role keyword term 'LLM', so the cluster is {LLM, LLMs, large language models}; 'LLM' is a whole token of the text → matches. e1 is on the master, text is not an existing bullet/reserve text exactly → no kinds.",
+  "fn": "candidates",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": [
+        "LLMs",
+        "large language models"
+       ]
+      },
+      {
+       "term": "stakeholders",
+       "synonyms": [
+        "stakeholder"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led platform migration"
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Aligned stakeholders on roadmap"
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "text": "Mentored junior engineers"
+    }
+   ]
+  },
+  "candidates": [
+   {
+    "entry_id": "e1",
+    "text": "Built LLM evaluation harness",
+    "fact_ids": [
+     "f1"
+    ],
+    "bold": false,
+    "gap": "LLMs"
+   }
+  ],
+  "expect_kinds": [
+   []
+  ]
+ },
+ {
+  "name": "candidates: entry_not_on_master",
+  "why": "Spec §5 first rule: \"entry_not_on_master — its entry_id is not an entry_id of the master\". e7 is not in master. The text contains 'stakeholders' so no_gap_term does not fire, and it is not equal to any master text so not_new does not fire.",
+  "fn": "candidates",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": [
+        "LLMs",
+        "large language models"
+       ]
+      },
+      {
+       "term": "stakeholders",
+       "synonyms": [
+        "stakeholder"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led platform migration"
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Aligned stakeholders on roadmap"
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "text": "Mentored junior engineers"
+    }
+   ]
+  },
+  "candidates": [
+   {
+    "entry_id": "e7",
+    "text": "Aligned stakeholders quarterly",
+    "fact_ids": [
+     "f2"
+    ],
+    "bold": true,
+    "gap": "stakeholders"
+   }
+  ],
+  "expect_kinds": [
+   [
+    "entry_not_on_master"
+   ]
+  ]
+ },
+ {
+  "name": "candidates: not_new against a reserve text",
+  "why": "Spec §5 second rule: \"not_new — its text equals an existing master bullet or reserve text exactly\". Text equals the reserve text. gap 'junior' equals no role keyword term/synonym, so the cluster is just 'junior', which matches the text as a token → no_gap_term does not fire.",
+  "fn": "candidates",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": [
+        "LLMs",
+        "large language models"
+       ]
+      },
+      {
+       "term": "stakeholders",
+       "synonyms": [
+        "stakeholder"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led platform migration"
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Aligned stakeholders on roadmap"
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "text": "Mentored junior engineers"
+    }
+   ]
+  },
+  "candidates": [
+   {
+    "entry_id": "e2",
+    "text": "Mentored junior engineers",
+    "fact_ids": [],
+    "bold": false,
+    "gap": "junior"
+   }
+  ],
+  "expect_kinds": [
+   [
+    "not_new"
+   ]
+  ]
+ },
+ {
+  "name": "candidates: empty gap gives no_gap_term",
+  "why": "Spec §5 third rule: \"no_gap_term — gap is empty ...\". gap is \"\" so the rule fires; entry e1 exists and the text is not an exact master bullet/reserve text, so only no_gap_term is reported.",
+  "fn": "candidates",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": [
+        "LLMs",
+        "large language models"
+       ]
+      },
+      {
+       "term": "stakeholders",
+       "synonyms": [
+        "stakeholder"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led platform migration"
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Aligned stakeholders on roadmap"
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "text": "Mentored junior engineers"
+    }
+   ]
+  },
+  "candidates": [
+   {
+    "entry_id": "e1",
+    "text": "Owned quarterly roadmap",
+    "fact_ids": [
+     "f3"
+    ],
+    "bold": false,
+    "gap": ""
+   }
+  ],
+  "expect_kinds": [
+   [
+    "no_gap_term"
+   ]
+  ]
+ },
+ {
+  "name": "candidates: gap cluster via synonym matches; unrelated text triggers no_gap_term",
+  "why": "Candidate 1: gap 'LLM' equals the term, so the cluster includes synonym 'large language models', present as whole tokens in the text → matches, entry and newness fine → no kinds. Candidate 2: gap 'LLMs' cluster is {LLM, LLMs, large language models}; 'Shipped retrieval pipelines' contains none → no_gap_term.",
+  "fn": "candidates",
+  "role": {
+   "competencies": [
+    {
+     "id": "c1",
+     "weight": 3,
+     "keywords": [
+      {
+       "term": "LLM",
+       "synonyms": [
+        "LLMs",
+        "large language models"
+       ]
+      },
+      {
+       "term": "stakeholders",
+       "synonyms": [
+        "stakeholder"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "master": {
+   "entries": [
+    {
+     "entry_id": "e1",
+     "bullets": [
+      {
+       "text": "Led platform migration"
+      }
+     ]
+    },
+    {
+     "entry_id": "e2",
+     "bullets": [
+      {
+       "text": "Aligned stakeholders on roadmap"
+      }
+     ]
+    }
+   ],
+   "reserve": [
+    {
+     "text": "Mentored junior engineers"
+    }
+   ]
+  },
+  "candidates": [
+   {
+    "entry_id": "e1",
+    "text": "Experience with large language models",
+    "fact_ids": [
+     "f1"
+    ],
+    "bold": false,
+    "gap": "LLM"
+   },
+   {
+    "entry_id": "e1",
+    "text": "Shipped retrieval pipelines",
+    "fact_ids": [
+     "f4"
+    ],
+    "bold": false,
+    "gap": "LLMs"
+   }
+  ],
+  "expect_kinds": [
+   [],
+   [
+    "no_gap_term"
+   ]
+  ]
+ },
+ {
+  "name": "bank: insert at end of a middle section",
+  "why": "Spec §6: find '## Alpha', insert after its last non-empty line ('alpha two') before the next '## ' line, \"keeping the blank line(s) that follow\" (one blank line kept before '## Beta'); result ends with exactly one newline.",
+  "fn": "bank",
+  "bank": "# Bank\n\n## Alpha\nalpha one\nalpha two\n\n## Beta\nbeta one\n",
+  "heading": "Alpha",
+  "lines": [
+   "new bullet"
+  ],
+  "expect": "# Bank\n\n## Alpha\nalpha one\nalpha two\nnew bullet\n\n## Beta\nbeta one\n"
+ },
+ {
+  "name": "bank: insert at end of the last section",
+  "why": "Spec §6: last non-empty line before \"the end\" is 'beta one'; the new line goes right after it, and the result ends with exactly one newline.",
+  "fn": "bank",
+  "bank": "## Alpha\nalpha one\n\n## Beta\nbeta one\n",
+  "heading": "Beta",
+  "lines": [
+   "beta two"
+  ],
+  "expect": "## Alpha\nalpha one\n\n## Beta\nbeta one\nbeta two\n"
+ },
+ {
+  "name": "bank: missing heading appends a new section",
+  "why": "Spec §6: \"No such heading → append '\\n\\n## heading\\n' + the lines at the end\". Input stripped of trailing newlines is '# Bank\\n\\n## Alpha\\nalpha one', then '\\n\\n## Gamma\\n' + 'gamma one' + final newline.",
+  "fn": "bank",
+  "bank": "# Bank\n\n## Alpha\nalpha one\n",
+  "heading": "Gamma",
+  "lines": [
+   "gamma one"
+  ],
+  "expect": "# Bank\n\n## Alpha\nalpha one\n\n## Gamma\ngamma one\n"
+ },
+ {
+  "name": "bank: blank lines after the last non-empty line are kept",
+  "why": "Spec §6: insertion goes \"right after its last non-empty line ... keeping the blank line(s) that follow\". The two blank lines before '## Beta' stay after the inserted line.",
+  "fn": "bank",
+  "bank": "## Alpha\nalpha one\n\n\n## Beta\nbeta one\n",
+  "heading": "Alpha",
+  "lines": [
+   "new"
+  ],
+  "expect": "## Alpha\nalpha one\nnew\n\n\n## Beta\nbeta one\n"
+ },
+ {
+  "name": "bank: trailing newlines stripped, result ends with exactly one newline",
+  "why": "Spec §6: \"The result always ends with exactly one '\\n' (trailing newlines of the input are stripped first)\". After stripping, 'alpha one' is the last non-empty line; 'x' is inserted and a single final newline is emitted.",
+  "fn": "bank",
+  "bank": "## Alpha\nalpha one\n\n\n",
+  "heading": "Alpha",
+  "lines": [
+   "x"
+  ],
+  "expect": "## Alpha\nalpha one\nx\n"
+ }
+]

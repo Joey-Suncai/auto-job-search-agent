@@ -1,13 +1,19 @@
 #!/bin/sh
-# Companion-file check (scripts/check_updates.py), then — when the answer rules, the canon audit or the facts they read are
-# staged — the form replay (scripts/learn/replay.py --check, JSA-188): a submitted answer that changes without a recorded
-# reason, or a rule answer that contradicts his facts, blocks the commit. Skip once with: git commit --no-verify
+# Product repo pre-commit (ADR-0011 step 5, JSA-342).
+# 1) Commits come only from a worktree (a developer session): the main folder is the land target only — land.py in the
+#    dev repo fast-forwards it, nobody commits there. Joey can allow one commit with JSA_COMMIT_IN_MAIN=1.
+# 2) When the answer rules, the canon audit or the facts they read are staged: the form replay (scripts/learn/replay.py
+#    --check, JSA-188) — a submitted answer that changes without a recorded reason blocks the commit.
+# The document checks (check_updates) run in the dev repo's land.py, once per landing.
 ROOT=$(git rev-parse --show-toplevel)
-if [ -f "$ROOT/scripts/check_updates.py" ]; then
-  python3 "$ROOT/scripts/check_updates.py" || exit 1
+GITDIR=$(git rev-parse --absolute-git-dir)
+COMMON=$(cd "$(git rev-parse --git-common-dir)" && pwd -P)
+if [ "$(cd "$GITDIR" && pwd -P)" = "$COMMON" ] && [ -z "$JSA_COMMIT_IN_MAIN" ]; then
+  echo "pre-commit: this is the product repo's main folder — commit in a worktree and land it with the dev repo's land.py (ADR-0011)." >&2
+  exit 1
 fi
 if [ -f "$ROOT/scripts/learn/replay.py" ] && command -v node >/dev/null 2>&1 && \
-   git diff --cached --name-only | grep -qE '^(skills/auto-apply/scripts/answer_rules\.js|skills/auto-apply/runner/(rules_bridge\.js|canon\.py)|config/(profile|canonical|connections)\.json)$'; then
+   git diff --cached --name-only | grep -qE '^(skills/auto-apply/scripts/answer_rules\.js|skills/auto-apply/runner/(rules_bridge\.js|canon\.py))$'; then
   python3 "$ROOT/scripts/learn/replay.py" --check || exit 1
 fi
 exit 0

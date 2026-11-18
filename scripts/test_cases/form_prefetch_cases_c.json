@@ -48,7 +48,7 @@
    "rule": "none",
    "second_opinion": null,
    "suggestion": {
-    "answer": "Sun",
+    "answer": "Doe",
     "fact": "last_name"
    }
   },
@@ -57,7 +57,7 @@
    "high_risk": false,
    "derived_block": true
   },
-  "spec_quote": "A suggestion is never used on its own — low-risk questions included (Joey 2026-11-06): it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Sun, from last_name) are listed together with their fact; Joey can accept the whole block with one click (still his confirm; each accepted item → qa_add.py)."
+  "spec_quote": "A suggestion is never used on its own — low-risk questions included (Joey 2026-11-06): it goes on the sheet for his one-click confirm → `qa_add.py` → a rule for every job that asks it. / Derived-from-facts block on top: suggestions DeepSeek derived from a named fact (e.g. Preferred Last Name → Doe, from last_name) are listed together with their fact; Joey can accept the whole block with one click (still his confirm; each accepted item → qa_add.py)."
  },
  {
   "name": "route_jd_dependent_fact_suggestion_not_in_derived_block",
